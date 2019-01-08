@@ -3,7 +3,7 @@ import axios from 'axios';
 import Resources from '../../resources.json';
 import '../../App.css';
 
-let currentLang =localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
 
 let DefaultUrl = 'https://demov4services.procoor.com/PM/api/Procoor/';
 let axiosConfig = {
@@ -39,7 +39,7 @@ class WidgetsWithText extends Component {
             <div className="col-xs-3 mt-5"> 
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title">{Resources[this.props.title][currentLang]}</h5>
+                        <h5 className="card-title">{Resources[this.props.title][currentLanguage]}</h5>
                         <div className="text_counter">
                             <p>{this.state.count}</p>
                             <sub>Out Of {this.state.total}</sub>                   
