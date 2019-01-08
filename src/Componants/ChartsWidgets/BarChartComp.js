@@ -6,7 +6,7 @@ import exporting from 'highcharts/modules/exporting'
 //import 'bootstrap/dist/css/bootstrap.css';
 import Api from '../../api';
 import language from '../../resources.json'
-let currentLanguage = localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
 
 addNoDataModule(Highcharts);
 exporting(Highcharts)
