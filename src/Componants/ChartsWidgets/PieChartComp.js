@@ -76,8 +76,8 @@ class PieChartComp extends Component {
     }
     render() { 
         return ( 
-                <div className="card">
-                    <div className="card-body">
+                <div className="panel">
+                    <div className="panel-body">
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={this.state.options}

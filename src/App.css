@@ -45,18 +45,6 @@
     top: 18px;
 }
 
-.card {
-    box-shadow: 0 0 61px #f1f1f1;
-    /* border: none; */
-    border-radius: 0;
-}
-
-.card-title {
-    border-bottom: 1px solid #f1f1f1;
-    padding-bottom: 10px;
-    margin-bottom: 10px
-}
-
 .text_counter {
     font-size: 30px;
     justify-content: space-between;
@@ -478,4 +466,15 @@ font-size: 30px;
 .row {
   margin-left: -13px;
   margin-right: -13px;
+}
+.panel {
+    box-shadow: 0 0 61px #f1f1f1 ;
+    margin-bottom: 40px ;
+    border-radius: 0;
+}
+
+.panel-title {
+    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 10px;
+    margin-bottom: 10px
 }

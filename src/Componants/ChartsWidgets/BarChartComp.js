@@ -130,7 +130,7 @@ class BarChartComp extends Component {
 
     render() { 
         return ( 
-            <div className="panel p-0">
+            <div className="panel">
                 <div className="panel-body">
                     <HighchartsReact 
                         highcharts={Highcharts}
