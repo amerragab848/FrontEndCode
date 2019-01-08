@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import addNoDataModule from 'highcharts/modules/no-data-to-display';
+import exporting from 'highcharts/modules/exporting'
 //import 'bootstrap/dist/css/bootstrap.css';
 import Api from '../../api';
 import language from '../../resources.json'
 let currentLanguage = localStorage.getItem('lang');
 
 addNoDataModule(Highcharts);
-
+exporting(Highcharts)
 class BarChartComp extends Component {
 
     constructor(props) {
@@ -80,6 +81,9 @@ class BarChartComp extends Component {
                 credits: {
                     enabled: false
 
+                },
+                exporting:{
+                    enabled:true
                 }
 
 
