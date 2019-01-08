@@ -1,0 +1,153 @@
+
+.SummeriesContainer .SummeriesContainerContent {
+    border-bottom: 1px solid #E9ECF0;
+    border-top: 1px solid #E9ECF0;
+    background-color: #fff;
+    display: flex;
+    padding: 0px 70px;
+    padding-top: 50px;
+    flex-wrap: wrap; 
+}
+
+.SummeriesContainer .SummeriesContainerContent .summerisItem {
+    position: relative;
+    padding: 20px 0;
+    margin-bottom: 70px;
+}
+
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding: 0 30px;
+    width: 204px;
+    position: relative;
+    z-index: 9;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .title {
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    color: #858D9E;
+    font-family: font-xb;
+    text-transform: uppercase;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
+    font-size: 56px;
+    font-family: font-b;
+    color: #252833;
+    margin: 0;
+    overflow: hidden;
+    width: 96%;
+    text-align: center;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
+    color: #adbccc;
+    letter-spacing: -0.2px;
+    font-size: 16px;
+    margin: 0;
+    font-family: font-b;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL {
+    display: flex;
+    height: 4px;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 128px;
+    position: relative;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+*, :after, :before {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+}.SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList .first {
+    margin-right: 14px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
+    font-family: font-b;
+    font-size: 14px;
+    letter-spacing: -0.2px;
+    color: #ccd2db;
+}.SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
+    font-family: font-b;
+    font-size: 14px;
+    letter-spacing: -0.2px;
+    color: #ccd2db;
+}
+.summerisItem:hover { 
+                .title,
+                .number,
+                .status,
+                .summerisList {
+                    color: #fff;
+                    > div {
+                        span {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+.summerisItem:before {
+                transform: scale(0);
+                transition: 0.3s;
+                position: absolute;
+                content: "";
+                left: -10px;
+                right: -10px;
+                background: #47cc4a;
+                bottom: -80px;
+                top: -60px;
+                z-index: 3;
+            }
+ul {
+    padding: 0;
+}
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child {
+    margin-top: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: inherit;
+    line-height: normal;
+}
+
+body ::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    border-radius: 5px;
+    background: rgba(0,0,0,.25);
+    -webkit-transition: color .2s ease;
+    transition: color .2s ease;
+}
+body ::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.1);
+    border-radius: 0;
+}
+
+::selection {
+    background: #47cc4a;
+    color: #fff;
+}
+::selection {
+    background-color: #cce2ff;
+    color: rgba(0,0,0,.87);
+}
