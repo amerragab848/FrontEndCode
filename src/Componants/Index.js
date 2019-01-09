@@ -9,7 +9,7 @@ import { ChartWidgetsData, BarChartComp, PieChartComp } from './ChartsWidgets';
 import { ThreeWidgetsData, ApprovedWidget } from './ThreeWidgets';
  
 import language from '../resources.json'; 
-let currentLanguage = localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
 
 class Index extends Component {
     constructor(props) {

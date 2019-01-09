@@ -5,7 +5,7 @@ import addNoDataModule from 'highcharts/modules/no-data-to-display';
 //import 'bootstrap/dist/css/bootstrap.css';
 import Api from '../../api';
 import language from '../../resources.json'
-let currentLanguage = localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
 
 addNoDataModule(Highcharts);
 
@@ -76,8 +76,8 @@ class PieChartComp extends Component {
     }
     render() { 
         return ( 
-                <div className="card">
-                    <div className="card-body">
+                <div className="panel">
+                    <div className="panel-body">
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={this.state.options}
