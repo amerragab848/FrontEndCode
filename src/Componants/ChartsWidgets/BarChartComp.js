@@ -103,6 +103,7 @@ class BarChartComp extends Component {
                 });
 
                 this.setState({ options: { series: { name: this.props.title, data: _data }, xAxis: { categories: _catag } } });
+           
             }
             else {
                 results.map((item) => {
