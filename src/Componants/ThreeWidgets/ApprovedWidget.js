@@ -20,10 +20,9 @@ class ApprovedWidget extends Component {
     });
   }
 
-  onOpenModal = function(i) {
+  onOpenModal = function() {
     if (this.props.isModal) {
       this.setState({ open: true });
-    } else {
     }
   };
 
@@ -50,18 +49,18 @@ class ApprovedWidget extends Component {
       });
 
       return (
-        <div class="summerisItem">
-          <div class="content">
-            <h4 class="title">{this.props.title}</h4>
-            <p class="number">{high ? high[this.props.value] : 0}</p>
-            <p class="status">{high ? high[this.props.text] : ""}</p>
-            <ul class="satusBarUL">
-              <li class="num-1" />
-              <li class="num-2" />
-              <li class="num-3" />
+        <div className="summerisItem">
+          <div className="content">
+            <h4 className="title">{this.props.title}</h4>
+            <p className="number">{high ? high[this.props.value] : 0}</p>
+            <p className="status">{high ? high[this.props.text] : ""}</p>
+            <ul className="satusBarUL">
+              <li className="num-1" />
+              <li className="num-2" />
+              <li className="num-3" />
             </ul>
-            <div class="summerisList">
-              <div class="first">
+            <div className="summerisList">
+              <div className="first">
                 <span>{normal ? normal[this.props.value] : 0} </span>{" "}
                 {normal ? normal[this.props.text] : ""}
               </div>
@@ -73,28 +72,6 @@ class ApprovedWidget extends Component {
           </div>
         </div>
       );
-
-      //   let drawWidget = widgetes.map((i, index) => {
-      //     return (
-      //       <div
-      //         onClick={() => this.onOpenModal(i)}
-      //         className="counter_inner_container"
-      //         style={{ cursor: "pointer" }}
-      //         key={index + "-div"}
-      //       >
-      //         <p
-      //           style={{
-      //             display: "inline-block"
-      //           }}
-      //           className="card-text"
-      //         >
-      //           {i[this.props.text]}
-      //         </p>
-      //         &nbsp;&nbsp;
-      //         <span>{i[this.props.value]}</span>
-      //       </div>
-      //     );
-      //   });
     }
   }
 

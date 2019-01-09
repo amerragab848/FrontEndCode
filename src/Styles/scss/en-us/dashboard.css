@@ -655,7 +655,8 @@ ul {
   .SummeriesContainer .SummeriesContainerContent .summerisItem {
     position: relative;
     padding: 20px 0;
-    margin-bottom: 70px; }
+    margin-bottom: 70px;
+   }
     .SummeriesContainer .SummeriesContainerContent .summerisItem:last-child:after {
       width: 0; }
     .SummeriesContainer .SummeriesContainerContent .summerisItem::after {
@@ -690,7 +691,8 @@ ul {
         width: 100%;
         text-align: center;
         position: relative;
-        padding: 0 5px 12px 0
+        padding: 0 5px 12px 0;
+        cursor: pointer;
          }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
         color: #adbccc;
