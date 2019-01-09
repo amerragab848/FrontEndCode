@@ -6,6 +6,7 @@ class App extends Component {
   	
 	 	console.log('in App');
     return (
+    	///test
       <DashBoard /> 
     );
   }
