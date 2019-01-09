@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment} from 'react';
 import Resources from '../../resources.json';
 import Api from '../../api';
-import '../../App.css';
+//import '../../App.css';
 import "../../Styles/scss/en-us/dashboard.css";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -20,18 +20,16 @@ class Widgets extends Component {
             this.setState({
                 value: result
             });
-        });
-    }
-    
-    
+        });   
+} 
 
     render() {
-        return (
+        return (       
             <div className="summerisItem">  
-            <div className="content">
-            <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-            <p className="number">{this.state.value}</p>
-            </div>
+                <div className="content">
+                <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
+                <p className="number">{this.state.value}</p>
+                </div>
             </div>
         )
     }

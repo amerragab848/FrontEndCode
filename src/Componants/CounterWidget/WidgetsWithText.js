@@ -1,7 +1,7 @@
 import React, { Component} from 'react'; 
 import axios from 'axios';
 import Resources from '../../resources.json';
-import '../../App.css';
+//import '../../App.css';
 import "../../Styles/scss/en-us/dashboard.css";
 
 let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');

@@ -24,6 +24,9 @@ fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {
     @extend .clear-styles;
 }*/
+* {
+  box-sizing: border-box;
+}
 .zero {
   margin: 0;
   padding: 0; }
