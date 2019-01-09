@@ -29,7 +29,7 @@ class Widgets extends Component {
             <div className="summerisItem">  
                 <div className="content">
                 <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-                <p className="number">{this.state.value}</p>
+                <p className="number">{ Api.ConvertNumbers(this.state.value, 2)}</p>
                 </div>
             </div>
         )
