@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import "react-tabs/style/react-tabs.css";
 
+
+//import "../Styles/scss/en-us/dashboard.css";
+
 import { WidgetData, Widgets, WidgetsWithText } from './CounterWidget';
 import { ChartWidgetsData, BarChartComp, PieChartComp } from './ChartsWidgets';
 
@@ -121,9 +124,12 @@ class Index extends Component {
  					    </TabPanel>
 
 					    <TabPanel>
-					      {this.renderCounter()}
-						  {this.renderCounterDetails()}
-        				   
+                            <div className="SummeriesContainer">
+                            <div className="SummeriesContainerContent">      
+                                {this.renderCounter()}
+                                {this.renderCounterDetails()}
+                            </div>	 
+                            </div>
 					    </TabPanel>
 
 					    <TabPanel className="App container" > 

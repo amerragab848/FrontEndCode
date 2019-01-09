@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import axios from 'axios';
 import Resources from '../../resources.json';
 import '../../App.css';
+import "../../Styles/scss/en-us/dashboard.css";
 
 let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
 
@@ -36,16 +37,12 @@ class WidgetsWithText extends Component {
 
     render() {   
         return ( 
-            <div className="col-xs-3 mt-5"> 
-                <div className="card">
-                    <div className="card-body">
-                        <h5 className="card-title">{Resources[this.props.title][currentLanguage]}</h5>
-                        <div className="text_counter">
-                            <p>{this.state.count}</p>
-                            <sub>Out Of {this.state.total}</sub>                   
-                        </div>
-                    </div>
-                </div> 
+            <div className="summerisItem">  
+            <div className="content">
+            <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
+            <p className="number">{this.state.count}</p>
+            <sub>Out Of {this.state.total}</sub> 
+            </div>
             </div>
         )
     }

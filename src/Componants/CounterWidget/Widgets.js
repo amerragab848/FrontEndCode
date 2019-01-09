@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Resources from '../../resources.json';
 import Api from '../../api';
 import '../../App.css';
+import "../../Styles/scss/en-us/dashboard.css";
 
-let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class Widgets extends Component {
     constructor(props) {
@@ -15,26 +16,24 @@ class Widgets extends Component {
     };
 
     componentDidMount() {
-        Api.get(this.props.api).then(result => { 
+        Api.get(this.props.api).then(result => {
             this.setState({
                 value: result
             });
         });
     }
+    
+    
 
     render() {
         return (
-             <div className="col-xs-3 mt-5"> 
-                <div className="card">
-                  <div className="card-body">
-                  <h5 className="card-title">{Resources[this.props.title][currentLanguage]}</h5>
-                    <div className="text_counter">
-                      <span>{this.state.value}</span>        
-                    </div>
-                </div>
-              </div>
+            <div className="summerisItem">  
+            <div className="content">
+            <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
+            <p className="number">{this.state.value}</p>
             </div>
-        );
+            </div>
+        )
     }
 }
 
