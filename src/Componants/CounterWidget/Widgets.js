@@ -24,6 +24,7 @@ class Widgets extends Component {
 } 
 
     render() {
+        
         return (       
             <div className="summerisItem">  
                 <div className="content">
