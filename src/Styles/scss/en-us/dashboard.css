@@ -688,7 +688,10 @@ ul {
         margin: 0;
         overflow: hidden;
         width: 96%;
-        text-align: center; }
+        text-align: center;
+        position: relative;
+        padding: 0 5px 12px 0
+         }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
         color: #adbccc;
         letter-spacing: -0.2px;
@@ -758,5 +761,10 @@ ul {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box; }
-
+.number sub{
+    font-size: 12px; 
+    right: 12px;
+    position: absolute;
+    bottom: 0px;
+}
 /*# sourceMappingURL=dashboard.css.map */

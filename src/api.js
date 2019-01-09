@@ -7,7 +7,7 @@ export default class Api {
             'Content-Type': 'application/json',
             'dataType': 'json',
             'Lang':localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang'),
-            'Authorization': 'Bearer 9JkBsJK5cKPJSKWnTbnVL6X9JgCFAg03Vcufd84BLppnormpEcCwWAmOOarecFs8_Pd_ggljMAgJbOOdBUAAmCp6ekCl_WucTNUxM7ncGF4eOWtO2VnpGf7pVg9e9C-W3YU_gZIuXNawspCLpdY1eZQM4TmQdOs8UhHPmjohrLNseGKjaHYdEtSe7GBI6WC1cbEGTf-mTMoxNLtXtewE1EI-0-3ixF6qwDxF1EQjte1Dg8MGIAgGR2mniDt_mshe5KX_reXnN0W07BL31YwIesYycyJGWr_ds-ym0F6n5gAvgpwaLYHf9Be1KnD9io6Y445eMJm3AfP-vOGicgrdVggKDSl9ec5oKMQRcctO1I24rRinTpf0QwlC4lX9_s4FRLv7pKL4Cw9AoDnmUBIx5gGvIjWtwWLi8vnG_fEaW6YseVAF'
+            'Authorization': 'Bearer RBYirnnWQC_tsVjWYP5lCinxtue2dgZAoOJcSr3AS6BGUsb92bIGGu6eNzreiUfwNZsfSnedKGML1CHOLju4Nax5S-UX3JelXMSIL6Qw9ZQZ7KcWBF2nL2SOO9fap5Kem-CsiN-kRRR_TLG6wzg3mjkEuoBcJXrSQV1eE1JazXzhf0rKH7ymUBdoipHBVyyu3EX_AQ58k-XPEhaqeutkpuSinI3n1YmljKwgP7AV3nb9K4QbNz32OnON-2FgBMmJnTsIdiizfPYtcyDUuH0BpuosVByk6bC5yzcYPeh9AlvCTOWpFGCcV3GlZt9efj3sOE83s_4sY9TIEX9eUSF5uohWhyLw7oEqnsZK88qNHCanzBWdtaPkgprcdVlN1WT85INokJc6fCQg801M_nFbeWhDRxPne9StOQcyN9k2pMwLhsl-'
         }
     }
 

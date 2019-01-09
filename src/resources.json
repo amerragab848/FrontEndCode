@@ -4185,35 +4185,35 @@
     "ar": " طلب المعاينات المفتوحه"
   },
   "avgRespondTimeLetters": {
-    "en": "Avg Time Of Responding(Letters)",
+    "en": "Avg Responding(Letters)",
     "ar": " (متوسط الاستجابه (الخطابات"
   },
   "avgRespondTimeSubmittals": {
-    "en": "Avg Time Of Responding(Submittals)",
+    "en": "Avg Responding(Submittals)",
     "ar": " (متوسط الاستجابه (التقديمات"
   },
   "avgRespondTimeTransmittals": {
-    "en": "Avg Time Of Responding(Transmittals)",
+    "en": "Avg Responding(Transmittals)",
     "ar": " (متوسط الاستجابه (التسليمات"
   },
   "avgRespondTimeIR": {
-    "en": "Avg Time Of Responding(IR)",
+    "en": "Avg Responding(IR)",
     "ar": " (متوسط الاستجابه (طلب معاينة"
   },
   "avgRespondTimeMIR": {
-    "en": "Avg Time Of Responding(MIR)",
+    "en": "Avg Responding(MIR)",
     "ar": " (متوسط الاستجابه (معاينة الخامات"
   },
   "avgRespondTimeRFI": {
-    "en": "Avg Time Of Responding(RFI)",
+    "en": "Avg Responding(RFI)",
     "ar": " (متوسط الاستجابه (طلبات المعلومات"
   },
   "avgRespondTimePO": {
-    "en": "Avg Time Of Responding(PO)",
+    "en": "Avg Responding(PO)",
     "ar": " (متوسط الاستجابه (طلبات الشراء"
   },
   "monthlyAvgRespondTimeLetters": {
-    "en": "Monthly Avg Time Of Responding(Letters)",
+    "en": "Monthly Avg Responding(Letters)",
     "ar": " (متوسط الاستجابه (الخطابات"
   },
   "monthlyAvgRespondTimeSubmittals": {
@@ -4225,19 +4225,19 @@
     "ar": " (متوسط الاستجابه (التسليمات"
   },
   "monthlyAvgRespondTimeIR": {
-    "en": "Monthly Avg Time Of Responding(IR)",
+    "en": "Monthly Avg Responding(IR)",
     "ar": " (متوسط الاستجابه (طلب معاينة"
   },
   "monthlyAvgRespondTimeMIR": {
-    "en": "Monthly Avg Time Of Responding(MIR)",
+    "en": "Monthly Avg Responding(MIR)",
     "ar": " (متوسط الاستجابه (معاينة الخامات"
   },
   "monthlyAvgRespondTimeRFI": {
-    "en": "Monthly Avg Time Of Responding(RFI)",
+    "en": "Monthly Avg Responding(RFI)",
     "ar": " (متوسط الاستجابه (طلبات المعلومات"
   },
   "monthlyAvgRespondTimePO": {
-    "en": "Monthly Avg Time Of Responding(PO)",
+    "en": "Monthly Avg Responding(PO)",
     "ar": " (متوسط الاستجابه (طلبات الشراء"
   },
   "delay": {
