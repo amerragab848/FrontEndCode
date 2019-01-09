@@ -8,7 +8,8 @@ class ApprovedWidget extends Component {
     super(props);
     this.state = {
       open: false,
-      dataList: []
+      dataList: [],
+      isModal: this.props.isModal
     };
   }
 
@@ -20,8 +21,9 @@ class ApprovedWidget extends Component {
     });
   }
 
-  onOpenModal = function() {
-    if (this.props.isModal) {
+  onOpenModal = () => {
+    let modal = this.props.isModal;
+    if (modal) {
       this.setState({ open: true });
     }
   };
@@ -32,7 +34,6 @@ class ApprovedWidget extends Component {
 
   drawThreeCard() {
     let widgetes = [];
-    console.log(this.state.dataList);
     if (this.state.dataList.length > 0) {
       widgetes = this.state.dataList;
 
@@ -52,7 +53,9 @@ class ApprovedWidget extends Component {
         <div className="summerisItem">
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
-            <p className="number">{high ? high[this.props.value] : 0}</p>
+            <p className="number" onClick={this.onOpenModal}>
+              {high ? high[this.props.value] : 0}
+            </p>
             <p className="status">{high ? high[this.props.text] : ""}</p>
             <ul className="satusBarUL">
               <li className="num-1" />

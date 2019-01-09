@@ -100,8 +100,8 @@ class Index extends Component {
 
   renderThreeCard() {
     let ThreeCard = (
-      <div class="SummeriesContainer ">
-        <div class="SummeriesContainerContent">
+      <div className="SummeriesContainer ">
+        <div className="SummeriesContainerContent">
           {this.state.threeWidgets.map((panel, i) => {
             return (
               <ApprovedWidget
