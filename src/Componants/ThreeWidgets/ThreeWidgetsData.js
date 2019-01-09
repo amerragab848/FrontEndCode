@@ -9,7 +9,7 @@ let ThreeWidgetsData = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 0,
         permission: 10232
@@ -24,7 +24,7 @@ let ThreeWidgetsData = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 1,
         permission: 10233
@@ -39,7 +39,7 @@ let ThreeWidgetsData = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 2,
         permission: 10234
@@ -54,7 +54,7 @@ let ThreeWidgetsData = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 3,
         permission: 10235
@@ -69,7 +69,7 @@ let ThreeWidgetsData = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 4,
         permission: 10236

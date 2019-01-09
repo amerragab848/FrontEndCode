@@ -1,0 +1,725 @@
+.Chips-Components {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 1050px;
+
+}
+
+.chipImgName {
+    cursor: pointer;
+    min-width: 140px;
+    height: 28px;
+    border: none;
+    @include border-radius(100px);
+    background-color: #e9edf2;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 6px 0 3px;
+    &:hover {
+        background-color: #dfe2e6;
+    }
+    &:active {
+        background-color: #dfe2e6;
+        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    }
+    img {
+        width: 22px;
+        height: 22px;
+        @include border-radius(50%);
+        display: inline-block;
+    }
+    span {
+        display: inline-block;
+        font-size: $heading6-font;
+        color: $grey-800;
+        font-family: $sans-sb;
+        letter-spacing: -0.3px;
+        margin-#{$left}: 4px;
+    }
+}
+
+.chipImgNameClose {
+    cursor: pointer;
+    min-width: 157px;
+    height: 28px;
+    @include border-radius(100px);
+    background-color: #e9edf2;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 4px 0 3px;
+    border: none;
+    &:hover {
+        background-color: #dfe2e6;
+        path {
+            fill: #5e6475;
+        }
+    }
+    &:active {
+        background-color: #dfe2e6;
+        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        path {
+            fill: #5e6475;
+        }
+    }
+    img {
+        width: 22px;
+        height: 22px;
+        @include border-radius(50%);
+        display: inline-block;
+    }
+    span {
+        display: inline-block;
+        font-size: $heading6-font;
+        color: $grey-800;
+        font-family: $sans-sb;
+        letter-spacing: -0.3px;
+        margin-#{$left}: 4px;
+    }
+
+    svg {
+        margin-#{$left}: 4px;
+        cursor: pointer;
+    }
+}
+
+.chipImgNameTextX {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .chipImgText {
+        border: none;
+        padding: 0 7px 0 3px;
+        min-width: 139px;
+        height: 28px;
+        @include border-top-left(100px);
+        @include border-bottom-left(100px);
+        background-color: #e9edf2;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        img {
+            width: 22px;
+            height: 22px;
+            @include border-radius(50%);
+            display: inline-block;
+        }
+        span {
+            display: inline-block;
+            font-size: $heading6-font;
+            color: $grey-800;
+            font-family: $sans-sb;
+            letter-spacing: -0.3px;
+            margin-#{$left}: 4px;
+        }
+        &:hover {
+            background-color: #dfe2e6;
+        }
+        &:active {
+            background-color: #dfe2e6;
+            box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        }
+    }
+    .chipCompanyX {
+        cursor: pointer;
+        border: none;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        min-width: 87px;
+        height: 28px;
+        @include border-top-right(100px);
+        @include border-bottom-right(100px);
+        background-color: #dce0e6;
+        padding: 0 6px 0 8px;
+        &:hover {
+            background-color: #d0d4d9;
+            path {
+                fill: #5e6475;
+            }
+        }
+        &:active {
+            background-color: #d0d4d9;
+            box-shadow: inset -2px 1px 2px 0 rgba(0, 0, 0, 0.2);
+            path {
+                fill: #5e6475;
+            }
+        }
+        span {
+            color: $grey-700;
+            font-size: $heading6-font;
+        }
+        svg {
+            margin-#{$left}: 4px;
+        }
+    }
+}
+
+/**/
+
+.chipImgNameLarge {
+    cursor: pointer;
+    min-width: 168px;
+    height: 32px;
+    @include border-radius(100px);
+    background-color: #e9edf2;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 6px 0 3px;
+    border: none;
+    &:hover {
+        background-color: #dfe2e6;
+    }
+    &:active {
+        background-color: #dfe2e6;
+        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    }
+    img {
+        width: 28px;
+        height: 28px;
+        @include border-radius(50%);
+        display: inline-block;
+    }
+    span {
+        display: inline-block;
+        font-size: $heading5-font;
+        color: $grey-800;
+        font-family: $sans-sb;
+        letter-spacing: -0.2px;
+        margin-#{$left}: 4px;
+    }
+}
+
+.chipImgNameCloseLarge {
+    cursor: pointer;
+    min-width: 189px;
+    height: 32px;
+    @include border-radius(100px);
+    background-color: #e9edf2;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 4px 0 3px;
+    border: none;
+    &:hover {
+        background-color: #dfe2e6;
+        path {
+            fill: #5e6475;
+        }
+    }
+    &:active {
+        background-color: #dfe2e6;
+        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        path {
+            fill: #5e6475;
+        }
+    }
+    img {
+        width: 28px;
+        height: 28px;
+        @include border-radius(50%);
+        display: inline-block;
+    }
+    span {
+        display: inline-block;
+        font-size: $heading5-font;
+        color: $grey-800;
+        font-family: $sans-sb;
+        letter-spacing: -0.3px;
+        margin-#{$left}: 4px;
+    }
+
+    svg {
+        margin-#{$left}: 4px;
+        cursor: pointer;
+    }
+}
+
+
+/*Start Tags*/
+
+.Tags-components {
+    padding: 20px;
+    > div {
+        margin-right: 16px;
+    }
+}
+
+.grayTagIcon {
+    height: 24px;
+    @include border-radius(100px);
+    background-color: #e9edf2;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 9px 5px 8px;
+    color: $grey-800;
+    letter-spacing: -0.3px;
+    font-size: $heading6-font;
+    font-family: $sans-sb;
+}
+
+.darkGrayTagIcon {
+    height: 24px;
+    @include border-radius(100px);
+    background-color: $grey-700;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 9px 5px 8px;
+    color: $white;
+    letter-spacing: -0.3px;
+    font-size: $heading6-font;
+    font-family: $sans-sb;
+}
+
+.blueTagIcon {
+    height: 24px;
+    @include border-radius(100px);
+    background-color: $Primary-1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 9px 5px 8px;
+    color: $white;
+    letter-spacing: -0.3px;
+    font-size: $heading6-font;
+    font-family: $sans-sb;
+}
+
+.greenTagIcon {
+    height: 24px;
+    @include border-radius(100px);
+    background-color: $Secondary-2;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 9px 5px 8px;
+    color: $white;
+    letter-spacing: -0.3px;
+    font-size: $heading6-font;
+    font-family: $sans-sb;
+}
+
+.redTagIcon {
+    height: 24px;
+    @include border-radius(100px);
+    background-color: $Secondary-1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 9px 5px 8px;
+    color: $white;
+    letter-spacing: -0.3px;
+    font-size: $heading6-font;
+    font-family: $sans-sb;
+}
+
+.Labelssss {
+    padding: 15px;
+    button {
+        margin-right: 15px;
+    }
+}
+
+.mailBoxLabel {
+    cursor: pointer;
+    border: none;
+    @include border-radius(100px);
+    padding: 3px 8px 4px 8px;
+    height: 24px;
+    display: inline-block;
+    min-width: 54px;
+    &:hover {
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+    }
+    &:active {
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+    }
+    .FirstSpAn {
+        margin-right: 8px;
+    }
+    span {
+        font-family: $muli-b;
+        font-size: $heading6-font;
+    }
+}
+
+.mailBoxLabelGray {
+    background-color: #e9edf2;
+    i {
+        color: #99a4b4;
+    }
+    span {
+        color: $grey-700;
+    }
+}
+
+.mailBoxLabelDGray {
+    background-color: #99a4b4;
+    i {
+        color: #f9fbfc;
+    }
+    span {
+        color: #f9fbfc;
+    }
+}
+
+.mailBoxLabelBlue {
+    background-color: $Primary-1;
+    i {
+        color: #f9fbfc;
+    }
+    span {
+        color: #f9fbfc;
+    }
+}
+
+.mailBoxLabelRed {
+    background-color: $Secondary-1;
+    i {
+        color: #f9fbfc;
+    }
+    span {
+        color: #f9fbfc;
+    }
+}
+
+.mailBoxLabelGreen {
+    background-color: $Secondary-2;
+    i {
+        color: #f9fbfc;
+    }
+    span {
+        color: #f9fbfc;
+    }
+}
+
+.workflowLabel {
+    cursor: pointer;
+    min-width: 102px;
+    height: 26px;
+    @include border-radius(100px);
+    background-color: #e9edf2;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px 4px 8px;
+    &:hover {
+        background-color: #dfe2e6;
+        path {
+            fill: #5e6475;
+        }
+    }
+    &:active {
+        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        path {
+            fill: #858d9e;
+        }
+    }
+    span {
+        font-family: $sans-sb;
+        font-size: $heading6-font;
+    }
+
+    svg {
+        margin-#{$left}: 8px;
+    }
+}
+
+/*labelsWithArrow*/
+
+.ui.label.labelWithArrowGray {
+    background-color: #e9edf2;
+    height: 28px;
+    padding: 7px 10px 3px 10px;
+    span {
+        color: $grey-900;
+        letter-spacing: -0.2px;
+        font-size: $heading5-font;
+        font-family: $muli-b;
+
+    }
+}
+
+.ui.label.labelWithArrowBlue {
+    height: 28px;
+    background-color: $Primary-1;
+    padding: 7px 10px 3px 10px;
+    span {
+        color: $white;
+        letter-spacing: -0.2px;
+        font-size: $heading5-font;
+        font-family: $muli-b;
+
+    }
+}
+
+.ui.label.labelWithArrowGreen {
+    height: 28px;
+    background-color: $Secondary-2;
+    padding: 7px 10px 3px 10px;
+    span {
+        color: $white;
+        letter-spacing: -0.2px;
+        font-size: $heading5-font;
+        font-family: $muli-b;
+    }
+
+}
+
+.ui.label.labelWithArrowBorder.basic {
+    height: 28px;
+    border: solid 1px #5e6475;
+    padding: 7px 10px 3px 10px;
+    span {
+        color: $grey-900;
+        letter-spacing: -0.2px;
+        font-size: $heading5-font;
+        font-family: $muli-b;
+
+    }
+}
+
+/**/
+
+.ui.label.labelWithArrowGrayS {
+    background-color: #e9edf2;
+    height: 24px;
+    padding: 6px 10px 3px 10px;
+    span {
+        color: $grey-900;
+        letter-spacing: -0.2px;
+        font-size: $heading6-font;
+        font-family: $muli-b;
+    }
+}
+
+.ui.label.labelWithArrowRedS {
+    height: 24px;
+    background-color: $Secondary-1;
+    padding: 6px 10px 3px 10px;
+    span {
+        color: $white;
+        letter-spacing: -0.2px;
+        font-size: $heading6-font;
+        font-family: $muli-b;
+    }
+}
+
+.ui.label.labelWithArrowGreenS {
+    height: 24px;
+    background-color: $Secondary-2;
+    padding: 6px 10px 3px 10px;
+    span {
+        color: $white;
+        letter-spacing: -0.2px;
+        font-size: $heading6-font;
+        font-family: $muli-b;
+    }
+
+}
+
+.ui.label.labelWithArrowBorderS.basic {
+    height: 24px;
+    border: solid 1px #5e6475;
+    padding: 6px 10px 3px 10px;
+    span {
+        color: $grey-900;
+        letter-spacing: -0.2px;
+        font-size: $heading6-font;
+        font-family: $muli-b;
+    }
+}
+
+.ui.label.labelWithArrowRedBasic.basic {
+    border: solid 1px $Secondary-1;
+    padding: 6px 10px 3px 10px;
+    height: 24px;
+    span {
+        color: $Secondary-1;
+        letter-spacing: -0.2px;
+        font-size: $heading6-font;
+        font-family: $muli-b;
+    }
+}
+
+.ui.label.labelWithArrowGreenBasic {
+    height: 24px;
+    padding: 6px 10px 3px 10px;
+    border: solid 1px #47cc4a;
+    span {
+        color: #47cc4a;
+        letter-spacing: -0.2px;
+        font-size: $heading6-font;
+        font-family: $muli-b;
+    }
+
+}
+
+/**/
+
+.inboxNotif {
+    background-color: $red-500;
+    color: #f9fbfc;
+    font-family: $muli-b;
+    font-size: $heading6-font;
+    display: inline-block;
+    cursor: pointer;
+    overflow: hidden;
+    &:hover {
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+        background-color: #d64435;
+
+    }
+    &:active {
+        background-color: #d13e2e;
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+    }
+}
+
+.inboxNotif.smallSquare {
+    min-width: 26px;
+    height: 16px;
+    border-radius: 4px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: $heading6-font;
+}
+
+.inboxNotif.largeSquare {
+    min-width: 34px;
+    height: 20px;
+    border-radius: 4px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: $heading5-font;
+
+
+}
+
+/**/
+
+.inboxNotif.xsmallCircle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: $muli-xb;
+
+}
+
+.inboxNotif.smallCircle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: $muli-xb;
+
+}
+
+.inboxNotif.largeCircle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: $muli-xb;
+
+}
+
+.inboxNotif.justCircle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}

@@ -1,0 +1,591 @@
+.modalContainerSS {
+    padding: 20px 100px;
+    display: flex;
+    .modalBtn {
+        margin-right: 20px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+}
+
+.modalBtnZ {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.ui.dimmer {
+    background-color: rgba(0, 0, 0, 0.60);
+    overflow: auto;
+    padding: 0;
+}
+
+.ui.modal {
+    position: relative;
+    padding: 23px 32px;
+}
+
+.ui.modal > .header {
+    border-bottom: 0;
+    padding: 0;
+    color: $grey-900;
+    font-family: $muli-b;
+
+}
+
+.ui.modal > .header:not(.ui) {
+    letter-spacing: -0.2px;
+    font-size: $heading2-font;
+    padding-bottom: 40px;
+    line-height: 1.4;
+}
+
+.ui.modal > .content {
+    padding: 0;
+    background: inherit;
+    line-height: 1.71;
+    letter-spacing: -0.2px;
+    color: $grey-800;
+    font-size: $heading5-font;
+}
+
+.ui.modal > .actions {
+    background: inherit;
+    border: none;
+    padding: 0;
+}
+
+.modalBtn {
+    cursor: pointer;
+}
+
+/*Small Modal*/
+
+.ui.modal.smallModal {
+
+    max-width: 430px;
+    .actions {
+        padding-#{$right}: 28px;
+    }
+}
+
+/*Medium Modal*/
+
+.ui.modal.mediumModal {
+    max-width: 600px;
+    .content {
+        padding-bottom: 30px;
+
+    }
+    .actions {
+        padding-#{$right}: 28px;
+    }
+}
+
+/*Large Modal*/
+
+.ui.modal.largeModal {
+    max-width: 600px;
+    min-height: 460px;
+    .header {
+        padding-bottom: 30px;
+    }
+    .content {
+        padding-bottom: 30px;
+    }
+    .actions {
+        padding-#{$right}: 28px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 64px;
+        left: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+        background-color: $grey-100;
+        button {
+            margin: 0 2px;
+        }
+    }
+}
+
+
+
+.ui.modal.FullScreen {
+    width: 100%;
+    
+}
+/*input Modal*/
+
+.ui.modal.smallInputModal {
+    max-width: 408px;
+    width: 100%;
+    min-height: 320px;
+    .header {
+        padding-bottom: 30px;
+    }
+    .content {
+        padding-bottom: 30px;
+        .proForm {
+            .ui.input.inputDev {
+                input {
+                    width: 340px;
+
+                }
+
+            }
+        }
+        .form-group {
+            display: block;
+            background-color: #ffffff !important;
+            padding: 0;
+
+        }
+    }
+    .actions {
+        padding-#{$right}: 28px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 64px;
+        left: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+        background-color: $grey-100;
+        button {
+            margin: 0 2px;
+        }
+    }
+}
+
+/*big input*/
+
+.ui.modal.bigInputModal {
+    max-width: 800px;
+    width: 100%;
+    min-height: 464px;
+    .header {
+        padding-bottom: 30px;
+    }
+    .content {
+        padding-bottom: 30px;
+        .form-group {
+            display: block;
+            background-color: #ffffff !important;
+            padding: 0;
+        }
+    }
+    .actions {
+        padding-#{$right}: 28px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 64px;
+        left: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+        background-color: $grey-100;
+        button {
+            margin: 0 2px;
+        }
+    }
+}
+
+/*big input*/
+
+.ui.modal.stepperModal {
+    max-width: 600px;
+    width: 100%;
+    min-height: 384px;
+    padding-right: 0;
+    .step-progress {
+        background-color: inherit;
+    }
+    .workflow-sliderSteps {
+        padding-right: 15px;
+    }
+
+    .header {
+        h2 {
+            color: $grey-900;
+            font-family: $muli-b;
+            letter-spacing: -0.2px;
+            font-size: $heading3-font;
+        }
+    }
+    .actions {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+        button {
+            margin: 0 2px;
+        }
+    }
+}
+
+/*
+.ui.modal>.close*/
+
+.ui.modal.subjectModal {
+    max-width: 800px;
+    width: 100%;
+    min-height: 464px;
+    .close {
+        top: 16px;
+        #{$right}: 16px;
+        height: auto;
+        width: auto;
+        opacity: 1;
+    }
+    > .header {
+        padding-bottom: 17px;
+    }
+    .description {
+        .header {
+            font-size: $heading4-font;
+            font-family: $muli-b;
+            margin-bottom: 30px;
+        }
+    }
+    .content {
+        margin-bottom: 27px;
+    }
+    .actions {
+        padding-#{$right}: 28px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 64px;
+        left: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+        background-color: $grey-100;
+        button {
+            margin: 0 2px;
+        }
+    }
+}
+
+/**/
+
+.ui.modal.xLargeModal {
+
+    width: 60%;
+    min-width: 600px;
+    min-height: 670px;
+    padding: 48px;
+    .header {
+        font-size: $heading1-font;
+        padding-bottom: 40px;
+        h2 {
+            margin-bottom: 15px;
+
+        }
+        h3 {
+            font-size: $heading3-font;
+            font-family: $muli-r;
+            line-height: 1.4;
+            letter-spacing: -0.2px;
+        }
+    }
+    .content {
+        p {
+            font-family: $sans-r;
+            line-height: 1.5;
+            letter-spacing: -0.2px;
+            font-size: $heading4-font;
+        }
+    }
+    .actions {
+        padding-#{$right}: 28px;
+    }
+}
+
+
+/*Doc Approval*/
+
+.ui.modal.submiModalBig.docApproval {
+    position: relative;
+    max-width: 100%;
+    box-shadow: none;
+    background-color: transparent;
+    padding: 56px;
+    overflow: hidden;
+    .close {
+        #{$right}: 6px;
+        #{$left}: inherit;
+    }
+    .docApprovalContainer {
+        position: inherit;
+        .Rectangle-2 {
+            width: 234px;
+            height: 8px;
+            background-color: #ccd2db;
+            margin: 8px 0;
+            &:nth-child(3) {
+                width: 162px;
+            }
+            &:nth-child(4) {
+                width: 306px;
+            }
+            &:nth-child(5) {
+                width: 346px;
+            }
+            &:nth-child(6) {
+                width: 346px;
+            }
+            &:nth-child(7) {
+                width: 266px;
+            }
+            &:nth-child(8) {
+                width: 290px;
+            }
+            &:nth-child(9) {
+                width: 322px;
+            }
+            &:nth-child(10) {
+                width: 314px;
+            }
+            &:nth-child(11) {
+                width: 338px;
+            }
+
+        }
+        .subiConHead {
+            padding-right: 32px;
+            h3 {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                font-size: $heading2-font;
+                flex: 1;
+                span {
+                    font-size: $heading6-font;
+                    line-height: 1.33;
+                    letter-spacing: -0.3px;
+                    font-family: $sans-sb;
+                    margin-#{$left}: 24px;
+                }
+            }
+            .subofSubiConHead {
+                flex: 1;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-flow: column;
+                flex-flow: column;
+                -webkit-box-align: end;
+                -ms-flex-align: end;
+                align-items: flex-end;
+                p {
+                    font-family: $sans-sb;
+                    font-size: $heading6-font;
+                    letter-spacing: -0.3px;
+                    margin-bottom: 8px;
+                }
+                span {
+                    letter-spacing: -0.2px;
+                    color: $grey-500;
+                    font-family: $sans-r;
+                    font-size: $heading6-font;
+                }
+            }
+        }
+        .subitTabs {
+            width: 355px;
+            border-top-#{$left}-radius: 5px;
+        }
+        .step-progress {
+            margin: 0 auto;
+        }
+        .step-content {
+            position: relative;
+            width: 100%;
+        }
+        .approveDocument {
+            height: 70px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            position: relative;
+            width: 100%;
+            z-index: 19;
+            background-color: #ffffff;
+            box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+            padding: 0 24px 0 32px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            h2 {
+                flex: 0.5;
+                line-height: 1.17;
+                letter-spacing: -0.5px;
+                color: #252833;
+                opacity: 0.3;
+                font-family: $muli-b;
+
+            }
+            .approveDocumentBTNS {
+                flex: 1.5;
+                display: flex;
+                justify-content: flex-end;
+                .firstBtnApprov {
+                    margin-#{$right}: 16px;
+
+                }
+                .menu  {
+                    top: inherit;
+                    bottom: 40px;
+                }
+            }
+            .border {
+                display: block;
+                width: 1px;
+                height: 40px;
+                background-color: #e9ecf0;
+                margin: 0 24px;
+            }
+
+        }
+        .subiTabsContent {
+            background-color: #ffffff;
+            padding-bottom: 0;
+            border-top-#{$right}-radius: 5px;
+        }
+
+        .step-progress .step-slider .step-slider-item {
+            position: relative;
+            margin-right: 3px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            div {
+                display: block;
+                width: 7px;
+                background-color: $grey-600;
+                height: 7px;
+                border-radius: 50%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            &.active {
+                border: solid 1px #ffffff;
+                div {
+                    background-color: #fff;
+                }
+            }
+        }
+        .step-content-foot {
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Safari */
+            -khtml-user-select: none;
+            /* Konqueror HTML */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+            margin: 0 auto;
+            span {
+                cursor: pointer;
+                color: $white;
+                letter-spacing: -0.2px;
+                font-size: $heading6-font;
+                font-family: $muli-sb;
+                margin: 0 15px;
+                i {
+                    margin: 0 5px;
+                }
+
+            }
+        }
+
+        .step-content-btn.disabled,
+        .step-content-btn-prev.disabled,
+            {
+            pointer-events: none;
+            color: #ccc;
+        }
+        .step-content-body {
+            transition: 1.3s all;
+            border-radius: 4px;
+            transform: translateX(0%);
+            position: relative;
+            top: 0;
+            width: 100%;
+        }
+        .step-content .step-content-body.out {
+            position: absolute;
+            top: 0;
+            transform: translateX(300%);
+        }
+
+
+        /**/
+        .workflow-sliderSteps {
+            position: inherit;
+            height: 64px;
+            border-radius: 3px;
+            width: 340px;
+            display: flex;
+            align-items: center;
+            margin: 0 auto;
+            .step-slider {
+                display: none;
+            }
+            .slider-Btns {
+                flex: .4;
+            }
+        }
+
+    }
+
+
+}

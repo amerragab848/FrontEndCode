@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--
+	<meta name="viewport" content="width=1024">
+	content="width=device-width, initial-scale=1.0"
+-->
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <title>V4-New</title>
+    <link rel="icon" href="" type="image/gif">
+    <link href='css/font-awesome.min.css' media="all" rel='stylesheet' type='text/css'>
+    <link href='css/semantic.min.css' media="all" rel='stylesheet' type='text/css'>
+    <link href='css/jquery-ui.theme.min.css' media="all" rel='stylesheet' type='text/css'>
+    <link href='css/jquery-ui.min.css' media="all" rel='stylesheet' type='text/css'>
+    <link href='css/bootstrap-datepicker.min.css' media="all" rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/MediaQuery.css">
+    <link href='scss/en-us/layout.css' media="all" rel='stylesheet' type='text/css'>
+<script src="https://unpkg.com/react@16/umd/react.development.js">
+</script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+<link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/258531/react-vis.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css">
+
+<!-- Don't use this in production: -->
+<script src="https://unpkg.com/react-vis@1.10.4/dist/dist.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/britecharts@2/dist/bundled/britecharts.min.js"></script>
+
+
+    <style>
+
+        .app {
+            width: 1300px;
+            padding: 28px 56px;
+            background-color: #fff;
+        }
+
+        .title {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .pageVisitorsChart .organicPageVisitors {
+            fill: rgba(0, 166, 128, 0.5);
+        }
+
+        .pageVisitorsChart .paidPageVisitors {
+            fill: #00a680;
+        }
+
+        .pageVisitorsChart .rv-xy-plot__axis__tick__text {
+            fill: #4a4a4a;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+
+<body>
+  <header class="main-header">
+            <div class="header-content">
+                <ul class="nav-left">
+                    <li class="titleproject1">
+                        <a href="">Technical office ·</a>
+                    </li>
+                    <li class="titleproject2">
+                        East town (P2)
+                    </li>
+                </ul>
+                <ul class="nav-right">
+                    <li>
+                        <a data-modal="modal1" class="notfiUI">
+                    <img alt="" title="" src="images/workflow-icon.png">
+                </a>
+
+                    </li>
+                    <li>
+                        <a href="Templates_Settings.html" data-modal="modal2" class="notfiUI settingIcon">
+                    <img alt="" title="" src="images/settings-icon.png">
+                </a>
+
+                    </li>
+                    <li class="notifi-icon">
+                        <a>
+                    <img alt="" title="" src="images/notif-icon.png">
+                    <div class="inboxNotif smallSquare">12</div>
+                </a>
+
+                    </li>
+                    <li>
+                        <a>
+                    <img alt="" title="" src="images/message-icon.png">
+                </a>
+                    </li>
+                    <li class="UserImg ">
+                        <figure class="zero avatarProfile onlineAvatar">
+                            <img alt="" title="" src="images/24176695_10215314500400869_7164682088117484142_n.jpg">
+                            <span class="avatarStatusCircle"></span>
+                        </figure>
+                        <span class="profileName"> Hossam Elsawy </span>
+                        <div class="ui dropdown classico basic">
+                            <i class="dropdown icon"></i>
+                            <div class="menu left">
+                                <div class="item">
+                                    <div class="item-content">Settings</div>
+                                </div>
+                                <div class="item">
+                                    <div class="item-content">Log Out</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </header>
+        <!---->
+     
+<div class="dashboard-container">
+    <!--start Tabs Menu-->
+
+    <!--Tab Menu-->
+    <ul class="dashboard-ul zero">
+        <li data-tab="dash-tab-1" class="active">Actions & Summaries</li>
+        <li data-tab="dash-tab-2">Interests</li>
+        <li data-tab="dash-tab-3">PM counters</li>
+        <li data-tab="dash-tab-4">hr</li>
+        <li data-tab="dash-tab-5">Accounting</li>
+    </ul>
+
+    <!--Tab Content-->
+    <div class="ui tab active" data-tab="dash-tab-1">
+       <h2 class="welcome-title">Welcome to your dashboard, Hady!</h2>
+        <!---->
+
+        <h2>Kitchen Sink Charts</h2>
+        <h2>Bar Chart</h2>
+        <div class="js-bar-chart-tooltip-container card--chart"></div>
+
+        <h2>Line Chart</h2>
+        <div class="britechart js-line-chart-container card--chart"></div>
+        <h2>Donut Chart</h2>
+        <div class="card--chart">
+            <div class="js-donut-chart-container donut-chart-container"></div>
+            <!--
+    <div class="js-legend-chart-container legend-chart-container"></div>
+-->
+        </div>
+
+
+<!--Stacked Area -->
+
+<div id="stacked-area">
+    <h2>Stacked Area Chart</h2>
+    <div class="britechart js-stacked-area-chart-tooltip-container card--chart"></div>
+</div>
+    <h2>Grouped Bar Chart with Tooltip</h2>
+    <div class="britechart js-grouped-bar-chart-tooltip-container card--chart"></div>
+
+   
+   <!---->
+    <div id="root"></div>
+    <div id="root2"></div>
+    <div id="test"></div>
+    
+   </div>
+   
+    <div class="ui tab"  data-tab="dash-tab-2">
+       Tab 2
+   </div>
+   
+    
+</div>
+  
+
+       
+       <script type="text/babel">
+    // example datasets
+
+let barData = {
+  data:[
+    {stack: "shiny", name: "A", value: 0.08167},
+    {stack: "shiny", name: "B", value: 1.08167},
+    {stack: "shiny", name: "C", value: 0.08167},
+    {stack: "shiny", name: "D", value: 1.08167},
+
+    {stack: "radiant", name: "A", value: 0.08167},
+    {stack: "radiant", name: "B", value: 1.08167},
+    {stack: "radiant", name: "C", value: 0.08167},
+    {stack: "radiant", name: "D", value: 1.08167},
+  ]
+};
+
+/*
+let barData2 = {
+  data:[
+    {name: "Radiating", value: 2},
+    {name: "Opalescent", value: 4},
+    {name: "Shining", value: 3},
+    {name: "Vibrant", value: 6},
+    {name: "Vivid", value: 6},
+    {name: "Brilliant", value: 1}
+  ]
+};
+*/
+
+let donutData1 = {
+  data:[
+    {name: "Shiny", id: 1, quantity: 86, percentage: 5},
+    {name: "Blazing", id: 2, quantity: 300, percentage: 18},
+    {name: "Dazzling", id: 3, quantity: 276, percentage: 16},
+    {name: "Radiant", id: 4, quantity: 195, percentage: 11},
+    {name: "Sparkling", id: 5, quantity: 36, percentage: 2},
+    {name: "Other", id: 0, quantity: 814, percentage: 48}
+  ]
+};
+
+let groupedBarData = {
+  data:[
+    {stack: "shiny", name: "Direct1", views: 3, date: "2011-01-05"},
+    {stack: "shiny", name: "Direct2", views: 10, date: "2011-01-06"},
+    {stack: "shiny", name: "Direct3", views: 16, date: "2011-01-07"},
+    {stack: "shiny", name: "Direct4", views: 23, date: "2011-01-08"},
+    {stack: "radiant", name: "Eventbrite1", views: 23, date: "2011-01-05"},
+    {stack: "radiant", name: "Eventbrite2", views: 16, date: "2011-01-06"},
+    {stack: "radiant", name: "Eventbrite3", views: 10, date: "2011-01-07"},
+    {stack: "radiant", name: "Eventbrite4", views: 4, date: "2011-01-08"}
+  ]
+};
+
+let groupedBarData2 = {
+  data:[
+    {stack: "shiny", name: "Direct1", views: 3, date: "2011-01-05"},
+    {stack: "shiny", name: "Direct2", views: 10, date: "2011-01-06"},
+    {stack: "shiny", name: "Direct3", views: 16, date: "2011-01-07"},
+    {stack: "shiny", name: "Direct4", views: 23, date: "2011-01-08"},
+    {stack: "radiant", name: "Eventbrite1", views: 23, date: "2011-01-05"},
+    {stack: "radiant", name: "Eventbrite2", views: 16, date: "2011-01-06"},
+    {stack: "radiant", name: "Eventbrite3", views: 10, date: "2011-01-07"},
+    {stack: "radiant", name: "Eventbrite4", views: 4, date: "2011-01-08"},
+    {stack: "luminous", name: "Email1", views: 10, date: "2011-01-05"},
+    {stack: "luminous", name: "Email2", views: 20, date: "2011-01-06"},
+    {stack: "luminous", name: "Email3", views: 26, date: "2011-01-07"},
+    {stack: "luminous", name: "Email4", views: 33, date: "2011-01-08"}
+  ]
+};
+
+let lineData2 = {
+  dataByTopic: [
+    {
+      topic: 103,
+      topicName: "San Francisco",
+      dates:[
+        {date: "27-Jun-15", value: 1, fullDate : "2015-06-27T07:00:00.000Z"},
+        {date: "28-Jun-15", value: 1, fullDate : "2015-06-28T07:00:00.000Z"},
+        {date: "29-Jun-15", value: 4, fullDate : "2015-06-29T07:00:00.000Z"},
+        {date: "30-Jun-15", value: 2, fullDate : "2015-06-30T07:00:00.000Z"},
+        {date: "1-Jul-15", value: 3, fullDate : "2015-07-01T07:00:00.000Z"},
+        {date: "2-Jul-15", value: 3, fullDate : "2015-07-02T07:00:00.000Z"},
+        {date: "3-Jul-15", value: 0, fullDate : "2015-07-03T07:00:00.000Z"},
+        {date: "4-Jul-15", value: 3, fullDate : "2015-07-04T07:00:00.000Z"},
+        {date: "5-Jul-15", value: 1, fullDate : "2015-07-05T07:00:00.000Z"},
+        {date: "6-Jul-15", value: 2, fullDate : "2015-07-06T07:00:00.000Z"},
+        {date: "7-Jul-15", value: 0, fullDate : "2015-07-07T07:00:00.000Z"},
+        {date: "8-Jul-15", value: 2, fullDate : "2015-07-08T07:00:00.000Z"},
+        {date: "9-Jul-15", value: 1, fullDate : "2015-07-09T07:00:00.000Z"},
+        {date: "10-Jul-15", value: 4, fullDate : "2015-07-10T07:00:00.000Z"},
+        {date: "11-Jul-15", value: 2, fullDate : "2015-07-11T07:00:00.000Z"},
+        {date: "12-Jul-15", value: 1, fullDate : "2015-07-12T07:00:00.000Z"},
+        {date: "13-Jul-15", value: 6, fullDate : "2015-07-13T07:00:00.000Z"},
+        {date: "14-Jul-15", value: 5, fullDate : "2015-07-14T07:00:00.000Z"},
+        {date: "15-Jul-15", value: 2, fullDate : "2015-07-15T07:00:00.000Z"},
+        {date: "16-Jul-15", value: 7, fullDate : "2015-07-16T07:00:00.000Z"},
+        {date: "17-Jul-15", value: 3, fullDate : "2015-07-17T07:00:00.000Z"},
+        {date: "18-Jul-15", value: 1, fullDate : "2015-07-18T07:00:00.000Z"},
+        {date: "19-Jul-15", value: 4, fullDate : "2015-07-19T07:00:00.000Z"},
+        {date: "20-Jul-15", value: 8, fullDate : "2015-07-20T07:00:00.000Z"},
+        {date: "21-Jul-15", value: 4, fullDate : "2015-07-21T07:00:00.000Z"},
+        {date: "22-Jul-15", value: 11, fullDate : "2015-07-22T07:00:00.000Z"},
+        {date: "23-Jul-15", value: 7, fullDate : "2015-07-23T07:00:00.000Z"},
+        {date: "24-Jul-15", value: 5, fullDate : "2015-07-24T07:00:00.000Z"},
+        {date: "25-Jul-15", value: 5, fullDate : "2015-07-25T07:00:00.000Z"},
+        {date: "26-Jul-15", value: 6, fullDate : "2015-07-26T07:00:00.000Z"},
+        {date: "27-Jul-15", value: 16, fullDate : "2015-07-27T07:00:00.000Z"},
+        {date: "28-Jul-15", value: 17, fullDate : "2015-07-28T07:00:00.000Z"},
+        {date: "29-Jul-15", value: 15, fullDate : "2015-07-29T07:00:00.000Z"},
+        {date: "30-Jul-15", value: 12, fullDate : "2015-07-30T07:00:00.000Z"},
+        {date: "31-Jul-15", value: 0, fullDate : "2015-07-31T07:00:00.000Z"},
+        {date: "1-Aug-15", value: 0, fullDate : "2015-08-01T07:00:00.000Z"},
+        {date: "2-Aug-15", value: 0, fullDate : "2015-08-02T07:00:00.000Z"}
+      ]
+    },
+    {
+      topic: 149,
+      topicName: "Unknown Location with a super hyper mega very very very long name.",
+      dates: [
+        {date: "27-Jun-15", value: 0, fullDate : "2015-06-27T07:00:00.000Z"},
+        {date: "28-Jun-15", value: 2, fullDate : "2015-06-28T07:00:00.000Z"},
+        {date: "29-Jun-15", value: 4, fullDate : "2015-06-29T07:00:00.000Z"},
+        {date: "30-Jun-15", value: 3, fullDate : "2015-06-30T07:00:00.000Z"},
+        {date: "1-Jul-15", value: 1, fullDate : "2015-07-01T07:00:00.000Z"},
+        {date: "2-Jul-15", value: 3, fullDate : "2015-07-02T07:00:00.000Z"},
+        {date: "3-Jul-15", value: 3, fullDate : "2015-07-03T07:00:00.000Z"},
+        {date: "4-Jul-15", value: 1, fullDate : "2015-07-04T07:00:00.000Z"},
+        {date: "5-Jul-15", value: 2, fullDate : "2015-07-05T07:00:00.000Z"},
+        {date: "6-Jul-15", value: 2, fullDate : "2015-07-06T07:00:00.000Z"},
+        {date: "7-Jul-15", value: 4, fullDate : "2015-07-07T07:00:00.000Z"},
+        {date: "8-Jul-15", value: 7, fullDate : "2015-07-08T07:00:00.000Z"},
+        {date: "9-Jul-15", value: 1, fullDate : "2015-07-09T07:00:00.000Z"},
+        {date: "10-Jul-15", value: 5, fullDate : "2015-07-10T07:00:00.000Z"},
+        {date: "11-Jul-15", value: 9, fullDate : "2015-07-11T07:00:00.000Z"},
+        {date: "12-Jul-15", value: 5, fullDate : "2015-07-12T07:00:00.000Z"},
+        {date: "13-Jul-15", value: 2, fullDate : "2015-07-13T07:00:00.000Z"},
+        {date: "14-Jul-15", value: 8, fullDate : "2015-07-14T07:00:00.000Z"},
+        {date: "15-Jul-15", value: 3, fullDate : "2015-07-15T07:00:00.000Z"},
+        {date: "16-Jul-15", value: 1, fullDate : "2015-07-16T07:00:00.000Z"},
+        {date: "17-Jul-15", value: 2, fullDate : "2015-07-17T07:00:00.000Z"},
+        {date: "18-Jul-15", value: 7, fullDate : "2015-07-18T07:00:00.000Z"},
+        {date: "19-Jul-15", value: 1, fullDate : "2015-07-19T07:00:00.000Z"},
+        {date: "20-Jul-15", value: 5, fullDate : "2015-07-20T07:00:00.000Z"},
+        {date: "21-Jul-15", value: 0, fullDate : "2015-07-21T07:00:00.000Z"},
+        {date: "22-Jul-15", value: 2, fullDate : "2015-07-22T07:00:00.000Z"},
+        {date: "23-Jul-15", value: 5, fullDate : "2015-07-23T07:00:00.000Z"},
+        {date: "24-Jul-15", value: 2, fullDate : "2015-07-24T07:00:00.000Z"},
+        {date: "25-Jul-15", value: 2, fullDate : "2015-07-25T07:00:00.000Z"},
+        {date: "26-Jul-15", value: 3, fullDate : "2015-07-26T07:00:00.000Z"},
+        {date: "27-Jul-15", value: 8, fullDate : "2015-07-27T07:00:00.000Z"},
+        {date: "28-Jul-15", value: 11, fullDate : "2015-07-28T07:00:00.000Z"},
+        {date: "29-Jul-15", value: 17, fullDate : "2015-07-29T07:00:00.000Z"},
+        {date: "30-Jul-15", value: 14, fullDate : "2015-07-30T07:00:00.000Z"},
+        {date: "31-Jul-15", value: 0, fullDate : "2015-07-31T07:00:00.000Z"},
+        {date: "1-Aug-15", value: 0, fullDate : "2015-08-01T07:00:00.000Z"},
+        {date: "2-Aug-15", value: 0, fullDate : "2015-08-02T07:00:00.000Z"}
+      ]
+    },
+    {
+      topic: 60,
+      topicName: "Los Angeles",
+      dates: [
+        {date: "27-Jun-15", value: 0, fullDate : "2015-06-27T07:00:00.000Z"},
+        {date: "28-Jun-15", value: 0, fullDate : "2015-06-28T07:00:00.000Z"},
+        {date: "29-Jun-15", value: 18, fullDate : "2015-06-29T07:00:00.000Z"},
+        {date: "30-Jun-15", value: 1, fullDate : "2015-06-30T07:00:00.000Z"},
+        {date: "1-Jul-15", value: 6, fullDate : "2015-07-01T07:00:00.000Z"},
+        {date: "2-Jul-15", value: 0, fullDate : "2015-07-02T07:00:00.000Z"},
+        {date: "3-Jul-15", value: 0, fullDate : "2015-07-03T07:00:00.000Z"},
+        {date: "4-Jul-15", value: 0, fullDate : "2015-07-04T07:00:00.000Z"},
+        {date: "5-Jul-15", value: 0, fullDate : "2015-07-05T07:00:00.000Z"},
+        {date: "6-Jul-15", value: 0, fullDate : "2015-07-06T07:00:00.000Z"},
+        {date: "7-Jul-15", value: 15, fullDate : "2015-07-07T07:00:00.000Z"},
+        {date: "8-Jul-15", value: 32, fullDate : "2015-07-08T07:00:00.000Z"},
+        {date: "9-Jul-15", value: 0, fullDate : "2015-07-09T07:00:00.000Z"},
+        {date: "10-Jul-15", value: 0, fullDate : "2015-07-10T07:00:00.000Z"},
+        {date: "11-Jul-15", value: 0, fullDate : "2015-07-11T07:00:00.000Z"},
+        {date: "12-Jul-15", value: 0, fullDate : "2015-07-12T07:00:00.000Z"},
+        {date: "13-Jul-15", value: 3, fullDate : "2015-07-13T07:00:00.000Z"},
+        {date: "14-Jul-15", value: 0, fullDate : "2015-07-14T07:00:00.000Z"},
+        {date: "15-Jul-15", value: 0, fullDate : "2015-07-15T07:00:00.000Z"},
+        {date: "16-Jul-15", value: 15, fullDate : "2015-07-16T07:00:00.000Z"},
+        {date: "17-Jul-15", value: 0, fullDate : "2015-07-17T07:00:00.000Z"},
+        {date: "18-Jul-15", value: 0, fullDate : "2015-07-18T07:00:00.000Z"},
+        {date: "19-Jul-15", value: 0, fullDate : "2015-07-19T07:00:00.000Z"},
+        {date: "20-Jul-15", value: 0, fullDate : "2015-07-20T07:00:00.000Z"},
+        {date: "21-Jul-15", value: 0, fullDate : "2015-07-21T07:00:00.000Z"},
+        {date: "22-Jul-15", value: 5, fullDate : "2015-07-22T07:00:00.000Z"},
+        {date: "23-Jul-15", value: 0, fullDate : "2015-07-23T07:00:00.000Z"},
+        {date: "24-Jul-15", value: 1, fullDate : "2015-07-24T07:00:00.000Z"},
+        {date: "25-Jul-15", value: 0, fullDate : "2015-07-25T07:00:00.000Z"},
+        {date: "26-Jul-15", value: 1, fullDate : "2015-07-26T07:00:00.000Z"},
+        {date: "27-Jul-15", value: 0, fullDate : "2015-07-27T07:00:00.000Z"},
+        {date: "28-Jul-15", value: 0, fullDate : "2015-07-28T07:00:00.000Z"},
+        {date: "29-Jul-15", value: 3, fullDate : "2015-07-29T07:00:00.000Z"},
+        {date: "30-Jul-15", value: 2, fullDate : "2015-07-30T07:00:00.000Z"},
+        {date: "31-Jul-15", value: 0, fullDate : "2015-07-31T07:00:00.000Z"},
+        {date: "1-Aug-15", value: 0, fullDate : "2015-08-01T07:00:00.000Z"},
+        {date: "2-Aug-15", value: 0, fullDate : "2015-08-02T07:00:00.000Z"}
+      ]
+    },
+    {
+      topic: 81,
+      topicName: "Oakland",
+      dates:[
+        {date: "27-Jun-15", value: 0, fullDate : "2015-06-27T07:00:00.000Z"},
+        {date: "28-Jun-15", value: 0, fullDate : "2015-06-28T07:00:00.000Z"},
+        {date: "29-Jun-15", value: 1, fullDate : "2015-06-29T07:00:00.000Z"},
+        {date: "30-Jun-15", value: 0, fullDate : "2015-06-30T07:00:00.000Z"},
+        {date: "1-Jul-15", value: 0, fullDate : "2015-07-01T07:00:00.000Z"},
+        {date: "2-Jul-15", value: 0, fullDate : "2015-07-02T07:00:00.000Z"},
+        {date: "3-Jul-15", value: 0, fullDate : "2015-07-03T07:00:00.000Z"},
+        {date: "4-Jul-15", value: 0, fullDate : "2015-07-04T07:00:00.000Z"},
+        {date: "5-Jul-15", value: 0, fullDate : "2015-07-05T07:00:00.000Z"},
+        {date: "6-Jul-15", value: 0, fullDate : "2015-07-06T07:00:00.000Z"},
+        {date: "7-Jul-15", value: 0, fullDate : "2015-07-07T07:00:00.000Z"},
+        {date: "8-Jul-15", value: 0, fullDate : "2015-07-08T07:00:00.000Z"},
+        {date: "9-Jul-15", value: 1, fullDate : "2015-07-09T07:00:00.000Z"},
+        {date: "10-Jul-15", value: 0, fullDate : "2015-07-10T07:00:00.000Z"},
+        {date: "11-Jul-15", value: 1, fullDate : "2015-07-11T07:00:00.000Z"},
+        {date: "12-Jul-15", value: 1, fullDate : "2015-07-12T07:00:00.000Z"},
+        {date: "13-Jul-15", value: 0, fullDate : "2015-07-13T07:00:00.000Z"},
+        {date: "14-Jul-15", value: 2, fullDate : "2015-07-14T07:00:00.000Z"},
+        {date: "15-Jul-15", value: 3, fullDate : "2015-07-15T07:00:00.000Z"},
+        {date: "16-Jul-15", value: 0, fullDate : "2015-07-16T07:00:00.000Z"},
+        {date: "17-Jul-15", value: 0, fullDate : "2015-07-17T07:00:00.000Z"},
+        {date: "18-Jul-15", value: 0, fullDate : "2015-07-18T07:00:00.000Z"},
+        {date: "19-Jul-15", value: 2, fullDate : "2015-07-19T07:00:00.000Z"},
+        {date: "20-Jul-15", value: 7, fullDate : "2015-07-20T07:00:00.000Z"},
+        {date: "21-Jul-15", value: 0, fullDate : "2015-07-21T07:00:00.000Z"},
+        {date: "22-Jul-15", value: 1, fullDate : "2015-07-22T07:00:00.000Z"},
+        {date: "23-Jul-15", value: 2, fullDate : "2015-07-23T07:00:00.000Z"},
+        {date: "24-Jul-15", value: 0, fullDate : "2015-07-24T07:00:00.000Z"},
+        {date: "25-Jul-15", value: 0, fullDate : "2015-07-25T07:00:00.000Z"},
+        {date: "26-Jul-15", value: 0, fullDate : "2015-07-26T07:00:00.000Z"},
+        {date: "27-Jul-15", value: 1, fullDate : "2015-07-27T07:00:00.000Z"},
+        {date: "28-Jul-15", value: 2, fullDate : "2015-07-28T07:00:00.000Z"},
+        {date: "29-Jul-15", value: 2, fullDate : "2015-07-29T07:00:00.000Z"},
+        {date: "30-Jul-15", value: 6, fullDate : "2015-07-30T07:00:00.000Z"},
+        {date: "31-Jul-15", value: 0, fullDate : "2015-07-31T07:00:00.000Z"},
+        {date: "1-Aug-15", value: 0, fullDate : "2015-08-01T07:00:00.000Z"},
+        {date: "2-Aug-15", value: 0, fullDate : "2015-08-02T07:00:00.000Z"}
+      ]
+    },
+    {
+      topic: 0,
+      topicName: "Other",
+      dates: [
+        {date: "27-Jun-15", value: 3, fullDate : "2015-06-27T07:00:00.000Z"},
+        {date: "28-Jun-15", value: 9, fullDate : "2015-06-28T07:00:00.000Z"},
+        {date: "29-Jun-15", value: 6, fullDate : "2015-06-29T07:00:00.000Z"},
+        {date: "30-Jun-15", value: 11, fullDate : "2015-06-30T07:00:00.000Z"},
+        {date: "1-Jul-15", value: 7, fullDate : "2015-07-01T07:00:00.000Z"},
+        {date: "2-Jul-15", value: 10, fullDate : "2015-07-02T07:00:00.000Z"},
+        {date: "3-Jul-15", value: 5, fullDate : "2015-07-03T07:00:00.000Z"},
+        {date: "4-Jul-15", value: 10, fullDate : "2015-07-04T07:00:00.000Z"},
+        {date: "5-Jul-15", value: 8, fullDate : "2015-07-05T07:00:00.000Z"},
+        {date: "6-Jul-15", value: 10, fullDate : "2015-07-06T07:00:00.000Z"},
+        {date: "7-Jul-15", value: 6, fullDate : "2015-07-07T07:00:00.000Z"},
+        {date: "8-Jul-15", value: 14, fullDate : "2015-07-08T07:00:00.000Z"},
+        {date: "9-Jul-15", value: 12, fullDate : "2015-07-09T07:00:00.000Z"},
+        {date: "10-Jul-15", value: 17, fullDate : "2015-07-10T07:00:00.000Z"},
+        {date: "11-Jul-15", value: 9, fullDate : "2015-07-11T07:00:00.000Z"},
+        {date: "12-Jul-15", value: 9, fullDate : "2015-07-12T07:00:00.000Z"},
+        {date: "13-Jul-15", value: 9, fullDate : "2015-07-13T07:00:00.000Z"},
+        {date: "14-Jul-15", value: 11, fullDate : "2015-07-14T07:00:00.000Z"},
+        {date: "15-Jul-15", value: 16, fullDate : "2015-07-15T07:00:00.000Z"},
+        {date: "16-Jul-15", value: 6, fullDate : "2015-07-16T07:00:00.000Z"},
+        {date: "17-Jul-15", value: 7, fullDate : "2015-07-17T07:00:00.000Z"},
+        {date: "18-Jul-15", value: 8, fullDate : "2015-07-18T07:00:00.000Z"},
+        {date: "19-Jul-15", value: 4, fullDate : "2015-07-19T07:00:00.000Z"},
+        {date: "20-Jul-15", value: 9, fullDate : "2015-07-20T07:00:00.000Z"},
+        {date: "21-Jul-15", value: 5, fullDate : "2015-07-21T07:00:00.000Z"},
+        {date: "22-Jul-15", value: 7, fullDate : "2015-07-22T07:00:00.000Z"},
+        {date: "23-Jul-15", value: 7, fullDate : "2015-07-23T07:00:00.000Z"},
+        {date: "24-Jul-15", value: 10, fullDate : "2015-07-24T07:00:00.000Z"},
+        {date: "25-Jul-15", value: 8, fullDate : "2015-07-25T07:00:00.000Z"},
+        {date: "26-Jul-15", value: 13, fullDate : "2015-07-26T07:00:00.000Z"},
+        {date: "27-Jul-15", value: 18, fullDate : "2015-07-27T07:00:00.000Z"},
+        {date: "28-Jul-15", value: 14, fullDate : "2015-07-28T07:00:00.000Z"},
+        {date: "29-Jul-15", value: 30, fullDate : "2015-07-29T07:00:00.000Z"},
+        {date: "30-Jul-15", value: 33, fullDate : "2015-07-30T07:00:00.000Z"},
+        {date: "31-Jul-15", value: 0, fullDate : "2015-07-31T07:00:00.000Z"},
+        {date: "1-Aug-15", value: 0, fullDate : "2015-08-01T07:00:00.000Z"},
+        {date: "2-Aug-15", value: 0, fullDate : "2015-08-02T07:00:00.000Z"}
+      ]
+    }
+  ],
+  dataByDate: [
+    {
+      date: "2015-06-27T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 1, topicName: "San Francisco"},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 149, value: 0, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 3, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-06-28T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 1, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 9, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-06-29T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 18, topicName: "Los Angeles"},
+        {name: 81, value: 1, topicName: "Oakland"},
+        {name: 103, value: 4, topicName: "San Francisco"},
+        {name: 149, value: 4, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 6, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-06-30T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 1, topicName: "Los Angeles"},
+        {name: 103, value: 2, topicName: "San Francisco"},
+        {name: 149, value: 3, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 11, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-01T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 6, topicName: "Los Angeles"},
+        {name: 103, value: 3, topicName: "San Francisco"},
+        {name: 149, value: 1, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 7, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-02T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 3, topicName: "San Francisco"},
+        {name: 149, value: 3, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 10, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-03T07:00:00.000Z",
+      topics: [
+        {name: 149, value: 3, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 103, value: 0, topicName: "San Francisco"},
+        {name: 0, value: 5, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-04T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 3, topicName: "San Francisco"},
+        {name: 149, value: 1, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 10, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-05T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 1, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 8, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-06T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 2, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 10, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-07T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 15, topicName: "Los Angeles"},
+        {name: 149, value: 4, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 103, value: 0, topicName: "San Francisco"},
+        {name: 0, value: 6, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-08T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 32, topicName: "Los Angeles"},
+        {name: 103, value: 2, topicName: "San Francisco"},
+        {name: 149, value: 7, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 14, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-09T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 1, topicName: "Oakland"},
+        {name: 103, value: 1, topicName: "San Francisco"},
+        {name: 149, value: 1, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 12, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-10T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 4, topicName: "San Francisco"},
+        {name: 149, value: 5, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 17, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-11T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 1, topicName: "Oakland"},
+        {name: 103, value: 2, topicName: "San Francisco"},
+        {name: 149, value: 9, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 9, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-12T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 1, topicName: "Oakland"},
+        {name: 103, value: 1, topicName: "San Francisco"},
+        {name: 149, value: 5, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 9, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-13T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 3, topicName: "Los Angeles"},
+        {name: 103, value: 6, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 9, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-14T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 2, topicName: "Oakland"},
+        {name: 103, value: 5, topicName: "San Francisco"},
+        {name: 149, value: 8, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 11, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-15T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 3, topicName: "Oakland"},
+        {name: 103, value: 2, topicName: "San Francisco"},
+        {name: 149, value: 3, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 16, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-16T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 15, topicName: "Los Angeles"},
+        {name: 103, value: 7, topicName: "San Francisco"},
+        {name: 149, value: 1, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 6, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-17T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 3, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 7, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-18T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 1, topicName: "San Francisco"},
+        {name: 149, value: 7, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 8, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-19T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 2, topicName: "Oakland"},
+        {name: 103, value: 4, topicName: "San Francisco"},
+        {name: 149, value: 1, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 4, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-20T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 7, topicName: "Oakland"},
+        {name: 103, value: 8, topicName: "San Francisco"},
+        {name: 149, value: 5, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 9, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-21T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 4, topicName: "San Francisco"},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 149, value: 0, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 5, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-22T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 5, topicName: "Los Angeles"},
+        {name: 81, value: 1, topicName: "Oakland"},
+        {name: 103, value: 11, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 7, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-23T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 2, topicName: "Oakland"},
+        {name: 103, value: 7, topicName: "San Francisco"},
+        {name: 149, value: 5, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 7, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-24T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 1, topicName: "Los Angeles"},
+        {name: 103, value: 5, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 10, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-25T07:00:00.000Z",
+      topics: [
+        {name: 103, value: 5, topicName: "San Francisco"},
+        {name: 149, value: 2, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 8, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-26T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 1, topicName: "Los Angeles"},
+        {name: 103, value: 6, topicName: "San Francisco"},
+        {name: 149, value: 3, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 0, value: 13, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-27T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 1, topicName: "Oakland"},
+        {name: 103, value: 16, topicName: "San Francisco"},
+        {name: 149, value: 8, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 18, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-28T07:00:00.000Z",
+      topics: [
+        {name: 81, value: 2, topicName: "Oakland"},
+        {name: 103, value: 17, topicName: "San Francisco"},
+        {name: 149, value: 11, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 0, value: 14, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-29T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 3, topicName: "Los Angeles"},
+        {name: 81, value: 2, topicName: "Oakland"},
+        {name: 103, value: 15, topicName: "San Francisco"},
+        {name: 149, value: 17, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 30, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-30T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 2, topicName: "Los Angeles"},
+        {name: 81, value: 6, topicName: "Oakland"},
+        {name: 103, value: 12, topicName: "San Francisco"},
+        {name: 149, value: 14, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 33, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-07-31T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 103, value: 0, topicName: "San Francisco"},
+        {name: 149, value: 0, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 0, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-08-01T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 103, value: 0, topicName: "San Francisco"},
+        {name: 149, value: 0, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 0, topicName: "Other"}
+      ]
+    },
+    {
+      date: "2015-08-02T07:00:00.000Z",
+      topics: [
+        {name: 60, value: 0, topicName: "Los Angeles"},
+        {name: 81, value: 0, topicName: "Oakland"},
+        {name: 103, value: 0, topicName: "San Francisco"},
+        {name: 149, value: 0, topicName: "Unknown Location with a super hyper mega very very very long name."},
+        {name: 0, value: 0, topicName: "Other"}
+      ]
+    }
+  ]
+};
+
+let stackedAreaData = {
+data: [
+  {name: "Direct", views: 0, date: "2011-01-05T00:00:00"},
+  {name: "Direct", views: 10, date: "2011-01-06T00:00:00"},
+  {name: "Direct", views: 7, date: "2011-01-07T00:00:00"},
+  {name: "Direct", views: 6, date: "2011-01-08T00:00:00"},
+  {name: "Eventbrite", views: 3, date: "2011-01-05T00:00:00"},
+  {name: "Eventbrite", views: 16, date: "2011-01-06T00:00:00"},
+  {name: "Eventbrite", views: 10, date: "2011-01-07T00:00:00"},
+  {name: "Eventbrite", views: 0, date: "2011-01-08T00:00:00"},
+  {name: "Email", views: 10, date: "2011-01-05T00:00:00"},
+  {name: "Email", views: 15, date: "2011-01-06T00:00:00"},
+  {name: "Email", views: 3, date: "2011-01-07T00:00:00"},
+  {name: "Email", views: 33, date: "2011-01-08T00:00:00"}
+]};
+
+/*
+let stackedAreaData2 = {
+  data:[
+    {name: "Direct", views: 0, dateUTC: "2011-01-05T00:00:00Z"},
+    {name: "Direct", views: 1000, dateUTC: "2011-01-06T00:00:00Z"},
+    {name: "Direct", views: 1006.34, dateUTC: "2011-01-07T00:00:00Z"},
+    {name: "Direct", views: 2000, dateUTC: "2011-01-08T00:00:00Z"},
+    {name: "Eventbrite", views: 1003, dateUTC: "2011-01-05T00:00:00Z"},
+    {name: "Eventbrite", views: 1006, dateUTC: "2011-01-06T00:00:00Z"},
+    {name: "Eventbrite", views: 1000, dateUTC: "2011-01-07T00:00:00Z"},
+    {name: "Eventbrite", views: 500, dateUTC: "2011-01-08T00:00:00Z"},
+    {name: "Email", views: 1000, dateUTC: "2011-01-05T00:00:00Z"},
+    {name: "Email", views: 2000, dateUTC: "2011-01-06T00:00:00Z"},
+    {name: "Email", views: 2002, dateUTC: "2011-01-07T00:00:00Z"},
+    {name: "Email", views: 700, dateUTC: "2011-01-08T00:00:00Z"},
+    {name: "Sun's Website", views: 0, dateUTC: "2011-01-05T00:00:00Z"},
+    {name: "Sun's Website", views: 1000, dateUTC: "2011-01-06T00:00:00Z"},
+    {name: "Sun's Website", views: 1006, dateUTC: "2011-01-07T00:00:00Z"},
+    {name: "Sun's Website", views: 300, dateUTC: "2011-01-08T00:00:00Z"},
+    {name: "Related Events", views: 1008, dateUTC: "2011-01-05T00:00:00Z"},
+    {name: "Related Events", views: 1002, dateUTC: "2011-01-06T00:00:00Z"},
+    {name: "Related Events", views: 500, dateUTC: "2011-01-07T00:00:00Z"},
+    {name: "Related Events", views: 300, dateUTC: "2011-01-08T00:00:00Z"},
+    {name: "Facebook", views: 400, dateUTC: "2011-01-05T00:00:00Z"},
+    {name: "Facebook", views: 900, dateUTC: "2011-01-06T00:00:00Z"},
+    {name: "Facebook", views: 600, dateUTC: "2011-01-07T00:00:00Z"},
+    {name: "Facebook", views: 300, dateUTC: "2011-01-08T00:00:00Z"}
+  ]
+};
+
+let stackedBarData = {
+  data:[
+    {stack: "vivid", name: "Direct1", views: 0, date: "2011-01-05"},
+    {stack: "vivid", name: "Direct2", views: 10, date: "2011-01-06"},
+    {stack: "vivid", name: "Direct3", views: 16, date: "2011-01-07"},
+    {stack: "vivid", name: "Direct4", views: 23, date: "2011-01-08"},
+    {stack: "sparkling", name: "Eventbrite1", views: 23, date: "2011-01-05"},
+    {stack: "sparkling", name: "Eventbrite2", views: 16, date: "2011-01-06"},
+    {stack: "sparkling", name: "Eventbrite3", views: 10, date: "2011-01-07"},
+    {stack: "sparkling", name: "Eventbrite4", views: 0, date: "2011-01-08"},
+    {stack: "sunny", name: "Email1", views: 10, date: "2011-01-05"},
+    {stack: "sunny", name: "Email2", views: 20, date: "2011-01-06"},
+    {stack: "sunny", name: "Email3", views: 26, date: "2011-01-07"},
+    {stack: "sunny", name: "Email4", views: 33, date: "2011-01-08"}
+  ]
+};
+*/
+
+
+/*
+const data = [
+  { name: 'Shiny', id: 1, quantity: 86, percentage: 5 },
+  { name: 'Blazing', id: 2, quantity: 300, percentage: 18 },
+  { name: 'Dazzling', id: 3, quantity: 276, percentage: 16 },
+  { name: 'Radiant', id: 4, quantity: 195, percentage: 11 },
+  { name: 'Sparkling', id: 5, quantity: 36, percentage: 2 },
+  { name: 'Other', id: 0, quantity: 814, percentage: 48 }
+];
+
+*/
+
+//Normal Bar
+
+// https://github.com/eventbrite/britecharts/blob/master/demos/demo-bar.js
+function createBarChart() {
+    let barChart = new britecharts.bar(),
+        chartTooltip = new britecharts.miniTooltip(),
+        margin = {
+                left: 120,
+                right: 20,
+                top: 20,
+                bottom: 30
+        },
+        barContainer = d3.select('.js-bar-chart-tooltip-container'),
+        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
+        tooltipContainer;
+
+    barChart
+       .margin(margin)
+       .width(containerWidth)
+       .colorSchema(britecharts.colors.colorSchemas.green)
+       // .valueLabel('percentage')
+       .height(300)
+      .on('customMouseOver', chartTooltip.show)
+      .on('customMouseMove', chartTooltip.update)
+      .on('customMouseOut', chartTooltip.hide);
+
+    barContainer.datum(barData.data).call(barChart);
+  
+    tooltipContainer = d3.select('.bar-chart .metadata-group');
+    tooltipContainer.datum([]).call(chartTooltip);
+}
+
+// https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js
+function createLineChart() {
+    let lineChart = new britecharts.line(),
+        chartTooltip = new britecharts.tooltip(),
+        margin = {
+                left: 120,
+                right: 20,
+                top: 20,
+                bottom: 30
+        },
+        lineContainer = d3.select('.js-line-chart-container'),
+        containerWidth = lineContainer.node() ? lineContainer.node().getBoundingClientRect().width : false,
+        tooltipContainer;
+
+    lineChart
+      .isAnimated(true)
+      .aspectRatio(0.7)
+      .tooltipThreshold(100)
+      .grid('horizontal')
+      .width(containerWidth)
+      .margin(margin)
+      .dateLabel('date')
+      .valueLabel('value')
+      .on('customMouseOver', chartTooltip.show)
+      .on('customMouseMove', chartTooltip.update)
+      .on('customMouseOut', chartTooltip.hide);
+
+      chartTooltip.title('Tooltip Title')
+
+      //   .topicsOrder(lineData2.dataByTopic.map(function(topic) {
+      //   return topic.topic;
+      // }));
+  
+    lineContainer.datum(lineData2).call(lineChart);
+    tooltipContainer = d3.select('.js-line-chart-container .metadata-group .hover-marker');
+    tooltipContainer.datum([]).call(chartTooltip);
+}
+
+// https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js
+function createDonutChart() {
+  let donutChart = britecharts.donut(),
+  legendChart = britecharts.legend(),
+  legendContainer;
+
+  donutChart
+    .width(400)
+    .height(300);
+  
+  legendChart
+    .width(300)
+    .height(200)
+    .numberFormat('s');
+  
+  d3.select('.js-donut-chart-container').datum(donutData1.data).call(donutChart);
+  legendContainer = d3.select('.js-legend-chart-container');
+  legendContainer.datum(donutData1.data).call(legendChart);
+
+}
+
+// https://github.com/eventbrite/britecharts/blob/master/demos/demo-stacked-area.js
+function createStackedAreaChart() {
+    let stackedAreaChart = britecharts.stackedArea(),
+        chartTooltip = britecharts.tooltip(),
+        dataSet = stackedAreaData.data,
+        container = d3.select('.js-stacked-area-chart-tooltip-container'),
+        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        tooltipContainer;
+
+      stackedAreaChart
+        .colorSchema(britecharts.colors.colorSchemas.green)
+        .isAnimated(true)
+        .tooltipThreshold(600)
+        .width(containerWidth)
+        .grid('horizontal')
+        .keyLabel('name')
+        .dateLabel('date')
+        .valueLabel('views')
+        .on('customMouseOver', chartTooltip.show)
+        .on('customMouseMove', chartTooltip.update)
+        .on('customMouseOut', chartTooltip.hide);
+
+      container.datum(dataSet).call(stackedAreaChart);
+
+      chartTooltip
+        .topicLabel('values')
+        .title('Testing tooltip')
+
+      tooltipContainer = d3.select('.js-stacked-area-chart-tooltip-container .metadata-group .vertical-marker-container');
+      tooltipContainer.datum(dataSet).call(chartTooltip);
+}
+
+// https://github.com/eventbrite/britecharts/blob/master/demos/demo-grouped-bar.js
+function createGroupedBarChart() {
+    var groupedBarChart = britecharts.groupedBar(),
+        chartTooltip = britecharts.tooltip(),
+        container = d3.select('.js-grouped-bar-chart-tooltip-container'),
+        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        tooltipContainer;
+    
+    groupedBarChart
+       .width(containerWidth)
+       .groupLabel('stack')
+       .nameLabel('date')
+       .valueLabel('views');
+    container.datum(groupedBarData.data).call(groupedBarChart);
+}
+
+
+createBarChart();
+createLineChart();
+createDonutChart();
+createStackedAreaChart();
+createGroupedBarChart();
+
+    </script>
+       
+       
+       
+        <script  type="text/babel">
+    const {
+  HorizontalGridLines,
+  FlexibleWidthXYPlot,
+  XAxis,
+  YAxis,
+  VerticalBarSeries
+} = reactVis;
+
+const barSeriesStyle = { fill: "inherit", stroke: "inherit" };
+
+const data = {
+  organicPageVisitors: [
+    { x: "FEB 2017", y: 15 },
+    { x: "MAR 2017", y: 25 },
+    { x: "APR 2017", y: 20 },
+    { x: "MAY 2017", y: 30 },
+    { x: "JUN 2017", y: 30 },
+    { x: "JUL 2017", y: 25 },
+    { x: "AUG 2017", y: 20 }
+  ],
+  paidPageVisitors: [
+    { x: "FEB 2017", y: 15 },
+    { x: "MAR 2017", y: 25 },
+    { x: "APR 2017", y: 20 },
+    { x: "MAY 2017", y: 30 },
+    { x: "JUN 2017", y: 30 },
+    { x: "JUL 2017", y: 25 },
+    { x: "AUG 2017", y: 20 }
+  ],
+
+};
+
+const App = () => (
+  <div className="app">
+    <div className="title">Page Visitors</div>
+    
+    <FlexibleWidthXYPlot className="pageVisitorsChart" xType="ordinal" height={300} >
+      <HorizontalGridLines />
+      <XAxis />
+      <YAxis />
+      <VerticalBarSeries
+        className="organicPageVisitors"
+        style={barSeriesStyle}
+        data={data.organicPageVisitors}
+      />
+      <VerticalBarSeries
+        className="paidPageVisitors"
+        style={barSeriesStyle}
+        data={data.paidPageVisitors}
+      />
+    </FlexibleWidthXYPlot>
+  </div>
+);
+
+ReactDOM.render(<App />, document.querySelector("#root"));
+    </script>
+
+    <script type="text/babel">
+    const data = [[1958,2.3,1.3],
+[1962,2.4,1.7],
+[1967,2.9,1.9],
+[1968,3.3,1.7],
+[1973,6.6,1.7],
+[1978,16.3,4],
+[1981,13.1,5.5],
+[1986,25.1,5.8],
+[1988,11.9,5.6],
+[1993,19.5,5.9],
+[1997,23.2,10.8],
+[2002,39.3,12.1],
+[2007,41.6,18.5],
+[2012,40,26.9],
+[2017,42.4,38.7]]
+
+const series = [2, 1].map(i =>
+  data.map(d => ({x: d[0], y: d[i]})
+          ));
+
+const {
+  DiscreteColorLegend,
+  HorizontalGridLines,
+  VerticalGridLines,
+  XAxis,
+  XYPlot,
+  YAxis,
+  LineMarkSeries
+} = reactVis;
+
+const axisProps = {
+  tickSizeInner: 0,
+  style: {line: {stroke: '#939393', strokeWidth: '1px'}}
+};
+
+function Chart({series}) {
+  
+  return (<div>
+      <h2 className='tk-adobe-caslon-pro'>Représentation des femmes à l'Assemblée Nationale</h2>
+      <DiscreteColorLegend items={['% des élus', '% des candidats']} orientation='horizontal'/><XYPlot width={700} height={300}
+           yDomain={[0, 100]}>
+         <VerticalGridLines />
+    <HorizontalGridLines />
+    <XAxis {...axisProps}
+      tickFormat={String}
+     /><YAxis {...axisProps} tickFormat={(d) => d + '%'}/>
+ 
+    {series.map((d, i) => <LineMarkSeries key={i} size={3} data={d} />)}
+    </XYPlot></div>);
+}
+
+
+
+const chart = <Chart series={series}/>;
+ReactDOM.render(chart, document.querySelector('#root2'));
+
+    </script>
+    <!--3 Test -->
+    <script type="text/babel">
+const barSeriesStyle = { fill: "inherit", stroke: "inherit" };
+    const data = {
+  thisyear: [
+    { x: "Jun 2017", y: 25 },
+    { x: "FEB 2017", y: 15 },
+    { x: "MAR 2017", y: 25 },
+    { x: "APR 2017", y: 20 },
+    { x: "MAY 2017", y: 30 },
+    { x: "JUN 2017", y: 30 },
+    { x: "AUG 2017", y: 25 },
+    { x: "Sep 2017", y: 25 },
+    { x: "OCT 2017", y: 25 },
+    { x: "NOV 2017", y: 25 },
+    { x: "Des 2017", y: 25 },
+  ],
+ prevyear: [
+    { x: "Jun 2017", y: 15 },
+    { x: "FEB 2017", y: 35 },
+    { x: "MAR 2017", y: 25 },
+    { x: "APR 2017", y: 10 },
+    { x: "MAY 2017", y: 30 },
+    { x: "JUN 2017", y: 40 },
+    { x: "AUG 2017", y: 15 },
+    { x: "Sep 2017", y: 15 },
+    { x: "OCT 2017", y: 25 },
+    { x: "NOV 2017", y: 25 },
+    { x: "Des 2017", y: 25 },
+  ],
+
+};
+const Test = () => (
+  <div className="app">
+    <div className="title">Page Visitors</div>
+    
+
+    
+   <XYPlot margin={{bottom: 70}} xType="ordinal" width={900} height={300}>
+        <VerticalGridLines />
+        <HorizontalGridLines />
+        <XAxis tickLabelAngle={-45} />
+        <YAxis />
+        <VerticalBarSeries
+             className="prevYear"
+           data={data.prevyear}
+        />
+           <VerticalBarSeries 
+             className="thisYear"
+             data={data.thisyear}
+            />
+
+      </XYPlot>
+  </div>
+);
+
+ReactDOM.render(<Test />, document.querySelector("#test"));
+
+
+/**/
+
+    </script>
+        <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/semantic.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/list.min.js"></script>
+    <script src="js/ResizeSensor.js"></script>
+    <script src="js/sticky-sidebar.min.js"></script>
+    <script src="js/functions.js"></script>
+
+</body>
+
+</html>

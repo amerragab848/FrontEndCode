@@ -1,0 +1,304 @@
+.Base-Buttons-Container {
+	padding: 30px;
+	display: flex;
+	justify-content: space-between;
+	width: 900px;
+
+	.Buttons-Text-Name {
+		margin-right: 50px;
+		color: #ff00b7;
+		font-weight: bold;
+		width: 200px;
+	}
+}
+
+.btn,
+.button {
+	@include border-radius(4px);
+	font-family: $muli-b;
+	font-size: $heading5-font - 1;
+	border: 1px solid transparent;
+	padding: 0 16px;
+	cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
+
+}
+
+
+/*Base Hover Press */
+
+.defaultBtn {
+	min-width: 88px;
+	background-color: transparent;
+	height: 40px;
+	color: $grey-600;
+
+	&:hover {
+		border: 1px solid #c2c8d1;
+		color: $grey-600;
+
+	}
+	&:active {
+		background-color: $grey-50;
+		outline: none;
+		border: 1px solid $grey-300;
+		box-shadow: none;
+		color: $grey-600;
+	}
+	&:focus {
+		color: $grey-600;
+	}
+
+
+}
+
+.primaryBtn-1 {
+	background-color: $Primary-2;
+	color: $white;
+	border: none;
+	min-width: 88px;
+	height: 40px;
+	&:hover {
+		background-color: $blue-600;
+		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+		color: $white;
+	}
+	&:active {
+		box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+	}
+	&:focus {
+		color: $white;
+	}
+
+}
+
+.primaryBtn-2 {
+	background-color: $grey-100;
+	color: $grey-700;
+	border: none;
+	min-width: 88px;
+	height: 40px;
+	&:hover {
+		background-color: #e1e4e8;
+		-webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+	}
+	&:active {
+		-webkit-box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+		box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+	}
+}
+
+/*End Base Hover Press */
+
+/*Disable Btn*/
+
+.defaultBtn.disabled {
+	background-color: $white;
+}
+
+.primaryBtn-1.disabled {
+	background-color: $blue-300;
+	color: $white;
+}
+
+.primaryBtn-2.disabled {
+	background-color: #edf1f5;
+	color: $grey-300;
+}
+
+/*End Disable Btn*/
+
+.LoadBtn {
+	svg {
+		height: 40px;
+	}
+	&:hover {
+		box-shadow: none;
+
+	}
+}
+
+/* Active Button */
+
+.activeBtn {
+	@include box-shadow(0 0 6px 0 rgba(67, 130, 249, 0.6));
+	&:hover {
+		@include box-shadow(0 0 6px 0 rgba(67, 130, 249, 0.6));
+	}
+
+}
+
+.defaultBtn.activeBtn {
+	&:hover {
+		border: 1px solid transparent;
+	}
+}
+
+.primaryBtn-1.activeBtn {
+	&:hover {
+		background-color: $Primary-2;
+	}
+}
+
+.primaryBtn-2.activeBtn {
+	&:hover {
+		background-color: $grey-100;
+	}
+}
+
+/* End Active Button */
+
+.primaryBtnGroup1 {
+
+	&.smallBtn {
+		height: 32px;
+		> .ui.button.normal {
+			font-size: $heading6-font;
+			line-height: 1.4;
+		}
+	}
+	&.mediumBtn {
+		height: 40px;
+		> .ui.button.normal {
+			font-size: $heading5-font - 1;
+			line-height: 1.4;
+		}
+		.ui.floating.dropdown.icon.button {
+			> .dropdown.icon {
+				font-size: $heading5-font - 1;
+				line-height: 1.6;
+			}
+		}
+	}
+	&.largeBtn {
+		height: 52px;
+		> .ui.button.normal {
+			font-size: $heading4-font;
+			line-height: 1.4;
+		}
+		.ui.floating.dropdown.icon.button {
+			> .dropdown.icon {
+				line-height: 1.8;
+				font-size: $heading4-font;
+			}
+		}
+	}
+	> .ui.button.normal {
+		font-family: $muli-b;
+	}
+	.button {
+		background-color: $Primary-2;
+		color: $white;
+		&:hover {
+			background-color: $blue-600;
+			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+			color: $white;
+		}
+		&:active {
+			box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+			background-color: $blue-600;
+
+		}
+		&:focus {
+			color: $white;
+			background-color: $blue-600;
+
+		}
+
+	}
+	.button.active {
+		&:hover {
+			background-color: $blue-600;
+			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+			color: $white;
+		}
+	}
+}
+
+.primaryBtnGroup2 {
+	&.smallBtn {
+		height: 32px;
+		> .ui.button.normal {
+			font-size: $heading6-font;
+			line-height: 1.4;
+		}
+	}
+	&.mediumBtn {
+		height: 40px;
+		> .ui.button.normal {
+			font-size: $heading5-font - 1;
+			line-height: 1.4;
+		}
+		.ui.floating.dropdown.icon.button {
+			> .dropdown.icon {
+				font-size: $heading5-font - 1;
+				line-height: 1.6;
+			}
+		}
+	}
+	&.largeBtn {
+		height: 52px;
+		> .ui.button.normal {
+			font-size: $heading4-font;
+			line-height: 1.4;
+		}
+		.ui.floating.dropdown.icon.button {
+			> .dropdown.icon {
+				line-height: 1.8;
+				font-size: $heading4-font;
+			}
+		}
+	}
+
+
+	> .ui.button.normal {
+		font-family: $muli-b;
+
+	}
+
+	.button {
+		background-color: $grey-100;
+		color: $grey-700;
+		&:hover {
+			background-color: #e1e4e8;
+			-webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+		}
+		&:active {
+			-webkit-box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+			box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+		}
+		&:focus {
+			background-color: #e1e4e8;
+
+		}
+
+	}
+
+	.button.active {
+		&:hover {
+			background-color: #e1e4e8;
+			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+		}
+	}
+
+}
+
+.btn.smallBtn {
+	min-width: 72px;
+	height: 32px;
+	font-size: 12px;
+}
+
+.btn.mediumBtn {
+	min-width: 88px;
+	height: 40px;
+}
+
+.btn.largeBtn {
+	min-width: 158px;
+	height: 52px;
+	font-size: 16px;
+}

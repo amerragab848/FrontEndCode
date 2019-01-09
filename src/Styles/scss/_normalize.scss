@@ -1,0 +1,135 @@
+/*===================================== 
+	-- initialization --
+=====================================*/
+
+/*html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    @extend .clear-styles;
+}*/
+
+.zero {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    direction: $ltr;
+    min-width: 1024px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #fafafa;
+}
+.mainContainerX {
+    padding: 40px;
+}
+
+.mainContainer {
+    min-height: 100vh;
+    padding-left: 130px;
+    padding-right: 40px;
+    padding-top: 72px;
+    background-image: linear-gradient(to bottom, #f5f5f6 0%, #f5f5f6 26%, #fafbfc 0%, #fafbfc 100%);
+}
+
+#ascrail2003,
+#ascrail2004,
+#ascrail2004-hr,
+    {
+    display: none !important;
+}
+
+::selection {
+    background: $selection-color;
+    color: #fff;
+}
+
+/* Safari */
+
+::-moz-selection {
+    background: $selection-color;
+    color: #fff;
+}
+
+/* Firefox */
+
+:-moz-placeholder,
+.form-control::-moz-placeholder {
+    color: $input-placeholder-color;
+}
+
+::-webkit-input-placeholder,
+.form-control::-webkit-input-placeholder {
+    color: $input-placeholder-color;
+}
+
+:-ms-input-placeholder,
+.form-control::-ms-input-placeholder {
+    color: $input-placeholder-color;
+}
+
+a,
+a:hover,
+a:link,
+a:active,
+a:focus,
+a:visited {
+    outline: none;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: inherit;
+    line-height: normal;
+}
+
+*:focus {
+    outline: none;
+}
+
+.clear-styles {
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    outline: none;
+    -ms-text-shadow: none;
+    text-shadow: none;
+    list-style: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+ul {
+    padding: 0;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+    outline: none;
+}
+
+
+.nicescroll-rails {
+    z-index: 2 !important;
+}

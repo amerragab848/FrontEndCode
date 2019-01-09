@@ -1,0 +1,245 @@
+.uploadForm {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width: 639px;
+    height: 108px;
+    border-radius: 4px;
+    background-color: $grey-50;
+    border: 3px dashed $grey-100;
+    margin-bottom: 29px;
+    img {
+        width: 80px;
+        height: 64px;
+    }
+    .dragUpload {
+        display: flex;
+        p {
+            opacity: 0.4;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.43;
+            letter-spacing: -0.2px;
+            color: $grey-500;
+            margin-right: 12px;
+        }
+        form {
+            .inputfile {
+                width: 0.1px;
+                height: 0.1px;
+                opacity: 0;
+                overflow: hidden;
+                position: absolute;
+                z-index: -1;
+            }
+            label {
+                font-size: 12px;
+                font-weight: bold;
+                line-height: 1.33;
+                letter-spacing: 0.2px;
+                color: $grey-600;
+                padding: 0;
+                overflow: visible;
+            }
+        }
+    }
+}
+.attachmentPage {
+    width: 703px;
+    margin: 0;
+    .gridSystemTables{
+        min-height: auto;
+        .tableCell-2 {
+            width: 190px;
+            @include min1440 {
+                width: 190px;
+            }
+        }
+        .girdTableHeader {
+            min-width: auto;
+            position: static;
+            .stickyHead {
+                width: 231px;
+            }
+            .thead-row {
+                width: auto;
+                min-width: 471px;
+                left: 231px;
+            }
+        }
+        .gridTableContent{
+            padding: 0;
+            .gridMainRow{
+                position: relative;
+                .tableCell-1{
+                    span {
+                        width: 20px;
+                        height: 24px;
+                    }
+                }
+                .normalContent{
+                    width: auto;
+                    min-width: 471px;
+                    left: 231px;
+                }
+                .stickyContent {
+                    width: auto;
+                    min-width: 231px;
+                }
+
+                .attachmentAction {
+                    display: flex;
+                    align-items: center;
+                    opacity: 0;
+                    transition: all 0.4s ease-in-out;
+                    position: absolute;
+                    right: 16px;
+                    top: calc(50% - 8px);
+                    span {
+                        margin: 0 8px;
+                        width: 16px;
+                        height: 16px;
+                        position: relative;
+                        overflow: hidden;
+                        cursor: pointer;
+                        img {
+                            transition: all 0.4s ease-in-out;
+                            transform: translateY(0);
+                        }
+                        &::after {
+                                content : '';
+                                width: 16px;
+                                position: absolute;
+                                height: 16px;
+                                background-size: 100% 100%;
+                                transform: translateY(-20px);
+                                top: 0;
+                                left: 0;
+                                transition: all 0.4s ease-in-out;
+                            }
+                        &.attachRecycle {
+                            &::after {
+                                background-image: url(../../images/afterDelete.png);
+                            }
+                        }
+                        &.attachPdf {
+                            &::after {
+                                background-image: url(../../images/afterDown.png);
+                            }
+                        }
+                        &.attachPend {
+                            &::after {
+                                background-image: url(../../images/afterPend.png);
+                            }
+                        }
+                        &:hover {
+                            img {
+                                transform: translateY(20px);
+                            }
+                            &::after {
+                                transform: translateY(0);
+                            }
+                        }
+                    }
+                }
+                &:hover {
+                    .attachmentAction {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+.fancybox-overlay-fixed {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.85);
+}
+.fancybox-outer {
+    overflow-y: visible;
+}
+.fancybox-inner {
+    overflow: visible !important;
+}
+.fancybox-nav {
+     span {
+        visibility: visible;
+        display: block;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%; 
+        position: relative;
+         &::after {
+                content: '';
+                width: 56px;
+                height: 56px;
+                position: absolute;
+                background-size: 100% 100%;
+            }
+        }
+    &.fancybox-prev {
+        left: calc(-100% + 320px);
+        span {
+            &::after {
+                background-image: url(../../images/pdfLeftArrow.png);
+            }
+        }
+    }
+    &.fancybox-next {
+        right: calc(-100% + 320px);
+        span {
+            &::after {
+                background-image: url(../../images/pdfrightArrow.png);
+            }
+        }
+    }
+}
+.fancybox-opened{
+    height: 100% !important;
+     .fancybox-skin {
+         height: 100% !important;
+    }
+    .fancybox-outer {
+        height: 100%;
+        .fancybox-inner {
+            height: 100% !important;
+        }
+    }
+}
+.fancybox-opened .fancybox-skin {
+    padding: 0 !important;
+}
+.fancybox-nav {
+    width: auto;
+}
+viewer-pdf-toolbar {
+    transform: translateY(0) !important;
+}
+.fancybox-close {
+    display: block;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    right: calc(-100% + 320px);
+    top: 16px;
+    &::after {
+        content: '';
+        position: absolute;
+        width: 56px;
+        height: 56px;
+        background-image: url(../../images/pdfClose.png);
+        background-size: 100% 100%;
+    }
+}
+#pdfLength{
+    font-size: 14px;
+    letter-spacing: -0.2px;
+    color: $grey-800;
+    padding-#{$left}:32px;
+    margin-bottom: 8px;
+}

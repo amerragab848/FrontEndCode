@@ -1,0 +1,13 @@
+
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+/* IE10+ CSS styles go here */
+
+    .mainGridSystem .gridSystemTables .gridTableContent .gridMainRow .stickyContent {
+         position:relative !important;
+    }
+    .mainGridSystem .gridSystemTables .normalContent {
+        margin-left: 0;
+    }
+
+}

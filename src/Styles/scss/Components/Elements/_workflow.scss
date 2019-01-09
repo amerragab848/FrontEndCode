@@ -1,0 +1,162 @@
+.workflow-header {
+    display: flex;
+    justify-content: space-between;
+    margin-#{$right}: 40px;
+    margin-#{$left}: 17px;
+    align-items: center;
+    padding-top: 46px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid $grey-drop;
+    margin-bottom: 39px;
+    h4{
+        font-size: 16px;
+        color: #374e64;
+        letter-spacing: -0.3px
+    }
+    ul {
+        margin: 0;
+        display: flex;
+        li {
+            &::after {
+               content: ' / ' 
+            }
+            &:last-of-type {
+                &::after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+.card-status {
+    display: flex;
+    overflow: auto;
+    padding-#{$left}:16px;
+    .card-box {
+        border: 2px solid $grey-300;
+        border-radius: 6px;
+        width: 192px;
+        height: 156px;
+        margin-#{$left}:16px;
+        padding: 10px 0 5px 0;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-bottom: 37px;
+        &.cardApproval { 
+            border: 4px solid $lightgreen-400;
+            .box-statue {
+                &::after {
+                    background-image: url(../../images/approval.png);
+                }
+            }
+        }&.cardPending {
+            border: 4px solid $Secondary-3;
+            justify-content: space-between;
+            padding-top: 10px;
+            .box-statue {
+                &::after {
+                    background-image: url(../../images/pending.png);
+                }
+            }
+        }&.cardDeclined {
+            border: 4px solid $red-500;
+            .box-statue {
+                &::after {
+                    background-image: url(../../images/declined.png);
+                }
+            }
+        }&.cardNormal {
+            background-color: #f7f9fa
+        }
+        .signature-h {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &.signaturePendingd {
+                flex-flow: column;
+                .avatarName {
+                    margin-left: 0;
+                    align-items: center;
+                    justify-content: center;
+                    display: flex;
+                    flex-flow: column;
+                    h6 {
+                        font-size: 14px
+                    }
+                }
+                .smallAvatarSize {
+                    width: 40px;
+                    height: 40px;
+                    margin-bottom: 5px
+                }
+            }
+            .smallAvatarSize {
+                width: 28px;
+                height: 28px;
+                margin: 0;
+            }
+            .avatarName {
+                margin-#{$left}:10px;
+                h6 {
+                    font-family: $muli-r;
+                    font-size: 12px;
+                    font-weight: bold;
+                    line-height: 1.33;
+                    letter-spacing: -0.2px;
+                    color: $grey-900;
+                    margin: 0;
+                }
+                p{
+                    font-family: $muli-r;
+                    font-size: 12px;
+                    font-weight: normal;
+                    line-height: 1.33;
+                    letter-spacing: -0.2px;
+                    color: $grey-600;
+                }
+            }
+        }
+        .card-signature {
+            display: flex;
+            flex: 1;
+            margin: 8px 0 3px 0;
+            img {
+                max-width:98px;
+                max-height:58px;
+            }
+        }
+        .box-statue {
+            text-align: center;
+            position: relative;
+            h5 {
+                margin: 0;
+                font-family: $muli-r;
+                font-size: 14px;
+                font-weight: bold;
+                line-height: 1.43;
+                letter-spacing: -0.2px;
+                color: $grey-900;
+            }
+            p {
+                font-family: $muli-r;
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 1.33;
+                letter-spacing: -0.2px;
+                color: $grey-600;
+            }
+            &::after {
+                content: ' ';
+                width: 32px;
+                height: 32px;
+                position: absolute;
+                background-size: 100% 100%;
+                top: 3px;
+                #{$right}: -38px;
+            }
+        }
+    }
+}

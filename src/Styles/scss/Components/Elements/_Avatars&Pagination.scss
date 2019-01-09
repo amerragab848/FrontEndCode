@@ -1,0 +1,235 @@
+.avatarsContainer {
+    padding: 20px;
+
+}
+
+.avatarProfile {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: $grey-100;
+    @include box-shadow(0 1px 2px 0 rgba(0, 0, 0, 0.3));
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    span {
+        color: $grey-400;
+        font-family: $muli-black;
+        font-size: $heading6-font;
+        letter-spacing: -0.2px;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+        @include border-radius(50%);
+    }
+}
+
+.smallAvatarSize {
+    width: 32px;
+    height: 32px;
+    box-shadow: none;
+}
+
+.avatarStatusCircle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: solid 1px $white;
+    @include border-radius(50%);
+    bottom: 0;
+    #{$right}: 0;
+}
+
+.offlineAvatar {
+    .avatarStatusCircle {
+        background-color: $red-500;
+    }
+}
+
+.onlineAvatar {
+    .avatarStatusCircle {
+        background-color: $lightgreen-600;
+    }
+}
+
+.sbigAvatar {
+    width: 112px;
+    height: 112px;
+        box-shadow: none;
+
+}
+
+.XbigAvatar {
+    width: 160px;
+    height: 160px;
+    box-shadow: none;
+
+    span {
+        font-size: $px-64;
+    }
+}
+
+.sbigAvatarBorder {
+    width: 160px;
+    height: 160px;
+    background-color: transparent;
+    box-shadow: none;
+
+}
+
+/*Pagination*/
+
+.ui.selection.active.rowsPagiDrop.dropdown:hover {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.ui.selection.active.dropdown.rowsPagiDrop {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.ui.selection.active.dropdown.rowsPagiDrop {
+    .menu {
+        border-color: transparent;
+        box-shadow: none;
+    }
+}
+
+.rowsPaginations {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: $sans-sb;
+    font-size: $heading6-font + 1;
+    .ui.selection.dropdown.rowsPagiDrop {
+        padding: 15px 30px 15px 5px;
+        background-color: transparent;
+        border: none;
+        font-size: 13px;
+
+        .text {
+            font-family: $sans-sb;
+            font-size: 13px;
+        }
+
+        &:hover {
+            background-color: transparent;
+            border: none !important;
+        }
+        .menu {
+            padding: 0;
+            background-color: #ffffff;
+            border: solid 1px #CCD2DB;
+            box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+        }
+        .dropdown.icon {
+            margin-left: 5px;
+            font-size: 15px;
+        }
+
+    }
+    .rowsPagiRange {
+        margin-#{$left}: 50px;
+        margin-#{$right}: 16px;
+        .of {
+            color: #9da2a9;
+        }
+    }
+    button {
+        width: 43px;
+        height: 40px;
+        background-color: $grey-100;
+        border: none;
+        margin: 0 5px;
+        @include border-radius (4px);
+        font-size: $heading2-font;
+        color: #535558;
+        cursor: pointer;
+        &:hover {
+            background-color: $grey-200;
+
+        }
+        i {
+            margin: 0;
+        }
+    }
+    .rowunActive {
+        color: $grey-300;
+        padding: 0;
+        opacity: 1;
+        &:hover {
+            background-color: $grey-100;
+        }
+    }
+}
+
+.paginationNumbers {
+
+    ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 600px;
+        flex-wrap: wrap;
+        li {
+            a {
+                cursor: pointer;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                width: 24px;
+                height: 24px;
+                background-color: $grey-100;
+                margin: 5px 2px;
+                border-radius: 50%;
+                font-family: $muli-b;
+                color: #3e4352;
+                font-size: $heading6-font;
+                letter-spacing: -0.2px;
+                &:hover {
+
+                    background-color: $grey-200;
+
+
+                }
+            }
+        }
+        .active {
+            a {
+                background-color: $Primary-2;
+                color: $white;
+            }
+        }
+
+    }
+    button {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $grey-100;
+        border: none;
+        margin: 0 5px;
+        @include border-radius (4px);
+        font-size: $heading3-font;
+        color: #535558;
+        padding: 0;
+        cursor: pointer;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
+        i {
+            margin: 0;
+        }
+        &:active {
+            box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        &:hover {
+            background-color: $grey-200;
+
+        }
+    }
+}

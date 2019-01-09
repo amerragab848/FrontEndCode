@@ -1,0 +1,53 @@
+@media screen and (min-width: 1200px) {
+    .mainTableHead {
+        border-bottom: 2px solid #e9ecf0;
+    }
+    .mainTableContent {
+        border-bottom: 1px solid #e9ecf0;
+
+    }
+    .stickyHead {
+        border-bottom: none;
+    }
+    .normalHead {
+        border-bottom: none;
+    }
+    .stickyContent {
+        border-bottom: none;
+    }
+    .normalContent {
+        border-bottom: none;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+
+    .headCell {
+        font-size: 12px;
+    }
+    .stickyHead,
+    .stickyContent {
+        width: 300px;
+
+    }
+
+}
+
+@media screen and (max-width: 1200px) {
+
+    .normalHead {
+        border-bottom: none;
+    }
+    .mainTableHead .headCell {
+        border-bottom: 2px solid #e9ecf0;
+
+    }
+    .mainTableContent .contentCell {
+        border-bottom: 2px solid #e9ecf0;
+    }
+   .stickyContent,.stickyHead, .normalContent {
+
+        border-bottom: none;
+
+    }
+}

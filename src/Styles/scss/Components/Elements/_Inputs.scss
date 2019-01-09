@@ -1,0 +1,480 @@
+.inputsSections {
+    padding: 10px 20px;
+}
+
+.inputsStates {
+    width: 148px;
+    height: 36px;
+    background-color: #252833;
+    color: #fff;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+    position: relative;
+    padding-left: 23px;
+    &:after {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background-color: #252833;
+        position: absolute;
+        right: -20px;
+        top: 0;
+        -webkit-clip-path: polygon(0 0, 0% 100%, 98% 0);
+        clip-path: polygon(0 0, 0% 100%, 98% 0);
+    }
+    &:before {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background-color: #252833;
+        position: absolute;
+        right: -20px;
+        bottom: 0;
+        -webkit-clip-path: polygon(100% 100%, 0 100%, 0 0);
+        clip-path: polygon(100% 100%, 0 100%, 0 0);
+    }
+}
+
+
+
+.proForm {
+    margin-top: 12px;
+    .form-group {
+        display: inline-block;
+        padding: 12px 16px;
+        @include border-radius(4px);
+        margin-bottom: $px-8;
+        label {
+            font-family: $sans-sb;
+            margin-bottom: 4px;
+        }
+        .ui {
+            &.labeled {
+                &.input {
+                    height: 40px;
+                    input {
+                        height: 40px;
+                        &:hover {
+                            border-color: $grey-500;
+
+                        }
+                        &:focus {
+                            background-color: $white;
+                            border: solid 2px $blue-300;
+
+                        }
+                        &::placeholder {
+                            letter-spacing: -0.2px;
+                            color: $grey-500;
+                        }
+                    }
+                }
+            }
+            &.left {
+                input {
+
+                    &:focus {
+                        border-top-left-radius: 0 !important;
+                        border-bottom-left-radius: 0 !important;
+                        border-left-color: transparent !important;
+                    }
+                }
+            }
+            &.right {
+                input {
+
+                    &:focus {
+                        border-top-right-radius: 0 !important;
+                        border-bottom-right-radius: 0 !important;
+                        border-right-color: transparent !important;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .formInputP {
+        letter-spacing: -0.2px;
+        color: $grey-500;
+        font-size: $heading6-font;
+        font-family: $sans-r;
+        margin-top: 4px;
+
+    }
+    .linebylineInput {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        label {
+            margin-#{$right}: 4px;
+            font-family: $sans-sb;
+
+        }
+        .ui.input.inputDev {
+            padding: 12px 16px;
+            @include border-radius(4px);
+        }
+
+
+    }
+
+    .has-error .help-block,
+    .has-error .control-label,
+    .has-error .radio,
+    .has-error .checkbox,
+    .has-error .radio-inline,
+    .has-error .checkbox-inline,
+    .has-error.radio label,
+    .has-error.checkbox label,
+    .has-error.radio-inline label,
+    .has-error.checkbox-inline label {
+        color: $red-500;
+        font-family: $sans-sb;
+        letter-spacing: -0.3px;
+        font-size: $heading6-font;
+        font-style: normal;
+    }
+    .control-label {
+        letter-spacing: -0.2px;
+        color: #26344c;
+        font-family: $sans-r;
+        display: block;
+    }
+    .ui.input {
+        .ui.svg-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: 0;
+            top: 0;
+            height: 42px;
+            width: 40px;
+            position: absolute;
+        }
+        .svgInput {
+            padding-left: 35px;
+        }
+    }
+    .ui.input.inputDev {
+        position: relative;
+        padding-bottom: 5px;
+        display: inline-block;
+        transition: .5s ease;
+        border-radius: 4px;
+        .glyphicon {
+            position: absolute;
+            top: 0;
+            #{$right}: 4px;
+            width: 25px;
+        }
+        .glyphicon-ok {
+            background-image: url(../../images/truesign.svg);
+            background-size: 25px 25px;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 39px;
+        }
+        .glyphicon-remove {
+            background-image: url(../../images/red-requird.svg);
+            background-size: 25px 25px;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 39px;
+
+        }
+        .error {
+            display: block;
+            color: $red-500;
+            font-family: $sans-sb;
+            letter-spacing: -0.3px;
+            font-size: $heading6-font;
+            font-style: normal;
+        }
+        .inputsideNote {
+            position: absolute;
+            top: -25px;
+            right: 0;
+            letter-spacing: -0.2px;
+            color: $grey-600;
+            font-family: $sans-r;
+            font-size: $heading6-font;
+        }
+        input {
+            height: 40px;
+            border-radius: 4px;
+            width: 360px;
+            border: solid 1px $grey-200;
+            font-family: $sans-r;
+            letter-spacing: -0.2px;
+            color: $grey-800;
+            background-color: $white;
+            font-size: $heading5-font;
+            &:hover {
+                border-color: $grey-500;
+            }
+            &:focus {
+                background-color: $white;
+                border: solid 2px $blue-300;
+            }
+            &::placeholder {
+                letter-spacing: -0.2px;
+                color: $grey-500;
+            }
+
+        }
+        &.has-error {
+            .form-control {
+                border: solid 2px #e74c3c;
+                background-color: #ffffff;
+            }
+            
+            .formInputP {
+                color: red;
+                span {
+                    color: red;
+                }
+            }
+        }
+        &.has-success .form-control {
+            border: solid 1px #dadee6;
+            &:focus {
+                border: solid 2px $blue-300;
+                box-shadow: none;
+                background-color: #ffffff;
+            }
+        }
+    }
+
+    .showPasswordArea {
+        .inputsideNote {
+            font-family: $sans-sb;
+            color: #3e4352;
+            display: inline-flex;
+            align-items: center;
+            img {
+                margin-#{$right}: 5px;
+            }
+
+
+        }
+        .togglePW {
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            .hide {
+                display: none;
+            }
+            &.active-pw {
+                .hide {
+                    display: block;
+                }
+                .show {
+                    display: none;
+                }
+            }
+        }
+    }
+    .inputXmark {
+        position: absolute;
+        top: 7px;
+        #{$right}: 3px;
+        height: 40px;
+    }
+    .popUp {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        display: none;
+        margin-left: 10px;
+    }
+    .inputPassContainer {
+        display: flex;
+        .inputDev {
+            margin-#{$right}: 5px;
+            &.has-success {
+                .charsNumber {
+                    color: $lightgreen-700;
+                }
+                .capsSpan {
+                    text-decoration: line-through;
+                    color: $lightgreen-700;
+                }
+            }
+
+            &.uppercase {
+                .capsSpan {
+                    text-decoration: line-through;
+                    color: $lightgreen-700;
+                }
+
+            }
+            &.has8letters {
+                .charsNumber {
+                    text-decoration: line-through;
+                    color: $lightgreen-700!important;
+                }
+            }
+
+            &.nouppercase {
+                .capsSpan {
+                    color: $grey-800;
+                }
+
+            }
+            &.nohas8letters {
+                .charsNumber {
+                    color: $grey-800;
+                }
+            }
+
+
+        }
+        .inputsPassLev {
+            display: inline-flex;
+            padding-top: 10px;
+            .SpansLevel {
+                margin: 0 5px;
+                span {
+                    width: 37px;
+                    height: 6px;
+                    border-radius: 3px;
+                    background-color: $grey-100;
+                    display: inline-block;
+                    margin: 0 4px;
+                }
+                &.weak {
+                    span {
+                        &:first-child {
+                            background-color: $Secondary-3;
+                        }
+                    }
+                }
+                &.medium {
+                    span {
+                        &:first-child {
+                            background-color: #ff6b08;
+                        }
+                        &:nth-child(2) {
+                            background-color: #ff6b08;
+                        }
+                    }
+                }
+                &.strong {
+                    span {
+                        background-color: #47cc4a;
+                    }
+                }
+            }
+            .spansWord {
+                color: #3e4352;
+                letter-spacing: -0.2px;
+                font-family: $sans-r;
+                font-size: $heading6-font;
+            }
+        }
+
+    }
+    .dropdown {
+        &.large {
+            min-width: 88px;
+            text-align: center;
+            background-color: $grey-100;
+            border: solid 1px $grey-200;
+        }
+        .text {
+            font-size: $heading5-font;
+            letter-spacing: -0.2px;
+            color: #252833;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            svg {
+                margin-#{$right}: 8px;
+            }
+        }
+        .menu {
+            .item {
+                display: -webkit-inline-box;
+                display: -ms-inline-flexbox;
+                display: inline-flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                width: 100%;
+                svg {
+                    margin-#{$right}: 8px;
+                }
+            }
+        }
+    }
+    .ui {
+        &.basic {
+            &.label {
+                font-size: $heading5-font;
+                letter-spacing: -0.2px;
+                color: #252833;
+            }
+            &.greyLabel {
+                background-color: $grey-100;
+                border-color: $grey-200;
+                border-width: 1px;
+                border-style: solid;
+            }
+            &.searchlabel {
+                min-width: 88px;
+                text-align: center;
+                &:hover {
+                    border-color: $grey-600;
+                }
+                &.svg {
+                    user-select: none;
+                    background-color: $lightgreen-600;
+                    svg {
+                        height: 40px;
+                        position: relative;
+                        top: -11px;
+                        margin-#{$right}: 0;
+                    }
+                }
+
+                &.active {
+                    background-color: $lightgreen-600;
+                    color: $white;
+                    letter-spacing: -0.2px;
+                }
+                &.disabled {
+                    color: #252833;
+                    opacity: .38;
+                    user-select: none;
+                    background-color: $grey-100;
+                    border: solid 1px $grey-200;
+                }
+                svg {
+                    margin-#{$right}: 8px;
+                }
+            }
+        }
+    }
+    .smallFrom {
+        .ui.input {
+            .form-control {
+                height: 32px;
+            }
+        }
+    }
+}

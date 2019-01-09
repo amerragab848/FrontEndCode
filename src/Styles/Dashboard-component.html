@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--
+	<meta name="viewport" content="width=1024">
+	content="width=device-width, initial-scale=1.0"
+-->
+    <meta name="viewport" content="width=1024, initial-scale=1.0" />
+    <title>V4-New</title>
+    <link rel="icon" href="" type="image/gif" />
+    <link
+      href="css/font-awesome.min.css"
+      media="all"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="css/semantic.min.css"
+      media="all"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="css/jquery-ui.theme.min.css"
+      media="all"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="css/jquery-ui.min.css"
+      media="all"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="css/bootstrap-datepicker.min.css"
+      media="all"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="css/MediaQuery.css" />
+    <link
+      href="scss/en-us/layout.css"
+      media="all"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css"
+    />
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+
+    <script src="js/Dashboard/jquery.sparkline.min.js"></script>
+
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+
+    <script src="js/Dashboard/britecharts-customized.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+
+    <script src="js/Dashboard/Chart.min.js"></script>
+  </head>
+
+  <body>
+    <!--Line Bar half screen-->
+    <div class="charts-container">
+      <div class="linebar half chart">
+        <div class="title"><h2>Annual expenses</h2></div>
+        <ul class="years">
+          <li class="new"><span></span> 2017</li>
+
+          <li class="old"><span></span> 2016</li>
+        </ul>
+        <canvas id="linebar-half"></canvas>
+      </div>
+      <!-- half with Predicted -->
+      <div class="linebar predicted chart">
+        <div class="title"><h2>Annual expenses</h2></div>
+        <ul class="years">
+          <li class="new"><span></span> 2017</li>
+
+          <li class="old"><span></span> 2016</li>
+          <li class="predicted"><span></span> predicted</li>
+        </ul>
+        <canvas id="linebar-predicted"></canvas>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="linebar70-dount">
+        <div class="linebar chart70 chart">
+          <div class="title"><h2>Annual expenses</h2></div>
+          <ul class="years">
+            <li class="new"><span></span> 2017</li>
+
+            <li class="old"><span></span> 2016</li>
+          </ul>
+          <canvas id="linebar-70" style="height: 200px"></canvas>
+        </div>
+
+        <h2>Simple Donut Chart with Legend</h2>
+        <div class="card--chart dount-container">
+          <div
+            class="js-donut-chart-container donut-chart-container"
+            style="height:250px; width:300px;"
+          ></div>
+
+          <p class="donut-total">Total <span>587.000 LE</span></p>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="linebar70-dount-predicted">
+        <div class="linebar chart70-predicted chart">
+          <div class="title"><h2>Annual expenses</h2></div>
+          <ul class="years">
+            <li class="new"><span></span> 2017</li>
+
+            <li class="old"><span></span> 2016</li>
+          </ul>
+          <canvas id="linebar-70-predicted" style="height: 200px"></canvas>
+        </div>
+
+        <h2>Simple Donut Chart with Legend</h2>
+        <div class="card--chart dount-container">
+          <div
+            class="js-donut-chart-container2 donut-chart-container"
+            style="height:250px; width:300px;"
+          ></div>
+
+          <p class="donut-total">Total <span>587.000 LE</span></p>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="linebar chart-full chart">
+        <div class="title"><h2>Annual expenses</h2></div>
+        <ul class="years">
+          <li class="new"><span></span> 2017</li>
+
+          <li class="old"><span></span> 2016</li>
+        </ul>
+        <canvas id="linebar-full" style="height: 200px"></canvas>
+      </div>
+
+      <!--Star Bar 50 % section-->
+      <div class="halfchartbargroup">
+        <div class="group-barchart">
+          <div class="title"><h2>Annual expenses</h2></div>
+          <ul class="years">
+            <li class="new"><span></span> 2017</li>
+
+            <li class="old"><span></span> 2016</li>
+          </ul>
+          <div
+            class="britechart js-grouped-bar-chart-tooltip-container-Half card--chart"
+          ></div>
+        </div>
+        <!--
+-->
+        <div class="group-barchart">
+          <div class="title"><h2>Annual expenses</h2></div>
+          <ul class="years">
+            <li class="new"><span></span> 2017</li>
+
+            <li class="old"><span></span> 2016</li>
+            <li class="predicted"><span></span> predicted</li>
+          </ul>
+          <div
+            class="britechart js-grouped-bar-chart-tooltip-container-predicted-Half card--chart"
+          ></div>
+        </div>
+      </div>
+
+      <!--End  Bar 50 % section-->
+
+      <div class="bar-Star">
+        <div class="group-barchart">
+          <h2>Grouped Bar Chart with Tooltip</h2>
+
+          <div
+            class="britechart js-grouped-bar-chart-tooltip-container card--chart"
+          ></div>
+        </div>
+
+        <div class="star-rating-container">
+          <!--<div class="rating">
+  elements are in reversed order, to allow "previous sibling selectors" in CSS
+  <input aria-flowto="rating0" class="rating__input" type="radio" name="rating" value="5" id="rating5">
+  <label class="rating__label" for="rating5">
+   <i class="fa fa-star-o"></i>
+  </label>
+  
+  <input aria-flowto="rating1"  class="rating__input" type="radio" name="rating" value="4" id="rating4">
+  <label class="rating__label" for="rating4">
+   <i class="fa fa-star-o"></i>
+  </label>
+  
+  <input aria-flowto="rating2" class="rating__input" type="radio" name="rating" value="3" id="rating3">
+  <label class="rating__label" for="rating3"><i class="fa fa-star-o"></i>
+  </label>
+  
+  <input aria-flowto="rating3" class="rating__input" type="radio" name="rating" value="2" id="rating2">
+  <label class="rating__label" for="rating2"><i class="fa fa-star-o"></i>
+  </label>
+  
+  <input aria-flowto="rating4" class="rating__input" type="radio" name="rating" value="1" id="rating1" aria-flowto="rating2">
+  <label class="rating__label" for="rating1"><i class="fa fa-star-o"></i>
+  </label>
+    
+</div>-->
+
+          <div class="ratingresult">
+            <div class="title"><h2>Annual expenses</h2></div>
+            <ul class="zero">
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star-half-o"></i></li>
+            </ul>
+            <div class="ratingresult-numbers">
+              <p class="below-average">
+                Below average <span class="count"> 342</span>
+                <span class="rating-text">rating</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bar-sparkline">
+        <div class="group-barchart">
+          <h2>Grouped Bar Chart with Tooltip predicted</h2>
+
+          <div
+            class="britechart js-grouped-bar-chart-tooltip-container-predicted card--chart"
+          ></div>
+        </div>
+
+        <div class="SparkTabs">
+          <div class="sparktab-title">
+            <h2 class="zero">Purchase orders</h2>
+            <ul class="sparktabsUl zero">
+              <li class="item active" data-tab="tab1">Current</li>
+              <li class="item" data-tab="tab2">Last month</li>
+              <li class="item" data-tab="tab3">Year ago</li>
+            </ul>
+          </div>
+          <div class="ui tab active" data-tab="tab1">
+            <div>
+              <div class="numberofSpark">532</div>
+              <div class="spark-percentage">
+                <div class="num">- 96%</div>
+                <div class="sparkline sparkline-container"></div>
+              </div>
+              <div class="sparktask-count">
+                <ul>
+                  <li>
+                    <span class="num"><a href="">32</a></span>
+                    <span class="text">Opened</span>
+                  </li>
+                  <li>
+                    <span class="num"><a href="">10</a></span>
+                    <span class="text">Closed</span>
+                  </li>
+                  <li>
+                    <span class="num"><a href="">32</a></span>
+                    <span class="text">Delayed</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="ui tab" data-tab="tab2">
+            <div class="sparkline"></div>
+            2
+          </div>
+          <div class="ui tab" data-tab="tab3">
+            <div class="sparkline"></div>
+            3
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <!--End Line Bar half screen-->
+    <!---->
+
+    <!--    <div class="js-legend-chart-container legend-chart-container"></div>-->
+
+    <!--Stacked Area -->
+
+    <div id="stacked-area">
+      <h2>Stacked Area Chart</h2>
+      <div
+        class="britechart js-stacked-area-chart-tooltip-container card--chart"
+      ></div>
+    </div>
+
+    <div class="dashboard-container">
+      <div id="myfirstchart" style="height: 250px;"></div>
+    </div>
+
+    <!--Start Summeries-->
+    <div class="SummeriesContainer ">
+      <h2 class="SummeriesTitle">Summeries</h2>
+      <div class="SummeriesContainerContent">
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+            <ul class="satusBarUL">
+              <li class="num-1"></li>
+              <li class="num-2"></li>
+              <li class="num-3"></li>
+            </ul>
+            <div class="summerisList">
+              <div class="first"><span>25 </span> Normal</div>
+              <div><span>12 </span> Low</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Summeries-->
+    <!--Start Summeries-->
+    <div class="SummeriesContainer numbersOnly">
+      <h2 class="SummeriesTitle">Summeries</h2>
+      <div class="SummeriesContainerContent">
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">322121212</p>
+            <p class="status">Hige</p>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+          </div>
+        </div>
+        <div class="summerisItem">
+          <div class="content">
+            <h4 class="title">Distribution</h4>
+            <p class="number">32</p>
+            <p class="status">Hige</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Summeries-->
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <script src="js/Dashboard/mainChart.js"></script>
+
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/semantic.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/list.min.js"></script>
+    <script src="js/ResizeSensor.js"></script>
+    <script src="js/functions.js"></script>
+  </body>
+</html>

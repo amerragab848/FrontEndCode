@@ -1,0 +1,166 @@
+.main-header {
+    height: 72px;
+    background-color: #ffffff;
+    display: flex;
+    border-bottom: 1px solid #e9ecf0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99;
+    right: 0;
+    padding-#{$left}: 130px;
+    padding-#{$right}: 40px;
+
+    .header-content {
+        width: 100%;
+        min-width: 1024px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;  
+        .dropdown-menu {
+            left: inherit;
+            -webkit-transform-origin: top right;
+            transform-origin: top right;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            -webkit-transition: -webkit-transform .15s ease-out;
+            transition: -webkit-transform .15s ease-out;
+            transition: transform .15s ease-out;
+            transition: transform .15s ease-out, -webkit-transform .15s ease-out;
+            border: 1px solid #ccc;
+            padding: 10px;
+            @include border-radius(8px);
+            right: 0;
+            display: inherit;
+        }
+        .dropdown.open .dropdown-menu {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+        .nav-left {
+            -webkit-box-flex: 0.7;
+            -ms-flex: 0.7;
+            flex: 0.7;
+            > li {
+                display: inline-block;
+            }
+        }
+        .nav-right {
+            -webkit-box-flex: 1.3;
+            -ms-flex: 1.3;
+            flex: 1.3;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            li {
+                margin-#{$left}: 32px;
+                &:first-child {
+                    margin-#{$left}: 0;
+                }
+                &:last-child {
+                    margin-#{$left}: 50px;
+                }
+                &.notifi-icon {
+                    position: relative;
+                    img {
+                        transform: rotate(-30deg);
+                    }
+                    .inboxNotif.smallSquare {
+                        top: -3px;
+                        #{$right}: -15px;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+        .UserImg {
+           
+            .dropdownContent{
+                 display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+            position: relative;
+                 .menu {
+                    top: 50px;
+                }
+            }
+            > .dropdown {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+               
+            }
+            .profileName {
+                position: relative;
+                margin-#{$left}: 8px;
+                color: #3e4352;
+                font-family: $sans-sb;
+                font-size: 12px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+
+            }
+
+        }
+        .titleproject1 {
+            a {
+                font-family: font-sb;
+                color: $grey-600;
+                font-size: 14px;
+                letter-spacing: -0.2px;
+                &:hover {
+                    transition: 0.5s ease-in-out;
+                    color: $grey-900;
+                }
+            }
+
+        }
+
+        .titleproject2 {
+            font-family: font-sb;
+            color: #adbccc;
+            font-size: 14px;
+            letter-spacing: -0.2px;
+        }
+
+        .UserImg > a {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+
+
+    }
+    &.setting-header {
+        padding-left: 40px;
+        position: relative;
+
+    }
+}

@@ -1,0 +1,125 @@
+$left: left;
+$right: right;
+
+$ltr: ltr;
+$rtl: rtl;
+                     
+@import "../_bootstrap";
+
+@import "../_variables.scss";
+@import "../_Media-Query";
+@import "../_Mixins";
+@import "../_normalize";
+@import "../_fonts";
+  
+// home page components
+@import "../Components/_basic-colors";
+@import "../Components/_Accordion";
+@import "../Components/_Navigation";
+@import "../Components/DatePicker";
+@import "../Components/_Sections";
+@import "../Components/_Modal";
+@import "../Components/_GridSystem";
+@import "../Components/_header";
+@import "../Components/_Settings";
+@import "../Components/_Documents";
+@import "../Components/_Dashboard";
+@import "../Components/_attachment";
+       
+                            
+/*Elements*/
+@import "../Components/Elements/_All-Elements";
+
+.notificontainer {
+    width: 600px;
+    position: absolute;
+    top: 100px;
+    right: 0;
+    display: none;
+}              
+.screen-support {
+    width: 100%;
+    height: 100%;
+    position: fixed;    
+    z-index: 999999999999;
+    background-color: rgba(0,0,0,0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .screen-support-text {
+        background-image: url(../../images/logo.svg);
+        background-repeat: no-repeat;
+        background-position: top 16px left 16px;
+        background-color: $grey-100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 30px;
+        flex-flow: column;
+        border-radius: 15px;
+        min-height: 260px;
+        p
+        {
+            &:first-child {
+                font-size: 25px;
+                color: $Primary-1;
+            }
+            &:last-of-type
+            {
+                a {
+                    font-size: 15px;
+                    color: $grey-500;
+                } 
+            }
+        }
+    }
+}               
+/*
+.grid-loading {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.85);
+    span {
+        animation: rotate 0.5s infinite;
+        width: 40px;
+        height: 40px;
+        border-radius:50%; 
+        border:3px solid red;
+        border-right-color: transparent;
+        background: transparent;
+    }
+}
+@keyframes rotate {
+    0%{
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }      
+}*/
+@media (max-width:1024px) {
+    body {       
+        overflow-y: hidden
+    }
+    .screen-support {
+        display: flex;
+    }
+}
+@media (max-width:1200px){
+    .main-header {
+        .header-content {
+            width: 100%;       
+            min-width: auto;
+        }
+    }
+}
