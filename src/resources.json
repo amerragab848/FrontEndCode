@@ -128,7 +128,7 @@
     "ar": "الاصول"
   },
   "monthlyPaymentRequisitions": {
-    "en": "Monthly Payment Requisitions",
+    "en": "Monthly P.R",
     "ar": "طلبات المستخلصات الشهريه"
   },
   "monthlyPo": {
@@ -3401,7 +3401,7 @@
     "ar": "تسعير العناصر"
   },
   "paymentRequisitions": {
-    "en": "Payment Requisitions",
+    "en": "P.R",
     "ar": "طلبات المستخلصات"
   },
   "createPaymentRequisitions": {
@@ -3409,11 +3409,11 @@
     "ar": "انشاء طلبات المستخلصات"
   },
   "paymentRequisitionsQuantities": {
-    "en": "Payment Requisitions Quantities",
+    "en": "P.R Quantities",
     "ar": "كميات طلبات المستخلصات"
   },
   "paymentRequisitionsReport": {
-    "en": "Payment Requisitions Report",
+    "en": "P.R Report",
     "ar": "تقرير طلبات المستخلصات"
   },
   "boqCostReport": {
@@ -4181,63 +4181,63 @@
     "ar": " الخطابات المفتوحه"
   },
   "openedIR": {
-    "en": "Opened Inspection Requests",
+    "en": "Opened IRs",
     "ar": " طلب المعاينات المفتوحه"
   },
   "avgRespondTimeLetters": {
-    "en": "Avg Responding(Letters)",
+    "en": "Avg Respond(Letters)",
     "ar": " (متوسط الاستجابه (الخطابات"
   },
   "avgRespondTimeSubmittals": {
-    "en": "Avg Responding(Submittals)",
+    "en": "Avg Respond(Submittals)",
     "ar": " (متوسط الاستجابه (التقديمات"
   },
   "avgRespondTimeTransmittals": {
-    "en": "Avg Responding(Transmittals)",
+    "en": "Avg Respond(Transmittals)",
     "ar": " (متوسط الاستجابه (التسليمات"
   },
   "avgRespondTimeIR": {
-    "en": "Avg Responding(IR)",
+    "en": "Avg Respond(IR)",
     "ar": " (متوسط الاستجابه (طلب معاينة"
   },
   "avgRespondTimeMIR": {
-    "en": "Avg Responding(MIR)",
+    "en": "Avg Respond(MIR)",
     "ar": " (متوسط الاستجابه (معاينة الخامات"
   },
   "avgRespondTimeRFI": {
-    "en": "Avg Responding(RFI)",
+    "en": "Avg Respond(RFI)",
     "ar": " (متوسط الاستجابه (طلبات المعلومات"
   },
   "avgRespondTimePO": {
-    "en": "Avg Responding(PO)",
+    "en": "Avg Respond(PO)",
     "ar": " (متوسط الاستجابه (طلبات الشراء"
   },
   "monthlyAvgRespondTimeLetters": {
-    "en": "Monthly Avg Responding(Letters)",
+    "en": "Monthly Avg Respond(Letters)",
     "ar": " (متوسط الاستجابه (الخطابات"
   },
   "monthlyAvgRespondTimeSubmittals": {
-    "en": "Monthly Avg Responding Time(Submittals)",
+    "en": "Monthly Avg Respond(Submittals)",
     "ar": " (متوسط الاستجابه (التقديمات"
   },
   "monthlyAvgRespondTimeTransmittals": {
-    "en": "Monthly Avg Responding Time(Transmittal)",
+    "en": "Monthly Avg Respond(Transmittal)",
     "ar": " (متوسط الاستجابه (التسليمات"
   },
   "monthlyAvgRespondTimeIR": {
-    "en": "Monthly Avg Responding(IR)",
+    "en": "Monthly Avg Respond(IR)",
     "ar": " (متوسط الاستجابه (طلب معاينة"
   },
   "monthlyAvgRespondTimeMIR": {
-    "en": "Monthly Avg Responding(MIR)",
+    "en": "Monthly Avg Respond(MIR)",
     "ar": " (متوسط الاستجابه (معاينة الخامات"
   },
   "monthlyAvgRespondTimeRFI": {
-    "en": "Monthly Avg Responding(RFI)",
+    "en": "Monthly Avg Respond(RFI)",
     "ar": " (متوسط الاستجابه (طلبات المعلومات"
   },
   "monthlyAvgRespondTimePO": {
-    "en": "Monthly Avg Responding(PO)",
+    "en": "Monthly Avg Respond(PO)",
     "ar": " (متوسط الاستجابه (طلبات الشراء"
   },
   "delay": {
@@ -5142,7 +5142,7 @@
     "ar": "التكاليف الفعلية "
   },
   "paymentTotal": {
-    "en": "Payment Requisitions Total",
+    "en": "P.R Total",
     "ar": "إجمالي المستخلصات "
   },
   "budgetComplete": {
@@ -5626,7 +5626,7 @@
     "ar": " تقرير المراسلات الواردة"
   },
   "inspectionRequest": {
-    "en": "Activity Inspection Request",
+    "en": "Activity IR",
     "ar": "طلب معاينة النشاط"
   },
   "inspectionRequestCount": {
@@ -5634,11 +5634,11 @@
     "ar": " مجموع طلب معاينة النشاط"
   },
   "inspectionRequestCycles": {
-    "en": "Inspection Request Cycles",
+    "en": "IR Cycles",
     "ar": "دورات طلب المعاينة"
   },
   "materialInspectionRequest": {
-    "en": "Material Inspection Request",
+    "en": "Material IR",
     "ar": "طلب معاينة الخامات"
   },
   "materialInspectionRequestCount": {
@@ -5650,11 +5650,11 @@
     "ar": "دورات معاينة الخامات"
   },
   "materialInspectionRequestAdd": {
-    "en": "Add Material Inspection Request",
+    "en": "Add Material IR",
     "ar": "اضافة طلب معاينة الخامات"
   },
   "inspectionRequestAdd": {
-    "en": "Add Inspection Request",
+    "en": "Add IR",
     "ar": "اضافة طلب المعاينة"
   },
   "revisionNo": {
@@ -6787,15 +6787,15 @@
     "ar": "بى دى إف"
   },
   "countinspectionApproved": {
-    "en": "Approved Inspection Request Count",
+    "en": "Approved IR Count",
     "ar": " عداد طلب معاينة النشاط معتمدة"
   },
   "countinspectionReject": {
-    "en": "Reject Inspection Request Count",
+    "en": "Reject IR Count",
     "ar": " عداد طلب معاينة النشاط مرفوضة"
   },
   "countinspectionPanding": {
-    "en": "Pending Inspection Request Count",
+    "en": "Pending IR Count",
     "ar": "  عداد طلب معاينة النشاط قيد الأنتظار"
   },
   "budgetCashFlowAll": {
@@ -7039,7 +7039,7 @@
     "ar": "التقديمات المرفوضة"
   },
   "rfiOpen": {
-    "en": "Request For Information Open",
+    "en": "RFI Open",
     "ar": "طلبات المعلومات المفتوحة"
   },
   "pendingItemInWorkFlow": {
@@ -7063,11 +7063,11 @@
     "ar": "المجموع"
   },
   "approvedInspectionRequest": {
-    "en": "Approved Inspection Request",
+    "en": "Approved IR",
     "ar": "قبول طلبات معاينة النشاط"
   },
   "rejectedInspectionRequest": {
-    "en": "Rejected Inspection Request",
+    "en": "Rejected IR",
     "ar": "رفض طلبات معاينة النشاط"
   },
   "percentage": {
