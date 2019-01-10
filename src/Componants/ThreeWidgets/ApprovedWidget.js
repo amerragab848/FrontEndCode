@@ -8,7 +8,8 @@ class ApprovedWidget extends Component {
     super(props);
     this.state = {
       open: false,
-      dataList: []
+      dataList: [],
+      isModal: this.props.isModal
     };
   }
 
@@ -20,10 +21,10 @@ class ApprovedWidget extends Component {
     });
   }
 
-  onOpenModal = function(i) {
-    if (this.props.isModal) {
+  onOpenModal = () => {
+    let modal = this.props.isModal;
+    if (modal) {
       this.setState({ open: true });
-    } else {
     }
   };
 
@@ -33,51 +34,60 @@ class ApprovedWidget extends Component {
 
   drawThreeCard() {
     let widgetes = [];
-    console.log(this.state.dataList);
     if (this.state.dataList.length > 0) {
       widgetes = this.state.dataList;
-    }
 
-    let drawWidget = widgetes.map((i, index) => {
+      var high = widgetes.find(function(i) {
+        return i.action == 1;
+      });
+
+      var normal = widgetes.find(function(i) {
+        return i.action == 2;
+      });
+
+      var low = widgetes.find(function(i) {
+        return i.action == 3;
+      });
+
       return (
-        <div
-          onClick={() => this.onOpenModal(i)}
-          className="counter_inner_container"
-          style={{ cursor: "pointer" }}
-          key={index + "-div"}
-        >
-          <p
-            style={{
-              display: "inline-block"
-            }}
-            className="card-text"
-          >
-            {i[this.props.text]}
-          </p>
-          &nbsp;&nbsp;
-          <span>{i[this.props.value]}</span>
+        <div className="summerisItem">
+          <div className="content">
+            <h4 className="title">{this.props.title}</h4>
+            <p className="number" onClick={this.onOpenModal}>
+              {high ? high[this.props.value] : 0}
+            </p>
+            <p className="status">{high ? high[this.props.text] : ""}</p>
+            <ul className="satusBarUL">
+              <li className="num-1" />
+              <li className="num-2" />
+              <li className="num-3" />
+            </ul>
+            <div className="summerisList">
+              <div className="first">
+                <span>{normal ? normal[this.props.value] : 0} </span>{" "}
+                {normal ? normal[this.props.text] : ""}
+              </div>
+              <div>
+                <span>{low ? low[this.props.value] : ""} </span>{" "}
+                {low ? low[this.props.text] : ""}
+              </div>
+            </div>
+          </div>
         </div>
       );
-    });
-
-    return drawWidget;
+    }
   }
 
   render() {
     return (
-      <div className="SummeriesContainer ">
-        <div className="SummeriesContainerContent">
-          <div className="card-body">
-            <h5 className="card-title">{this.props.title}</h5>
-            <div>{this.drawThreeCard()}</div>
-            <Modales
-              opened={this.state.open}
-              closed={this.onCloseModal}
-              id={this.props.id}
-              key={this.props.id}
-            />
-          </div>
-        </div>
+      <div>
+        <div>{this.drawThreeCard()}</div>
+        <Modales
+          opened={this.state.open}
+          closed={this.onCloseModal}
+          id={this.props.id}
+          key={this.props.id}
+        />
       </div>
     );
   }

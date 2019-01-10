@@ -27,10 +27,6 @@ const columns =
       text: 'Doc Date'
   }
   ];
-    
-  var hoverPointer = {
-      cursor:'Pointer'
-  }
 
   
 
@@ -88,7 +84,7 @@ class WidgetsWithText extends Component {
             <div className="summerisItem">  
             <div className="content">
             <h4 className="title" >{Resources[this.props.title][currentLanguage]}</h4>
-            <p className="number" style={hoverPointer} onClick={this.onOpenModal}>{this.state.count}
+            <p className="number" onClick={this.onOpenModal}>{this.state.count}
                 <sub>Out Of { Api.ConvertNumbers(this.state.total, 2)}</sub> 
             </p>
             
