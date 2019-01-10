@@ -40,7 +40,8 @@ class Index extends Component {
 				key={widget.id} 
 				title={widget.title}
 				api={widget.api}
-				value={widget.value} />
+                value={widget.value}
+                apiDetails={widget.apiDetails} />
         );
 
         return component;
@@ -54,7 +55,7 @@ class Index extends Component {
 				value={widgetDetails.value} 
 				total={widgetDetails.total}
 				api={widgetDetails.api} 
-	        	detailsApi={widgetDetails.detailsApi}  />
+	        	apiDetails={widgetDetails.apiDetails}  />
         );
 
         return component;

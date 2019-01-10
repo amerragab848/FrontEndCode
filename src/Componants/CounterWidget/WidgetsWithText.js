@@ -2,6 +2,37 @@ import React, { Component} from 'react';
 import Resources from '../../resources.json';
 import Api from '../../api'; 
 import "../../Styles/scss/en-us/dashboard.css";
+import Modal from 'react-responsive-modal';
+import BootstrapTable from 'react-bootstrap-table-next';
+
+const columns = 
+[{
+    dataField: 'id',
+    text: 'Doc Id'
+  },
+   {
+    dataField: 'subject',
+    text: 'Subject'
+  }, 
+  {
+      dataField: 'statusName',
+      text: 'Status Name'
+  },
+  {
+      dataField: 'projectName',
+      text: 'Project Name'
+  },
+  {
+      dataField: 'docDate',
+      text: 'Doc Date'
+  }
+  ];
+    
+  var hoverPointer = {
+      cursor:'Pointer'
+  }
+
+  
 
 let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
  
@@ -11,6 +42,7 @@ class WidgetsWithText extends Component {
         this.state = {
             count: '',
             total: '',
+            open: false , 
             detailsData:[] 
         }
     };
@@ -27,16 +59,40 @@ class WidgetsWithText extends Component {
         });  
     }
 
-    render() {   
+    onOpenModal = () => {
+   
+        this.setState({ open: true });
+        Api.get(this.props.apiDetails).then(res => {
+                this.setState({
+                    detailsData: res
+                });
+            });        
+        
+    };
 
+  onCloseModal = () => {
+    this.setState({ open: false });
+    };
+
+
+    render() {   
+        const { open } = this.state;
         return ( 
+            <div>
+                <div>
+                    <Modal open={open} onClose={this.onCloseModal} center>
+                    <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns }  striped hover condensed />        
+                    </Modal>
+                </div>
+
             <div className="summerisItem">  
             <div className="content">
-            <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-            <p className="number">{this.state.count}
+            <h4 className="title" >{Resources[this.props.title][currentLanguage]}</h4>
+            <p className="number" style={hoverPointer} onClick={this.onOpenModal}>{this.state.count}
                 <sub>Out Of { Api.ConvertNumbers(this.state.total, 2)}</sub> 
             </p>
             
+            </div>
             </div>
             </div>
         )

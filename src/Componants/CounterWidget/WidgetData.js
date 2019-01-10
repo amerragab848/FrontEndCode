@@ -2,6 +2,7 @@ let Widgets = [{
         id: 'wt_pendingInspectionRequestCount_1',
         title: 'countinspectionPanding',
         api: 'GetCountinspection?status=null',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -9,6 +10,7 @@ let Widgets = [{
         id: 'wt_rejectInspectionRequestCount_2',
         title: 'countinspectionReject',
         api: 'GetCountinspection?status=false',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -16,6 +18,7 @@ let Widgets = [{
         id: 'wt_approvedInspectionRequestCount_3',
         title: 'countinspectionApproved',
         api: 'GetCountinspection?status=true',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -30,6 +33,7 @@ let Widgets = [{
         id: 'wt_materialRequestCounts_5',
         title: 'materialRequestcount',
         api: 'GetMaterialRequestCounting',
+        apiDetails:'GetTotalMaterialRequestCounting',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -37,6 +41,7 @@ let Widgets = [{
         id: 'wt_monthlyPaymentRequisitions_6',
         title: 'monthlyPaymentRequisitions',
         api: 'GetTotalPayment',
+        apiDetails:'GetTotalPaymentDetails',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -44,6 +49,7 @@ let Widgets = [{
         id: 'wt_rejectedTimesheets_7',
         title: 'rejectedTimeSheet',
         api: 'GetRejectedTimesheetBySystemCount',
+        apiDetails:'GetRejectedTimesheetBySystem',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -51,6 +57,7 @@ let Widgets = [{
         id: 'wt_avgTimeOfResponding(Letters)_8',
         title: 'avgRespondTimeLetters',
         api: 'GetAvgTimeRespond?isMonthly=false&docType=19',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -58,6 +65,7 @@ let Widgets = [{
         id: 'wt_avgTimeOfResponding(Transmittals)_9',
         title: 'avgRespondTimeTransmittals',
         api: 'GetAvgTimeRespond?isMonthly=false&docType=28',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -65,6 +73,7 @@ let Widgets = [{
         id: 'wt_avgTimeOfResponding(IR)_10',
         title: 'avgRespondTimeIR',
         api: 'GetAvgTimeRespond?isMonthly=false&docType=25',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -72,6 +81,7 @@ let Widgets = [{
         id: 'wt_avgTimeOfResponding(MIR)_11',
         title: 'avgRespondTimeMIR',
         api: 'GetAvgTimeRespond?isMonthly=false&docType=103',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -79,6 +89,7 @@ let Widgets = [{
         id: 'wt_avgTimeOfResponding(RFI)_12',
         title: 'avgRespondTimeRFI',
         api: 'GetAvgTimeRespond?isMonthly=false&docType=23',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -86,6 +97,7 @@ let Widgets = [{
         id: 'wt_avgTimeOfResponding(Submittals)_13',
         title: 'avgRespondTimeSubmittals',
         api: 'GetAvgTimeRespond?isMonthly=false&docType=42',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -93,6 +105,7 @@ let Widgets = [{
         id: 'wt_avgTimeOfResponding(PO)_14',
         title: 'avgRespondTimePO',
         api: 'GetAvgTimeRespond?isMonthly=false&docType=70',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -100,6 +113,7 @@ let Widgets = [{
         id: 'wt_monthlyAvgTimeOfResponding(Letters)_15',
         title: 'monthlyAvgRespondTimeLetters',
         api: 'GetAvgTimeRespond?isMonthly=true&docType=19',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -107,6 +121,7 @@ let Widgets = [{
         id: 'wt_monthlyAvgRespondingTime(Transmittal)_16',
         title: 'monthlyAvgRespondTimeTransmittals',
         api: 'GetAvgTimeRespond?isMonthly=true&docType=28',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -114,6 +129,7 @@ let Widgets = [{
         id: 'wt_monthlyAvgTimeOfResponding(IR)_17',
         title: 'monthlyAvgRespondTimeIR',
         api: 'GetAvgTimeRespond?isMonthly=true&docType=25',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -121,6 +137,7 @@ let Widgets = [{
         id: 'wt_monthlyAvgTimeOfResponding(MIR)_18',
         title: 'monthlyAvgRespondTimeMIR',
         api: 'GetAvgTimeRespond?isMonthly=true&docType=103',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -128,6 +145,7 @@ let Widgets = [{
         id: 'wt_monthlyAvgTimeOfResponding(RFI)_19',
         title: 'monthlyAvgRespondTimeRFI',
         api: 'GetAvgTimeRespond?isMonthly=true&docType=23',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -135,6 +153,7 @@ let Widgets = [{
         id: 'wt_monthlyAvgRespondingTime(Submittals)_20',
         title: 'monthlyAvgRespondTimeSubmittals',
         api: 'GetAvgTimeRespond?isMonthly=true&docType=42',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     },
@@ -142,6 +161,7 @@ let Widgets = [{
         id: 'wt_onthlyAvgTimeOfResponding(PO)_21',
         title: 'monthlyAvgRespondTimePO',
         api: 'GetAvgTimeRespond?isMonthly=true&docType=70',
+        apiDetails:'NULL',
         isModel: 'false',
         route: 'route-to-view'
     }
