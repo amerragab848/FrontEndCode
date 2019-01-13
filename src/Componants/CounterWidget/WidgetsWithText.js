@@ -36,8 +36,8 @@ class WidgetsWithText extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: '',
-            total: '',
+            count: 0,
+            total: 0,
             open: false,
             detailsData: []
         }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Resources from '../../resources.json';
 import Api from '../../api';
- import '../../App.css';
+ //import '../../App.css';
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -40,7 +40,7 @@ class Widgets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '0',
+            value: 0,
             open: false,
             detailsData: []
         }
@@ -48,6 +48,7 @@ class Widgets extends Component {
 
     componentDidMount() {
         Api.get(this.props.api).then(result => {
+            console.log(result);
             this.setState({
                 value: result
             });
@@ -84,7 +85,7 @@ class Widgets extends Component {
                 <div className="summerisItem">
                     <div className="content">
                         <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-                        <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{Api.ConvertNumbers(this.state.value, 2)}</p>
+                        <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{this.state.value}</p>
                     </div>
                 </div>
 
