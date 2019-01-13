@@ -4,10 +4,8 @@ import Api from '../../api';
  import '../../App.css';
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
-import BootstrapTable from 'react-bootstrap-table-next';
-//import { Pointer } from 'highcharts';
-//import '../../Styles/scss/Components/'
-
+//import BootstrapTable from 'react-bootstrap-table-next';
+ 
 const columns = [{
     dataField: 'id',
     text: 'Doc Id'
@@ -84,7 +82,7 @@ class Widgets extends Component {
                                   
                                      </div>
                                     <div className="content">
-                                    <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />        
+                                    {/* <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />         */}
                                     </div>
                                     <div className="actions">
                                         <button className="defaultBtn btn cancel smallBtn">Cancel </button>

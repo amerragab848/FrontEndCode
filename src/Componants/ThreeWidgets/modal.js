@@ -1,6 +1,6 @@
 import React from "react";
-import Rodal from "rodal";
-import "rodal/lib/rodal.css";
+import Rodal from "../../Styles/js/rodal";
+import "../../Styles/css/rodal.css";
 import Api from "../../api";
 
 class Modales extends React.Component {

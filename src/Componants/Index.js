@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
-import "../Styles/scss/en-us/dashboard.css";
+import "../Styles/scss/en-us/layout.css";
 
 import { WidgetData, Widgets, WidgetsWithText } from "./CounterWidget";
 import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
@@ -11,6 +11,7 @@ import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
 
 import language from "../resources.json";
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -41,8 +42,6 @@ class Index extends Component {
         title={widget.title}
         api={widget.api}
         value={widget.value}
-        apiDetails={widget.apiDetails} 
-        isModal={widget.isModal}
       />
     ));
 
@@ -57,8 +56,7 @@ class Index extends Component {
         value={widgetDetails.value}
         total={widgetDetails.total}
         api={widgetDetails.api}
-        apiDetails={widgetDetails.apiDetails}
-        isModal={widgetDetails.isModal}
+        detailsApi={widgetDetails.detailsApi}
       />
     ));
 
@@ -109,13 +107,10 @@ class Index extends Component {
             return (
               <ApprovedWidget
                 key={panel.id}
-                title={language[panel.title][currentLanguage]}
+                {...panel}
                 value={panel.props.value}
                 text={panel.props.listType}
-                route={panel.props.route}
-                api={panel.props.api}
-                isModal={panel.props.isModal}
-                apiDetails={panel.props.apiDetails}
+                title={language[panel.title][currentLanguage]}
               />
             );
           })}

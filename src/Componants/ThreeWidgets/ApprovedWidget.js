@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import Modales from "./modal";
 import Api from "../../api"; 
-import "rodal/lib/rodal.css"; 
-
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import "../../Styles/css/rodal.css"; 
 
 class ApprovedWidget extends Component {
   constructor(props) {
@@ -17,7 +14,7 @@ class ApprovedWidget extends Component {
   }
 
   componentDidMount() {
-    Api.get(this.props.api).then(result => {
+    Api.get(this.props.props.api).then(result => {
       this.setState({
         dataList: result
       });
@@ -25,7 +22,7 @@ class ApprovedWidget extends Component {
   }
 
   onOpenModal = () => {
-    let modal = this.props.isModal;
+    let modal = this.props.props.isModal;
 
     if (modal) {
       this.setState({ open: true });
@@ -39,6 +36,7 @@ class ApprovedWidget extends Component {
   drawThreeCard() {
     let widgetes = [];
     if (this.state.dataList.length > 0) {
+
       widgetes = this.state.dataList;
 
       var high = widgetes.find(function(i) {
@@ -99,7 +97,7 @@ class ApprovedWidget extends Component {
               closed={this.onCloseModal}
               id={this.props.id}
               key={this.props.id}
-              apiDetails={this.props.apiDetails}
+              apiDetails={this.props.props.apiDetails}
             />
           ) : null}
         </div>
