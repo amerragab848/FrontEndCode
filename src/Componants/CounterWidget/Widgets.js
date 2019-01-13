@@ -5,9 +5,7 @@ import Api from '../../api';
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
 import BootstrapTable from 'react-bootstrap-table-next';
-//import { Pointer } from 'highcharts';
-//import '../../Styles/scss/Components/'
-
+ 
 const columns = [{
     dataField: 'id',
     text: 'Doc Id'
@@ -79,7 +77,7 @@ class Widgets extends Component {
             <div>
                 <div>
                     <Modal open={open} onClose={this.onCloseModal} center>
-                     <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />     
+                       <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />  
                     </Modal>
                 </div>
 

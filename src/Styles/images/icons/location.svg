@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>F313ED25-35D0-4390-B1EA-9FB2C093EEEA</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M2.95618118,11.545721 C3.85000483,12.4497676 4.83133715,13.2611141 5.88709372,13.9673906 C5.95578593,14.0108698 6.04247186,14.0108698 6.11116198,13.9673906 C7.16691854,13.2610511 8.14906733,12.4497046 9.04207451,11.545721 C10.9761209,9.58669088 11.9999933,7.58906021 11.9999933,5.76382991 C12.0048999,2.58905065 9.31192781,0 6.00250886,0 C2.69308991,0 0,2.58905065 0,5.76466996 C0,7.58752711 1.02221855,9.58671188 2.95624399,11.545721 L2.95618118,11.545721 Z M6.00244606,3.14999762 C6.89708617,3.14999762 7.70342208,3.6897962 8.04525022,4.51918287 C8.38707836,5.34775048 8.19735621,6.30184337 7.56520862,6.93602217 C6.93225712,7.57015897 5.98117601,7.75967546 5.15516112,7.4159458 C4.32920903,7.07139709 3.79111442,6.26250778 3.79193089,5.36503462 C3.79356655,4.141872 4.78308177,3.15085868 6.00246699,3.15001863 L6.00244606,3.14999762 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Area/Filled/16px/Dark-grey">
+            <g id="area">
+                <rect id="Path" fill="#5E6475" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <g id="Test/Color/Dark-gray/Base" transform="translate(2.000000, 1.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#FF02D4" fill-rule="nonzero" xlink:href="#path-1"></use>
+                    <g mask="url(#mask-2)" fill="#5E6475" id="Rectangle-5">
+                        <g transform="translate(-2.000000, -1.000000)">
+                            <rect x="0" y="0" width="16" height="16"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

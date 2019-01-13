@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "../../Styles/scss/en-us/dashboard.css";
 import Modales from "./modal";
-import Api from "../../api";
+import Api from "../../api"; 
+import "../../Styles/css/rodal.css"; 
 
 class ApprovedWidget extends Component {
   constructor(props) {
@@ -9,12 +9,12 @@ class ApprovedWidget extends Component {
     this.state = {
       open: false,
       dataList: [],
-      isModal: this.props.isModal
+      isModal: this.props.isModal 
     };
   }
 
   componentDidMount() {
-    Api.get(this.props.api).then(result => {
+    Api.get(this.props.props.api).then(result => {
       this.setState({
         dataList: result
       });
@@ -22,31 +22,33 @@ class ApprovedWidget extends Component {
   }
 
   onOpenModal = () => {
-    let modal = this.props.isModal;
+    let modal = this.props.props.isModal;
+
     if (modal) {
       this.setState({ open: true });
     }
   };
 
   onCloseModal = () => {
-    this.setState({ open: false });
+    this.setState({ open: false});
   };
 
   drawThreeCard() {
     let widgetes = [];
     if (this.state.dataList.length > 0) {
+
       widgetes = this.state.dataList;
 
       var high = widgetes.find(function(i) {
-        return i.action == 1;
+        return i.action === 1;
       });
 
       var normal = widgetes.find(function(i) {
-        return i.action == 2;
+        return i.action === 2;
       });
 
       var low = widgetes.find(function(i) {
-        return i.action == 3;
+        return i.action === 3;
       });
 
       return (
@@ -64,11 +66,15 @@ class ApprovedWidget extends Component {
             </ul>
             <div className="summerisList">
               <div className="first">
-                <span>{normal ? normal[this.props.value] : 0} </span>{" "}
+                <span className="mediumModal" onClick={this.onOpenModal}>
+                  {normal ? normal[this.props.value] : 0}
+                </span>
                 {normal ? normal[this.props.text] : ""}
               </div>
               <div>
-                <span>{low ? low[this.props.value] : ""} </span>{" "}
+                <span className="mediumModal" onClick={this.onOpenModal}>
+                  {low ? low[this.props.value] : ""}
+                </span>
                 {low ? low[this.props.text] : ""}
               </div>
             </div>
@@ -79,15 +85,22 @@ class ApprovedWidget extends Component {
   }
 
   render() {
+    console.log(this.props.apiDetails);
     return (
       <div>
         <div>{this.drawThreeCard()}</div>
-        <Modales
-          opened={this.state.open}
-          closed={this.onCloseModal}
-          id={this.props.id}
-          key={this.props.id}
-        />
+        <div>
+          {this.state.open ? (
+            <Modales
+              title={this.props.title}
+              opened={this.state.open}
+              closed={this.onCloseModal}
+              id={this.props.id}
+              key={this.props.id}
+              apiDetails={this.props.props.apiDetails}
+            />
+          ) : null}
+        </div>
       </div>
     );
   }

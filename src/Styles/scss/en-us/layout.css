@@ -1001,7 +1001,7 @@
   margin-left: 2px;
   vertical-align: middle;
   border-top: 4px dashed;
-  border-top: 4px solid \;
+  border-top: 4px solid;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
 }
@@ -1130,7 +1130,7 @@
 .navbar-fixed-bottom .dropdown .caret {
   border-top: 0;
   border-bottom: 4px dashed;
-  border-bottom: 4px solid \;
+  border-bottom: 4px solid;
   content: "";
 }
 .dropup .dropdown-menu,
@@ -11640,5 +11640,15 @@ viewer-pdf-toolbar {
     min-width: auto;
   }
 }
-
+.ui.modal {
+  display: block
+}
+.rodal-dialog {
+  padding: 0;
+  background: transparent;
+  display: flex;
+  border-radius: .28571429rem; 
+  justify-content: center;
+  align-items: center;
+}
 /*# sourceMappingURL=layout.css.map */
