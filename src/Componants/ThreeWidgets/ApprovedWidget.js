@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import Modales from "./modal";
-import Api from "../../api"; 
-import "../../Styles/css/rodal.css"; 
+import Api from "../../api";
+import "../../Styles/css/rodal.css";
+import language from "../../resources.json";
+
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class ApprovedWidget extends Component {
   constructor(props) {
@@ -9,7 +13,8 @@ class ApprovedWidget extends Component {
     this.state = {
       open: false,
       dataList: [],
-      isModal: this.props.isModal 
+      isModal: this.props.props.isModal,
+      action: 0
     };
   }
 
@@ -21,22 +26,22 @@ class ApprovedWidget extends Component {
     });
   }
 
-  onOpenModal = () => {
-    let modal = this.props.props.isModal;
+  onOpenModal = action => {
+    let modal = this.state.isModal;
 
     if (modal) {
-      this.setState({ open: true });
+      this.setState({ open: true, action: action });
     }
   };
 
   onCloseModal = () => {
-    this.setState({ open: false});
+    this.setState({ open: false });
   };
 
   drawThreeCard() {
     let widgetes = [];
-    if (this.state.dataList.length > 0) {
 
+    if (this.state.dataList.length > 0) {
       widgetes = this.state.dataList;
 
       var high = widgetes.find(function(i) {
@@ -55,10 +60,12 @@ class ApprovedWidget extends Component {
         <div className="summerisItem">
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
-            <p className="number" onClick={this.onOpenModal}>
+            <p className="number" onClick={() => this.onOpenModal(high.action)}>
               {high ? high[this.props.value] : 0}
             </p>
-            <p className="status">{high ? high[this.props.text] : ""}</p>
+            <p className="status">
+              {high ? language[high[this.props.text]][currentLanguage] : ""}
+            </p>
             <ul className="satusBarUL">
               <li className="num-1" />
               <li className="num-2" />
@@ -66,16 +73,24 @@ class ApprovedWidget extends Component {
             </ul>
             <div className="summerisList">
               <div className="first">
-                <span className="mediumModal" onClick={this.onOpenModal}>
+                <span
+                  className="mediumModal"
+                  onClick={() => this.onOpenModal(normal.action)}
+                >
                   {normal ? normal[this.props.value] : 0}
                 </span>
-                {normal ? normal[this.props.text] : ""}
+                {normal
+                  ? language[normal[this.props.text]][currentLanguage]
+                  : ""}
               </div>
               <div>
-                <span className="mediumModal" onClick={this.onOpenModal}>
+                <span
+                  className="mediumModal"
+                  onClick={() => this.onOpenModal(low.action)}
+                >
                   {low ? low[this.props.value] : ""}
                 </span>
-                {low ? low[this.props.text] : ""}
+                {low ? language[low[this.props.text]][currentLanguage] : ""}
               </div>
             </div>
           </div>
@@ -98,6 +113,7 @@ class ApprovedWidget extends Component {
               id={this.props.id}
               key={this.props.id}
               apiDetails={this.props.props.apiDetails}
+              action={this.state.action}
             />
           ) : null}
         </div>

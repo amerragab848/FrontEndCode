@@ -107,7 +107,7 @@ class Index extends Component {
       <div className="SummeriesContainer ">
         <div className="SummeriesContainerContent">
           {this.state.threeWidgets.map((panel, i) => {
-            return (
+            return panel.permission ? (
               <ApprovedWidget
                 key={panel.id}
                 {...panel}
@@ -115,7 +115,7 @@ class Index extends Component {
                 text={panel.props.listType}
                 title={language[panel.title][currentLanguage]}
               />
-            );
+            ) : null;
           })}
         </div>
       </div>
