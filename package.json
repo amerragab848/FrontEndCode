@@ -8,6 +8,7 @@
     "highcharts": "^7.0.1",
     "highcharts-react-official": "^2.0.0",
     "react": "^16.6.3",
+    "react-bootstrap-table-next": "^2.0.1",
     "react-dom": "^16.6.3",
     "react-responsive-modal": "^3.5.1",
     "react-scripts": "2.1.1",
