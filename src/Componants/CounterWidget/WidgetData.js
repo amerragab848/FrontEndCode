@@ -4,7 +4,8 @@ let Widgets = [{
         api: 'GetCountinspection?status=null',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3202
     },
     {
         id: 'wt_rejectInspectionRequestCount_2',
@@ -12,7 +13,8 @@ let Widgets = [{
         api: 'GetCountinspection?status=false',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3201
     },
     {
         id: 'wt_approvedInspectionRequestCount_3',
@@ -20,7 +22,8 @@ let Widgets = [{
         api: 'GetCountinspection?status=true',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3200
     },
     // {
     //     id: 'wt_monthlyPurchaseOrder_4',
@@ -35,7 +38,8 @@ let Widgets = [{
         api: 'GetMaterialRequestCounting',
         apiDetails:'GetTotalMaterialRequestCounting',
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3343
     },
     {
         id: 'wt_monthlyPaymentRequisitions_6',
@@ -43,7 +47,8 @@ let Widgets = [{
         api: 'GetTotalPayment',
         apiDetails:'GetTotalPaymentDetails',
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3198
     },
     {
         id: 'wt_rejectedTimesheets_7',
@@ -51,7 +56,8 @@ let Widgets = [{
         api: 'GetRejectedTimesheetBySystemCount',
         apiDetails:'GetRejectedTimesheetBySystem',
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:'true'
     },
     {
         id: 'wt_avgTimeOfResponding(Letters)_8',
@@ -59,7 +65,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=false&docType=19',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3514
     },
     {
         id: 'wt_avgTimeOfResponding(Transmittals)_9',
@@ -67,7 +74,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=false&docType=28',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_avgTimeOfResponding(IR)_10',
@@ -75,7 +83,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=false&docType=25',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3514
     },
     {
         id: 'wt_avgTimeOfResponding(MIR)_11',
@@ -83,7 +92,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=false&docType=103',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_avgTimeOfResponding(RFI)_12',
@@ -91,7 +101,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=false&docType=23',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_avgTimeOfResponding(Submittals)_13',
@@ -99,7 +110,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=false&docType=42',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_avgTimeOfResponding(PO)_14',
@@ -107,7 +119,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=false&docType=70',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_monthlyAvgTimeOfResponding(Letters)_15',
@@ -115,7 +128,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=true&docType=19',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_monthlyAvgRespondingTime(Transmittal)_16',
@@ -123,7 +137,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=true&docType=28',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_monthlyAvgTimeOfResponding(IR)_17',
@@ -131,7 +146,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=true&docType=25',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_monthlyAvgTimeOfResponding(MIR)_18',
@@ -139,7 +155,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=true&docType=103',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_monthlyAvgTimeOfResponding(RFI)_19',
@@ -147,7 +164,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=true&docType=23',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_monthlyAvgRespondingTime(Submittals)_20',
@@ -155,7 +173,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=true&docType=42',
         apiDetails:'',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     },
     {
         id: 'wt_onthlyAvgTimeOfResponding(PO)_21',
@@ -163,7 +182,8 @@ let Widgets = [{
         api: 'GetAvgTimeRespond?isMonthly=true&docType=70',
         apiDetails:'NULL',
         isModal: 'false',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3515
     }
 ];
 
@@ -175,7 +195,8 @@ let CounterWidgetsWithDetails = [{
         value: "total-0",
         total: "total-1",
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3494
     },
     {
         id: 'wt_approvalSubmittals_2',
@@ -185,7 +206,8 @@ let CounterWidgetsWithDetails = [{
         value: "total-0",
         total: "total-1",
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3493
     },
     {
         id: 'wt_requestForInformationOpen_3',
@@ -195,7 +217,8 @@ let CounterWidgetsWithDetails = [{
         value: "total-0",
         total: "total-1",
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3495
     },
     {
         id: 'wt_openedSubmittal_4',
@@ -205,7 +228,8 @@ let CounterWidgetsWithDetails = [{
         value: "count-0",
         total: "total-1",
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3510
     },
     {
         id: 'wt_openedTransmittals_5',
@@ -215,7 +239,8 @@ let CounterWidgetsWithDetails = [{
         value: "count-0",
         total: "total-1",
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3511
     },
     {
         id: 'wt_openedLetters_6',
@@ -225,7 +250,8 @@ let CounterWidgetsWithDetails = [{
         value: "count-0",
         total: "total-1",
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3512
     },
     {
         id: 'wt_openedInspectionRequests_7',
@@ -235,7 +261,8 @@ let CounterWidgetsWithDetails = [{
         value: "count-0",
         total: "total-1",
         isModal: 'true',
-        route: 'route-to-view'
+        route: 'route-to-view',
+        permission:3513
     }
 ];
 

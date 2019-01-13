@@ -4,7 +4,7 @@ import Api from '../../api';
  import '../../App.css';
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
-//import BootstrapTable from 'react-bootstrap-table-next';
+import BootstrapTable from 'react-bootstrap-table-next';
  
 const columns = [{
     dataField: 'id',
@@ -77,19 +77,7 @@ class Widgets extends Component {
             <div>
                 <div>
                     <Modal open={open} onClose={this.onCloseModal} center>
-                        <div className="ui modal smallModal scrolling transition hidden" id="smallModal">
-                                    <div className="header zero">
-                                  
-                                     </div>
-                                    <div className="content">
-                                    {/* <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />         */}
-                                    </div>
-                                    <div className="actions">
-                                        <button className="defaultBtn btn cancel smallBtn">Cancel </button>
-                                        <button className="smallBtn primaryBtn-1 btn approve"> ADD</button>
-                                    </div>
-                        </div>
-
+                       <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />  
                     </Modal>
                 </div>
 
