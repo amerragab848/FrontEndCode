@@ -75,9 +75,21 @@ class WidgetsWithText extends Component {
         const { open } = this.state;
         return ( 
             <div>
-                <div>
+                 <div>
                     <Modal open={open} onClose={this.onCloseModal} center>
-                    <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns }  striped hover condensed />        
+                        <div className="ui modal smallModal scrolling transition hidden" id="smallModal">
+                                    <div className="header zero">
+                                  
+                                     </div>
+                                    <div className="content">
+                                    <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />        
+                                    </div>
+                                    <div className="actions">
+                                        <button className="defaultBtn btn cancel smallBtn">Cancel </button>
+                                        <button className="smallBtn primaryBtn-1 btn approve"> ADD</button>
+                                    </div>
+                        </div>
+
                     </Modal>
                 </div>
 

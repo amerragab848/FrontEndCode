@@ -1,20 +1,21 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import Resources from '../../resources.json';
 import Api from '../../api';
-//import '../../App.css';
+ import '../../App.css';
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
 import BootstrapTable from 'react-bootstrap-table-next';
 //import { Pointer } from 'highcharts';
+//import '../../Styles/scss/Components/'
 
 const columns = [{
-  dataField: 'id',
-  text: 'Doc Id'
+    dataField: 'id',
+    text: 'Doc Id'
 },
- {
-  dataField: 'subject',
-  text: 'Subject'
-}, 
+{
+    dataField: 'subject',
+    text: 'Subject'
+},
 {
     dataField: 'statusName',
     text: 'Status Name'
@@ -28,9 +29,9 @@ const columns = [{
     text: 'Doc Date'
 }
 ];
-  
+
 var hoverPointer = {
-    cursor:'auto'
+    cursor: 'auto'
 }
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -42,8 +43,8 @@ class Widgets extends Component {
         super(props);
         this.state = {
             value: '0',
-            open: false , 
-            detailsData:[]
+            open: false,
+            detailsData: []
         }
     };
 
@@ -52,45 +53,55 @@ class Widgets extends Component {
             this.setState({
                 value: result
             });
-        });         
-   } 
+        });
+    }
 
-   onOpenModal = () => {
-   
-        if(this.props.isModal === 'true')
-        { 
-        this.setState({ open: true });
-        Api.get(this.props.apiDetails).then(res => {
+    onOpenModal = () => {
+        if (this.props.isModal === 'true') {
+            this.setState({ open: true });
+            Api.get(this.props.apiDetails).then(res => {
                 this.setState({
                     detailsData: res
                 });
-            });        
+            });
         }
     };
 
-  onCloseModal = () => {
-    this.setState({ open: false });
+    onCloseModal = () => {
+        this.setState({ open: false });
     };
 
 
     render() {
         const { open } = this.state;
-        return ( 
-            
+        return (
+
             <div>
                 <div>
                     <Modal open={open} onClose={this.onCloseModal} center>
-                       <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns }  striped hover condensed />        
-                    </Modal>
-            </div>
+                        <div className="ui modal smallModal scrolling transition hidden" id="smallModal">
+                                    <div className="header zero">
+                                  
+                                     </div>
+                                    <div className="content">
+                                    <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />        
+                                    </div>
+                                    <div className="actions">
+                                        <button className="defaultBtn btn cancel smallBtn">Cancel </button>
+                                        <button className="smallBtn primaryBtn-1 btn approve"> ADD</button>
+                                    </div>
+                        </div>
 
-                <div className="summerisItem">  
+                    </Modal>
+                </div>
+
+                <div className="summerisItem">
                     <div className="content">
-                    <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-                    <p className="number" style= {this.props.isModal === 'true' ? {} :hoverPointer } onClick={this.onOpenModal}>{ Api.ConvertNumbers(this.state.value, 2)}</p>
+                        <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
+                        <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{Api.ConvertNumbers(this.state.value, 2)}</p>
                     </div>
-                 </div>
-            
+                </div>
+
             </div>
         )
     }
