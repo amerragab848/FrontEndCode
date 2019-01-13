@@ -6,7 +6,7 @@ import Api from "../../api";
 class Modales extends React.Component {
   componentDidMount() {
     if (this.props.apiDetails) {
-      Api.get(this.props.apiDetails).then(result => {
+      Api.get(this.props.apiDetails+this.props.action).then(result => {
         console.log(result);
       });
     }
