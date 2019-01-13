@@ -4,7 +4,7 @@ let ThreeWidgetsData = [
         title: "assessmentSummary",
         props: {
             api: "GetAssessmentSummary",
-            apiDetails: "",
+            apiDetails: "GetAssessmentSummary",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -19,7 +19,7 @@ let ThreeWidgetsData = [
         title: "inboxSummary",
         props: {
             api: "GetInboxSummary",
-            apiDetails: "",
+            apiDetails: "GetInboxSummary",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -34,7 +34,7 @@ let ThreeWidgetsData = [
         title: "closedSummary",
         props: {
             api: "GetClosedDocumentsSummaryCount",
-            apiDetails: "",
+            apiDetails: "GetClosedDocumentsSummaryCount",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -49,7 +49,7 @@ let ThreeWidgetsData = [
         title: "distributionSummary",
         props: {
             api: "GetClosedDocumentsSummaryCount",
-            apiDetails: "",
+            apiDetails: "GetClosedDocumentsSummaryCount",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -64,7 +64,7 @@ let ThreeWidgetsData = [
         title: "actionBySummary",
         props: {
             api: "GetActionByCount",
-            apiDetails: "",
+            apiDetails: "GetActionByCount",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -79,7 +79,7 @@ let ThreeWidgetsData = [
         title: "notCodedExpensesSummary",
         props: {
             api: "GetNotCodedExpensesSummary",
-            apiDetails: "",
+            apiDetails: "GetNotCodedExpensesSummary",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -94,7 +94,7 @@ let ThreeWidgetsData = [
         title: "rejecerdItem",
         props: {
             api: "GetWorkFlowSummary",
-            apiDetails: "",
+            apiDetails: "GetWorkFlowSummary",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -109,7 +109,7 @@ let ThreeWidgetsData = [
         title: "notCodedPayment",
         props: {
             api: "GetNotCodedPaymentsSummary",
-            apiDetails: "",
+            apiDetails: "GetNotCodedPaymentsSummary",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -124,7 +124,7 @@ let ThreeWidgetsData = [
         title: "openedSummary",
         props: {
             api: "GetOppenedDocumentsSummaryCount",
-            apiDetails: "",
+            apiDetails: "GetOppenedDocumentsSummaryCount",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -139,7 +139,7 @@ let ThreeWidgetsData = [
         title: "schedualActionBy",
         props: {
             api: "GetActionByScheduleCount",
-            apiDetails: "",
+            apiDetails: "GetActionByScheduleCount",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -154,7 +154,7 @@ let ThreeWidgetsData = [
         title: "ScheduleAlertsSummary",
         props: {
             api: "GetScheduleAlertSummaryCount",
-            apiDetails: "",
+            apiDetails: "GetScheduleAlertSummaryCount",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -169,7 +169,7 @@ let ThreeWidgetsData = [
         title: "alertingQntySummary",
         props: {
             api: "GetBoqQuantityRequestedAlert",
-            apiDetails: "",
+            apiDetails: "GetBoqQuantityRequestedAlert",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -184,7 +184,7 @@ let ThreeWidgetsData = [
         title: "notCodedInvoicesSummary",
         props: {
             api: "GetNotCodedInvoicesSummary",
-            apiDetails: "",
+            apiDetails: "GetNotCodedInvoicesSummary",
             route: "route-to-view",
             value: "total",
             listType: "item",

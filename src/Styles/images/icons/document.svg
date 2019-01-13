@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>32207797-26A1-41B8-A849-DB0172A6E831</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M11.8089875,4.01734755 C11.9545208,4.13855967 12.0168923,4.30017583 11.9961018,4.48199401 L12,12.4444444 C12,13.1719138 11.4513566,14 10.5,14 L1.5,14 C0.587057054,14 0,13.2364467 0,12.4444444 L0,1.55555556 C0,0.543752375 0.853317255,0 1.5,0 L7.63291906,0 C7.8200333,0 7.98635707,0.0606060606 8.1110999,0.181818182 L11.8089875,4.01734755 Z M7,3.78174035 C7,4.68598753 7.36216383,5 8.26724546,5 L11,5 L7,1 C7,1 7,2.8177599 7,3.78174035 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Doc/Filled/16px/Dark-grey">
+            <g id="doc" fill="#5E6475" opacity="0">
+                <rect id="Path" x="0" y="0" width="16" height="16"></rect>
+            </g>
+            <g id="Test/Color/Dark-gray/Base" transform="translate(2.000000, 1.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#FF02D4" xlink:href="#path-1"></use>
+                <g mask="url(#mask-2)" fill="#5E6475" id="Rectangle-5">
+                    <g transform="translate(-2.000000, -1.000000)">
+                        <rect x="0" y="0" width="16" height="16"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

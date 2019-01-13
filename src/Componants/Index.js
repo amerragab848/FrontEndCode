@@ -112,6 +112,7 @@ class Index extends Component {
                 route={panel.props.route}
                 api={panel.props.api}
                 isModal={panel.props.isModal}
+                apiDetails={panel.props.apiDetails}
               />
             );
           })}

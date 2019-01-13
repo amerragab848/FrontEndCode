@@ -6,12 +6,13 @@
     "axios": "^0.18.0",
     "env": "0.0.2",
     "highcharts": "^7.0.1",
-    "highcharts-react-official": "^2.0.0", 
+    "highcharts-react-official": "^2.0.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-responsive-modal": "^3.5.1",
     "react-scripts": "2.1.1",
-    "react-tabs": "^3.0.0"
+    "react-tabs": "^3.0.0",
+    "rodal": "^1.6.3"
   },
   "scripts": {
     "start": "react-scripts start",

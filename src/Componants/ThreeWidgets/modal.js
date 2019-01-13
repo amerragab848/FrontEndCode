@@ -1,23 +1,43 @@
 import React from "react";
-import Modal from "react-responsive-modal";
-
-const styles = {
-    fontFamily: "sans-serif",
-    textAlign: "center"
-};
+import Rodal from "rodal";
+import "rodal/lib/rodal.css";
+import Api from "../../api";
 
 class Modales extends React.Component {
-    render() {
-        return (
-            <div style={styles}>
-                <Modal open={this.props.opened} onClose={this.props.closed}>
-                    <h2>Simple centered modal</h2>
-                    <p>{this.props.id}</p>
-                    <button onClick={this.props.closed}>Close Modal</button>
-                </Modal>
-            </div>
-        );
+  componentDidMount() {
+    if (this.props.apiDetails) {
+      Api.get(this.props.apiDetails).then(result => {
+        console.log(result);
+      });
     }
+  }
+
+  render() {
+    return (
+      <div>
+        <Rodal visible={this.props.opened} onClose={this.props.closed}>
+          <div className="ui modal mediumModal">
+            <div className="header zero">{this.props.title}</div>
+            <div className="content">
+              <p>
+                Fixie tote bag ethnic keytar. Neutra vinyl American Apparel kale
+                chips tofu art party, cardigan raw denim quinoa
+              </p>
+            </div>
+            <div className="actions">
+              <button
+                className="defaultBtn btn cancel smallBtn"
+                onClick={this.props.closed}
+              >
+                Cancel
+              </button>
+              <button className="smallBtn primaryBtn-1 btn approve">ADD</button>
+            </div>
+          </div>
+        </Rodal>
+      </div>
+    );
+  }
 }
 
 export default Modales;

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>17B4D901-75B8-4EBA-9CE4-8D383AE0DFEC</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M5,10.6506762 L-1.52516006,4.40634112 C-2.09131393,3.86455296 -3.00923072,3.86455296 -3.5753846,4.40634112 C-4.14153847,4.94812928 -4.14153847,5.82654145 -3.5753846,6.36832961 L3.97488773,13.5936589 C4.5410416,14.135447 5.4589584,14.135447 6.02511227,13.5936589 L13.5753846,6.36832961 C14.1415385,5.82654145 14.1415385,4.94812928 13.5753846,4.40634112 C13.0092307,3.86455296 12.0913139,3.86455296 11.5251601,4.40634112 L5,10.6506762 Z" id="path-1"/>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Action-icons/Arrow/Left/24px/Dark-grey_base">
+            <g id="back-btn">
+                <rect id="bg" fill="#5E6475" opacity="0" x="0" y="0" width="24" height="24"/>
+                <g id="Test/Color/Dark-gray/Base" transform="translate(7.000000, 3.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"/>
+                    </mask>
+                    <use id="Mask" fill="grey" fill-rule="nonzero" transform="translate(5.000000, 9.000000) rotate(90.000000) translate(-5.000000, -9.000000) " xlink:href="#path-1"/>
+                    
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './Styles/css/semantic.min.css'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+//import Semantic from './Styles/js/semantic.min'
+import './Styles/scss/en-us/layout.css'
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
