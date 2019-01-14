@@ -131,13 +131,14 @@ class SendToInbox extends Component {
             })
         }
         if (this.state.validToCompany && this.state.validAttention && this.state.validPriority) {
- 
+           
+            //console.log(this.state.sendingData);
 
-            let inboxDto={...this.state.sendnigData};
+            let inboxDto={...this.state.sendingData};
             
             
-            console.log(inboxDto);
-            Api.post("SendByInbox", inboxDto)
+           // console.log(inboxDto);
+           Api.post("SendByInbox", inboxDto)
         }
     }
 
