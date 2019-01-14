@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import Resources from '../../resources.json'; 
-import Api from '../../api';  
-import "../../Styles/scss/en-us/dashboard.css";
+import React, { Component } from 'react'; 
+import Resources from '../../resources.json';
+import Api from '../../api';
+  
+import "../../Styles/scss/en-us/dashboard.css"; 
 import Modal from 'react-responsive-modal';
 import BootstrapTable from 'react-bootstrap-table-next';
 
