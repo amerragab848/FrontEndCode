@@ -5,7 +5,8 @@ import Api from '../../api';
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
 import BootstrapTable from 'react-bootstrap-table-next';
- 
+
+
 const columns = [{
     dataField: 'id',
     text: 'Doc Id'
