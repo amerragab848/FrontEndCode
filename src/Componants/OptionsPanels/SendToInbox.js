@@ -137,7 +137,7 @@ class SendToInbox extends Component {
             
             
             console.log(inboxDto);
-            //Api.post("SendByInbox", inboxDto)
+            Api.post("SendByInbox", inboxDto)
         }
     }
 
