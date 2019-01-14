@@ -11,18 +11,15 @@ function DropDown(props) {
                 }
             </div>
             <div className="ui fluid selection dropdown singleDropDown" >
-                <div className="menu transition hidden" style={{ outline: "none" }}>
-                    <Select
-                        //   value={selectedOption}
+                <div className="customD_Menu" style={{ outline: "none" }}>
+                    <Select 
                         onChange={props.handleChange}
                         options={props.data}
                         placeholder="Select..."
                         isSearchable="true"
                         isMulti={props.isMulti}
-                        onBlur={props.onblur}
-
-                    />
-
+                        onBlur={props.onblur} 
+                    /> 
                 </div>
             </div>
         </div>

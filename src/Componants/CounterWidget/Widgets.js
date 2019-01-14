@@ -85,7 +85,7 @@ class Widgets extends Component {
                 <div className="summerisItem">
                     <div className="content">
                         <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-                        <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{this.state.value}</p>
+                        <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{Api.ConvertNumbers(this.state.value, 2)}</p>
                     </div>
                 </div>
 

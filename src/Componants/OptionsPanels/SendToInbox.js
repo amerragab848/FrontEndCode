@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import Api from './api'
+import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
 import validations from './validationRules';
+// import "../../Styles/scss/en-us/layout.css";
 const _ = require('lodash')
 class SendToInbox extends Component {
     constructor(props) {
@@ -95,8 +96,7 @@ class SendToInbox extends Component {
         })
 
     }
-
-
+ 
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
         this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData');
