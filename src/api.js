@@ -1,3 +1,7 @@
+
+import DashBoard from  './Pages/DashBoard';
+
+
 let currentLanguage = localStorage.getItem('lang');
 export default class Api {
     static headers() {
@@ -13,8 +17,6 @@ export default class Api {
     static get(route) {
         return this.xhr(route, null, 'GET');
     }
-
-
 
     static xhr(route, params, verb) {
         const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
@@ -77,9 +79,32 @@ export default class Api {
                 break;
             }
         }
- 
-    console.log('abbrNum('+ orig + ', ' + dec + ') = ' + number);
-        return number;
     }
 
+    static GetPayload() {
+        var payload = []; //CryptoJS.enc.Base64.parse(storage.getItem("claims")).toString(CryptoJS.enc.Utf8);
+
+        return JSON.parse(payload);
+    }
+
+    static IsAllow(code) {
+        let userPermissions = [];
+        let isCompany = false;
+        if (localStorage.getItem("permissions")) {
+            var perms =[];// CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8);
+            userPermissions = JSON.parse(perms);
+        }
+
+        if (isCompany === false) {
+            var isAllowed = userPermissions.indexOf(code);
+            if (isAllowed > -1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+
+    }
 }

@@ -4,97 +4,97 @@ let ThreeWidgetsData = [
         title: "assessmentSummary",
         props: {
             api: "GetAssessmentSummary",
-            apiDetails: "GetAssessmentSummary",
-            route: "route-to-view",
-            value: "total",
-            listType: "item",
-            action: "action",
-            isModal: true
-        },
-        order: 0,
-        permission: 10232
-    },
-    {
-        id: "wt-InboxSummary-2",
-        title: "inboxSummary",
-        props: {
-            api: "GetInboxSummary",
-            apiDetails: "GetInboxSummary",
-            route: "route-to-view",
-            value: "total",
-            listType: "item",
-            action: "action",
-            isModal: true
-        },
-        order: 1,
-        permission: 10233
-    },
-    {
-        id: "wt-ClosedSummary-3",
-        title: "closedSummary",
-        props: {
-            api: "GetClosedDocumentsSummaryCount",
-            apiDetails: "GetClosedDocumentsSummaryCount",
-            route: "route-to-view",
-            value: "total",
-            listType: "item",
-            action: "action",
-            isModal: true
-        },
-        order: 2,
-        permission: 10234
-    },
-    {
-        id: "wt-DistributionSummary-4",
-        title: "distributionSummary",
-        props: {
-            api: "GetClosedDocumentsSummaryCount",
-            apiDetails: "GetClosedDocumentsSummaryCount",
-            route: "route-to-view",
-            value: "total",
-            listType: "item",
-            action: "action",
-            isModal: true
-        },
-        order: 3,
-        permission: 10235
-    },
-    {
-        id: "wt-ActionBySummary-5",
-        title: "actionBySummary",
-        props: {
-            api: "GetActionByCount",
-            apiDetails: "GetActionByCount",
-            route: "route-to-view",
-            value: "total",
-            listType: "item",
-            action: "action",
-            isModal: true
-        },
-        order: 4,
-        permission: 10236
-    },
-    {
-        id: "wt-NotCodedExpensesSummary-6",
-        title: "notCodedExpensesSummary",
-        props: {
-            api: "GetNotCodedExpensesSummary",
-            apiDetails: "GetNotCodedExpensesSummary",
+            apiDetails: "",
             route: "route-to-view",
             value: "total",
             listType: "item",
             action: "action",
             isModal: false
         },
+        order: 0,
+        permission: 1369
+    },
+    {
+        id: "wt-InboxSummary-2",
+        title: "inboxSummary",
+        props: {
+            api: "GetInboxSummary",
+            apiDetails: "",
+            route: "route-to-view",
+            value: "total",
+            listType: "item",
+            action: "action",
+            isModal: false
+        },
+        order: 1,
+        permission: 1367
+    },
+    {
+        id: "wt-ClosedSummary-3",
+        title: "closedSummary",
+        props: {
+            api: "GetClosedDocumentsSummaryCount",
+            apiDetails: "SelectDocTypeByProjectIdClosed?action=",
+            route: "",
+            value: "total",
+            listType: "item",
+            action: "action",
+            isModal: true
+        },
+        order: 2,
+        permission: 1365
+    },
+    {
+        id: "wt-DistributionSummary-4",
+        title: "distributionSummary",
+        props: {
+            api: "GetClosedDocumentsSummaryCount",
+            apiDetails: "",
+            route: "route-to-view",
+            value: "total",
+            listType: "item",
+            action: "action",
+            isModal: false
+        },
+        order: 3,
+        permission: 1366
+    },
+    {
+        id: "wt-ActionBySummary-5",
+        title: "actionBySummary",
+        props: {
+            api: "GetActionByCount",
+            apiDetails: "GetActionsBySummaryDetails?action=",
+            route: "",
+            value: "total",
+            listType: "item",
+            action: "action",
+            isModal: true
+        },
+        order: 4,
+        permission: 1371
+    },
+    {
+        id: "wt-NotCodedExpensesSummary-6",
+        title: "notCodedExpensesSummary",
+        props: {
+            api: "GetNotCodedExpensesSummary",
+            apiDetails: "GetNotCodedExpensesSummaryDetail?action=",
+            route: "",
+            value: "total",
+            listType: "item",
+            action: "action",
+            isModal: true
+        },
         order: 5,
-        permission: 10235
+        permission: 1368
     },
     {
         id: "wt-RejecerdItem-7",
         title: "rejecerdItem",
         props: {
             api: "GetWorkFlowSummary",
-            apiDetails: "GetWorkFlowSummary",
+            apiDetails: "",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -102,89 +102,89 @@ let ThreeWidgetsData = [
             isModal: false
         },
         order: 6,
-        permission: 10236
+        permission: 1369
     },
     {
         id: "wt-NotCodedPayment-8",
         title: "notCodedPayment",
         props: {
             api: "GetNotCodedPaymentsSummary",
-            apiDetails: "GetNotCodedPaymentsSummary",
-            route: "route-to-view",
+            apiDetails: "GetPaymentUserByRange?action=",
+            route: "",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 7,
-        permission: 10236
+        permission: 1370
     },
     {
         id: "wt-OpenedSummary-9",
         title: "openedSummary",
         props: {
             api: "GetOppenedDocumentsSummaryCount",
-            apiDetails: "GetOppenedDocumentsSummaryCount",
-            route: "route-to-view",
+            apiDetails: "SelectDocTypeByProjectIdOpened?action=",
+            route: "",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 8,
-        permission: 10236
+        permission: 1372
     },
     {
         id: "wt-SchedualActionBy-10",
         title: "schedualActionBy",
         props: {
             api: "GetActionByScheduleCount",
-            apiDetails: "GetActionByScheduleCount",
-            route: "route-to-view",
+            apiDetails: "GetActionsByScheduleSummaryDetails?action=",
+            route: "",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 9,
-        permission: 10236
+        permission: 1373
     },
     {
         id: "wt-ScheduleAlertsSummary-11",
         title: "ScheduleAlertsSummary",
         props: {
             api: "GetScheduleAlertSummaryCount",
-            apiDetails: "GetScheduleAlertSummaryCount",
-            route: "route-to-view",
+            apiDetails: "GetScheduleAlertSummary?action=",
+            route: "",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 10,
-        permission: 10236
+        permission: 1374
     },
     {
         id: "wt-AlertingQntySummary-12",
         title: "alertingQntySummary",
         props: {
             api: "GetBoqQuantityRequestedAlert",
-            apiDetails: "GetBoqQuantityRequestedAlert",
-            route: "route-to-view",
+            apiDetails: "GetBoqQuantityRequestedAlertDetails",
+            route: "",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: true
         },
         order: 11,
-        permission: 10236
+        permission: 1362
     },
     {
         id: "wt-NotCodedInvoicesSummary-13",
         title: "notCodedInvoicesSummary",
         props: {
             api: "GetNotCodedInvoicesSummary",
-            apiDetails: "GetNotCodedInvoicesSummary",
+            apiDetails: "GetInvoicesUserByRange?action=",
             route: "route-to-view",
             value: "total",
             listType: "item",
@@ -192,7 +192,7 @@ let ThreeWidgetsData = [
             isModal: false
         },
         order: 12,
-        permission: 10236
+        permission: 1369
     }
 ];
 
