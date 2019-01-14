@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Api from '../../api'
- import "../../Styles/scss/en-us/layout.css";
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
 import validations from './validationRules'; 
@@ -104,8 +103,7 @@ class SendToInbox extends Component {
         this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
     }
-
-
+ 
     inputChangeHandler = (e) => {
         this.setState({ sendingData: { ...this.state.sendingData, Comment: e.target.value } });
     }

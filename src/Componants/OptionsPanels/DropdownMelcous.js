@@ -1,7 +1,7 @@
 import React from 'react'
 import Select from 'react-select';
  
-function DropDown(props) {
+function DropdownMelcous(props) {
     return (
         <div className={"fillter-status fillter-item-c " + (props.className ? (props.className) : "")}>
             <div className="spanValidation">
@@ -27,4 +27,4 @@ function DropDown(props) {
     )
 }
 
-export default DropDown;
+export default DropdownMelcous;
