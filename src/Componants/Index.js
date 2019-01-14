@@ -9,9 +9,11 @@ import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
 
 import language from "../resources.json";
-
+ 
 let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+ 
+import Api from '../api';
+ 
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -34,30 +36,32 @@ class Index extends Component {
 
   renderCounter() {
     let component = this.state.counterData.map(widget => (
+     Api.IsAllow(widget.permission) === true ?
       <Widgets
         key={widget.id}
         title={widget.title}
         api={widget.api}
         value={widget.value}
         apiDetails={widget.apiDetails}
-        isModal={widget.isModal}
-      />
+        isModal={widget.isModal}/> 
+       : null
     ));
-
     return component;
   }
 
   renderCounterDetails() {
     let component = this.state.counterDataDetails.map(widgetDetails => (
-      <WidgetsWithText
-        key={widgetDetails.id}
-        title={widgetDetails.title}
-        value={widgetDetails.value}
-        total={widgetDetails.total}
-        api={widgetDetails.api}
-        apiDetails={widgetDetails.apiDetails}
-        isModal={widgetDetails.isModal}
-      />
+
+      Api.IsAllow(widgetDetails.permission) === true ?  
+        <WidgetsWithText
+          key={widgetDetails.id}
+          title={widgetDetails.title}
+          value={widgetDetails.value}
+          total={widgetDetails.total}
+          api={widgetDetails.api}
+          apiDetails={widgetDetails.apiDetails}
+          isModal={widgetDetails.isModal}/>  
+        : null
     ));
 
     return component;
@@ -119,6 +123,7 @@ class Index extends Component {
     );
     return ThreeCard;
   }
+  
   render() {
     return (
       <Tabs
@@ -136,8 +141,8 @@ class Index extends Component {
         <TabPanel>
           <div className="SummeriesContainer">
             <div className="SummeriesContainerContent">
-                 {this.renderCounterDetails()} {this.renderCounter()}
-          
+              {this.renderCounterDetails()} {this.renderCounter()}
+
             </div>
           </div>
         </TabPanel>

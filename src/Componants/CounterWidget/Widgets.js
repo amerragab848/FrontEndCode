@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Resources from '../../resources.json';
-import Api from '../../api'; 
+import Resources from '../../resources.json'; 
+import Api from '../../api';  
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
 import BootstrapTable from 'react-bootstrap-table-next';
- 
+
+
 const columns = [{
     dataField: 'id',
     text: 'Doc Id'
@@ -33,7 +34,6 @@ var hoverPointer = {
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-
 class Widgets extends Component {
 
     constructor(props) {
@@ -47,11 +47,13 @@ class Widgets extends Component {
 
     componentDidMount() {
         Api.get(this.props.api).then(result => {
-            console.log(result);
+          //  console.log(result);
             this.setState({
                 value: result
             });
-        });
+        }); 
+
+         
     }
 
     onOpenModal = () => {
@@ -69,15 +71,14 @@ class Widgets extends Component {
         this.setState({ open: false });
     };
 
-
     render() {
         const { open } = this.state;
-        return (
 
+            return (
             <div>
                 <div>
                     <Modal open={open} onClose={this.onCloseModal} center>
-                       <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />  
+                        <BootstrapTable keyField='id' data={this.state.detailsData} columns={columns} />
                     </Modal>
                 </div>
 
@@ -87,9 +88,8 @@ class Widgets extends Component {
                         <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{Api.ConvertNumbers(this.state.value, 2)}</p>
                     </div>
                 </div>
-
             </div>
-        )
+            )
     }
 }
 
