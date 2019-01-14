@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import Api from '../../api'
+ import "../../Styles/scss/en-us/layout.css";
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
-import validations from './validationRules';
-// import "../../Styles/scss/en-us/layout.css";
+import validations from './validationRules'; 
+
 const _ = require('lodash')
+
 class SendToInbox extends Component {
     constructor(props) {
         super(props)
@@ -195,8 +197,5 @@ class SendToInbox extends Component {
 
     }
 }
-
-
-
-
+ 
 export default SendToInbox;
