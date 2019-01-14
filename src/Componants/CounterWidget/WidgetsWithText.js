@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Resources from '../../resources.json';
-import Api from '../../api';
-import "../../Styles/scss/en-us/dashboard.css";
+import Api from '../../api'; 
 import Modal from 'react-responsive-modal';
 
 

@@ -17,6 +17,11 @@ export default class Api {
     static get(route) {
         return this.xhr(route, null, 'GET');
     }
+    static post(route, params) {
+        
+        console.log(params)
+        return this.xhr(route, params, 'POST');
+    }
 
     static xhr(route, params, verb) {
         const host = 'https://demov4services.procoor.com/PM/api/Procoor/';

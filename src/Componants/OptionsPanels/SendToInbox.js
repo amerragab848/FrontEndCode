@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
-import validations from './validationRules';
-// import "../../Styles/scss/en-us/layout.css";
+import validations from './validationRules'; 
+
 const _ = require('lodash')
+
 class SendToInbox extends Component {
     constructor(props) {
         super(props)
@@ -102,8 +103,7 @@ class SendToInbox extends Component {
         this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
     }
-
-
+ 
     inputChangeHandler = (e) => {
         this.setState({ sendingData: { ...this.state.sendingData, Comment: e.target.value } });
     }
@@ -131,13 +131,14 @@ class SendToInbox extends Component {
             })
         }
         if (this.state.validToCompany && this.state.validAttention && this.state.validPriority) {
- 
+           
+            //console.log(this.state.sendingData);
 
-            let inboxDto={...this.state.sendnigData};
+            let inboxDto={...this.state.sendingData};
             
             
-            console.log(inboxDto);
-            //Api.post("SendByInbox", inboxDto)
+           // console.log(inboxDto);
+           Api.post("SendByInbox", inboxDto)
         }
     }
 
@@ -195,8 +196,5 @@ class SendToInbox extends Component {
 
     }
 }
-
-
-
-
+ 
 export default SendToInbox;

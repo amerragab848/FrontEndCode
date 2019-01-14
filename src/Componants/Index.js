@@ -1,21 +1,17 @@
 import React, { Component } from "react";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-
-import "../Styles/scss/en-us/layout.css";
-
+import "react-tabs/style/react-tabs.css"; 
 import { WidgetData, Widgets, WidgetsWithText } from "./CounterWidget";
-import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
-
+import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets"; 
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
 
 import language from "../resources.json";
-
+  
 import Api from '../api';
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+ 
+  
 class Index extends Component {
   constructor(props) {
     super(props);

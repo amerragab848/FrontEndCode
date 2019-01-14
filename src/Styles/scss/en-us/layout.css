@@ -11714,11 +11714,7 @@ viewer-pdf-toolbar {
 }
 .dropWrapper .customD_Menu {
   width: 100%
-}
-.dropWrapper .customD_Menu .css-15k3avv {
-  position: absolute !important;
-  z-index: 99999999999999999999 !important;
-}
+} 
 .dropWrapper .dropBtn {
   text-align: center;
   margin-top: 30px;
@@ -11735,4 +11731,7 @@ viewer-pdf-toolbar {
   border: 1px solid #f6e2e3;
   font-size: 14px;
   color: #9da3b1;
+}
+.ahmedshobra {
+  color: rebeccapurple
 }
