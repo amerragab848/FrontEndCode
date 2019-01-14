@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Resources from '../../resources.json';
 import Api from '../../api';
  //import '../../App.css';
-import "../../Styles/scss/en-us/dashboard.css";
+//import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
 import BootstrapTable from 'react-bootstrap-table-next';
  
