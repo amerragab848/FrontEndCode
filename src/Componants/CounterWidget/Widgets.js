@@ -3,30 +3,10 @@ import Resources from '../../resources.json';
 import Api from '../../api';
 import "../../Styles/scss/en-us/dashboard.css";
 import Modal from 'react-responsive-modal';
-import BootstrapTable from 'react-bootstrap-table-next';
 
 
-const columns = [{
-    dataField: 'id',
-    text: 'Doc Id'
-},
-{
-    dataField: 'subject',
-    text: 'Subject'
-},
-{
-    dataField: 'statusName',
-    text: 'Status Name'
-},
-{
-    dataField: 'projectName',
-    text: 'Project Name'
-},
-{
-    dataField: 'docDate',
-    text: 'Doc Date'
-}
-];
+
+
 
 var hoverPointer = {
     cursor: 'auto'
@@ -47,7 +27,6 @@ class Widgets extends Component {
 
     componentDidMount() {
         Api.get(this.props.api).then(result => {
-          //  console.log(result);
             this.setState({
                 value: result
             });
@@ -78,7 +57,7 @@ class Widgets extends Component {
             <div>
                 <div>
                     <Modal open={open} onClose={this.onCloseModal} center>
-                        <BootstrapTable keyField='id' data={this.state.detailsData} columns={columns} />
+                     
                     </Modal>
                 </div>
 
