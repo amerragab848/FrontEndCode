@@ -91,12 +91,12 @@ export default class Api {
         let userPermissions = [];
         let isCompany = false;
         if (localStorage.getItem("permissions")) {
-            var perms =[];// CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8);
-            userPermissions = JSON.parse(perms);
+           let perms =[3198,3515,3514];// JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
+           userPermissions = perms;
         }
 
         if (isCompany === false) {
-            var isAllowed = userPermissions.indexOf(code);
+            let isAllowed = userPermissions.indexOf(code);
             if (isAllowed > -1) {
                 return true;
             } else {
@@ -105,6 +105,5 @@ export default class Api {
         } else {
             return true;
         }
-
     }
 }

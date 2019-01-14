@@ -57,7 +57,7 @@ let Widgets = [{
         apiDetails:'GetRejectedTimesheetBySystem',
         isModal: 'true',
         route: 'route-to-view',
-        permission:'true'
+        permission:''
     },
     {
         id: 'wt_avgTimeOfResponding(Letters)_8',
