@@ -56,11 +56,9 @@ class Widgets extends Component {
             return (
             <div>
                 <div>
-                    <Modal open={open} onClose={this.onCloseModal} center>
-                     
+                    <Modal open={open} onClose={this.onCloseModal} center>              
                     </Modal>
                 </div>
-
                 <div className="summerisItem">
                     <div className="content">
                         <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
