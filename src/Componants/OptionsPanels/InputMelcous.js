@@ -9,7 +9,7 @@ function InputMelcous (props) {
 
         <div className="inputDev ui input">
             <input  type="text" className="form-control" id="lastname1" 
-            placeholder="Type Comment" onChange={props.inputChangeHandler}></input>
+            placeholder={props.placeholderText} onChange={props.inputChangeHandler}></input>
            
         </div>
 

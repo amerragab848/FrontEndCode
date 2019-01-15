@@ -18,8 +18,7 @@ export default class Api {
         return this.xhr(route, null, 'GET');
     }
     static post(route, params) {
-        
-        console.log(params)
+         
         return this.xhr(route, params, 'POST');
     }
 
@@ -38,7 +37,13 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-                json = resp.json();
+                json =resp !=null ? resp.json() : "";
+
+                return json;
+            }
+            else if(resp.status==500)
+            {
+                 json = "resp.json()";
 
                 return json;
             }
