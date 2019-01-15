@@ -6,6 +6,8 @@ import DashBoard from  './Pages/DashBoard';
 import CreateTransmittal from  './Componants/OptionsPanels/CreateTransmittal';
 import SendTask from  './Componants/OptionsPanels/SendTask';
 
+import DistributionList from  './Componants/OptionsPanels/DistributionList';
+import DashBoard from  './Pages/DashBoard'; 
 
 class App extends Component {
   render() {
@@ -14,8 +16,9 @@ class App extends Component {
     	///test
     // <SendToInbox /> 
     // <DashBoard/>
-   <CreateTransmittal/>
+   //<CreateTransmittal/>
    // <SendTask/>
+      <DistributionList /> 
     );
   }
 }

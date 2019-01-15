@@ -11864,24 +11864,82 @@ viewer-pdf-toolbar {
   font-size: 14px;
   color: #9da3b1;
 }
-.ahmedshobra {
-  color: rebeccapurple
+.dropWrapper .fullWidthWrapper {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
 }
-/* 
- sayed edition 
- */
- .dropWrapper .proForm {
-  min-width: 45%;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  margin-top: 0;
-} 
-.proForm .linebylineInput label {
-  margin-right: 15px;
-  font-family: font-opensb;
+.dropWrapper .color.color {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 10px 10px 5px;
+  border-bottom: 1px solid #ebebeb!important;
+  border: none;
+  box-sizing: border-box;
+  margin-top: 22px;
+  box-shadow: none;
+  font-family: Open Sans,sans-serif;
 }
-
-/* 
- sayed edition 
- */
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+  width: 100%
+}
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div{
+  position: relative;
+}
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div >div{
+  z-index: 9;
+}
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div::after{
+  content: '';
+  position: absolute;
+  background-image: url(../../images/icons/date-pickericon.svg);
+  right: 10px;
+  background-size: 100% 100%;
+  width: 16px;
+  height: 16px;
+  top: 10px;
+  z-index: 0;
+}
+.customDatepicker .proForm .linebylineInput input {
+  width: 100% !important;
+  text-align: left;
+  height: 40px;
+  border-radius: 4px;
+  border: solid 1px #DADEE6;
+  font-family: font-opens;
+  letter-spacing: -0.2px;
+  color: #3E4352;
+  background-color: #ffffff;
+  font-size: 14px;
+  outline: 0;
+  padding: .67857143em 1em;
+}
+.twoLineHeader {
+  position: relative;
+  display: inline-block;
+}
+.twoLineHeader::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  background-color: #4382f9;
+  right: -70px;
+  top: 12px;
+}
+.twoLineHeader::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  background-color: #4382f9;
+  left: -70px;
+  top: 12px;
+}
+.deleteImg {
+  width: 16px;
+  height: 16px
+}

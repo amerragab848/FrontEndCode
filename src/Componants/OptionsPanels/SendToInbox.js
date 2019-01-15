@@ -13,7 +13,7 @@ class SendToInbox extends Component {
 
             sendingData: {
                 projectId: "4330",
-                docId: "183",
+                docId: "138",
                 arrange: "",
                 docType: "64",
                 priorityId: "",
@@ -69,6 +69,7 @@ class SendToInbox extends Component {
 
     To_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + selectedOption.value;
+        
         this.GetData(url, "contactName", "id", "AttentionData");
         this.setState({
             sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },
@@ -101,7 +102,7 @@ class SendToInbox extends Component {
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
         this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData');
-        this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
+        this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData');
     }
  
     inputChangeHandler = (e) => {
@@ -109,37 +110,37 @@ class SendToInbox extends Component {
     }
 
     clickHandler = (e) => {
-        if (!this.state.validPriority) {
-            this.setState({
-                priorityClass: "borderError",
-                priorityErrorMess: "please select Priority"
+        // if (!this.state.validPriority) {
+        //     this.setState({
+        //         priorityClass: "borderError",
+        //         priorityErrorMess: "please select Priority"
 
-            })
-        }
-        if (!this.state.validAttention) {
-            this.setState({
-                attentionClass: "borderError",
-                attentionErrorMess: "please select Attention"
+        //     })
+        // }
+        // if (!this.state.validAttention) {
+        //     this.setState({
+        //         attentionClass: "borderError",
+        //         attentionErrorMess: "please select Attention"
 
-            })
-        }
-        if (!this.state.validToCompany) {
-            this.setState({
-                toCompanyClass: "borderError",
-                toCompanyErrorMess: "please select To Company"
+        //     })
+        // }
+        // if (!this.state.validToCompany) {
+        //     this.setState({
+        //         toCompanyClass: "borderError",
+        //         toCompanyErrorMess: "please select To Company"
 
-            })
-        }
-        if (this.state.validToCompany && this.state.validAttention && this.state.validPriority) {
+        //     })
+        // }
+        // if (this.state.validToCompany && this.state.validAttention && this.state.validPriority) {
            
-            //console.log(this.state.sendingData);
+        //     //console.log(this.state.sendingData);
 
-            let inboxDto={...this.state.sendingData};
+        //     let inboxDto={...this.state.sendingData};
             
             
-           // console.log(inboxDto);
-           Api.post("SendByInbox", inboxDto)
-        }
+        //    // console.log(inboxDto);
+        //    Api.post("SendByInbox", inboxDto)
+        // }
     }
 
     render() {
@@ -192,9 +193,7 @@ class SendToInbox extends Component {
         });
     }
 
-    Validate() {
-
-    }
+   
 }
  
 export default SendToInbox;
