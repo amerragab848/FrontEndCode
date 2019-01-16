@@ -151,16 +151,16 @@ class SendToInbox extends Component {
 
                 <InputMelcous title="Comment" value="add comment" inputChangeHandler={this.inputChangeHandler} />
 
-                <Dropdown title="To Company" data={this.state.To_Cc_CompanyData} handleChange={this.To_company_handleChange}
+                <Dropdown title="To Company" data={this.state.To_Cc_CompanyData} name="toCompanydd"  handleChange={this.To_company_handleChange}
                     className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} />
 
-                <Dropdown title="Attention" data={this.state.AttentionData} handleChange={this.Attention_handleChange}
-                    className={this.state.attentionClass} message={this.state.attentionErrorMess} />
+                <Dropdown title="Attention" data={this.state.AttentionData} name="toContactdd"  handleChange={this.Attention_handleChange}
+                     className={this.state.attentionClass} message={this.state.attentionErrorMess} />
 
-                <Dropdown title="CC Company" data={this.state.To_Cc_CompanyData} handleChange={this.Cc_company_handleChange}
+                <Dropdown title="CC Company" data={this.state.To_Cc_CompanyData} name="ccCompanydd"  handleChange={this.Cc_company_handleChange}
                     onblur="" message="" />
                 <div className="filterWrapper">
-                    <Dropdown title="CC Contact" data={this.state.Cc_ContactData} handleChange={this.Cc_Contact_handleChange}
+                    <Dropdown title="CC Contact" data={this.state.Cc_ContactData} name="ccContactsdd" handleChange={this.Cc_Contact_handleChange}
                         isMulti="true" message="" />
 
                 </div>

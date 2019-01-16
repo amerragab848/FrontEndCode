@@ -13,11 +13,11 @@ class App extends Component {
   	 
     return (
     	///test
-    // <SendToInbox /> 
+     <SendToInbox /> 
     // <DashBoard/>
    //<CreateTransmittal/>
    // <SendTask/>
-      <DistributionList /> 
+     // <DistributionList /> 
     );
   }
 }
