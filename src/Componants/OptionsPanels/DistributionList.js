@@ -39,7 +39,8 @@ class DistributionList extends Component {
                     dataIndex: '',
                     key: 'd',
                     render: (text, record) => (
-                        <Dropdown title="" data={this.state.ActionData} handleChange={this.DistributionDate} />
+                        <Dropdown title="" data={this.state.ActionData} handleChange={this.DistributionDate} 
+                        value={this.state.value}/>
 
                     ),
                     width: 250
@@ -47,14 +48,11 @@ class DistributionList extends Component {
 
 
             ],
-
+value:"857",
             data: [
 
             ],
-
-
-
-
+ 
             sendingData: {
                 projectId: "3527",
                 docId: "183",
@@ -166,12 +164,7 @@ class DistributionList extends Component {
                 </div>
                 <div className="fullWidthWrapper">
                     <button className="primaryBtn-1 btn">SEND</button>
-                </div>
-
-
-
-
-
+                </div> 
             </div>
 
 
@@ -203,11 +196,13 @@ class DistributionList extends Component {
     GetDistributionData = (url) => {
         let data = []
         let distributiondetail = []
-        let items = []
+        
+        let defaultAction=this.state.ActionData[0];
+        console.log(defaultAction.value);
+
         Api.get(url).then(result => {
             result.map((item, Index) => {
-                items = []
-                data.push({ b: item['companyName'], c: item['contactName'], key: Index })
+                data.push({ b: item['companyName'], c: item['contactName'],action: defaultAction.value, key: Index })
 
 
                 distributiondetail.push({
