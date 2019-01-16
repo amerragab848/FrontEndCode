@@ -11837,7 +11837,7 @@ viewer-pdf-toolbar {
   padding: 25PX;
   display: flex;
   justify-content: space-between;
-  width: 600px;
+  width: 730px;
   flex-wrap: wrap;
 }
 .dropWrapper .customD_Menu {
@@ -11944,3 +11944,27 @@ viewer-pdf-toolbar {
   width: 16px;
   height: 16px
 }
+/* 
+table edition
+*/
+.dropWrapper .fullWidthWrapper table {
+  border-spacing: 0;
+}
+.dropWrapper .fullWidthWrapper table thead tr th, .dropWrapper .fullWidthWrapper table tbody tr td{
+  border: 1px solid #cccccc;
+  border-left-width: 0;
+  border-bottom-width: 0;
+}
+.dropWrapper .fullWidthWrapper table thead tr th, .dropWrapper .fullWidthWrapper table tbody tr:last-of-type td{
+  border-bottom-width: 1px;
+}
+.dropWrapper .fullWidthWrapper table thead tr th:first-of-type, .dropWrapper .fullWidthWrapper table tbody tr td:first-of-type {
+  border-left-width: 1px;
+}
+/* table th, table td {
+  padding: 0px 8px !important;
+  white-space: unset !important;
+} */
+/* 
+table edition
+*/

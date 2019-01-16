@@ -12,6 +12,7 @@ import 'rc-table/assets/animation.css';
 
 
 import moment from 'moment';
+import Index from '../Index';
 const _ = require('lodash')
 const AnimateBody = props => <Animate transitionName="move" component="tbody" {...props} />;
 class DistributionList extends Component {
@@ -26,22 +27,29 @@ class DistributionList extends Component {
                     key: 'e',
                     render: (text, record) => (
                         <a onClick={e => this.onDelete(record.key, e)} href="#">
-                        <img className="deleteImg" src={Recycle} alt="Del" />
-                    </a>
+                            <img className="deleteImg" src={Recycle} alt="Del" />
+                        </a>
                     ),
                 },
-                { title: 'Action', dataIndex: 'a', key: 'a', width: 100 },
-                { title: 'Company Name', dataIndex: 'b', key: 'b', width: 100 },
-                { title: 'Contact Name', dataIndex: 'c', key: 'c', width: 200 },
-                { title: 'Action', dataIndex: 'd', key: 'c', width: 200 }
+                { title: 'Action', dataIndex: 'a', key: 'a' },
+                { title: 'Company Name', dataIndex: 'b', key: 'b' },
+                { title: 'Contact Name', dataIndex: 'c', key: 'c' },
+                {
+                    title: 'Action',
+                    dataIndex: '',
+                    key: 'd',
+                    render: (text, record) => (
+                        <Dropdown title="" data={this.state.ActionData} handleChange={this.DistributionDate} />
 
-             
+                    ),
+                    width: 250
+                }
+
+
             ],
 
             data: [
-                { a: '123', key: '1' },
-                { a: 'cdd', b: 'edd', key: '2' },
-                { a: '1333', c: 'eee', key: '3' },
+
             ],
 
 
@@ -54,21 +62,17 @@ class DistributionList extends Component {
                 docType: "64",
                 priorityId: "",
                 CompanyId: "",
+                DistributionDetails: []
 
-                toContactId: "",
-                ccCompanyId: "",
-
-                cc: [],
-                Comment: ""
             },
 
 
-            DistributionDate: [],
+            DistributionListDate: [],
             PriorityData: [],
             CompanyData: [],
             ContactNameData: [],
-            Cc_ContactData: [],
-            Cc_Selected: [],
+            ActionData: [],
+            DistributionTabelData: []
 
 
         };
@@ -81,17 +85,17 @@ class DistributionList extends Component {
         const data = this.state.data.filter(item => item.key !== key);
         this.setState({ data });
     }
-    onAdd=()=> {
+    onAdd = () => {
         const data = [...this.state.data];
         data.push({
-          a: 'new data',
-          b: 'new data',
-          c: 'new data',
-          d: 'new data',
-          key: Date.now(),
+            a: 'new data',
+            b: 'new data',
+            c: 'new data',
+            d: 'new data',
+            key: Date.now(),
         });
         this.setState({ data });
-      }
+    }
 
     Company_handleChange = (item) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
@@ -102,10 +106,10 @@ class DistributionList extends Component {
 
     }
 
-    DistributionDate = (item) => {
-        this.setState({
-            sendingData: { ...this.state.sendingData, priorityId: item.value }
-        })
+    DistributionHanleChange = (item) => {
+        let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
+        this.GetDistributionData(url);
+
     }
 
     Priority_handelChange = (item) => {
@@ -117,9 +121,10 @@ class DistributionList extends Component {
     componentDidMount = () => {
         let url = "getProjectDistributionList?projectId=" + this.state.sendingData.projectId;
         let url2 = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
-        this.GetData(url, 'subject', 'projectId', 'DistributionDate');
+        this.GetData(url, 'subject', 'id', 'DistributionListDate');
         this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData');
         this.GetData(url2, 'companyName', 'companyId', 'CompanyData');
+        this.GetData("GetaccountsDefaultListForList?listType=distribution_action", 'title', 'id', 'ActionData');
     }
 
 
@@ -133,7 +138,7 @@ class DistributionList extends Component {
 
         return (
             <div className="dropWrapper">
-                <Dropdown title="Distribution List" data={this.state.DistributionDate} handleChange={this.DistributionDate} />
+                <Dropdown title="Distribution List" data={this.state.DistributionListDate} handleChange={this.DistributionHanleChange} />
 
                 <DatePicker startDate={this.state.startDate} handleChange={this.DatehandleChange} />
 
@@ -150,15 +155,15 @@ class DistributionList extends Component {
                 <div className="fullWidthWrapper">
                     <h4 className="twoLineHeader">Contact List</h4>
                 </div>
-                {/* <div className="modal-header fullWidthWrapper">
+                <div className="modal-header fullWidthWrapper">
                     <Table
                         columns={this.state.columns}
-                        data={this.state.data}
+                        data={this.state.DistributionTabelData}
                         components={{
                             body: { wrapper: AnimateBody },
                         }}
                     />
-                </div> */}
+                </div>
                 <div className="fullWidthWrapper">
                     <button className="primaryBtn-1 btn">SEND</button>
                 </div>
@@ -193,6 +198,40 @@ class DistributionList extends Component {
 
         }).catch(ex => {
         });
+    }
+
+    GetDistributionData = (url) => {
+        let data = []
+        let distributiondetail = []
+        let items = []
+        Api.get(url).then(result => {
+            result.map((item, Index) => {
+                items = []
+                data.push({ b: item['companyName'], c: item['contactName'], key: Index })
+
+
+                distributiondetail.push({
+                    'companyId': item['companyId'], 'contactId': item['contactId'],
+                    'companyName': item['companyName'], 'action': '0'
+                })
+
+                //   ]([, item['contactId'],
+                //         item['contactName'], item['action'])
+            })
+
+            this.setState({
+                DistributionTabelData: [...data],
+                sendingData: { ...this.state.sendingData, DistributionDetails: distributiondetail }
+            })
+            console.log(distributiondetail)
+
+        }).catch(ex => {
+        });
+    }
+
+    createItem = (item) => {
+
+
     }
 }
 
