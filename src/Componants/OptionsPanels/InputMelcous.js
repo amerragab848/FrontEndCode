@@ -3,7 +3,7 @@ import React from 'react'
 function InputMelcous (props) {
     return (
         
-        <div className="fullWidthWrapper">
+        <div className="fullWidthWrapper textLeft">
 
         <label className="control-label">{props.title}</label>
 

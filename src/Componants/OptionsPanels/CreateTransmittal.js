@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
-import validations from './validationRules';
+//import validations from './validationRules';
 
 
 const _ = require('lodash')
@@ -27,7 +27,8 @@ class CreateTransmittal extends Component {
             ToCompany: [],
             SubmittedForData: [],
             AttentionData: [],
-            selectedOption: 'true'
+            selectedOption: 'true',
+            attentionValue: ''
         }
     }
     clickHandler = (e) => {
@@ -51,12 +52,20 @@ class CreateTransmittal extends Component {
     }
 
     To_company_handleChange = (selectedOption) => {
+
+
+        // this.setState({
+        //     valueAttention:null
+        // })
+
+        this.setState({
+            attentionValue:null,
+            sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },   
+         });
+
         let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.GetData(url, "contactName", "id", "AttentionData");
-         this.setState({
-            sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },   
-            AttentionData:[]
-         });
+         
       
 
     }
@@ -79,6 +88,7 @@ class CreateTransmittal extends Component {
 
     Attention_handleChange = (item) => {
         this.setState({
+            attentionValue:item,
             sendingData: { ...this.state.sendingData, toContactId: item.value }
         })
     }
@@ -100,6 +110,7 @@ class CreateTransmittal extends Component {
                 <Dropdown title="Attention"
                     data={this.state.AttentionData}
                     handleChange={this.Attention_handleChange}
+                    value={this.state.attentionValue}
                 //className={this.state.attentionClass} message={this.state.attentionErrorMess}
                 />
 

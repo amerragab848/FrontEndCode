@@ -9,8 +9,8 @@
 sayed exp
 */
 *, :after, :before {
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .ui.radio.checkbox{min-height:15px}
@@ -70,10 +70,6 @@ sayed exp
     transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease;
     transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
     border: 1px solid #d4d4d5;
-}
-.linebylineInput .ui.checkbox .box:before,.linebylineInput .ui.checkbox label:before {
-    width: 15px !important;
-    height: 15px !important;
 }
 .ui.radio.checkbox .box:before, .ui.radio.checkbox label:before {
     content: '';
@@ -11867,6 +11863,11 @@ viewer-pdf-toolbar {
 .dropWrapper .fullWidthWrapper {
   width: 100%;
   text-align: center;
+  margin: 20px 0;
+}
+.dropWrapper .fullWidthWrapper.textLeft{
+  width: 100%;
+  text-align: left;
   margin: 20px 0;
 }
 .dropWrapper .color.color {
