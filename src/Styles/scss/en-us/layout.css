@@ -11943,3 +11943,20 @@ viewer-pdf-toolbar {
   width: 16px;
   height: 16px
 }
+/* 
+table edition
+*/
+.dropWrapper .fullWidthWrapper table {
+  border-spacing: 0;
+}
+.dropWrapper .fullWidthWrapper table thead tr th, .dropWrapper .fullWidthWrapper table tbody tr td{
+  border: 1px solid #cccccc;
+  border-left-width: 0;
+  border-bottom-width: 0;
+}
+.dropWrapper .fullWidthWrapper table thead tr th:first-of-type, .dropWrapper .fullWidthWrapper table tbody tr td:first-of-type {
+  border-left-width: 1px;
+}
+/* 
+table edition
+*/
