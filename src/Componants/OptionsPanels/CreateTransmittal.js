@@ -52,22 +52,12 @@ class CreateTransmittal extends Component {
     }
 
     To_company_handleChange = (selectedOption) => {
-
-
-        // this.setState({
-        //     valueAttention:null
-        // })
-
+       let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
             attentionValue:null,
             sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },   
-         });
-
-        let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
+         });     
         this.GetData(url, "contactName", "id", "AttentionData");
-         
-      
-
     }
 
     Priority_handelChange = (item) => {
@@ -98,8 +88,8 @@ class CreateTransmittal extends Component {
              <div><h1>Create Transmittal</h1>
             <div className="dropWrapper">  
 
-                <InputMelcous title="Subject" value="add subject"
-                    placeholderText='Subject' inputChangeHandler={this.inputChangeHandler}  />
+                <InputMelcous title="Subject" fullwidth='true'
+                    placeholderText='Subject' fullWidth='true' inputChangeHandler={this.inputChangeHandler}  />
 
                 <Dropdown title="To Company"
                     data={this.state.ToCompany}
