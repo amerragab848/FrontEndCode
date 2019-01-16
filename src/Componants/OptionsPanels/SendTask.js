@@ -70,12 +70,22 @@ class SendTask extends Component {
     To_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
-            contactValue:null,
+            contactValue:3258,
             sendingData: { ...this.state.sendingData, bicCompanyId: selectedOption.value },
         });
         this.GetData(url, "contactName", "id", "contactData");
-        
+       
+        this.setState({
+            contactValue:3258,
+        });
+  
+       
+      
+
     }
+
+    valueFromId = (opts, id) => opts.find(o => o.value === id);
+
 
     Priority_handelChange = (item) => {
         this.setState({
@@ -110,7 +120,9 @@ class SendTask extends Component {
                     <Dropdown title="Contact Name"
                         data={this.state.contactData}
                         handleChange={this.Contact_handelChange}
-                        value={this.state.contactValue}
+                        //value={this.state.contactValue}
+                      //  defaultValue={this.state.contactValue}
+                      value={this.valueFromId(this.state.contactData, this.state.contactValue)}
                     //className={this.state.attentionClass} message={this.state.attentionErrorMess}
                     />
                    

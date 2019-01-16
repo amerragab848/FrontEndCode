@@ -21,6 +21,8 @@ function DropdownMelcous(props) {
                         isMulti={props.isMulti}
                         onBlur={props.onblur} 
                         value={props.value}
+                        getOptionValue={({value}) => props.value}
+                    
                     /> 
                 </div>
             </div>
