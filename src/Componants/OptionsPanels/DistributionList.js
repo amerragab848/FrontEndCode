@@ -27,29 +27,29 @@ class DistributionList extends Component {
                     key: 'e',
                     render: (text, record) => (
                         <a onClick={e => this.onDelete(record.key, e)} href="#">
-                        <img className="deleteImg" src={Recycle} alt="Del" />
-                    </a>
+                            <img className="deleteImg" src={Recycle} alt="Del" />
+                        </a>
                     ),
                 },
-                { title: 'Action', dataIndex: 'a', key: 'a', width: 100 },
-                { title: 'Company Name', dataIndex: 'b', key: 'b', width: 100 },
-                { title: 'Contact Name', dataIndex: 'c', key: 'c', width: 200 },
+                { title: 'Action', dataIndex: 'a', key: 'a' },
+                { title: 'Company Name', dataIndex: 'b', key: 'b' },
+                { title: 'Contact Name', dataIndex: 'c', key: 'c' },
                 {
                     title: 'Action',
                     dataIndex: '',
                     key: 'd',
                     render: (text, record) => (
-                      <Dropdown title="" data={this.state.ActionData} handleChange={this.DistributionDate} />
-               
+                        <Dropdown title="" data={this.state.ActionData} handleChange={this.DistributionDate} />
+
                     ),
-                    width: 250,
+                    width: 250
                 }
 
-             
+
             ],
 
             data: [
-             
+
             ],
 
 
@@ -62,21 +62,17 @@ class DistributionList extends Component {
                 docType: "64",
                 priorityId: "",
                 CompanyId: "",
+                DistributionDetails: []
 
-                toContactId: "",
-                ccCompanyId: "",
-
-                cc: [],
-                Comment: ""
             },
 
 
-            DistributionDate: [],
+            DistributionListDate: [],
             PriorityData: [],
             CompanyData: [],
             ContactNameData: [],
-            ActionData:[],
-            DistributionList:[]
+            ActionData: [],
+            DistributionTabelData: []
 
 
         };
@@ -89,17 +85,17 @@ class DistributionList extends Component {
         const data = this.state.data.filter(item => item.key !== key);
         this.setState({ data });
     }
-    onAdd=()=> {
+    onAdd = () => {
         const data = [...this.state.data];
         data.push({
-          a: 'new data',
-          b: 'new data',
-          c: 'new data',
-          d: 'new data',
-          key: Date.now(),
+            a: 'new data',
+            b: 'new data',
+            c: 'new data',
+            d: 'new data',
+            key: Date.now(),
         });
         this.setState({ data });
-      }
+    }
 
     Company_handleChange = (item) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
@@ -111,9 +107,9 @@ class DistributionList extends Component {
     }
 
     DistributionHanleChange = (item) => {
-        let url="GetProjectDistributionListItemsByDistributionId?distributionId="+item.value;
+        let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
         this.GetDistributionData(url);
-        console.log(this.GetDistributionData(url))
+
     }
 
     Priority_handelChange = (item) => {
@@ -125,7 +121,7 @@ class DistributionList extends Component {
     componentDidMount = () => {
         let url = "getProjectDistributionList?projectId=" + this.state.sendingData.projectId;
         let url2 = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
-        this.GetData(url, 'subject', 'id', 'DistributionDate');
+        this.GetData(url, 'subject', 'id', 'DistributionListDate');
         this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData');
         this.GetData(url2, 'companyName', 'companyId', 'CompanyData');
         this.GetData("GetaccountsDefaultListForList?listType=distribution_action", 'title', 'id', 'ActionData');
@@ -142,7 +138,7 @@ class DistributionList extends Component {
 
         return (
             <div className="dropWrapper">
-                <Dropdown title="Distribution List" data={this.state.DistributionDate} handleChange={this.DistributionHanleChange} />
+                <Dropdown title="Distribution List" data={this.state.DistributionListDate} handleChange={this.DistributionHanleChange} />
 
                 <DatePicker startDate={this.state.startDate} handleChange={this.DatehandleChange} />
 
@@ -162,7 +158,7 @@ class DistributionList extends Component {
                 <div className="modal-header fullWidthWrapper">
                     <Table
                         columns={this.state.columns}
-                        data={this.state.DistributionList}
+                        data={this.state.DistributionTabelData}
                         components={{
                             body: { wrapper: AnimateBody },
                         }}
@@ -205,17 +201,37 @@ class DistributionList extends Component {
     }
 
     GetDistributionData = (url) => {
-        let data=[]
+        let data = []
+        let distributiondetail = []
+        let items = []
         Api.get(url).then(result => {
-            result.map((item,Index)=>{
-                data.push({b:item['companyName'],c:item['contactName'] ,key:Index})
+            result.map((item, Index) => {
+                items = []
+                data.push({ b: item['companyName'], c: item['contactName'], key: Index })
+
+
+                distributiondetail.push({
+                    'companyId': item['companyId'], 'contactId': item['contactId'],
+                    'companyName': item['companyName'], 'action': '0'
+                })
+
+                //   ]([, item['contactId'],
+                //         item['contactName'], item['action'])
             })
-       
-        this.setState({DistributionList:[...data]})
-        console.log(this.state.DistributionList)
-            
+
+            this.setState({
+                DistributionTabelData: [...data],
+                sendingData: { ...this.state.sendingData, DistributionDetails: distributiondetail }
+            })
+            console.log(distributiondetail)
+
         }).catch(ex => {
         });
+    }
+
+    createItem = (item) => {
+
+
     }
 }
 

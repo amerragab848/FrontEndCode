@@ -9,8 +9,8 @@
 sayed exp
 */
 *, :after, :before {
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .ui.radio.checkbox{min-height:15px}
@@ -70,10 +70,6 @@ sayed exp
     transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease;
     transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
     border: 1px solid #d4d4d5;
-}
-.linebylineInput .ui.checkbox .box:before,.linebylineInput .ui.checkbox label:before {
-    width: 15px !important;
-    height: 15px !important;
 }
 .ui.radio.checkbox .box:before, .ui.radio.checkbox label:before {
     content: '';
@@ -11841,7 +11837,7 @@ viewer-pdf-toolbar {
   padding: 25PX;
   display: flex;
   justify-content: space-between;
-  width: 600px;
+  width: 730px;
   flex-wrap: wrap;
 }
 .dropWrapper .customD_Menu {
@@ -11867,6 +11863,11 @@ viewer-pdf-toolbar {
 .dropWrapper .fullWidthWrapper {
   width: 100%;
   text-align: center;
+  margin: 20px 0;
+}
+.dropWrapper .fullWidthWrapper.textLeft{
+  width: 100%;
+  text-align: left;
   margin: 20px 0;
 }
 .dropWrapper .color.color {
@@ -11954,9 +11955,16 @@ table edition
   border-left-width: 0;
   border-bottom-width: 0;
 }
+.dropWrapper .fullWidthWrapper table thead tr th, .dropWrapper .fullWidthWrapper table tbody tr:last-of-type td{
+  border-bottom-width: 1px;
+}
 .dropWrapper .fullWidthWrapper table thead tr th:first-of-type, .dropWrapper .fullWidthWrapper table tbody tr td:first-of-type {
   border-left-width: 1px;
 }
+/* table th, table td {
+  padding: 0px 8px !important;
+  white-space: unset !important;
+} */
 /* 
 table edition
 */
