@@ -20,7 +20,8 @@ function DropdownMelcous(props) {
                         isSearchable="true"
                         isMulti={props.isMulti}
                         onBlur={props.onblur} 
-                        value={props.value}
+                        //value={props.value}
+                        value={props.data[0]}
                     /> 
                 </div>
             </div>
