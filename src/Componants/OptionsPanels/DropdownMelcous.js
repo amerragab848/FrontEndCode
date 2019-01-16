@@ -14,13 +14,10 @@ function DropdownMelcous(props) {
             <div className="ui fluid selection dropdown singleDropDown" >
                 <div className="customD_Menu" style={{ outline: "none" }}>
                     <Select 
-                        onChange={props.handleChange}
-                        options={props.data}
-                        placeholder="Select..."
-                        isSearchable="true"
-                        isMulti={props.isMulti}
-                        onBlur={props.onblur} 
-                        defaultValue={props.data[3]}
+                        onChange={props.handleChange} options={props.data}
+                        placeholder={props.placeholder===null?'Select ...':props.placeholder}
+                        isSearchable="true" isMulti={props.isMulti}
+                        onBlur={props.onblur} defaultValue={props.data[3]}
                     /> 
                 </div>
             </div>

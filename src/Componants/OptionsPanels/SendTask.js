@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
-import validations from './validationRules';
-// datepicker
+import Resources from '../../resources.json';
 import DatePicker from './DatePicker'
 import moment from 'moment';
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
 
@@ -14,12 +15,10 @@ class SendTask extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            sendingData: {
-               
+            sendingData: {              
                 docId: "969",
                 arrange: "1",
                 docTypeId: '19',
-
                 bicContactId: "",
                 bicCompanyId: "",
                 Subject: "",
@@ -32,8 +31,7 @@ class SendTask extends Component {
             projectId: "4330",
             PriorityData: [],
             ToCompany: [],
-            contactData: [],
-            contactValue: ''
+            contactData: []
         }
 
     }
@@ -70,23 +68,11 @@ class SendTask extends Component {
     To_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
-            contactValue:3258,
             sendingData: { ...this.state.sendingData, bicCompanyId: selectedOption.value },
         });
         this.GetData(url, "contactName", "id", "contactData");
-       
-        this.setState({
-            contactValue:3258,
-        });
-  
-       
-    let  valueFromId = (opts, id) => opts.find(o => o.value === id);
-
     }
-
-    
-
-
+  
     Priority_handelChange = (item) => {
         this.setState({
             sendingData: { ...this.state.sendingData, Priority: item.value },
@@ -95,61 +81,49 @@ class SendTask extends Component {
 
     Contact_handelChange = (item) => {
         this.setState({
-            contactValue:item,
             sendingData: { ...this.state.sendingData, bicContactId: item.value },
         })
     }
     render() {
         return (
-            <div><h1>Send Task</h1>
+          
                 <div className="dropWrapper">
                       
-                    <InputMelcous fullwidth='true'
-                     title="Subject"
-                        placeholderText='Subject' inputChangeHandler={this.inputSubjectChangeHandler} 
-                        //value={this.state.subjectDefulart} 
-                        defulatValue='Task :'
-                        />
+                    <InputMelcous fullwidth='true' title={Resources['subject'][currentLanguage]} 
+                                  placeholderText={Resources['subject'][currentLanguage]} 
+                                  defulatValue={Resources['Task'][currentLanguage]+':'}
+                                  inputChangeHandler={this.inputSubjectChangeHandler} />
 
-                    <Dropdown title="To Company"
-                        data={this.state.ToCompany}
-                        handleChange={this.To_company_handleChange}
-                    //   className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} 
-                    />
+                    <Dropdown title={Resources['toCompany'][currentLanguage]} 
+                              data={this.state.ToCompany} handleChange={this.To_company_handleChange}
+                              placeholder={Resources['selectCompany'][currentLanguage]}/>
 
-                    <Dropdown title="Contact Name"
-                        data={this.state.contactData}
-                        handleChange={this.Contact_handelChange}
-                        //value={this.state.contactValue}
-                     //  defaultValue={this.state.contactValue}
-                      value={this.valueFromId(this.state.contactData, this.state.contactData[0])}
-                    //className={this.state.attentionClass} message={this.state.attentionErrorMess}
-                    />
+                    <Dropdown title={Resources['ContactName'][currentLanguage]}
+                              data={this.state.contactData} handleChange={this.Contact_handelChange} 
+                              placeholder={Resources['selectContact'][currentLanguage]}/>
                    
-                 
-                    <DatePicker title='Start Date' startDate={this.state.sendingData.startDate} handleChange={this.startDatehandleChange} />
-                    <DatePicker title='Finish Date' startDate={this.state.sendingData.finishDate} handleChange={this.finishDatehandleChange} />
+                    <DatePicker title={Resources['startDate'][currentLanguage]}  
+                                startDate={this.state.sendingData.startDate}
+                                handleChange={this.startDatehandleChange} />
 
-                    <InputMelcous title="Estimated Time" 
-                        placeholderText='Estimated Time' 
-                         inputChangeHandler={this.inputEstimatedTimeChangeHandler} 
-                         defulatValue='0' />
+                    <DatePicker title={Resources['finishDate'][currentLanguage]} 
+                                startDate={this.state.sendingData.finishDate} 
+                                handleChange={this.finishDatehandleChange} />
 
+                    <InputMelcous title={Resources['estimateTime'][currentLanguage]} 
+                                  placeholderText={Resources['estimateTime'][currentLanguage]} 
+                                  inputChangeHandler={this.inputEstimatedTimeChangeHandler} defulatValue='0' />
 
-                    <Dropdown title="Priority"
-                        data={this.state.PriorityData}
-                        handleChange={this.Priority_handelChange}
-                    //className={this.state.priorityClass} message={this.state.priorityErrorMess}
-                    />
-
+                    <Dropdown title={Resources['priority'][currentLanguage]} data={this.state.PriorityData}
+                              handleChange={this.Priority_handelChange} 
+                              placeholder={Resources['prioritySelect'][currentLanguage]}/>
 
                     <div className="dropBtn">
-                        <button className="primaryBtn-1 btn"
-                            onClick={this.clickHandler}
-                        >Submit</button>
+                        <button className="primaryBtn-1 btn" onClick={this.clickHandler}>
+                                {Resources['save'][currentLanguage]}</button>
                     </div>
+                    
                 </div>
-            </div>
         )
     }
 
