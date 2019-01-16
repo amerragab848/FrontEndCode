@@ -54,7 +54,7 @@ class CreateTransmittal extends Component {
     To_company_handleChange = (selectedOption) => {
        let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
-            attentionValue:null,
+            attentionValue: 77,
             sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },   
          });     
         this.GetData(url, "contactName", "id", "AttentionData");
