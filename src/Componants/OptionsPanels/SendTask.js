@@ -80,11 +80,11 @@ class SendTask extends Component {
         });
   
        
-      
+    let  valueFromId = (opts, id) => opts.find(o => o.value === id);
 
     }
 
-    valueFromId = (opts, id) => opts.find(o => o.value === id);
+    
 
 
     Priority_handelChange = (item) => {
@@ -107,7 +107,7 @@ class SendTask extends Component {
                     <InputMelcous fullwidth='true'
                      title="Subject"
                         placeholderText='Subject' inputChangeHandler={this.inputSubjectChangeHandler} 
-                        value={this.state.subjectDefulart} 
+                        //value={this.state.subjectDefulart} 
                         defulatValue='Task :'
                         />
 
@@ -121,8 +121,8 @@ class SendTask extends Component {
                         data={this.state.contactData}
                         handleChange={this.Contact_handelChange}
                         //value={this.state.contactValue}
-                      //  defaultValue={this.state.contactValue}
-                      value={this.valueFromId(this.state.contactData, this.state.contactValue)}
+                     //  defaultValue={this.state.contactValue}
+                      value={this.valueFromId(this.state.contactData, this.state.contactData[0])}
                     //className={this.state.attentionClass} message={this.state.attentionErrorMess}
                     />
                    
