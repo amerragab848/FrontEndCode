@@ -3,6 +3,9 @@ import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
 import validations from './validationRules';
+// datepicker
+import DatePicker from './DatePicker'
+import moment from 'moment';
 
 const _ = require('lodash')
 
@@ -12,70 +15,91 @@ class SendTask extends Component {
         super(props)
         this.state = {
             sendingData: {
-                projectId: "4330",
-                docId: "183",
-                arrange: "",
-                docType: "64",
+               
+                docId: "969",
+                arrange: "1",
+                docTypeId: '19',
 
-                contactId: "",
-                toCompanyId: "",
+                bicContactId: "",
+                bicCompanyId: "",
                 Subject: "",
-                priorityId: "",
-                startDate: '',
-                finishDate: '',
-                estimatedTime: ''
+                Priority: "",
+                status: true,
+                startDate: moment(),
+                finishDate: moment(),
+                estimateTime: ""
             },
+            projectId: "4330",
             PriorityData: [],
             ToCompany: [],
             contactData: [],
-
+            contactValue: ''
         }
 
     }
 
     componentDidMount = () => {
-        let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
+        let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
         
     }
+
+    clickHandler = (e) => {
+        let inboxDto={...this.state.sendingData};      
+           console.log(inboxDto);
+           Api.post("SendTask", inboxDto)
+    }
     
+    startDatehandleChange = (date) => {
+        this.setState({ sendingData: { ...this.state.sendingData, startDate: date } });
+    }
+
+    finishDatehandleChange = (date) => {
+            this.setState({ sendingData: { ...this.state.sendingData, finishDate: date } });
+    }
+
     inputSubjectChangeHandler = (e) => {
         this.setState({ sendingData: { ...this.state.sendingData, Subject: e.target.value } });
     }
 
     inputEstimatedTimeChangeHandler = (e) => {
-        this.setState({ sendingData: { ...this.state.sendingData, estimatedTime: e.target.value } });
+        this.setState({ sendingData: { ...this.state.sendingData, estimateTime: e.target.value } });
     }
 
     To_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
-        this.GetData(url, "contactName", "id", "contactData");
         this.setState({
-            sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },
+            contactValue:null,
+            sendingData: { ...this.state.sendingData, bicCompanyId: selectedOption.value },
         });
-
-
+        this.GetData(url, "contactName", "id", "contactData");
+        
     }
 
     Priority_handelChange = (item) => {
         this.setState({
-            sendingData: { ...this.state.sendingData, priorityId: item.value },
+            sendingData: { ...this.state.sendingData, Priority: item.value },
         })
     }
 
     Contact_handelChange = (item) => {
         this.setState({
-            sendingData: { ...this.state.sendingData, contactId: item.value },
+            contactValue:item,
+            sendingData: { ...this.state.sendingData, bicContactId: item.value },
         })
     }
     render() {
         return (
             <div><h1>Send Task</h1>
                 <div className="dropWrapper">
-
-                    <InputMelcous title="Subject" value="add subject"
-                        placeholderText='Subject' inputChangeHandler={this.inputSubjectChangeHandler} text='task:' />
+                      
+                    <InputMelcous fullwidth='true'
+                     title="Subject"
+                        placeholderText='Subject' inputChangeHandler={this.inputSubjectChangeHandler} 
+                        value={this.state.subjectDefulart} 
+                        defulatValue='Task :'
+                        />
 
                     <Dropdown title="To Company"
                         data={this.state.ToCompany}
@@ -86,14 +110,18 @@ class SendTask extends Component {
                     <Dropdown title="Contact Name"
                         data={this.state.contactData}
                         handleChange={this.Contact_handelChange}
+                        value={this.state.contactValue}
                     //className={this.state.attentionClass} message={this.state.attentionErrorMess}
                     />
                    
-                   {/* // datepicker startDate
-                   // datepicker endDate */}
+                 
+                    <DatePicker title='Start Date' startDate={this.state.sendingData.startDate} handleChange={this.startDatehandleChange} />
+                    <DatePicker title='Finish Date' startDate={this.state.sendingData.finishDate} handleChange={this.finishDatehandleChange} />
 
-                    <InputMelcous title="Estimated Time" value="add Estimated Time"
-                        placeholderText='Estimated Time' inputChangeHandler={this.inputEstimatedTimeSubjectChangeHandler} text='0' />
+                    <InputMelcous title="Estimated Time" 
+                        placeholderText='Estimated Time' 
+                         inputChangeHandler={this.inputEstimatedTimeChangeHandler} 
+                         defulatValue='0' />
 
 
                     <Dropdown title="Priority"
@@ -112,9 +140,6 @@ class SendTask extends Component {
             </div>
         )
     }
-
-
-
 
     GetData = (url, label, value, currState) => {
         let Data = []
