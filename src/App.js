@@ -16,8 +16,8 @@ class App extends Component {
     // <SendToInbox /> 
     // <DashBoard/>
    //<CreateTransmittal/>
-   <SendTask/>
-     // <DistributionList /> 
+  // <SendTask/>
+      <DistributionList /> 
     );
   }
 }

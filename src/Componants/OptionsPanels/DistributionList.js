@@ -31,7 +31,6 @@ class DistributionList extends Component {
                         </a>
                     ),
                 },
-                { title: 'Action', dataIndex: 'a', key: 'a' },
                 { title: 'Company Name', dataIndex: 'b', key: 'b' },
                 { title: 'Contact Name', dataIndex: 'c', key: 'c' },
                 {
@@ -39,7 +38,7 @@ class DistributionList extends Component {
                     dataIndex: '',
                     key: 'd',
                     render: (text, record) => (
-                        <Dropdown title="" data={this.state.ActionData} handleChange={this.actionHandler} />
+                        <Dropdown title="" data={this.state.ActionData} handleChange={this.actionHandler} selectedValue={this.state.selectedValue} />
 
                     ),
                     width: 250
@@ -47,70 +46,84 @@ class DistributionList extends Component {
 
 
             ],
-
-            data: [],
- 
+            selectedValue: "",
             sendingData: {
                 projectId: "3527",
                 docId: "183",
                 arrange: "",
                 docType: "64",
                 priorityId: "",
-                CompanyId: "",
                 DistributionDetails: []
 
             },
-
-
             DistributionListDate: [],
             PriorityData: [],
             CompanyData: [],
             ContactNameData: [],
-            ActionData: [],
-            DistributionTabelData: []
-
+            DistributionTabelData: [],
+            selctedCompany: "",
+            slectedConstact: '',
+            ActionData: []
 
         };
 
     }
 
     onDelete(key, e) {
-        console.log('Delete', key);
         e.preventDefault();
-        const data = this.state.data.filter(item => item.key !== key);
-        this.setState({ data });
+        const data = this.state.DistributionTabelData.filter(item => item.key !== key);
+        const data2 = this.state.sendingData.DistributionDetails.filter(item => item.key !== key);
+
+        this.setState({
+            DistributionTabelData: data,
+            sendingData: { ...this.state.sendingData, DistributionDetails: data2 }
+        });
     }
     onAdd = () => {
-        const data = [...this.state.data];
+        const data = [...this.state.DistributionTabelData];
+        const _DistributionDetails = [...this.state.sendingData.DistributionDetails]
         data.push({
-            a: 'new data',
-            b: 'new data',
-            c: 'new data',
-            d: 'new data',
+            b: this.state.selctedCompany.label,
+            c: this.state.slectedConstact.label,
             key: Date.now(),
         });
-        this.setState({ data });
+        _DistributionDetails.push({
+            'companyId': this.state.selctedCompany.value, 'contactId': this.state.slectedConstact.value,
+            'companyName': this.state.selctedCompany.label, 'action': '0'
+        })
+        this.setState({
+            DistributionTabelData: data,
+            sendingData: { ...this.state.sendingData, DistributionDetails: _DistributionDetails }
+        });
+
+
+
     }
 
     Company_handleChange = (item) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
         this.GetData(url, "contactName", "id", "ContactNameData");
         this.setState({
-            sendingData: { ...this.state.sendingData, CompanyId: item.value }
+            selctedCompany: item
         });
 
     }
+    Contact_handleChange = (item) => {
+        this.setState({
+            slectedConstact: item
+        });
+    }
 
-    actionHandler=()=>{
-        alert("jdhgfjkds")
+    actionHandler = () => {
+        this.setState({ selectedValue: this.state.ActionData[3] })
     }
 
     DistributionHanleChange = (item) => {
         let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
         this.GetDistributionData(url);
-     
-
+      
     }
+
 
     Priority_handelChange = (item) => {
         this.setState({
@@ -125,6 +138,8 @@ class DistributionList extends Component {
         this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData');
         this.GetData(url2, 'companyName', 'companyId', 'CompanyData');
         this.GetData("GetaccountsDefaultListForList?listType=distribution_action", 'title', 'id', 'ActionData');
+        this.setState({ selectedValue: this.state.ActionData[0] })
+
     }
 
 
@@ -132,6 +147,10 @@ class DistributionList extends Component {
         this.setState({
             startDate: date
         });
+    }
+
+    submitBtnHandler = () => {
+        console.log(this.state.sendingData)
     }
 
     render() {
@@ -156,6 +175,7 @@ class DistributionList extends Component {
                     <h4 className="twoLineHeader">Contact List</h4>
                 </div>
                 <div className="modal-header fullWidthWrapper">
+
                     <Table
                         columns={this.state.columns}
                         data={this.state.DistributionTabelData}
@@ -163,10 +183,11 @@ class DistributionList extends Component {
                             body: { wrapper: AnimateBody },
                         }}
                     />
+
                 </div>
                 <div className="fullWidthWrapper">
-                    <button className="primaryBtn-1 btn">SEND</button>
-                </div> 
+                    <button className="primaryBtn-1 btn" onClick={this.submitBtnHandler}>SEND</button>
+                </div>
             </div>
 
 
@@ -198,7 +219,7 @@ class DistributionList extends Component {
     GetDistributionData = (url) => {
         let data = []
         let distributiondetail = []
-        
+
         Api.get(url).then(result => {
             result.map((item, Index) => {
                 data.push({ b: item['companyName'], c: item['contactName'], key: Index })
@@ -206,26 +227,19 @@ class DistributionList extends Component {
 
                 distributiondetail.push({
                     'companyId': item['companyId'], 'contactId': item['contactId'],
-                    'companyName': item['companyName'], 'action': '1'
+                    'companyName': item['companyName'], 'action': '1', key: Index
                 })
 
-                //   ]([, item['contactId'],
-                //         item['contactName'], item['action'])
             })
 
             this.setState({
                 DistributionTabelData: [...data],
                 sendingData: { ...this.state.sendingData, DistributionDetails: distributiondetail }
             })
-            console.log(distributiondetail)
+
 
         }).catch(ex => {
         });
-    }
-
-    createItem = (item) => {
-
-
     }
 }
 
