@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Select from 'react-select';
- 
-
+  
 class DropdownMelcous extends Component { 
     constructor(props) {
         super(props) 
@@ -25,7 +24,7 @@ class DropdownMelcous extends Component {
                     {
                         this.props.message  ?
                             <span>{this.props.message}</span> : ""
-                    }
+                    } 
                 </div>
                 <div className="ui fluid selection dropdown singleDropDown" >
                     <div className="customD_Menu" style={{ outline: "none" }}>
@@ -33,7 +32,7 @@ class DropdownMelcous extends Component {
                             value={this.props.selectedValue}
                             onChange={this.props.handleChange}
                             options={this.props.data}
-                            placeholder="Select..."
+                            placeholder={props.placeholder===null?'Select ...':props.placeholder}
                             isSearchable="true"
                             isMulti={this.props.isMulti}
                             onBlur={this.props.onblur} 

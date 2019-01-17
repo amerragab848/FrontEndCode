@@ -11,12 +11,10 @@ import DashBoard from  './Pages/DashBoard';
 class App extends Component {
   render() {
   	 
-    return (
-    	///test
-     <SendToInbox /> 
-    // <DashBoard/>
-   //<CreateTransmittal/> 
-   // <SendTask/>  
+    return ( 
+    // <DashBoard/> 
+    //<CreateTransmittal/>
+    <SendTask/> 
      // <DistributionList /> 
     );
   }

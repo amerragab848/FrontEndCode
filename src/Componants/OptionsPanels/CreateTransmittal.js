@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
-//import validations from './validationRules';
-
+import Resources from '../../resources.json';
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
 
@@ -28,7 +28,6 @@ class CreateTransmittal extends Component {
             SubmittedForData: [],
             AttentionData: [],
             selectedOption: 'true',
-            attentionValue: ''
         }
     }
     clickHandler = (e) => {
@@ -54,7 +53,6 @@ class CreateTransmittal extends Component {
     To_company_handleChange = (selectedOption) => {
        let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
-            attentionValue: 77,
             sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },   
          });     
         this.GetData(url, "contactName", "id", "AttentionData");
@@ -78,67 +76,61 @@ class CreateTransmittal extends Component {
 
     Attention_handleChange = (item) => {
         this.setState({
-            attentionValue:item,
             sendingData: { ...this.state.sendingData, toContactId: item.value }
         })
     }
 
     render() {
-        return (
-             <div><h1>Create Transmittal</h1>
-            <div className="dropWrapper">  
+            return (
+                        <div className="dropWrapper">  
 
-                <InputMelcous title="Subject" fullwidth='true'
-                    placeholderText='Subject' fullWidth='true' inputChangeHandler={this.inputChangeHandler}  />
+                            <InputMelcous  title={Resources['subject'][currentLanguage]} 
+                                           placeholderText={Resources['subject'][currentLanguage]}
+                                           fullwidth='true' inputChangeHandler={this.inputChangeHandler} />
 
-                <Dropdown title="To Company"
-                    data={this.state.ToCompany}
-                    handleChange={this.To_company_handleChange}
-                //   className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} 
-                />
+                            <Dropdown title={Resources['toCompany'][currentLanguage]} 
+                                      data={this.state.ToCompany} handleChange={this.To_company_handleChange}
+                                      placeholder={Resources['selectCompany'][currentLanguage]} />
 
-                <Dropdown title="Attention"
-                    data={this.state.AttentionData}
-                    handleChange={this.Attention_handleChange}
-                    value={this.state.attentionValue}
-                //className={this.state.attentionClass} message={this.state.attentionErrorMess}
-                />
+                            <Dropdown title={Resources['ToContact'][currentLanguage]}
+                                      data={this.state.AttentionData} handleChange={this.Attention_handleChange} 
+                                      placeholder={Resources['selectContact'][currentLanguage]}/>
 
-                <Dropdown title="Priority"
-                    data={this.state.PriorityData}
-                    handleChange={this.Priority_handelChange}
-                //className={this.state.priorityClass} message={this.state.priorityErrorMess}
-                />
+                            <Dropdown title={Resources['priority'][currentLanguage]}
+                                      data={this.state.PriorityData} handleChange={this.Priority_handelChange} 
+                                      placeholder={Resources['prioritySelect'][currentLanguage]}/>
 
-                <Dropdown title="Submitted For"
-                    data={this.state.SubmittedForData}
-                    handleChange={this.SubmittedFor_handelChange}
-                //className={this.state.priorityClass} message={this.state.priorityErrorMess}
-                />
+                            <Dropdown title={Resources['submittedFor'][currentLanguage]}
+                                      data={this.state.SubmittedForData} handleChange={this.SubmittedFor_handelChange}
+                                      placeholder={Resources['submittedForSelect'][currentLanguage]} />
 
-                <form className="proForm">
-                    <div className="linebylineInput">
-                        <label className="control-label">Status</label>
-                        <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio"  className="hidden" name="Close-open"  value="true" checked={this.state.selectedOption === "true"} onChange={this.radioChange} />
-                            <label>Opened</label>
+                            <form className="proForm">
+                                <div className="linebylineInput">
+                                    <label className="control-label"> {Resources['statusName'][currentLanguage]} </label>
+
+                                        <div className="ui checkbox radio radioBoxBlue">
+                                            <input type="radio"  className="hidden" name="Close-open" value="true" 
+                                                   checked={this.state.selectedOption === "true"} onChange={this.radioChange} />
+                                            <label>{Resources['oppened'][currentLanguage]}</label>
+                                        </div>
+
+                                        <div className="ui checkbox radio radioBoxBlue checked">
+                                            <input type="radio"  className="hidden" name="Close-open" value="false"
+                                             checked={this.state.selectedOption === "false"} onChange={this.radioChange} />
+                                            <label> {Resources['closed'][currentLanguage]}</label>
+                                        </div>
+
+                                </div>
+                            </form>
+
+                            <div className="dropBtn">
+                                <button className="primaryBtn-1 btn" onClick={this.clickHandler} >
+                                        {Resources['save'][currentLanguage]}</button>
+                            </div>
                         </div>
-                        <div className="ui checkbox radio radioBoxBlue checked">
-                            <input type="radio"  className="hidden" name="Close-open" value="false" checked={this.state.selectedOption === "false"} onChange={this.radioChange} />
-                            <label>Closed</label>
-                        </div>
-                    </div>
-                </form>
-
-                <div className="dropBtn">
-                    <button className="primaryBtn-1 btn"
-                    onClick={this.clickHandler}
-                    >Submit</button>
-                </div>
-            </div>
-            </div>
         )
     }
+
     GetData = (url, label, value, currState) => {
         let Data = []
         Api.get(url).then(result => {
