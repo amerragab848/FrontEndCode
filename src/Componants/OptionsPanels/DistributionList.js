@@ -39,8 +39,7 @@ class DistributionList extends Component {
                     dataIndex: '',
                     key: 'd',
                     render: (text, record) => (
-                        <Dropdown title="" data={this.state.ActionData} handleChange={this.DistributionDate} 
-                        value={this.state.value}/>
+                        <Dropdown title="" data={this.state.ActionData} handleChange={this.actionHandler} />
 
                     ),
                     width: 250
@@ -48,10 +47,8 @@ class DistributionList extends Component {
 
 
             ],
-value:"857",
-            data: [
 
-            ],
+            data: [],
  
             sendingData: {
                 projectId: "3527",
@@ -104,9 +101,14 @@ value:"857",
 
     }
 
+    actionHandler=()=>{
+        alert("jdhgfjkds")
+    }
+
     DistributionHanleChange = (item) => {
         let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
         this.GetDistributionData(url);
+     
 
     }
 
@@ -197,17 +199,14 @@ value:"857",
         let data = []
         let distributiondetail = []
         
-        let defaultAction=this.state.ActionData[0];
-        console.log(defaultAction.value);
-
         Api.get(url).then(result => {
             result.map((item, Index) => {
-                data.push({ b: item['companyName'], c: item['contactName'],action: defaultAction.value, key: Index })
+                data.push({ b: item['companyName'], c: item['contactName'], key: Index })
 
 
                 distributiondetail.push({
                     'companyId': item['companyId'], 'contactId': item['contactId'],
-                    'companyName': item['companyName'], 'action': '0'
+                    'companyName': item['companyName'], 'action': '1'
                 })
 
                 //   ]([, item['contactId'],

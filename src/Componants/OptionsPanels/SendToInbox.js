@@ -27,6 +27,12 @@ class SendToInbox extends Component {
             },
 
 
+            selectedValue:{ label: "select Perioity" , value: 0 },
+            selectedCompanyId:{label: "select To Company" , value: 0},
+            selectedConatctId:{label: "select To Contact" , value: 0},
+
+            selectedCCCompanyId:{label: "select CC Company" , value: 0}, 
+
             PriorityData: [],
             To_Cc_CompanyData: [],
             AttentionData: [],
@@ -47,18 +53,22 @@ class SendToInbox extends Component {
         }
     }
     Priority_handelChange = (item) => {
+        // this.setState({
+        //     sendingData: { ...this.state.sendingData, priorityId: item.value },
+        //     validPriority: !validations.equals("Select...", item.label),
+        //     priorityClass: (validations.equals("Select...", item.label) ? "borderError" : "borderValid"),
+        //     priorityErrorMess: ""
+
+        // }) 
         this.setState({
-            sendingData: { ...this.state.sendingData, priorityId: item.value },
-            validPriority: !validations.equals("Select...", item.label),
-            priorityClass: (validations.equals("Select...", item.label) ? "borderError" : "borderValid"),
-            priorityErrorMess: ""
-
-        })
-
+            selectedValue: item,
+            sendingData: { ...this.state.sendingData, priorityId: item.value }
+        }); 
     }
 
     Attention_handleChange = (item) => {
         this.setState({
+            selectedConatctId: item,
             sendingData: { ...this.state.sendingData, toContactId: item.value },
             validAttention: !validations.equals("Select...", item.label),
             attentionClass: (validations.equals("Select...", item.label) ? "borderError" : "borderValid"),
@@ -70,8 +80,9 @@ class SendToInbox extends Component {
     To_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + selectedOption.value;
         
-        this.GetData(url, "contactName", "id", "AttentionData");
+        this.GetData(url, "contactName", "id", "AttentionData",3);
         this.setState({
+            selectedCompanyId: selectedOption,
             sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },
             validToCompany: !validations.equals("Select...", selectedOption.label),
             toCompanyClass: (validations.equals("Select...", selectedOption.label) ? "borderError" : "borderValid"),
@@ -83,6 +94,7 @@ class SendToInbox extends Component {
     Cc_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
+            selectedCCCompanyId:selectedOption,
             sendingData: { ...this.state.sendingData, ccCompanyId: selectedOption.value }
         });
 
@@ -101,8 +113,8 @@ class SendToInbox extends Component {
  
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
-        this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData');
-        this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData');
+        this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData',2);
+        this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData',1);
     }
  
     inputChangeHandler = (e) => {
@@ -142,25 +154,31 @@ class SendToInbox extends Component {
         //    Api.post("SendByInbox", inboxDto)
         // }
     }
+ 
 
     render() {
         return (
             <div className="dropWrapper">
-                <Dropdown title="Priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange}
+                <Dropdown title="Priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange} selectedValue={this.state.selectedValue}
+                    index='Priorityddinbox'
                     className={this.state.priorityClass} message={this.state.priorityErrorMess} />
 
                 <InputMelcous title="Comment" value="add comment" inputChangeHandler={this.inputChangeHandler} />
 
-                <Dropdown title="To Company" data={this.state.To_Cc_CompanyData} name="toCompanydd"  handleChange={this.To_company_handleChange}
+                <Dropdown title="To Company" data={this.state.To_Cc_CompanyData} name="toCompanydd"  selectedValue={this.state.selectedCompanyId} handleChange={this.To_company_handleChange}
+                index='toCompanyddinbox'
                     className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} />
 
-                <Dropdown title="Attention" data={this.state.AttentionData} name="toContactdd"  handleChange={this.Attention_handleChange}
+                <Dropdown title="Attention" data={this.state.AttentionData} name="toContactdd" selectedValue={this.state.selectedConatctId}  handleChange={this.Attention_handleChange}
+                index='Attentionddinbox'
                      className={this.state.attentionClass} message={this.state.attentionErrorMess} />
 
-                <Dropdown title="CC Company" data={this.state.To_Cc_CompanyData} name="ccCompanydd"  handleChange={this.Cc_company_handleChange}
+                <Dropdown title="CC Company" data={this.state.To_Cc_CompanyData} name="ccCompanydd" handleChange={this.Cc_company_handleChange}
+                index='ccCompanyddinbox'
                     onblur="" message="" />
                 <div className="filterWrapper">
                     <Dropdown title="CC Contact" data={this.state.Cc_ContactData} name="ccContactsdd" handleChange={this.Cc_Contact_handleChange}
+                    index='ccContactsddinbox'
                         isMulti="true" message="" />
 
                 </div>
@@ -172,7 +190,7 @@ class SendToInbox extends Component {
         );
     }
 
-    GetData = (url, label, value, currState) => {
+    GetData = (url, label, value, currState,type) => {
         let Data = []
         Api.get(url).then(result => {
             (result).forEach(item => {
@@ -185,9 +203,28 @@ class SendToInbox extends Component {
             });
 
             this.setState({
-                [currState]: [...Data]
+                [currState]: [...Data] 
             });
 
+            switch (type){
+                case 1: 
+                    this.setState({ 
+                        selectedValue: Data[0]
+                    }); 
+                 break;
+
+                case 2:
+                    this.setState({ 
+                        selectedCompanyId: Data[0]
+                    });
+                 break;
+
+                case 3:
+                    this.setState({ 
+                        selectedConatctId: Data[0]
+                    });
+                 break;
+            }
 
         }).catch(ex => {
         });
