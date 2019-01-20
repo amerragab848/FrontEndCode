@@ -1,39 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'; 
 import Resources from '../../resources.json';
 import Api from '../../api';
- //import '../../App.css';
-import "../../Styles/scss/en-us/dashboard.css";
+   
 import Modal from 'react-responsive-modal';
-import BootstrapTable from 'react-bootstrap-table-next';
- 
-const columns = [{
-    dataField: 'id',
-    text: 'Doc Id'
-},
-{
-    dataField: 'subject',
-    text: 'Subject'
-},
-{
-    dataField: 'statusName',
-    text: 'Status Name'
-},
-{
-    dataField: 'projectName',
-    text: 'Project Name'
-},
-{
-    dataField: 'docDate',
-    text: 'Doc Date'
-}
-];
+
+
+
+
 
 var hoverPointer = {
     cursor: 'auto'
 }
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
 
 class Widgets extends Component {
 
@@ -48,11 +27,12 @@ class Widgets extends Component {
 
     componentDidMount() {
         Api.get(this.props.api).then(result => {
-            console.log(result);
             this.setState({
                 value: result
             });
-        });
+        }); 
+
+         
     }
 
     onOpenModal = () => {
@@ -70,27 +50,23 @@ class Widgets extends Component {
         this.setState({ open: false });
     };
 
-
     render() {
         const { open } = this.state;
-        return (
 
+            return (
             <div>
                 <div>
-                    <Modal open={open} onClose={this.onCloseModal} center>
-                       <BootstrapTable keyField='id' data={ this.state.detailsData } columns={ columns } />  
+                    <Modal open={open} onClose={this.onCloseModal} center>              
                     </Modal>
                 </div>
-
                 <div className="summerisItem">
                     <div className="content">
                         <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-                        <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{this.state.value}</p>
+                        <p className="number" style={this.props.isModal === 'true' ? {} : hoverPointer} onClick={this.onOpenModal}>{Api.ConvertNumbers(this.state.value, 2)}</p>
                     </div>
                 </div>
-
             </div>
-        )
+            )
     }
 }
 

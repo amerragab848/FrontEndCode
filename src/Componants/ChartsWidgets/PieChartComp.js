@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import addNoDataModule from 'highcharts/modules/no-data-to-display';
-//import 'bootstrap/dist/css/bootstrap.css';
+import addNoDataModule from 'highcharts/modules/no-data-to-display'; 
 import Api from '../../api';
 import language from '../../resources.json'
 let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');

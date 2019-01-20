@@ -3,6 +3,134 @@
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+
+
+/* 
+sayed exp
+*/
+*, :after, :before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.ui.radio.checkbox{min-height:15px}
+.ui.checkbox {
+  position: relative;
+  display: inline-block;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  outline: none;
+  vertical-align: baseline;
+  font-style: normal;
+  min-height: 17px;
+  font-size: 1rem;
+  line-height: 22px;
+  min-width: 17px;
+}
+.ui.checkbox input.hidden {
+    z-index: -1;
+}
+.ui.checkbox input[type=checkbox],.ui.checkbox input[type=radio]{
+    cursor:pointer;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0!important;
+    outline:0;
+    z-index:3;
+    width:17px;
+    height:17px
+}
+.ui.checkbox input.hidden+label{
+    cursor:pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+.ui.checkbox .box, .ui.checkbox label {
+    cursor: auto;
+    position: relative;
+    display: block;
+    padding-left: 1.85714em;
+    outline: 0;
+    font-size: 1em;
+}
+.ui.checkbox .box:before, .ui.checkbox label:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    content: '';
+    background: #fff;
+    border-radius: .21428571rem;
+    -webkit-transition: border .1s ease,opacity .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
+    transition: border .1s ease,opacity .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
+    transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease;
+    transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
+    border: 1px solid #d4d4d5;
+}
+.ui.radio.checkbox .box:before, .ui.radio.checkbox label:before {
+    content: '';
+    -webkit-transform: none;
+    transform: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 500rem;
+    top: 1px;
+    left: 0;
+}
+.ui.checkbox .box:after, .ui.checkbox label:after {
+    position: absolute;
+    font-size: 14px;
+    top: 0;
+    left: 0;
+    width: 17px;
+    height: 17px;
+    text-align: center;
+    opacity: 0;
+    color: rgba(0,0,0,.87);
+    -webkit-transition: border .1s ease,opacity .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
+    transition: border .1s ease,opacity .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
+    transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease;
+    transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
+}
+.ui.radio.checkbox .box:after, .ui.radio.checkbox label:after {
+    border: none;
+    content: ''!important; 
+    line-height: 15px;
+}
+.ui.radio.checkbox .box:after, .ui.radio.checkbox label:after {
+    top: 1px;
+    left: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 500rem;
+    -webkit-transform: scale(.46666667);
+    transform: scale(.46666667);
+    background-color: rgba(0,0,0,.87);
+}
+.ui.checkbox input:checked~.box:after, .ui.checkbox input:checked~label:after {
+  content: '\e800';
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+/* 
+sayed exm
+*/
+
+
+
 .container {
   margin-right: auto;
   margin-left: auto;
@@ -8459,7 +8587,7 @@ viewer-pdf-toolbar {
 }
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:before {
   border: 2.5px solid #3570e6;
-}
+} 
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:after {
   background-color: #3570e6;
 }
@@ -11652,3 +11780,191 @@ viewer-pdf-toolbar {
   align-items: center;
 }
 /*# sourceMappingURL=layout.css.map */
+  /* new css */
+  .dropWrapper .ui.selection.dropdown {
+    border: none;
+  }
+  .dropWrapper .ui.selection.dropdown:hover {
+    border: none;
+}
+ .dropWrapper .menu.transition.hidden {
+    min-width: 100%;
+  }
+ .dropWrapper .ui.selection.dropdown.singleDropDown {
+    padding: 4px 0;
+}
+.dropWrapper .borderError .css-1aya2g8 {
+  border: 1px solid #d13e2e
+}
+.dropWrapper .borderValid .css-1aya2g8 {
+  border: 1px solid #2AA832;
+}
+.dropWrapper .fillter-item-c {
+  min-width: 45%;
+  margin-bottom: 10px;
+}
+.dropWrapper .filterWrapper {
+  width: 100%;
+}
+.dropWrapper .filterWrapper .fillter-item-c {
+  width: 100%;
+  margin-top: 10px
+}
+.dropWrapper .filterWrapper .fillter-item-c .ui.selection.dropdown.singleDropDown {
+  height: auto;
+}
+.dropWrapper .css-d8oujb {
+  width: 0 !important
+}
+.dropWrapper .css-19bqh2r {
+  width: 15px;
+  height: 18px;
+}
+.dropWrapper .inputDev.ui.input {
+  padding: 4px 0;
+}
+.dropWrapper #lastname1 {
+  background-color: hsl(0,0%,98%);
+  border: 1px solid  hsl(0,0%,80%);
+  min-height: 35px;
+  outline: 0 !important;
+  transition: all 100ms;
+  min-width: 100%;
+  padding-left: 10px;
+  border-radius: 4px
+}
+.dropWrapper {
+  padding: 25PX;
+  display: flex;
+  justify-content: space-between;
+  width: 730px;
+  flex-wrap: wrap;
+}
+.dropWrapper .customD_Menu {
+  width: 100%
+} 
+.dropWrapper .dropBtn {
+  text-align: center;
+  margin-top: 30px;
+  width: 100%;
+}
+.dropWrapper .spanValidation {
+  display: flex;
+  justify-content: space-between;
+}
+.dropWrapper .spanValidation span{
+  padding: 1px;
+  border-radius: 3px;
+  background: #f3e0e0;
+  border: 1px solid #f6e2e3;
+  font-size: 14px;
+  color: #9da3b1;
+}
+.dropWrapper .fullWidthWrapper {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+}
+.dropWrapper .fullWidthWrapper.textLeft{
+  width: 100%;
+  text-align: left;
+  margin: 20px 0;
+}
+.dropWrapper .color.color {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 10px 10px 5px;
+  border-bottom: 1px solid #ebebeb!important;
+  border: none;
+  box-sizing: border-box;
+  margin-top: 22px;
+  box-shadow: none;
+  font-family: Open Sans,sans-serif;
+}
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+  width: 100%
+}
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div{
+  position: relative;
+}
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div >div{
+  z-index: 9;
+}
+.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div::after{
+  content: '';
+  position: absolute;
+  background-image: url(../../images/icons/date-pickericon.svg);
+  right: 10px;
+  background-size: 100% 100%;
+  width: 16px;
+  height: 16px;
+  top: 10px;
+  z-index: 0;
+}
+.customDatepicker .proForm .linebylineInput input {
+  width: 100% !important;
+  text-align: left;
+  height: 40px;
+  border-radius: 4px;
+  border: solid 1px #DADEE6;
+  font-family: font-opens;
+  letter-spacing: -0.2px;
+  color: #3E4352;
+  background-color: #ffffff;
+  font-size: 14px;
+  outline: 0;
+  padding: .67857143em 1em;
+}
+.twoLineHeader {
+  position: relative;
+  display: inline-block;
+}
+.twoLineHeader::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  background-color: #4382f9;
+  right: -70px;
+  top: 12px;
+}
+.twoLineHeader::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  background-color: #4382f9;
+  left: -70px;
+  top: 12px;
+}
+.deleteImg {
+  width: 16px;
+  height: 16px
+}
+/* 
+table edition
+*/
+.dropWrapper .fullWidthWrapper table {
+  border-spacing: 0;
+}
+.dropWrapper .fullWidthWrapper table thead tr th, .dropWrapper .fullWidthWrapper table tbody tr td{
+  border: 1px solid #cccccc;
+  border-left-width: 0;
+  border-bottom-width: 0;
+}
+.dropWrapper .fullWidthWrapper table thead tr th, .dropWrapper .fullWidthWrapper table tbody tr:last-of-type td{
+  border-bottom-width: 1px;
+}
+.dropWrapper .fullWidthWrapper table thead tr th:first-of-type, .dropWrapper .fullWidthWrapper table tbody tr td:first-of-type {
+  border-left-width: 1px;
+}
+/* table th, table td {
+  padding: 0px 8px !important;
+  white-space: unset !important;
+} */
+/* 
+table edition
+*/
