@@ -105,6 +105,5 @@ export default class Api {
         } else {
             return true;
         }
-
     }
 }
