@@ -3,6 +3,7 @@ import DashBoard from  './Pages/DashBoard';
 
 
 let currentLanguage = localStorage.getItem('lang');
+let   Authorization = localStorage.getItem('userToken'); 
 export default class Api {
     static headers() {
         return {
@@ -10,12 +11,16 @@ export default class Api {
             'Content-Type': 'application/json',
             'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
-            'Authorization': 'Bearer RBYirnnWQC_tsVjWYP5lCinxtue2dgZAoOJcSr3AS6BGUsb92bIGGu6eNzreiUfwNZsfSnedKGML1CHOLju4Nax5S-UX3JelXMSIL6Qw9ZQZ7KcWBF2nL2SOO9fap5Kem-CsiN-kRRR_TLG6wzg3mjkEuoBcJXrSQV1eE1JazXzhf0rKH7ymUBdoipHBVyyu3EX_AQ58k-XPEhaqeutkpuSinI3n1YmljKwgP7AV3nb9K4QbNz32OnON-2FgBMmJnTsIdiizfPYtcyDUuH0BpuosVByk6bC5yzcYPeh9AlvCTOWpFGCcV3GlZt9efj3sOE83s_4sY9TIEX9eUSF5uohWhyLw7oEqnsZK88qNHCanzBWdtaPkgprcdVlN1WT85INokJc6fCQg801M_nFbeWhDRxPne9StOQcyN9k2pMwLhsl-'
+            'Authorization': Authorization
         }
     }
 
     static get(route) {
         return this.xhr(route, null, 'GET');
+    }
+    static post(route, params) {
+         
+        return this.xhr(route, params, 'POST');
     }
 
     static xhr(route, params, verb) {
@@ -33,7 +38,13 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-                json = resp.json();
+                json =resp !=null ? resp.json() : "";
+
+                return json;
+            }
+            else if(resp.status==500)
+            {
+                 json = "resp.json()";
 
                 return json;
             }
@@ -91,12 +102,12 @@ export default class Api {
         let userPermissions = [];
         let isCompany = false;
         if (localStorage.getItem("permissions")) {
-            var perms =[];// CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8);
-            userPermissions = JSON.parse(perms);
+           let perms =[3198,3515,3514];// JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
+           userPermissions = perms;
         }
 
         if (isCompany === false) {
-            var isAllowed = userPermissions.indexOf(code);
+            let isAllowed = userPermissions.indexOf(code);
             if (isAllowed > -1) {
                 return true;
             } else {
