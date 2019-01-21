@@ -20,7 +20,7 @@ class InputMelcous extends Component {
                                         <input type="text" className="form-control" id="lastname1"
                                                 placeholder={this.props.placeholderText === null ? Resources[this.props.placeholderText][currentLanguage] : ' '}
                                                 fullwidth={this.props.fullwidth}
-                                                value={this.props.value} defaultValue={this.props.defulatValue}
+                                                value={this.props.value} defaultValue={Resources[this.props.defulatValue][currentLanguage]}
                                                 onChange={this.props.inputChangeHandler}></input>
                                 </div>
                         </div>
