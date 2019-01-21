@@ -1013,7 +1013,6 @@
     "en": "day7",
     "ar": "عدد الساعات"
   },
-
   "timesheetDate": {
     "en": "Time Sheet Date",
     "ar": "تاريخ ساعات العمل"
@@ -2903,7 +2902,6 @@
     "ar": "أجندة الإجتماعات"
   },
   "decisions": {
-
     "en": "Decisions",
     "ar": "قرارات"
   },
@@ -3335,7 +3333,6 @@
     "en": "Contracts",
     "ar": " العقود"
   },
-
   "projectContracts": {
     "en": "Project Contracts",
     "ar": "عقود المشروع"
@@ -4359,7 +4356,6 @@
   "remarks": {
     "en": "Remarks",
     "ar": "ملاحظات"
-
   },
   "procurementTerms": {
     "en": "Procurement Terms",
@@ -6777,7 +6773,6 @@
     "en": " Correspondences",
     "ar": " سجل المراسلات "
   },
-
   "arrangeLevel": {
     "en": "Arrange Level",
     "ar": "الترتيب"
@@ -7645,5 +7640,9 @@
   "createVO": {
     "en": "Create VO",
     "ar": "إنشاء تغيير عقد المقترحة"
+  },
+  "addAnthorContact": {
+    "en": "Add Anthor Contact",
+    "ar": "اضافة عميل اخر"
   }
 }

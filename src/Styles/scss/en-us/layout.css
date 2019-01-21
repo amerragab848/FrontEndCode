@@ -11962,6 +11962,14 @@ table edition
 .dropWrapper .fullWidthWrapper table thead tr th:first-of-type, .dropWrapper .fullWidthWrapper table tbody tr td:first-of-type {
   border-left-width: 1px;
 }
+.fullWidthWrapper .ReactTable >div, .fullWidthWrapper .ReactTable >div .rt-tbody {
+  overflow: visible;
+}
+.fullWidthWrapper .ReactTable >div .rt-tbody div {
+  overflow: visible;
+  white-space: pre-wrap;
+  align-items: center;
+}
 /* table th, table td {
   padding: 0px 8px !important;
   white-space: unset !important;

@@ -90,34 +90,34 @@ class SendTask extends Component {
           
                 <div className="dropWrapper">
                       
-                    <InputMelcous fullwidth='true' title={Resources['subject'][currentLanguage]} 
-                                  placeholderText={Resources['subject'][currentLanguage]} 
-                                  defulatValue={Resources['Task'][currentLanguage]+':'}
+                    <InputMelcous fullwidth='true' title='subject'
+                                  placeholderText='subject'
+                                  defulatValue="''+':'"
                                   inputChangeHandler={this.inputSubjectChangeHandler} />
 
-                    <Dropdown title={Resources['toCompany'][currentLanguage]} 
+                    <Dropdown title='toCompany'
                               data={this.state.ToCompany} handleChange={this.To_company_handleChange}
-                              placeholder={Resources['selectCompany'][currentLanguage]}/>
+                              placeholder='selectCompany'/>
 
-                    <Dropdown title={Resources['ContactName'][currentLanguage]}
+                    <Dropdown title='ContactName'
                               data={this.state.contactData} handleChange={this.Contact_handelChange} 
-                              placeholder={Resources['selectContact'][currentLanguage]}/>
+                              placeholder='selectContact'/>
                    
-                    <DatePicker title={Resources['startDate'][currentLanguage]}  
+                    <DatePicker title='startDate' 
                                 startDate={this.state.sendingData.startDate}
                                 handleChange={this.startDatehandleChange} />
 
-                    <DatePicker title={Resources['finishDate'][currentLanguage]} 
+                    <DatePicker title='finishDate'
                                 startDate={this.state.sendingData.finishDate} 
                                 handleChange={this.finishDatehandleChange} />
 
-                    <InputMelcous title={Resources['estimateTime'][currentLanguage]} 
-                                  placeholderText={Resources['estimateTime'][currentLanguage]} 
+                    <InputMelcous title='estimateTime'
+                                  placeholderText='estimateTime'
                                   inputChangeHandler={this.inputEstimatedTimeChangeHandler} defulatValue='0' />
 
-                    <Dropdown title={Resources['priority'][currentLanguage]} data={this.state.PriorityData}
+                    <Dropdown title='priority' data={this.state.PriorityData}
                               handleChange={this.Priority_handelChange} 
-                              placeholder={Resources['prioritySelect'][currentLanguage]}/>
+                              placeholder='prioritySelect'/>
 
                     <div className="dropBtn">
                         <button className="primaryBtn-1 btn" onClick={this.clickHandler}>
