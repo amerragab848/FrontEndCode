@@ -5,7 +5,7 @@ import InputMelcous from './InputMelcous'
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('lodash')
+//const _ = require('lodash')
 
 class CreateTransmittal extends Component {
     constructor(props) {
