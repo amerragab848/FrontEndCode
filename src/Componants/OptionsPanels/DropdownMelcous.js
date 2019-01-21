@@ -28,7 +28,7 @@ class DropdownMelcous extends Component {
                           //  valueKey={this.props.index}
                             onChange={this.props.handleChange}
                             options={this.props.data}
-                            placeholder={this.props.placeholder===null?'Select ...':this.props.placeholder}
+                            placeholder={this.props.title? Resources[this.props.title][currentLanguage] : ""}
                             isSearchable="true"
                             defaultValue={this.props.selectedValue}
                             isMulti={this.props.isMulti}
