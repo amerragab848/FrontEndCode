@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
 import language from "../../resources.json";
+import Navigate from "../../Navigate";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -10,6 +12,7 @@ let currentLanguage =
 class ApprovedWidget extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       open: false,
       dataList: [],
@@ -26,11 +29,50 @@ class ApprovedWidget extends Component {
     });
   }
 
-  onOpenModal = action => {
-    let modal = this.state.isModal;
-
-    if (modal) {
-      this.setState({ open: true, action: action });
+  onOpenModal = (action, value, id) => {
+    if (value > 0) {
+      if (id == "wt-AssessmentSummary-1") {
+        if (action == 1) {
+          Navigate({
+            pathname: "timeSheetDetails"
+          });
+        } else if (action == 2) {
+          Navigate({
+            pathname: "docApprovalDetails",
+            search: "?action=" + action
+          });
+        } else {
+          Navigate({
+            pathname: "pendingExpensesDetails"
+          });
+        }
+      } else if (id == "wt-InboxSummary-2") {
+        Navigate({
+          pathname: this.props.props.route,
+          search: "?id=" + 0 + "&action=" + action
+        });
+      } else if (id == "wt-DistributionSummary-4") {
+        Navigate({
+          pathname: this.props.props.route,
+          search: "?id=" + 1 + "&action=" + action
+        });
+      } else if (id == "wt-RejecerdItem-7") {
+        if (action == 1) {
+          Navigate({
+            pathname: "docApprovalDetails",
+            search: "?action=" + action
+          });
+        } else if (action == 2) {
+          Navigate({
+            pathname: "docNotifyLogDetails"
+          });
+        }
+      } else {
+        Navigate({
+          pathname: this.props.props.route,
+          search: "?action=" + action
+        });
+      }
     }
   };
 
@@ -60,7 +102,16 @@ class ApprovedWidget extends Component {
         <div className="summerisItem">
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
-            <p className="number" onClick={() => this.onOpenModal(high.action)}>
+            <p
+              className="number"
+              onClick={() =>
+                this.onOpenModal(
+                  high.action,
+                  high[this.props.value],
+                  this.props.id
+                )
+              }
+            >
               {high ? high[this.props.value] : 0}
             </p>
             <p className="status">
@@ -75,7 +126,13 @@ class ApprovedWidget extends Component {
               <div className="first">
                 <span
                   className="mediumModal"
-                  onClick={() => this.onOpenModal(normal.action)}
+                  onClick={() =>
+                    this.onOpenModal(
+                      normal.action,
+                      normal[this.props.value],
+                      this.props.id
+                    )
+                  }
                 >
                   {normal ? normal[this.props.value] : 0}
                 </span>
@@ -86,7 +143,13 @@ class ApprovedWidget extends Component {
               <div>
                 <span
                   className="mediumModal"
-                  onClick={() => this.onOpenModal(low.action)}
+                  onClick={() =>
+                    this.onOpenModal(
+                      low.action,
+                      low[this.props.value],
+                      this.props.id
+                    )
+                  }
                 >
                   {low ? low[this.props.value] : ""}
                 </span>
@@ -100,7 +163,6 @@ class ApprovedWidget extends Component {
   }
 
   render() {
-    console.log(this.props.apiDetails);
     return (
       <div>
         <div>{this.drawThreeCard()}</div>

@@ -102,17 +102,18 @@ class Index extends Component {
   }
 
   renderThreeCard() {
+     
     let ThreeCard = (
       <div className="SummeriesContainer ">
         <div className="SummeriesContainerContent">
           {this.state.threeWidgets.map((panel, i) => {
             return panel.permission ? (
-              <ApprovedWidget
+              <ApprovedWidget 
                 key={panel.id}
                 {...panel}
                 value={panel.props.value}
                 text={panel.props.listType}
-                title={language[panel.title][currentLanguage]}
+                title={language[panel.title][currentLanguage]} 
               />
             ) : null;
           })}

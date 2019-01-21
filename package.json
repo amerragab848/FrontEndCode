@@ -20,6 +20,7 @@
     "react-inputs-validation": "^2.1.4",
     "react-modern-datepicker": "^0.7.1",
     "react-responsive-modal": "^3.5.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "react-select": "^2.2.0",
     "react-select-plus": "^1.0.0-rc.3.patch12",

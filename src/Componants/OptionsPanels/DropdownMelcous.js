@@ -32,7 +32,7 @@ class DropdownMelcous extends Component {
                             value={this.props.selectedValue}
                             onChange={this.props.handleChange}
                             options={this.props.data}
-                            placeholder={props.placeholder===null?'Select ...':props.placeholder}
+                            placeholder={this.props.placeholder===null?'Select ...':this.props.placeholder}
                             isSearchable="true"
                             isMulti={this.props.isMulti}
                             onBlur={this.props.onblur} 

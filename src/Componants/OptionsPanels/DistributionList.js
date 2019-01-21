@@ -12,8 +12,6 @@ import 'rc-table/assets/animation.css';
 
 
 import moment from 'moment';
-import Index from '../Index';
-const _ = require('lodash')
 const AnimateBody = props => <Animate transitionName="move" component="tbody" {...props} />;
 class DistributionList extends Component {
     constructor(props) {
@@ -26,10 +24,10 @@ class DistributionList extends Component {
                     dataIndex: '',
                     key: 'e',
                     render: (text, record) => (
-                        <a onClick={e => this.onDelete(record.key, e)} href="#">
+                        <a onClick={e => this.onDelete(record.key, e)} href={'/#'}>
                             <img className="deleteImg" src={Recycle} alt="Del" />
                         </a>
-                    ),
+                    )
                 },
                 { title: 'Action', dataIndex: 'a', key: 'a' },
                 { title: 'Company Name', dataIndex: 'b', key: 'b' },
@@ -211,6 +209,7 @@ class DistributionList extends Component {
 
                 //   ]([, item['contactId'],
                 //         item['contactName'], item['action'])
+                return 0;
             })
 
             this.setState({

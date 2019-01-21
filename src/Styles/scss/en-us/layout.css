@@ -1431,7 +1431,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }*/
 .zero {
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
 }
 
 body {
@@ -4354,6 +4354,10 @@ ul {
   background: inherit;
   border: none;
   padding: 0;
+  text-align: right;
+}
+.ui.modal > .actions .btn.smallBtn{
+  margin-left: 5px;
 }
 
 .modalBtn {
@@ -4371,6 +4375,7 @@ ul {
 /*Medium Modal*/
 .ui.modal.mediumModal {
   max-width: 600px;
+  background: #fff;
 }
 .ui.modal.mediumModal .content {
   padding-bottom: 30px;
