@@ -18,9 +18,10 @@ class InputMelcous extends Component {
                                 <label className="control-label">{Resources[this.props.title][currentLanguage]}</label>
                                 <div className="inputDev ui input">
                                         <input type="text" className="form-control" id="lastname1"
-                                                placeholder={this.props.placeholderText === null ? Resources[this.props.placeholderText][currentLanguage] : ' '}
+                                                placeholder={this.props.placeholderText === null ?' ' : Resources[this.props.placeholderText][currentLanguage] }
                                                 fullwidth={this.props.fullwidth}
-                                                value={this.props.value} defaultValue={Resources[this.props.defulatValue][currentLanguage]}
+                                                value={this.props.value} 
+                                                defaultValue={this.props.defaultValue}
                                                 onChange={this.props.inputChangeHandler}></input>
                                 </div>
                         </div>

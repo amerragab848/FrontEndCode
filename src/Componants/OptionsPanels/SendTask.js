@@ -92,7 +92,7 @@ class SendTask extends Component {
                       
                     <InputMelcous fullwidth='true' title='subject'
                                   placeholderText='subject'
-                                  defulatValue="''+':'"
+                                  defaultValue={Resources['Task'][currentLanguage]+':'}
                                   inputChangeHandler={this.inputSubjectChangeHandler} />
 
                     <Dropdown title='toCompany'
@@ -113,7 +113,7 @@ class SendTask extends Component {
 
                     <InputMelcous title='estimateTime'
                                   placeholderText='estimateTime'
-                                  inputChangeHandler={this.inputEstimatedTimeChangeHandler} defulatValue='0' />
+                                  inputChangeHandler={this.inputEstimatedTimeChangeHandler} defaultValue='0' />
 
                     <Dropdown title='priority' data={this.state.PriorityData}
                               handleChange={this.Priority_handelChange} 
