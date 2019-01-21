@@ -16,9 +16,9 @@ class SendTask extends Component {
         super(props)
         this.state = {
             sendingData: {              
-                docId: "969",
+                docId: "183",
                 arrange: "1",
-                docTypeId: '19',
+                docTypeId: '64',
                 bicContactId: "",
                 bicCompanyId: "",
                 Subject: "",
@@ -26,9 +26,10 @@ class SendTask extends Component {
                 status: true,
                 startDate: moment(),
                 finishDate: moment(),
-                estimateTime: ""
+                estimateTime: "",
+                projectId: "4330",
             },
-            projectId: "4330",
+           
             PriorityData: [],
             ToCompany: [],
             contactData: []
@@ -37,7 +38,7 @@ class SendTask extends Component {
     }
 
     componentDidMount = () => {
-        let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId;
+        let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
         
