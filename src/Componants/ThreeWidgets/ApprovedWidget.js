@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import React, { Component } from "react"; 
 import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
@@ -31,12 +30,12 @@ class ApprovedWidget extends Component {
 
   onOpenModal = (action, value, id) => {
     if (value > 0) {
-      if (id == "wt-AssessmentSummary-1") {
-        if (action == 1) {
+      if (id === "wt-AssessmentSummary-1") {
+        if (action === 1) {
           Navigate({
             pathname: "timeSheetDetails"
           });
-        } else if (action == 2) {
+        } else if (action === 2) {
           Navigate({
             pathname: "docApprovalDetails",
             search: "?action=" + action
@@ -46,31 +45,23 @@ class ApprovedWidget extends Component {
             pathname: "pendingExpensesDetails"
           });
         }
-      } else if (id == "wt-InboxSummary-2") {
-        Navigate({
-          pathname: this.props.props.route,
-          search: "?id=" + 0 + "&action=" + action
-        });
-      } else if (id == "wt-DistributionSummary-4") {
-        Navigate({
-          pathname: this.props.props.route,
-          search: "?id=" + 1 + "&action=" + action
-        });
-      } else if (id == "wt-RejecerdItem-7") {
-        if (action == 1) {
+      }  else if (id === "wt-RejecerdItem-7") {
+        if (action === 1) {
           Navigate({
             pathname: "docApprovalDetails",
             search: "?action=" + action
           });
-        } else if (action == 2) {
+        } else if (action === 2) {
           Navigate({
             pathname: "docNotifyLogDetails"
           });
         }
       } else {
+
+        let pathname = this.props.props.route + action;
+
         Navigate({
-          pathname: this.props.props.route,
-          search: "?action=" + action
+          pathname: pathname
         });
       }
     }

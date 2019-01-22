@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import Api from "../../api";
 
 class NotCodedExpensesSummaryDetails extends Component {
-  state = { action: null };
 
   componentDidMount() {
+
+    console.log("componentDidMount");
+
     const query = new URLSearchParams(this.props.location.search);
 
     let action = null;
@@ -23,10 +25,12 @@ class NotCodedExpensesSummaryDetails extends Component {
   }
 
   render() {
+
+    console.log("render");
+
     return (
       <div>
-        <p>this is NotCodedExpensesSummaryDetails</p>
-        <span>{this.state.action}</span>
+        <p>this is NotCodedExpensesSummaryDetails</p> 
       </div>
     );
   }

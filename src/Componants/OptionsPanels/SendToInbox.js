@@ -3,6 +3,8 @@ import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
 import validations from './validationRules'; 
+import Resources from '../../resources.json';
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
 
@@ -30,7 +32,6 @@ class SendToInbox extends Component {
             selectedValue:{ label: "select Perioity" , value: 0 },
             selectedCompanyId:{label: "select To Company" , value: 0},
             selectedConatctId:{label: "select To Contact" , value: 0},
-
             selectedCCCompanyId:{label: "select CC Company" , value: 0}, 
 
             PriorityData: [],
@@ -159,31 +160,31 @@ class SendToInbox extends Component {
     render() {
         return (
             <div className="dropWrapper">
-                <Dropdown title="Priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange} selectedValue={this.state.selectedValue}
+                <Dropdown title="priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange} selectedValue={this.state.selectedValue}
                     index='Priorityddinbox'
                     className={this.state.priorityClass} message={this.state.priorityErrorMess} />
 
-                <InputMelcous title="Comment" value="add comment" inputChangeHandler={this.inputChangeHandler} />
+                <InputMelcous title="comments" value="add comment" inputChangeHandler={this.inputChangeHandler} />
 
-                <Dropdown title="To Company" data={this.state.To_Cc_CompanyData} name="toCompanydd"  selectedValue={this.state.selectedCompanyId} handleChange={this.To_company_handleChange}
+                <Dropdown title="toCompanyName" data={this.state.To_Cc_CompanyData} name="toCompanydd"  selectedValue={this.state.selectedCompanyId} handleChange={this.To_company_handleChange}
                 index='toCompanyddinbox'
                     className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} />
 
-                <Dropdown title="Attention" data={this.state.AttentionData} name="toContactdd" selectedValue={this.state.selectedConatctId}  handleChange={this.Attention_handleChange}
+                <Dropdown title="ToContact" data={this.state.AttentionData} name="toContactdd" selectedValue={this.state.selectedConatctId}  handleChange={this.Attention_handleChange}
                 index='Attentionddinbox'
                      className={this.state.attentionClass} message={this.state.attentionErrorMess} />
 
-                <Dropdown title="CC Company" data={this.state.To_Cc_CompanyData} name="ccCompanydd" handleChange={this.Cc_company_handleChange}
+                <Dropdown title="ccCompany" data={this.state.To_Cc_CompanyData} name="ccCompanydd" handleChange={this.Cc_company_handleChange}
                 index='ccCompanyddinbox'
                     onblur="" message="" />
                 <div className="filterWrapper">
-                    <Dropdown title="CC Contact" data={this.state.Cc_ContactData} name="ccContactsdd" handleChange={this.Cc_Contact_handleChange}
+                    <Dropdown title="ccContact" data={this.state.Cc_ContactData} name="ccContactsdd" handleChange={this.Cc_Contact_handleChange}
                     index='ccContactsddinbox'
                         isMulti="true" message="" />
 
                 </div>
                 <div className="dropBtn">
-                    <button className="primaryBtn-1 btn" onClick={this.clickHandler}>Submit</button>
+                    <button className="primaryBtn-1 btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
                 </div>
             </div>
 

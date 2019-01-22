@@ -1,34 +1,31 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import queryString from "query-string";
 
 class DistributionInboxListSummaryDetails extends Component {
-  state = { action: null };
-
   componentDidMount() {
-    const query = new URLSearchParams(this.props.location.search);
+    //  const query = new URLSearchParams(this.props.location.search);
 
-    let action = null;
-    let id = null;
+    const query = queryString.parse(this.props.location.search);
 
-    let index = 0;
-    for (let param of query.entries()) {
-      index === 0 ? (id = param[1]) : (action = param[1]);
-      index++;
-    }
-
+    let id = query["id"];
+    let action = query["action"];
+    
     if (id === "0") {
       if (action) {
-        Api.get(
-          "GetDocApprovalDetailsInbox?action=" +action).then(result => {
+        Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
           console.log(result);
         });
       }
-    }else {
+    } else {
       if (action) {
         Api.get(
           "GetDocApprovalDetailsDistriburtionList?action=" +
             action +
-            "&pageNumber=" + 0 +"&pageSize="+200
+            "&pageNumber=" +
+            0 +
+            "&pageSize=" +
+            200
         ).then(result => {
           console.log(result);
         });
@@ -40,7 +37,6 @@ class DistributionInboxListSummaryDetails extends Component {
     return (
       <div>
         <p> this is distributionInboxListSummaryDetails</p>
-        <span>{this.state.action}</span>
       </div>
     );
   }
