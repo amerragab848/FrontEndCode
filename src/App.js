@@ -7,6 +7,7 @@ import SendTask from  './Componants/OptionsPanels/SendTask';
 
 //import DistributionList from  './Componants/OptionsPanels/DistributionList';
 //import DashBoard from  './Pages/DashBoard'; 
+import Letter from  './Pages/Communication/Letter'; 
 
 class App extends Component {
   render() {
@@ -15,7 +16,7 @@ class App extends Component {
     	///test
       //<SendToInbox /> 
     // <DashBoard/>
-   <CreateTransmittal/>
+   <Letter/>
   //<SendTask/>
      //<DistributionList /> 
     );
