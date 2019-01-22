@@ -85,7 +85,7 @@ class CreateTransmittal extends Component {
                         <div className="dropWrapper">  
 
                             <div className="fullWidthWrapper">
-                                <h2 class="headCustom">{Resources['createTransmittal'][currentLanguage]}</h2>
+                                <h2 className="headCustom">{Resources['createTransmittal'][currentLanguage]}</h2>
                             </div>
 
                             <InputMelcous  title='subject'

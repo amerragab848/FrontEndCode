@@ -15,7 +15,7 @@ class App extends Component {
     	///test
       //<SendToInbox /> 
     <DashBoard/>
-  // <CreateTransmittal/>
+  //<CreateTransmittal/>
     //<SendTask/>
      //<DistributionList /> 
     );
