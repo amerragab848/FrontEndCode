@@ -4,21 +4,19 @@ import "./Styles/scss/en-us/layout.css";
 //sayed
 import CreateTransmittal from  './Componants/OptionsPanels/CreateTransmittal';
 import SendTask from  './Componants/OptionsPanels/SendTask';
-
-//import DistributionList from  './Componants/OptionsPanels/DistributionList';
-//import DashBoard from  './Pages/DashBoard'; 
-import Letter from  './Pages/Communication/Letter'; 
+ 
+import Letter from  './Pages/Communication/Letter';  
+import DashBoard from  './Pages/DashBoard';  
 
 class App extends Component {
   render() {
   	 
     return (
     	///test
-      //<SendToInbox /> 
+      //<SendToInbox />  
     // <DashBoard/>
    <Letter/>
-  //<SendTask/>
-     //<DistributionList /> 
+  //<SendTask/> 
     );
   }
 }
