@@ -110,6 +110,14 @@ class GridSetup extends Component {
     return selectors.getRows({ rows, filters });
   }
 
+  // rowGetter(i) {
+  //     let row = this.state.rows[i]; 
+  //     if (row) { 
+  //         let doc_view=row.id +'/'+row.projectId + '/' + row.projectName; 
+  //         row.doc_view =  doc_view; 
+  //     }
+  //     return row;
+  // }
   render() {  
 
       //const [filters, setFilters] = useState({});
@@ -119,7 +127,7 @@ class GridSetup extends Component {
           <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
               <ReactDataGrid
                 columns={this.state.columns}
-                rowGetter={i => this.state.rows[i]}
+                rowGetter={i => this.state.rows[i]} 
                 rowsCount={this.state.rows.length} 
                 enableCellSelect={false}
                 onColumnResize={(idx, width) =>
