@@ -138,8 +138,9 @@ sayed exp
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-
-
+.mainContainer {
+  background-image: linear-gradient(to bottom,#f5f5f6 100%,#f5f5f6 26%,#fafbfc 0%,#fafbfc 0%);
+}
 
 
 
@@ -11997,6 +11998,43 @@ table edition
   white-space: pre-wrap;
   align-items: center;
 }
+
+
+
+/* sla7 22/1/2019*/
+.gridfillter-container .fillter-status-container .fillter-status {
+  width: 170px;
+}
+.gridfillter-container .fillter-status-container .fillter-item-c {
+  margin-bottom: 0 !important;
+}
+.mainContainer .ui.fluid.selection.dropdown.singleDropDown {
+  padding: 0;
+}
+.mainContainer .customD_Menu >div >div >div {
+  padding: 0;
+}
+.mainContainer .customD_Menu >div >div >div >div  {
+  white-space: nowrap;
+}
+.mainContainer .customD_Menu {
+  width: 100%;
+}
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+  display: block;
+}
+.filterHidden {
+  overflow: hidden;
+}
+.gridfillter-container {
+  transition: all 0.4s ease-in-out
+}
+/* .mainContainer .customD_Menu div {
+  padding: 0;
+} */
+/* .mainContainer .customD_Menu div span{
+  width: 0;
+} */
 /* table th, table td {
   padding: 0px 8px !important;
   white-space: unset !important;

@@ -90,7 +90,7 @@ class SendTask extends Component {
 
             <div className="dropWrapper">
                 <div className="fullWidthWrapper">
-                    <h2 class="headCustom">{Resources['sendTask'][currentLanguage]}</h2>
+                    <h2 className="headCustom">{Resources['sendTask'][currentLanguage]}</h2>
                 </div>
 
                 <InputMelcous fullwidth='true' title='subject'
