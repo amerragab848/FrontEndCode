@@ -22,26 +22,12 @@ class SendWorkFlow extends Component {
                 workFlowId: "", 
                 toAccountId:"",
                 dueDate: ""
-            },
-
-
+            }, 
             selectedWorkFlow:{ label: "select WorkFlow" , value: 0 },
             selectedApproveId:{label: "select To Contact" , value: 0}, 
 
             WorkFlowData: [],
-            WorkFlowContactData: [], 
-
-            validPriority: false,
-            priorityErrorMess: "",
-            priorityClass: "",
-
-            validToCompany: false,
-            toCompanyErrorMess: "",
-            toCompanyClass: "",
-
-            validAttention: false,
-            attentionErrorMess: "",
-            attentionClass: ""
+            WorkFlowContactData: []
         }
     }
 
