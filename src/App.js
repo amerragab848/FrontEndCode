@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./Styles/scss/en-us/layout.css"; 
 import SendToInbox from  './Componants/OptionsPanels/SendToInbox';
+import SendWorkFlow from  './Componants/OptionsPanels/SendWorkFlow';
 //sayed
 import CreateTransmittal from  './Componants/OptionsPanels/CreateTransmittal';
 import SendTask from  './Componants/OptionsPanels/SendTask';
@@ -13,7 +14,7 @@ class App extends Component {
   	 
     return (
     	///test
-      <SendToInbox />  
+      <SendWorkFlow />  
     // <DashBoard/>
    //<Letter/>
   //<SendTask/> 
