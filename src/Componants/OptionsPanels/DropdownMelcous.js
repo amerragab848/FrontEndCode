@@ -5,8 +5,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 class DropdownMelcous extends Component {
     constructor(props) {
-        super(props)
-
+        super(props) 
     }
 
     render() {
@@ -24,11 +23,10 @@ class DropdownMelcous extends Component {
                     <div className="customD_Menu" style={{ outline: "none" }}>
                         <Select key={this.props.index} ref={this.props.index}
                             name="form-field-name"
-                              value={this.props.selectedValue}
-                          //  valueKey={this.props.index}
+                            value={this.props.selectedValue} 
                             onChange={this.props.handleChange}
                             options={this.props.data}
-                            placeholder={this.props.placeholder===null?'Select ...': Resources[this.props.placeholder][currentLanguage]}
+                            placeholder={this.props.placeholder === null ? 'Select ...' : Resources.pleaseSelect[currentLanguage]}
                             isSearchable="true"
                             defaultValue={this.props.selectedValue}
                             isMulti={this.props.isMulti}
