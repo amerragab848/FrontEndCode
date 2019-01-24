@@ -3,30 +3,55 @@ import Api from "../../api";
 import "../../Styles/scss/en-us/layout.css";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
+import GridSetup from "../../Pages/Communication/GridSetup";
+import { Toolbar, Data, Filters } from "react-data-grid-addons";
+const {
+  NumericFilter,
+  AutoCompleteFilter,
+  MultiSelectFilter,
+  SingleSelectFilter
+} = Filters;
+
 class TimeSheetDetails extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      viewfilter: true
-    };
-  }
+    var columnsGrid = [
+      {
+        key: "requestCount",
+        name: "requestCount",
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "requestFromUserName",
+        name: "fromContact",
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "companyName",
+        name: "fromCompany",
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      }
+    ];
 
-  componentDidMount() {
-    // Api.get("GetApprovalRequestsGroupByUserId?requestType=timeSheet").then(
-    //   result => {
-    //     console.log(result);
-    //   }
-    // );
-  }
-
-  hideFilter(value) {
-    this.setState({ viewfilter: !this.state.viewfilter });
-
-    return this.state.viewfilter;
-  }
-
-  render() {
     const filtersColumns = [
       {
         field: "requestCount",
@@ -45,8 +70,55 @@ class TimeSheetDetails extends Component {
         name: "fromCompany",
         type: "string",
         isCustom: true
+      },
+      {
+        field: "status",
+        name: "fromCompany",
+        type: "toggle",
+        trueLabel:"oppened",
+        falseLabel:"closed",
+        isCustom: true
+      },
+      {
+        field: "requireDate",
+        name: "fromCompany",
+        type: "date",
+        isCustom: true
       }
     ];
+
+    this.state = {
+      viewfilter: true,
+      columns: columnsGrid,
+      isLoading: true,
+      rows: [],
+      filtersColumns:filtersColumns
+    };
+  }
+
+  componentWillMount() {
+    Api.get("GetApprovalRequestsGroupByUserId?requestType=timeSheet").then(
+      result => {
+        this.setState({
+          rows: result,
+          isLoading: false
+        });
+      }
+    );
+  }
+
+  hideFilter(value) {
+    this.setState({ viewfilter: !this.state.viewfilter });
+
+    return this.state.viewfilter;
+  }
+   
+  render() {
+ 
+    const dataGrid =
+      this.state.isLoading === false ? (
+        <GridSetup rows={this.state.rows} columns={this.state.columns} />
+      ) : null;
 
     return (
       <div className="mainContainer">
@@ -119,13 +191,12 @@ class TimeSheetDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-            <button className="primaryBtn-1 btn mediumBtn">NEW</button>
+            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button> 
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
-              <span>0</span> -<span>30</span> of
-              <span>156</span>
+              <span>0</span> - <span>30</span> of
+              <span> 156</span>
             </div>
             <button className="rowunActive">
               <i className="angle left icon" />
@@ -135,16 +206,19 @@ class TimeSheetDetails extends Component {
             </button>
           </div>
         </div>
-        <div className="filterHidden">
-          <div
-            className="gridfillter-container"
-            style={{
-              transform: this.state.viewfilter ? "" : "translateY(-100%)"
-            }}
-          >
-            <Filter filtersColumns={filtersColumns} apiFilter="" />
+        <div
+          className="filterHidden"
+          style={{
+            maxHeight: this.state.viewfilter ? "" : "0px",
+            overflow: this.state.viewfilter ? '' : 'hidden'
+          }}
+        >
+          <div className="gridfillter-container">
+            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
           </div>
         </div>
+
+        <div>{dataGrid}</div>
       </div>
     );
   }

@@ -138,9 +138,6 @@ sayed exp
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.mainContainer {
-  background-image: linear-gradient(to bottom,#f5f5f6 100%,#f5f5f6 26%,#fafbfc 0%,#fafbfc 0%);
-}
 
 
 
@@ -12008,6 +12005,9 @@ table edition
 .gridfillter-container .fillter-status-container .fillter-item-c {
   margin-bottom: 0 !important;
 }
+.mainContainer {
+  background-image: linear-gradient(to bottom,#f5f5f6 100%,#f5f5f6 26%,#fafbfc 0%,#fafbfc 0%);
+}
 .mainContainer .ui.fluid.selection.dropdown.singleDropDown {
   padding: 0;
 }
@@ -12016,18 +12016,70 @@ table edition
 }
 .mainContainer .customD_Menu >div >div >div >div  {
   white-space: nowrap;
+  padding-left: 12px;
 }
 .mainContainer .customD_Menu {
   width: 100%;
+}
+.mainContainer .customD_Menu div{
+  border-width: 0;
+  outline: 0
+}
+.mainContainer .customD_Menu div:hover{
+  border: none;
+  box-shadow: none;
+  outline: 0;
+
 }
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
 }
 .filterHidden {
-  overflow: hidden;
+  transition: all 0.4s ease-in-out;
+  max-height: 250px;
 }
 .gridfillter-container {
-  transition: all 0.4s ease-in-out
+  transition: all 0.4s ease-in-out;
+}
+.spinner {
+  width: 100%;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 12px;
+  height: 12px;
+  margin: 0 2px;
+  background-color: #333;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
 }
 /* .mainContainer .customD_Menu div {
   padding: 0;
