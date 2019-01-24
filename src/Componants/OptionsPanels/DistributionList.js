@@ -1,4 +1,4 @@
-
+//////////important note  version of anthor implmentation for this component is pushed with commit No. (5f09adf)////////////
 import React, { Component } from 'react'
 import Api from '../../api';
 import Dropdown from "./DropdownMelcous";
@@ -7,11 +7,13 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import moment from 'moment';
-
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
+
+
+
 class DistributionList extends Component {
     constructor(props) {
         super(props)
@@ -55,25 +57,24 @@ class DistributionList extends Component {
             data.push({
                 companyId: this.state.selectedCompany.value, companyName: this.state.selectedCompany.label,
                 contactId: this.state.selectedConstact.value, contactName: this.state.selectedConstact.label, action: 0,
-                SelectedAction: { label: "For Information", value: 0 }
+
 
             });
+            let state = { sendingData: { ...this.state.sendingData, itemContacts: data } };
+            state[this.state.selectedConstact.value + '-drop'] = this.state.ActionData[3];
+            this.setState(state);
 
-            this.setState({
-                sendingData: { ...this.state.sendingData, itemContacts: data },
-                selectedCompany: null,
-                selectedConstact: null
-            });
         }
     }
 
     Company_handleChange = (item) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
+
         this.GetData(url, "contactName", "id", "ContactNameData");
+
         this.setState({
             selectedCompany: item
         });
-
     }
     Contact_handleChange = (item) => {
         this.setState({
@@ -82,24 +83,26 @@ class DistributionList extends Component {
     }
 
     actionHandler = (key, e) => {
-        const data = this.state.sendingData.itemContacts.filter(function (item) {
-            if (item.contactId === key) {
-                item.SelectedAction = e
-                item.action = e.value
-            }
-            return item
-        });
-
-        this.setState({
-            sendingData: { ...this.state.sendingData, itemContacts: data }
-        });
-
+        let state = {};
+        state[key + '-drop'] = e;
+        this.setState(state);
     }
 
     DistributionHanleChange = (item) => {
+
+        console.log(item)
+        
         let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
         this.GetDistributionData(url);
-        this.setState({ sendingData: { ...this.state.sendingData, DistributionListId: item.value } })
+        setTimeout(() => {
+            let state = { sendingData: { ...this.state.sendingData, DistributionListId: item.value } };
+
+            this.state.sendingData.itemContacts.forEach((it) => {
+                state[it.contactId + '-drop'] = this.state.ActionData[3];
+            });
+
+            this.setState(state);
+        }, 500);
 
     }
 
@@ -127,22 +130,24 @@ class DistributionList extends Component {
     }
 
     submitBtnHandler = () => {
-        /// const currentRecords = this.selectTable.getResolvedState().sortedData;
         let tempData = this.state.sendingData.itemContacts.map(item => {
             return {
                 companyId: item['companyId'], contactId: item['contactId'], companyName: item['companyName'],
-                contactName: item['contactName'], action: ['action']
+                contactName: item['contactName'], action: this.state[item['contactId'] + '-drop'].value
             }
         })
-
         this.setState({
             sendingData: { ...this.state.sendingData, itemContacts: tempData }
         })
-        Api.post("SnedToDistributionList", this.state.sendingData)
+        setTimeout(() => {
+
+            Api.post("SnedToDistributionList", this.state.sendingData)
+        }, 500)
 
     }
 
     render() {
+
         const columns = [
             {
                 Cell: props => {
@@ -182,7 +187,7 @@ class DistributionList extends Component {
                 accessor: 'action',
                 Cell: props => {
                     return (<Dropdown title="" data={this.state.ActionData} handleChange={e => this.actionHandler(props.original.contactId, e)}
-                        selectedValue={props.original.SelectedAction} index={Date.now()} />)
+                        selectedValue={this.state[props.original.contactId + '-drop']} index={Date.now()} />)
                 },
                 width: 200
 
@@ -191,8 +196,10 @@ class DistributionList extends Component {
 
         return (
             <div className="dropWrapper">
-                <Dropdown title="distributionList" data={this.state.DistributionListDate} handleChange={this.DistributionHanleChange}
+
+                <Dropdown name="color" title="distributionList" data={this.state.DistributionListDate} handleChange={this.DistributionHanleChange}
                     index='Distribution' />
+
 
                 <DatePicker startDate={this.state.sendingData.RequiredDate} handleChange={this.DatehandleChange} />
 
@@ -229,6 +236,8 @@ class DistributionList extends Component {
                 <div className="fullWidthWrapper">
                     <button className="primaryBtn-1 btn" onClick={this.submitBtnHandler}>{Resources['send'][currentLanguage]}</button>
                 </div>
+
+
             </div>
 
         );
