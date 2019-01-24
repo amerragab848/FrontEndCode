@@ -4,7 +4,7 @@ function DatePicker(props) {
 
     return (
         <div className="customDatepicker fillter-status fillter-item-c "> 
-            <form className="proForm datepickerContainer"> 
+            <div className="proForm datepickerContainer"> 
             <label className="control-label">{props.title}</label>
                 <div className="linebylineInput">
                     <div className="inputDev ui input input-group date NormalInputDate">
@@ -17,7 +17,7 @@ function DatePicker(props) {
                         />
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
 
 

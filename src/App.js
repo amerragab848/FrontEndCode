@@ -7,6 +7,11 @@ import SendTask from  './Componants/OptionsPanels/SendTask';
 
 import DistributionList from  './Componants/OptionsPanels/DistributionList';
 import DashBoard from  './Pages/DashBoard'; 
+import ViewAttachment from './Componants/OptionsPanels/ViewAttachmments'
+import Validation from './Componants/OptionsPanels/validationRules'
+import SendToWorkflow from './Componants/OptionsPanels/SendWorkFlow'
+
+import Upload from './Componants/OptionsPanels/UploadAttachment'
 
 class App extends Component {
   render() {
@@ -17,8 +22,13 @@ class App extends Component {
     // <DashBoard/>
    //<CreateTransmittal/>
   // <SendTask/>
-     <DistributionList /> 
-    );
+   //  <DistributionList /> 
+//<ViewAttachment />
+//<Validation />
+<Upload />
+
+
+     );
   }
 }
 
