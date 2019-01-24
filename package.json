@@ -8,14 +8,20 @@
     "formik": "^1.4.2",
     "highcharts": "^7.0.1",
     "highcharts-react-official": "^2.0.0",
+<<<<<<< HEAD
     "lodash": "^4.17.11",
     "material-ui": "^0.20.2",
+=======
+    "immutable": "^4.0.0-rc.12",
+>>>>>>> c77d6e517e0ebaace9f32cf53cfa74371a08b0ac
     "moment": "^2.23.0",
     "rc-animate": "^2.6.0",
     "rc-table": "^6.4.3",
     "react": "^16.6.3",
     "react-bootstrap-table-next": "^2.0.1",
     "react-calendar": "^2.17.5",
+    "react-data-grid": "^5.0.5",
+    "react-data-grid-addons": "^5.0.5",
     "react-date-picker": "^7.1.1",
     "react-datepicker": "^2.0.0",
     "react-dom": "^16.6.3",

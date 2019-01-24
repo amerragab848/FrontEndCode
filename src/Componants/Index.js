@@ -7,7 +7,7 @@ import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
 
 import language from "../resources.json";
-  
+//import '../Styles/css/semantic.min.css';
 import Api from '../api';
 let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
  

@@ -56,7 +56,7 @@ class WidgetsWithText extends Component {
                     <div className="content">
                         <h4 className="title" >{Resources[this.props.title][currentLanguage]}</h4>
                         <p className="number" onClick={this.onOpenModal}>{this.state.count}
-                            <sub>Out Of {Api.ConvertNumbers(this.state.total, 2)}</sub>
+                            <sub>Out Of {this.state.total}</sub>
                         </p>
                     </div>
                 </div>

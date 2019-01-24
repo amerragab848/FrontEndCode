@@ -5,7 +5,7 @@ import InputMelcous from './InputMelcous'
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('lodash')
+//const _ = require('lodash')
 
 class CreateTransmittal extends Component {
     constructor(props) {
@@ -84,25 +84,29 @@ class CreateTransmittal extends Component {
             return (
                         <div className="dropWrapper">  
 
-                            <InputMelcous  title={Resources['subject'][currentLanguage]} 
-                                           placeholderText={Resources['subject'][currentLanguage]}
+                            <div className="fullWidthWrapper">
+                                <h2 className="headCustom">{Resources['createTransmittal'][currentLanguage]}</h2>
+                            </div>
+
+                            <InputMelcous  title='subject'
+                                           placeholderText='subject'
                                            fullwidth='true' inputChangeHandler={this.inputChangeHandler} />
 
-                            <Dropdown title={Resources['toCompany'][currentLanguage]} 
+                            <Dropdown title='toCompany'
                                       data={this.state.ToCompany} handleChange={this.To_company_handleChange}
-                                      placeholder={Resources['selectCompany'][currentLanguage]} />
+                                      placeholder='selectCompany' />
 
-                            <Dropdown title={Resources['ToContact'][currentLanguage]}
+                            <Dropdown title='ToContact'
                                       data={this.state.AttentionData} handleChange={this.Attention_handleChange} 
-                                      placeholder={Resources['selectContact'][currentLanguage]}/>
+                                      placeholder='selectContact'/>
 
-                            <Dropdown title={Resources['priority'][currentLanguage]}
+                            <Dropdown title='priority'
                                       data={this.state.PriorityData} handleChange={this.Priority_handelChange} 
-                                      placeholder={Resources['prioritySelect'][currentLanguage]}/>
+                                      placeholder='prioritySelect'/>
 
-                            <Dropdown title={Resources['submittedFor'][currentLanguage]}
+                            <Dropdown title='submittedFor'
                                       data={this.state.SubmittedForData} handleChange={this.SubmittedFor_handelChange}
-                                      placeholder={Resources['submittedForSelect'][currentLanguage]} />
+                                      placeholder='submittedForSelect' />
 
                             <form className="proForm">
                                 <div className="linebylineInput">

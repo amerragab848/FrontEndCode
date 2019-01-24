@@ -6,7 +6,7 @@
 
 
 /* 
-sayed exp
+sayed exp 
 */
 *, :after, :before {
   -webkit-box-sizing: border-box;
@@ -11429,6 +11429,7 @@ viewer-pdf-toolbar {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  transform: none;
 }
 .ui.selection.dropdown.singleDropDown .text {
   background: #e9edf2;

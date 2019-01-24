@@ -18,7 +18,7 @@ class App extends Component {
   	 
     return (
     	///test
-      //<SendToInbox /> 
+    // <SendToInbox />  
     // <DashBoard/>
    //<CreateTransmittal/>
   // <SendTask/>
@@ -27,8 +27,7 @@ class App extends Component {
 //<Validation />
 <Upload />
 
-
-     );
+    )
   }
 }
 
