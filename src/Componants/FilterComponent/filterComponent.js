@@ -21,19 +21,19 @@ class FilterComponent extends Component {
       isLoading: false
     };
 
-    let newState = {};
+    let state = {};
 
     this.state.filtersColumns.map((column, index) => {
       if (column.type === "date") {
-        console.log(index + "-column");
-        newState[index + "-column"] = moment();
-      }  
+        state[index + "-column"] = moment();
+      }
     });
-
-    this.setState(newState);
+    setTimeout(() => {
+      this.setState(state);
+    }, 500);
   }
 
-  getValueHandler(event, type, field) {
+  getValueHandler(event, type, field, indexx) {
     var obj = {};
 
     if (type === "toggle") {
@@ -44,6 +44,11 @@ class FilterComponent extends Component {
       obj.field = field;
       obj.value = event;
       obj.type = type;
+
+      let state = {};
+      this.state[indexx + "-column"] = event;
+      this.setState(state);
+   
     } else {
       obj.field = event.target.name;
       obj.value = event.target.value;
@@ -158,7 +163,7 @@ class FilterComponent extends Component {
                 <DatePicker
                   title={column.name}
                   handleChange={date =>
-                    this.getValueHandler(date, column.type, column.field)
+                    this.getValueHandler(date, column.type, column.field, index)
                   }
                   startDate={this.state[index + "-column"]}
                   index={index}

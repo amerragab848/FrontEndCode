@@ -11,7 +11,7 @@
     "history": "^4.7.2",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.11",
-    "material-ui": "^0.20.2", 
+    "material-ui": "^0.20.2",
     "moment": "^2.23.0",
     "query-string": "^6.2.0",
     "rc-animate": "^2.6.0",

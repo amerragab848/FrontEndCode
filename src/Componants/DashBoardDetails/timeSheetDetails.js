@@ -70,21 +70,22 @@ class TimeSheetDetails extends Component {
         name: "fromCompany",
         type: "string",
         isCustom: true
-      },
-      {
-        field: "status",
-        name: "fromCompany",
-        type: "toggle",
-        trueLabel:"oppened",
-        falseLabel:"closed",
-        isCustom: true
-      },
-      {
-        field: "requireDate",
-        name: "fromCompany",
-        type: "date",
-        isCustom: true
       }
+      // ,
+      // {
+      //   field: "status",
+      //   name: "fromCompany",
+      //   type: "toggle",
+      //   trueLabel:"oppened",
+      //   falseLabel:"closed",
+      //   isCustom: true
+      // },
+      // {
+      //   field: "requireDate",
+      //   name: "fromCompany",
+      //   type: "date",
+      //   isCustom: true
+      // }
     ];
 
     this.state = {
