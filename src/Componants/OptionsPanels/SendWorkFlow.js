@@ -52,34 +52,7 @@ class SendWorkFlow extends Component {
         this.setState({ workFlowData: { ...this.state.workFlowData, Comment: e.target.value } });
     }
 
-    clickHandler = (e) => {
-        // if (!this.state.validPriority) {
-        //     this.setState({
-        //         priorityClass: "borderError",
-        //         priorityErrorMess: "please select Priority"
-
-        //     })
-        // }
-        // if (!this.state.validAttention) {
-        //     this.setState({
-        //         attentionClass: "borderError",
-        //         attentionErrorMess: "please select Attention"
-
-        //     })
-        // }
-        // if (!this.state.validToCompany) {
-        //     this.setState({
-        //         toCompanyClass: "borderError",
-        //         toCompanyErrorMess: "please select To Company"
-
-        //     })
-        // }
-        // if (this.state.validToCompany && this.state.validAttention && this.state.validPriority) {
-           
-        //     //console.log(this.state.sendingData);
-
-        // }
-  
+    clickHandler = (e) => { 
             let workFlowObj={...this.state.workFlowData};
             workFlowObj.toAccountId=this.state.selectedApproveId.value;
              
@@ -100,7 +73,6 @@ class SendWorkFlow extends Component {
                     <button className="workFlowDataBtn-1 btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
                 </div>
             </div>
-
         );
     }
 
