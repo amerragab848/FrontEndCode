@@ -6,6 +6,7 @@ import Api from '../../api'
 
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import documentDefenition from "../../documentDefenition.json";
+import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
  const {
   NumericFilter,
@@ -14,11 +15,10 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
   SingleSelectFilter
 } = Filters;
 
-const subjectLink = ({ value }) => {
-	//style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
-  return <div id="divSubject" ><a data-bind="attr: { href: '#lettersAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }"><span>{`${value}%`}</span></a></div>;
+const subjectLink = ({ value ,row}) => { 
+	return <a href={'letterAddEdit/'+row.id+'/'+row.projectId}>{row.subject}</a> 
 };
-
+ 
 class Letter extends Component {
   
     constructor(props) {
@@ -27,19 +27,21 @@ class Letter extends Component {
         let cNames=[];
         
         console.log(documentObj);
-        documentObj.documentColumns.map(item=>{
+        documentObj.documentColumns.map((item,index)=>{
         	
-        	if(item.isCustom===true){
+        	if(item.isCustom===true){ 
 	        	var obj={
 	        		key: item.field,
-	        		name: item.friendlyName,
+	        		name: Resources[item.friendlyName][currentLanguage],
 	        		width: item.minWidth,
 			        draggable: true,
 	  				sortable: true,
 			        resizable: true,
 	 				filterable: true,
 	    			sortDescendingFirst: true, 
-	    			filterRenderer: item.dataType === 'number' ? NumericFilter: SingleSelectFilter 
+	    			formatter: item.field=='subject'?  subjectLink : null, 
+	    			//getRowMetaData: (data)=>(data),
+	    			filterRenderer: item.dataType === 'number' ? NumericFilter: SingleSelectFilter
 	        	};
 	        	cNames.push(obj);
         	}
@@ -80,9 +82,7 @@ class Letter extends Component {
 
 	}
 
-  render() { 
-
-  	//let columns=this.state.columns;//.map(c => ({ ...c, ...defaultColumnProperties }));
+  render() {   
   	const dataGrid = this.state.isLoading===false ? <GridSetup rows={this.state.rows} pageSize={this.state.pageSize}  columns={this.state.columns} /> :null;
   	return( 
   		<div>

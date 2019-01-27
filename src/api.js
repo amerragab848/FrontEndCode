@@ -36,6 +36,7 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
+               
                 json =resp !=null ? resp.json() : "";
 
                 return json;

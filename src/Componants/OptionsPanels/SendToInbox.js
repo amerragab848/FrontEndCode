@@ -54,13 +54,7 @@ class SendToInbox extends Component {
         }
     }
     Priority_handelChange = (item) => {
-        // this.setState({
-        //     sendingData: { ...this.state.sendingData, priorityId: item.value },
-        //     validPriority: !validations.equals("Select...", item.label),
-        //     priorityClass: (validations.equals("Select...", item.label) ? "borderError" : "borderValid"),
-        //     priorityErrorMess: ""
-
-        // }) 
+        
         this.setState({
             selectedValue: item,
             sendingData: { ...this.state.sendingData, priorityId: item.value }
@@ -161,7 +155,7 @@ class SendToInbox extends Component {
         return (
             <div className="dropWrapper">
                 <Dropdown title="priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange} selectedValue={this.state.selectedValue}
-                    index='Priorityddinbox'
+                    index='Priorityddinbox' 
                     className={this.state.priorityClass} message={this.state.priorityErrorMess} />
 
                 <InputMelcous title="comments" value="add comment" inputChangeHandler={this.inputChangeHandler} />

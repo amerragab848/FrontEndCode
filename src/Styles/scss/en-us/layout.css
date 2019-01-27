@@ -8039,11 +8039,11 @@ ul {
   min-height: auto;
 }
 .attachmentPage .gridSystemTables .tableCell-2 {
-  width: 190px;
+  width: 200px;
 }
 @media screen and (min-width: 1440px) {
   .attachmentPage .gridSystemTables .tableCell-2 {
-    width: 190px;
+    width: 200px;
   }
 }
 .attachmentPage .gridSystemTables .girdTableHeader {
@@ -8051,12 +8051,13 @@ ul {
   position: static;
 }
 .attachmentPage .gridSystemTables .girdTableHeader .stickyHead {
-  width: 231px;
+  width: 241px;
 }
 .attachmentPage .gridSystemTables .girdTableHeader .thead-row {
   width: auto;
   min-width: 471px;
-  left: 231px;
+  left: 241px;
+  transform: translateX(0px);
 }
 .attachmentPage .gridSystemTables .gridTableContent {
   padding: 0;
@@ -8073,14 +8074,11 @@ ul {
   width: 20px;
   height: 24px;
 }
-.attachmentPage
-  .gridSystemTables
-  .gridTableContent
-  .gridMainRow
-  .normalContent {
+.attachmentPage .gridSystemTables .gridTableContent .gridMainRow .normalContent {
   width: auto;
   min-width: 471px;
-  left: 231px;
+  left: 241px;
+  margin-left: 0;
 }
 .attachmentPage
   .gridSystemTables
@@ -8088,7 +8086,7 @@ ul {
   .gridMainRow
   .stickyContent {
   width: auto;
-  min-width: 231px;
+  min-width: 241px;
 }
 .attachmentPage
   .gridSystemTables
@@ -8108,7 +8106,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span {
+  a {
   margin: 0 8px;
   width: 16px;
   height: 16px;
@@ -8121,7 +8119,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span
+  a
   img {
   transition: all 0.4s ease-in-out;
   transform: translateY(0);
@@ -8131,7 +8129,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span::after {
+  a::after {
   content: "";
   width: 16px;
   position: absolute;
@@ -8147,7 +8145,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span.attachRecycle::after {
+  .attachRecycle::after {
   background-image: url(../../images/afterDelete.png);
 }
 .attachmentPage
@@ -8155,7 +8153,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span.attachPdf::after {
+  .attachPdf::after {
   background-image: url(../../images/afterDown.png);
 }
 .attachmentPage
@@ -8163,7 +8161,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span.attachPend::after {
+  .attachPend::after {
   background-image: url(../../images/afterPend.png);
 }
 .attachmentPage
@@ -8171,7 +8169,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span:hover
+  a:hover
   img {
   transform: translateY(20px);
 }
@@ -8180,7 +8178,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span:hover::after {
+  a:hover::after {
   transform: translateY(0);
 }
 .attachmentPage
@@ -11995,6 +11993,7 @@ table edition
   white-space: pre-wrap;
   align-items: center;
 }
+<<<<<<< HEAD
 
 
 
@@ -12087,6 +12086,7 @@ table edition
 /* .mainContainer .customD_Menu div span{
   width: 0;
 } */
+  
 /* table th, table td {
   padding: 0px 8px !important;
   white-space: unset !important;
