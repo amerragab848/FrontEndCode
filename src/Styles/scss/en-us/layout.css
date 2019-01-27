@@ -11992,11 +11992,8 @@ table edition
   overflow: visible;
   white-space: pre-wrap;
   align-items: center;
-}
-<<<<<<< HEAD
-
-
-
+} 
+ 
 /* sla7 22/1/2019*/
 .gridfillter-container .fillter-status-container .fillter-status {
   width: 170px;
@@ -12086,7 +12083,13 @@ table edition
 /* .mainContainer .customD_Menu div span{
   width: 0;
 } */
-  
+   
+.attachmentPage {
+  width: 100%;
+  margin: 0;
+}
+
+ 
 /* table th, table td {
   padding: 0px 8px !important;
   white-space: unset !important;
