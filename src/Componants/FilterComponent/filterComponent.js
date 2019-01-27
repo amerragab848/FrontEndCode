@@ -21,7 +21,16 @@ class FilterComponent extends Component {
       isLoading: false
     };
 
-    // this.getValueHandler = this.getValueHandler.bind(this);
+    let newState = {};
+
+    this.state.filtersColumns.map((column, index) => {
+      if (column.type === "date") {
+        console.log(index + "-column");
+        newState[index + "-column"] = moment();
+      }  
+    });
+
+    this.setState(newState);
   }
 
   getValueHandler(event, type, field) {
@@ -59,6 +68,7 @@ class FilterComponent extends Component {
       columnFilter.value = obj.value;
 
       const columnFilters = [...this.state.valueColumns];
+
       columnFilters[index] = columnFilter;
 
       this.setState({
@@ -67,7 +77,7 @@ class FilterComponent extends Component {
     }
   }
 
-  searchHandler(event) {
+  searchHandler() {
     this.setState({
       isLoading: true
     });
@@ -143,13 +153,14 @@ class FilterComponent extends Component {
                 />
               );
             } else if (column.type === "date") {
+              console.log("index of state : " + this.state[index + "-column"]);
               return (
                 <DatePicker
                   title={column.name}
                   handleChange={date =>
                     this.getValueHandler(date, column.type, column.field)
                   }
-                  startDate={moment()}
+                  startDate={this.state[index + "-column"]}
                   index={index}
                   key={index}
                 />
