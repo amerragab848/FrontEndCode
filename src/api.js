@@ -1,25 +1,27 @@
 
-import DashBoard from  './Pages/DashBoard';
+import DashBoard from './Pages/DashBoard';
 
 
 let currentLanguage = localStorage.getItem('lang');
-let   Authorization = localStorage.getItem('userToken'); 
+let Authorization = localStorage.getItem('userToken');
 export default class Api {
     static headers() {
         return {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'dataType': 'json',
+    //          'Content-Type': 'application/json',
+      //      'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
-            'Authorization': Authorization
+            'Authorization': Authorization,
+         //   'processData': false
         }
     }
+
+
 
     static get(route) {
         return this.xhr(route, null, 'GET');
     }
     static post(route, params) {
-         
         return this.xhr(route, params, 'POST');
     }
 
@@ -38,14 +40,13 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-               
-                json =resp !=null ? resp.json() : "";
+
+                json = resp != null ? resp.json() : "";
 
                 return json;
             }
-            else if(resp.status === 500)
-            {
-                 json = "resp.json()";
+            else if (resp.status === 500) {
+                json = "resp.json()";
 
                 return json;
             }
@@ -103,8 +104,8 @@ export default class Api {
         let userPermissions = [];
         let isCompany = false;
         if (localStorage.getItem("permissions")) {
-           let perms =[3198,3515,3514];// JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
-           userPermissions = perms;
+            let perms = [3198, 3515, 3514];// JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
+            userPermissions = perms;
         }
 
         if (isCompany === false) {
@@ -117,5 +118,31 @@ export default class Api {
         } else {
             return true;
         }
+    }
+
+    static postFile(route, params, header) {
+
+        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+        const url = `${host}${route}`;
+        let headers = Api.headers();
+        headers.docid = header.docId
+        headers.doctypeid = header.docTypeId
+        headers.parentid = header.parentId
+        fetch(url, {
+            method: 'POST',
+            headers: {
+
+                ...headers
+            },
+            body: params
+        }).then(
+            response => response.json()
+        ).then(
+            success => console.log(success)
+        ).catch(
+            error => console.log(error)
+        );
+
+
     }
 }
