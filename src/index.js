@@ -5,9 +5,7 @@ import createBrowserHistory from "history/createBrowserHistory";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-//import Semantic from './Styles/js/semantic.min'
-// import './Styles/scss/en-us/layout.css'
-
+ 
 const history = createBrowserHistory();
 
 window.nav_history = history;

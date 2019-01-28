@@ -12088,9 +12088,7 @@ table edition
   width: 100%;
   margin: 0;
 }
-
-<<<<<<< HEAD
-
+ 
 .uploadForm {
   display: flex;
   flex-flow: column;
@@ -12193,14 +12191,4 @@ table edition
       color: #858D9E;
       padding: 0;
       overflow: visible; }
-
-=======
- 
->>>>>>> df0c285fc916f108aa0e55cb59a37bf3554aa3ca
-/* table th, table td {
-  padding: 0px 8px !important;
-  white-space: unset !important;
-} */
-/* 
-table edition
-*/
+  
