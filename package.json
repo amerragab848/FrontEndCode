@@ -8,10 +8,14 @@
     "formik": "^1.4.2",
     "highcharts": "^7.0.1",
     "highcharts-react-official": "^2.0.0",
+<<<<<<< HEAD
+    "immutable": "^4.0.0-rc.12",
+=======
     "history": "^4.7.2",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.11",
     "material-ui": "^0.20.2",
+>>>>>>> df0c285fc916f108aa0e55cb59a37bf3554aa3ca
     "moment": "^2.23.0",
     "query-string": "^6.2.0",
     "rc-animate": "^2.6.0",

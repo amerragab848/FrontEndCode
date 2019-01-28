@@ -1,53 +1,73 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone';
 import classNames from 'classnames'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import FontIcon from 'material-ui/FontIcon';
-import { blue500, red500, greenA200 } from 'material-ui/styles/colors';
+import AttachUpload from '../../Styles/images/attacthUpload.png';
+import AttachDrag from '../../Styles/images/attachDraggable.png';
+import 'react-table/react-table.css'
+import Api from '../../api';
+
+
 class UploadAttachment extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filesPreview: [],
-            filesToBeSent: [],
-            printcount: 10,
+            docTypeId: '64',
+            docId: '138',
+            parentId:'',
+            _className: ''
         }
     }
     onDrop = (acceptedFiles, rejectedFiles) => {
-         console.log('sabo');
-        var filesToBeSent = this.state.filesToBeSent;
-        if (filesToBeSent.length < this.state.printcount) {
-            filesToBeSent.push(acceptedFiles);
-            var filesPreview = [];
-            for (var i in filesToBeSent) {
-                filesPreview.push(<div>
-                    {filesToBeSent[i][0].name}
-                    <MuiThemeProvider>
-                        <a href="#"><FontIcon
-                            className="material-icons customstyle"
-                            color={blue500}
-                            styles={{ top: 10, }}
-                        >clear</FontIcon></a>
-                    </MuiThemeProvider>
-                </div>
-                )
-            }
-            this.setState({ filesToBeSent, filesPreview });
-        }
-        else {
-            alert("You have reached the limit of printing files at a time")
-        }
-        setTimeout(() => {
-            console.log(this.state.filesToBeSent)
 
-        }, 500)
+
+        this.setState({ _className: " dragHover dropHover fullProgressBar" })
+
     }
+
+    onDropRejected = (rejectedFiles) => {
+        rejectedFiles.forEach(element => {
+           
+        });
+
+        //  console.log("accepted")
+        setTimeout(() => {
+            this.setState({ _className: "hundredPercent" })
+        }, 1000)
+    }
+
+    onDropAcceptedHandler = (acceptedFiles) => {
+        setTimeout(() => {
+            this.setState({ _className: "hundredPercent" })
+        }, 500)
+
+        acceptedFiles.forEach(element => {
+            let formData = new FormData();
+            
+            formData.append("file",element)
+           
+            let header={'docTypeId':this.state.docTypeId,'docId':this.state.docId,'parentId':this.state.parentId}
+            
+               Api.postFile("BlobUpload",formData,header)
+              
+        
+            
+        });
+
+        //  console.log("accepted")
+        setTimeout(() => {
+            this.setState({ _className: "zeropercent" })
+        }, 1000)
+
+    }
+
 
     render() {
         return (
             <div>
-                <Dropzone onDrop={this.onDrop} onDragEnter={e=>console.log("enter")}  onDragLeave={e=>console.log("onDragLeave")}
-                 onDragOver={e=>console.log("onDragOver")}  onDragStart={e=>console.log("onDragStart")}> 
+                <Dropzone  onDrop={e => this.onDrop(e)}
+                    onDragLeave={e => this.setState({ _className: " " })}
+                    onDragOver={e => this.setState({ _className: "dragHover" })} onDropAccepted={e=>this.onDropAcceptedHandler(e)}
+                    onDropRejected={this.onDropRejected} >
                     {({ getRootProps, getInputProps, isDragActive }) => {
                         return (
                             <div
@@ -56,18 +76,36 @@ class UploadAttachment extends Component {
                             >
                                 <input {...getInputProps()} />
                                 {
-                                    isDragActive ?
-                                        <p>Drop files here...</p> :
-                                        <p>Try dropping some files here, or click to select files to upload.</p>
+                                    <div className={"uploadForm" + " " + this.state._className}>
+                                        <div className="uploadFormDiv">
+                                            <img src={AttachUpload} />
+                                            <div className="dragUpload">
+                                                <p>Drag and drop photos here to share your food shots! or</p>
+                                                <form>
+                                                    <input type="file" name="file" id="file" className="inputfile" />
+                                                    <label >Upload</label>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div className="dragHoverDiv">
+                                            <div id="myBar"></div>
+                                            <img src={AttachDrag} />
+                                            <div className="dragUpload">
+                                                <p>Drop your files here!</p>
+                                            </div>
+                                        </div>
+                                        <div className='progressBar'>
+                                            <div className='smallProgress'>
+                                            </div>
+                                        </div>
+                                    </div>
                                 }
                             </div>
+
                         )
                     }}
                 </Dropzone>
-                <div>
-                    Files to be printed are:
-              {this.state.filesPreview}
-                </div>
+
             </div>
         )
     }

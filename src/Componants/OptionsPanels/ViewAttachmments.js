@@ -8,9 +8,10 @@ import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
 import Api from '../../api';
 import Resources from '../../resources.json';
+import '../../Styles/scss/en-us/layout33.css';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-class ViewAttachmnents extends Component {
+class NewAttachment extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -43,77 +44,84 @@ class ViewAttachmnents extends Component {
 
     }
     render() {
-        let tabel = this.state.data.map((item, Index) => { 
-                        let extension=item['fileName'].split(".")[1] === 'xlsx' ? xlsx: (item['fileName'].split(".")[1] ==='pdf'?pdf:doc)
+        let tabel = this.state.data.map((item, Index) => {
+            let extension = item['fileName'].split(".")[1] === 'xlsx' ? xlsx : (item['fileName'].split(".")[1] === 'pdf' ? pdf : doc)
             return (
-                <div className="gridMainRow" key={Index}>
-                    <div className="stickyContent">
+                <tr key={Index}>
+                    <td>
                         <div className="contentCell tableCell-1">
                             <span>
                                 <img src={extension} alt="pdf" width="100%" height="100%" />
                             </span>
                         </div>
+                    </td>
+                    <td>
                         <div className="contentCell tableCell-2">
-                            <a href={item['attachFile']} className="pdfPopup various zero">{item['fileName']}</a>
+                            <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item['fileName']}</a>
                         </div>
-                    </div>
-                    <div className="normalContent">
+                    </td>
+                    <td>
                         <div className="contentCell tableCell-3">
                             <p className="zero status">{item['uploadDate']}</p>
                         </div>
+                    </td>
+                    <td>
                         <div className="contentCell tableCell-4">
                             <h6 className="zero">{item['uploadedBy']} </h6>
                         </div>
-
-
-                    </div>
-                    <div className="attachmentAction">
-                        <a className="attachRecycle" onClick={() => this.deletehandler(item['id'])} >
-                            <img src={Recycle} alt="del" width="100%" height="100%" />
-                        </a>
-                        <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
-                            <img src={Download} alt="dLoad" width="100%" height="100%" />
-                        </a>
-                        <a className="attachPend" onClick={() => this.versionHandler(item['parentId'])}>
-                            <img src={Pending} alt="pend" width="100%" height="100%" />
-                        </a>
-                    </div>
-
-
-                </div>
+                    </td>
+                    <td className="tdHover">
+                        <div className="attachmentAction">
+                            <a className="attachRecycle" onClick={() => this.deletehandler(item['id'])} >
+                                <img src={Recycle} alt="del" width="100%" height="100%" />
+                            </a>
+                            <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
+                                <img src={Download} alt="dLoad" width="100%" height="100%" />
+                            </a>
+                            <a className="attachPend" onClick={() => this.versionHandler(item['parentId'])}>
+                                <img src={Pending} alt="pend" width="100%" height="100%" />
+                            </a>
+                        </div>
+                    </td>
+                </tr>
             );
         })
 
         return (
-            <div className="mainGridSystem attachmentPage">
-                <div id="gridSort" className="gridSystemTables" tabIndex="1">
-                    <div className="girdTableHeader" tabIndex="2">
-                        <div className="stickyHead">
+            <table className="attachmentTable">
+                <thead>
+                    <tr>
+                        <th>
                             <div className="headCell tableCell-1">
                                 <span> {Resources['arrange'][currentLanguage]} </span>
                             </div>
+                        </th>
+                        <th>
                             <div className="headCell tableCell-2">
                                 <span>{Resources['fileName'][currentLanguage]} </span>
                             </div>
-                        </div>
-                        <div className="thead-row">
-                            <div className="headCell tableCell-3 ui-resizable" data-sort="status">
+                        </th>
+                        <th>
+                            <div className="headCell tableCell-3">
                                 <span>{Resources['docDate'][currentLanguage]}
-                            </span>
-                                <div className="ui-resizable-handle ui-resizable-e"></div></div>
-                            <div className="headCell tableCell-4 ui-resizable" data-sort="name">
-                                <span>{Resources['uploadedBy'][currentLanguage]}
-                            </span>
-                                <div className="ui-resizable-handle ui-resizable-e"></div></div>
+                                </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="headCell tableCell-4">
+                                <span>{Resources['uploadedBy'][currentLanguage]} </span>
+                            </div>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-                        </div>
 
-                    </div>
-                    <div className="gridTableContent list">
-                        {tabel}
-                    </div>
-                </div>
-            </div>
+
+                <tbody>
+                    {tabel}
+                </tbody>
+            </table>
         )
     }
 
@@ -136,4 +144,4 @@ class ViewAttachmnents extends Component {
         });
     }
 }
-export default ViewAttachmnents;
+export default NewAttachment;
