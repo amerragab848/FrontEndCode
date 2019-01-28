@@ -219,6 +219,8 @@ class SendToInbox extends Component {
                         selectedConatctId: Data[0]
                     });
                  break;
+                 default:
+                    break;
             }
 
         }).catch(ex => {

@@ -21,6 +21,7 @@ class InputMelcous extends Component {
                                                 placeholder={this.props.placeholderText == null ? ' ' : Resources[this.props.placeholderText][currentLanguage] }
                                                 fullwidth={this.props.fullwidth}
                                                 value={this.props.value} 
+                                                name={this.props.name}
                                                 defaultValue={this.props.defaultValue}
                                                 onChange={this.props.inputChangeHandler}></input>
                                 </div>
