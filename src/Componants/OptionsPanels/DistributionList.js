@@ -189,8 +189,7 @@ class DistributionList extends Component {
                     return (<Dropdown title="" data={this.state.ActionData} handleChange={e => this.actionHandler(props.original.contactId, e)}
                         selectedValue={this.state[props.original.contactId + '-drop']} index={Date.now()} />)
                 },
-                width: 200
-
+                width: 200 
             }
         ]
 

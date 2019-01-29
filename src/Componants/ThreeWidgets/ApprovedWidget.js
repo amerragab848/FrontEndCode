@@ -1,4 +1,4 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
@@ -28,42 +28,58 @@ class ApprovedWidget extends Component {
     });
   }
 
-  onOpenModal = (action, value, id) => {
+  onOpenModal = (action, value) => {
     if (value > 0) {
-      if (id === "wt-AssessmentSummary-1") {
-        if (action === 1) {
-          Navigate({
-            pathname: "timeSheetDetails"
-          });
-        } else if (action === 2) {
-          Navigate({
-            pathname: "docApprovalDetails",
-            search: "?action=" + action
-          });
-        } else {
-          Navigate({
-            pathname: "pendingExpensesDetails"
-          });
-        }
-      }  else if (id === "wt-RejecerdItem-7") {
-        if (action === 1) {
-          Navigate({
-            pathname: "docApprovalDetails",
-            search: "?action=" + action
-          });
-        } else if (action === 2) {
-          Navigate({
-            pathname: "docNotifyLogDetails"
-          });
-        }
-      } else {
-
-        let pathname = this.props.props.route + action;
+      let arr = this.props.props.route;
+      if (arr.length === 1) {
+        let arr = this.props.props.route[0].split("?");
+        let url = arr[0];
+        let param = arr[1];
 
         Navigate({
-          pathname: pathname
+          pathname: url,
+          search: "?" + param + action
         });
-      }
+      } else if (arr.length === 2) {
+        if (action === 1) {
+          let link = this.props.props.route[0];
+          link = link.split("?");
+          let url = link[0];
+          let param = link[1];
+
+          Navigate({
+            pathname: url,
+            search: "?" + param + action
+          });
+        } else {  
+          Navigate({
+            pathname: this.props.props.route[1]
+          });
+        }
+      } else if (arr.length === 3) {
+        if (action === 1) {
+          Navigate({
+            pathname: this.props.props.route[0]
+          });
+        } else if(action === 2) {  
+          let link = this.props.props.route[1];
+          console.log("Link : "+link);
+          link = link.split("?");
+          let url = link[0];
+          console.log("url : "+url);
+          let param = link[1];
+          console.log("param : "+param);
+
+          Navigate({
+            pathname: url,
+            search: "?" + param + action
+          }); 
+        }else{
+          Navigate({
+            pathname: this.props.props.route[2]
+          });
+        }
+      } 
     }
   };
 
@@ -98,8 +114,7 @@ class ApprovedWidget extends Component {
               onClick={() =>
                 this.onOpenModal(
                   high.action,
-                  high[this.props.value],
-                  this.props.id
+                  high[this.props.value] 
                 )
               }
             >
@@ -120,8 +135,7 @@ class ApprovedWidget extends Component {
                   onClick={() =>
                     this.onOpenModal(
                       normal.action,
-                      normal[this.props.value],
-                      this.props.id
+                      normal[this.props.value] 
                     )
                   }
                 >
@@ -137,8 +151,7 @@ class ApprovedWidget extends Component {
                   onClick={() =>
                     this.onOpenModal(
                       low.action,
-                      low[this.props.value],
-                      this.props.id
+                      low[this.props.value] 
                     )
                   }
                 >

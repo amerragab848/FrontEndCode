@@ -5,6 +5,10 @@ import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
+import Resources from "../../resources.json";
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 const {
   NumericFilter,
   AutoCompleteFilter,
@@ -16,10 +20,10 @@ class TimeSheetDetails extends Component {
   constructor(props) {
     super(props);
 
-    var columnsGrid = [
+    const columnsGrid = [
       {
         key: "requestCount",
-        name: "requestCount",
+        name: Resources["requestCount"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -30,7 +34,7 @@ class TimeSheetDetails extends Component {
       },
       {
         key: "requestFromUserName",
-        name: "fromContact",
+        name: Resources["fromContact"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -41,7 +45,7 @@ class TimeSheetDetails extends Component {
       },
       {
         key: "companyName",
-        name: "fromCompany",
+        name: Resources["fromCompany"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -56,7 +60,7 @@ class TimeSheetDetails extends Component {
       {
         field: "requestCount",
         name: "requestCount",
-        type: "string",
+        type: "number",
         isCustom: true
       },
       {
@@ -70,22 +74,7 @@ class TimeSheetDetails extends Component {
         name: "fromCompany",
         type: "string",
         isCustom: true
-      }
-      // ,
-      // {
-      //   field: "status",
-      //   name: "fromCompany",
-      //   type: "toggle",
-      //   trueLabel:"oppened",
-      //   falseLabel:"closed",
-      //   isCustom: true
-      // },
-      // {
-      //   field: "requireDate",
-      //   name: "fromCompany",
-      //   type: "date",
-      //   isCustom: true
-      // }
+      } 
     ];
 
     this.state = {
@@ -93,7 +82,8 @@ class TimeSheetDetails extends Component {
       columns: columnsGrid,
       isLoading: true,
       rows: [],
-      filtersColumns:filtersColumns
+      filtersColumns: filtersColumns,
+      isCustom: true
     };
   }
 
@@ -113,9 +103,12 @@ class TimeSheetDetails extends Component {
 
     return this.state.viewfilter;
   }
-   
+
+  isCustomHandlel() {
+    this.setState({ isCustom: !this.state.isCustom });
+  }
+
   render() {
- 
     const dataGrid =
       this.state.isLoading === false ? (
         <GridSetup rows={this.state.rows} columns={this.state.columns} />
@@ -125,7 +118,7 @@ class TimeSheetDetails extends Component {
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">TimeSheet</h3>
+            <h3 className="zero">{Resources["timeSheet"][currentLanguage]}</h3>
             <span>45</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
@@ -180,19 +173,27 @@ class TimeSheetDetails extends Component {
 
               {this.state.viewfilter === true ? (
                 <span className="text active">
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
+                  <span className="show-fillter">
+                    {Resources["howFillter"][currentLanguage]}
+                  </span>
+                  <span className="hide-fillter">
+                    {Resources["hideFillter"][currentLanguage]}
+                  </span>
                 </span>
               ) : (
                 <span className="text">
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
+                  <span className="show-fillter">
+                    {Resources["howFillter"][currentLanguage]}
+                  </span>
+                  <span className="hide-fillter">
+                    {Resources["hideFillter"][currentLanguage]}
+                  </span>
                 </span>
               )}
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button> 
+            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
@@ -211,7 +212,7 @@ class TimeSheetDetails extends Component {
           className="filterHidden"
           style={{
             maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? '' : 'hidden'
+            overflow: this.state.viewfilter ? "" : "hidden"
           }}
         >
           <div className="gridfillter-container">

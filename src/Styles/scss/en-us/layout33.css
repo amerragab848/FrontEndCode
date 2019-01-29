@@ -3357,8 +3357,7 @@ ul {
         width: 136px; }
         .gridfillter-container .fillter-status-container .datepickerContainer.proForm .linebylineInput .ui.input.inputDev input {
           width: 136px; }
-    .gridfillter-container .fillter-status-container .fillter-item-c {
-      margin-bottom: 20px !important; }
+
     .gridfillter-container .fillter-status-container .form-control::placeholder {
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -8593,5 +8592,12 @@ ul {
   .main-header .header-content {
     width: 100%;
     min-width: auto; } }
-
+    .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+      display: block;
+    }
+    .mainContainer .fillter-status-container .customD_Menu {
+      width: 100%;
+      border: 1px solid rgba(34,36,38,.15);
+      border-radius: .28571429rem;
+  }
 /*# sourceMappingURL=layout.css.map */

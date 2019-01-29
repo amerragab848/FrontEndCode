@@ -29,6 +29,7 @@ class FilterComponent extends Component {
         state[index + "-column"] = moment();
       }
     });
+
     setTimeout(() => {
       this.setState(state);
     }, 500);
@@ -49,7 +50,6 @@ class FilterComponent extends Component {
       let state = {};
       this.state[indexx + "-column"] = event;
       this.setState(state);
-   
     } else {
       obj.field = event.target.name;
       obj.value = event.target.value;
@@ -82,7 +82,7 @@ class FilterComponent extends Component {
       });
     }
   }
-
+ 
   // searchHandler() {
   //   this.setState({
   //     isLoading: true
@@ -114,19 +114,20 @@ class FilterComponent extends Component {
   //     isLoading: false
   //   });
   // }
-
+ 
   renderFilterColumns() {
     let columns = (
       <div className="fillter-status-container">
         {this.state.filtersColumns.map((column, index) => {
           if (this.state.isCustom) {
-            if (column.type === "string") {
+            if (column.type === "string" ||column.type === "number" ) {
               return (
                 <div className="form-group fillterinput fillter-item-c" key={index}>
                   <InputMelcous
                     title={column.name}
                     index={index}
                     key={index}
+                    type={column.type}
                     name={column.field}
                     inputChangeHandler={event =>
                       this.getValueHandler(event, column.type)
@@ -176,8 +177,8 @@ class FilterComponent extends Component {
 
         {this.state.isLoading === false ? (
           <button
-            className="primaryBtn-2 btn smallBtn fillter-item-c"
-            onClick={this.props.filterMethod}
+            className="primaryBtn-2 btn smallBtn fillter-item-c" 
+            onClick={this.props.filterMethod} 
           >
             {Resources["search"][currentLanguage]}
           </button>
