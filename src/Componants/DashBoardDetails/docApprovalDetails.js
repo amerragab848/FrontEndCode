@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
+import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
 import Filter from "../FilterComponent/filterComponent";
-import "../../Styles/css/semantic.min.css";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";

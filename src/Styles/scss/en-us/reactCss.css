@@ -320,9 +320,6 @@ table edition
 .gridfillter-container .fillter-status-container .fillter-status {
   width: 170px;
 }
-.gridfillter-container .fillter-status-container .fillter-item-c {
-  margin-bottom: 0 !important;
-}
 .mainContainer {
   background-image: linear-gradient(to bottom,#f5f5f6 100%,#f5f5f6 26%,#fafbfc 0%,#fafbfc 0%);
 }
@@ -347,7 +344,6 @@ table edition
   border: none;
   box-shadow: none;
   outline: 0;
-
 }
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
@@ -363,7 +359,6 @@ table edition
   width: 100%;
   text-align: center;
 }
-
 .spinner > div {
   width: 12px;
   height: 12px;
@@ -374,7 +369,6 @@ table edition
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
-
 .spinner .bounce1 {
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
@@ -417,3 +411,6 @@ table edition
 /* 
 table edition 
 */
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+  display: block;
+}
