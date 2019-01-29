@@ -35,7 +35,7 @@ let ThreeWidgetsData = [
         props: {
             api: "GetClosedDocumentsSummaryCount",
             apiDetails: "SelectDocTypeByProjectIdClosedByAction?action=",
-            route: "closedSummaryDetails",
+            route: "closedSummaryDetails?action=",
             value: "total",
             listType: "item",
             action: "action",
