@@ -21,7 +21,7 @@ class DocApprovalDetails extends Component {
   constructor(props) {
     super(props);
 
-    var columnsGrid = [
+    const columnsGrid = [
       {
         key: "readStatusText",
         name: Resources["statusName"][currentLanguage],
@@ -338,6 +338,7 @@ class DocApprovalDetails extends Component {
     for (let param of query.entries()) {
       action = param[1];
     }
+     
     if (action === "1") {
       this.setState({
         title: Resources["docRejected"][currentLanguage]

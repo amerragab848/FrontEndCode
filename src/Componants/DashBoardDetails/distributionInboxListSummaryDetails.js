@@ -142,14 +142,20 @@ class DistributionInboxListSummaryDetails extends Component {
       title: ""
     };
   }
+ 
+  componentWillMount() {
+    let id = null;
+    let action = null;
 
-  componentDidMount() {
-    //  const query = new URLSearchParams(this.props.location.search);
-
-    const query = queryString.parse(this.props.location.search);
-
-    let id = query["id"];
-    let action = query["action"];
+    const query = new URLSearchParams(this.props.location.search);
+    for (let param of query.entries()) {
+      if (param[0] === "id") {
+        id = param[1];
+      }
+      if (param[0] === "action") {
+        action = param[1];
+      }
+    }
 
     if (id === "0") {
       this.setState({

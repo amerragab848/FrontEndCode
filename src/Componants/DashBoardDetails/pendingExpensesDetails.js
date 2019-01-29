@@ -21,7 +21,7 @@ class PendingExpensesDetails extends Component {
   constructor(props) {
     super(props);
 
-    var columnsGrid = [
+    const columnsGrid = [
       {
         key: "arrangeLevel",
         name: Resources["levelNo"][currentLanguage],
