@@ -12201,7 +12201,6 @@ table edition
       color: #858D9E;
       padding: 0;
       overflow: visible; }
-<<<<<<< HEAD
 
 /* table th, table td {
   padding: 0px 8px !important;
@@ -12310,11 +12309,9 @@ table edition
 .has-success .customD_Menu div:first-child >div  {
   border-color: #2AA832;
 }
-=======
-  
-      .mainContainer .fillter-status-container .customD_Menu {
-        width: 100%;
-        border: 1px solid rgba(34,36,38,.15);
-        border-radius: .28571429rem;
-    }
->>>>>>> e4b6abe6cf32c0c89a2da469c43e8f8869f8bfbb
+.dropWrapper .proForm .ui.input.inputDev input {
+  width: 100%;
+}
+.dropWrapper .proForm .fillter-item-c .ui.input.inputDev {
+  width: 100%;
+}

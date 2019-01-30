@@ -16,19 +16,21 @@ import Validation from './Componants/OptionsPanels/validationRules'
 import UploadAttachment from './Componants/OptionsPanels/UploadAttachment'
 import Upload from './Componants/OptionsPanels/UploadAttachment'
 import WFApproval from './Componants/OptionsPanels/wfApproval'
+import SendToInbox from './Componants/OptionsPanels/SendToInbox'
 
 class App extends Component {
   render() { 
      
     return (
+   //   <SendWorkFlow />
       ///test
-      //<SendToInbox />
+      <SendToInbox />
       // <DashBoard/>
       //  <Letter/>
       //<SendTask/>
       // <DistributionList />
       // <TimeSheet />
-       <Letter />
+      // <Letter />
      // <div>
        //    {routes}
       //</div>
