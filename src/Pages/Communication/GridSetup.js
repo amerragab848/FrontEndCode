@@ -1,10 +1,13 @@
 import React, { useState,Component } from "react"; 
-import ReactDataGrid from "react-data-grid";   
-    
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
-const {
-  DraggableHeader: { DraggableContainer }
-} = require("react-data-grid-addons");
+import ReactDataGrid from "react-data-grid";    
+import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
+
+const DraggableContainer = Draggable.Container;
+const Toolbar = ToolsPanel.AdvancedToolbar;
+const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
+// const {
+//   DraggableHeader: { DraggableContainer }
+// } = require("react-data-grid-addons");
 
 const selectors = Data.Selectors;
 const {
@@ -21,15 +24,18 @@ class GridSetup extends Component {
           super(props) 
 
           this.state={
-            columns:this.props.columns,
+            columns: this.props.columns,
             rows: this.props.rows,
             setFilters: {},
-            filters: {}
+            filters: {},
+            setGroupBy: this.props.rows,
+            groupBy: []
           }; 
-     // this.sortRows =this.sortRows.bind(this); 
+     this.groupColumn =this.groupColumn.bind(this); 
   };
 
   componentWillMount = () => { 
+    
     // this.setState({
     //   columns: this.props.columns,
     //   rows: this.props.rows 
@@ -75,8 +81,7 @@ class GridSetup extends Component {
   };
 
   handleFilterChange = (filter )=> filters =>  {
-    console.log(filter);
-
+    
     const newFilters = { ...filters };
     if (filter.filterTerm) {
       newFilters[filter.column.key] = filter;
@@ -106,41 +111,85 @@ class GridSetup extends Component {
       });
   };
 
-  getRows=(rows, filters)=> {
+  getRows = (rows, filters) => {
     return selectors.getRows({ rows, filters });
   }
 
-  // rowGetter(i) {
-  //     let row = this.state.rows[i]; 
-  //     if (row) { 
-  //         let doc_view=row.id +'/'+row.projectId + '/' + row.projectName; 
-  //         row.doc_view =  doc_view; 
-  //     }
-  //     return row;
-  // }
-  render() {  
+  getRowsGrouping = (rows, groups) => { 
 
-      //const [filters, setFilters] = useState({});
+    return Data.Selectors.getRows({ rows, groups });
+    //return rows;
+  }
+ 
+  groupColumn = (columnKey)=> {
+     
+    console.log(columnKey);
+ 
+    const columnGroups = this.state.groupBy.slice(0);
+ 
+    const activeColumn = this.state.columns.find(c => c.key === columnKey);
+
+    const isNotInGroups =columnGroups.find(c => activeColumn.key === c.name) == null;
+    
+    if (isNotInGroups) {
+      columnGroups.push({ key: activeColumn.key, name: activeColumn.name });
+    }
+     console.log(columnGroups);
+    return columnGroups;
+  };
+
+  ungroupColumn = (columnKey) => groupBy => {
+    return groupBy.filter(g =>
+      typeof g === "string" ? g !== columnKey : g.key !== columnKey
+    );
+  };
+
+  render() {    
+      const { rows,groupBy} = this.state;
       const filteredRows = this.getRows(this.state.rows, this.state.filters);
+      
+      const groupedRows = Data.Selectors.getRows({ rows, groupBy });
+      
+      const CustomToolbar = ({ groupBy,onColumnGroupAdded,onColumnGroupDeleted }) => {
+          return (
+            <Toolbar>
+              <GroupedColumnsPanel
+                groupBy={groupBy}
+                onColumnGroupAdded={onColumnGroupAdded}
+                onColumnGroupDeleted={onColumnGroupDeleted}
+              />
+            </Toolbar>
+          );
+        };
 
        return ( 
-          <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
+          <DraggableContainer >
               <ReactDataGrid
                 columns={this.state.columns}
-                rowGetter={i => this.state.rows[i]} 
-                rowsCount={this.state.rows.length} 
+                rowGetter={i => groupedRows[i]} 
+                rowsCount={groupedRows.length} 
                 enableCellSelect={false}
                 onColumnResize={(idx, width) =>
                   console.log(`Column ${idx} has been resized to ${width}`)
                 }
 
                 onGridSort={(sortColumn, sortDirection) =>  
-                   this.setState({ rows:  this.sortRows(this.state.rows, sortColumn, sortDirection) })
+                   this.setState({ rows: this.sortRows(this.state.rows, sortColumn, sortDirection) })
                 }
-                toolbar={<Toolbar enableFilter={true} />}
+                 
+                enableDragAndDrop={true}
+                toolbar={
+                <CustomToolbar
+                      groupBy={ this.state.groupBy } 
+                      onColumnGroupAdded={columnKey => this.setState({ groupBy: this.groupColumn(columnKey)})}
+                      onColumnGroupDeleted={(columnKey) => this.setState({ groupBy: this.ungroupColumn(columnKey)})}
+                    />
+                  }
+
                 onAddFilter={filter => this.setState({ setFilters: this.handleFilterChange(filter)}) }
                 onClearFilters={() =>  this.setState({ setFilters: {}}) }
                 getValidFilterValues={columnKey => this.getValidFilterValues(this.state.rows, columnKey)}
+
               />
           </DraggableContainer>
     );

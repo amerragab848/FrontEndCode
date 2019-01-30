@@ -6,6 +6,7 @@ import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import moment from "moment";
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -28,6 +29,7 @@ class FilterComponent extends Component {
         state[index + "-column"] = moment();
       }
     });
+
     setTimeout(() => {
       this.setState(state);
     }, 500);
@@ -48,7 +50,6 @@ class FilterComponent extends Component {
       let state = {};
       this.state[indexx + "-column"] = event;
       this.setState(state);
-   
     } else {
       obj.field = event.target.name;
       obj.value = event.target.value;
@@ -81,51 +82,52 @@ class FilterComponent extends Component {
       });
     }
   }
+ 
+  // searchHandler() {
+  //   this.setState({
+  //     isLoading: true
+  //   });
 
-  searchHandler() {
-    this.setState({
-      isLoading: true
-    });
+  //   var query = {};
 
-    var query = {};
+  //   this.state.valueColumns.map(column => {
+  //     if (column.type === "date") {
+  //       if (column.value != "") {
+  //         query[column.field] = moment(column.value).format("YYYY-MM-DD");
+  //       }
+  //     } else if (column.type === "number") {
+  //       if (column.value != "") {
+  //         query[column.field] = parseInt(column.value);
+  //       }
+  //     } else {
+  //       if (column.value != "") {
+  //         query[column.field] = column.value;
+  //       }
+  //     }
+  //   });
 
-    this.state.valueColumns.map(column => {
-      if (column.type === "date") {
-        if (column.value != "") {
-          query[column.field] = moment(column.value).format("YYYY-MM-DD");
-        }
-      } else if (column.type === "number") {
-        if (column.value != "") {
-          query[column.field] = parseInt(column.value);
-        }
-      } else {
-        if (column.value != "") {
-          query[column.field] = column.value;
-        }
-      }
-    });
+  //   query["isCustom"] = this.state.isCustom;
 
-    query["isCustom"] = this.state.isCustom;
+  //    Api.get(this.state.apiFilter + "?query=" + query).then(result => {});
 
-    // Api.get(this.state.apiFilter + "?query=" + query).then(result => {});
-
-    this.setState({
-      isLoading: false
-    });
-  }
-
+  //   this.setState({
+  //     isLoading: false
+  //   });
+  // }
+ 
   renderFilterColumns() {
     let columns = (
       <div className="fillter-status-container">
         {this.state.filtersColumns.map((column, index) => {
           if (this.state.isCustom) {
-            if (column.type === "string") {
+            if (column.type === "string" ||column.type === "number" ) {
               return (
-                <div className="form-group fillterinput fillter-item-c">
+                <div className="form-group fillterinput fillter-item-c" key={index}>
                   <InputMelcous
                     title={column.name}
                     index={index}
                     key={index}
+                    type={column.type}
                     name={column.field}
                     inputChangeHandler={event =>
                       this.getValueHandler(event, column.type)
@@ -157,8 +159,7 @@ class FilterComponent extends Component {
                   ]}
                 />
               );
-            } else if (column.type === "date") {
-              console.log("index of state : " + this.state[index + "-column"]);
+            } else if (column.type === "date") { 
               return (
                 <DatePicker
                   title={column.name}
@@ -173,10 +174,11 @@ class FilterComponent extends Component {
             }
           }
         })}
+
         {this.state.isLoading === false ? (
           <button
-            className="primaryBtn-2 btn smallBtn fillter-item-c"
-            onClick={event => this.searchHandler()}
+            className="primaryBtn-2 btn smallBtn fillter-item-c" 
+            onClick={this.props.filterMethod} 
           >
             {Resources["search"][currentLanguage]}
           </button>
@@ -190,8 +192,7 @@ class FilterComponent extends Component {
           </button>
         )}
       </div>
-    );
-
+    ); 
     return columns;
   }
 

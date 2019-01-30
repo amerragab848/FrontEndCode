@@ -5061,9 +5061,7 @@ ul {
   input {
   width: 136px;
 }
-.gridfillter-container .fillter-status-container .fillter-item-c {
-  margin-bottom: 20px !important;
-}
+
 .gridfillter-container .fillter-status-container .form-control::placeholder {
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -11998,9 +11996,7 @@ table edition
 .gridfillter-container .fillter-status-container .fillter-status {
   width: 170px;
 }
-.gridfillter-container .fillter-status-container .fillter-item-c {
-  margin-bottom: 0 !important;
-}
+
 .mainContainer {
   background-image: linear-gradient(to bottom,#f5f5f6 100%,#f5f5f6 26%,#fafbfc 0%,#fafbfc 0%);
 }
@@ -12025,14 +12021,13 @@ table edition
   border: none;
   box-shadow: none;
   outline: 0;
-
 }
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+/* .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
-}
+} */
 .filterHidden {
   transition: all 0.4s ease-in-out;
-  max-height: 250px;
+  max-height: 550px;
 }
 .gridfillter-container {
   transition: all 0.4s ease-in-out;
@@ -12088,8 +12083,22 @@ table edition
   width: 100%;
   margin: 0;
 }
+<<<<<<< HEAD
 
 
+=======
+ 
+/* table th, table td {
+  padding: 0px 8px !important;
+  white-space: unset !important;
+} */
+/* 
+table edition
+*/
+.gridfillter-container .fillter-status-container >div {
+  margin-bottom: 20px !important;
+}
+>>>>>>> e4b6abe6cf32c0c89a2da469c43e8f8869f8bfbb
 .uploadForm {
   display: flex;
   flex-flow: column;
@@ -12192,6 +12201,7 @@ table edition
       color: #858D9E;
       padding: 0;
       overflow: visible; }
+<<<<<<< HEAD
 
 /* table th, table td {
   padding: 0px 8px !important;
@@ -12300,3 +12310,11 @@ table edition
 .has-success .customD_Menu div:first-child >div  {
   border-color: #2AA832;
 }
+=======
+  
+      .mainContainer .fillter-status-container .customD_Menu {
+        width: 100%;
+        border: 1px solid rgba(34,36,38,.15);
+        border-radius: .28571429rem;
+    }
+>>>>>>> e4b6abe6cf32c0c89a2da469c43e8f8869f8bfbb
