@@ -11884,7 +11884,7 @@ viewer-pdf-toolbar {
   font-size: 14px;
   color: #9da3b1;
 }
-.dropWrapper .fullWidthWrapper {
+.fullWidthWrapper {
   width: 100%;
   text-align: center;
   margin: 20px 0;
@@ -12089,7 +12089,6 @@ table edition
   margin: 0;
 }
 
-<<<<<<< HEAD
 
 .uploadForm {
   display: flex;
@@ -12194,9 +12193,6 @@ table edition
       padding: 0;
       overflow: visible; }
 
-=======
- 
->>>>>>> df0c285fc916f108aa0e55cb59a37bf3554aa3ca
 /* table th, table td {
   padding: 0px 8px !important;
   white-space: unset !important;
@@ -12204,3 +12200,103 @@ table edition
 /* 
 table edition
 */
+.proForm .showPasswordArea .togglePW.activePW .hide {
+  display: block;
+}
+.proForm .showPasswordArea .togglePW.activePW .show {
+  display: none;
+}
+
+
+
+.approvalDocument {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 4px;
+}
+.approvalWrapper {
+  width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  background: #fff;
+  padding: 10px;
+  border-radius: 4px;
+}
+.textarea-group {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.textarea-group textarea {
+  overflow: auto;
+  width: 100%;
+  min-height: 100px;
+  border-radius: 4px;
+  border: 1px solid #DADEE6;
+  padding: 11px;
+}
+.textarea-group label {
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
+  color: #26344c;
+  font-family: font-opens;
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+}
+.approvalTitle {
+  height: 80px;
+  border-bottom: 1px solid #DADEE6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.approvalTitle h3 {
+  color: #26344c;
+  font-size: 26px;
+}
+.pError {
+  position: absolute;
+  left: 0;
+  bottom: -14px;
+  color: #e74c3c;
+  font-size: 12px;
+}
+.fullWidthWrapper.textLeft {
+  text-align: left;
+}
+.fullWidthWrapper.textLeft label{
+  margin-bottom: 5px;
+}
+.dropWrapper .customProform {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.customD_Menu .css-1hwfws3 {
+  max-height: 40px;
+}
+.has-error .spanValidation label {
+  color: #E74C3C
+}
+.has-success .spanValidation label {
+  color: #2AA832;
+}
+.customD_Menu div:first-child >div:hover {
+  border-color: hsl(0,0%,80%)
+}
+.has-error .customD_Menu div:first-child >div  {
+  border-color: #E74C3C;
+}
+.has-success .customD_Menu div:first-child >div  {
+  border-color: #2AA832;
+}

@@ -8,7 +8,9 @@ class DropdownMelcous extends Component {
         super(props) 
     }
    
-
+    handleChange =(e)=>{
+        this.props.handleChange(e,'sokary')
+    }
 
     render() {
 

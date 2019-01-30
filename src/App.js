@@ -19,9 +19,9 @@ import DashBoard from  './Pages/DashBoard';
 import ViewAttachment from './Componants/OptionsPanels/ViewAttachmments'
 import Validation from './Componants/OptionsPanels/validationRules'
 // import SendToWorkflow from './Componants/OptionsPanels/SendWorkFlow'
-
+import UploadAttachment from './Componants/OptionsPanels/UploadAttachment'
 import Upload from './Componants/OptionsPanels/UploadAttachment'
-
+import WFApproval from './Componants/OptionsPanels/wfApproval'
 
 class App extends Component {
   render() {
@@ -31,8 +31,11 @@ class App extends Component {
       // <DashBoard/>
       //  <Letter/>
       //<SendTask/>
-      // <DistributionList />
-      <TimeSheet />
+       <DistributionList />
+   //   <TimeSheet />
+   //<UploadAttachment />
+  // <WFApproval />
+  //<Validation />  
     );
     	///test
     // <SendToInbox />  
