@@ -12202,3 +12202,33 @@ table edition
         border: 1px solid rgba(34,36,38,.15);
         border-radius: .28571429rem;
     }
+    .ui.modal {
+      display: block !important;
+    } 
+    .EastWestProject.closeAccordion ul {
+      transition: all 0.5s ease-in-out;
+      max-height: 0;
+      overflow: hidden;
+    }
+    .EastWestProject ul {
+      max-height: inherit;
+      transition: all 0.5s ease-in-out;
+    }
+    /* .EastMainLi {
+      display: none;
+    } */
+    .EastMainLi::first-letter {
+      display: block;
+      /*color: red*/
+    }
+    .sidebar__inner {
+      position: fixed;
+      top: auto;
+      left: 0px;
+      bottom: 0;
+      /* width: 88px; */
+      height: 100%;
+      z-index: 99;
+      overflow-y: visible;
+      overflow-x: hidden;
+    }

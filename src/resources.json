@@ -5958,7 +5958,7 @@
     "ar": "المرتبات"
   },
   "pm": {
-    "en": "PM",
+    "en": "Project Management",
     "ar": "ادارة المشاريع"
   },
   "hrVacationSummary": {
@@ -7652,5 +7652,13 @@
   "hideFillter": {
     "en": "Hide Fillter",
     "ar": "إخفاء البحث"
+  },
+  "humanResource": {
+    "en": "Human Resource",
+    "ar": "إخفاء البحث"
+  },
+  "realState": {
+    "en": "Real Estate",
+    "ar": "Real Estate"
   }
 }

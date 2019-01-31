@@ -8,7 +8,7 @@ export default class Api {
     static headers() {
         return {
             'Accept': 'application/json',
-    //          'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
       //      'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': Authorization,

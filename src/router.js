@@ -15,6 +15,7 @@ import ScheduleAlertsSummaryDetails from "./Componants/DashBoardDetails/Schedule
 import TimeSheetDetails from "./Componants/DashBoardDetails/TimeSheetDetails";
 import DocApprovalDetails from "./Componants/DashBoardDetails/DocApprovalDetails";
 import PendingExpensesDetails from "./Componants/DashBoardDetails/PendingExpensesDetails";
+import Letter from "./Pages/Communication/Letter";
 
 
 let routes = (<Switch>
@@ -33,6 +34,7 @@ let routes = (<Switch>
     <Route path="/TimeSheetDetails" component={TimeSheetDetails} />,
     <Route path="/DocApprovalDetails" component={DocApprovalDetails} />,
     <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />
+    <Route path="/Letter" path="/:projectId" component={Letter} />
 </Switch>);
 
 export default routes;
