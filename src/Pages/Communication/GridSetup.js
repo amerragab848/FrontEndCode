@@ -1,14 +1,13 @@
 import React, { useState,Component } from "react"; 
+//import "../../Styles/css/semantic.min.css";
 import ReactDataGrid from "react-data-grid";    
 import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
+import "../../Styles/gridStyle.css";
 
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
-// const {
-//   DraggableHeader: { DraggableContainer }
-// } = require("react-data-grid-addons");
-
+ 
 const selectors = Data.Selectors;
 const {
   NumericFilter,
@@ -29,8 +28,12 @@ class GridSetup extends Component {
             setFilters: {},
             filters: {},
             setGroupBy: this.props.rows,
-            groupBy: []
+            groupBy: [],
+            selectedIndexes:[],
+            selectedRows:[],
+            expandedRows: {},
           }; 
+
      this.groupColumn =this.groupColumn.bind(this); 
   };
 
@@ -115,10 +118,8 @@ class GridSetup extends Component {
     return selectors.getRows({ rows, filters });
   }
 
-  getRowsGrouping = (rows, groups) => { 
-
-    return Data.Selectors.getRows({ rows, groups });
-    //return rows;
+  getRowsGrouping = (rows, groups) => {  
+    return Data.Selectors.getRows({ rows, groups }); 
   }
  
   groupColumn = (columnKey)=> {
@@ -144,12 +145,67 @@ class GridSetup extends Component {
     );
   };
 
+  onRowsSelected = rows => { 
+      let prevRows=this.state.selectedIndexes; 
+      let prevRowsId=this.state.selectedRows; 
+
+       if(rows.length > 1){
+          prevRows=[];
+          prevRowsId=[];
+          prevRows=  rows.map(r =>r.rowIdx);
+          prevRowsId=  rows.map(r =>r.row.id);
+       }
+       else { 
+          let exist=prevRows.indexOf(rows[0].rowIdx) === -1 ? false : true;
+          if (exist===false) {
+              prevRows.push(rows[0].rowIdx)
+              prevRowsId.push(rows[0].row.id)
+          }  
+      }
+
+      this.setState({
+        selectedIndexes: prevRows,
+        selectedRows: prevRowsId
+      }); 
+  };
+
+  onRowsDeselected = rows => {
+     let prevRows=this.state.selectedIndexes; 
+     let prevRowsId=this.state.selectedRows; 
+    
+     if(rows.length > 1){ 
+            prevRows =[];
+            prevRowsId =[];
+
+     } else {
+            let rowIndexes = rows.map(r => r.rowIdx);
+            let currRows=rows.map(r => r.row.id);
+            prevRows= this.state.selectedIndexes.filter( i => rowIndexes.indexOf(i) === -1)
+            prevRowsId= this.state.selectedRows.filter( i => currRows.indexOf(i) === -1)
+     }
+
+      this.setState({
+        selectedIndexes: prevRows,
+        selectedRows: prevRowsId,
+      });
+  };
+
+  onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
+      let expandedRows = Object.assign({}, this.state.expandedRows);
+      expandedRows[columnGroupName] = Object.assign({}, expandedRows[columnGroupName]);
+      expandedRows[columnGroupName][name] = {isExpanded: shouldExpand};
+      this.setState({expandedRows: expandedRows});
+  }
+  onRowClick= (rows,value) => {
+     
+     console.log('route to letterAddEdit/'+value.id);
+  }
   render() {    
       const { rows,groupBy} = this.state;
       const filteredRows = this.getRows(this.state.rows, this.state.filters);
       
       const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-      
+
       const CustomToolbar = ({ groupBy,onColumnGroupAdded,onColumnGroupDeleted }) => {
           return (
             <Toolbar>
@@ -158,18 +214,39 @@ class GridSetup extends Component {
                 onColumnGroupAdded={onColumnGroupAdded}
                 onColumnGroupDeleted={onColumnGroupDeleted}
               />
+              {
+               this.state.selectedRows.length > 0 ? 
+               (
+                <div className="gridSystemSelected active">
+                    <div className="tableselcted-items">
+                        <span id="count-checked-checkboxes">1</span>
+                        <span>Selected</span>
+                    </div>
+                    <div className="tableSelctedBTNs">
+                        <button className="defaultBtn btn smallBtn">DELETE</button> 
+                       
+                    </div>
+                </div>
+                ) 
+               : 
+               null 
+              }
             </Toolbar>
+
           );
         };
 
        return ( 
-          <DraggableContainer >
+          <DraggableContainer > 
               <ReactDataGrid
+                rowKey="id"
+                minHeight={800}
                 columns={this.state.columns}
                 rowGetter={i => groupedRows[i]} 
                 rowsCount={groupedRows.length} 
                 enableCellSelect={false}
-                onColumnResize={(idx, width) =>
+                onRowExpandToggle={this.onRowExpandToggle.bind(this)}
+                onColumnResize={( idx, width) => 
                   console.log(`Column ${idx} has been resized to ${width}`)
                 }
 
@@ -186,11 +263,21 @@ class GridSetup extends Component {
                     />
                   }
 
+                rowSelection={{
+                            showCheckbox: true,
+                            enableShiftSelect: true, 
+                            defaultChecked:false,
+                            onRowsSelected: this.onRowsSelected,
+                            onRowsDeselected: this.onRowsDeselected,
+                            selectBy: {
+                              indexes: this.state.selectedIndexes
+                            }
+                          }}
+                onRowClick={(index,value) => this.onRowClick(index,value)}
                 onAddFilter={filter => this.setState({ setFilters: this.handleFilterChange(filter)}) }
                 onClearFilters={() =>  this.setState({ setFilters: {}}) }
                 getValidFilterValues={columnKey => this.getValidFilterValues(this.state.rows, columnKey)}
-
-              />
+              /> 
           </DraggableContainer>
     );
   }

@@ -21,8 +21,9 @@ const subjectLink = ({ value ,row}) => {
 	 if (row) { 
 	          doc_view='letterAddEdit/' + row.id +'/'+row.projectId + '/' + row.projectName; 
 		      subject=row.subject; 
+				return <a href={doc_view}> {subject} </a> 
 	      }
-	return <a href={doc_view}> {subject} </a> 
+	      return null;
 };
   
 class Letter extends Component {
@@ -41,6 +42,7 @@ class Letter extends Component {
         	if(item.isCustom === true ){ 
 	        	var obj = {
 	        		key: item.field,
+    				frozen: index < 2 ? true : false ,
 	        		name: Resources[item.friendlyName][currentLanguage],
 	        		width: item.minWidth,
 			        draggable: true,
@@ -64,18 +66,21 @@ class Letter extends Component {
         	apiFilter: documentObj.filterApi,
         	pageTitle: Resources[documentObj.documentTitle][currentLanguage],
             viewfilter: true,
-        	projectId: 4330,
+        	projectId: 2,
             filtersColumns:filtersColumns,
         	docType: 'Letters',
             rows: [],
+            totalRows: 0,
             columns:cNames, 
 			pageSize: 50,
+			pageNumber:0,
 			isLoading: true	,
 			api: documentObj.documentApi.get,
-			pageNumber:0
+			query:"",
+			isCustom: true
         } 
-
-      // this.searchHandler=this.bind(searchHandler) ;
+ 
+    	this.filterMethodMain = this.filterMethodMain.bind(this);
     }
 
 	componentWillMount = () => {  
@@ -87,6 +92,7 @@ class Letter extends Component {
 	    Api.get(url).then(result => {  
 	        this.setState({
 	            rows: result,
+	            totalRows:result.length,
 	            isLoading: false
 	        }); 
 	    }).catch(ex => {
@@ -98,38 +104,57 @@ class Letter extends Component {
 	    return this.state.viewfilter;
     }
 
-    searchHandler = () => {
+    exportData(){ 
+     alert('Exporting...under Construction function....');
+    }
 
-    this.setState({
-      isLoading: true
-    });
+    addRecord(){
+     alert('under Construction function....');
+    }
 
-    var query = {};
+	GetNextData() {
 
-    this.state.valueColumns.map(column => {
-      if (column.type === "date") {
-        if (column.value != "") {
-          query[column.field] = moment(column.value).format("YYYY-MM-DD");
-        }
-      } else if (column.type === "number") {
-        if (column.value != "") {
-          query[column.field] = parseInt(column.value);
-        }
-      } else {
-        if (column.value != "") {
-          query[column.field] = column.value;
-        }
-      }
-    });
+		let pageNumber=this.state.pageNumber +1;
 
-    query["isCustom"] = this.state.isCustom;
+	    this.setState({ 
+	        isLoading: true,
+	        pageNumber: pageNumber
+	    }); 
+  		
+  		let url = (this.state.query == "" ? this.state.api :this.state.apiFilter ) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber
+	    	+ "&pageSize=" + this.state.pageSize +(this.state.query == "" ? "": "&query=" + this.state.query);
 
-     Api.get(this.state.apiFilter + "?query=" + query).then(result => {});
+	    Api.get(url).then(result => {
+	    	
+	    	let oldRows=this.state.rows;
+	    	const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+ 
+			this.setState({
+	            rows: newRows,
+                totalRows:newRows.length,
+	            isLoading: false
+	        }); 
+	    });
+    }
 
-     this.setState({
-      isLoading: false
-    });
-  }
+    filterMethodMain = (event,query,apiFilter)=> { 
+     
+	    var stringifiedQuery = JSON.stringify(query);
+		
+		this.setState({ 
+	        isLoading: true,
+	        query:stringifiedQuery
+	    }); 
+
+	    Api.get(apiFilter + "?projectId="+this.state.projectId+"&pageNumber="+this.state.pageNumber+"&pageSize="+this.state.pageSize+"&query=" + stringifiedQuery).then(result => {
+				this.setState({
+		            rows: result,
+                    totalRows:result.length,
+		            isLoading: false
+		        }); 
+	    });
+  	}
+
   render() {   
   	const dataGrid = this.state.isLoading===false ? <GridSetup rows={this.state.rows} pageSize={this.state.pageSize}  columns={this.state.columns} /> :null;
   	
@@ -204,17 +229,18 @@ class Letter extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button> 
+            <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.exportData()}>EXPORT</button> 
+            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
+              <span>0</span> - <span>{this.state.pageSize}</span> of
+              <span> {this.state.totalRows}</span>
             </div>
             <button className="rowunActive">
               <i className="angle left icon" />
             </button>
-            <button>
+            <button onClick={() => this.GetNextData()}>
               <i className="angle right icon" />
             </button>
           </div>
@@ -227,7 +253,7 @@ class Letter extends Component {
           }}
         >
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.searchHandler} key={this.state.docType} />
+            <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} key={this.state.docType} />
           </div>
         </div>
 
