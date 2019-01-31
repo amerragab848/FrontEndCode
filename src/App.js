@@ -4,6 +4,7 @@ import "./Styles/scss/en-us/layout.css";
 //sayed
 import CreateTransmittal from  './Componants/OptionsPanels/CreateTransmittal';
 import SendTask from  './Componants/OptionsPanels/SendTask';
+import ViewWorkFlow from  './Componants/OptionsPanels/ViewWorkFlow';
  
 import Letter from  './Pages/Communication/Letter';  
 import DashBoard from  './Pages/DashBoard';  
@@ -15,8 +16,9 @@ class App extends Component {
     	///test
       //<SendToInbox />  
     // <DashBoard/>
-   <Letter/>
+   //<Letter/>
   //<SendTask/> 
+  <ViewWorkFlow/>
     );
   }
 }
