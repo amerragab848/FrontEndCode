@@ -509,7 +509,7 @@ class LeftMenu extends Component {
                         >
                           <li>
                             <Link
-                              to="/Letter"
+                              to={"/Letter?projectId="+this.state.projectId}
                               params={{ projectId: this.state.projectId }}
                             >
                               Letter

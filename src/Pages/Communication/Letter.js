@@ -40,6 +40,14 @@ class Letter extends Component {
     constructor(props) {
 
         super(props)
+
+        const query = new URLSearchParams(this.props.location.search);
+        
+        let projectId = 0;
+
+        for (let param of query.entries()) {
+          projectId = param[1];
+        }
         
         let documentObj=documentDefenition['Letters'];
         
@@ -75,7 +83,7 @@ class Letter extends Component {
         	apiFilter: documentObj.filterApi,
         	pageTitle: Resources[documentObj.documentTitle][currentLanguage],
             viewfilter: true,
-        	projectId: 3721,
+        	projectId: projectId,
             filtersColumns:filtersColumns,
         	docType: 'Letters',
             rows: [],

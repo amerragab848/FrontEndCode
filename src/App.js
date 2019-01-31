@@ -11,8 +11,7 @@ import SendWorkFlow from "./Componants/OptionsPanels/SendWorkFlow";
 
 import DashBoard from "./Pages/DashBoard";
 import Menu from "./Pages/Menu/Menu";
-import ViewAttachment from "./Componants/OptionsPanels/ViewAttachmments";
-import Validation from "./Componants/OptionsPanels/validationRules";
+import ViewAttachment from "./Componants/OptionsPanels/ViewAttachmments"; 
 
 import Upload from "./Componants/OptionsPanels/UploadAttachment";
 import CopyTo from "./Componants/OptionsPanels/CopyTo";
