@@ -581,9 +581,13 @@ table edition
         border-radius: 4px;
         border: 1px solid #DADEE6;
         padding: 10px;
-      }
-=======
+      } 
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
+} 
+/*.ui.modal{
+  display:  block !important;
+}*/
+.ui.modal{
+  display:  block !important;
 }
->>>>>>> e4b6abe6cf32c0c89a2da469c43e8f8869f8bfbb

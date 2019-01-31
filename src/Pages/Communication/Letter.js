@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import GridSetup from  './GridSetup'; 
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from '../../api'
-import moment from "moment";
-
+import moment from "moment"; 
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
+
+
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import documentDefenition from "../../documentDefenition.json";
 import Resources from '../../resources.json';
+//import "../../Styles/scss/en-us/layout.css";
+
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
  const {
   NumericFilter,
@@ -26,6 +31,10 @@ const subjectLink = ({ value ,row}) => {
 	      return null;
 };
   
+const dateFormate = ({ value }) => {  
+   
+	return value ? moment(value).format("DD/MM/YYYY") : 'No Date'
+};
 class Letter extends Component {
   
     constructor(props) {
@@ -50,7 +59,7 @@ class Letter extends Component {
 			        resizable: true,
 	 				filterable: false,
 	    			sortDescendingFirst: true, 
-	    			formatter: item.field === 'subject' ?  subjectLink : '',  
+	    			formatter: item.field === 'subject' ?  subjectLink : ( item.dataType === 'date' ? dateFormate : '' ),  
 	    			filterRenderer: item.dataType === 'number' ? NumericFilter: SingleSelectFilter
 	        	};
 
@@ -66,21 +75,25 @@ class Letter extends Component {
         	apiFilter: documentObj.filterApi,
         	pageTitle: Resources[documentObj.documentTitle][currentLanguage],
             viewfilter: true,
-        	projectId: 2,
+        	projectId: 3721,
             filtersColumns:filtersColumns,
         	docType: 'Letters',
             rows: [],
             totalRows: 0,
             columns:cNames, 
-			pageSize: 50,
+			pageSize: 22,
 			pageNumber:0,
 			isLoading: true	,
 			api: documentObj.documentApi.get,
+			apiDelete: documentObj.documentApi.delete,
 			query:"",
-			isCustom: true
+			isCustom: true,
+			showDeleteModal:false,
+			selectedRows: []
         } 
  
     	this.filterMethodMain = this.filterMethodMain.bind(this);
+    	this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
     }
 
 	componentWillMount = () => {  
@@ -155,8 +168,61 @@ class Letter extends Component {
 	    });
   	}
 
+	onCloseModal = () => {
+		this.setState({ showDeleteModal: false });
+	};
+
+	onOpenModal = (action, value) => {
+	};
+
+	clickHandlerCancelMain = () =>{
+		this.setState({ showDeleteModal: false });
+    }
+
+	clickHandlerContinueMain = ()=> {
+		
+	    this.setState({ 
+	        isLoading: true 
+	    }); 
+
+		Api.post(this.state.apiDelete, this.state.selectedRows ).then(result => { 
+           
+           let originalRows=this.state.rows;
+           this.state.selectedRows.map(i=> { 
+           	   originalRows=originalRows.filter(r => r.id !== i);
+           });
+ 
+	        this.setState({
+	            rows: originalRows,
+	            totalRows: originalRows.length ,
+	            isLoading: false,
+	            showDeleteModal: false 
+	        }); 
+
+	    }).catch(ex => { 
+		    this.setState({ 
+		        isLoading: false ,
+	            showDeleteModal: false 
+		    }); 
+	    });   
+    }
+
+	clickHandlerDeleteRowsMain = (selectedRows) => {
+
+		  console.log('001');
+		  console.log(selectedRows)  
+		this.setState({ 
+			showDeleteModal: true,
+			selectedRows: selectedRows
+		 });
+		  console.log('000001');
+    }
+
   render() {   
-  	const dataGrid = this.state.isLoading===false ? <GridSetup rows={this.state.rows} pageSize={this.state.pageSize}  columns={this.state.columns} /> :null;
+  	const dataGrid = this.state.isLoading === false ? 
+  	<GridSetup rows={ this.state.rows } clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} showCheckbox="true" pageSize={ this.state.pageSize }  columns={ this.state.columns } /> 
+  	:
+  	 null;
   	
     return (
       <div className="mainContainer">
@@ -258,6 +324,17 @@ class Letter extends Component {
         </div>
 
         <div>{dataGrid}</div>
+        <div>
+        { this.state.showDeleteModal == true ? (
+            <ConfirmationModal 
+              closed={this.onCloseModal} 
+              showDeleteModal={this.showDeleteModal} 
+              clickHandlerCancel={this.clickHandlerCancelMain} 
+              clickHandlerContinue={this.clickHandlerContinueMain} 
+            />
+          ) : null
+        }
+        </div>
       </div>
     );
   }

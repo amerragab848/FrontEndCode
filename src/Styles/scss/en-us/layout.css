@@ -4346,6 +4346,7 @@ ul {
 .ui.modal {
   position: relative;
   padding: 23px 32px;
+  display: block;
 }
 
 .ui.modal > .header {
@@ -11791,9 +11792,6 @@ viewer-pdf-toolbar {
     min-width: auto;
   }
 }
-.ui.modal {
-  display: block
-}
 .rodal-dialog {
   padding: 0;
   background: transparent;
@@ -12301,4 +12299,7 @@ table edition
 }
 .dropWrapper .proForm .fillter-item-c .ui.input.inputDev {
   width: 100%;
+}
+.ui.modal{
+  display:  block !important;
 }

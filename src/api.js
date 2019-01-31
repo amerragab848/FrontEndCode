@@ -41,7 +41,7 @@ export default class Api {
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
 
-                json = resp != null ? resp.json() : "";
+                json = verb == 'GET' ? resp.json() : "";
 
                 return json;
             }
@@ -139,8 +139,6 @@ export default class Api {
         }).then(
             response => response.json()
         )
-
-
     }
 
     static getPassword(route,password){

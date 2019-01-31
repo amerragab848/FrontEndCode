@@ -12,7 +12,7 @@
     "documentApi": {
       "get": "GetLettersByProjectId",
       "getCustom": "getLettersCustom",
-      "delete": "multipleDeleteLetters"
+      "delete": "DeletMultipleLettersById"
     },
     "documentColumns": [
       {

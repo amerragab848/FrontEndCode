@@ -2,6 +2,7 @@ import React, { useState,Component } from "react";
 //import "../../Styles/css/semantic.min.css";
 import ReactDataGrid from "react-data-grid";    
 import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
+//import "../../Styles/scss/en-us/layout.css";
 import "../../Styles/gridStyle.css";
 
 const DraggableContainer = Draggable.Container;
@@ -68,7 +69,7 @@ class GridSetup extends Component {
       columns: stateCopy.columns
     });
     this.setState(reorderedColumns);
-    console.log(reorderedColumns);
+    //console.log(reorderedColumns);
   };
 
   sortRows = (initialRows, sortColumn, sortDirection) =>  {
@@ -91,22 +92,17 @@ class GridSetup extends Component {
     } else {
       delete newFilters[filter.column.key];
     }
-     console.log(newFilters);
+     //console.log(newFilters);
     return newFilters;
   };
 
   getValidFilterValues=(rows, columnId) =>  {
-
-      console.log('getValidFilterValues');
-      console.log(columnId);
-
-      console.log(rows);
+  
      let ar= rows
       .map(r => r[columnId])
       .filter((item, i, a) => {
         return i === a.indexOf(item);
-      });
-      console.log(ar);
+      }); 
     return rows
       .map(r => r[columnId])
       .filter((item, i, a) => {
@@ -124,8 +120,6 @@ class GridSetup extends Component {
  
   groupColumn = (columnKey)=> {
      
-    console.log(columnKey);
- 
     const columnGroups = this.state.groupBy.slice(0);
  
     const activeColumn = this.state.columns.find(c => c.key === columnKey);
@@ -134,8 +128,7 @@ class GridSetup extends Component {
     
     if (isNotInGroups) {
       columnGroups.push({ key: activeColumn.key, name: activeColumn.name });
-    }
-     console.log(columnGroups);
+    } 
     return columnGroups;
   };
 
@@ -197,9 +190,16 @@ class GridSetup extends Component {
       this.setState({expandedRows: expandedRows});
   }
   onRowClick= (rows,value) => {
+    if (value) {
+       console.log('route to letterAddEdit/'+value.id); 
+    }
      
-     console.log('route to letterAddEdit/'+value.id);
   }
+  
+  clickHandlerDeleteRows = (e) => {  
+    this.props.clickHandlerDeleteRows(this.state.selectedRows);
+  }
+  
   render() {    
       const { rows,groupBy} = this.state;
       const filteredRows = this.getRows(this.state.rows, this.state.filters);
@@ -223,7 +223,7 @@ class GridSetup extends Component {
                         <span>Selected</span>
                     </div>
                     <div className="tableSelctedBTNs">
-                        <button className="defaultBtn btn smallBtn">DELETE</button> 
+                        <button className="defaultBtn btn smallBtn" onClick={this.clickHandlerDeleteRows}>DELETE</button> 
                        
                     </div>
                 </div>
@@ -246,9 +246,10 @@ class GridSetup extends Component {
                 rowsCount={groupedRows.length} 
                 enableCellSelect={false}
                 onRowExpandToggle={this.onRowExpandToggle.bind(this)}
-                onColumnResize={( idx, width) => 
-                  console.log(`Column ${idx} has been resized to ${width}`)
-                }
+                onColumnResize={( idx, width,event) => {
+                  //console.log(this.state.columns[idx-1]); 
+                 // console.log(`Column ${idx} has been resized to ${width}`);
+                }}
 
                 onGridSort={(sortColumn, sortDirection) =>  
                    this.setState({ rows: this.sortRows(this.state.rows, sortColumn, sortDirection) })
@@ -264,9 +265,9 @@ class GridSetup extends Component {
                   }
 
                 rowSelection={{
-                            showCheckbox: true,
+                            showCheckbox: this.props.showCheckbox,
                             enableShiftSelect: true, 
-                            defaultChecked:false,
+                            //defaultChecked:false,
                             onRowsSelected: this.onRowsSelected,
                             onRowsDeselected: this.onRowsDeselected,
                             selectBy: {
