@@ -160,9 +160,21 @@ class Letter extends Component {
 	    }); 
 
 	    Api.get(apiFilter + "?projectId="+this.state.projectId+"&pageNumber="+this.state.pageNumber+"&pageSize="+this.state.pageSize+"&query=" + stringifiedQuery).then(result => {
+	    	if (result.length > 0) { 
 				this.setState({
 		            rows: result,
                     totalRows:result.length,
+		            isLoading: false
+		        }); 
+	    	}else { 
+				this.setState({ 
+		            isLoading: false
+		        }); 
+	    	}
+	    }).catch(ex => {  
+	    	    alert(ex);
+				this.setState({ 
+					rows: [],
 		            isLoading: false
 		        }); 
 	    });
