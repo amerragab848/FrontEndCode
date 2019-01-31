@@ -7,6 +7,8 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import moment from 'moment';
+import { Formik, Form } from 'formik';
+
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -23,7 +25,7 @@ class DistributionList extends Component {
                 docId: "138",
                 DistributionListId: "",
                 Priority: "",
-                RequiredDate: moment().format(),
+                RequiredDate: moment().toDate(),
                 docTypeId: "64",
                 itemContacts: [],
                 redDays: 1,
@@ -36,7 +38,11 @@ class DistributionList extends Component {
             ContactNameData: [],
             seletedCompany: "",
             selectedConstact: '',
-            ActionData: []
+            ActionData: [],
+            DistributionValidation: true,
+            PriorityValidation: true,
+            CompanyValidation: true,
+            ContactValidation: true
 
         };
 
@@ -45,41 +51,28 @@ class DistributionList extends Component {
     onDelete(key, e) {
         e.preventDefault();
         const data = this.state.sendingData.itemContacts.filter(item => item.contactId !== key);
-
-        this.setState({
-            sendingData: { ...this.state.sendingData, itemContacts: data }
-
-        });
+        this.setState({ sendingData: { ...this.state.sendingData, itemContacts: data } });
     }
     onAdd = () => {
         if (this.state.selectedCompany != null && this.state.selectedConstact != null) {
             const data = [...this.state.sendingData.itemContacts];
             data.push({
                 companyId: this.state.selectedCompany.value, companyName: this.state.selectedCompany.label,
-                contactId: this.state.selectedConstact.value, contactName: this.state.selectedConstact.label, action: 0,
-
-
+                contactId: this.state.selectedConstact.value, contactName: this.state.selectedConstact.label, action: 0
             });
             let state = { sendingData: { ...this.state.sendingData, itemContacts: data } };
             state[this.state.selectedConstact.value + '-drop'] = this.state.ActionData[3];
             this.setState(state);
-
         }
     }
 
     Company_handleChange = (item) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
-
         this.GetData(url, "contactName", "id", "ContactNameData");
-
-        this.setState({
-            selectedCompany: item
-        });
+        this.setState({ selectedCompany: item, CompanyValidation: false });
     }
     Contact_handleChange = (item) => {
-        this.setState({
-            selectedConstact: item
-        });
+        this.setState({ selectedConstact: item, ContactValidation: false });
     }
 
     actionHandler = (key, e) => {
@@ -89,28 +82,18 @@ class DistributionList extends Component {
     }
 
     DistributionHanleChange = (item) => {
-
-        console.log(item)
-        
         let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
         this.GetDistributionData(url);
         setTimeout(() => {
-            let state = { sendingData: { ...this.state.sendingData, DistributionListId: item.value } };
-
+            let state = { sendingData: { ...this.state.sendingData, DistributionListId: item.value }, DistributionValidation: false, showTabel: true };
             this.state.sendingData.itemContacts.forEach((it) => {
                 state[it.contactId + '-drop'] = this.state.ActionData[3];
             });
-
             this.setState(state);
-        }, 500);
-
+        }, 400);
     }
-
     Priority_handelChange = (item) => {
-        this.setState({
-            sendingData: { ...this.state.sendingData, Priority: item.value }
-        })
-
+        this.setState({ sendingData: { ...this.state.sendingData, Priority: item.value }, PriorityValidation: false })
     }
     componentDidMount = () => {
         let url = "getProjectDistributionList?projectId=" + this.state.sendingData.projectId;
@@ -119,44 +102,21 @@ class DistributionList extends Component {
         this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData');
         this.GetData(url2, 'companyName', 'companyId', 'CompanyData');
         this.GetData("GetaccountsDefaultListForList?listType=distribution_action", 'title', 'action', 'ActionData');
-
     }
 
 
     DatehandleChange = (date) => {
-        this.setState({
-            sendingData: { ...this.state.sendingData, RequiredDate: date }
-        });
+        this.setState({ sendingData: { ...this.state.sendingData, RequiredDate: date } });
     }
 
-    submitBtnHandler = () => {
-        let tempData = this.state.sendingData.itemContacts.map(item => {
-            return {
-                companyId: item['companyId'], contactId: item['contactId'], companyName: item['companyName'],
-                contactName: item['contactName'], action: this.state[item['contactId'] + '-drop'].value
-            }
-        })
-        this.setState({
-            sendingData: { ...this.state.sendingData, itemContacts: tempData }
-        })
-        setTimeout(() => {
-
-            Api.post("SnedToDistributionList", this.state.sendingData)
-        }, 500)
-
-    }
-
-    render() {
-
+    ContactSection = () => {
         const columns = [
             {
                 Cell: props => {
                     return (
-
                         <a onClick={e => this.onDelete(props.original.contactId, e)} href="#">
                             <img className="deleteImg" src={Recycle} alt="Del" />
                         </a>
-
                     )
                 }, width: 30
             }, {
@@ -171,11 +131,9 @@ class DistributionList extends Component {
                 width: 200,
                 sortabel: true,
                 filterable: true
-
             }, {
                 Header: 'contactId',
                 accessor: 'contactId', show: false
-
             }, {
                 Header: Resources['ContactName'][currentLanguage],
                 accessor: 'contactName',
@@ -189,31 +147,20 @@ class DistributionList extends Component {
                     return (<Dropdown title="" data={this.state.ActionData} handleChange={e => this.actionHandler(props.original.contactId, e)}
                         selectedValue={this.state[props.original.contactId + '-drop']} index={Date.now()} />)
                 },
-                width: 200 
+                width: 200
             }
         ]
-
         return (
-            <div className="dropWrapper">
-
-                <Dropdown name="color" title="distributionList" data={this.state.DistributionListDate} handleChange={this.DistributionHanleChange}
-                    index='Distribution' />
-
-
-                <DatePicker startDate={this.state.sendingData.RequiredDate} handleChange={this.DatehandleChange} />
-
-                <Dropdown title="priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange}
-                    index='Priority' />
+            <div className="proForm customProform">
                 <div className="modal-header fullWidthWrapper"><h4 className="modal-title" >{Resources['addAnthorContact'][currentLanguage]}</h4></div>
                 <br />
-
                 <Dropdown title="CompanyName" data={this.state.CompanyData} handleChange={this.Company_handleChange}
                     index='Company' />
-
                 <Dropdown title="ContactName" data={this.state.ContactNameData} handleChange={this.Contact_handleChange}
                     index='Contact' />
                 <div className="fullWidthWrapper">
-                    <button className="primaryBtn-1 btn" onClick={this.onAdd} >{Resources['addTitle'][currentLanguage]}</button>
+                    <button className={this.state.ContactValidation ? "primaryBtn-1 ui disabled button" : "primaryBtn-1 btn"} type="button" onClick={this.onAdd}
+                        disabled={this.state.ContactValidation} >{Resources['addTitle'][currentLanguage]}</button>
                 </div>
                 <div className="fullWidthWrapper">
                     <h4 className="twoLineHeader">{Resources['contactList'][currentLanguage]}</h4>
@@ -229,16 +176,73 @@ class DistributionList extends Component {
                         minRows={2}
                         noDataText={Resources['noData'][currentLanguage]}
                     />
-
-
                 </div>
-                <div className="fullWidthWrapper">
-                    <button className="primaryBtn-1 btn" onClick={this.submitBtnHandler}>{Resources['send'][currentLanguage]}</button>
-                </div>
+            </div >
+        );
+    }
+    render() {
+        return (
+            <div className="dropWrapper">
+                <Formik
+                    initialValues={{
+                        DistributionValidation: '',
+                        PriorityValidation: ''
+                    }}
+                    onSubmit={(values) => {
 
-
-            </div>
-
+                        if (!this.state.DistributionValidation && !this.state.PriorityValidation) {
+                            let tempData = this.state.sendingData.itemContacts.map(item => {
+                                return {
+                                    companyId: item['companyId'], contactId: item['contactId'], companyName: item['companyName'],
+                                    contactName: item['contactName'], action: this.state[item['contactId'] + '-drop'].value
+                                }
+                            })
+                            this.setState({
+                                sendingData: { ...this.state.sendingData, itemContacts: tempData }
+                            })
+                            setTimeout(() => {
+                                Api.post("SnedToDistributionList", this.state.sendingData)
+                            }, 500)
+                        }
+                    }}
+                >
+                    {({ touched }) => (
+                        <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
+                            <div className={this.state.DistributionValidation && touched.DistributionValidation ? (
+                                "ui input inputDev fillter-item-c has-error"
+                            ) : !this.state.DistributionValidation && touched.DistributionValidation ? (
+                                "ui input inputDev fillter-item-c has-success"
+                            ) : "ui input inputDev fillter-item-c"}
+                            >
+                                <Dropdown title="distributionList" data={this.state.DistributionListDate} handleChange={this.DistributionHanleChange}
+                                    index='Distribution' name="DistributionValidation" />
+                                {this.state.DistributionValidation && touched.DistributionValidation ? (
+                                    <em className="pError">{this.state.DistributionValidation}</em>
+                                ) : null}
+                            </div>
+                            <DatePicker startDate={this.state.sendingData.RequiredDate} handleChange={this.DatehandleChange} />
+                            <div className={this.state.PriorityValidation && touched.PriorityValidation ? (
+                                "ui input inputDev fillter-item-c has-error"
+                            ) : !this.state.PriorityValidation && touched.PriorityValidation ? (
+                                "ui input inputDev fillter-item-c has-success"
+                            ) : "ui input inputDev fillter-item-c"}
+                            >
+                                <Dropdown title="priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange}
+                                    index='Priority' name="PriorityValidation" />
+                                {this.state.PriorityValidation && touched.PriorityValidation ? (
+                                    <em className="pError">{this.state.PriorityValidation}</em>
+                                ) : null}
+                            </div>
+                            {!this.state.DistributionValidation &&
+                                <this.ContactSection />
+                            }
+                            <div className="fullWidthWrapper">
+                                <button className="primaryBtn-1 btn" type="submit" >{Resources['send'][currentLanguage]}</button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </div >
         );
     }
 
@@ -249,16 +253,11 @@ class DistributionList extends Component {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-
                 Data.push(obj);
-
             });
-
             this.setState({
                 [currState]: [...Data]
             });
-
-
         }).catch(ex => {
         });
     }
@@ -275,10 +274,7 @@ class DistributionList extends Component {
             })
             this.setState({
                 sendingData: { ...this.state.sendingData, itemContacts: data }
-
             })
-
-
         }).catch(ex => {
         });
     }

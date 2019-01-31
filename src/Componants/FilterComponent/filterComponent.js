@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import "../../Styles/scss/en-us/layout.css";
 import InputMelcous from "../OptionsPanels/InputMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import moment from "moment";
+//import "../../Styles/scss/en-us/layout.css";
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -81,22 +82,18 @@ class FilterComponent extends Component {
       });
     }
   }
-
-  searchHandler(e) {
-
-    e.preventDefault();
-
+ 
+  filterMethod = (e) => {
+     
     this.setState({
       isLoading: true
-    });
-
+    }); 
     var query = {};
-
+    
     this.state.valueColumns.map(column => {
       if (column.type === "date") {
         if (column.value != "") {
-          //query[column.field] = moment(column.value).format("DD/MM/YYYY");
-          query[column.field] = column.value;
+          query[column.field] = moment(column.value).format("YYYY-MM-DD");
         }
       } else if (column.type === "number") {
         if (column.value != "") {
@@ -110,14 +107,14 @@ class FilterComponent extends Component {
     });
 
     query["isCustom"] = this.state.isCustom;
-
-    // Api.get(this.state.apiFilter + "?query=" + query).then(result => {});
-
+     
+    this.props.filterMethod(e,query,this.state.apiFilter);
+ 
     this.setState({
       isLoading: false
     });
   }
-
+ 
   renderFilterColumns() {
     let columns = (
       <div className="fillter-status-container">
@@ -125,8 +122,9 @@ class FilterComponent extends Component {
           if (this.state.isCustom) {
             if (column.type === "string" ||column.type === "number" ) {
               return (
-                <div className="form-group fillterinput fillter-item-c">
+                <div className="form-group fillterinput fillter-item-c" key={index}>
                   <InputMelcous
+                    ref={column.name}
                     title={column.name}
                     index={index}
                     key={index}
@@ -162,8 +160,7 @@ class FilterComponent extends Component {
                   ]}
                 />
               );
-            } else if (column.type === "date") {
-              console.log("index of state : " + this.state[index + "-column"]);
+            } else if (column.type === "date") { 
               return (
                 <DatePicker
                   title={column.name}
@@ -178,10 +175,11 @@ class FilterComponent extends Component {
             }
           }
         })}
+
         {this.state.isLoading === false ? (
           <button
-            className="primaryBtn-2 btn smallBtn fillter-item-c"
-            onClick={event => this.searchHandler(event)}
+            className="primaryBtn-2 btn smallBtn fillter-item-c" 
+            onClick={this.filterMethod} 
           >
             {Resources["search"][currentLanguage]}
           </button>
@@ -195,8 +193,7 @@ class FilterComponent extends Component {
           </button>
         )}
       </div>
-    );
-
+    ); 
     return columns;
   }
 

@@ -5,8 +5,7 @@ let currentLanguage =
 
 class InputMelcous extends Component {
   constructor(props) {
-    super(props);
-    console.log(this.props);
+    super(props); 
   }
   render() {
     return (
