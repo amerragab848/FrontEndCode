@@ -3,6 +3,7 @@ import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
 import language from "../../resources.json";
+import Navigate from "../../Navigate";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -10,6 +11,7 @@ let currentLanguage =
 class ApprovedWidget extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       open: false,
       dataList: [],
@@ -26,11 +28,58 @@ class ApprovedWidget extends Component {
     });
   }
 
-  onOpenModal = action => {
-    let modal = this.state.isModal;
+  onOpenModal = (action, value) => {
+    if (value > 0) {
+      let arr = this.props.props.route;
+      if (arr.length === 1) {
+        let arr = this.props.props.route[0].split("?");
+        let url = arr[0];
+        let param = arr[1];
 
-    if (modal) {
-      this.setState({ open: true, action: action });
+        Navigate({
+          pathname: url,
+          search: "?" + param + action
+        });
+      } else if (arr.length === 2) {
+        if (action === 1) {
+          let link = this.props.props.route[0];
+          link = link.split("?");
+          let url = link[0];
+          let param = link[1];
+
+          Navigate({
+            pathname: url,
+            search: "?" + param + action
+          });
+        } else {  
+          Navigate({
+            pathname: this.props.props.route[1]
+          });
+        }
+      } else if (arr.length === 3) {
+        if (action === 1) {
+          Navigate({
+            pathname: this.props.props.route[0]
+          });
+        } else if(action === 2) {  
+          let link = this.props.props.route[1];
+          console.log("Link : "+link);
+          link = link.split("?");
+          let url = link[0];
+          console.log("url : "+url);
+          let param = link[1];
+          console.log("param : "+param);
+
+          Navigate({
+            pathname: url,
+            search: "?" + param + action
+          }); 
+        }else{
+          Navigate({
+            pathname: this.props.props.route[2]
+          });
+        }
+      } 
     }
   };
 
@@ -60,7 +109,15 @@ class ApprovedWidget extends Component {
         <div className="summerisItem">
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
-            <p className="number" onClick={() => this.onOpenModal(high.action)}>
+            <p
+              className="number"
+              onClick={() =>
+                this.onOpenModal(
+                  high.action,
+                  high[this.props.value] 
+                )
+              }
+            >
               {high ? high[this.props.value] : 0}
             </p>
             <p className="status">
@@ -75,7 +132,12 @@ class ApprovedWidget extends Component {
               <div className="first">
                 <span
                   className="mediumModal"
-                  onClick={() => this.onOpenModal(normal.action)}
+                  onClick={() =>
+                    this.onOpenModal(
+                      normal.action,
+                      normal[this.props.value] 
+                    )
+                  }
                 >
                   {normal ? normal[this.props.value] : 0}
                 </span>
@@ -86,7 +148,12 @@ class ApprovedWidget extends Component {
               <div>
                 <span
                   className="mediumModal"
-                  onClick={() => this.onOpenModal(low.action)}
+                  onClick={() =>
+                    this.onOpenModal(
+                      low.action,
+                      low[this.props.value] 
+                    )
+                  }
                 >
                   {low ? low[this.props.value] : ""}
                 </span>
@@ -100,7 +167,6 @@ class ApprovedWidget extends Component {
   }
 
   render() {
-    console.log(this.props.apiDetails);
     return (
       <div>
         <div>{this.drawThreeCard()}</div>

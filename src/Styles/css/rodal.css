@@ -31,6 +31,8 @@
     background: transparent;
     border-radius: 3px;
     box-shadow: none;
+    width: auto !important;
+    height: auto !important;
 }
 
 .rodal-dialog:focus {

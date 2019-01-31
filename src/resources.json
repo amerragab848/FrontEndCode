@@ -7644,5 +7644,13 @@
   "addAnthorContact": {
     "en": "Add Anthor Contact",
     "ar": "اضافة عميل اخر"
+  },
+  "howFillter": {
+    "en": "Show Fillter",
+    "ar": "عرض البحث"
+  },
+  "hideFillter": {
+    "en": "Hide Fillter",
+    "ar": "إخفاء البحث"
   }
 }

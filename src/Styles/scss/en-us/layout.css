@@ -115,9 +115,30 @@ sayed exp
   content: '\e800';
   opacity: 1;
 }
-
-
-
+.react-grid-checkbox-label 
+.ui.input>input {
+  margin: 0;
+  max-width: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  outline: 0;
+  -webkit-tap-highlight-color: rgba(255,255,255,0);
+  text-align: left;
+  line-height: 1.21428571em;
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  padding: .67857143em 1em;
+  background: #fff;
+  border: 1px solid rgba(34,36,38,.15);
+  color: rgba(0,0,0,.87);
+  border-radius: .28571429rem;
+  -webkit-transition: border-color .1s ease,-webkit-box-shadow .1s ease;
+  transition: border-color .1s ease,-webkit-box-shadow .1s ease;
+  transition: box-shadow .1s ease,border-color .1s ease;
+  transition: box-shadow .1s ease,border-color .1s ease,-webkit-box-shadow .1s ease;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 
 
 
@@ -1431,7 +1452,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }*/
 .zero {
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
 }
 
 body {
@@ -4325,6 +4346,7 @@ ul {
 .ui.modal {
   position: relative;
   padding: 23px 32px;
+  display: block;
 }
 
 .ui.modal > .header {
@@ -4354,6 +4376,10 @@ ul {
   background: inherit;
   border: none;
   padding: 0;
+  text-align: right;
+}
+.ui.modal > .actions .btn.smallBtn{
+  margin-left: 5px;
 }
 
 .modalBtn {
@@ -4371,6 +4397,7 @@ ul {
 /*Medium Modal*/
 .ui.modal.mediumModal {
   max-width: 600px;
+  background: #fff;
 }
 .ui.modal.mediumModal .content {
   padding-bottom: 30px;
@@ -5036,9 +5063,7 @@ ul {
   input {
   width: 136px;
 }
-.gridfillter-container .fillter-status-container .fillter-item-c {
-  margin-bottom: 20px !important;
-}
+
 .gridfillter-container .fillter-status-container .form-control::placeholder {
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -8014,11 +8039,11 @@ ul {
   min-height: auto;
 }
 .attachmentPage .gridSystemTables .tableCell-2 {
-  width: 190px;
+  width: 200px;
 }
 @media screen and (min-width: 1440px) {
   .attachmentPage .gridSystemTables .tableCell-2 {
-    width: 190px;
+    width: 200px;
   }
 }
 .attachmentPage .gridSystemTables .girdTableHeader {
@@ -8026,12 +8051,13 @@ ul {
   position: static;
 }
 .attachmentPage .gridSystemTables .girdTableHeader .stickyHead {
-  width: 231px;
+  width: 241px;
 }
 .attachmentPage .gridSystemTables .girdTableHeader .thead-row {
   width: auto;
   min-width: 471px;
-  left: 231px;
+  left: 241px;
+  transform: translateX(0px);
 }
 .attachmentPage .gridSystemTables .gridTableContent {
   padding: 0;
@@ -8048,14 +8074,11 @@ ul {
   width: 20px;
   height: 24px;
 }
-.attachmentPage
-  .gridSystemTables
-  .gridTableContent
-  .gridMainRow
-  .normalContent {
+.attachmentPage .gridSystemTables .gridTableContent .gridMainRow .normalContent {
   width: auto;
   min-width: 471px;
-  left: 231px;
+  left: 241px;
+  margin-left: 0;
 }
 .attachmentPage
   .gridSystemTables
@@ -8063,7 +8086,7 @@ ul {
   .gridMainRow
   .stickyContent {
   width: auto;
-  min-width: 231px;
+  min-width: 241px;
 }
 .attachmentPage
   .gridSystemTables
@@ -8083,7 +8106,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span {
+  a {
   margin: 0 8px;
   width: 16px;
   height: 16px;
@@ -8096,7 +8119,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span
+  a
   img {
   transition: all 0.4s ease-in-out;
   transform: translateY(0);
@@ -8106,7 +8129,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span::after {
+  a::after {
   content: "";
   width: 16px;
   position: absolute;
@@ -8122,7 +8145,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span.attachRecycle::after {
+  .attachRecycle::after {
   background-image: url(../../images/afterDelete.png);
 }
 .attachmentPage
@@ -8130,7 +8153,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span.attachPdf::after {
+  .attachPdf::after {
   background-image: url(../../images/afterDown.png);
 }
 .attachmentPage
@@ -8138,7 +8161,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span.attachPend::after {
+  .attachPend::after {
   background-image: url(../../images/afterPend.png);
 }
 .attachmentPage
@@ -8146,7 +8169,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span:hover
+  a:hover
   img {
   transform: translateY(20px);
 }
@@ -8155,7 +8178,7 @@ ul {
   .gridTableContent
   .gridMainRow
   .attachmentAction
-  span:hover::after {
+  a:hover::after {
   transform: translateY(0);
 }
 .attachmentPage
@@ -11769,9 +11792,6 @@ viewer-pdf-toolbar {
     min-width: auto;
   }
 }
-.ui.modal {
-  display: block
-}
 .rodal-dialog {
   padding: 0;
   background: transparent;
@@ -11861,7 +11881,7 @@ viewer-pdf-toolbar {
   font-size: 14px;
   color: #9da3b1;
 }
-.dropWrapper .fullWidthWrapper {
+.fullWidthWrapper {
   width: 100%;
   text-align: center;
   margin: 20px 0;
@@ -11969,7 +11989,206 @@ table edition
   overflow: visible;
   white-space: pre-wrap;
   align-items: center;
+} 
+ 
+/* sla7 22/1/2019*/
+.gridfillter-container .fillter-status-container .fillter-status {
+  width: 170px;
 }
+
+.mainContainer {
+  background-image: linear-gradient(to bottom,#f5f5f6 100%,#f5f5f6 26%,#fafbfc 0%,#fafbfc 0%);
+}
+.mainContainer .ui.fluid.selection.dropdown.singleDropDown {
+  padding: 0;
+}
+.mainContainer .customD_Menu >div >div >div {
+  padding: 0;
+}
+.mainContainer .customD_Menu >div >div >div >div  {
+  white-space: nowrap;
+  padding-left: 12px;
+}
+.mainContainer .customD_Menu {
+  width: 100%;
+}
+.mainContainer .customD_Menu div{
+  border-width: 0;
+  outline: 0
+}
+.mainContainer .customD_Menu div:hover{
+  border: none;
+  box-shadow: none;
+  outline: 0;
+}
+/* .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+  display: block;
+} */
+.filterHidden {
+  transition: all 0.4s ease-in-out;
+  max-height: 550px;
+}
+.gridfillter-container {
+  transition: all 0.4s ease-in-out;
+}
+.spinner {
+  width: 100%;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 12px;
+  height: 12px;
+  margin: 0 2px;
+  background-color: #333;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+/* .mainContainer .customD_Menu div {
+  padding: 0;
+} */
+/* .mainContainer .customD_Menu div span{
+  width: 0;
+} */
+   
+.attachmentPage {
+  width: 100%;
+  margin: 0;
+}
+ 
+.gridfillter-container .fillter-status-container >div {
+  margin-bottom: 20px !important;
+} 
+.uploadForm {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  width: 639px;
+  height: 108px;
+  border-radius: 4px;
+  background-color: #FAFBFC;
+  border: 3px dashed #E9ECF0;
+  margin-bottom: 29px;
+  position: relative; }
+  .uploadForm .progressBar {
+    width: 100%;
+    height: 100%;
+    position: absolute; }
+    .uploadForm .progressBar .smallProgress {
+      background-color: #d9eeff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      z-index: 0;
+      height: 100%;
+      transition: all 1s ease-in-out;
+    }
+    .uploadForm.fullProgressBar .progressBar .smallProgress {
+      width: 90%; 
+    }
+    .uploadForm.hundredPercent .progressBar .smallProgress {
+      width: 100%; 
+      transition: none;
+    }
+    .uploadForm.zeropercent .progressBar .smallProgress {
+      width: 0; 
+      transition: none;
+    }
+  .uploadForm .dragHoverDiv {
+    display: none;
+    align-items: center;
+    flex-flow: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1; }
+    .uploadForm .dragHoverDiv img {
+      width: 64px;
+      height: 64px;
+      position: relative; }
+  .uploadForm .uploadFormDiv {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1; }
+  .uploadForm.dragHover {
+    border-color: #83B4FC;
+    background: #E8F4FC; }
+    .uploadForm.dragHover .uploadFormDiv {
+      display: none; }
+    .uploadForm.dragHover .dragHoverDiv {
+      display: flex; }
+  .uploadForm.dropHover {
+    border: 3px solid #83B4FC; }
+    .uploadForm.dropHover .uploadFormDiv {
+      display: none; }
+    .uploadForm.dropHover .dragHoverDiv {
+      display: flex; }
+  .uploadForm img {
+    width: 80px;
+    height: 64px; }
+  .uploadForm .dragUpload {
+    display: flex; 
+    align-items: center;
+  }
+    .uploadForm .dragUpload p {
+      opacity: 0.4;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.43;
+      letter-spacing: -0.2px;
+      color: #A8B0BF;
+      margin: 0;
+      margin-right: 12px;
+      padding: 0;
+     }
+    .uploadForm .dragUpload form .inputfile {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1; }
+    .uploadForm .dragUpload form label {
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1.33;
+      letter-spacing: 0.2px;
+      color: #858D9E;
+      padding: 0;
+      overflow: visible; }
+
 /* table th, table td {
   padding: 0px 8px !important;
   white-space: unset !important;
@@ -11977,3 +12196,110 @@ table edition
 /* 
 table edition
 */
+.proForm .showPasswordArea .togglePW.activePW .hide {
+  display: block;
+}
+.proForm .showPasswordArea .togglePW.activePW .show {
+  display: none;
+}
+ 
+.approvalDocument {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 4px;
+}
+.approvalWrapper {
+  width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  background: #fff;
+  padding: 10px;
+  border-radius: 4px;
+}
+.textarea-group {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.textarea-group textarea {
+  overflow: auto;
+  width: 100%;
+  min-height: 100px;
+  border-radius: 4px;
+  border: 1px solid #DADEE6;
+  padding: 11px;
+}
+.textarea-group label {
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
+  color: #26344c;
+  font-family: font-opens;
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+}
+.approvalTitle {
+  height: 80px;
+  border-bottom: 1px solid #DADEE6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.approvalTitle h3 {
+  color: #26344c;
+  font-size: 26px;
+}
+.pError {
+  position: absolute;
+  left: 0;
+  bottom: -14px;
+  color: #e74c3c;
+  font-size: 12px;
+}
+.fullWidthWrapper.textLeft {
+  text-align: left;
+}
+.fullWidthWrapper.textLeft label{
+  margin-bottom: 5px;
+}
+.dropWrapper .customProform {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.customD_Menu .css-1hwfws3 {
+  max-height: 40px;
+}
+.has-error .spanValidation label {
+  color: #E74C3C
+}
+.has-success .spanValidation label {
+  color: #2AA832;
+}
+.customD_Menu div:first-child >div:hover {
+  border-color: hsl(0,0%,80%)
+}
+.has-error .customD_Menu div:first-child >div  {
+  border-color: #E74C3C;
+}
+.has-success .customD_Menu div:first-child >div  {
+  border-color: #2AA832;
+}
+.dropWrapper .proForm .ui.input.inputDev input {
+  width: 100%;
+}
+.dropWrapper .proForm .fillter-item-c .ui.input.inputDev {
+  width: 100%;
+}
+.ui.modal{
+  display:  block !important;
+}

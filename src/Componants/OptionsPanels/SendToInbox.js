@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
-import validations from './validationRules'; 
 import Resources from '../../resources.json';
+import { Formik, Form } from 'formik';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
@@ -20,19 +21,11 @@ class SendToInbox extends Component {
                 docType: "64",
                 priorityId: "",
                 toCompanyId: "",
-
                 toContactId: "",
                 ccCompanyId: "",
-
                 cc: [],
                 Comment: ""
             },
-
-
-            selectedValue:{ label: "select Perioity" , value: 0 },
-            selectedCompanyId:{label: "select To Company" , value: 0},
-            selectedConatctId:{label: "select To Contact" , value: 0},
-            selectedCCCompanyId:{label: "select CC Company" , value: 0}, 
 
             PriorityData: [],
             To_Cc_CompanyData: [],
@@ -40,158 +33,130 @@ class SendToInbox extends Component {
             Cc_ContactData: [],
             Cc_Selected: [],
 
-            validPriority: false,
-            priorityErrorMess: "",
-            priorityClass: "",
-
-            validToCompany: false,
-            toCompanyErrorMess: "",
-            toCompanyClass: "",
-
-            validAttention: false,
-            attentionErrorMess: "",
-            attentionClass: ""
+            validPriority: true,
+            validToCompany: true,
+            validAttention: true,
         }
     }
     Priority_handelChange = (item) => {
-        // this.setState({
-        //     sendingData: { ...this.state.sendingData, priorityId: item.value },
-        //     validPriority: !validations.equals("Select...", item.label),
-        //     priorityClass: (validations.equals("Select...", item.label) ? "borderError" : "borderValid"),
-        //     priorityErrorMess: ""
-
-        // }) 
         this.setState({
             selectedValue: item,
-            sendingData: { ...this.state.sendingData, priorityId: item.value }
-        }); 
+            sendingData: { ...this.state.sendingData, priorityId: item.value },
+            validPriority: false  });
     }
-
     Attention_handleChange = (item) => {
         this.setState({
             selectedConatctId: item,
             sendingData: { ...this.state.sendingData, toContactId: item.value },
-            validAttention: !validations.equals("Select...", item.label),
-            attentionClass: (validations.equals("Select...", item.label) ? "borderError" : "borderValid"),
-            attentionErrorMess: ""
-        })
-
+            validAttention: false })
     }
-
     To_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + selectedOption.value;
-        
-        this.GetData(url, "contactName", "id", "AttentionData",3);
+        this.GetData(url, "contactName", "id", "AttentionData", 3);
         this.setState({
             selectedCompanyId: selectedOption,
             sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },
-            validToCompany: !validations.equals("Select...", selectedOption.label),
-            toCompanyClass: (validations.equals("Select...", selectedOption.label) ? "borderError" : "borderValid"),
-            toCompanyErrorMess: ""
-        });
-
+            validToCompany: false});
     }
-
     Cc_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
-            selectedCCCompanyId:selectedOption,
-            sendingData: { ...this.state.sendingData, ccCompanyId: selectedOption.value }
-        });
-
+            selectedCCCompanyId: selectedOption,
+            sendingData: { ...this.state.sendingData, ccCompanyId: selectedOption.value } });
         this.GetData(url, "contactName", "id", "Cc_ContactData");
     }
-
     Cc_Contact_handleChange = (selectedOption) => {
-      
         this.setState({
             sendingData: {
-                ...this.state.sendingData, cc: _.map(selectedOption,function(item){return item.value })
+                ...this.state.sendingData, cc: _.map(selectedOption, function (item) { return item.value })
             }
         })
-
     }
- 
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
-        this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData',2);
-        this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData',1);
+        this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData', 2);
+        this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData', 1);
     }
- 
+
     inputChangeHandler = (e) => {
         this.setState({ sendingData: { ...this.state.sendingData, Comment: e.target.value } });
     }
-
-    clickHandler = (e) => {
-        // if (!this.state.validPriority) {
-        //     this.setState({
-        //         priorityClass: "borderError",
-        //         priorityErrorMess: "please select Priority"
-
-        //     })
-        // }
-        // if (!this.state.validAttention) {
-        //     this.setState({
-        //         attentionClass: "borderError",
-        //         attentionErrorMess: "please select Attention"
-
-        //     })
-        // }
-        // if (!this.state.validToCompany) {
-        //     this.setState({
-        //         toCompanyClass: "borderError",
-        //         toCompanyErrorMess: "please select To Company"
-
-        //     })
-        // }
-        // if (this.state.validToCompany && this.state.validAttention && this.state.validPriority) {
-           
-        //     //console.log(this.state.sendingData);
-
-        //     let inboxDto={...this.state.sendingData};
-            
-            
-        //    // console.log(inboxDto);
-        //    Api.post("SendByInbox", inboxDto)
-        // }
-    }
- 
-
     render() {
         return (
             <div className="dropWrapper">
-                <Dropdown title="priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange} selectedValue={this.state.selectedValue}
-                    index='Priorityddinbox'
-                    className={this.state.priorityClass} message={this.state.priorityErrorMess} />
+                <Formik
+                    initialValues={{
+                        priority: '',
+                        toCompany: '',
+                        Attention: ''
 
-                <InputMelcous title="comments" value="add comment" inputChangeHandler={this.inputChangeHandler} />
+                    }}
 
-                <Dropdown title="toCompanyName" data={this.state.To_Cc_CompanyData} name="toCompanydd"  selectedValue={this.state.selectedCompanyId} handleChange={this.To_company_handleChange}
-                index='toCompanyddinbox'
-                    className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} />
+                    onSubmit={values => {
+                        if (!this.state.validAttention && !this.state.validPriority && !this.state.validToCompany) {
+                            Api.post("SendByInbox", this.state.sendingData)
+                        }
+                    }}
 
-                <Dropdown title="ToContact" data={this.state.AttentionData} name="toContactdd" selectedValue={this.state.selectedConatctId}  handleChange={this.Attention_handleChange}
-                index='Attentionddinbox'
-                     className={this.state.attentionClass} message={this.state.attentionErrorMess} />
+                >
+                    {({ errors, touched, handleBlur, handleChange }) => (
+                        <Form id="signupForm1" className="proForm customProform" noValidate="novalidate">
+                            <div className={this.state.validPriority && touched.priority ? (
+                                "ui input inputDev fillter-item-c has-error"
+                            ) : !this.state.validPriority && touched.priority ? (
+                                "ui input inputDev fillter-item-c has-success"
+                            ) : "ui input inputDev fillter-item-c"}
+                            >
+                                <Dropdown title="priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange}
+                                    index='Priorityddinbox' name="priority" />
+                                {this.state.validPriority && touched.priority ? (
+                                    <em className="pError">{this.state.validPriority}</em>
+                                ) : null}
+                            </div>
+                            <InputMelcous title="comments" placeholderText="discussionPanelCommentPlaceholder" inputChangeHandler={this.inputChangeHandler} fullwidth="false" />
+                            <div className={this.state.validToCompany&& touched.toCompany ? (
+                                "ui input inputDev fillter-item-c has-error"
+                            ) : !this.state.validToCompany&& touched.toCompany ? (
+                                "ui input inputDev fillter-item-c has-success"
+                            ) : "ui input inputDev fillter-item-c"}
+                            >
+                                <Dropdown title="toCompanyName" data={this.state.To_Cc_CompanyData} name="toCompanydd" handleChange={this.To_company_handleChange}
+                                    index='toCompanyddinbox' name="toCompany" />
+                                {this.state.validToCompany&& touched.toCompany ? (
+                                    <em className="pError">{this.state.validPriority}</em>
+                                ) : null}
+                            </div>
+                            <div className={this.state.validAttention && touched.Attention? (
+                                "ui input inputDev fillter-item-c has-error"
+                            ) : !this.state.validAttention && touched.Attention? (
+                                "ui input inputDev fillter-item-c has-success"
+                            ) : "ui input inputDev fillter-item-c"}
+                            >
+                                <Dropdown title="ToContact" data={this.state.AttentionData}  handleChange={this.Attention_handleChange}
+                                    index='Attentionddinbox' name="Attention" />
+                                {this.state.validAttention && touched.Attention? (
+                                    <em className="pError">{this.state.validPriority}</em>
+                                ) : null}
+                            </div>
+                            <Dropdown title="ccCompany" data={this.state.To_Cc_CompanyData} name="ccCompanydd" handleChange={this.Cc_company_handleChange}
+                                index='ccCompanyddinbox' />
+                            <div className="filterWrapper">
+                                <Dropdown title="ccContact" data={this.state.Cc_ContactData} name="ccContactsdd" handleChange={this.Cc_Contact_handleChange}
+                                    index='ccContactsddinbox' isMulti="true" />
 
-                <Dropdown title="ccCompany" data={this.state.To_Cc_CompanyData} name="ccCompanydd" handleChange={this.Cc_company_handleChange}
-                index='ccCompanyddinbox'
-                    onblur="" message="" />
-                <div className="filterWrapper">
-                    <Dropdown title="ccContact" data={this.state.Cc_ContactData} name="ccContactsdd" handleChange={this.Cc_Contact_handleChange}
-                    index='ccContactsddinbox'
-                        isMulti="true" message="" />
-
-                </div>
-                <div className="dropBtn">
-                    <button className="primaryBtn-1 btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
-                </div>
+                            </div>
+                            <div className="dropBtn">
+                                <button className="primaryBtn-1 btn" type="submit">{Resources['send'][currentLanguage]}</button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
             </div>
 
         );
     }
 
-    GetData = (url, label, value, currState,type) => {
+    GetData = (url, label, value, currState, type) => {
         let Data = []
         Api.get(url).then(result => {
             (result).forEach(item => {
@@ -204,34 +169,36 @@ class SendToInbox extends Component {
             });
 
             this.setState({
-                [currState]: [...Data] 
+                [currState]: [...Data]
             });
 
-            switch (type){
-                case 1: 
-                    this.setState({ 
+            switch (type) {
+                case 1:
+                    this.setState({
                         selectedValue: Data[0]
-                    }); 
-                 break;
+                    });
+                    break;
 
                 case 2:
-                    this.setState({ 
+                    this.setState({
                         selectedCompanyId: Data[0]
                     });
-                 break;
+                    break;
 
                 case 3:
-                    this.setState({ 
+                    this.setState({
                         selectedConatctId: Data[0]
                     });
-                 break;
+                    break;
+                default:
+                    break;
             }
 
         }).catch(ex => {
         });
     }
 
-   
+
 }
- 
+
 export default SendToInbox;
