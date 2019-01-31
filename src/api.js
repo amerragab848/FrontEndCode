@@ -8,8 +8,8 @@ export default class Api {
     static headers() {
         return {
             'Accept': 'application/json',
-    //          'Content-Type': 'application/json',
-      //      'dataType': 'json',
+             'Content-Type': 'application/json',
+            'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': Authorization,
          //   'processData': false
@@ -124,7 +124,8 @@ export default class Api {
 
         const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
         const url = `${host}${route}`;
-        let headers = Api.headers();
+        let headers ={}
+        headers.Authorization=Authorization
         headers.docid = header.docId
         headers.doctypeid = header.docTypeId
         headers.parentid = header.parentId
@@ -137,12 +138,27 @@ export default class Api {
             body: params
         }).then(
             response => response.json()
-        ).then(
-            success => console.log(success)
-        ).catch(
-            error => console.log(error)
-        );
+        )
 
+
+    }
+
+    static getPassword(route,password){
+        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+        const url = `${host}${route}`;
+        let headers = Api.headers();
+        headers.password = password
+            return  fetch(url, {
+            method: 'POST',
+            headers: {
+
+                ...headers
+            },
+            body:null
+        }).then(
+            response => response.json()
+         
+            )
 
     }
 }
