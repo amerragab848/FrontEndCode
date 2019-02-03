@@ -8,7 +8,8 @@ import DistributionList from "./Componants/OptionsPanels/DistributionList";
 import Filter from "./Componants/FilterComponent/filterComponent";
 import TimeSheet from "./Componants/DashBoardDetails/timeSheetDetails";  
 import SendWorkFlow from  './Componants/OptionsPanels/SendWorkFlow';
-  
+
+import ViewWorkFlow from  './Componants/OptionsPanels/ViewWorkFlow';
 import DashBoard from  './Pages/DashBoard'; 
 import ViewAttachment from './Componants/OptionsPanels/ViewAttachmments'  
 import UploadAttachment from './Componants/OptionsPanels/UploadAttachment'
@@ -20,7 +21,7 @@ class App extends Component {
   render() { 
      
     return ( 
-       <Letter />
+       <ViewWorkFlow />
      // <div>
        //    {routes}
       //</div>

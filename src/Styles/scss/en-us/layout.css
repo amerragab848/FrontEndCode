@@ -12303,3 +12303,6 @@ table edition
 .ui.modal{
   display:  block !important;
 }
+.workFlowStep .StepNumber.approvalstep .StepNum .StepN {
+  display: block !important
+}
