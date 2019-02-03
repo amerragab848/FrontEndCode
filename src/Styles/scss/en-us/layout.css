@@ -12303,6 +12303,15 @@ table edition
 .ui.modal{
   display:  block !important;
 }
-.workFlowStep .StepNumber.approvalstep .StepNum .StepN {
-  display: block !important
+.sidebar__inner {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  z-index: 9999;
+  left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.SummeriesContainer .SummeriesContainerContent {
+  padding: 0 !important;
 }

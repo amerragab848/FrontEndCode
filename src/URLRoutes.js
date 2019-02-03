@@ -2186,3 +2186,5 @@
         settings: { General: true, permission: 4016, caption: 'procoor-icon-BIC', order: 11 }
     }
     ];
+
+    export default routes;

@@ -5,6 +5,8 @@ import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
 //import "../../Styles/scss/en-us/layout.css";
 import "../../Styles/gridStyle.css";
 
+import Resources from '../../resources.json';
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
@@ -183,12 +185,15 @@ class GridSetup extends Component {
       });
   };
 
-  onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
+  onRowExpandToggle({ columnGroupName, name, shouldExpand }) { 
       let expandedRows = Object.assign({}, this.state.expandedRows);
       expandedRows[columnGroupName] = Object.assign({}, expandedRows[columnGroupName]);
       expandedRows[columnGroupName][name] = {isExpanded: shouldExpand};
       this.setState({expandedRows: expandedRows});
   }
+   rowGroupRenderer =()=>{
+    alert('rowGroupRenderer');
+   }
   onRowClick= (rows,value) => {
     if (value) {
        console.log('route to letterAddEdit/'+value.id); 
@@ -205,6 +210,8 @@ class GridSetup extends Component {
       const filteredRows = this.getRows(this.state.rows, this.state.filters);
       
       const groupedRows = Data.Selectors.getRows({ rows, groupBy });
+      
+      const drag=Resources['jqxGridLanguage'][currentLanguage].localizationobj.groupsheaderstring
 
       const CustomToolbar = ({ groupBy,onColumnGroupAdded,onColumnGroupDeleted }) => {
           return (
@@ -213,6 +220,7 @@ class GridSetup extends Component {
                 groupBy={groupBy}
                 onColumnGroupAdded={onColumnGroupAdded}
                 onColumnGroupDeleted={onColumnGroupDeleted}
+                noColumnsSelectedMessage={drag}
               />
               {
                this.state.selectedRows.length > 0 ? 
@@ -245,7 +253,8 @@ class GridSetup extends Component {
                 rowGetter={i => groupedRows[i]} 
                 rowsCount={groupedRows.length} 
                 enableCellSelect={false}
-                onRowExpandToggle={this.onRowExpandToggle.bind(this)}
+                //expandedRows={this.onRowExpandToggle}
+                //rowGroupRenderer={this.rowGroupRenderer}
                 onColumnResize={( idx, width,event) => {
                   //console.log(this.state.columns[idx-1]); 
                  // console.log(`Column ${idx} has been resized to ${width}`);
@@ -266,8 +275,7 @@ class GridSetup extends Component {
 
                 rowSelection={{
                             showCheckbox: this.props.showCheckbox,
-                            enableShiftSelect: true, 
-                            //defaultChecked:false,
+                            enableShiftSelect: true,  
                             onRowsSelected: this.onRowsSelected,
                             onRowsDeselected: this.onRowsDeselected,
                             selectBy: {

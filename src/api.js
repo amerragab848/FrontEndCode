@@ -8,8 +8,8 @@ export default class Api {
     static headers() {
         return {
             'Accept': 'application/json',
-             'Content-Type': 'application/json',
-            'dataType': 'json',
+              'Content-Type': 'application/json',
+      //      'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': Authorization,
          //   'processData': false
@@ -46,7 +46,7 @@ export default class Api {
                 return json;
             }
             else if (resp.status === 500) {
-                json = "resp.json()";
+                json = null;
 
                 return json;
             }
@@ -54,6 +54,7 @@ export default class Api {
             return json.then(err => {
                 throw err
             });
+
         }).then(json => (json.result ? json.result : json));
     }
 

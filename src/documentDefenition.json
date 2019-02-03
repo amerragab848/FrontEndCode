@@ -150,7 +150,7 @@
       {
         "field": "docDate",
         "friendlyName": "docDate",
-        "minWidth": 85,
+        "minWidth": 150,
         "width": "15%",
         "dataType": "date",
         "isDate": true,

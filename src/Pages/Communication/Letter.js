@@ -40,6 +40,14 @@ class Letter extends Component {
     constructor(props) {
 
         super(props)
+
+        const query = new URLSearchParams(this.props.location.search);
+        
+        let projectId = 0;
+
+        for (let param of query.entries()) {
+          projectId = param[1];
+        }
         
         let documentObj=documentDefenition['Letters'];
         
@@ -75,7 +83,7 @@ class Letter extends Component {
         	apiFilter: documentObj.filterApi,
         	pageTitle: Resources[documentObj.documentTitle][currentLanguage],
             viewfilter: true,
-        	projectId: 3721,
+        	projectId: projectId,
             filtersColumns:filtersColumns,
         	docType: 'Letters',
             rows: [],
@@ -160,9 +168,21 @@ class Letter extends Component {
 	    }); 
 
 	    Api.get(apiFilter + "?projectId="+this.state.projectId+"&pageNumber="+this.state.pageNumber+"&pageSize="+this.state.pageSize+"&query=" + stringifiedQuery).then(result => {
+	    	if (result.length > 0) { 
 				this.setState({
 		            rows: result,
                     totalRows:result.length,
+		            isLoading: false
+		        }); 
+	    	}else { 
+				this.setState({ 
+		            isLoading: false
+		        }); 
+	    	}
+	    }).catch(ex => {  
+	    	    alert(ex);
+				this.setState({ 
+					rows: [],
 		            isLoading: false
 		        }); 
 	    });
