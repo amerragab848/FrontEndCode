@@ -139,6 +139,7 @@ class FilterComponent extends Component {
               );
             } else if (column.type === "toggle") {
               return (
+                <div class="form-group fillterinput fillter-item-c">
                 <Dropdown
                   title={column.name}
                   index={index}
@@ -159,9 +160,11 @@ class FilterComponent extends Component {
                     }
                   ]}
                 />
+                </div>
               );
             } else if (column.type === "date") { 
               return (
+                <div class="form-group fillterinput fillter-item-c">
                 <DatePicker
                   title={column.name}
                   handleChange={date =>
@@ -171,6 +174,7 @@ class FilterComponent extends Component {
                   index={index}
                   key={index}
                 />
+                </div>
               );
             }
           }

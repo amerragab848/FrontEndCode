@@ -22,37 +22,9 @@ import SendByEmails from "./Componants/OptionsPanels/SendByEmails";
 
 class App extends Component {
   render() {
-    return (
-      ///test
-      //<SendToInbox />
-      // <DashBoard/>
-      //  <Letter/>
-      //<SendTask/>
-      //<DistributionList />
-      // <TimeSheet />
-      // <div>
-      //      {routes}
-      // </div>
-      // <CopyTo />
-      // <SendByEmails />
-      <ViewWorkFlow />
-    );
-    ///test
-    // <SendToInbox />
-    // <DashBoard/>
-    //<CreateTransmittal/>
-    // <SendTask/>
-    //  <DistributionList />
-    //<ViewAttachment />
-    //<Validation />
-
-    // return (
-    //   <SendWorkFlow />
-    // )
-    // return (
-    //   <TimeSheet />
-    // ); 
-  
+    return ( 
+      <Menu />
+    ); 
   }
 }
 

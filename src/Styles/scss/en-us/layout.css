@@ -12315,3 +12315,19 @@ table edition
 .SummeriesContainer .SummeriesContainerContent {
   padding: 0 !important;
 }
+.customDatepicker {
+  width: auto !important;
+  margin-right: 0 !important; 
+}
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+  margin-right: 0 !important;
+}
+.gridfillter-container .primaryBtn-2.btn.smallBtn {
+    margin-top: 0 !important;
+}
+.gridfillter-container .fillter-status-container .fillter-item-c {
+    margin-bottom: 0px !important; 
+}
+.form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
+  margin-bottom: 0 !important
+} 

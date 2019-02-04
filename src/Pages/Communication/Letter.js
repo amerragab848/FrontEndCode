@@ -5,13 +5,11 @@ import Api from '../../api'
 import moment from "moment"; 
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 
-
+import Export from "../../Componants/OptionsPanels/Export"; 
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import documentDefenition from "../../documentDefenition.json";
 import Resources from '../../resources.json';
-//import "../../Styles/scss/en-us/layout.css";
-
-
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
  const {
   NumericFilter,
@@ -41,13 +39,13 @@ class Letter extends Component {
 
         super(props)
 
-        const query = new URLSearchParams(this.props.location.search);
+        //const query = new URLSearchParams(this.props.location.search);
         
-        let projectId = 0;
+        let projectId = 3430;
 
-        for (let param of query.entries()) {
-          projectId = param[1];
-        }
+        // for (let param of query.entries()) {
+        //   projectId = param[1];
+        // }
         
         let documentObj=documentDefenition['Letters'];
         
@@ -59,16 +57,16 @@ class Letter extends Component {
         	if(item.isCustom === true ){ 
 	        	var obj = {
 	        		key: item.field,
-    				frozen: index < 2 ? true : false ,
+    				  frozen: index < 2 ? true : false ,
 	        		name: Resources[item.friendlyName][currentLanguage],
 	        		width: item.minWidth,
 			        draggable: true,
-	  				sortable: true,
+	  				  sortable: true,
 			        resizable: true,
-	 				filterable: false,
-	    			sortDescendingFirst: true, 
-	    			formatter: item.field === 'subject' ?  subjectLink : ( item.dataType === 'date' ? dateFormate : '' ),  
-	    			filterRenderer: item.dataType === 'number' ? NumericFilter: SingleSelectFilter
+	 				    filterable: false,
+  	    			sortDescendingFirst: true, 
+  	    			formatter: item.field === 'subject' ?  subjectLink : ( item.dataType === 'date' ? dateFormate : '' ),  
+  	    			filterRenderer: item.dataType === 'number' ? NumericFilter: SingleSelectFilter
 	        	};
 
 	        	filtersColumns.push({ field: item.field,
@@ -79,25 +77,25 @@ class Letter extends Component {
         });
          
         this.state = { 
-   			isLoading: true,
-        	apiFilter: documentObj.filterApi,
-        	pageTitle: Resources[documentObj.documentTitle][currentLanguage],
-            viewfilter: true,
-        	projectId: projectId,
-            filtersColumns:filtersColumns,
-        	docType: 'Letters',
-            rows: [],
-            totalRows: 0,
-            columns:cNames, 
-			pageSize: 22,
-			pageNumber:0,
-			isLoading: true	,
-			api: documentObj.documentApi.get,
-			apiDelete: documentObj.documentApi.delete,
-			query:"",
-			isCustom: true,
-			showDeleteModal:false,
-			selectedRows: []
+               		isLoading: true,
+                	apiFilter: documentObj.filterApi,
+                	pageTitle: Resources[documentObj.documentTitle][currentLanguage],
+                  viewfilter: true,
+                	projectId: projectId,
+                  filtersColumns:filtersColumns,
+                	docType: 'Letters',
+                  rows: [],
+                  totalRows: 0,
+                  columns:cNames, 
+            			pageSize: 22,
+            			pageNumber:0,
+            			isLoading: true	,
+            			api: documentObj.documentApi.get,
+            			apiDelete: documentObj.documentApi.delete,
+            			query:"",
+            			isCustom: true,
+            			showDeleteModal:false,
+            			selectedRows: []
         } 
  
     	this.filterMethodMain = this.filterMethodMain.bind(this);
@@ -126,7 +124,10 @@ class Letter extends Component {
     }
 
     exportData(){ 
-     alert('Exporting...under Construction function....');
+      console.log(this.state.columns);
+      return(
+          <Export rows={this.state.rows}  columns={this.state.columns} fileName={this.state.pageTitle} />
+        )
     }
 
     addRecord(){
@@ -211,7 +212,6 @@ class Letter extends Component {
            this.state.selectedRows.map(i=> { 
            	   originalRows=originalRows.filter(r => r.id !== i);
            });
- 
 	        this.setState({
 	            rows: originalRows,
 	            totalRows: originalRows.length ,
@@ -228,9 +228,7 @@ class Letter extends Component {
     }
 
 	clickHandlerDeleteRowsMain = (selectedRows) => {
-
-		  console.log('001');
-		  console.log(selectedRows)  
+  
 		this.setState({ 
 			showDeleteModal: true,
 			selectedRows: selectedRows
@@ -243,7 +241,9 @@ class Letter extends Component {
   	<GridSetup rows={ this.state.rows } clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} showCheckbox="true" pageSize={ this.state.pageSize }  columns={ this.state.columns } /> 
   	:
   	 null;
-  	
+  	const btnExport= this.state.isLoading === false ? 
+            <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+            : null ;
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
@@ -315,7 +315,7 @@ class Letter extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.exportData()}>EXPORT</button> 
+            {btnExport}
             <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
           </div>
           <div className="rowsPaginations">

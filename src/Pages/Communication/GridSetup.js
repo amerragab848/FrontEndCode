@@ -1,8 +1,6 @@
-import React, { useState,Component } from "react"; 
-//import "../../Styles/css/semantic.min.css";
+import React, { useState,Component } from "react";  
 import ReactDataGrid from "react-data-grid";    
-import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
-//import "../../Styles/scss/en-us/layout.css";
+import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons"; 
 import "../../Styles/gridStyle.css";
 
 import Resources from '../../resources.json';
@@ -41,11 +39,7 @@ class GridSetup extends Component {
   };
 
   componentWillMount = () => { 
-    
-    // this.setState({
-    //   columns: this.props.columns,
-    //   rows: this.props.rows 
-    // })
+     
   }
 
   onHeaderDrop = (source, target) => {
@@ -197,8 +191,7 @@ class GridSetup extends Component {
   onRowClick= (rows,value) => {
     if (value) {
        console.log('route to letterAddEdit/'+value.id); 
-    }
-     
+    } 
   }
   
   clickHandlerDeleteRows = (e) => {  
