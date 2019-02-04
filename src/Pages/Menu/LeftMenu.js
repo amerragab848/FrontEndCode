@@ -579,7 +579,7 @@ class LeftMenu extends Component {
                         {this.state.generalMenu.map((r,index)  => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "?projectId=" + this.state.projectId} activeClassName="active" >
+                                <NavLink to={"/"+ r.route + "?projectId=" + this.state.projectId} activeClassName="active" >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink> 
                               </li>
@@ -633,15 +633,16 @@ class LeftMenu extends Component {
                           </span>
                         </a>
                         <ul className={ this.state.rowIndex === 2 ? "content subBigMenuUl active": "content subBigMenuUl"}>
+                          
                           {this.state.communication.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={"/"+r.route + "/" + this.state.projectId} activeClassName="active">
+                                <NavLink  to={ "/"+ r.route + "/" + this.state.projectId} >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink> 
                               </li>
                             );
-                          })}
+                          })} 
                         </ul>
                       </li>
                       <li>
@@ -690,7 +691,7 @@ class LeftMenu extends Component {
                           {this.state.procurementMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active">
+                                <NavLink to={"/"+r.route + "/" + this.state.projectId} activeClassName="active">
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -764,7 +765,7 @@ class LeftMenu extends Component {
                           {this.state.siteMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active">
+                                <NavLink to={"/"+r.route + "/" + this.state.projectId} activeClassName="active">
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -818,7 +819,7 @@ class LeftMenu extends Component {
                           {this.state.contractMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active" >
+                                <NavLink to={ "/"+ r.route + "/" + this.state.projectId} activeClassName="active" >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -872,7 +873,7 @@ class LeftMenu extends Component {
                           {this.state.timeMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active" >
+                                <NavLink to={"/"+ r.route + "/" + this.state.projectId} activeClassName="active" >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -926,7 +927,7 @@ class LeftMenu extends Component {
                           {this.state.costControlMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active" >
+                                <NavLink to={"/"+ r.route + "/" + this.state.projectId} activeClassName="active" >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -983,7 +984,7 @@ class LeftMenu extends Component {
                           {this.state.estimationMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active">
+                                <NavLink to={"/"+ r.route + "/" + this.state.projectId} activeClassName="active">
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -1037,7 +1038,7 @@ class LeftMenu extends Component {
                           {this.state.qualityControlMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active" >
+                                <NavLink to={"/"+r.route + "/" + this.state.projectId} activeClassName="active" >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -1111,7 +1112,7 @@ class LeftMenu extends Component {
                           {this.state.designMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active" >
+                                <NavLink to={"/"+ r.route + "/" + this.state.projectId} activeClassName="active" >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>
@@ -1165,7 +1166,7 @@ class LeftMenu extends Component {
                           {this.state.reportsMenu.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active" >
+                                <NavLink to={"/"+ r.route + "/" + this.state.projectId} activeClassName="active" >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink>
                               </li>

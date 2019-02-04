@@ -39,85 +39,41 @@ const dateFormate = ({ value }) => {
 class Letter extends Component {
   constructor(props) {
     super(props); 
-
-   let params = Object.values(props.match.params);
-
-    let projectId = params[1];
-    let documents = params[0];
-
-    let documentObj = documentDefenition[documents];
-
-    let cNames = [];
-
-    let filtersColumns = [];
-
-    documentObj.documentColumns.map((item, index) => {
-      if (item.isCustom === true) {
-        var obj = {
-          key: item.field,
-          frozen: index < 2 ? false : false,
-          name: Resources[item.friendlyName][currentLanguage],
-          width: item.minWidth,
-          draggable: true,
-          sortable: true,
-          resizable: true,
-          filterable: false,
-          sortDescendingFirst: true,
-          formatter:
-            item.field === "subject"
-              ? subjectLink
-              : item.dataType === "date"
-              ? dateFormate
-              : "",
-          //filterRenderer:            item.dataType === "number" ? NumericFilter : SingleSelectFilter
-        };
-
-        filtersColumns.push({
-          field: item.field,
-          name: item.friendlyName,
-          type: item.dataType
-        });
-        cNames.push(obj);
-      }
-    });
-
+     
     this.state = {
       isLoading: true,
-      pageTitle: Resources[documentObj.documentTitle][currentLanguage],
+      pageTitle: "",
       viewfilter: true,
-      projectId: projectId,
-      filtersColumns: filtersColumns,
-      docType: documents ,
+      projectId: props.match.params.projectId,
+      filtersColumns: [],
+      docType: "" ,
       rows: [],
       totalRows: 0,
-      columns: cNames,
+      columns: [],
       pageSize: 22,
       pageNumber: 0, 
-      apiFilter: documentObj.filterApi,
-      api: documentObj.documentApi.get,
-      apiDelete: documentObj.documentApi.delete,
+      apiFilter: "",
+      api: "",
+      apiDelete: "",
       query: "",
       isCustom: true,
       showDeleteModal: false,
-      selectedRows: []
+      selectedRows: [],
+      documentName:props.match.params.document
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
+ 
+    this.renderComponent(this.state.documentName,this.state.projectId);
   }
 
-  componentWillMount = () => {
-    let url =
-      this.state.api +
-      "?projectId=" +
-      this.state.projectId +
-      "&pageNumber=" +
-      this.state.pageNumber +
-      "&pageSize=" +
-      this.state.pageSize;
-    this.GetLogData(url, "rows");
-  };
-
+  // componentWillMount = () => {
+   
+  //   this.renderComponent();
+ 
+  // };
+ 
   GetLogData = (url, currState) => {
     Api.get(url)
       .then(result => {
@@ -130,6 +86,13 @@ class Letter extends Component {
       .catch(ex => {});
   };
 
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.match!==this.props.match){
+      this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId);
+    }
+  }
+  
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
     return this.state.viewfilter;
@@ -262,11 +225,81 @@ class Letter extends Component {
     console.log("000001");
   };
 
+  renderComponent(documentName,projectId){
+
+    var projectId = projectId;
+
+    var documents = documentName;
+ 
+    var documentObj = documentDefenition[documentName];
+
+    var cNames = [];
+
+    var filtersColumns = [];
+
+    // this.setState({ 
+    //     pageTitle:Resources[documentObj.documentTitle][currentLanguage],
+    //     projectId:projectId,
+    //     docType:documents,
+    //     apiFilter:documentObj.filterApi,
+    //     api:documentObj.documentApi.get,
+    //     apiDelete:documentObj.documentApi.delete  
+    // }); 
+
+    documentObj.documentColumns.map((item, index) => {
+      if (item.isCustom === true) {
+        var obj = {
+          key: item.field,
+          frozen: index < 2 ? false : false,
+          name: Resources[item.friendlyName][currentLanguage],
+          width: item.minWidth,
+          draggable: true,
+          sortable: true,
+          resizable: true,
+          filterable: false,
+          sortDescendingFirst: true,
+          formatter:
+            item.field === "subject"
+              ? subjectLink
+              : item.dataType === "date"
+              ? dateFormate
+              : "",
+          //filterRenderer:item.dataType === "number" ? NumericFilter : SingleSelectFilter
+        };
+
+        filtersColumns.push({
+          field: item.field,
+          name: item.friendlyName,
+          type: item.dataType
+        });
+        cNames.push(obj);
+      }
+    });
+
+      setTimeout(()=>{
+        this.setState( {   
+          pageTitle:Resources[documentObj.documentTitle][currentLanguage],
+          projectId:projectId,
+          docType:documents,
+          apiFilter:documentObj.filterApi,
+          api:documentObj.documentApi.get,
+          apiDelete:documentObj.documentApi.delete  ,
+          columns: cNames,
+          filtersColumns: filtersColumns 
+      }); 
+      },500) 
+
+    let url = documentObj.documentApi.get + "?projectId=" + projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+
+    this.GetLogData(url, "rows");
+ 
+  }
+
   render() {
     
     const showCheckbox=true;
 
-    const dataGrid =      this.state.isLoading === false ? (
+    const dataGrid = this.state.isLoading === false ? (
         <GridSetup
           rows={this.state.rows}
           clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}

@@ -54,10 +54,26 @@ const routesModule = Router.map((r, index) => {
 });
   
 let routes = (
-  <Switch> 
-  {Routes}
-    {/* <Route path="/:document/:projectId" component={Letter} /> */}
-  </Switch>
+    
+<Switch>
+    <Route exact path="/" component={DashBoard} />,
+    <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />,
+    <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />,
+    <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />,
+    <Route path="/ClosedSummaryDetails" component={ClosedSummaryDetails} />,
+    <Route path="/DistributionInboxListSummaryDetails" component={DistributionInboxListSummaryDetails} />,
+    <Route path="/NotCodedExpensesSummaryDetails" component={NotCodedExpensesSummaryDetails} />,
+    <Route path="/NotCodedInvoicesSummaryDetails" component={NotCodedInvoicesSummaryDetails} />,
+    <Route path="/NotCodedPaymentDetails" component={NotCodedPaymentDetails} />,
+    <Route path="/OpenedSummaryDetails" component={OpenedSummaryDetails} />,
+    <Route path="/SchedualActionByDetails" component={SchedualActionByDetails} />,
+    <Route path="/ScheduleAlertsSummaryDetails" component={ScheduleAlertsSummaryDetails} />,
+    <Route path="/TimeSheetDetails" component={TimeSheetDetails} />,
+    <Route path="/DocApprovalDetails" component={DocApprovalDetails} />,
+    <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />
+    <Route path="/:document/:projectId" component={Letter} />
+</Switch>
+
 );
 
 console.log("routes : " + routes);
