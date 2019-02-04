@@ -4,8 +4,7 @@ import InputMelcous from "../OptionsPanels/InputMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
-import moment from "moment";
-//import "../../Styles/scss/en-us/layout.css";
+import moment from "moment"; 
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

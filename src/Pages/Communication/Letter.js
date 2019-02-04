@@ -39,13 +39,13 @@ class Letter extends Component {
 
         super(props)
 
-        //const query = new URLSearchParams(this.props.location.search);
+        const query = new URLSearchParams(this.props.location.search);
         
-        let projectId = 3430;
+        let projectId = 0;
 
-        // for (let param of query.entries()) {
-        //   projectId = param[1];
-        // }
+        for (let param of query.entries()) {
+          projectId = param[1];
+        }
         
         let documentObj=documentDefenition['Letters'];
         
