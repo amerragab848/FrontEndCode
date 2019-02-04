@@ -8,11 +8,11 @@ export default class Api {
     static headers() {
         return {
             'Accept': 'application/json',
-              'Content-Type': 'application/json',
-      //      'dataType': 'json',
+            'Content-Type': 'application/json',
+            //      'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': Authorization,
-         //   'processData': false
+            //   'processData': false
         }
     }
 
@@ -24,6 +24,7 @@ export default class Api {
     static post(route, params) {
         return this.xhr(route, params, 'POST');
     }
+
 
     static xhr(route, params, verb) {
         const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
@@ -125,8 +126,8 @@ export default class Api {
 
         const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
         const url = `${host}${route}`;
-        let headers ={}
-        headers.Authorization=Authorization
+        let headers = {}
+        headers.Authorization = Authorization
         headers.docid = header.docId
         headers.doctypeid = header.docTypeId
         headers.parentid = header.parentId
@@ -142,22 +143,54 @@ export default class Api {
         )
     }
 
-    static getPassword(route,password){
+    static getPassword(route, password) {
         const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
-            return  fetch(url, {
+        return fetch(url, {
             method: 'POST',
             headers: {
 
                 ...headers
             },
-            body:null
+            body: null
         }).then(
             response => response.json()
-         
-            )
 
+        )
     }
+    static authorizationApi(route, params) {
+        const host = 'https://procoorauthorization.procoor.com/api/';
+        const url = `${host}${route}`;
+        let json = null;
+
+        let options = Object.assign({
+            method: 'Put'
+        }, params ? {
+            body: JSON.stringify(params)
+        } : null);
+
+        options.headers = Api.headers();
+
+        return fetch(url, options).then(resp => {
+            if (resp.status === 200) {
+
+                json =  resp.json();
+
+                return json;
+            }
+            else if (resp.status === 500) {
+                json = null;
+
+                return json;
+            }
+
+            return json.then(err => {
+                throw err
+            });
+
+        }).then(json => (json.result ? json.result : json));
+    }
+
 }

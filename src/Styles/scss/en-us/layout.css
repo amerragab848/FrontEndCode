@@ -12321,5 +12321,72 @@ table edition
   width: 100%;
 }
 .flexForm label {
-  margin-right: 15px;
+  margin-right: 16px;
+  width: 130px;
+  text-align: right;
 } 
+.proForm .flexForm .inputPassContainer
+ {
+  width: calc(100% - 160px) 
+}
+.proForm .flexForm .inputPassContainer .ui.input.inputDev , .proForm .flexForm .inputPassContainer .ui.input.inputDev input
+ {
+  width: 100%
+}
+
+
+
+.loadingWrapper {
+  position: relative;
+}
+.loadingWrapper .dashboardLoading {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 2; }
+  .loadingWrapper .dashboardLoading span {
+    width: 64px;
+    height: 64px;
+    border: 3px solid #A8B0BF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite; 
+  }
+    .loadingWrapper .dashboardLoading h3 {
+    font-family: font-b;
+    font-size: 45px;
+    line-height: 1.16;
+    letter-spacing: -1.1px;
+    color: #252833;
+    margin-top: 36px; 
+  }
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg); }
+  25% {
+    transform: rotate(90deg); }
+  50% {
+    transform: rotate(180deg); }
+  75% {
+    transform: rotate(270deg); }
+  100% {
+    transform: rotate(360deg); } 
+  }
+.proForm .popUp {
+    position: absolute;
+    top: 29px  !important;
+    right: 0  !important;
+    left: 73%  !important;
+    display: inline-block !important;
+    margin-left: 10px;
+  }
+  .popUp.basic-popUp.disNone, .pError.disNone {
+    display: none !important
+  }

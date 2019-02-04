@@ -28,7 +28,8 @@ import WfApproval from './Componants/OptionsPanels/wfApproval';
 class App extends Component {
   render() {
     return (
-     // <PrivacySetting />
+      //<WfApproval/>
+     <PrivacySetting />
       ///test
       //<SendToInbox />
       // <DashBoard/>
@@ -41,8 +42,8 @@ class App extends Component {
       // </div>
       // <CopyTo />
       // <SendByEmails />
-      <ViewWorkFlow />
-    );
+   // <ViewWorkFlow />
+    //);
     ///test
     // <SendToInbox />
     // <DashBoard/>
@@ -58,7 +59,7 @@ class App extends Component {
     // return (
     //   <TimeSheet />
     // ); 
-    //);
+    );
   }
 }
 
