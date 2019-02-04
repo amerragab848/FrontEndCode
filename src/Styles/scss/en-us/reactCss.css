@@ -411,63 +411,151 @@ table edition
 /* 
 table edition 
 */
-
-.attachmentPage {
-  width: 100%;
-  margin: 0;
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+  display: block;
 }
 
-
-.uploadForm {
+.loginWrapper {
   display: flex;
-  flex-flow: column;
   align-items: center;
   justify-content: center;
-  width: 639px;
-  height: 108px;
-  border-radius: 4px;
-  background-color: #FAFBFC;
-  border: 3px dashed #E9ECF0;
-  margin-bottom: 29px;
-  position: relative; }
-  .uploadForm .progressBar {
-    width: 100%;
-    height: 100%;
-    position: absolute; }
-    .uploadForm .progressBar .smallProgress {
-      background-color: #d9eeff;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      z-index: 0;
-      height: 100%;
-      transition: all 1s ease-in-out;
-    }
-    .uploadForm.fullProgressBar .progressBar .smallProgress {
-      width: 90%; 
-    }
-    .uploadForm.hundredPercent .progressBar .smallProgress {
-      width: 100%; 
-      transition: none;
-    }
-    .uploadForm.zeropercent .progressBar .smallProgress {
-      width: 0; 
-      transition: none;
-    }
-  .uploadForm .dragHoverDiv {
-    display: none;
-    align-items: center;
-    flex-flow: column;
-    justify-content: center;
-    position: relative;
-    z-index: 1; }
-    .uploadForm .dragHoverDiv img {
-      width: 64px;
-      height: 64px;
-      position: relative; }
-  .uploadForm .uploadFormDiv {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.loginWrapper .loginForm {
+  text-align: center;
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+}
+.loginWrapper h3 {
+  color: #4382f9;
+  font-size: 24px;
+  font-weight: bold;
+}
+.loginWrapper .proForm {
+  display: flex;
+  flex-flow: column;
+  text-align: left;
+}
+.loginWrapper .primaryBtn-1 {
+  margin: 0 16px;
+}
+.loginWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.loginWrapper .loginForm {
+  text-align: center;
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+}
+.loginWrapper h3 {
+  color: #4382f9;
+  font-size: 24px;
+  font-weight: bold;
+}
+.loginWrapper .proForm {
+  display: flex;
+  flex-flow: column;
+  text-align: left;
+}
+.loginWrapper .primaryBtn-1 {
+  margin: 0 16px;
+}
+.proForm .ui.input.inputDev .inputsideNote {
+  right: 10px;
+}
+.approvalTitle {
+  height: 80px;
+  border-bottom: 1px solid #DADEE6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.approvalTitle h3 {
+  color: #26344c;
+  font-size: 26px;
+}
+.pError {
+  position: absolute;
+  left: 0;
+  bottom: -14px;
+  color: #e74c3c;
+  font-size: 12px;
+}
+.fullWidthWrapper.textLeft {
+  text-align: left;
+}
+.fullWidthWrapper.textLeft label{
+  margin-bottom: 5px;
+}
+.dropWrapper .customProform {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.customD_Menu .css-1hwfws3 {
+  max-height: 40px;
+}
+.has-error .spanValidation label {
+  color: #E74C3C
+}
+.has-success .spanValidation label {
+  color: #2AA832;
+}
+.customD_Menu div:first-child >div:hover {
+  border-color: hsl(0,0%,80%)
+}
+.has-error .customD_Menu div:first-child >div  {
+  border-color: #E74C3C;
+}
+.has-success .customD_Menu div:first-child >div  {
+  border-color: #2AA832;
+}
+.dropWrapper .proForm .ui.input.inputDev input {
+  width: 100%;
+}
+.dropWrapper .proForm .fillter-item-c .ui.input.inputDev {
+  width: 100%;
+}
+.fullWidthWrapper  .inputDev.ui.input {
+  width: 100%
+}
+.skylight-dialog >h2 {
+  text-align: center;
+}
+.skylight-wrapper  {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.skylight-dialog{
+  
+  min-height: 400px;
+  position: relative !important;
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+  top: 0 !important;
+  left: 0!important;
+} 
+.ReactTable .rt-tbody {
+    flex: 99999 1 auto;
     display: flex;
     align-items: center;
     flex-flow: column;
@@ -625,3 +713,11 @@ table edition
 .sidebar__inner::-webkit-scrollbar {
   width: 0;
 } 
+
+.ui.modal{
+  display:  block !important;
+}
+
+.workFlowStep .StepNumber.approvalstep .StepNum .StepN {
+  display: block !important;
+}

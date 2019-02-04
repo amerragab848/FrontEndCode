@@ -1,18 +1,18 @@
-
-import DashBoard from './Pages/DashBoard';
-
-
+import config from "./IP_Configrations.json";
 let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
+
+const Domain=config.static
 export default class Api {
+
     static headers() {
         return {
             'Accept': 'application/json',
-              'Content-Type': 'application/json',
-      //      'dataType': 'json',
+            'Content-Type': 'application/json',
+            'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': Authorization,
-         //   'processData': false
+
         }
     }
 
@@ -26,7 +26,7 @@ export default class Api {
     }
 
     static xhr(route, params, verb) {
-        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+        const host = Domain+'/PM/api/Procoor/';
         const url = `${host}${route}`;
         let json = null;
 
@@ -123,10 +123,10 @@ export default class Api {
 
     static postFile(route, params, header) {
 
-        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+        const host = Domain+'/PM/api/Procoor/';
         const url = `${host}${route}`;
-        let headers ={}
-        headers.Authorization=Authorization
+        let headers = {}
+        headers.Authorization = Authorization
         headers.docid = header.docId
         headers.doctypeid = header.docTypeId
         headers.parentid = header.parentId
@@ -142,22 +142,53 @@ export default class Api {
         )
     }
 
-    static getPassword(route,password){
-        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+    static getPassword(route, password) {
+        const host = Domain+'/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
-            return  fetch(url, {
+        return fetch(url, {
             method: 'POST',
             headers: {
 
                 ...headers
             },
-            body:null
+            body: null
         }).then(
             response => response.json()
-         
-            )
 
+        )
+
+    }
+
+    static Login(hostt, route, params) {
+        const host = hostt;
+        const url = `${host}${route}`;
+
+        let json = null;
+        let options = Object.assign({
+            method: 'Post'
+        }, params ? {
+            body: (params)
+        } : null);
+
+        options.headers = {
+            'Accept': '*/*',
+            'Content-Type': 'application/x-www-form-urlencoded',
+
+        };
+        return fetch(url, options).then(resp => {
+            if (resp.status === 200) {
+                json = resp != null ? resp.json() : "";
+                return json;
+            }
+            else if (resp.status === 400) {
+                
+                return resp.status;
+            }
+            return json.then(err => {
+                throw err
+            });
+        }).then(json => (json.result ? json.result : json));
     }
 }

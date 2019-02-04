@@ -127,7 +127,12 @@ class wfApproval extends Component {
                                                     "ui input inputDev has-success"
                                                 ) : "ui input inputDev"}
                                                 >
-                                                    <input name="password" type="text"
+                                                    <span class={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
+                                                        <img src={eyeShow} />
+                                                        <span class="show"> Show</span>
+                                                        <span class="hide"> Hide</span>
+                                                    </span>
+                                                    <input name="password" type={this.state.type ? 'text' : 'password' }
                                                         className="form-control" id="password" placeholder='password' autoComplete='off'
                                                         onBlur={(e) => {
                                                             this.passwordHandleChange(e)
@@ -168,7 +173,8 @@ class wfApproval extends Component {
                     )}
                 </Formik>
             </div>
-        )
+       
+       )
     }
 
 }
