@@ -633,15 +633,16 @@ class LeftMenu extends Component {
                           </span>
                         </a>
                         <ul className={ this.state.rowIndex === 2 ? "content subBigMenuUl active": "content subBigMenuUl"}>
+                          
                           {this.state.communication.map((r,index) => {
                             return (
                               <li key={index}>
-                                <NavLink to={r.route + "/" + this.state.projectId} activeClassName="active">
+                                <NavLink  to={ "/"+ r.route + "/" + this.state.projectId} >
                                   {Resources[r.title][currentLanguage]}
                                 </NavLink> 
                               </li>
                             );
-                          })}
+                          })} 
                         </ul>
                       </li>
                       <li>

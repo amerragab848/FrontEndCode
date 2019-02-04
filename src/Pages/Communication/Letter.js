@@ -42,7 +42,7 @@ class Letter extends Component {
 
     let projectId = props.match.params.projectId;
     let documents = props.match.params.document;
-
+ 
     let documentObj = documentDefenition[documents];
 
     let cNames = [];
@@ -128,6 +128,14 @@ class Letter extends Component {
       .catch(ex => {});
   };
 
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.match!==this.props.match){
+      //Perform some operation
+      alert(nextProps.match.params.document);
+    }
+  }
+  
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
     return this.state.viewfilter;
