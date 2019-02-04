@@ -4,8 +4,7 @@ import InputMelcous from "../OptionsPanels/InputMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
-import moment from "moment";
-//import "../../Styles/scss/en-us/layout.css";
+import moment from "moment"; 
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -139,6 +138,7 @@ class FilterComponent extends Component {
               );
             } else if (column.type === "toggle") {
               return (
+                <div className="form-group fillterinput fillter-item-c" key={index}>
                 <Dropdown
                   title={column.name}
                   index={index}
@@ -159,9 +159,11 @@ class FilterComponent extends Component {
                     }
                   ]}
                 />
+                </div>
               );
             } else if (column.type === "date") { 
               return (
+                <div className="form-group fillterinput fillter-item-c" key={index}>
                 <DatePicker
                   title={column.name}
                   handleChange={date =>
@@ -171,6 +173,7 @@ class FilterComponent extends Component {
                   index={index}
                   key={index}
                 />
+                </div>
               );
             }
           }
@@ -178,17 +181,17 @@ class FilterComponent extends Component {
 
         {this.state.isLoading === false ? (
           <button
-            className="primaryBtn-2 btn smallBtn fillter-item-c" 
+            className="primaryBtn-2 btn smallBtn fillter-item-c"  
             onClick={this.filterMethod} 
           >
             {Resources["search"][currentLanguage]}
           </button>
         ) : (
           <button className="primaryBtn-2 btn smallBtn fillter-item-c">
-            <div class="spinner">
-              <div class="bounce1" />
-              <div class="bounce2" />
-              <div class="bounce3" />
+            <div className="spinner">
+              <div className="bounce1" />
+              <div className="bounce2" />
+              <div className="bounce3" />
             </div>
           </button>
         )}

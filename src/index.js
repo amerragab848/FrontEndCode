@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router } from "react-router-dom";
+import { BrowserRouter  as Router } from "react-router-dom";
 import createBrowserHistory from "history/createBrowserHistory";
 import "./index.css";
 import App from "./App";
@@ -11,7 +11,7 @@ const history = createBrowserHistory();
 window.nav_history = history;
 
 const app = (
-  <Router history={history}>
+  <Router>
     <App />
   </Router>
 );

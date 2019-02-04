@@ -15,10 +15,7 @@
     "en": "Reject",
     "ar": "رفض"
   },
-  "show": {
-    "en": "Show",
-    "ar": "اظهر"
-  },
+
   "actualFinishDate": {
     "en": "Actual Finish Date",
     "ar": "تاريخ الانتهاء الفعلى"
@@ -71,10 +68,7 @@
     "en": "-- Please select Account --",
     "ar": "-- برجاء اختيار الحساب --"
   },
-  "hide": {
-    "en": "Hide",
-    "ar": "اخفي"
-  },
+
   "statusName": {
     "en": "Status",
     "ar": "الحالة"
@@ -7664,5 +7658,18 @@
   "realState": {
     "en": "Real Estate",
     "ar": "Real Estate"
+  },
+  "backtoprojects": {
+    "en": "Back to projects",
+    "ar": "الرجوع إلى المشاريع"
+  },
+  "backtoModules": {
+    "en": "Back to Modules",
+    "ar": "الرجوع إلى الفروع"
+  },
+  "logIn": {
+    "en": "Log In",
+    "ar": "الدخول"
   }
+
 }

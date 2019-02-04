@@ -1,18 +1,25 @@
-
-import DashBoard from './Pages/DashBoard';
-
-
+import config from "./IP_Configrations.json";
 let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
+
+const Domain=config.static
 export default class Api {
+
     static headers() {
         return {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+<<<<<<< HEAD
             //      'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': Authorization,
             //   'processData': false
+=======
+            'dataType': 'json',
+            'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
+            'Authorization': Authorization,
+
+>>>>>>> d124023259a50bcb3fa2f846c3730dbe60544126
         }
     }
 
@@ -27,7 +34,7 @@ export default class Api {
 
 
     static xhr(route, params, verb) {
-        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+        const host = Domain+'/PM/api/Procoor/';
         const url = `${host}${route}`;
         let json = null;
 
@@ -124,7 +131,7 @@ export default class Api {
 
     static postFile(route, params, header) {
 
-        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+        const host = Domain+'/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = {}
         headers.Authorization = Authorization
@@ -144,7 +151,11 @@ export default class Api {
     }
 
     static getPassword(route, password) {
+<<<<<<< HEAD
         const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
+=======
+        const host = Domain+'/PM/api/Procoor/';
+>>>>>>> d124023259a50bcb3fa2f846c3730dbe60544126
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
@@ -159,6 +170,38 @@ export default class Api {
             response => response.json()
 
         )
+
+    }
+
+    static Login(hostt, route, params) {
+        const host = hostt;
+        const url = `${host}${route}`;
+
+        let json = null;
+        let options = Object.assign({
+            method: 'Post'
+        }, params ? {
+            body: (params)
+        } : null);
+
+        options.headers = {
+            'Accept': '*/*',
+            'Content-Type': 'application/x-www-form-urlencoded',
+
+        };
+        return fetch(url, options).then(resp => {
+            if (resp.status === 200) {
+                json = resp != null ? resp.json() : "";
+                return json;
+            }
+            else if (resp.status === 400) {
+                
+                return resp.status;
+            }
+            return json.then(err => {
+                throw err
+            });
+        }).then(json => (json.result ? json.result : json));
     }
     static authorizationApi(route, params) {
         const host = 'https://procoorauthorization.procoor.com/api/';
