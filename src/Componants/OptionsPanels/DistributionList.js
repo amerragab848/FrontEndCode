@@ -42,7 +42,8 @@ class DistributionList extends Component {
             DistributionValidation: true,
             PriorityValidation: true,
             CompanyValidation: true,
-            ContactValidation: true
+            ContactValidation: true,
+            ApiResponse:false
 
         };
 
@@ -201,7 +202,9 @@ class DistributionList extends Component {
                                 sendingData: { ...this.state.sendingData, itemContacts: tempData }
                             })
                             setTimeout(() => {
-                                Api.post("SnedToDistributionList", this.state.sendingData)
+                                Api.post("SnedToDistributionList", this.state.sendingData).then(
+                                    this.setState({ApiResponse:true})
+                                )
                             }, 500)
                         }
                     }}
@@ -237,7 +240,7 @@ class DistributionList extends Component {
                                 <this.ContactSection />
                             }
                             <div className="fullWidthWrapper">
-                                <button className="primaryBtn-1 btn" type="submit" >{Resources['send'][currentLanguage]}</button>
+                                <button className="primaryBtn-1 btn" type="submit"  >{Resources['send'][currentLanguage]}</button>
                             </div>
                         </Form>
                     )}

@@ -10,12 +10,6 @@ const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
  
 const selectors = Data.Selectors;
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
 
 class GridSetup extends Component {
 
@@ -32,10 +26,11 @@ class GridSetup extends Component {
             groupBy: [],
             selectedIndexes:[],
             selectedRows:[],
-            expandedRows: {},
+            expandedRows: {}
           }; 
 
      this.groupColumn =this.groupColumn.bind(this); 
+     this.onRowsSelected =this.onRowsSelected.bind(this); 
   };
 
   componentWillMount = () => { 
@@ -134,31 +129,36 @@ class GridSetup extends Component {
     );
   };
 
-  onRowsSelected = rows => { 
-      let prevRows=this.state.selectedIndexes; 
-      let prevRowsId=this.state.selectedRows; 
+  onRowsSelected = (rows) => { 
 
-       if(rows.length > 1){
-          prevRows=[];
-          prevRowsId=[];
-          prevRows=  rows.map(r =>r.rowIdx);
-          prevRowsId=  rows.map(r =>r.row.id);
-       }
-       else { 
-          let exist=prevRows.indexOf(rows[0].rowIdx) === -1 ? false : true;
-          if (exist===false) {
-              prevRows.push(rows[0].rowIdx)
-              prevRowsId.push(rows[0].row.id)
-          }  
-      }
+    alert('select row');
+    let prevRows=this.state.selectedIndexes; 
+    let prevRowsId=this.state.selectedRows; 
 
-      this.setState({
-        selectedIndexes: prevRows,
-        selectedRows: prevRowsId
-      }); 
+     if(rows.length > 1){
+        prevRows=[];
+        prevRowsId=[];
+        prevRows=  rows.map(r =>r.rowIdx);
+        prevRowsId=  rows.map(r =>r.row.id);
+     }
+     else { 
+        let exist = prevRows.indexOf(rows[0].rowIdx) === -1 ? false : true;
+        if (exist===false) {
+            prevRows.push(rows[0].rowIdx)
+            prevRowsId.push(rows[0].row.id)
+        }  
+    }
+
+    this.setState({
+      selectedIndexes: prevRows,
+      selectedRows: prevRowsId
+    }); 
+
   };
 
-  onRowsDeselected = rows => {
+  onRowsDeselected =( rows) => {
+
+     alert(' De select row');
      let prevRows=this.state.selectedIndexes; 
      let prevRowsId=this.state.selectedRows; 
     
@@ -178,17 +178,20 @@ class GridSetup extends Component {
         selectedRows: prevRowsId,
       });
   };
+ 
+  rowGroupRenderer =()=>{
+    alert('rowGroupRenderer');
+  }
 
-  onRowExpandToggle({ columnGroupName, name, shouldExpand }) { 
+  onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
       let expandedRows = Object.assign({}, this.state.expandedRows);
       expandedRows[columnGroupName] = Object.assign({}, expandedRows[columnGroupName]);
       expandedRows[columnGroupName][name] = {isExpanded: shouldExpand};
       this.setState({expandedRows: expandedRows});
   }
-   rowGroupRenderer =()=>{
-    alert('rowGroupRenderer');
-   }
+
   onRowClick= (rows,value) => {
+    alert('row click');
     if (value) {
        console.log('route to letterAddEdit/'+value.id); 
     } 
@@ -204,7 +207,7 @@ class GridSetup extends Component {
       
       const groupedRows = Data.Selectors.getRows({ rows, groupBy });
       
-      const drag=Resources['jqxGridLanguage'][currentLanguage].localizationobj.groupsheaderstring
+      const drag = Resources['jqxGridLanguage'][currentLanguage].localizationobj.groupsheaderstring
 
       const CustomToolbar = ({ groupBy,onColumnGroupAdded,onColumnGroupDeleted }) => {
           return (
@@ -220,12 +223,11 @@ class GridSetup extends Component {
                (
                 <div className="gridSystemSelected active">
                     <div className="tableselcted-items">
-                        <span id="count-checked-checkboxes">1</span>
+                        <span id="count-checked-checkboxes">{this.state.selectedRows.length} </span>
                         <span>Selected</span>
                     </div>
                     <div className="tableSelctedBTNs">
                         <button className="defaultBtn btn smallBtn" onClick={this.clickHandlerDeleteRows}>DELETE</button> 
-                       
                     </div>
                 </div>
                 ) 
@@ -241,13 +243,12 @@ class GridSetup extends Component {
           <DraggableContainer > 
               <ReactDataGrid
                 rowKey="id"
-                minHeight={800}
+                minHeight={650}
+                isScrolling={false}
                 columns={this.state.columns}
                 rowGetter={i => groupedRows[i]} 
                 rowsCount={groupedRows.length} 
-                enableCellSelect={false}
-                //expandedRows={this.onRowExpandToggle}
-                //rowGroupRenderer={this.rowGroupRenderer}
+                enableCellSelect={false}  
                 onColumnResize={( idx, width,event) => {
                   //console.log(this.state.columns[idx-1]); 
                  // console.log(`Column ${idx} has been resized to ${width}`);
@@ -268,6 +269,7 @@ class GridSetup extends Component {
 
                 rowSelection={{
                             showCheckbox: this.props.showCheckbox,
+                            defaultChecked:false,  
                             enableShiftSelect: true,  
                             onRowsSelected: this.onRowsSelected,
                             onRowsDeselected: this.onRowsDeselected,
@@ -276,6 +278,7 @@ class GridSetup extends Component {
                             }
                           }}
                 onRowClick={(index,value) => this.onRowClick(index,value)}
+
                 onAddFilter={filter => this.setState({ setFilters: this.handleFilterChange(filter)}) }
                 onClearFilters={() =>  this.setState({ setFilters: {}}) }
                 getValidFilterValues={columnKey => this.getValidFilterValues(this.state.rows, columnKey)}

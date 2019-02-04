@@ -138,7 +138,7 @@ class FilterComponent extends Component {
               );
             } else if (column.type === "toggle") {
               return (
-                <div class="form-group fillterinput fillter-item-c">
+                <div className="form-group fillterinput fillter-item-c" key={index}>
                 <Dropdown
                   title={column.name}
                   index={index}
@@ -163,7 +163,7 @@ class FilterComponent extends Component {
               );
             } else if (column.type === "date") { 
               return (
-                <div class="form-group fillterinput fillter-item-c">
+                <div className="form-group fillterinput fillter-item-c" key={index}>
                 <DatePicker
                   title={column.name}
                   handleChange={date =>
@@ -181,17 +181,17 @@ class FilterComponent extends Component {
 
         {this.state.isLoading === false ? (
           <button
-            className="primaryBtn-2 btn smallBtn fillter-item-c" 
+            className="primaryBtn-2 btn smallBtn fillter-item-c"  
             onClick={this.filterMethod} 
           >
             {Resources["search"][currentLanguage]}
           </button>
         ) : (
           <button className="primaryBtn-2 btn smallBtn fillter-item-c">
-            <div class="spinner">
-              <div class="bounce1" />
-              <div class="bounce2" />
-              <div class="bounce3" />
+            <div className="spinner">
+              <div className="bounce1" />
+              <div className="bounce2" />
+              <div className="bounce3" />
             </div>
           </button>
         )}

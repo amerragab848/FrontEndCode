@@ -9,15 +9,33 @@ let currentLanguage =
 class Menu extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      appComponants: []
+    };
   }
 
-  componentWillMount = () => {};
+  componentDidMount = () => {
+    var result = null;
+
+    Api.get("GetPrimeData").then(res => {
+    
+      result = res;
+
+      console.log("result : "+result);
+
+      this.setState({
+         appComponants: result.appComponants 
+      }); 
+
+    });  
+  };
 
   render() {
     return (
       <div>
         <HeaderMenu />
-        <LeftMenu />
+        <LeftMenu appComponants={this.state.appComponants} />
       </div>
     );
   }
