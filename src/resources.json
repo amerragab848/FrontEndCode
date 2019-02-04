@@ -7660,5 +7660,13 @@
   "realState": {
     "en": "Real Estate",
     "ar": "Real Estate"
+  },
+  "backtoprojects": {
+    "en": "Back to projects",
+    "ar": "الرجوع إلى المشاريع"
+  },
+  "backtoModules": {
+    "en": "Back to Modules",
+    "ar": "الرجوع إلى الفروع"
   }
 }

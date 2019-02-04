@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from 'react-router-dom';
 import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
@@ -7,6 +8,7 @@ import Navigate from "../../Navigate";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 
 class ApprovedWidget extends Component {
   constructor(props) {
@@ -36,7 +38,7 @@ class ApprovedWidget extends Component {
         let url = arr[0];
         let param = arr[1];
 
-        Navigate({
+        this.props.history.push({
           pathname: url,
           search: "?" + param + action
         });
@@ -47,18 +49,18 @@ class ApprovedWidget extends Component {
           let url = link[0];
           let param = link[1];
 
-          Navigate({
+          this.props.history.push({
             pathname: url,
             search: "?" + param + action
           });
         } else {  
-          Navigate({
+          this.props.history.push({
             pathname: this.props.props.route[1]
           });
         }
       } else if (arr.length === 3) {
         if (action === 1) {
-          Navigate({
+          this.props.history.push({
             pathname: this.props.props.route[0]
           });
         } else if(action === 2) {  
@@ -70,12 +72,12 @@ class ApprovedWidget extends Component {
           let param = link[1];
           console.log("param : "+param);
 
-          Navigate({
+          this.props.history.push({
             pathname: url,
             search: "?" + param + action
           }); 
         }else{
-          Navigate({
+          this.props.history.push({
             pathname: this.props.props.route[2]
           });
         }
@@ -188,4 +190,4 @@ class ApprovedWidget extends Component {
   }
 }
 
-export default ApprovedWidget;
+export default withRouter(ApprovedWidget);

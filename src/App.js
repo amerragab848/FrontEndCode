@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import routes from "./router";
+
 import "./Styles/scss/en-us/layout.css";
 import CreateTransmittal from "./Componants/OptionsPanels/CreateTransmittal";
 import SendTask from "./Componants/OptionsPanels/SendTask";
@@ -11,11 +12,12 @@ import SendWorkFlow from "./Componants/OptionsPanels/SendWorkFlow";
 
 import DashBoard from "./Pages/DashBoard";
 import Menu from "./Pages/Menu/Menu";
-import ViewAttachment from "./Componants/OptionsPanels/ViewAttachmments"; 
+import ViewAttachment from "./Componants/OptionsPanels/ViewAttachmments";
 
 import Upload from "./Componants/OptionsPanels/UploadAttachment";
 import CopyTo from "./Componants/OptionsPanels/CopyTo";
 import SendByEmails from "./Componants/OptionsPanels/SendByEmails";
+import Router from "../src/router";
 
 class App extends Component {
   render() {
@@ -32,7 +34,10 @@ class App extends Component {
       // </div>
       // <CopyTo />
       // <SendByEmails />
-      <Menu/>
+      <div>
+        <Menu />
+        {Router}
+      </div>
     );
     ///test
     // <SendToInbox />
@@ -48,8 +53,7 @@ class App extends Component {
     // )
     // return (
     //   <TimeSheet />
-    // ); 
-  
+    // );
   }
 }
 
