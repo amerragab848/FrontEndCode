@@ -5,8 +5,8 @@
  */
 
 
-/* 
-sayed exp 
+/*
+sayed exp
 */
 *, :after, :before {
   -webkit-box-sizing: border-box;
@@ -98,7 +98,7 @@ sayed exp
 }
 .ui.radio.checkbox .box:after, .ui.radio.checkbox label:after {
     border: none;
-    content: ''!important; 
+    content: ''!important;
     line-height: 15px;
 }
 .ui.radio.checkbox .box:after, .ui.radio.checkbox label:after {
@@ -145,7 +145,7 @@ sayed exp
 
 
 
-/* 
+/*
 sayed exm
 */
 
@@ -1436,7 +1436,7 @@ sayed exm
 /*BoxShadow*/
 /*Auto Margin*/
 /*Border-raduis*/
-/*===================================== 
+/*=====================================
 	-- initialization --
 =====================================*/
 /*html, body, div, span, applet, object, iframe,
@@ -8608,7 +8608,7 @@ viewer-pdf-toolbar {
 }
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:before {
   border: 2.5px solid #3570e6;
-} 
+}
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:after {
   background-color: #3570e6;
 }
@@ -11761,7 +11761,7 @@ viewer-pdf-toolbar {
         animation: rotate 0.5s infinite;
         width: 40px;
         height: 40px;
-        border-radius:50%; 
+        border-radius:50%;
         border:3px solid red;
         border-right-color: transparent;
         background: transparent;
@@ -11773,7 +11773,7 @@ viewer-pdf-toolbar {
     }
     100% {
         transform: rotate(360deg);
-    }      
+    }
 }*/
 @media (max-width: 1024px) {
   body {
@@ -11797,7 +11797,7 @@ viewer-pdf-toolbar {
   padding: 0;
   background: transparent;
   display: flex;
-  border-radius: .28571429rem; 
+  border-radius: .28571429rem;
   justify-content: center;
   align-items: center;
 }
@@ -11859,12 +11859,12 @@ viewer-pdf-toolbar {
   padding: 25PX;
   display: flex;
   justify-content: space-between;
-  width: 730px;
+  width: 100%;
   flex-wrap: wrap;
 }
 .dropWrapper .customD_Menu {
   width: 100%
-} 
+}
 .dropWrapper .dropBtn {
   text-align: center;
   margin-top: 30px;
@@ -11966,7 +11966,7 @@ viewer-pdf-toolbar {
   width: 16px;
   height: 16px
 }
-/* 
+/*
 table edition
 */
 .dropWrapper .fullWidthWrapper table {
@@ -11983,15 +11983,13 @@ table edition
 .dropWrapper .fullWidthWrapper table thead tr th:first-of-type, .dropWrapper .fullWidthWrapper table tbody tr td:first-of-type {
   border-left-width: 1px;
 }
-.fullWidthWrapper .ReactTable >div, .fullWidthWrapper .ReactTable >div .rt-tbody {
-  overflow: visible;
-}
+
 .fullWidthWrapper .ReactTable >div .rt-tbody div {
   overflow: visible;
   white-space: pre-wrap;
   align-items: center;
-} 
- 
+}
+
 /* sla7 22/1/2019*/
 .gridfillter-container .fillter-status-container .fillter-status {
   width: 170px;
@@ -12064,10 +12062,10 @@ table edition
 }
 
 @keyframes sk-bouncedelay {
-  0%, 80%, 100% { 
+  0%, 80%, 100% {
     -webkit-transform: scale(0);
     transform: scale(0);
-  } 40% { 
+  } 40% {
     -webkit-transform: scale(1.0);
     transform: scale(1.0);
   }
@@ -12078,7 +12076,7 @@ table edition
 /* .mainContainer .customD_Menu div span{
   width: 0;
 } */
-   
+
 .attachmentPage {
   width: 100%;
   margin: 0;
@@ -12087,12 +12085,12 @@ table edition
 
 
 =======
- 
+
 /* table th, table td {
   padding: 0px 8px !important;
   white-space: unset !important;
 } */
-/* 
+/*
 table edition
 */
 .gridfillter-container .fillter-status-container >div {
@@ -12127,14 +12125,14 @@ table edition
       transition: all 1s ease-in-out;
     }
     .uploadForm.fullProgressBar .progressBar .smallProgress {
-      width: 90%; 
+      width: 90%;
     }
     .uploadForm.hundredPercent .progressBar .smallProgress {
-      width: 100%; 
+      width: 100%;
       transition: none;
     }
     .uploadForm.zeropercent .progressBar .smallProgress {
-      width: 0; 
+      width: 0;
       transition: none;
     }
   .uploadForm .dragHoverDiv {
@@ -12172,7 +12170,7 @@ table edition
     width: 80px;
     height: 64px; }
   .uploadForm .dragUpload {
-    display: flex; 
+    display: flex;
     align-items: center;
   }
     .uploadForm .dragUpload p {
@@ -12206,7 +12204,7 @@ table edition
   padding: 0px 8px !important;
   white-space: unset !important;
 } */
-/* 
+/*
 table edition
 */
 .proForm .showPasswordArea .togglePW.activePW .hide {
@@ -12314,4 +12312,76 @@ table edition
 }
 .dropWrapper .proForm .fillter-item-c .ui.input.inputDev {
   width: 100%;
+}
+.fullWidthWrapper  .inputDev.ui.input {
+  width: 100%
+}
+.skylight-dialog >h2 {
+  text-align: center;
+}
+.skylight-wrapper  {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.skylight-dialog{
+  
+  min-height: 400px;
+  position: relative !important;
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+  top: 0 !important;
+  left: 0!important;
+} 
+.ReactTable .rt-tbody {
+    flex: 99999 1 auto;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+}
+.largePopup .skylight-dialog {
+  min-width: 800px;
+}
+.ui.modal {
+  display: block !important;
+}
+ .fullWidthWrapper .ReactTable >div, .fullWidthWrapper .ReactTable >div .rt-tbody {
+  overflow: visible;
+} 
+.fillter-item-c .inputDev.ui.input {
+  width: 100%; 
+}
+
+.loginWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.loginWrapper .loginForm {
+  text-align: center;
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+}
+.loginWrapper h3 {
+  color: #4382f9;
+  font-size: 24px;
+  font-weight: bold;
+}
+.loginWrapper .proForm {
+  display: flex;
+  flex-flow: column;
+  text-align: left;
+}
+.loginWrapper .primaryBtn-1 {
+  margin: 0 16px;
+}
+.proForm .ui.input.inputDev .inputsideNote {
+  right: 10px;
 }

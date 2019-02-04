@@ -7652,5 +7652,10 @@
   "hideFillter": {
     "en": "Hide Fillter",
     "ar": "إخفاء البحث"
+  },
+  "logIn": {
+    "en": "Log In",
+    "ar": "الدخول"
   }
+
 }

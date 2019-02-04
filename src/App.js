@@ -11,20 +11,23 @@ import SendWorkFlow from  './Componants/OptionsPanels/SendWorkFlow';
   
 import DashBoard from  './Pages/DashBoard'; 
 import ViewAttachment from './Componants/OptionsPanels/ViewAttachmments'
-import Validation from './Componants/OptionsPanels/validationRules'
-// import SendToWorkflow from './Componants/OptionsPanels/SendWorkFlow'
 import UploadAttachment from './Componants/OptionsPanels/UploadAttachment'
 import Upload from './Componants/OptionsPanels/UploadAttachment'
 import WFApproval from './Componants/OptionsPanels/wfApproval'
 import SendToInbox from './Componants/OptionsPanels/SendToInbox'
 
+import PopUp from './Componants/OptionsPanels/OptionContainer'
+import Login from './Componants/Layouts/Login'
+
 class App extends Component {
   render() { 
      
     return (
+      //<PopUp />
+      <Login />
    //   <SendWorkFlow />
       ///test
-      <SendToInbox />
+     // <SendToInbox />
       // <DashBoard/>
       //  <Letter/>
       //<SendTask/>
@@ -34,6 +37,7 @@ class App extends Component {
      // <div>
        //    {routes}
       //</div>
+     // <WFApproval />
     );
     	///test
     // <SendToInbox />  
