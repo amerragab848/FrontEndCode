@@ -115,6 +115,7 @@ sayed exp
   content: '\e800';
   opacity: 1;
 }
+.react-grid-checkbox-label 
 .ui.input>input {
   margin: 0;
   max-width: 100%;
@@ -4345,6 +4346,7 @@ ul {
 .ui.modal {
   position: relative;
   padding: 23px 32px;
+  display: block;
 }
 
 .ui.modal > .header {
@@ -11790,9 +11792,6 @@ viewer-pdf-toolbar {
     min-width: auto;
   }
 }
-.ui.modal {
-  display: block
-}
 .rodal-dialog {
   padding: 0;
   background: transparent;
@@ -12082,6 +12081,7 @@ table edition
   margin: 0;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 =======
@@ -12093,10 +12093,12 @@ table edition
 /*
 table edition
 */
+=======
+ 
+>>>>>>> 7cc9c506ebf147e29eac17ca661eb533c0301801
 .gridfillter-container .fillter-status-container >div {
   margin-bottom: 20px !important;
-}
->>>>>>> e4b6abe6cf32c0c89a2da469c43e8f8869f8bfbb
+} 
 .uploadForm {
   display: flex;
   flex-flow: column;
@@ -12213,9 +12215,7 @@ table edition
 .proForm .showPasswordArea .togglePW.activePW .show {
   display: none;
 }
-
-
-
+ 
 .approvalDocument {
   display: flex;
   align-items: center;
@@ -12313,6 +12313,7 @@ table edition
 .dropWrapper .proForm .fillter-item-c .ui.input.inputDev {
   width: 100%;
 }
+
 .fullWidthWrapper  .inputDev.ui.input {
   width: 100%
 }
@@ -12385,3 +12386,28 @@ table edition
 .proForm .ui.input.inputDev .inputsideNote {
   right: 10px;
 }
+
+.ui.modal{
+  display:  block !important;
+}
+.sidebar__inner {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  z-index: 9999;
+  left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.SummeriesContainer .SummeriesContainerContent {
+  padding: 0 !important;
+}
+.flexForm {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+}
+.flexForm label {
+  margin-right: 15px;
+} 
+

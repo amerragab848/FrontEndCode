@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import "../../Styles/scss/en-us/layout.css";
 import InputMelcous from "../OptionsPanels/InputMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import moment from "moment";
+//import "../../Styles/scss/en-us/layout.css";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -83,37 +83,37 @@ class FilterComponent extends Component {
     }
   }
  
-  // searchHandler() {
-  //   this.setState({
-  //     isLoading: true
-  //   });
+  filterMethod = (e) => {
+     
+    this.setState({
+      isLoading: true
+    }); 
+    var query = {};
+    
+    this.state.valueColumns.map(column => {
+      if (column.type === "date") {
+        if (column.value != "") {
+          query[column.field] = moment(column.value).format("YYYY-MM-DD");
+        }
+      } else if (column.type === "number") {
+        if (column.value != "") {
+          query[column.field] = parseInt(column.value);
+        }
+      } else {
+        if (column.value != "") {
+          query[column.field] = column.value;
+        }
+      }
+    });
 
-  //   var query = {};
-
-  //   this.state.valueColumns.map(column => {
-  //     if (column.type === "date") {
-  //       if (column.value != "") {
-  //         query[column.field] = moment(column.value).format("YYYY-MM-DD");
-  //       }
-  //     } else if (column.type === "number") {
-  //       if (column.value != "") {
-  //         query[column.field] = parseInt(column.value);
-  //       }
-  //     } else {
-  //       if (column.value != "") {
-  //         query[column.field] = column.value;
-  //       }
-  //     }
-  //   });
-
-  //   query["isCustom"] = this.state.isCustom;
-
-  //    Api.get(this.state.apiFilter + "?query=" + query).then(result => {});
-
-  //   this.setState({
-  //     isLoading: false
-  //   });
-  // }
+    query["isCustom"] = this.state.isCustom;
+     
+    this.props.filterMethod(e,query,this.state.apiFilter);
+ 
+    this.setState({
+      isLoading: false
+    });
+  }
  
   renderFilterColumns() {
     let columns = (
@@ -124,6 +124,7 @@ class FilterComponent extends Component {
               return (
                 <div className="form-group fillterinput fillter-item-c" key={index}>
                   <InputMelcous
+                    ref={column.name}
                     title={column.name}
                     index={index}
                     key={index}
@@ -178,7 +179,7 @@ class FilterComponent extends Component {
         {this.state.isLoading === false ? (
           <button
             className="primaryBtn-2 btn smallBtn fillter-item-c" 
-            onClick={this.props.filterMethod} 
+            onClick={this.filterMethod} 
           >
             {Resources["search"][currentLanguage]}
           </button>
