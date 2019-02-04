@@ -40,8 +40,10 @@ class Letter extends Component {
   constructor(props) {
     super(props); 
 
-    let projectId = props.match.params.projectId;
-    let documents = props.match.params.document;
+   let params = Object.values(props.match.params);
+
+    let projectId = params[1];
+    let documents = params[0];
 
     let documentObj = documentDefenition[documents];
 

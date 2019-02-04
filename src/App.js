@@ -32,7 +32,7 @@ import WfApproval from './Componants/OptionsPanels/wfApproval';
 
 
 import PopUp from './Componants/OptionsPanels/OptionContainer'
-import Login from './Componants/Layouts/Login'
+//import Login from './Componants/Layouts/Login'
 
 class App extends Component {
   render() {

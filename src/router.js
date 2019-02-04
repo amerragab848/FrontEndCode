@@ -30,61 +30,36 @@ import Router from "./URLRoutes";
 // let costControlMenu = [];
 // let reportsMenu = [];
 
-var renderRouter = () => {
-    let rout = Router.map((r,index) => {
-        if (r.settings) {
-          if (r.settings.General === true) {
-            return <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index} /> 
-          } else if (r.settings.Communication === true) { 
-              return <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/>
-          } else if (r.settings.Procurement === true) {
-              return <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.Site === true) {
-              return  <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.Contracts === true) {
-              return  <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.Design === true) {
-              return  <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.Time === true) {
-              return  <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.Estimation === true) {
-              return <Route path={"/:" + r + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.QualityControl === true) {
-              return   <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.CostControl === true) {
-              return  <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          } else if (r.settings.Reports === true) {
-              return  <Route path={"/:" + r.route + "/:projectId"} component={Letter} key={index}/> 
-          }
-        }
-      });
-      console.log("rout : "+rout);
 
-      return rout;
-}
- 
+
+let Routes = [
+  <Route exact path="/" component={DashBoard} />,
+  <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />,
+  <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails}/>,
+  <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />,
+  <Route path="/ClosedSummaryDetails" component={ClosedSummaryDetails} />,
+  <Route path="/DistributionInboxListSummaryDetails" component={DistributionInboxListSummaryDetails} />,
+  <Route path="/NotCodedExpensesSummaryDetails" component={NotCodedExpensesSummaryDetails}/>,
+  <Route path="/NotCodedInvoicesSummaryDetails" component={NotCodedInvoicesSummaryDetails}/>,
+  <Route path="/NotCodedPaymentDetails" component={NotCodedPaymentDetails} />,
+  <Route path="/OpenedSummaryDetails" component={OpenedSummaryDetails} />,
+  <Route path="/SchedualActionByDetails" component={SchedualActionByDetails} />,
+  <Route path="/ScheduleAlertsSummaryDetails" component={ScheduleAlertsSummaryDetails}/>,
+  <Route path="/TimeSheetDetails" component={TimeSheetDetails} />,
+  <Route path="/DocApprovalDetails" component={DocApprovalDetails} />,
+  <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />
+];
+const routesModule = Router.map((r, index) => { 
+    Routes.push(<Route path={ r.route} component={Letter} key={index} />);
+});
+  
 let routes = (
   <Switch> 
-    <Route exact path="/" component={DashBoard} /> 
-    <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} /> 
-    <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails}/> 
-    <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} /> 
-    <Route path="/ClosedSummaryDetails" component={ClosedSummaryDetails} /> 
-    <Route path="/DistributionInboxListSummaryDetails" component={DistributionInboxListSummaryDetails}/> 
-    <Route path="/NotCodedExpensesSummaryDetails" component={NotCodedExpensesSummaryDetails}/> 
-    <Route path="/NotCodedInvoicesSummaryDetails" component={NotCodedInvoicesSummaryDetails} /> 
-    <Route path="/NotCodedPaymentDetails" component={NotCodedPaymentDetails} /> 
-    <Route path="/OpenedSummaryDetails" component={OpenedSummaryDetails} /> 
-    <Route path="/SchedualActionByDetails" component={SchedualActionByDetails}/> 
-    <Route path="/ScheduleAlertsSummaryDetails" component={ScheduleAlertsSummaryDetails} /> 
-    <Route path="/TimeSheetDetails" component={TimeSheetDetails} /> 
-    <Route path="/DocApprovalDetails" component={DocApprovalDetails} /> 
-    <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} /> 
-    {/* {renderRouter()} */}
-    <Route path="/:document/:projectId" component={Letter} />
+  {Routes}
+    {/* <Route path="/:document/:projectId" component={Letter} /> */}
   </Switch>
 );
 
-console.log("routes : "+routes);
+console.log("routes : " + routes);
 
 export default routes;
