@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import routes from "./router";
 import "./Styles/scss/en-us/layout.css";
+import "./Styles/scss/en-us/reactCss.css";
+
 import CreateTransmittal from "./Componants/OptionsPanels/CreateTransmittal";
 import SendTask from "./Componants/OptionsPanels/SendTask";
 import Letter from "./Pages/Communication/Letter";
@@ -11,6 +13,7 @@ import SendWorkFlow from "./Componants/OptionsPanels/SendWorkFlow";
 import PrivacySetting from './Componants/User/PrivacySetting '
 
 
+import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
 import Menu from "./Pages/Menu/Menu";
 import ViewAttachment from "./Componants/OptionsPanels/ViewAttachmments"; 
@@ -25,7 +28,7 @@ import WfApproval from './Componants/OptionsPanels/wfApproval';
 class App extends Component {
   render() {
     return (
-      <PrivacySetting />
+     // <PrivacySetting />
       ///test
       //<SendToInbox />
       // <DashBoard/>
@@ -38,8 +41,8 @@ class App extends Component {
       // </div>
       // <CopyTo />
       // <SendByEmails />
-     // <Menu/>
- 
+      <ViewWorkFlow />
+    );
     ///test
     // <SendToInbox />
     // <DashBoard/>
@@ -55,7 +58,7 @@ class App extends Component {
     // return (
     //   <TimeSheet />
     // ); 
-    );
+    //);
   }
 }
 

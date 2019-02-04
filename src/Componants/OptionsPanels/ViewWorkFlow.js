@@ -10,18 +10,22 @@ import Moment from 'moment';
 import Resources from '../../resources.json';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
+
 import "../../Styles//scss/en-us/layout22.css"
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
 
-export default class ViewWorkFlow extends Component {
+class ViewWorkFlow extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            title: [],
-            data: []
+        this.state = { 
+            cycles: [],
+            projectId: this.props.projectId != null ? this.props.projectId :3721,
+            docId: this.props.docId !=null ? this.props.docId :63,
+            docType: this.props.docType !=null ?this.props.docType :25
         }
     }
 
@@ -29,7 +33,7 @@ export default class ViewWorkFlow extends Component {
         let levels = [];
         let cycles = [];
 
-        Api.get('GetCycleWorkflowByDocIdDocType?docId=63&docType=25&projectId=3721').then(result => {
+        Api.get('GetCycleWorkflowByDocIdDocType?docId='+this.state.docId+'&docType='+this.state.docType+'&projectId='+this.state.projectId).then(result => {
 
             let workFlowCycles = _.uniqBy(result, 'subject');
             const poolLevels = _.orderBy(result, ['arrange'], 'asc');
@@ -38,131 +42,93 @@ export default class ViewWorkFlow extends Component {
                 var obj = {};
 
                 obj.subject = item.subject;
+                obj.creationDate=item.creationDate;
+
                 obj.accountDocWorkFlowId = item.accountDocWorkFlowId;
 
                 //all levels in same subject
                 levels = _.filter(poolLevels, function (i) {
                     return i.accountDocWorkFlowId === item.accountDocWorkFlowId;
                 });
+
                 obj.levels = levels;
+ 
+                let maxArrange=_.maxBy(levels,'arrange');
+                 
+                obj.currentLevel=maxArrange.arrange;
                 cycles.push(obj);
             });
 
-            this.setState({
-                data: poolLevels,
-                title: workFlowCycles
+            this.setState({ 
+                cycles:cycles
             });
         });
     }
 
+    renderLevels(items) {
+ 
+        let grouped=_.groupBy(items, 'arrange');
+         
+        let groupedLevels=[];
 
-    renderLevels(item) {
-
-        const CountLevels = [];
-        const F_Levels = _.filter(this.state.data, function (o) {
-            if (o.arrange == item.arrange
-                && o.accountDocWorkFlowId == item.accountDocWorkFlowId) return o
-        });
-        F_Levels.forEach(function (i) {
-            var obj = {};
-            obj.level = i.arrange;
-            obj.count = F_Levels.length;
-            CountLevels.push(obj);
-        });
-        const F_CountLevels = _.uniqBy(CountLevels, 'level');
-        console.log(F_CountLevels)
-
-        return (
-            <Fragment>
-                {item.status === 'Pending' ?
-                    <div>
-                        <div className="StepNumber pendingStep">
-                            <span className="Step-Line afterLine"></span>
-                            <div className="StepNum">
-                                <p className="StepN zero">{item.arrange}</p>
-                                <p className="StepTrue zero">?</p>
-                            </div>
-                            <span className="Step-Line"></span>
-                        </div>
-                        <div className="card-box cardPending">
-                            <div className="signature-h signaturePendingd">
-                                <figure className="avatarProfile smallAvatarSize">
-                                    <img alt="" title="" src={Avatar} />
-                                </figure>
-                                <div className="avatarName">
-                                    <h6>{item.contactName}</h6>
-                                    <p>{item.companyName}</p>
+       _.filter(grouped , function (i) {
+            let obj = {};
+            obj.level=i[0].arrange;
+            obj.statusVal=i[0].statusVal;
+            obj.count=i.length;
+            groupedLevels.push(obj);
+        }); 
+ 
+   let mapLevels = groupedLevels.map((i,index) => {
+         return (
+            <div className="StepperNum1 StepperNum workFlowStep" key={index}>
+                        <div>
+                            <div className={i.statusVal == null ? 'StepNumber pendingStep':  ( i.statusVal === true ? "StepNumber approvalstep" : "StepNumber declineStep" ) }>
+                                <span className="Step-Line afterLine"></span>
+                                <div className="StepNum">
+                                    <p className="StepN zero">{i.level}</p> 
                                 </div>
-                            </div>
-                            <div className="box-statue">
-                                <h5>{item.status}</h5>
-                                <p>{Moment(item.creationDate).format('DD-MM-YYYY')}</p>
-                            </div>
+                                <span className="Step-Line"></span>
+                            </div> 
+                            <div className="MultiPeinding"> 
+                            { items.map((level,idx) =>  level.arrange === i.level ?
+                                    <div className= {level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
+                                        <div className={ level.statusVal == null ? "signature-h signaturePendingd" : "signature-h" }>
+                                            <figure className="avatarProfile smallAvatarSize">
+                                                <img alt="" title="" src={Avatar} />
+                                            </figure>
+                                            <div className="avatarName">
+                                                <h6>{level.contactName}</h6>
+                                                <p>{level.companyName}</p>
+                                            </div>
+                                        </div>
+                                        { level.statusVal != null? <div className="card-signature"> 
+                                            <img src={level.signature !=null ? level.signature: Signature } alt="..." />
+                                        </div> : null } 
+                                        <div className="box-statue">
+                                            <h5>{level.status}</h5>
+                                            <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+                                        </div>
+                                    </div>    
+                                : null      
+                            )}
+                            </div>  
                         </div>
-                    </div>
-                    :
-                    <div>
-                        <div className="StepNumber approved" className={item.status === 'Approved' ? "StepNumber approvalstep" : "StepNumber declineStep"}>
-                            <span className="Step-Line afterLine"></span>
-                            <div className="StepNum">
-                                <p className="StepN zero">{item.arrange}</p>
-                            </div>
-                            <span className="Step-Line afterLine"></span>
-                        </div>
-
-
-                        <div className={item.status === 'Approved' ? "card-box cardApproval" : "card-box cardDeclined"}>
-
-                            <div className="signature-h">
-                                <figure className="avatarProfile smallAvatarSize">
-                                    <img alt="" title="" src={Avatar} />
-                                </figure>
-                                <div className="avatarName">
-                                    <h6>{item.contactName}</h6>
-                                    <p>{item.companyName}</p>
-                                </div>
-                            </div>
-                            <div className="card-signature">
-                                <img src={item.signature === null ? Signature : 'https:demov4.procoor.com/' + item.signature} alt="..." />
-
-                            </div>
-                            <div className="box-statue">
-                                <h5>{item.status}</h5>
-                                <p>{Moment(item.creationDate).format('DD-MM-YYYY')}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                }
-            </Fragment>)
+            </div>
+            )
+         })
+       return mapLevels;
     }
-
-
-    renderWorkFlows(accountDocWorkFlowId) {
-        let cycle = this.state.data.map(item => {
-
-            if (accountDocWorkFlowId === item.accountDocWorkFlowId) {
-                return (
-                    <div className="StepperNum1 StepperNum workFlowStep" key={Math.random()}>
-                        {this.renderLevels(item)}
-                    </div>
-                )
-            }
-        })
-
-        return cycle;
-    }
-
+ 
     renderCycles() {
-        let cycles = this.state.title.map(cycle => {
-            return (
-
+        let cycles = this.state.cycles.map(cycle => {
+            return ( 
                 <div className="workflowWrapper" key={Math.random()}>
                     <div className="workflow-header">
-                        <h4>{cycle.subject + " -Currently at Level:" + cycle.arrange + " -Sent in:" + Moment(cycle.creationDate).format('DD-MM-YYYY')}</h4>
+                        <h4>{cycle.subject + " -Currently at Level:" + cycle.currentLevel + " -Sent in:" + Moment(cycle.creationDate).format('DD-MM-YYYY')}</h4>
                     </div>
                     <div className="card-status">
-                        {this.renderWorkFlows(cycle.accountDocWorkFlowId)}
+                        {this.renderLevels(cycle.levels)}
                     </div>
                 </div>
             )
@@ -171,14 +137,14 @@ export default class ViewWorkFlow extends Component {
         return cycles
     }
 
-
     render() {
         return (
             <Fragment >
                 {this.renderCycles()}
             </Fragment>
         )
-
     }
 }
+
+export default ViewWorkFlow;
 

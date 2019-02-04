@@ -584,18 +584,11 @@ table edition
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
  
-}
-.ui.modal {
-  display: block;
 } 
-/*.ui.modal{
-  display:  block !important;
-}*/
 .ui.modal{
   display:  block !important;
 }
-.flexForm {
-  display: flex;
-  align-items: center;
-  width: 100%;
+
+.workFlowStep .StepNumber.approvalstep .StepNum .StepN {
+  display: block !important;
 }
