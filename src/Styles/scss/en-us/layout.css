@@ -12315,3 +12315,11 @@ table edition
 .SummeriesContainer .SummeriesContainerContent {
   padding: 0 !important;
 }
+.flexForm {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+}
+.flexForm label {
+  margin-right: 15px;
+} 

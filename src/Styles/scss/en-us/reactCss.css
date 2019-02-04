@@ -588,10 +588,14 @@ table edition
 .ui.modal {
   display: block;
 } 
-} 
 /*.ui.modal{
   display:  block !important;
 }*/
 .ui.modal{
   display:  block !important;
+}
+.flexForm {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }

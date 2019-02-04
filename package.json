@@ -6,7 +6,7 @@
     "axios": "^0.18.0",
     "calidation": "^1.7.0",
     "env": "0.0.2",
-    "formik": "^1.4.2",
+    "formik": "^1.4.3",
     "highcharts": "^7.0.1",
     "highcharts-react-official": "^2.0.0",
     "history": "^4.7.2",

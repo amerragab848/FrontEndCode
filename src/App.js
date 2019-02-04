@@ -8,6 +8,8 @@ import DistributionList from "./Componants/OptionsPanels/DistributionList";
 import Filter from "./Componants/FilterComponent/filterComponent";
 import TimeSheet from "./Componants/DashBoardDetails/TimeSheetDetails";
 import SendWorkFlow from "./Componants/OptionsPanels/SendWorkFlow";
+import PrivacySetting from './Componants/User/PrivacySetting '
+
 
 import DashBoard from "./Pages/DashBoard";
 import Menu from "./Pages/Menu/Menu";
@@ -16,10 +18,14 @@ import ViewAttachment from "./Componants/OptionsPanels/ViewAttachmments";
 import Upload from "./Componants/OptionsPanels/UploadAttachment";
 import CopyTo from "./Componants/OptionsPanels/CopyTo";
 import SendByEmails from "./Componants/OptionsPanels/SendByEmails";
+import WfApproval from './Componants/OptionsPanels/wfApproval';
+
+
 
 class App extends Component {
   render() {
     return (
+      <PrivacySetting />
       ///test
       //<SendToInbox />
       // <DashBoard/>
@@ -32,8 +38,8 @@ class App extends Component {
       // </div>
       // <CopyTo />
       // <SendByEmails />
-      <Menu/>
-    );
+     // <Menu/>
+ 
     ///test
     // <SendToInbox />
     // <DashBoard/>
@@ -49,7 +55,7 @@ class App extends Component {
     // return (
     //   <TimeSheet />
     // ); 
-  
+    );
   }
 }
 

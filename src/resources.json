@@ -2297,6 +2297,10 @@
     "en": "Please Enter New Password",
     "ar": "برجاء إدخال كلمة المرور الجديدة"
   },
+  "ConfirmpasswordRequired": {
+    "en": "Please enter the same value again",
+    "ar": " برجاء إدخال كلمة المرور الجديدة مره اخري"
+  },
   "port": {
     "en": "Port",
     "ar": "مدخل"
