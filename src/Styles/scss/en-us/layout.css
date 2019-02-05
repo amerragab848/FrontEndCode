@@ -12045,6 +12045,7 @@ table edition
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
 
+
 .spinner .bounce1 {
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
@@ -12436,4 +12437,92 @@ table edition
 .flexForm label {
   margin-right: 15px;
 } 
-  
+.dashboardLoading {
+  position: fixed;
+  top: 153px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 2; 
+}
+.dashboardLoading span {
+    width: 64px;
+    height: 64px;
+    border: 3px solid #A8B0BF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite; 
+  }
+.dashboardLoading h3 {
+    font-family: font-b;
+    font-size: 45px;
+    line-height: 1.16;
+    letter-spacing: -1.1px;
+    color: #252833;
+    margin-top: 36px; 
+  }
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg); 
+  }
+  25% {
+    transform: rotate(90deg); 
+  }
+  50% {
+    transform: rotate(180deg);
+   }
+  75% {
+    transform: rotate(270deg); 
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+  }
+.resetPassword .spinner > div {
+  background-color: rgb(198, 217, 253);
+}
+.disNone {
+  display: none;
+}
+.animationBlock {
+  animation: opacity 3s linear;
+  transition: all 0.3s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes opacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.resetPassword .inputPassContainer label {
+  width: 130px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.resetPassword .inputPassContainer {
+  display: flex;
+  width: 100%;
+}
+.resetPassword  .ui.input.inputDev, .resetPassword .ui.input.inputDev input {
+  width: 100% !important;
+}
+.resetPassword  .notifiActionsContainer{
+  position: absolute;
+  top: 32px;
+  right: 40px;
+  max-width: 500px; 
+  width: auto;
+  min-width: 300px;
+  height: 50px;
+}

@@ -39,8 +39,9 @@ class App extends Component {
  
     return ( 
       <div>
-        <Menu />
-        {Router}
+        {/* <Menu />
+        {Router} */}
+        <PrivacySetting />
       </div> 
     ); 
   }

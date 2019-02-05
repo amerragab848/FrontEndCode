@@ -9,17 +9,10 @@ export default class Api {
         return {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-<<<<<<< HEAD
-            //      'dataType': 'json',
-            'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
-            'Authorization': Authorization,
-            //   'processData': false
-=======
             'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': Authorization,
 
->>>>>>> d124023259a50bcb3fa2f846c3730dbe60544126
         }
     }
 
@@ -151,11 +144,7 @@ export default class Api {
     }
 
     static getPassword(route, password) {
-<<<<<<< HEAD
-        const host = 'https://demov4services.procoor.com/PM/api/Procoor/';
-=======
         const host = Domain+'/PM/api/Procoor/';
->>>>>>> d124023259a50bcb3fa2f846c3730dbe60544126
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
@@ -176,6 +165,7 @@ export default class Api {
     static Login(hostt, route, params) {
         const host = hostt;
         const url = `${host}${route}`;
+
 
         let json = null;
         let options = Object.assign({
@@ -204,7 +194,7 @@ export default class Api {
         }).then(json => (json.result ? json.result : json));
     }
     static authorizationApi(route, params) {
-        const host = 'https://procoorauthorization.procoor.com/api/';
+        const host = config.loginServer+'/api/'
         const url = `${host}${route}`;
         let json = null;
 
