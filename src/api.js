@@ -189,6 +189,7 @@ export default class Api {
         const host = hostt;
         const url = `${host}${route}`;
 
+
         let json = null;
         let options = Object.assign({
             method: 'Post'
@@ -222,7 +223,7 @@ export default class Api {
     }
 
     static authorizationApi(route, params) {
-        const host = 'https://procoorauthorization.procoor.com/api/';
+        const host = config.loginServer+'/api/'
         const url = `${host}${route}`;
         let json = null;
 

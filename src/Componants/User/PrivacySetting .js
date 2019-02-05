@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import Api from '../../api'
-//import Dropdown from "./DropdownMelcous";
-//import InputMelcous from './InputMelcous'
+import Api from '../../api' 
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import { AlertError } from 'material-ui/svg-icons';
-import eyepw from '../../Styles/images/eyepw.svg'
+import eyepw from '../../Styles/images/eyepw.svg';
+import NotifiMsg from '../publicComponants/NotifiMsg'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let showDeiv = "popUp basic-popUp disNone";
@@ -21,17 +21,18 @@ class PrivacySetting extends Component {
             newPassword: '',
             userName: '',
             emailOrPassword: '',
-            companyId: '',
+            companyId: '2',
             changePassword: false,
             typeConfimPassword: false,
             typeCurrentPassword: false,
             typeNewPassword: false,
             isChechingPassword: false,
-            statusClass: "popUp basic-popUp disNone",
-            confirmPasswordSpan:"",
-            confirmPasswordError:"pError disNone",
-            boxError : "ui input inputDev",
-            submit:''
+            statusClass: "disNone",
+            statusClassSuccess:'disNone',
+            confirmPasswordSpan: "",
+            confirmPasswordError: "pError disNone",
+            boxError: "ui input inputDev",
+            isLoading: false
         }
     }
 
@@ -60,24 +61,24 @@ class PrivacySetting extends Component {
     }
 
     confirmPasswordHandleBlur = (e) => {
-      
+
         this.setState({
             ConfimPassword: e.target.value
         })
-      
-        
-        if(this.state.newPassword !== e.target.value){
-        this.setState({
-            confirmPasswordSpan:"glyphicon glyphicon-remove form-control-feedback spanError",
-            confirmPasswordError:"pError",
-            boxError : "ui input inputDev has-error"
-        })
-            
-        }else {
+
+
+        if (this.state.newPassword !== e.target.value) {
             this.setState({
-                confirmPasswordSpan:"glyphicon form-control-feedback glyphicon-ok",
-                confirmPasswordError:"pError disNone",
-                boxError : "ui input inputDev"
+                confirmPasswordSpan: "glyphicon glyphicon-remove form-control-feedback spanError",
+                confirmPasswordError: "pError",
+                boxError: "ui input inputDev has-error"
+            })
+
+        } else {
+            this.setState({
+                confirmPasswordSpan: "glyphicon form-control-feedback glyphicon-ok",
+                confirmPasswordError: "pError disNone",
+                boxError: "ui input inputDev"
             })
         }
     }
@@ -98,25 +99,31 @@ class PrivacySetting extends Component {
 
 
             if (result === false) {
+                setTimeout(() => {
+                    this.setState({
+                        changePassword: result,
+                        isChechingPassword: false,
+                        statusClass: "animationBlock"
+                    })
+                }, 1000);
+                setTimeout(() => {
+                    this.setState({ 
+                        statusClass: "disNone"
+                    })
+                }, 5000);
+ 
+            }
+            else if (result === true) {
 
                 this.setState({
                     changePassword: result,
                     isChechingPassword: false,
-                    statusClass: "popUp basic-popUp"
+                    statusClass: "disNone"
                 });
-                // showDeiv = "popUp basic-popUp"
-            }
-            else if (result === true) {
-                this.setState({
-                    changePassword: result,
-                    isChechingPassword: false,
-                    statusClass: "popUp basic-popUp disNone"
-                });
-                // showDeiv = "popUp basic-popUp disNone"
+
             }
 
         }).catch(ex => {
-
             this.setState({
                 isChechingPassword: false
             });
@@ -128,14 +135,14 @@ class PrivacySetting extends Component {
     componentDidMount = () => {
         Api.get('GetAccountInfo').then(result => {
             this.setState({
-                userName: result.userName, companyId: result.companyId
+                userName: result.userName
             })
         })
 
     }
 
     render() {
-
+   
         return (
 
             <div className="mainContainer">
@@ -143,13 +150,13 @@ class PrivacySetting extends Component {
                     initialValues={{
                         currentPassword: '',
                         newPassword: '',
-                        confirmPassword: ''
-                    }}
+                        confirmPassword: ''}}
+                    
                     validate={values => {
                         let errors = {};
-                         if (values.currentPassword.length == 0) {
-                             errors.currentPassword = Resources['currentPasswordRequired'][currentLanguage];
-                         }
+                        if (values.currentPassword.length == 0) {
+                            errors.currentPassword = Resources['currentPasswordRequired'][currentLanguage];
+                        }
                         if (values.newPassword.length == 0) {
                             errors.newPassword = Resources['newPasswordRequired'][currentLanguage];
                         }
@@ -160,47 +167,54 @@ class PrivacySetting extends Component {
                         return errors;
                     }}
 
-                    onSubmit={values => { 
+                    onSubmit={(values,  actions ) => {
                         if (this.state.changePassword === true) {
                             this.setState({
-                               submit:'submit'
+                                isLoading: true
                             })
-                            Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword=' + this.state.newPassword + '&companyId=2&changePassword=' + this.state.changePassword + '').then(
-                                Api.getPassword('EditAccountUserPassword', this.state.newPassword)
-                                );
-                                this.setState({
-                                    submit:''
-                                 })
-
+                            setTimeout((e) => {
+                                Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword=' + this.state.newPassword + '&companyId='+ this.state.companyId +'&changePassword=' + this.state.changePassword + '').then(
+                                    Api.getPassword('EditAccountUserPassword', this.state.newPassword)
+                                    ,  actions.setSubmitting(false),
+                                    this.initialValues = {
+                                            currentPassword: '',
+                                            newPassword: '',
+                                            confirmPassword: ''
+                                        },
+                                    this.setState({
+                                        isLoading: false,
+                                        statusClassSuccess:"animationBlock"
+                                    }),
+                                )
+                            }, 2000)
+                            this.setState({
+                                statusClassSuccess:"disNone"
+                            })
+                          
                         }
                         else
-                            alert("invalid Password11")
-                    }
+                            alert("invalid Password")
+                      }
                     }
                 >
-                    {({ errors, touched, handleBlur, handleChange }) => (
-                        <Form id="signupForm1" className="proForm" noValidate="novalidate">
+                    {({ errors, touched, handleBlur, handleChange  , handleReset,handleSubmit , isSubmitting}) => (
+                        <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit} >
 
                             <div className="resetPassword">
-                                <div className={this.state.statusClass}>
-                                    <span>password is invalid</span>
-                                </div>
+
+                           
+                                
+                                    <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['currentPasswordRequired'][currentLanguage]} />
+                                    <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
+
+
                                 <div className="approvalTitle">
                                     <h3>{Resources['security'][currentLanguage] + '- ' + Resources['profile'][currentLanguage]}</h3>
                                 </div>
                                 <div className="loadingWrapper">
-                                  {/* in save  */}
-                                  {this.state.submit ==='submit' ? 
-                                        <div className="dashboardLoading ">
-                                                    <span></span>
-                                                    <h3>Loading</h3>
-                                        </div>
-                                   :null }
+
                                     {this.state.isChechingPassword ?
-                                        <div className="dashboardLoading ">
-                                            <span></span>
-                                            <h3>Loading</h3>
-                                        </div>
+                                       <LoadingSection />
                                         : null
                                     }
 
@@ -222,7 +236,7 @@ class PrivacySetting extends Component {
                                                     "ui input inputDev has-error"
                                                 ) : "ui input inputDev"}
                                                 >
-                                                    <span className={this.state.typeCurrentPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggleCurrentPassword}>
+                                                    <span className={this.state.typeCurrentPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggletypeCurrentPassword}>
                                                         <img src={eyepw} />
                                                         <span className="show"> Show</span>
                                                         <span className="hide"> Hide</span>
@@ -296,12 +310,12 @@ class PrivacySetting extends Component {
                                                     <input name="confirmPassword" type={this.state.typeConfimPassword ? 'text' : 'password'}
                                                         className="form-control" id="confirmPassword" placeholder={Resources['confirmPassword'][currentLanguage]} autoComplete='off'
                                                         onBlur={(e) => {
-                                                        
+
                                                             handleBlur(e)
                                                             this.confirmPasswordHandleBlur(e)
                                                         }} onChange={handleChange} />
                                                     <span className={this.state.confirmPasswordSpan}></span>
-                                                    <em className={this.state.confirmPasswordError}>ERROR</em>
+                                                    <em className={this.state.confirmPasswordError}>{Resources['ConfirmpasswordRequired'][currentLanguage]}</em>
                                                 </div>
                                             </div>
                                         </div>
@@ -310,7 +324,23 @@ class PrivacySetting extends Component {
 
 
                                     <div className="fullWidthWrapper">
-                                        <button className="primaryBtn-1 btn largeBtn" type="submit">{Resources['update'][currentLanguage]}</button>
+                                        {this.state.isLoading === false ? (
+                                            <button 
+                                                className="primaryBtn-1 btn largeBtn"
+                                                type="submit"
+                                                 >  {Resources["update"][currentLanguage]}
+                                                </button>
+                                        ) : 
+                                            (
+                                                <button className="primaryBtn-1 btn largeBtn">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                            )}
+
                                     </div>
                                 </div>
                             </div>
