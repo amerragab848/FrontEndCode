@@ -39,17 +39,18 @@ const IsAuthorize = api.IsAuthorized()
 
 class App extends Component {
   render() {
-    const showComp = IsAuthorize ?
-      <div>
-        <Menu />
-        {Route}
-      </div>
-      : <Login />
+  //  const showComp = IsAuthorize ?
+    //   <div>
+    //     <Menu />
+    //     {Route}
+    //   </div>
+    //   : <Login />
 
-    return (
-      <div>
-        {showComp}
-      </div>
+     return (
+    //   <div>
+    //     {showComp}
+    //   </div>
+    <PrivacySetting />
     );
   }
 }

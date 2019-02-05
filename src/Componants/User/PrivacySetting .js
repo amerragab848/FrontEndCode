@@ -168,7 +168,7 @@ class PrivacySetting extends Component {
                         return errors;
                     }}
 
-                    onSubmit={(values,  actions ) => {
+                    onSubmit={(values, actions ) => {
                         if (this.state.changePassword === true) {
                             this.setState({
                                 isLoading: true
@@ -176,29 +176,23 @@ class PrivacySetting extends Component {
                             setTimeout((e) => {
                                 Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword=' + this.state.newPassword + '&companyId='+ this.state.companyId +'&changePassword=' + this.state.changePassword + '').then(
                                     Api.getPassword('EditAccountUserPassword', this.state.newPassword)
-                                    ,  actions.setSubmitting(false),
-                                    this.initialValues = {
-                                            currentPassword: '',
-                                            newPassword: '',
-                                            confirmPassword: ''
-                                        },
+                                    , 
                                     this.setState({
                                         isLoading: false,
                                         statusClassSuccess:"animationBlock"
-                                    }),
+                                    }), actions.setSubmitting(false)
                                 )
                             }, 2000)
                             this.setState({
                                 statusClassSuccess:"disNone"
                             })
-                          
                         }
                         else
                             alert("invalid Password")
                       }
                     }
                 >
-                    {({ errors, touched, handleBlur, handleChange  , handleReset,handleSubmit , isSubmitting}) => (
+                    {({ errors, touched, handleBlur, handleChange , handleSubmit }) => (
                         <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit} >
 
                             <div className="resetPassword">
@@ -329,14 +323,22 @@ class PrivacySetting extends Component {
 
                                     <div className="fullWidthWrapper">
                                         {this.state.isLoading === false ? (
+                                          
                                             <button 
                                                 className="primaryBtn-1 btn largeBtn"
-                                                type="submit"
-                                                 >  {Resources["update"][currentLanguage]}
-                                                </button>
+                                                type="submit"   >
+                                              
+                                                 {Resources["update"][currentLanguage]}
+                                            </button>
+                                            
                                         ) : 
                                             (
-                                                <button className="primaryBtn-1 btn largeBtn">
+                                                <button className="primaryBtn-1 btn largeBtn" 
+                                                // type="reset"
+                                                // value="Reset"
+                                                // onChange={this.handleReset}
+                                                >
+
                                                     <div className="spinner">
                                                         <div className="bounce1" />
                                                         <div className="bounce2" />
