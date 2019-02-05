@@ -32,17 +32,49 @@ import WfApproval from './Componants/OptionsPanels/wfApproval';
 
 
 import PopUp from './Componants/OptionsPanels/OptionContainer'
-//import Login from './Componants/Layouts/Login'
+import Login from './Componants/Layouts/Login'
+import Route from './router';
 
 class App extends Component {
   render() {
- 
-    return ( 
+    return (
+      //<PopUp />
       <div>
+        <Login />
         <Menu />
-        {Router}
-      </div> 
-    ); 
+        {Route}
+      </div>
+      
+   //   <SendWorkFlow />
+      ///test
+     // <SendToInbox />
+      // <DashBoard/>
+      //  <Letter/>
+      //<SendTask/>
+      //<DistributionList />
+      // <TimeSheet />
+      // <Letter />
+     // <div>
+       //    {routes}
+      //</div>
+     // <WFApproval />
+    );
+    ///test
+    // <SendToInbox />
+    // <DashBoard/>
+    //<CreateTransmittal/>
+    // <SendTask/>
+    //  <DistributionList />
+    //<ViewAttachment />
+    //<Validation />
+
+    // return (
+    //   <SendWorkFlow />
+    // )
+    // return (
+    //   <TimeSheet />
+    // ); 
+    //);
   }
 }
 
