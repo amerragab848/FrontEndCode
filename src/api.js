@@ -16,8 +16,6 @@ export default class Api {
     } 
 
     static get(route) {
-        console.log(route);
-        console.log(Authorization);
         return this.xhr(route, null, 'GET');
     }
     static post(route, params) {
@@ -50,6 +48,7 @@ export default class Api {
                 return json;
             }
             else if (resp.status === 401) {
+                localStorage.removeItem('userToken')
                 json =  "";
 
                 return json;
@@ -212,6 +211,10 @@ export default class Api {
 
                 return resp.status;
             }
+            else if (resp.status === 401) {
+
+                localStorage.removeItem('userToken')
+            }
             return json.then(err => {
                 throw err
             });
@@ -242,7 +245,10 @@ export default class Api {
 
                 return json;
             }
+            else if (resp.status === 401) {
 
+                localStorage.removeItem('userToken')
+            }
             return json.then(err => {
                 throw err
             });
