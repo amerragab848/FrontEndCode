@@ -686,9 +686,6 @@ table edition
   overflow-x: hidden;
   box-shadow: 0px 5px 12px #888888;
 }
-.SummeriesContainer .SummeriesContainerContent {
-  padding: 0 !important;
-}
 .EastWestProject  ul {
   max-height: 1150px;
   transition: all 0.2s ease-in-out;
@@ -737,3 +734,58 @@ table edition
 .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
   margin-bottom: 0 !important
 } 
+<<<<<<< HEAD
+.UserImg .dropdownContent .menu.center.left{
+  display: none;
+}
+.UserImg .dropdownContent.active .menu.center.left{
+  display: block !important;
+}
+.rodal {
+  z-index: 9999999;
+}
+.logOutMsg .contentName {
+  padding-bottom: 40px;
+    display: block;
+=======
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
+    position: absolute;
+    bottom: 15px;
+    right: 12px;
+    font-size: 12px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem:before {
+bottom: -59px;
+top: -15px;
+z-index: 3;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .title {
+height: 50px;
+overflow: hidden;
+display: flex;
+align-items: center;
+text-transform: capitalize
+}
+.react-tabs__tab--selected {
+  background: #dcdcdc !important;
+  border: 1px solid #dcdcdc !important;
+  color: black !important;
+  border-radius: 0 !important;
+  padding: 15px !important;
+}
+.react-tabs__tab-list {
+  border-bottom: 1px solid #e6e6e6 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+  background: #fff !important;
+  top: 72px !important;
+  overflow: hidden !important;
+  z-index: 99 !important;
+  position: sticky !important; 
+  width: 100% !important
+>>>>>>> 0eb0c4b7bacb936df8cfa0e59da3f07448b61823
+}

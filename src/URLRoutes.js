@@ -1,20 +1,20 @@
 var routes = [
   {
-    route: "",
+    route: "/",
     moduleId: "login",
     title: "Login",
     nav: true,
     settings: { Login: true }
   },
   {
-    route: "Dashboard",
+    route: "/Dashboard",
     moduleId: "dashboard",
     title: "Dashboard",
     nav: true,
     settings: { Dashboard: true }
   },
   {
-    route: "search",
+    route: "/search",
     moduleId: "search",
     title: "Search",
     nav: true,

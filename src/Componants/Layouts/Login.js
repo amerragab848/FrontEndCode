@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import { withRouter } from "react-router-dom";
 import tokenStore from '../../tokenStore'
 import language from "../../resources.json";
 import config from "../../IP_Configrations.json";
 import CryptoJS from 'crypto-js';
-import cookie from 'react-cookies'
+import Cookies from 'react-cookies'
+import Router from "../../router";
 import platform from 'platform'
 import eyeShow from "../../Styles/images/eyepw.svg"
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-
+const _ = require('lodash')
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -40,10 +42,11 @@ class Login extends Component {
                 let token = Response.access_token
                 tokenStore.setItem('userToken', 'Bearer ' + token)
                 let payLoad = {}
+                
                 Api.get('LoginSuccess').then(result => {
+
                     if (result) {
                         payLoad.acn = result.acn
-
                         payLoad.aoi = result.aoi
                         payLoad.cmi = result.cmi
                         payLoad.cni = result.cni
@@ -57,32 +60,95 @@ class Login extends Component {
                         payLoad.uty = result.uty
 
                     }
+                    console.log(payLoad);
+
                     let _payLoad = CryptoJS.enc.Utf8.parse(JSON.stringify(payLoad))
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(_payLoad)
                     tokenStore.setItem('claims', encodedPaylod)
-                    let cookieName = cookie.loadAll()
-                    let size = {}
-
+                    console.log(encodedPaylod);
+                    let browserObj = this.createBrowserObject()
+                    let cookie = this.getCookie();
                     if (config.canSendAlert) {
-                        size.height = window.innerHeight + 'px'
-                        size.width = window.innerWidth + 'px'
-                        console.log("browserName", platform.name)
-                        console.log("browserversion", platform.version)
-                        console.log("browserproduct", size)
-                        console.log("os", platform.os)
+                        browserObj.token = cookie
+                        if (browserObj.publicIP === undefined) {
+                            Api.getPublicIP("https://ipapi.co/json").then(res => {
+                                browserObj.publicIP = res.ip
+                                browserObj.macAddress = res.latitude + ',' + res.longitude
 
-                        console.log("description", platform.description)
+                                Api.post('checkAccountLogin', browserObj).then(resp => {
+                                    if (resp !== "Done")
+                                        this.setCookie(resp)
+                                })
 
+                            })
+                        }
+                    } else {
+                        Api.post('checkAccountLogin', browserObj).then(resp => {
+                            if (resp !== "Done")
+                                this.setCookie(resp)
+                        })
                     }
 
-                })
-            }
-        })
+                    if (tokenStore.getItem('requestPermission')) {
+                        let deviceToken = tokenStore.getItem('requestPermission')
+                        Api.post('UpdateAccountWebDeviceToken?webDeviceToken=' + deviceToken, null)
+                    }
 
+                    Api.get('GetPrimeData?token=undefined').then(primeData => { 
+                        if (primeData.permissions && primeData.permissions.length > 0) {
+                            let permission = CryptoJS.enc.Utf8.parse(JSON.stringify(primeData.permissions))
+                            let encodedPermission = CryptoJS.enc.Base64.stringify(permission)
+                            tokenStore.setItem('permission', encodedPermission)
+                        }
+                        if (primeData.timeSheetSettings) {
+                            tokenStore.setItem('timeSheetSettings', JSON.stringify(primeData.timeSheetSettings))
+                        }
+                        if (primeData.wfSettings) {
+                            tokenStore.setItem('wfSettings', JSON.stringify(primeData.wfSettings))
+                        }
+                        if (primeData.appComponants) {
+                            tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
+                        }
+                        if (primeData.appComponants) {
+                            tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
+                        }
+                    }) 
+                   window.location.reload();
+                })
+            } 
+        console.log("this.props : "+this.props);
+        
+        }) 
     }
 
+    getCookie = () => {
+        let cookieName = Cookies.loadAll()
+        if (!_.isEmpty(cookieName)) {
 
+            return Cookies.load("randomNumber")
+        }
+        return "";
+    }
 
+    setCookie = (name) => {
+        let documentCookie = this.getCookie()
+        if (documentCookie === "") {
+            Cookies.save("randomNumber", name)
+        }
+    }
+
+    createBrowserObject = () => {
+        let size = {}
+        size.height = window.innerHeight
+        size.width = window.innerWidth
+        var objBrowser = {
+            "browserName": platform.name + '/ ScreenSize ' + size.height + ' X ' + size.width,
+            "browserversion": platform.version,
+            "Description": platform.description
+        }
+        return objBrowser;
+
+    }
     toggle = () => {
         const currentType = this.state.type;
         this.setState({ type: !currentType })
@@ -180,4 +246,4 @@ class Login extends Component {
         );
     }
 }
-export default Login
+export default withRouter(Login)
