@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
+import '../../Styles/scss/en-us/layout.css'
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

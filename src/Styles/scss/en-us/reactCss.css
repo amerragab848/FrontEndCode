@@ -758,7 +758,7 @@ table edition
   cursor: pointer;
 }
 .rodal {
-  z-index: 9999999;
+  z-index: 9999999 !important;
 }
 .logOutMsg .contentName {
   padding-bottom: 40px;
@@ -907,3 +907,13 @@ text-transform: capitalize
     transform: rotate(360deg);
   }
   }
+  .ui.modal.smallModal {
+    max-width: 430px;
+    padding: 0;
+}
+.rodal .modal .actions button:nth-child(2) {
+  margin-left: 10px;
+}
+.ui.modal>.actions {
+  border-top: none !important;
+}

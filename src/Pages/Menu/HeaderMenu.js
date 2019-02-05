@@ -206,7 +206,7 @@ class HeaderMenu extends Component {
           <ConfirmationModal 
               closed={this.onCloseModal} 
               showDeleteModal={this.state.logOut}
-              clickHandlerCancel={this.closeMessage}
+              clickHandlerCancel={this.onCloseModal}
               clickHandlerContinue={()=> this.logOutHandler()}
               title="You Will Be Missed, Are You Sure Want to Leave US?"
               buttonName="submit"
