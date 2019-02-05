@@ -2,23 +2,22 @@ import config from "./IP_Configrations.json";
 let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
 
-const Domain=config.static
+const Domain = config.static
 export default class Api {
 
     static headers() {
         return {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', 
             'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
-            'Authorization': Authorization,
-
+            'Authorization': localStorage.getItem('userToken')
         }
-    }
-
-
+    } 
 
     static get(route) {
+        console.log(route);
+        console.log(Authorization);
         return this.xhr(route, null, 'GET');
     }
     static post(route, params) {
@@ -27,7 +26,7 @@ export default class Api {
 
 
     static xhr(route, params, verb) {
-        const host = Domain+'/PM/api/Procoor/';
+        const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
         let json = null;
 
@@ -42,12 +41,16 @@ export default class Api {
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
 
-                json = verb == 'GET' ? resp.json() : "";
-
+                json = resp.json();
                 return json;
             }
             else if (resp.status === 500) {
                 json = null;
+
+                return json;
+            }
+            else if (resp.status === 401) {
+                json =  "";
 
                 return json;
             }
@@ -104,7 +107,7 @@ export default class Api {
 
     static IsAllow(code) {
         let userPermissions = [];
-        let isCompany = false;
+        let isCompany = true;
         if (localStorage.getItem("permissions")) {
             let perms = [3198, 3515, 3514];// JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
             userPermissions = perms;
@@ -124,10 +127,10 @@ export default class Api {
 
     static postFile(route, params, header) {
 
-        const host = Domain+'/PM/api/Procoor/';
+        const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = {}
-        headers.Authorization = Authorization
+        headers.Authorization = localStorage.getItem('userToken')
         headers.docid = header.docId
         headers.doctypeid = header.docTypeId
         headers.parentid = header.parentId
@@ -141,10 +144,11 @@ export default class Api {
         }).then(
             response => response.json()
         )
-    }
+    } 
 
-    static getPassword(route, password) {
-        const host = Domain+'/PM/api/Procoor/';
+    static getPassword(route, password) { 
+        const host = Domain+'/PM/api/Procoor/'; 
+  
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
@@ -159,9 +163,29 @@ export default class Api {
             response => response.json()
 
         )
-
     }
 
+    static getPublicIP() {
+        const url = 'https://ipapi.co/json/?callback=?';
+        let json = null;
+        return fetch(url).then(resp => {
+            if (resp.status === 200) {
+
+                json = resp.json();
+                return json;
+            }
+            else if (resp.status === 500) {
+                json = null;
+
+                return json;
+            }
+
+            return json.then(err => {
+                throw err
+            });
+
+        }).then(json => (json.result ? json.result : json));
+    }
     static Login(hostt, route, params) {
         const host = hostt;
         const url = `${host}${route}`;
@@ -171,11 +195,12 @@ export default class Api {
             method: 'Post'
         }, params ? {
             body: (params)
-        } : null);
-
+        } : null); 
+        
         options.headers = {
             'Accept': '*/*',
             'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': Authorization,
 
         };
         return fetch(url, options).then(resp => {
@@ -184,7 +209,7 @@ export default class Api {
                 return json;
             }
             else if (resp.status === 400) {
-                
+
                 return resp.status;
             }
             return json.then(err => {
@@ -192,6 +217,7 @@ export default class Api {
             });
         }).then(json => (json.result ? json.result : json));
     }
+
     static authorizationApi(route, params) {
         const host = 'https://procoorauthorization.procoor.com/api/';
         const url = `${host}${route}`;
@@ -207,7 +233,6 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-
                 json =  resp.json();
 
                 return json;
@@ -224,5 +249,12 @@ export default class Api {
 
         }).then(json => (json.result ? json.result : json));
     }
-
+   
+    static IsAuthorized(){
+        let authorize=false;
+        if(localStorage.getItem('userToken') ){
+            authorize=true;
+        } 
+        return authorize;
+    }
 }

@@ -36,7 +36,9 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-class Letter extends Component {
+class Letter extends Component { 
+  _isMounted = false;
+  
   constructor(props) {
     super(props); 
      
@@ -45,6 +47,7 @@ class Letter extends Component {
       pageTitle: "",
       viewfilter: true,
       projectId: props.match.params.projectId,
+      documentName:props.match.params.document,
       filtersColumns: [],
       docType: "" ,
       rows: [],
@@ -58,38 +61,56 @@ class Letter extends Component {
       query: "",
       isCustom: true,
       showDeleteModal: false,
-      selectedRows: [],
-      documentName:props.match.params.document
+      selectedRows: []
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
- 
-    this.renderComponent(this.state.documentName,this.state.projectId);
   }
 
-  // componentWillMount = () => {
+  // componentWillMount() {
    
-  //   this.renderComponent();
- 
+  //  console.log('componentWillMount in Letter Componants 0000'); 
   // };
  
-  GetLogData = (url, currState) => {
-    Api.get(url)
-      .then(result => {
-        this.setState({
-          rows: result,
-          totalRows: result.length,
-          isLoading: false
-        });
-      })
-      .catch(ex => {});
-  };
+  componentDidMount() {   
+   console.log('componentDidMount in Letter Componants 0000');
+   this.renderComponent(this.state.documentName,this.state.projectId);
+        
+    // this.GetRecordOfLog();
+  }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   let shouldUpdate = this.state.api !== nextState.api;
+  //   return shouldUpdate;
+  // }
 
+  // componentWillUpdate() { 
+
+  //  console.log('componentWillUpdate in Letter Componants 0212');
+  //   //this.GetRecordOfLog();
+  // }
+
+  componentWillUnmount() {
+     console.log('componentWillUnmount in Letter Componants 0000');
+     this._isMounted = false; 
+     this.setState({ 
+      isLoading: true 
+     });
+  }
+    
   componentWillReceiveProps(nextProps){
-    if(nextProps.match!==this.props.match){
+    if(nextProps.match !== this.props.match){ 
+      this._isMounted = false; 
+      //setTimeout(()=>{
+          this.setState({ 
+              isLoading: true 
+            });
+      //},500);
+
+      console.log('componentWillReceiveProps in Letter Componants 0000'); 
       this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId);
+ 
     }
   }
   
@@ -226,7 +247,7 @@ class Letter extends Component {
   };
 
   renderComponent(documentName,projectId){
-
+     
     var projectId = projectId;
 
     var documents = documentName;
@@ -236,16 +257,7 @@ class Letter extends Component {
     var cNames = [];
 
     var filtersColumns = [];
-
-    // this.setState({ 
-    //     pageTitle:Resources[documentObj.documentTitle][currentLanguage],
-    //     projectId:projectId,
-    //     docType:documents,
-    //     apiFilter:documentObj.filterApi,
-    //     api:documentObj.documentApi.get,
-    //     apiDelete:documentObj.documentApi.delete  
-    // }); 
-
+ 
     documentObj.documentColumns.map((item, index) => {
       if (item.isCustom === true) {
         var obj = {
@@ -263,8 +275,7 @@ class Letter extends Component {
               ? subjectLink
               : item.dataType === "date"
               ? dateFormate
-              : "",
-          //filterRenderer:item.dataType === "number" ? NumericFilter : SingleSelectFilter
+              : ""
         };
 
         filtersColumns.push({
@@ -272,28 +283,46 @@ class Letter extends Component {
           name: item.friendlyName,
           type: item.dataType
         });
+
         cNames.push(obj);
       }
-    });
-
-      setTimeout(()=>{
-        this.setState( {   
-          pageTitle:Resources[documentObj.documentTitle][currentLanguage],
-          projectId:projectId,
-          docType:documents,
-          apiFilter:documentObj.filterApi,
-          api:documentObj.documentApi.get,
-          apiDelete:documentObj.documentApi.delete  ,
-          columns: cNames,
-          filtersColumns: filtersColumns 
-      }); 
-      },500) 
-
-    let url = documentObj.documentApi.get + "?projectId=" + projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
-
-    this.GetLogData(url, "rows");
- 
+    }); 
+    this.setState( {   
+      pageTitle:Resources[documentObj.documentTitle][currentLanguage], 
+      docType:documents,
+      apiFilter:documentObj.filterApi,
+      api:documentObj.documentApi.get,
+      apiDelete:documentObj.documentApi.delete  ,
+      columns: cNames,
+      filtersColumns: filtersColumns
+    });  
+    
+    this.GetRecordOfLog(documentObj.documentApi.get);
   }
+
+  GetRecordOfLog(api) { 
+     
+    let url = api + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+    this.GetLogData(url, "rows");
+  }
+
+  GetLogData(url, currState)  {
+    Api.get(url).then(result => { 
+         
+        this.setState({
+          rows: result,
+          totalRows: result.length,
+          isLoading: false  
+        });
+
+        this._isMounted = true;   
+        
+      })
+      .catch(ex => { 
+         this.setState({isLoading: false}) 
+        
+      });
+  };
 
   render() {
     
@@ -311,13 +340,21 @@ class Letter extends Component {
       const btnExport= this.state.isLoading === false ? 
             <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
             : null ;
- 
+
+      const ComponantFilter= this.state.isLoading === false ?   
+                <Filter
+                  filtersColumns={this.state.filtersColumns}
+                  apiFilter={this.state.apiFilter}
+                  filterMethod={this.filterMethodMain}
+                  key={this.state.docType}
+                />: null;
+
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
-            <span>{this.state.pageSize}</span>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -408,12 +445,7 @@ class Letter extends Component {
           }}
         >
           <div className="gridfillter-container">
-            <Filter
-              filtersColumns={this.state.filtersColumns}
-              apiFilter={this.state.apiFilter}
-              filterMethod={this.filterMethodMain}
-              key={this.state.docType}
-            />
+          {ComponantFilter}
           </div>
         </div>
 

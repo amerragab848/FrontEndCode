@@ -12393,9 +12393,6 @@ table edition
   overflow-x: hidden;
   box-shadow: 0px 5px 12px #888888;
 }
-.SummeriesContainer .SummeriesContainerContent {
-  padding: 0 !important;
-} 
 .customDatepicker {
   width: auto !important;
   margin-right: 0 !important; 
@@ -12444,6 +12441,7 @@ table edition
 .flexForm label {
   margin-right: 15px;
 } 
+<<<<<<< HEAD
 .UserImg .dropdownContent .menu.center.left{
   display: none;
   min-width: 185px !important;
@@ -12468,3 +12466,24 @@ table edition
   padding-left: 24px;
   cursor: pointer;
 }
+=======
+  
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
+    position: absolute;
+    bottom: 15px !important;
+    right: 12px;
+    font-size: 12px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem:before {
+  bottom: -41px !important;
+  top: -35px !important;
+  z-index: 3;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .title {
+  height: 50px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  text-transform: capitalize !important
+}
+>>>>>>> 0eb0c4b7bacb936df8cfa0e59da3f07448b61823
