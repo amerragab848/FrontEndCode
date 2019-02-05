@@ -8,7 +8,7 @@ import CreateTransmittal from "./CreateTransmittal";
 import SendToInbox from './SendToInbox'
 
 import Resources from '../../resources.json';
-import { Data } from 'react-data-grid-addons';
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require("lodash")
@@ -57,8 +57,8 @@ class Example extends React.Component {
 
         return (
             <div>
-                <DropDown data={this.state.Data} name="toCompanydd" handleChange={this.handleChange}
-                    index='toCompanyddinbox' name="toCompany" />
+                <DropDown data={this.state.Data} name="panel" handleChange={this.handleChange}
+                    index='panelIndex'  />
                 <div className="largePopup">
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}

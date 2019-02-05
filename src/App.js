@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import routes from "./router";
+
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css";
 
@@ -21,10 +22,11 @@ import PrivacySetting from './Componants/User/PrivacySetting '
 
 import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
-import Menu from "./Pages/Menu/Menu";
+import Menu from "./Pages/Menu/Menu"; 
 
 import CopyTo from "./Componants/OptionsPanels/CopyTo";
 import SendByEmails from "./Componants/OptionsPanels/SendByEmails";
+import Router from "../src/router";
 import WfApproval from './Componants/OptionsPanels/wfApproval';
 
 

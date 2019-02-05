@@ -7651,6 +7651,22 @@
     "en": "Hide Fillter",
     "ar": "إخفاء البحث"
   },
+  "humanResource": {
+    "en": "Human Resource",
+    "ar": "إخفاء البحث"
+  },
+  "realState": {
+    "en": "Real Estate",
+    "ar": "Real Estate"
+  },
+  "backtoprojects": {
+    "en": "Back to projects",
+    "ar": "الرجوع إلى المشاريع"
+  },
+  "backtoModules": {
+    "en": "Back to Modules",
+    "ar": "الرجوع إلى الفروع"
+  },
   "logIn": {
     "en": "Log In",
     "ar": "الدخول"

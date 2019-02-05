@@ -2169,9 +2169,9 @@
     "documentDeletePermission": 91,
     "documentPermission": 93,
     "documentApi": {
-      "get": "getPhones",
+      "get": "GetPhoneByProjectId",
       "getCustom": "getPhonesCustom",
-      "delete": "deleteMultiplePhones"
+      "delete": "DeleteMultiplePhoneById"
     },
     "documentColumns": [
       {
@@ -3109,9 +3109,9 @@
     "documentViewPermission": 426,
     "documentPermission": 427,
     "documentApi": {
-      "get": "communicationReportsSelectAllByProjectId",
+      "get": "CommunicationReportsSelectAllByProjectId",
       "getCustom": "communicationReportsSelectAllByProjectIdCustom",
-      "delete": "deleteMultipleCommunicationReports"
+      "delete": "DeleteMultipleCommunicationReports"
     },
     "documentColumns": [
       {
@@ -3434,9 +3434,9 @@
     "documentViewPermission": 78,
     "documentPermission": 79,
     "documentApi": {
-      "get": "getCommunicationRfi",
+      "get": "GetCommunicationRfi",
       "getCustom": "getCommunicationRfiCustom",
-      "delete": "communicationRfiMultipleDelete"
+      "delete": "CommunicationRfiMultipleDelete"
     },
     "documentColumns": [
       {

@@ -25,6 +25,7 @@ export default class Api {
         return this.xhr(route, params, 'POST');
     }
 
+
     static xhr(route, params, verb) {
         const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
@@ -212,4 +213,37 @@ export default class Api {
             });
         }).then(json => (json.result ? json.result : json));
     }
+    static authorizationApi(route, params) {
+        const host = 'https://procoorauthorization.procoor.com/api/';
+        const url = `${host}${route}`;
+        let json = null;
+
+        let options = Object.assign({
+            method: 'Put'
+        }, params ? {
+            body: JSON.stringify(params)
+        } : null);
+
+        options.headers = Api.headers();
+
+        return fetch(url, options).then(resp => {
+            if (resp.status === 200) {
+
+                json =  resp.json();
+
+                return json;
+            }
+            else if (resp.status === 500) {
+                json = null;
+
+                return json;
+            }
+
+            return json.then(err => {
+                throw err
+            });
+
+        }).then(json => (json.result ? json.result : json));
+    }
+
 }

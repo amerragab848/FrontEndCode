@@ -1,255 +1,323 @@
-import React, { Component } from 'react';   
-import GridSetup from  './GridSetup'; 
+import React, { Component } from "react";
+import GridSetup from "./GridSetup";
 import Filter from "../../Componants/FilterComponent/filterComponent";
-import Api from '../../api'
-import moment from "moment"; 
+import Api from "../../api";
+import moment from "moment";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
-
+import Export from "../../Componants/OptionsPanels/Export"; 
 
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import documentDefenition from "../../documentDefenition.json";
-import Resources from '../../resources.json';
-//import "../../Styles/scss/en-us/layout.css";
+import Resources from "../../resources.json"; 
 
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
- const {
+const {
   NumericFilter,
   AutoCompleteFilter,
   MultiSelectFilter,
   SingleSelectFilter
 } = Filters;
 
-const subjectLink = ({ value ,row}) => { 
-	let doc_view="";
-	let subject="";
-	 if (row) { 
-	          doc_view='letterAddEdit/' + row.id +'/'+row.projectId + '/' + row.projectName; 
-		      subject=row.subject; 
-				return <a href={doc_view}> {subject} </a> 
-	      }
-	      return null;
+const subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+    doc_view =
+      "letterAddEdit/" + row.id + "/" + row.projectId + "/" + row.projectName;
+    subject = row.subject;
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
 };
-  
-const dateFormate = ({ value }) => {  
-   
-	return value ? moment(value).format("DD/MM/YYYY") : 'No Date'
+
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
+
 class Letter extends Component {
-  
-    constructor(props) {
-
-        super(props)
-
-        const query = new URLSearchParams(this.props.location.search);
-        
-        let projectId = 0;
-
-        for (let param of query.entries()) {
-          projectId = param[1];
-        }
-        
-        let documentObj=documentDefenition['Letters'];
-        
-        let cNames=[];
-        
-        let filtersColumns = []; 
-
-        documentObj.documentColumns.map((item,index)=>{
-        	if(item.isCustom === true ){ 
-	        	var obj = {
-	        		key: item.field,
-    				frozen: index < 2 ? true : false ,
-	        		name: Resources[item.friendlyName][currentLanguage],
-	        		width: item.minWidth,
-			        draggable: true,
-	  				sortable: true,
-			        resizable: true,
-	 				filterable: false,
-	    			sortDescendingFirst: true, 
-	    			formatter: item.field === 'subject' ?  subjectLink : ( item.dataType === 'date' ? dateFormate : '' ),  
-	    			filterRenderer: item.dataType === 'number' ? NumericFilter: SingleSelectFilter
-	        	};
-
-	        	filtersColumns.push({ field: item.field,
-							          name: item.friendlyName,
-							          type: item.dataType});
-	        	cNames.push(obj);
-        	}
-        });
-         
-        this.state = { 
-   			isLoading: true,
-        	apiFilter: documentObj.filterApi,
-        	pageTitle: Resources[documentObj.documentTitle][currentLanguage],
-            viewfilter: true,
-        	projectId: projectId,
-            filtersColumns:filtersColumns,
-        	docType: 'Letters',
-            rows: [],
-            totalRows: 0,
-            columns:cNames, 
-			pageSize: 22,
-			pageNumber:0,
-			isLoading: true	,
-			api: documentObj.documentApi.get,
-			apiDelete: documentObj.documentApi.delete,
-			query:"",
-			isCustom: true,
-			showDeleteModal:false,
-			selectedRows: []
-        } 
- 
-    	this.filterMethodMain = this.filterMethodMain.bind(this);
-    	this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
-    }
-
-	componentWillMount = () => {  
-	    let url = this.state.api+"?projectId=" + this.state.projectId+'&pageNumber='+ this.state.pageNumber+'&pageSize='+ this.state.pageSize;
-	    this.GetLogData(url, 'rows');
-	}
-
-	GetLogData = (url, currState) => { 
-	    Api.get(url).then(result => {  
-	        this.setState({
-	            rows: result,
-	            totalRows:result.length,
-	            isLoading: false
-	        }); 
-	    }).catch(ex => {
-	    }); 
-	}
-
-	hideFilter(value) {
-	    this.setState({ viewfilter: !this.state.viewfilter });
-	    return this.state.viewfilter;
-    }
-
-    exportData(){ 
-     alert('Exporting...under Construction function....');
-    }
-
-    addRecord(){
-     alert('under Construction function....');
-    }
-
-	GetNextData() {
-
-		let pageNumber=this.state.pageNumber +1;
-
-	    this.setState({ 
-	        isLoading: true,
-	        pageNumber: pageNumber
-	    }); 
-  		
-  		let url = (this.state.query == "" ? this.state.api :this.state.apiFilter ) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber
-	    	+ "&pageSize=" + this.state.pageSize +(this.state.query == "" ? "": "&query=" + this.state.query);
-
-	    Api.get(url).then(result => {
-	    	
-	    	let oldRows=this.state.rows;
-	    	const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
- 
-			this.setState({
-	            rows: newRows,
-                totalRows:newRows.length,
-	            isLoading: false
-	        }); 
-	    });
-    }
-
-    filterMethodMain = (event,query,apiFilter)=> { 
+  constructor(props) {
+    super(props); 
      
-	    var stringifiedQuery = JSON.stringify(query);
-		
-		this.setState({ 
-	        isLoading: true,
-	        query:stringifiedQuery
-	    }); 
+    this.state = {
+      isLoading: true,
+      pageTitle: "",
+      viewfilter: true,
+      projectId: props.match.params.projectId,
+      filtersColumns: [],
+      docType: "" ,
+      rows: [],
+      totalRows: 0,
+      columns: [],
+      pageSize: 22,
+      pageNumber: 0, 
+      apiFilter: "",
+      api: "",
+      apiDelete: "",
+      query: "",
+      isCustom: true,
+      showDeleteModal: false,
+      selectedRows: [],
+      documentName:props.match.params.document
+    };
 
-	    Api.get(apiFilter + "?projectId="+this.state.projectId+"&pageNumber="+this.state.pageNumber+"&pageSize="+this.state.pageSize+"&query=" + stringifiedQuery).then(result => {
-	    	if (result.length > 0) { 
-				this.setState({
-		            rows: result,
-                    totalRows:result.length,
-		            isLoading: false
-		        }); 
-	    	}else { 
-				this.setState({ 
-		            isLoading: false
-		        }); 
-	    	}
-	    }).catch(ex => {  
-	    	    alert(ex);
-				this.setState({ 
-					rows: [],
-		            isLoading: false
-		        }); 
-	    });
-  	}
-
-	onCloseModal = () => {
-		this.setState({ showDeleteModal: false });
-	};
-
-	onOpenModal = (action, value) => {
-	};
-
-	clickHandlerCancelMain = () =>{
-		this.setState({ showDeleteModal: false });
-    }
-
-	clickHandlerContinueMain = ()=> {
-		
-	    this.setState({ 
-	        isLoading: true 
-	    }); 
-
-		Api.post(this.state.apiDelete, this.state.selectedRows ).then(result => { 
-           
-           let originalRows=this.state.rows;
-           this.state.selectedRows.map(i=> { 
-           	   originalRows=originalRows.filter(r => r.id !== i);
-           });
+    this.filterMethodMain = this.filterMethodMain.bind(this);
+    this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
  
-	        this.setState({
-	            rows: originalRows,
-	            totalRows: originalRows.length ,
-	            isLoading: false,
-	            showDeleteModal: false 
-	        }); 
+    this.renderComponent(this.state.documentName,this.state.projectId);
+  }
 
-	    }).catch(ex => { 
-		    this.setState({ 
-		        isLoading: false ,
-	            showDeleteModal: false 
-		    }); 
-	    });   
+  // componentWillMount = () => {
+   
+  //   this.renderComponent();
+ 
+  // };
+ 
+  GetLogData = (url, currState) => {
+    Api.get(url)
+      .then(result => {
+        this.setState({
+          rows: result,
+          totalRows: result.length,
+          isLoading: false
+        });
+      })
+      .catch(ex => {});
+  };
+
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.match!==this.props.match){
+      this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId);
     }
+  }
+  
+  hideFilter(value) {
+    this.setState({ viewfilter: !this.state.viewfilter });
+    return this.state.viewfilter;
+  }
+ 
+  addRecord() {
+    alert("under Construction function....");
+  }
 
-	clickHandlerDeleteRowsMain = (selectedRows) => {
+  GetNextData() {
+    let pageNumber = this.state.pageNumber + 1;
 
-		  console.log('001');
-		  console.log(selectedRows)  
-		this.setState({ 
-			showDeleteModal: true,
-			selectedRows: selectedRows
-		 });
-		  console.log('000001');
-    }
+    this.setState({
+      isLoading: true,
+      pageNumber: pageNumber
+    });
 
-  render() {   
-  	const dataGrid = this.state.isLoading === false ? 
-  	<GridSetup rows={ this.state.rows } clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} showCheckbox="true" pageSize={ this.state.pageSize }  columns={ this.state.columns } /> 
-  	:
-  	 null;
-  	
+    let url =
+      (this.state.query == "" ? this.state.api : this.state.apiFilter) +
+      "?projectId=" +
+      this.state.projectId +
+      "&pageNumber=" +
+      pageNumber +
+      "&pageSize=" +
+      this.state.pageSize +
+      (this.state.query == "" ? "" : "&query=" + this.state.query);
+
+    Api.get(url).then(result => {
+      let oldRows = this.state.rows;
+      const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+
+      this.setState({
+        rows: newRows,
+        totalRows: newRows.length,
+        isLoading: false
+      });
+    }) .catch(ex => {
+         let oldRows = this.state.rows;
+        this.setState({
+          rows: oldRows,
+          isLoading: false
+        });
+      });;
+  }
+
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get(
+      apiFilter +
+        "?projectId=" +
+        this.state.projectId +
+        "&pageNumber=" +
+        this.state.pageNumber +
+        "&pageSize=" +
+        this.state.pageSize +
+        "&query=" +
+        stringifiedQuery
+    )
+      .then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            totalRows: result.length,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
+  onCloseModal = () => {
+    this.setState({ showDeleteModal: false });
+  };
+ 
+  clickHandlerCancelMain = () => {
+    this.setState({ showDeleteModal: false });
+  };
+
+  clickHandlerContinueMain = () => {
+    this.setState({
+      isLoading: true
+    });
+
+    Api.post(this.state.apiDelete, this.state.selectedRows)
+      .then(result => {
+        let originalRows = this.state.rows;
+        this.state.selectedRows.map(i => {
+          originalRows = originalRows.filter(r => r.id !== i);
+        });
+
+        this.setState({
+          rows: originalRows,
+          totalRows: originalRows.length,
+          isLoading: false,
+          showDeleteModal: false
+        });
+      })
+      .catch(ex => {
+
+        this.setState({
+          isLoading: false,
+          showDeleteModal: false
+        });
+      
+      });
+  };
+
+  clickHandlerDeleteRowsMain = selectedRows => {
+    console.log("001"); 
+    this.setState({
+      showDeleteModal: true,
+      selectedRows: selectedRows
+    });
+    console.log("000001");
+  };
+
+  renderComponent(documentName,projectId){
+
+    var projectId = projectId;
+
+    var documents = documentName;
+ 
+    var documentObj = documentDefenition[documentName];
+
+    var cNames = [];
+
+    var filtersColumns = [];
+
+    // this.setState({ 
+    //     pageTitle:Resources[documentObj.documentTitle][currentLanguage],
+    //     projectId:projectId,
+    //     docType:documents,
+    //     apiFilter:documentObj.filterApi,
+    //     api:documentObj.documentApi.get,
+    //     apiDelete:documentObj.documentApi.delete  
+    // }); 
+
+    documentObj.documentColumns.map((item, index) => {
+      if (item.isCustom === true) {
+        var obj = {
+          key: item.field,
+          frozen: index < 2 ? false : false,
+          name: Resources[item.friendlyName][currentLanguage],
+          width: item.minWidth,
+          draggable: true,
+          sortable: true,
+          resizable: true,
+          filterable: false,
+          sortDescendingFirst: true,
+          formatter:
+            item.field === "subject"
+              ? subjectLink
+              : item.dataType === "date"
+              ? dateFormate
+              : "",
+          //filterRenderer:item.dataType === "number" ? NumericFilter : SingleSelectFilter
+        };
+
+        filtersColumns.push({
+          field: item.field,
+          name: item.friendlyName,
+          type: item.dataType
+        });
+        cNames.push(obj);
+      }
+    });
+
+      setTimeout(()=>{
+        this.setState( {   
+          pageTitle:Resources[documentObj.documentTitle][currentLanguage],
+          projectId:projectId,
+          docType:documents,
+          apiFilter:documentObj.filterApi,
+          api:documentObj.documentApi.get,
+          apiDelete:documentObj.documentApi.delete  ,
+          columns: cNames,
+          filtersColumns: filtersColumns 
+      }); 
+      },500) 
+
+    let url = documentObj.documentApi.get + "?projectId=" + projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+
+    this.GetLogData(url, "rows");
+ 
+  }
+
+  render() {
+    
+    const showCheckbox=true;
+
+    const dataGrid = this.state.isLoading === false ? (
+        <GridSetup
+          rows={this.state.rows}
+          clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+          showCheckbox={showCheckbox}
+          pageSize={this.state.pageSize}
+          columns={this.state.columns}
+        />      ) : null;
+
+      const btnExport= this.state.isLoading === false ? 
+            <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+            : null ;
+ 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
-            <span>45</span>
+            <span>{this.state.pageSize}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -314,14 +382,15 @@ class Letter extends Component {
               )}
             </div>
           </div>
-          <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.exportData()}>EXPORT</button> 
+          <div className="filterBTNS"> 
+            {btnExport}
             <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
+   
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
               <span>0</span> - <span>{this.state.pageSize}</span> of
-              <span> {this.state.totalRows}</span>
+              <span>{this.state.totalRows}</span>
             </div>
             <button className="rowunActive">
               <i className="angle left icon" />
@@ -335,22 +404,27 @@ class Letter extends Component {
           className="filterHidden"
           style={{
             maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? '' : 'hidden'
+            overflow: this.state.viewfilter ? "" : "hidden"
           }}
         >
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} key={this.state.docType} />
+            <Filter
+              filtersColumns={this.state.filtersColumns}
+              apiFilter={this.state.apiFilter}
+              filterMethod={this.filterMethodMain}
+              key={this.state.docType}
+            />
           </div>
         </div>
 
         <div>{dataGrid}</div>
         <div>
         { this.state.showDeleteModal == true ? (
-            <ConfirmationModal 
-              closed={this.onCloseModal} 
-              showDeleteModal={this.showDeleteModal} 
-              clickHandlerCancel={this.clickHandlerCancelMain} 
-              clickHandlerContinue={this.clickHandlerContinueMain} 
+            <ConfirmationModal
+              closed={this.onCloseModal}
+              showDeleteModal={this.state.showDeleteModal}
+              clickHandlerCancel={this.clickHandlerCancelMain}
+              clickHandlerContinue={this.clickHandlerContinueMain}
             />
           ) : null
         }
@@ -358,7 +432,6 @@ class Letter extends Component {
       </div>
     );
   }
-
 }
 
 export default Letter;

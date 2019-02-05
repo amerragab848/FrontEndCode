@@ -672,11 +672,68 @@ table edition
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
  
+}
+.ui.modal{
+  display:  block !important;
+}
+.sidebar__inner {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  z-index: 9999;
+  left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0px 5px 12px #888888;
+}
+.SummeriesContainer .SummeriesContainerContent {
+  padding: 0 !important;
+}
+.EastWestProject  ul {
+  max-height: 1150px;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+}
+.EastWestProject ul.closeAccordion {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out
+}
+.mainSide .mainSideNav .mainSidenavContent {
+  height: 100%;
+}
+.mainSide .mainSideNav .mainSidenavContent {
+  height: 100%;
+  overflow: auto !important;
+  box-shadow: 0px 5px 12px #888888;
+}
+.mainSide .mainSideNav .mainSidenavContent::-webkit-scrollbar {
+  width: 0;
+}
+.sidebar__inner::-webkit-scrollbar {
+  width: 0;
 } 
+
 .ui.modal{
   display:  block !important;
 }
 
 .workFlowStep .StepNumber.approvalstep .StepNum .StepN {
   display: block !important;
+} 
+.customDatepicker {
+  width: auto !important;
+  margin-right: 0 !important; 
 }
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
+  margin-right: 0 !important;
+}
+.gridfillter-container .primaryBtn-2.btn.smallBtn {
+    margin-top: 0 !important;
+}
+.gridfillter-container .fillter-status-container .fillter-item-c {
+    margin-bottom: 0px !important; 
+} 
+.form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
+  margin-bottom: 0 !important
+} 
