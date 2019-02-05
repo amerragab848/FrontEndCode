@@ -1,24 +1,66 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import Rodal from "../../Styles/js/rodal";
+import "../../Styles/css/rodal.css";
 import "react-table/react-table.css";
-import "../../Styles/scss/en-us/layout.css"; 
+import "../../Styles/scss/en-us/layout.css";
 import Notif from "../../Styles/images/notif-icon.png";
 import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
 import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
 import "../../Styles/css/font-awesome.min.css";
-//import Resources from "../../resources.json";
+import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class LeftMenu extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
+
+    this.state = {
+      contactName: "Ahmed Salah",
+      activeClass: false,
+      logOut: false,
+      languageSelected: "en",
+      classRadio: true
+    };
   }
- 
 
   componentWillMount = () => {};
+
+  openProfile = () => {
+    this.setState({
+      activeClass: !this.state.activeClass
+    });
+  };
+  userLogOut = () => {
+    this.setState({
+      logOut: !this.state.logOut
+    });
+  };
+
+  closeMessage = () => {
+    this.setState({
+      logOut: false
+    });
+  };
+
+  handleChange(event) {
+    localStorage.setItem("lang", event.target.value);
+
+    this.setState({
+      languageSelected: event.target.value,
+      classRadio:!this.state.classRadio
+    });
+
+    window.location.reload();
+  }
+
+  logOutHandler(){
+    localStorage.clear();
+    window.location.reload();
+  }
 
   render() {
     return (
@@ -67,20 +109,83 @@ class LeftMenu extends Component {
                   </a>
                 </li>
                 <li className="UserImg ">
-                  <div className="dropdownContent">
+                  <div
+                    className={
+                      this.state.activeClass === false
+                        ? "dropdownContent"
+                        : "dropdownContent active"
+                    }
+                    onClick={this.openProfile}
+                  >
                     <figure className="zero avatarProfile onlineAvatar">
                       <img alt="" title="" src={Img} />
                       <span className="avatarStatusCircle" />
                     </figure>
-                    <span className="profileName">Ahmed Salah</span>
+                    <span className="profileName">
+                      {this.state.contactName}
+                    </span>
                     <div className="ui dropdown classico basic">
                       <i className="dropdown icon" />
-                      <div className="menu center">
+                      <div className="menu center left">
                         <div className="item">
-                          <div className="item-content">Settings</div>
+                          <div className="item-content">
+                            {Resources["profile"][currentLanguage]}
+                          </div>
                         </div>
                         <div className="item">
-                          <div className="item-content">Log Out</div>
+                          <div className="item-content">
+                            {Resources["privacySettings"][currentLanguage]}
+                          </div>
+                        </div>
+                        <div className="item">
+                          <div className="item-content">
+                            {Resources["clearSettings"][currentLanguage]}
+                          </div>
+                        </div>
+                        <div className="item">
+                          <div className="item-content">
+                            {Resources["clearCach"][currentLanguage]}
+                          </div>
+                        </div>
+                        <div className="item">
+                          <div
+                            className={
+                              this.state.classRadio === true
+                                ? "ui checkbox radio radioBoxBlue checked"
+                                : "ui checkbox radio radioBoxBlue"
+                            }
+                          >
+                            <input
+                              type="radio"
+                              value="en"
+                              checked={this.state.languageSelected === "en"}
+                              onChange={event => this.handleChange(event)}
+                            />
+                            <label>English</label>
+                          </div>
+                          <div
+                            className={
+                              this.state.classRadio === false
+                                ? "ui checkbox radio  radioBoxBlue checked"
+                                : "ui checkbox radio  radioBoxBlue"
+                            }
+                          >
+                            <input
+                              type="radio"
+                              value="ar"
+                              checked={this.state.languageSelected === "ar"}
+                              onChange={event => this.handleChange(event)}
+                            />
+                            <label>عربى</label>
+                          </div>
+                        </div>
+                        <div className="item">
+                          <div
+                            className="item-content"
+                            onClick={this.userLogOut}
+                          >
+                            {Resources["logout"][currentLanguage]}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -91,6 +196,34 @@ class LeftMenu extends Component {
             </div>
           </header>
         </div>
+        {this.state.logOut ? (
+          <div className="logOutMsg">
+            <Rodal
+              visible={this.state.logOut}
+              onClose={this.userLogOut.bind(this)}
+            >
+              <div className="ui modal smallModal" id="smallModal">
+                <div className="header zero">
+                  {Resources["logout"][currentLanguage] +
+                    " " +
+                    this.state.contactName +
+                    " ?"}
+                </div>
+                <span className="contentName">
+                  You Will Be Missed, Are You Sure Want to Leave US?
+                </span>
+                <div className="actions">
+                  <button className="defaultBtn btn cancel smallBtn" onClick={this.closeMessage}>
+                    {Resources["no"][currentLanguage]}
+                  </button>
+                  <button className="smallBtn primaryBtn-1 btn approve" onClick={this.logOutHandler}>
+                    {Resources["yes"][currentLanguage]}
+                  </button>
+                </div>
+              </div>
+            </Rodal>
+          </div>
+        ) : null}
       </div>
     );
   }
