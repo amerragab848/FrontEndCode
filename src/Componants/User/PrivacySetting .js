@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import Api from '../../api' 
+import config from "../../Services/Config";
+
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
@@ -14,6 +16,7 @@ class PrivacySetting extends Component {
     constructor(props) {
 
         super(props)
+        console.log(config);
         this.state = {
             ConfimPassword: '',
             currentPassword: '',
