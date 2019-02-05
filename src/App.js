@@ -31,12 +31,18 @@ import WfApproval from './Componants/OptionsPanels/wfApproval';
 
 import PopUp from './Componants/OptionsPanels/OptionContainer'
 import Login from './Componants/Layouts/Login'
+import Route from './router';
 
 class App extends Component {
   render() {
     return (
       //<PopUp />
-      <Login />
+      <div>
+        <Login />
+        <Menu />
+        {Route}
+      </div>
+      
    //   <SendWorkFlow />
       ///test
      // <SendToInbox />

@@ -2,7 +2,7 @@ import config from "./IP_Configrations.json";
 let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
 
-const Domain=config.static
+const Domain = config.static
 export default class Api {
 
     static headers() {
@@ -26,7 +26,7 @@ export default class Api {
     }
 
     static xhr(route, params, verb) {
-        const host = Domain+'/PM/api/Procoor/';
+        const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
         let json = null;
 
@@ -41,8 +41,7 @@ export default class Api {
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
 
-                json = verb == 'GET' ? resp.json() : "";
-
+                json = resp.json();
                 return json;
             }
             else if (resp.status === 500) {
@@ -123,7 +122,7 @@ export default class Api {
 
     static postFile(route, params, header) {
 
-        const host = Domain+'/PM/api/Procoor/';
+        const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = {}
         headers.Authorization = Authorization
@@ -143,7 +142,7 @@ export default class Api {
     }
 
     static getPassword(route, password) {
-        const host = Domain+'/PM/api/Procoor/';
+        const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
@@ -161,6 +160,27 @@ export default class Api {
 
     }
 
+    static getPublicIP() {
+        const url = 'https://ipapi.co/json/?callback=?';
+        let json = null;
+        return fetch(url).then(resp => {
+            if (resp.status === 200) {
+
+                json = resp.json();
+                return json;
+            }
+            else if (resp.status === 500) {
+                json = null;
+
+                return json;
+            }
+
+            return json.then(err => {
+                throw err
+            });
+
+        }).then(json => (json.result ? json.result : json));
+    }
     static Login(hostt, route, params) {
         const host = hostt;
         const url = `${host}${route}`;
@@ -175,6 +195,7 @@ export default class Api {
         options.headers = {
             'Accept': '*/*',
             'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': Authorization,
 
         };
         return fetch(url, options).then(resp => {
@@ -183,7 +204,7 @@ export default class Api {
                 return json;
             }
             else if (resp.status === 400) {
-                
+
                 return resp.status;
             }
             return json.then(err => {
