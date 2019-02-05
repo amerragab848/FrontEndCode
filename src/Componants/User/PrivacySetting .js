@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import Api from '../../api'
-//import Dropdown from "./DropdownMelcous";
-//import InputMelcous from './InputMelcous'
+import Api from '../../api' 
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import { AlertError } from 'material-ui/svg-icons';
@@ -215,10 +214,7 @@ class PrivacySetting extends Component {
                                 <div className="loadingWrapper">
 
                                     {this.state.isChechingPassword ?
-                                        <div className="dashboardLoading ">
-                                            <span></span>
-                                            <h3>Loading</h3>
-                                        </div>
+                                       <LoadingSection />
                                         : null
                                     }
 
