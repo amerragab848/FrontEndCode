@@ -17,6 +17,7 @@ import DocApprovalDetails from "./Componants/DashBoardDetails/DocApprovalDetails
 import PendingExpensesDetails from "./Componants/DashBoardDetails/PendingExpensesDetails";
 import Letter from "./Pages/Communication/Letter";
 import Router from "./URLRoutes";
+import PrivacySetting  from "../src/Componants/User/PrivacySetting ";
 
 // let generalMenu = [];
 // let communication = [];
@@ -54,7 +55,6 @@ const routesModule = Router.map((r, index) => {
 });
   
 let routes = (
-    
 <Switch>
     <Route exact path="/" component={DashBoard} />,
     <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />,
@@ -70,7 +70,8 @@ let routes = (
     <Route path="/ScheduleAlertsSummaryDetails" component={ScheduleAlertsSummaryDetails} />,
     <Route path="/TimeSheetDetails" component={TimeSheetDetails} />,
     <Route path="/DocApprovalDetails" component={DocApprovalDetails} />,
-    <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />
+    <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />,
+    <Route path="/PrivacySetting" component={PrivacySetting} />,
     <Route path="/:document/:projectId" component={Letter} />
 </Switch>
 

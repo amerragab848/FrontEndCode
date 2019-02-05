@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Api from "../../api";
-import Rodal from "../../Styles/js/rodal";
+import { Link,withRouter } from "react-router-dom";
+import Api from "../../api"; 
 import "../../Styles/css/rodal.css";
 import "react-table/react-table.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -11,10 +11,12 @@ import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
 import "../../Styles/css/font-awesome.min.css";
 import Resources from "../../resources.json";
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-class LeftMenu extends Component {
+class HeaderMenu extends Component {
   constructor(props) {
     super(props);
 
@@ -58,6 +60,9 @@ class LeftMenu extends Component {
   }
 
   logOutHandler(){
+    
+    this.props.history.push('/');
+
     localStorage.clear();
     window.location.reload();
   }
@@ -76,12 +81,12 @@ class LeftMenu extends Component {
         <div className="wrapper">
           <header className="main-header">
             <div className="header-content">
-              <ul className="nav-left">
+              {/* <ul className="nav-left">
                 <li className="titleproject1">
                   <a href="">Technical office ·</a>
                 </li>
                 <li className="titleproject2">East town (P2)</li>
-              </ul>
+              </ul> */}
               <ul className="nav-right">
                 <li>
                   <a data-modal="modal1" className="notfiUI">
@@ -134,7 +139,9 @@ class LeftMenu extends Component {
                         </div>
                         <div className="item">
                           <div className="item-content">
+                          <Link to="/PrivacySetting">
                             {Resources["privacySettings"][currentLanguage]}
+                          </Link>
                           </div>
                         </div>
                         <div className="item">
@@ -197,36 +204,17 @@ class LeftMenu extends Component {
           </header>
         </div>
         {this.state.logOut ? (
-          <div className="logOutMsg">
-            <Rodal
-              visible={this.state.logOut}
-              onClose={this.userLogOut.bind(this)}
-            >
-              <div className="ui modal smallModal" id="smallModal">
-                <div className="header zero">
-                  {Resources["logout"][currentLanguage] +
-                    " " +
-                    this.state.contactName +
-                    " ?"}
-                </div>
-                <span className="contentName">
-                  You Will Be Missed, Are You Sure Want to Leave US?
-                </span>
-                <div className="actions">
-                  <button className="defaultBtn btn cancel smallBtn" onClick={this.closeMessage}>
-                    {Resources["no"][currentLanguage]}
-                  </button>
-                  <button className="smallBtn primaryBtn-1 btn approve" onClick={this.logOutHandler}>
-                    {Resources["yes"][currentLanguage]}
-                  </button>
-                </div>
-              </div>
-            </Rodal>
-          </div>
+          <ConfirmationModal
+              closed={this.userLogOut}
+              showDeleteModal={this.state.logOut}
+              clickHandlerCancel={this.closeMessage}
+              clickHandlerContinue={()=> this.logOutHandler()}
+              title="You Will Be Missed, Are You Sure Want to Leave US?"
+            />
         ) : null}
       </div>
     );
   }
 }
 
-export default LeftMenu;
+export default  withRouter(HeaderMenu);

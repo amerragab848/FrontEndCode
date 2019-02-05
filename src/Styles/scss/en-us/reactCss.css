@@ -204,7 +204,7 @@ sayed exp
   font-size: 14px;
   color: #9da3b1;
 }
-.dropWrapper .fullWidthWrapper {
+.fullWidthWrapper {
   width: 100%;
   text-align: center;
   margin: 20px 0;
@@ -734,11 +734,28 @@ table edition
 .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
   margin-bottom: 0 !important
 } 
-.UserImg .dropdownContent .menu.center.left{
+/*.UserImg .dropdownContent .menu.center.left{
   display: none;
 }
 .UserImg .dropdownContent.active .menu.center.left{
   display: block !important;
+}*/
+.UserImg .dropdownContent .menu.center.left{
+  display: none;
+  min-width: 185px !important;
+}
+.UserImg .dropdownContent.active .menu.center.left{
+  display: block !important;
+}
+.UserImg .dropdownContent .item .ui.checkbox.radio.radioBoxBlue {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.UserImg .dropdownContent .item .ui.checkbox.radio.radioBoxBlue label{
+  font-size: 12px;
+  padding-left: 24px;
+  cursor: pointer;
 }
 .rodal {
   z-index: 9999999;
@@ -783,7 +800,110 @@ text-transform: capitalize
   background: #fff !important;
   top: 72px !important;
   overflow: hidden !important;
-  z-index: 99 !important;
+  z-index: 10 !important;
   position: sticky !important; 
   width: 100% !important
 }
+.disNone {
+  display: none;
+}
+.resetPassword .spinner > div {
+  background-color: rgb(198, 217, 253);
+}
+.animationBlock {
+  animation: opacity 3s linear;
+  transition: all 0.3s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes opacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.resetPassword {
+  position: relative;
+}
+
+.resetPassword .inputPassContainer label {
+  width: 130px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.resetPassword .inputPassContainer {
+  display: flex;
+  width: 100%;
+}
+.resetPassword  .ui.input.inputDev, .resetPassword .ui.input.inputDev input {
+  width: 100% !important;
+}
+.resetPassword  .notifiActionsContainer{
+  position: absolute;
+  top: 0;
+  right: 40px;
+  max-width: 500px; 
+  width: auto;
+  min-width: 300px;
+  height: 50px;
+}
+.flexForm {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+}
+.flexForm label {
+  margin-right: 15px;
+} 
+.dashboardLoading {
+  position: fixed;
+  top: 153px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 2; 
+}
+
+
+.dashboardLoading span {
+    width: 64px;
+    height: 64px;
+    border: 3px solid #A8B0BF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite; 
+  }
+.dashboardLoading h3 {
+    font-family: font-b;
+    font-size: 45px;
+    line-height: 1.16;
+    letter-spacing: -1.1px;
+    color: #252833;
+    margin-top: 36px; 
+  }
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg); 
+  }
+  25% {
+    transform: rotate(90deg); 
+  }
+  50% {
+    transform: rotate(180deg);
+   }
+  75% {
+    transform: rotate(270deg); 
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+  }

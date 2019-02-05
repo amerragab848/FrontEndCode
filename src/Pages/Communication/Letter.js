@@ -5,6 +5,7 @@ import Api from "../../api";
 import moment from "moment";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Export from "../../Componants/OptionsPanels/Export"; 
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import documentDefenition from "../../documentDefenition.json";
@@ -67,30 +68,13 @@ class Letter extends Component {
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
   }
-
-  // componentWillMount() {
-   
-  //  console.log('componentWillMount in Letter Componants 0000'); 
-  // };
  
   componentDidMount() {   
    console.log('componentDidMount in Letter Componants 0000');
    this.renderComponent(this.state.documentName,this.state.projectId);
-        
-    // this.GetRecordOfLog();
+                         
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   let shouldUpdate = this.state.api !== nextState.api;
-  //   return shouldUpdate;
-  // }
-
-  // componentWillUpdate() { 
-
-  //  console.log('componentWillUpdate in Letter Componants 0212');
-  //   //this.GetRecordOfLog();
-  // }
-
+ 
   componentWillUnmount() {
      console.log('componentWillUnmount in Letter Componants 0000');
      this._isMounted = false; 
@@ -101,19 +85,27 @@ class Letter extends Component {
     
   componentWillReceiveProps(nextProps){
     if(nextProps.match !== this.props.match){ 
-      this._isMounted = false; 
-      //setTimeout(()=>{
-          this.setState({ 
-              isLoading: true 
-            });
-      //},500);
-
+      this._isMounted = false;  
+      this.setState({ 
+          isLoading: true 
+      });  
       console.log('componentWillReceiveProps in Letter Componants 0000'); 
       this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId);
  
     }
   }
   
+  shouldComponentUpdate(nextProps, nextState) {
+    // alert(nextProps.isCustom);
+    // alert(this.state.isCustom);
+    let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
+    return shouldUpdate;
+  }
+  
+  componentWillUpdate () {
+   //alert('isCustom')
+  }
+
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
     return this.state.viewfilter;
@@ -335,11 +327,11 @@ class Letter extends Component {
           showCheckbox={showCheckbox}
           pageSize={this.state.pageSize}
           columns={this.state.columns}
-        />      ) : null;
+        />      ) : <LoadingSection />;
 
       const btnExport= this.state.isLoading === false ? 
             <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-            : null ;
+            : <LoadingSection /> ;
 
       const ComponantFilter= this.state.isLoading === false ?   
                 <Filter
@@ -347,7 +339,7 @@ class Letter extends Component {
                   apiFilter={this.state.apiFilter}
                   filterMethod={this.filterMethodMain}
                   key={this.state.docType}
-                />: null;
+                />: <LoadingSection />;
 
     return (
       <div className="mainContainer">
