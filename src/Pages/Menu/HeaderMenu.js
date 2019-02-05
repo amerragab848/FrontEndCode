@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link,withRouter } from "react-router-dom";
-import Api from "../../api";
-import Rodal from "../../Styles/js/rodal";
+import Api from "../../api"; 
 import "../../Styles/css/rodal.css";
 import "react-table/react-table.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -62,9 +61,7 @@ class HeaderMenu extends Component {
 
   logOutHandler(){
     
-    this.props.history.push({
-      pathname: "/"
-    });
+    this.props.history.push('/');
 
     localStorage.clear();
     window.location.reload();
@@ -211,7 +208,7 @@ class HeaderMenu extends Component {
               closed={this.userLogOut}
               showDeleteModal={this.state.logOut}
               clickHandlerCancel={this.closeMessage}
-              clickHandlerContinue={this.logOutHandler}
+              clickHandlerContinue={()=> this.logOutHandler()}
             />
         ) : null}
       </div>
@@ -219,4 +216,4 @@ class HeaderMenu extends Component {
   }
 }
 
-export default withRouter(HeaderMenu);
+export default  withRouter(HeaderMenu);
