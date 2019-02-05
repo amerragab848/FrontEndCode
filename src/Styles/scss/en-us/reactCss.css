@@ -734,7 +734,6 @@ table edition
 .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
   margin-bottom: 0 !important
 } 
-<<<<<<< HEAD
 .UserImg .dropdownContent .menu.center.left{
   display: none;
 }
@@ -747,7 +746,7 @@ table edition
 .logOutMsg .contentName {
   padding-bottom: 40px;
     display: block;
-=======
+}
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
     position: absolute;
     bottom: 15px;
@@ -784,8 +783,7 @@ text-transform: capitalize
   background: #fff !important;
   top: 72px !important;
   overflow: hidden !important;
-  z-index: 99 !important;
+  z-index: 10 !important;
   position: sticky !important; 
   width: 100% !important
->>>>>>> 0eb0c4b7bacb936df8cfa0e59da3f07448b61823
 }

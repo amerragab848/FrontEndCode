@@ -76,12 +76,12 @@ class LeftMenu extends Component {
         <div className="wrapper">
           <header className="main-header">
             <div className="header-content">
-              <ul className="nav-left">
+              {/* <ul className="nav-left">
                 <li className="titleproject1">
                   <a href="">Technical office ·</a>
                 </li>
                 <li className="titleproject2">East town (P2)</li>
-              </ul>
+              </ul> */}
               <ul className="nav-right">
                 <li>
                   <a data-modal="modal1" className="notfiUI">
