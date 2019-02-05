@@ -139,7 +139,7 @@ class HeaderMenu extends Component {
                         </div>
                         <div className="item">
                           <div className="item-content">
-                          <Link to="PrivacySetting">
+                          <Link to="/PrivacySetting">
                             {Resources["privacySettings"][currentLanguage]}
                           </Link>
                           </div>
@@ -209,6 +209,7 @@ class HeaderMenu extends Component {
               showDeleteModal={this.state.logOut}
               clickHandlerCancel={this.closeMessage}
               clickHandlerContinue={()=> this.logOutHandler()}
+              title="You Will Be Missed, Are You Sure Want to Leave US?"
             />
         ) : null}
       </div>
