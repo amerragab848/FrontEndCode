@@ -25,7 +25,8 @@ class HeaderMenu extends Component {
       activeClass: false,
       logOut: false,
       languageSelected: "en",
-      classRadio: true
+      classRadio: true,
+
     };
   }
 
@@ -38,15 +39,9 @@ class HeaderMenu extends Component {
   };
   userLogOut = () => {
     this.setState({
-      logOut: !this.state.logOut
+      logOut: true
     });
-  };
-
-  closeMessage = () => {
-    this.setState({
-      logOut: false
-    });
-  };
+  }; 
 
   handleChange(event) {
     localStorage.setItem("lang", event.target.value);
@@ -66,6 +61,10 @@ class HeaderMenu extends Component {
     localStorage.clear();
     window.location.reload();
   }
+
+  onCloseModal = () => {
+    this.setState({ logOut: false });
+  };
 
   render() {
     return (
@@ -204,12 +203,13 @@ class HeaderMenu extends Component {
           </header>
         </div>
         {this.state.logOut ? (
-          <ConfirmationModal
-              closed={this.userLogOut}
+          <ConfirmationModal 
+              closed={this.onCloseModal} 
               showDeleteModal={this.state.logOut}
               clickHandlerCancel={this.closeMessage}
               clickHandlerContinue={()=> this.logOutHandler()}
               title="You Will Be Missed, Are You Sure Want to Leave US?"
+              buttonName="submit"
             />
         ) : null}
       </div>
