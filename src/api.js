@@ -104,7 +104,7 @@ export default class Api {
 
     static IsAllow(code) {
         let userPermissions = [];
-        let isCompany = false;
+        let isCompany = true;
         if (localStorage.getItem("permissions")) {
             let perms = [3198, 3515, 3514];// JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
             userPermissions = perms;
@@ -143,9 +143,9 @@ export default class Api {
         )
     }
 
-    static getPassword(route, password) {
- 
+    static getPassword(route, password) { 
         const host = Domain+'/PM/api/Procoor/'; 
+ 
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password

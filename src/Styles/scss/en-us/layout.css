@@ -12437,3 +12437,9 @@ table edition
   margin-right: 15px;
 } 
   
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
+    position: absolute;
+    bottom: 15px !important;
+    right: 12px;
+    font-size: 12px;
+}

@@ -10,25 +10,39 @@ let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class FilterComponent extends Component {
+ 
   constructor(props) {
     super(props);
 
     this.state = {
-      filtersColumns: this.props.filtersColumns,
-      apiFilter: this.props.apiFilter,
+      filtersColumns: [],
+      apiFilter: "",
       valueColumns: [],
       isCustom: true,
       isLoading: false
     };
 
     let state = {};
+ 
+  } 
 
-    this.state.filtersColumns.map((column, index) => {
+  componentWillMount()   {
+   console.log('componentWillMount in filter Componants');
+    let state = {};
+    this._isMounted = false; 
+
+    this.props.filtersColumns.map((column, index) => {
       if (column.type === "date") {
         state[index + "-column"] = moment();
       }
+
     });
 
+    this.setState({
+      filtersColumns: this.props.filtersColumns,
+      apiFilter: this.props.apiFilter
+    });
+    
     setTimeout(() => {
       this.setState(state);
     }, 500);

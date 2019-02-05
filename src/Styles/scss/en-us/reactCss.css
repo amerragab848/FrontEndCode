@@ -737,3 +737,9 @@ table edition
 .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
   margin-bottom: 0 !important
 } 
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
+    position: absolute;
+    bottom: 15px;
+    right: 12px;
+    font-size: 12px;
+}
