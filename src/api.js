@@ -11,11 +11,13 @@ export default class Api {
             'Content-Type': 'application/json', 
             'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
-            'Authorization': Authorization
+            'Authorization': localStorage.getItem('userToken')
         }
     } 
 
     static get(route) {
+        console.log(route);
+        console.log(Authorization);
         return this.xhr(route, null, 'GET');
     }
     static post(route, params) {
@@ -44,6 +46,11 @@ export default class Api {
             }
             else if (resp.status === 500) {
                 json = null;
+
+                return json;
+            }
+            else if (resp.status === 401) {
+                json =  "";
 
                 return json;
             }
@@ -123,7 +130,7 @@ export default class Api {
         const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = {}
-        headers.Authorization = Authorization
+        headers.Authorization = localStorage.getItem('userToken')
         headers.docid = header.docId
         headers.doctypeid = header.docTypeId
         headers.parentid = header.parentId
@@ -188,8 +195,8 @@ export default class Api {
             method: 'Post'
         }, params ? {
             body: (params)
-        } : null);
-
+        } : null); 
+        
         options.headers = {
             'Accept': '*/*',
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -242,5 +249,12 @@ export default class Api {
 
         }).then(json => (json.result ? json.result : json));
     }
-
+   
+    static IsAuthorized(){
+        let authorize=false;
+        if(localStorage.getItem('userToken') ){
+            authorize=true;
+        } 
+        return authorize;
+    }
 }

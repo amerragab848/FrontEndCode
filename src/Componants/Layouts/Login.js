@@ -42,6 +42,7 @@ class Login extends Component {
                 let token = Response.access_token
                 tokenStore.setItem('userToken', 'Bearer ' + token)
                 let payLoad = {}
+                
                 Api.get('LoginSuccess').then(result => {
 
                     if (result) {
@@ -59,10 +60,12 @@ class Login extends Component {
                         payLoad.uty = result.uty
 
                     }
+                    console.log(payLoad);
+
                     let _payLoad = CryptoJS.enc.Utf8.parse(JSON.stringify(payLoad))
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(_payLoad)
                     tokenStore.setItem('claims', encodedPaylod)
-
+                    console.log(encodedPaylod);
                     let browserObj = this.createBrowserObject()
                     let cookie = this.getCookie();
                     if (config.canSendAlert) {
@@ -91,10 +94,7 @@ class Login extends Component {
                         Api.post('UpdateAccountWebDeviceToken?webDeviceToken=' + deviceToken, null)
                     }
 
-                    Api.get('GetPrimeData?token=undefined').then(primeData => {
-
-
-
+                    Api.get('GetPrimeData?token=undefined').then(primeData => { 
                         if (primeData.permissions && primeData.permissions.length > 0) {
                             let permission = CryptoJS.enc.Utf8.parse(JSON.stringify(primeData.permissions))
                             let encodedPermission = CryptoJS.enc.Base64.stringify(permission)
@@ -112,14 +112,11 @@ class Login extends Component {
                         if (primeData.appComponants) {
                             tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
                         }
-                    })
-
+                    }) 
+                   window.location.reload();
                 })
-            }
-        
-
-            console.log("this.props : "+this.props);
-        this.props.history.push({pathname:"/"});
+            } 
+        console.log("this.props : "+this.props);
         
         }) 
     }
