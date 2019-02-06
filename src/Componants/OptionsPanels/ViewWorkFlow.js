@@ -11,7 +11,6 @@ import Resources from '../../resources.json';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
 
-import "../../Styles//scss/en-us/layout22.css"
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 

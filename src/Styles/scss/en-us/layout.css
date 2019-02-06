@@ -8945,3 +8945,10 @@ ul {
     background-color: #ffffff; }
 
 /*# sourceMappingURL=layout.css.map */
+.mainContainer {
+  position: relative;
+}
+.dashboardLoading {
+  position: absolute !important;
+  top:0 !important;
+}

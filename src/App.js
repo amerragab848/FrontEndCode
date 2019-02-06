@@ -17,7 +17,7 @@ import Upload from './Componants/OptionsPanels/UploadAttachment'
 import WFApproval from './Componants/OptionsPanels/wfApproval'
 import SendToInbox from './Componants/OptionsPanels/SendToInbox'
 import PrivacySetting from './Componants/User/PrivacySetting '
-
+import TimesheetUser from './Componants/User/Timesheet'
 
 import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
@@ -40,17 +40,18 @@ const IsAuthorize = api.IsAuthorized()
 class App extends Component {
   render() {
   //  const showComp = IsAuthorize ?
-    //   <div>
+      return (
+     // <div>
     //     <Menu />
     //     {Route}
     //   </div>
     //   : <Login />
 
-     return (
+     //return (
     //   <div>
     //     {showComp}
     //   </div>
-    <PrivacySetting />
+    <TimesheetUser />
     );
   }
 }

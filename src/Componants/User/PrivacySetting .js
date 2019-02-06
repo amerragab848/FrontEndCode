@@ -181,10 +181,12 @@ class PrivacySetting extends Component {
                                     , 
                                     this.setState({
                                         isLoading: false,
-                                        statusClassSuccess:"animationBlock"
-                                    }), actions.setSubmitting(false)
+                                        statusClassSuccess:"animationBlock",
+                                        currentPassword:''
+                                    }), actions.setSubmitting(false) , 
+                                    
                                 )
-                            }, 2000)
+                            }, 500)
                             this.setState({
                                 statusClassSuccess:"disNone"
                             })
@@ -194,8 +196,8 @@ class PrivacySetting extends Component {
                       }
                     }
                 >
-                    {({ errors, touched, handleBlur, handleChange , handleSubmit }) => (
-                        <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit} >
+                    {({ errors, touched, handleBlur, handleChange , handleReset ,handleSubmit }) => (
+                        <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit}  >
 
                             <div className="resetPassword">
 
@@ -239,6 +241,7 @@ class PrivacySetting extends Component {
                                                         <span className="hide"> Hide</span>
                                                     </span>
                                                     <input name="currentPassword" type={this.state.typeCurrentPassword ? 'text' : 'password'}
+                                                        
                                                         className="form-control" id="currentPassword" placeholder={Resources['currentPassword'][currentLanguage]} autoComplete='off'
                                                         onBlur={(e) => {
                                                             this.currentPasswordHandleBlur(e)
@@ -325,19 +328,16 @@ class PrivacySetting extends Component {
                                           
                                             <button 
                                                 className="primaryBtn-1 btn largeBtn"
-                                                type="submit"   >
-                                              
+                                                type="submit"  >                            
                                                  {Resources["update"][currentLanguage]}
                                             </button>
-                                            
+                                           
                                         ) : 
                                             (
+                                               
                                                 <button className="primaryBtn-1 btn largeBtn" 
-                                                // type="reset"
-                                                // value="Reset"
-                                                // onChange={this.handleReset}
+                                                 
                                                 >
-
                                                     <div className="spinner">
                                                         <div className="bounce1" />
                                                         <div className="bounce2" />
