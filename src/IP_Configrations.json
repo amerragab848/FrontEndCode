@@ -14,5 +14,6 @@
     "local": "https://demov4services.procoor.com",
     "loginServer": "https://procoorauthorization.procoor.com",
     "pmApp": "PM",
-    "static": "https://demov4services.procoor.com"
+    "static": "https://demov4services.procoor.com",
+    "downloads": "https://demov4services.procoor.com"
 }

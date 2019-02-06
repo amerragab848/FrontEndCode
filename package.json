@@ -57,6 +57,7 @@
     "react-validation": "^3.0.7",
     "rodal": "^1.6.3",
     "simple-react-validator": "^1.0.3",
+    "xlsx": "^0.14.1",
     "yup": "^0.26.7"
   },
   "scripts": {

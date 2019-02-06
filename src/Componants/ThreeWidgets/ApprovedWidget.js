@@ -4,7 +4,7 @@ import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
 import language from "../../resources.json";
-import Navigate from "../../Navigate";
+//import Navigate from "../../Navigate";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -65,12 +65,11 @@ class ApprovedWidget extends Component {
           });
         } else if(action === 2) {  
           let link = this.props.props.route[1];
-          console.log("Link : "+link);
+     
           link = link.split("?");
           let url = link[0];
-          console.log("url : "+url);
-          let param = link[1];
-          console.log("param : "+param);
+           
+          let param = link[1]; 
 
           this.props.history.push({
             pathname: url,

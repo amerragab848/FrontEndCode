@@ -8,7 +8,7 @@ import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
 import Api from '../../api';
 import Resources from '../../resources.json';
-import '../../Styles/scss/en-us/layout33.css';
+//import '../../Styles/scss/en-us/layout33.css';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class NewAttachment extends Component {

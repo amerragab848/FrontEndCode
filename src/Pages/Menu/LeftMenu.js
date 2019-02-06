@@ -5,10 +5,10 @@ import "../../Styles/scss/en-us/layout.css";
 import Logo from "../../Styles/images/logo.svg";
 import Router from "../../URLRoutes"; 
 import Resources from "../../resources.json";
+
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
 let currentProjectId = localStorage.getItem("lastSelectedProject") == null ? null : localStorage.getItem("lastSelectedProject");
-
 let currentProjectName = localStorage.getItem("lastSelectedprojectName") == null ? null : localStorage.getItem("lastSelectedprojectName");
 
 var viewModules = false;
@@ -285,7 +285,7 @@ class LeftMenu extends Component {
       this.setState(state => {
         return { ListEps: result };
       });
-    });
+    }); 
   };
 
   selectProjectHandler = (projectId, titleProject) => {

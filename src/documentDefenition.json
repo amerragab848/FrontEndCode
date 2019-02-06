@@ -11,7 +11,7 @@
     "documentPermission": 52,
     "documentApi": {
       "get": "GetLettersByProjectId",
-      "getCustom": "getLettersCustom",
+      "getCustom": "GetLettersByProjectIdCustom",
       "delete": "DeletMultipleLettersById"
     },
     "documentColumns": [
@@ -232,7 +232,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "lettersFilters",
+    "filterApi": "LettersFilters",
     "filters": [
       {
         "name": "numberAbb",
@@ -328,7 +328,7 @@
     "documentViewPermission": 3471,
     "documentPermission": 3472,
     "documentApi": {
-      "get": "getCorrespondenceReceivedForCustomLog"
+      "get": "GetCorrespondenceReceivedForCustomLog"
     },
     "documentColumns": [
       {
@@ -500,7 +500,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "communicationCorrespondenceReceivedFilterAll",
+    "filterApi": "CommunicationCorrespondenceReceivedFilterAll",
     "filters": [
       {
         "name": "numberAbb",
@@ -602,7 +602,7 @@
     "documentViewPermission": 3453,
     "documentPermission": 3454,
     "documentApi": {
-      "get": "getCorrespondenceSentForCustomLog"
+      "get": "GetCorrespondenceSentForCustomLog"
     },
     "documentColumns": [
       {
@@ -774,7 +774,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "correspondenceSentFilterAll",
+    "filterApi": "CorrespondenceSentFilterAll",
     "filters": [
       {
         "name": "numberAbb",
@@ -880,9 +880,9 @@
     "documentViewPermission": 394,
     "documentPermission": 395,
     "documentApi": {
-      "get": "getCommunicationEmails",
-      "getCustom": "getCommunicationEmailsCustom",
-      "delete": "communicationEmailsMultipleDelete"
+      "get": "GetCommunicationEmails",
+      "getCustom": "GetCommunicationEmailsCustom",
+      "delete": "CommunicationEmailsMultipleDelete"
     },
     "documentColumns": [
       {
@@ -1066,7 +1066,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "emailsFilter",
+    "filterApi": "EmailsFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -1155,9 +1155,9 @@
     "documentViewPermission": 101,
     "documentPermission": 102,
     "documentApi": {
-      "get": "getCommunicationInternalMemo",
-      "getCustom": "getCommunicationInternalMemoCustom",
-      "delete": "communicationInternalMemoMultipleDelete"
+      "get": "GetCommunicationInternalMemo",
+      "getCustom": "GetCommunicationInternalMemoCustom",
+      "delete": "CommunicationInternalMemoMultipleDelete"
     },
     "documentColumns": [
       {
@@ -1365,7 +1365,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "internalMemoFilter",
+    "filterApi": "InternalMemoFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -1466,9 +1466,9 @@
     "documentViewPermission": 455,
     "documentPermission": 456,
     "documentApi": {
-      "get": "getCommunicationMeetingAgenda",
-      "getCustom": "getCommunicationMeetingAgendaCustom",
-      "delete": "communicationMeetingAgendaMultipleDelete"
+      "get": "GetCommunicationMeetingAgenda",
+      "getCustom": "GetCommunicationMeetingAgendaCustom",
+      "delete": "CommunicationMeetingAgendaMultipleDelete"
     },
     "documentColumns": [
       {
@@ -1700,7 +1700,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "meetingAgendFilter",
+    "filterApi": "MeetingAgendFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -1810,9 +1810,9 @@
     "documentViewPermission": 920,
     "documentPermission": 921,
     "documentApi": {
-      "get": "getCommunicationNCR",
-      "getCustom": "getCommunicationNCRCustom",
-      "delete": "communicationNCRMultipleDelete"
+      "get": "GetCommunicationNCR",
+      "getCustom": "GetCommunicationNCRCustom",
+      "delete": "CommunicationNCRMultipleDelete"
     },
     "documentColumns": [
       {
@@ -2170,7 +2170,7 @@
     "documentPermission": 93,
     "documentApi": {
       "get": "GetPhoneByProjectId",
-      "getCustom": "getPhonesCustom",
+      "getCustom": "GetPhonesCustom",
       "delete": "DeleteMultiplePhoneById"
     },
     "documentColumns": [
@@ -2379,7 +2379,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "phonsFilter",
+    "filterApi": "PhonsFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -2478,9 +2478,9 @@
     "documentDeletePermission": 68,
     "documentPermission": 70,
     "documentApi": {
-      "get": "communicationProposalSelectAllByProjectId",
-      "getCustom": "communicationProposalSelectAllByProjectIdCustom",
-      "delete": "deleteMultipleCommunicationProposal"
+      "get": "CommunicationProposalSelectAllByProjectId",
+      "getCustom": "CommunicationProposalSelectAllByProjectIdCustom",
+      "delete": "DeleteMultipleCommunicationProposal"
     },
     "documentColumns": [
       {
@@ -2700,7 +2700,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "proposalFilter",
+    "filterApi": "ProposalFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -2806,9 +2806,9 @@
     "documentViewPermission": 60,
     "documentPermission": 61,
     "documentApi": {
-      "get": "getRequestProposal",
-      "getCustom": "getRequestProposalCustom",
-      "delete": "deleteMultipleRequestProposal"
+      "get": "GetRequestProposalByProjectId",
+      "getCustom": "GetRequestProposalCustom",
+      "delete": "DeleteMultipleRequestProposalById"
     },
     "documentColumns": [
       {
@@ -3016,7 +3016,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "requestProposalFilter",
+    "filterApi": "RequestProposalFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -3110,7 +3110,7 @@
     "documentPermission": 427,
     "documentApi": {
       "get": "CommunicationReportsSelectAllByProjectId",
-      "getCustom": "communicationReportsSelectAllByProjectIdCustom",
+      "getCustom": "CommunicationReportsSelectAllByProjectIdCustom",
       "delete": "DeleteMultipleCommunicationReports"
     },
     "documentColumns": [
@@ -3331,7 +3331,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "reportsFilter",
+    "filterApi": "ReportsFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -3435,7 +3435,7 @@
     "documentPermission": 79,
     "documentApi": {
       "get": "GetCommunicationRfi",
-      "getCustom": "getCommunicationRfiCustom",
+      "getCustom": "GetCommunicationRfiCustom",
       "delete": "CommunicationRfiMultipleDelete"
     },
     "documentColumns": [
@@ -3716,7 +3716,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "communicationRFIFilter",
+    "filterApi": "CommunicationRFIFilter",
     "filters": [
       {
         "name": "status",
@@ -3852,9 +3852,9 @@
     "documentViewPermission": 87,
     "documentPermission": 88,
     "documentApi": {
-      "get": "getCommunicationTransmittal",
-      "getCustom": "getCommunicationTransmittalCustom",
-      "delete": "communicationTransmittalMultipleDelete"
+      "get": "GetCommunicationTransmittal",
+      "getCustom": "GetCommunicationTransmittalCustom",
+      "delete": "CommunicationTransmittalMultipleDelete"
     },
     "documentColumns": [
       {
@@ -4110,7 +4110,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "transmittalFilter",
+    "filterApi": "TransmittalFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -4235,9 +4235,9 @@
     "documentViewPermission": 110,
     "documentPermission": 111,
     "documentApi": {
-      "get": "getCommunicationMeetingMinutesInternal",
-      "getCustom": "getCommunicationMeetingMinutesInternalCustom",
-      "delete": "communicationMeetingMinutesMultipleDelete"
+      "get": "GetCommunicationMeetingMinutes",
+      "getCustom": "GetCommunicationMeetingMinutesInternalCustom",
+      "delete": "CommunicationMeetingMinutesMultipleDelete"
     },
     "documentColumns": [
       {
