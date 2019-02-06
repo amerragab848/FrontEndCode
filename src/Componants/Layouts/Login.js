@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import Api from "../../api";
 import { withRouter } from "react-router-dom";
 import tokenStore from '../../tokenStore'
-import language from "../../resources.json";
-//import config from "../../IP_Configrations.json";
+import language from "../../resources.json"; 
 import CryptoJS from 'crypto-js';
 import Cookies from 'react-cookies'
 import Router from "../../router";
@@ -29,13 +28,12 @@ const publicConfiguarion= config.getPublicConfiguartion();
 class Login extends Component {
 
     constructor(props) { 
-        
+
         super(props);
         this.state = {
             type: false
         }
-
-        alert(JSON.stringify(config.getPayload()));
+ 
     }
 
     loginHandler = (input) => {

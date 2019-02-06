@@ -3,7 +3,7 @@ let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
 
 const Domain = config.static
-
+ 
 export default class Api {
 
     static headers() {

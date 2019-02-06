@@ -7,25 +7,21 @@ import Resources from '../../resources.json';
 import { Formik, Form,withFormik } from 'formik';
 import { AlertError } from 'material-ui/svg-icons';
 import eyepw from '../../Styles/images/eyepw.svg';
-import NotifiMsg from '../publicComponants/NotifiMsg'
+import NotifiMsg from '../publicComponants/NotifiMsg' 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let showDeiv = "popUp basic-popUp disNone";
-
-//let IsAuthorize= Api.IsAuthorized ===true? true : window.location.href('/');
-
+ 
 class PrivacySetting extends Component {
     constructor(props) { 
         super(props) 
         
-        // if(Api.IsAuthorized === false){
-        //   //window.location.href('/');
-        //    this.props.history.push({
-        //     pathname: "/"
-        //   });
-        // }
-
-        alert(JSON.stringify(config.getPayload()));
+        if(Api.IsAuthorized() === false){ 
+           this.props.history.push({
+            pathname: "/"
+          });
+        } 
+        // alert(JSON.stringify(config.getPayload()));
         this.state = {
             obj: {
                     currentPassword: '',

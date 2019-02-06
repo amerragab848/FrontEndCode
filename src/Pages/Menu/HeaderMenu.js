@@ -9,6 +9,7 @@ import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
 import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
+import config from "../../Services/Config";
 import "../../Styles/css/font-awesome.min.css";
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -21,12 +22,12 @@ class HeaderMenu extends Component {
     super(props);
 
     this.state = {
-      contactName: "Ahmed Salah",
+      contactName: this.props.contactName,
+      profilePath: this.props.profilePath?this.props.profilePath: Img,
       activeClass: false,
       logOut: false,
       languageSelected: "en",
-      classRadio: true,
-
+      classRadio: true
     };
   }
 
@@ -122,7 +123,7 @@ class HeaderMenu extends Component {
                     onClick={this.openProfile}
                   >
                     <figure className="zero avatarProfile onlineAvatar">
-                      <img alt="" title="" src={Img} />
+                      <img alt="" title="" src={this.state.profilePath} />
                       <span className="avatarStatusCircle" />
                     </figure>
                     <span className="profileName">
