@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
-import language from "../../resources.json";
-//import Navigate from "../../Navigate";
+import language from "../../resources.json"; 
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
 
 class ApprovedWidget extends Component {
   constructor(props) {
@@ -24,6 +22,16 @@ class ApprovedWidget extends Component {
 
   componentDidMount() {
     Api.get(this.props.props.api).then(result => {
+      result.map(res => {
+        if (res.action === 1) {
+          res.item = "High";
+        } else if (res.action === 2) {
+          res.item = "Normal";
+        } else {
+          res.item = "Low";
+        }
+      });
+
       this.setState({
         dataList: result
       });
@@ -53,7 +61,7 @@ class ApprovedWidget extends Component {
             pathname: url,
             search: "?" + param + action
           });
-        } else {  
+        } else {
           this.props.history.push({
             pathname: this.props.props.route[1]
           });
@@ -63,24 +71,24 @@ class ApprovedWidget extends Component {
           this.props.history.push({
             pathname: this.props.props.route[0]
           });
-        } else if(action === 2) {  
+        } else if (action === 2) {
           let link = this.props.props.route[1];
-     
+
           link = link.split("?");
           let url = link[0];
-           
-          let param = link[1]; 
+
+          let param = link[1];
 
           this.props.history.push({
             pathname: url,
             search: "?" + param + action
-          }); 
-        }else{
+          });
+        } else {
           this.props.history.push({
             pathname: this.props.props.route[2]
           });
         }
-      } 
+      }
     }
   };
 
@@ -113,10 +121,7 @@ class ApprovedWidget extends Component {
             <p
               className="number"
               onClick={() =>
-                this.onOpenModal(
-                  high.action,
-                  high[this.props.value] 
-                )
+                this.onOpenModal(high.action, high[this.props.value])
               }
             >
               {high ? high[this.props.value] : 0}
@@ -134,26 +139,18 @@ class ApprovedWidget extends Component {
                 <span
                   className="mediumModal"
                   onClick={() =>
-                    this.onOpenModal(
-                      normal.action,
-                      normal[this.props.value] 
-                    )
+                    this.onOpenModal(normal.action, normal[this.props.value])
                   }
                 >
                   {normal ? normal[this.props.value] : 0}
                 </span>
-                {normal
-                  ? language[normal[this.props.text]][currentLanguage]
-                  : ""}
+                {normal ? language[normal[this.props.text]][currentLanguage]: ""}
               </div>
               <div>
                 <span
                   className="mediumModal"
                   onClick={() =>
-                    this.onOpenModal(
-                      low.action,
-                      low[this.props.value] 
-                    )
+                    this.onOpenModal(low.action, low[this.props.value])
                   }
                 >
                   {low ? low[this.props.value] : ""}

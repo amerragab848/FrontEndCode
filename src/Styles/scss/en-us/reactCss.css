@@ -336,12 +336,13 @@ table edition
 .mainContainer .customD_Menu {
   width: 100%;
 }
-.mainContainer .customD_Menu div{
-  border-width: 0;
-  outline: 0
-}
+.mainContainer .customD_Menu >div{
+  border-color: hsl(0,0%,80%) !important;
+  outline: 0;
+  box-shadow:none !important
+} 
 .mainContainer .customD_Menu div:hover{
-  border: none;
+  border-color: hsl(0,0%,80%) !important;
   box-shadow: none;
   outline: 0;
 }
