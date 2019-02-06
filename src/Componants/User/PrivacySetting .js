@@ -4,7 +4,7 @@ import config from "../../Services/Config";
 
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Resources from '../../resources.json';
-import { Formik, Form } from 'formik';
+import { Formik, Form,withFormik } from 'formik';
 import { AlertError } from 'material-ui/svg-icons';
 import eyepw from '../../Styles/images/eyepw.svg';
 import NotifiMsg from '../publicComponants/NotifiMsg'
@@ -13,29 +13,31 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 let showDeiv = "popUp basic-popUp disNone";
 
 class PrivacySetting extends Component {
-    constructor(props) {
-
+    constructor(props) { 
         super(props)
-        console.log(config);
+        //console.log(JSON.stringify(config.getPublicConfiguartion().accountCompanyId));
         this.state = {
-            ConfimPassword: '',
-            currentPassword: '',
+            obj: {
+                    currentPassword: '',
+                    newPassword: '',
+                    ConfimPassword: ''
+            },
             passwordStatus: false,
-            newPassword: '',
             userName: '',
             emailOrPassword: '',
-            companyId: '2',
+            companyId: config.getPublicConfiguartion().accountCompanyId,
             changePassword: false,
             typeConfimPassword: false,
             typeCurrentPassword: false,
             typeNewPassword: false,
             isChechingPassword: false,
-            statusClass: "disNone",
-            statusClassSuccess:'disNone',
+            statusClass: "disNone", 
             confirmPasswordSpan: "",
             confirmPasswordError: "pError disNone",
             boxError: "ui input inputDev",
-            isLoading: false
+            isLoading: false,
+            stateMode: null,
+            isNewMode: true
         }
     }
 
@@ -43,8 +45,7 @@ class PrivacySetting extends Component {
         const typeCurrentPassword = this.state.typeCurrentPassword
         this.setState({
             typeCurrentPassword: !typeCurrentPassword
-        })
-
+        }) 
     }
 
     toggleNewPassword = () => {
@@ -53,14 +54,13 @@ class PrivacySetting extends Component {
         this.setState({
             typeNewPassword: !typeNewPassword
         })
-
     }
+
     toggleConfimPassword = () => {
         const typeConfimPassword = this.state.typeConfimPassword
         this.setState({
             typeConfimPassword: !typeConfimPassword
-        })
-
+        }) 
     }
 
     confirmPasswordHandleBlur = (e) => {
@@ -91,24 +91,24 @@ class PrivacySetting extends Component {
             newPassword: (e.target.value)
         });
     }
-
-
+ 
     currentPasswordHandleBlur = (e) => {
 
         this.setState({
             isChechingPassword: true
         });
-        Api.getPassword('GetPassWordEncrypt', e.target.value).then(result => {
 
-
+        Api.getPassword('GetPassWordEncrypt', e.target.value).then(result => { 
             if (result === false) {
                 setTimeout(() => {
                     this.setState({
                         changePassword: result,
                         isChechingPassword: false,
-                        statusClass: "animationBlock"
+                        statusClass: "animationBlock",
+                        stateMode: true
                     })
                 }, 1000);
+
                 setTimeout(() => {
                     this.setState({ 
                         statusClass: "disNone"
@@ -116,23 +116,21 @@ class PrivacySetting extends Component {
                 }, 5000);
  
             }
-            else if (result === true) {
-
+            else if (result === true) { 
                 this.setState({
                     changePassword: result,
                     isChechingPassword: false,
+                    stateMode: null,
                     statusClass: "disNone"
-                });
-
+                }); 
             }
 
         }).catch(ex => {
             this.setState({
-                isChechingPassword: false
+                isChechingPassword: false, 
+                stateMode: null
             });
-        });
-
-
+        }); 
     }
 
     componentDidMount = () => {
@@ -140,221 +138,226 @@ class PrivacySetting extends Component {
             this.setState({
                 userName: result.userName
             })
-        })
-
+        }) 
+    }
+    
+    onTodoChange(value){
+        this.setState({
+             currentPassword: value
+        });
     }
 
-    render() {
-   
-        return (
+    render() {  
 
+        return ( 
+             
             <div className="mainContainer">
-                <Formik
-                    initialValues={{
-                        currentPassword: '',
-                        newPassword: '',
-                        confirmPassword: ''}}
-                    
-                    validate={values => {
-                        let errors = {};
-                        if (values.currentPassword.length == 0) {
-                            errors.currentPassword = Resources['currentPasswordRequired'][currentLanguage];
-                        }
-                        if (values.newPassword.length == 0) {
-                            errors.newPassword = Resources['newPasswordRequired'][currentLanguage];
-                        }
-                        if (values.confirmPassword.length == 0) {
-                            errors.confirmPassword = Resources['ConfirmpasswordRequired'][currentLanguage];
-                        }
+                {this.state.isNewMode === true ?
+                    <Formik
+                        enableReinitialize={true}
+                        initialValues={this.state.obj} 
+                        validate={values => {
+                            let errors = {};
+                            if (values.currentPassword.length == 0) {
+                                errors.currentPassword = Resources['currentPasswordRequired'][currentLanguage];
+                            }
+                            if (values.newPassword.length == 0) {
+                                errors.newPassword = Resources['newPasswordRequired'][currentLanguage];
+                            }
+                            if (values.confirmPassword.length == 0) {
+                                errors.confirmPassword = Resources['ConfirmpasswordRequired'][currentLanguage];
+                            }
 
-                        return errors;
-                    }}
+                            return errors;
+                        }}
 
-                    onSubmit={(values,  actions ) => {
-                        if (this.state.changePassword === true) {
-                            this.setState({
-                                isLoading: true
-                            })
-                            setTimeout((e) => {
-                                Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword=' + this.state.newPassword + '&companyId='+ this.state.companyId +'&changePassword=' + this.state.changePassword + '').then(
-                                    Api.getPassword('EditAccountUserPassword', this.state.newPassword)
-                                    ,  actions.setSubmitting(false),
-                                    this.initialValues = {
-                                            currentPassword: '',
-                                            newPassword: '',
-                                            confirmPassword: ''
-                                        },
-                                    this.setState({
-                                        isLoading: false,
-                                        statusClassSuccess:"animationBlock"
-                                    }),
-                                )
-                            }, 2000)
-                            this.setState({
-                                statusClassSuccess:"disNone"
-                            })
-                          
-                        }
-                        else
-                            alert("invalid Password")
-                      }
-                    }
-                >
-                    {({ errors, touched, handleBlur, handleChange  , handleReset,handleSubmit , isSubmitting}) => (
-                        <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit} >
-
-                            <div className="resetPassword">
-
-                           
+                        onSubmit={(values,  actions ) => {
+                            if (this.state.changePassword === true && this.state.isLoading==false) {
                                 
-                                    <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['currentPasswordRequired'][currentLanguage]} />
-                                    <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
+                                this.setState({
+                                    isLoading: true 
+                                })
+     
+                                    Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword=' 
+                                                                                          + this.state.newPassword + '&companyId='+ this.state.companyId 
+                                                                                          +'&changePassword=' + this.state.changePassword ).then(
+                                        Api.getPassword('EditAccountUserPassword', this.state.newPassword).then(result=>{
+                                            actions.setSubmitting(false);
+                                            actions.resetForm({});
+                                          withFormik({ 
+                                            enableReinitialize: true,
+                                            initialValues:{
+                                                currentPassword:'', 
+                                                newPassword: '',
+                                                confirmPassword: ''
+                                              }  
+                                            })    
+                                            this.setState({
+                                                isLoading: false,
+                                                stateMode: false,
+                                                isNewMode: false,
+                                                statusClass: "animationBlock"
+                                            });
 
+                                            setTimeout(() => {
+                                                this.setState({ 
+                                                    stateMode: null,
+                                                    isNewMode: true,
+                                                    statusClass: "disNone"
+                                                })
+                                            }, 3000);
+                                        }) 
+                                    ) 
+                            }
+                            else
+                                alert("invalid Password")
+                          }
+                        }
+                        onReset={(values)=>{ }}
+                    >
+                        {({ errors, touched, handleBlur, handleChange  , handleReset,handleSubmit , isSubmitting}) => (
+                            <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit}>
 
-                                <div className="approvalTitle">
-                                    <h3>{Resources['security'][currentLanguage] + '- ' + Resources['profile'][currentLanguage]}</h3>
-                                </div>
-                                <div className="loadingWrapper">
-
-                                    {this.state.isChechingPassword ?
-                                       <LoadingSection />
-                                        : null
-                                    }
-
-                                    <div className="inputPassContainer">
-                                        <div className="form-group passwordInputs showPasswordArea flexForm">
-                                            <label className="control-label">{Resources['accountUserName'][currentLanguage]} </label>
-                                            <div className="inputPassContainer">
-                                                <label className="control-label">{this.state.userName}</label>
-                                            </div>
-                                        </div>
-
+                                <div className="resetPassword"> 
+                                    <NotifiMsg statusClass={this.state.statusClass} IsSuccess={ this.state.stateMode ===true ? "false" :(this.state.stateMode == false ? "true": "true")} Msg={this.state.stateMode ===true ? Resources['currentPasswordRequired'][currentLanguage] : Resources['successAlert'][currentLanguage]} />
+                                    
+                                    <div className="approvalTitle">
+                                        <h3>{Resources['security'][currentLanguage] + '- ' + Resources['profile'][currentLanguage]}</h3>
                                     </div>
+                                    <div className="loadingWrapper"> 
+                                        {this.state.isChechingPassword ?
+                                           <LoadingSection />
+                                            : null
+                                        }
 
-                                    <div className="inputPassContainer">
-                                        <div className="form-group passwordInputs showPasswordArea flexForm">
-                                            <label className="control-label">{Resources['currentPassword'][currentLanguage]} </label>
-                                            <div className="inputPassContainer">
-                                                <div className={errors.currentPassword && touched.currentPassword ? (
-                                                    "ui input inputDev has-error"
-                                                ) : "ui input inputDev"}
-                                                >
-                                                    <span className={this.state.typeCurrentPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggletypeCurrentPassword}>
-                                                        <img src={eyepw} />
-                                                        <span className="show"> Show</span>
-                                                        <span className="hide"> Hide</span>
-                                                    </span>
-                                                    <input name="currentPassword" type={this.state.typeCurrentPassword ? 'text' : 'password'}
-                                                        className="form-control" id="currentPassword" placeholder={Resources['currentPassword'][currentLanguage]} autoComplete='off'
-                                                        onBlur={(e) => {
-                                                            this.currentPasswordHandleBlur(e)
-                                                            handleBlur(e)
-                                                        }} onChange={handleChange} />
-
-                                                    {errors.currentPassword && touched.currentPassword ? (
-                                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                    ) : null}
-                                                    {errors.currentPassword && touched.currentPassword ? (
-                                                        <em className="pError">{errors.currentPassword}</em>
-                                                    ) : null}
+                                        <div className="inputPassContainer">
+                                            <div className="form-group passwordInputs showPasswordArea flexForm">
+                                                <label className="control-label">{Resources['accountUserName'][currentLanguage]} </label>
+                                                <div className="inputPassContainer">
+                                                    <label className="control-label">{this.state.userName}</label>
                                                 </div>
                                             </div>
                                         </div>
 
-                                    </div>
+                                        <div className="inputPassContainer">
+                                            <div className="form-group passwordInputs showPasswordArea flexForm">
+                                                <label className="control-label">{Resources['currentPassword'][currentLanguage]} </label>
+                                                <div className="inputPassContainer">
+                                                    <div className={errors.currentPassword && touched.currentPassword ? (
+                                                        "ui input inputDev has-error"
+                                                    ) : "ui input inputDev"}
+                                                    >
+                                                        <span className={this.state.typeCurrentPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggletypeCurrentPassword}>
+                                                            <img src={eyepw} />
+                                                            <span className="show"> Show</span>
+                                                            <span className="hide"> Hide</span>
+                                                        </span>
+                                                        <input name="currentPassword" type={this.state.typeCurrentPassword ? 'text' : 'password'} 
+                                                            //value={this.state.currentPassword} 
+                                                            className="form-control" id="currentPassword" placeholder={Resources['currentPassword'][currentLanguage]} autoComplete='off'
+                                                            onBlur={(e) => {
+                                                                this.currentPasswordHandleBlur(e)
+                                                                handleBlur(e)
+                                                            }} onChange={handleChange} />
 
-
-                                    <div className="inputPassContainer">
-                                        <div className="form-group passwordInputs showPasswordArea flexForm">
-                                            <label className="control-label">{Resources['newPassword'][currentLanguage]} </label>
-                                            <div className="inputPassContainer">
-                                                <div className={errors.newPassword && touched.newPassword ? (
-                                                    "ui input inputDev has-error"
-                                                ) : "ui input inputDev"}
-                                                >
-                                                    <span className={this.state.typeNewPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggleNewPassword}>
-                                                        <img src={eyepw} />
-                                                        <span className="show"> Show</span>
-                                                        <span className="hide"> Hide</span>
-                                                    </span>
-                                                    <input name="newPassword" type={this.state.typeNewPassword ? 'text' : 'password'}
-                                                        className="form-control" id="newPassword" placeholder={Resources['newPassword'][currentLanguage]} autoComplete='off'
-                                                        onBlur={(e) => {
-                                                            this.newPasswordHandleChange(e)
-                                                            handleBlur(e)
-                                                        }} onChange={handleChange} />
-
-                                                    {errors.newPassword && touched.newPassword ? (
-                                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                    ) : null}
-                                                    {errors.newPassword && touched.newPassword ? (
-                                                        <em className="pError">{errors.newPassword}</em>
-                                                    ) : null}
+                                                        {errors.currentPassword && touched.currentPassword ? (
+                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
+                                                        ) : null}
+                                                        {errors.currentPassword && touched.currentPassword ? (
+                                                            <em className="pError">{errors.currentPassword}</em>
+                                                        ) : null}
+                                                    </div>
                                                 </div>
                                             </div>
+
                                         </div>
+     
+                                        <div className="inputPassContainer">
+                                            <div className="form-group passwordInputs showPasswordArea flexForm">
+                                                <label className="control-label">{Resources['newPassword'][currentLanguage]} </label>
+                                                <div className="inputPassContainer">
+                                                    <div className={errors.newPassword && touched.newPassword ? (
+                                                        "ui input inputDev has-error"
+                                                    ) : "ui input inputDev"}
+                                                    >
+                                                        <span className={this.state.typeNewPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggleNewPassword}>
+                                                            <img src={eyepw} />
+                                                            <span className="show"> Show</span>
+                                                            <span className="hide"> Hide</span>
+                                                        </span>
+                                                        <input name="newPassword" type={this.state.typeNewPassword ? 'text' : 'password'}
+                                                            className="form-control" id="newPassword" placeholder={Resources['newPassword'][currentLanguage]} autoComplete='off'
+                                                            onBlur={(e) => {
+                                                                this.newPasswordHandleChange(e)
+                                                                handleBlur(e)
+                                                            }} onChange={handleChange} />
 
-                                    </div>
-
-
-                                    <div className="inputPassContainer">
-                                        <div className="form-group passwordInputs showPasswordArea flexForm">
-                                            <label className="control-label">{Resources['confirmPassword'][currentLanguage]} </label>
-                                            <div className="inputPassContainer">
-                                                <div className={errors.confirmPassword && touched.confirmPassword ? (
-                                                    "ui input inputDev has-error"
-                                                ) : this.state.boxError}
-                                                >
-                                                    <span className={this.state.typeConfimPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggleConfimPassword}>
-                                                        <img src={eyepw} />
-                                                        <span className="show"> Show</span>
-                                                        <span className="hide"> Hide</span>
-                                                    </span>
-                                                    <input name="confirmPassword" type={this.state.typeConfimPassword ? 'text' : 'password'}
-                                                        className="form-control" id="confirmPassword" placeholder={Resources['confirmPassword'][currentLanguage]} autoComplete='off'
-                                                        onBlur={(e) => {
-
-                                                            handleBlur(e)
-                                                            this.confirmPasswordHandleBlur(e)
-                                                        }} onChange={handleChange} />
-                                                    <span className={this.state.confirmPasswordSpan}></span>
-                                                    <em className={this.state.confirmPasswordError}>{Resources['ConfirmpasswordRequired'][currentLanguage]}</em>
+                                                        {errors.newPassword && touched.newPassword ? (
+                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
+                                                        ) : null}
+                                                        {errors.newPassword && touched.newPassword ? (
+                                                            <em className="pError">{errors.newPassword}</em>
+                                                        ) : null}
+                                                    </div>
                                                 </div>
                                             </div>
+
                                         </div>
+     
+                                        <div className="inputPassContainer">
+                                            <div className="form-group passwordInputs showPasswordArea flexForm">
+                                                <label className="control-label">{Resources['confirmPassword'][currentLanguage]} </label>
+                                                <div className="inputPassContainer">
+                                                    <div className={errors.confirmPassword && touched.confirmPassword ? (
+                                                        "ui input inputDev has-error"
+                                                    ) : this.state.boxError}
+                                                    >
+                                                        <span className={this.state.typeConfimPassword ? "inputsideNote togglePW activePW" : "inputsideNote togglePW"} onClick={this.toggleConfimPassword}>
+                                                            <img src={eyepw} />
+                                                            <span className="show"> Show</span>
+                                                            <span className="hide"> Hide</span>
+                                                        </span>
+                                                        <input name="confirmPassword" type={this.state.typeConfimPassword ? 'text' : 'password'}
+                                                            className="form-control" id="confirmPassword" placeholder={Resources['confirmPassword'][currentLanguage]} autoComplete='off'
+                                                            onBlur={(e) => {
 
-                                    </div>
+                                                                handleBlur(e)
+                                                                this.confirmPasswordHandleBlur(e)
+                                                            }} onChange={handleChange} />
+                                                        <span className={this.state.confirmPasswordSpan}></span>
+                                                        <em className={this.state.confirmPasswordError}>{Resources['ConfirmpasswordRequired'][currentLanguage]}</em>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-
-                                    <div className="fullWidthWrapper">
-                                        {this.state.isLoading === false ? (
-                                            <button 
+                                        </div>
+     
+                                        <div className="fullWidthWrapper">
+                                            {this.state.isLoading === false ? ( 
+                                               <button 
                                                 className="primaryBtn-1 btn largeBtn"
                                                 type="submit"
                                                  >  {Resources["update"][currentLanguage]}
-                                                </button>
-                                        ) : 
-                                            (
-                                                <button className="primaryBtn-1 btn largeBtn">
+                                               </button>  
+                                            ) : 
+                                                (
+                                                <button className="primaryBtn-1 btn largeBtn disabled">
                                                     <div className="spinner">
                                                         <div className="bounce1" />
                                                         <div className="bounce2" />
                                                         <div className="bounce3" />
                                                     </div>
                                                 </button>
-                                            )}
+                                                )}
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        </Form>
-
-                    )}
-                </Formik>
+                            </Form>
+                        )}
+                    </Formik>
+                    : <LoadingSection /> }
             </div>
-
-
         )
     }
 }
