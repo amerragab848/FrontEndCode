@@ -764,6 +764,14 @@ table edition
   padding-bottom: 40px;
     display: block;
 }
+.SummeriesContainer .SummeriesContainerContent {
+    padding: 0;
+    padding-top: 50px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content {
+  width: 230px;
+  padding: 0 20px;
+}
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
     position: absolute;
     bottom: 15px;
@@ -921,3 +929,12 @@ text-transform: capitalize
 .numcursor{
   cursor: pointer;
 }
+.panel {
+    margin-bottom: 25px;
+}
+.App.react-tabs__tab-panel--selected {
+  padding-top: 35px;
+}
+.highcharts-container {
+    margin: auto;
+  }
