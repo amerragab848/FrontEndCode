@@ -12441,32 +12441,6 @@ table edition
 .flexForm label {
   margin-right: 15px;
 } 
-<<<<<<< HEAD
-.UserImg .dropdownContent .menu.center.left{
-  display: none;
-  min-width: 185px !important;
-}
-.UserImg .dropdownContent.active .menu.center.left{
-  display: block !important;
-}
-.rodal {
-  z-index: 9999999;
-}
-.logOutMsg .contentName {
-  padding-bottom: 40px;
-    display: block;
-}
-.UserImg .dropdownContent .item .ui.checkbox.radio.radioBoxBlue {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-.UserImg .dropdownContent .item .ui.checkbox.radio.radioBoxBlue label{
-  font-size: 12px;
-  padding-left: 24px;
-  cursor: pointer;
-}
-=======
   
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
     position: absolute;
@@ -12486,4 +12460,3 @@ table edition
   align-items: center;
   text-transform: capitalize !important
 }
->>>>>>> 0eb0c4b7bacb936df8cfa0e59da3f07448b61823

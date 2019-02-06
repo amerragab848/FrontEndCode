@@ -17,7 +17,7 @@ import Upload from './Componants/OptionsPanels/UploadAttachment'
 import WFApproval from './Componants/OptionsPanels/wfApproval'
 import SendToInbox from './Componants/OptionsPanels/SendToInbox'
 import PrivacySetting from './Componants/User/PrivacySetting '
-
+import UploadSignture from './Componants/User/uploadSigniture'
 
 import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
@@ -47,9 +47,10 @@ class App extends Component {
       : <Login />
 
     return (
-      <div>
-        {showComp}
-      </div>
+      <UploadSignture />
+      // <div>
+      //   {showComp}
+      // </div>
     );
   }
 }

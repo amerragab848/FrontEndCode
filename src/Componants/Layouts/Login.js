@@ -109,9 +109,7 @@ class Login extends Component {
                         if (primeData.appComponants) {
                             tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
                         }
-                        if (primeData.appComponants) {
-                            tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
-                        }
+                    
                     }) 
                    window.location.reload();
                 })
