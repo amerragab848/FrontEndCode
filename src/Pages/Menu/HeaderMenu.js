@@ -9,6 +9,7 @@ import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
 import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
+import config from "../../Services/Config";
 import "../../Styles/css/font-awesome.min.css";
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -21,7 +22,8 @@ class HeaderMenu extends Component {
     super(props);
 
     this.state = {
-      contactName: "Ahmed Salah",
+      contactName: this.props.contactName,
+      profilePath: this.props.profilePath?this.props.profilePath: Img,
       activeClass: false,
       logOut: false,
       languageSelected: "en",
@@ -38,15 +40,9 @@ class HeaderMenu extends Component {
   };
   userLogOut = () => {
     this.setState({
-      logOut: !this.state.logOut
+      logOut: true
     });
-  };
-
-  closeMessage = () => {
-    this.setState({
-      logOut: false
-    });
-  };
+  }; 
 
   handleChange(event) {
     localStorage.setItem("lang", event.target.value);
@@ -66,6 +62,10 @@ class HeaderMenu extends Component {
     localStorage.clear();
     window.location.reload();
   }
+
+  onCloseModal = () => {
+    this.setState({ logOut: false });
+  };
 
   render() {
     return (
@@ -123,7 +123,7 @@ class HeaderMenu extends Component {
                     onClick={this.openProfile}
                   >
                     <figure className="zero avatarProfile onlineAvatar">
-                      <img alt="" title="" src={Img} />
+                      <img alt="" title="" src={this.state.profilePath} />
                       <span className="avatarStatusCircle" />
                     </figure>
                     <span className="profileName">
@@ -204,12 +204,13 @@ class HeaderMenu extends Component {
           </header>
         </div>
         {this.state.logOut ? (
-          <ConfirmationModal
-              closed={this.userLogOut}
+          <ConfirmationModal 
+              closed={this.onCloseModal} 
               showDeleteModal={this.state.logOut}
-              clickHandlerCancel={this.closeMessage}
+              clickHandlerCancel={this.onCloseModal}
               clickHandlerContinue={()=> this.logOutHandler()}
               title="You Will Be Missed, Are You Sure Want to Leave US?"
+              buttonName="submit"
             />
         ) : null}
       </div>
