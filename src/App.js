@@ -22,11 +22,7 @@ import "./Styles/scss/en-us/reactCss.css";
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
  
 import PrivacySetting from './Componants/User/PrivacySetting '
-<<<<<<< HEAD
-import TimesheetUser from './Componants/User/Timesheet'
-=======
 import UploadSignture from './Componants/User/uploadSigniture'
->>>>>>> 46cdaefe28c3b07d107c39e68ed7c9afaf2e1678
 
 import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
