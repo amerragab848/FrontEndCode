@@ -4,8 +4,10 @@ import ip_public from "../IP_Configrations.json";
 import CryptoJS from 'crypto-js';
 
 let userPermissions =window.localStorage.getItem("permissions")? CryptoJS.enc.Base64.parse(window.localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8):[];
-
 let contactName="Admin";
+let iscompnay=false; 
+let authorize=false; 
+let wfSettings={};
 
 export default class Config {
 
@@ -14,14 +16,14 @@ export default class Config {
 	}
 
 	static getPermissions() { 
-	    var permissions =userPermissions;// CryptoJS.enc.Base64.parse(window.localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8);
+	    var permissions =userPermissions;
 	    userPermissions=permissions;
 		return permissions;
 	}
 
 	static IsAllow(code) {
 	     
-	    let isCompany = true;
+	    let isCompany = iscompnay;
 	      
 	    if (isCompany === false) {
 	        let isAllowed = userPermissions.indexOf(code);

@@ -22,7 +22,10 @@ class Menu extends Component {
        config.contactName = result.contactName; 
        this.setState({
          contactName: result.contactName,
-         profilePath: config.getPublicConfiguartion().downloads+ "/"+result.profilePath
+         profilePath: config.getPublicConfiguartion().downloads+ "/"+result.profilePath,
+         iscompnay: result.isCompany,
+         authorize: result.authorize,
+         wfSettings:result.wfSettings
        });
     });
 

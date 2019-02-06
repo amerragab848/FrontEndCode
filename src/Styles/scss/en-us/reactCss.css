@@ -764,6 +764,14 @@ table edition
   padding-bottom: 40px;
     display: block;
 }
+.SummeriesContainer .SummeriesContainerContent {
+    padding: 0;
+    padding-top: 50px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content {
+  width: 230px;
+  padding: 0 20px;
+}
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
     position: absolute;
     bottom: 15px;
@@ -880,7 +888,7 @@ text-transform: capitalize
   flex-direction: 'row';
   flex-Wrap: 'wrap';
   margin-Top: 16
-};
+}
 .thumb {
   display: 'inline-flex';
   border-radius: 2;
@@ -891,7 +899,7 @@ text-transform: capitalize
   height: 100;
   padding: 4;
   box-Sizing: 'border-box'
-};
+}
 
 .thumbInner{
   display: 'flex';
@@ -903,7 +911,8 @@ text-transform: capitalize
   display: 'block';
   width: 'auto';
   height: '100%'
-};
+}
+
 .disNone {
   display: none;
 }
@@ -1020,6 +1029,12 @@ text-transform: capitalize
 
 .numcursor{
   cursor: pointer;
+} 
+.panel {
+    margin-bottom: 25px;
+}
+.App.react-tabs__tab-panel--selected {
+  padding-top: 35px;
 }
 .a7medImg {
   overflow: hidden;
@@ -1049,3 +1064,6 @@ text-transform: capitalize
   width: auto;
   height: 100%
 }
+.highcharts-container {
+    margin: auto;
+  } 

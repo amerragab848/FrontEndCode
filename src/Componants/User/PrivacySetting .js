@@ -9,8 +9,6 @@ import { AlertError } from 'material-ui/svg-icons';
 import eyepw from '../../Styles/images/eyepw.svg';
 import NotifiMsg from '../publicComponants/NotifiMsg' 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
-let showDeiv = "popUp basic-popUp disNone";
  
 class PrivacySetting extends Component {
     constructor(props) { 
