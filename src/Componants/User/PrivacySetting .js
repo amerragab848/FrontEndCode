@@ -334,23 +334,6 @@ class PrivacySetting extends Component {
                                                 </div>
                                             </div>
 
-<<<<<<< HEAD
-                                    <div className="fullWidthWrapper">
-                                        {this.state.isLoading === false ? (
-                                          
-                                            <button 
-                                                className="primaryBtn-1 btn largeBtn"
-                                                type="submit"  >                            
-                                                 {Resources["update"][currentLanguage]}
-                                            </button>
-                                           
-                                        ) : 
-                                            (
-                                               
-                                                <button className="primaryBtn-1 btn largeBtn" 
-                                                 
-                                                >
-=======
                                         </div>
      
                                         <div className="fullWidthWrapper">
@@ -363,7 +346,6 @@ class PrivacySetting extends Component {
                                             ) : 
                                                 (
                                                 <button className="primaryBtn-1 btn largeBtn disabled">
->>>>>>> 46cdaefe28c3b07d107c39e68ed7c9afaf2e1678
                                                     <div className="spinner">
                                                         <div className="bounce1" />
                                                         <div className="bounce2" />
