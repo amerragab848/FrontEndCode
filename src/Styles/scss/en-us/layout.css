@@ -8951,3 +8951,10 @@ ul {
   z-index: 99999;
 }
 /*# sourceMappingURL=layout.css.map */
+.mainContainer {
+  position: relative;
+}
+.dashboardLoading {
+  position: absolute !important;
+  top:0 !important;
+}
