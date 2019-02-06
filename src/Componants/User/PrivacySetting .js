@@ -12,10 +12,20 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 let showDeiv = "popUp basic-popUp disNone";
 
+//let IsAuthorize= Api.IsAuthorized ===true? true : window.location.href('/');
+
 class PrivacySetting extends Component {
     constructor(props) { 
-        super(props)
-        //console.log(JSON.stringify(config.getPublicConfiguartion().accountCompanyId));
+        super(props) 
+        
+        // if(Api.IsAuthorized === false){
+        //   //window.location.href('/');
+        //    this.props.history.push({
+        //     pathname: "/"
+        //   });
+        // }
+
+        alert(JSON.stringify(config.getPayload()));
         this.state = {
             obj: {
                     currentPassword: '',

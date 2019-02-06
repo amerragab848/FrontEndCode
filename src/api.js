@@ -3,6 +3,7 @@ let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
 
 const Domain = config.static
+
 export default class Api {
 
     static headers() {
@@ -20,8 +21,7 @@ export default class Api {
     }
     static post(route, params) {
         return this.xhr(route, params, 'POST');
-    }
-
+    } 
 
     static xhr(route, params, verb) {
         const host = Domain + '/PM/api/Procoor/';

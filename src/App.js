@@ -36,7 +36,7 @@ import Route from './router';
 import api from './api';
 
 const IsAuthorize = api.IsAuthorized()
-
+ 
 class App extends Component {
   render() {
     const showComp = IsAuthorize ?

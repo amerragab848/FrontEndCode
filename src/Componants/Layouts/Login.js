@@ -3,7 +3,7 @@ import Api from "../../api";
 import { withRouter } from "react-router-dom";
 import tokenStore from '../../tokenStore'
 import language from "../../resources.json";
-import config from "../../IP_Configrations.json";
+//import config from "../../IP_Configrations.json";
 import CryptoJS from 'crypto-js';
 import Cookies from 'react-cookies'
 import Router from "../../router";
@@ -11,6 +11,9 @@ import platform from 'platform'
 import eyeShow from "../../Styles/images/eyepw.svg"
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+
+import config from "../../Services/Config";
+
 const _ = require('lodash')
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -21,18 +24,23 @@ const validationSchema = Yup.object().shape({
 })
 
 
+const publicConfiguarion= config.getPublicConfiguartion();
 
 class Login extends Component {
-    constructor(props) {
+
+    constructor(props) { 
+        
         super(props);
         this.state = {
             type: false
         }
+
+        alert(JSON.stringify(config.getPayload()));
     }
 
     loginHandler = (input) => {
-        let companyId = config["accountCompanyId"]
-        let loginServer = config["loginServer"]
+        let companyId =publicConfiguarion.accountCompanyId// config["accountCompanyId"]
+        let loginServer =publicConfiguarion.loginServer// config["loginServer"]
         let url = '/token'
         let param = 'grant_type=password&username=' + input.userName + '&password=' + input.password + '&companyId=' + companyId
         Api.Login(loginServer, url, param).then(Response => {
@@ -60,15 +68,14 @@ class Login extends Component {
                         payLoad.uty = result.uty
 
                     }
-                    console.log(payLoad);
-
+                     
                     let _payLoad = CryptoJS.enc.Utf8.parse(JSON.stringify(payLoad))
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(_payLoad)
                     tokenStore.setItem('claims', encodedPaylod)
-                    console.log(encodedPaylod);
+                   
                     let browserObj = this.createBrowserObject()
                     let cookie = this.getCookie();
-                    if (config.canSendAlert) {
+                    if (publicConfiguarion.canSendAlert) {
                         browserObj.token = cookie
                         if (browserObj.publicIP === undefined) {
                             Api.getPublicIP("https://ipapi.co/json").then(res => {
@@ -108,10 +115,7 @@ class Login extends Component {
                         }
                         if (primeData.appComponants) {
                             tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
-                        }
-                        if (primeData.appComponants) {
-                            tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
-                        }
+                        } 
                     }) 
                    window.location.reload();
                 })
@@ -152,9 +156,9 @@ class Login extends Component {
     toggle = () => {
         const currentType = this.state.type;
         this.setState({ type: !currentType })
-
-
+ 
     }
+
     render() {
         return (
             <div className=" loginWrapper">
