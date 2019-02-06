@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-
-import PrivacySetting from './Componants/User/PrivacySetting '
-import DashBoard from "./Pages/DashBoard";
-import Menu from "./Pages/Menu/Menu"; 
-import Letter from "./Pages/Communication/Letter"; 
-import Login from './Componants/Layouts/Login'
-import Route from './router';
-import api from './api';
-
+ 
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css";
 
@@ -28,7 +20,18 @@ import "./Styles/scss/en-us/reactCss.css";
 // import WfApproval from './Componants/OptionsPanels/wfApproval';
 // import PopUp from './Componants/OptionsPanels/OptionContainer' 
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
+ 
+import PrivacySetting from './Componants/User/PrivacySetting '
+import UploadSignture from './Componants/User/uploadSigniture'
 
+import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
+import DashBoard from "./Pages/DashBoard";
+import Menu from "./Pages/Menu/Menu"; 
+import Letter from "./Pages/Communication/Letter"; 
+import Login from './Componants/Layouts/Login'
+import Route from './router';
+import api from './api';
+ 
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -42,6 +45,7 @@ class App extends Component {
       : <Login />
 
     return (
+      //<UploadSignture />
       <div>
         {showComp}
       </div>

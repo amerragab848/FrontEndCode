@@ -9,12 +9,12 @@ export default class Api {
     static headers() {
         return {
             'Accept': 'application/json',
-            'Content-Type': 'application/json', 
+            'Content-Type': 'application/json',
             'dataType': 'json',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': localStorage.getItem('userToken')
         }
-    } 
+    }
 
     static get(route) {
         return this.xhr(route, null, 'GET');
@@ -49,7 +49,7 @@ export default class Api {
             }
             else if (resp.status === 401) {
                 localStorage.removeItem('userToken')
-                json =  "";
+                json = "";
 
                 return json;
             }
@@ -130,9 +130,11 @@ export default class Api {
         const url = `${host}${route}`;
         let headers = {}
         headers.Authorization = localStorage.getItem('userToken')
-        headers.docid = header.docId
-        headers.doctypeid = header.docTypeId
-        headers.parentid = header.parentId
+        if (header) {
+            headers.docid = header.docId
+            headers.doctypeid = header.docTypeId
+            headers.parentid = header.parentId
+        }
         fetch(url, {
             method: 'POST',
             headers: {
@@ -141,13 +143,13 @@ export default class Api {
             },
             body: params
         }).then(
-            response => response.json()
+            response => response?response.json():''
         )
-    } 
+    }
 
-    static getPassword(route, password) { 
-        const host = Domain+'/PM/api/Procoor/'; 
-  
+    static getPassword(route, password) {
+        const host = Domain + '/PM/api/Procoor/';
+
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
@@ -195,8 +197,8 @@ export default class Api {
             method: 'Post'
         }, params ? {
             body: (params)
-        } : null); 
-        
+        } : null);
+
         options.headers = {
             'Accept': '*/*',
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -237,7 +239,7 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-                json =  resp.json();
+                json = resp.json();
 
                 return json;
             }
@@ -256,12 +258,12 @@ export default class Api {
 
         }).then(json => (json.result ? json.result : json));
     }
-   
-    static IsAuthorized(){
-        let authorize=false;
-        if(localStorage.getItem('userToken') ){
-            authorize=true;
-        } 
+
+    static IsAuthorized() {
+        let authorize = false;
+        if (localStorage.getItem('userToken')) {
+            authorize = true;
+        }
         return authorize;
     }
 }
