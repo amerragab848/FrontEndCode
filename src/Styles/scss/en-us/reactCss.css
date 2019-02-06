@@ -917,3 +917,7 @@ text-transform: capitalize
 .ui.modal>.actions {
   border-top: none !important;
 }
+
+.numcursor{
+  cursor: pointer;
+}
