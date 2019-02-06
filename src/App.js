@@ -22,7 +22,6 @@ import "./Styles/scss/en-us/reactCss.css";
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
  
 import PrivacySetting from './Componants/User/PrivacySetting '
-import UploadSignture from './Componants/User/uploadSigniture'
 
 import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
