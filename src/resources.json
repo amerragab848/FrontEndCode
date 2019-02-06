@@ -7671,5 +7671,9 @@
   "submit": {
     "en": "Submit",
     "ar": "تنفيذ"
-  }    
+  } , 
+  "chooseFile": {
+    "en": "Choose File",
+    "ar": "اختر الملف"
+  } 
 }
