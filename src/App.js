@@ -31,7 +31,7 @@ import Letter from "./Pages/Communication/Letter";
 import Login from './Componants/Layouts/Login'
 import Route from './router';
 import api from './api';
-
+import User from './Componants/User/index'
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -45,7 +45,7 @@ class App extends Component {
       : <Login />
 
     return (
-      <UploadSignture />
+      <User />
       // <div>
       //   {showComp}
       // </div>
