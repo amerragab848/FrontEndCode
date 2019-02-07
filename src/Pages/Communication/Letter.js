@@ -351,7 +351,7 @@ class Letter extends Component {
 
     const btnExport= this.state.isLoading === false ? 
             <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-            : <LoadingSection /> ;
+            : null ;
 
     const ComponantFilter= this.state.isLoading === false ?   
                 <Filter
@@ -359,7 +359,7 @@ class Letter extends Component {
                   apiFilter={this.state.apiFilter}
                   filterMethod={this.filterMethodMain}
                   key={this.state.docType}
-                />: <LoadingSection />;
+                />: null;
 
     return (
       <div className="mainContainer">
@@ -471,7 +471,9 @@ class Letter extends Component {
                 <img src={MinimizeH} alt="" />
               </div>
             </div>
-            {dataGrid} 
+            <div className="grid-container">
+              {dataGrid}
+            </div>
           </div>
         </div>
         <div>

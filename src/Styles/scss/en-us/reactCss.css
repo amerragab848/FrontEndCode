@@ -726,9 +726,7 @@ table edition
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   margin-right: 0 !important;
 } 
-.gridfillter-container .primaryBtn-2.btn.smallBtn {
-    margin-top: 0 !important;
-}
+ 
 .gridfillter-container .fillter-status-container .fillter-item-c {
     margin-bottom: 0px !important;
 } 
@@ -1074,39 +1072,7 @@ text-transform: capitalize
 .sayedWrapper {
   position: relative;
 }
-.approveReject {
-  display: flex;
-  width: 100%;
-  border: 1px solid #A8B0BF;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 20px;
-}
-.reject_approve {
-  display: flex;
-  justify-content: center
-}
-.reject_approve h3 {
-  color: #252833;
-    line-height: 1.18;
-    letter-spacing: -1.1px;
-    font-family: font-b;
-    font-size: 34px;
-}
-.reject_approve span {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.reject_approve span:first-child {
-  margin-right: 15px;
-}
-.reject_approve span img {
-  width: 100%;
+
+.grid-container {
+  min-height: 650px;
 }
