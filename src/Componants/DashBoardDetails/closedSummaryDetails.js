@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
-
+import "../../Styles/scss/en-us/layout.css"; 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
-import moment from "moment";
-
+import moment from "moment"; 
 import Resources from "../../resources.json";
 
 let currentLanguage =
@@ -19,6 +19,10 @@ const {
   MultiSelectFilter,
   SingleSelectFilter
 } = Filters;
+
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
 
 class ClosedSummaryDetails extends Component {
   constructor(props) {
@@ -89,7 +93,8 @@ class ClosedSummaryDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       }
     ];
 
@@ -133,6 +138,7 @@ class ClosedSummaryDetails extends Component {
     ];
 
     this.state = {
+      pageTitle:Resources["closedSummary"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -175,25 +181,60 @@ class ClosedSummaryDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
+
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">
-              {Resources["closedSummary"][currentLanguage]}
-            </h3>
-            <span>45</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+            <h3 className="zero">{this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -239,60 +280,36 @@ class ClosedSummaryDetails extends Component {
                   </g>
                 </svg>
               </span>
-
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
-                  <span className="text">
-                    <span className="show-fillter">
-                      {Resources["howFillter"][currentLanguage]}
-                    </span>
-                    <span className="hide-fillter">
-                      {Resources["hideFillter"][currentLanguage]}
-                    </span>
+                  <span className="show-fillter">
+                    {Resources["howFillter"][currentLanguage]}
+                  </span>
+                  <span className="hide-fillter">
+                    {Resources["hideFillter"][currentLanguage]}
                   </span>
                 </span>
               ) : (
                 <span className="text">
-                  <span className="text">
-                    <span className="show-fillter">
-                      {Resources["howFillter"][currentLanguage]}
-                    </span>
-                    <span className="hide-fillter">
-                      {Resources["hideFillter"][currentLanguage]}
-                    </span>
+                  <span className="show-fillter">
+                    {Resources["howFillter"][currentLanguage]}
+                  </span>
+                  <span className="hide-fillter">
+                    {Resources["hideFillter"][currentLanguage]}
                   </span>
                 </span>
               )}
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+          {btnExport}
+          </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
         </div>
-
         <div>{dataGrid}</div>
       </div>
     );

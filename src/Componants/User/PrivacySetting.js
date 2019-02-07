@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Api from '../../api' 
 import config from "../../Services/Config";
 
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import LoadingSection from "../publicComponants/LoadingSection";
 import Resources from '../../resources.json';
 import { Formik, Form,withFormik } from 'formik';
 import { AlertError } from 'material-ui/svg-icons';

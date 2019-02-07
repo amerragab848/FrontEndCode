@@ -64,7 +64,7 @@ class Login extends Component {
                         payLoad.sub = result.sub
                         payLoad.ulp = result.ulp
                         payLoad.uty = result.uty
-
+                        payLoad.aci = result.aci 
                     }
                      
                     let _payLoad = CryptoJS.enc.Utf8.parse(JSON.stringify(payLoad))

@@ -4493,7 +4493,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "meetingMinutesFilter",
+    "filterApi": "MeetingMinutesFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -4618,9 +4618,9 @@
     "documentViewPermission": 110,
     "documentPermission": 111,
     "documentApi": {
-      "get": "getCommunicationMeetingMinutesExternal",
-      "getCustom": "getCommunicationMeetingMinutesExternalCustom",
-      "delete": "communicationMeetingMinutesMultipleDelete"
+      "get": "GetCommunicationMeetingMinutes",
+      "getCustom": "GetCommunicationMeetingMinutesExternalCustom",
+      "delete": "CommunicationMeetingMinutesMultipleDelete"
     },
     "documentColumns": [
       {
@@ -4876,7 +4876,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "meetingMinutesFilter",
+    "filterApi": "MeetingMinutesFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -5001,9 +5001,9 @@
     "documentViewPermission": 619,
     "documentPermission": 620,
     "documentApi": {
-      "get": "getContractsBoq",
-      "getCustom": "getContractsBoqCustom",
-      "delete": "contractsBoqMultipleDelete"
+      "get": "GetContractsBoq",
+      "getCustom": "GetContractsBoqCustom",
+      "delete": "ContractsBoqMultipleDelete"
     },
     "documentColumns": [
       {
@@ -5187,7 +5187,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "boqFilter",
+    "filterApi": "BoqFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -5274,9 +5274,9 @@
     "documentViewPermission": 160,
     "documentPermission": 161,
     "documentApi": {
-      "get": "getContractsChangeOrder",
-      "getCustom": "getContractsChangeOrderCustom",
-      "delete": "contractsChangeOrderMultipleDelete"
+      "get": "GetContractsChangeOrder",
+      "getCustom": "GetContractsChangeOrderCustom",
+      "delete": "ContractsChangeOrderMultipleDelete"
     },
     "documentColumns": [
       {
@@ -5508,7 +5508,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "changeOrderFilter",
+    "filterApi": "ChangeOrderFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -5619,9 +5619,9 @@
     "documentViewPermission": 3136,
     "documentPermission": 3137,
     "documentApi": {
-      "get": "getContractsClientModifications",
-      "getCustom": "getContractsClientModificationsCustom",
-      "delete": "contractsClientModificationMultipleDelete"
+      "get": "GetContractsClientModifications",
+      "getCustom": "GetContractsClientModificationsCustom",
+      "delete": "ContractsClientModificationMultipleDelete"
     },
     "documentColumns": [
       {
@@ -5853,7 +5853,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "clientModificationFilter",
+    "filterApi": "ClientModificationFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -5961,9 +5961,9 @@
     "documentViewPermission": 142,
     "documentPermission": 143,
     "documentApi": {
-      "get": "getContracts",
-      "getCustom": "getContractsCustom",
-      "delete": "deleteMultipleContracts"
+      "get": "GetContractsByProjectId",
+      "getCustom": "GetContractsByProjectIdCustom",
+      "delete": "DeleteMultipleContractsById"
     },
     "documentColumns": [
       {
@@ -6231,7 +6231,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "projectContractFilter",
+    "filterApi": "ProjectContractFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -6329,9 +6329,9 @@
     "documentViewPermission": 137,
     "documentPermission": 138,
     "documentApi": {
-      "get": "getContractsBoqShowInCostCodingTree",
+      "get": "GetContractsBoqShowInCostCodingTree",
       "getCustom": "getContractsBoqShowInCostCodingTreeCustom",
-      "delete": "deleteCostCodeTree"
+      "delete": "DeleteCostCodeTree"
     },
     "documentColumns": [
       {
@@ -6431,7 +6431,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "boqFilter",
+    "filterApi": "BoqFilter",
     "filters": [
       {
         "name": "subject",
@@ -6494,9 +6494,9 @@
     "documentViewPermission": 196,
     "documentPermission": 197,
     "documentApi": {
-      "get": "getContractsInvoicesForPo",
-      "getCustom": "getContractsInvoicesForPo",
-      "delete": "deleteMultipleContractsInvoicesForPo"
+      "get": "GetContractsInvoicesForPoByProjectId",
+      "getCustom": "GetContractsInvoicesForPoByProjectId",
+      "delete": "DeleteMultipleContractsInvoicesForPo"
     },
     "documentColumns": [
       {
@@ -6752,7 +6752,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "invoiceForPoFilter",
+    "filterApi": "InvoiceForPoFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -6874,9 +6874,9 @@
     "documentViewPermission": 151,
     "documentPermission": 152,
     "documentApi": {
-      "get": "getContractsPco",
-      "getCustom": "getContractsPcoCustom",
-      "delete": "deleteMultipleContractsPco"
+      "get": "GetContractsPcoByProjectId",
+      "getCustom": "GetContractsPcoByProjectIdCustom",
+      "delete": "DeleteMultipleContractsPco"
     },
     "documentColumns": [
       {
@@ -7156,7 +7156,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "contractPcoFilter",
+    "filterApi": "ContractPcoFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -7290,9 +7290,9 @@
     "documentViewPermission": 169,
     "documentPermission": 170,
     "documentApi": {
-      "get": "getContractsProcurement",
-      "getCustom": "getContractsProcurementCustom",
-      "delete": "deleteMultipleContractsProcurement"
+      "get": "GetContractsProcurementsByProjectId",
+      "getCustom": "GetContractsProcurementCustom",
+      "delete": "DeleteMultipleContractsProcurementById"
     },
     "documentColumns": [
       {
@@ -7464,7 +7464,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "contractsProcurementFilter",
+    "filterApi": "ContractsProcurementFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -7541,9 +7541,9 @@
     "documentViewPermission": 23,
     "documentPermission": 24,
     "documentApi": {
-      "get": "getContractsProjectIssues",
-      "getCustom": "getContractsProjectIssuesCustom",
-      "delete": "contractsProjectIssuesMultipleDelete"
+      "get": "GetContractsProjectIssues",
+      "getCustom": "GetContractsProjectIssuesCustom",
+      "delete": "ContractsProjectIssuesMultipleDelete"
     },
     "documentColumns": [
       {
@@ -7667,7 +7667,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "projectIssuesFilter",
+    "filterApi": "ProjectIssuesFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -7744,9 +7744,9 @@
     "documentViewePermission": 178,
     "documentPermission": 179,
     "documentApi": {
-      "get": "getContractsPurchaseOrdersWithItems",
-      "getCustom": "getContractsPurchaseOrdersWithItemsCustom",
-      "delete": "contractsPurchaseOrderMultipleDelete"
+      "get": "GetContractsPurchaseOrdersWithItems",
+      "getCustom": "GetContractsPurchaseOrdersWithItemsCustom",
+      "delete": "ContractsPurchaseOrderMultipleDelete"
     },
     "documentColumns": [
       {
@@ -8050,7 +8050,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "contractsPurchaseOrderFilter",
+    "filterApi": "ContractsPurchaseOrderFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -8192,9 +8192,9 @@
     "documentDeletePermission": 767,
     "documentPermission": 769,
     "documentApi": {
-      "get": "getContractsQs",
-      "getCustom": "getContractsQsCustom",
-      "delete": "contractsQsMultipleDelete"
+      "get": "GetContractsQs",
+      "getCustom": "GetContractsQsCustom",
+      "delete": "ContractsQsMultipleDelete"
     },
     "documentColumns": [
       {
@@ -8378,7 +8378,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "contractsQsFilter",
+    "filterApi": "ContractsQsFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -8461,9 +8461,9 @@
     "documentViewPermission": 187,
     "documentPermission": 188,
     "documentApi": {
-      "get": "getContractsRequestPayments",
-      "getCustom": "getContractsRequestPaymentsCustom",
-      "delete": "contractsRequestPaymentsMultipleDelete"
+      "get": "GetContractsRequestPayments",
+      "getCustom": "GetContractsRequestPaymentsCustom",
+      "delete": "ContractsRequestPaymentsMultipleDelete"
     },
     "documentColumns": [
       {
@@ -8719,7 +8719,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "requestPaymentFilter",
+    "filterApi": "RequestPaymentFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -8837,9 +8837,9 @@
     "documentDeletePermission": 118,
     "documentPermission": 120,
     "documentApi": {
-      "get": "getContractsSiteRequestWithItems",
-      "getCustom": "getContractsSiteRequestWithItemsCustom",
-      "delete": "deleteMultipleContractsSiteRequest"
+      "get": "GetContractsSiteRequestByProjectIdWithItems",
+      "getCustom": "GetContractsSiteRequestWithItemsCustom",
+      "delete": "DeleteMultipleContractsSiteRequest"
     },
     "documentColumns": [
       {
@@ -9119,7 +9119,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "siteRequestFilter",
+    "filterApi": "SiteRequestFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -9257,9 +9257,9 @@
     "documentViewPermission": 3165,
     "documentPermission": 3166,
     "documentApi": {
-      "get": "getContractsVariationRequest",
-      "getCustom": "getContractsVariationRequestCustom",
-      "delete": "deleteMultipleContractsVariationRequest"
+      "get": "GetContractsVariationRequestByProjectId",
+      "getCustom": "GetContractsVariationRequestByProjectIdCustom",
+      "delete": "DeleteMultipleContractsVariationRequest"
     },
     "documentColumns": [
       {
@@ -9443,7 +9443,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "variationRequestFilter",
+    "filterApi": "VariationRequestFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -9532,9 +9532,9 @@
     "documentViewPermission": 3519,
     "documentPermission": 3520,
     "documentApi": {
-      "get": "getLogsDrawingsModificationByProjectId",
-      "getCustom": "getLogsDrawingsModificationByProjectIdCustom",
-      "delete": "deleteLogDrawingMultiple"
+      "get": "GetLogsDrawingsModificationByProjectId",
+      "getCustom": "GetLogsDrawingsModificationByProjectIdCustom",
+      "delete": "DeleteLogDrawingMultiple"
     },
     "documentColumns": [
       {
@@ -9766,7 +9766,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "logsDrawingsFilter",
+    "filterApi": "LogsDrawingsFilter",
     "filters": [
       {
         "name": "status",
@@ -9874,9 +9874,9 @@
     "documentViewPermission": 205,
     "documentPermission": 206,
     "documentApi": {
-      "get": "getLogsDrawingsByProjectId",
-      "getCustom": "getLogsDrawingsByProjectIdCustom",
-      "delete": "deleteLogDrawingMultiple"
+      "get": "GetLogsDrawingsByProjectId",
+      "getCustom": "GetLogsDrawingsByProjectIdCustom",
+      "delete": "DeleteLogDrawingMultiple"
     },
     "documentColumns": [
       {
@@ -10108,7 +10108,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "logsDrawingsFilter",
+    "filterApi": "LogsDrawingsFilter",
     "filters": [
       {
         "name": "status",
@@ -10218,9 +10218,9 @@
     "documentViewPermission": 304,
     "documentPermission": 305,
     "documentApi": {
-      "get": "getDesignDrawingList",
-      "getCustom": "getDesignDrawingListCustom",
-      "delete": "deleteDesignDrawingListMultiple"
+      "get": "GetDesignDrawingListsByProjectId",
+      "getCustom": "GetDesignDrawingListsByProjectIdCustom",
+      "delete": "DeleteDesignDrawingListMultiple"
     },
     "documentColumns": [
       {
@@ -10308,7 +10308,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "designDrawingListFilter",
+    "filterApi": "DesignDrawingListFilter",
     "filters": [
       {
         "name": "status",
@@ -10370,9 +10370,9 @@
     "documentViewPermission": 313,
     "documentPermission": 314,
     "documentApi": {
-      "get": "getDesignDrawingPhases",
+      "get": "GetDesignDrawingPhases",
       "getCustom": "getDesignDrawingPhasesCustom",
-      "delete": "designDrawingPhasesDeleteMultiple"
+      "delete": "DesignDrawingPhasesDeleteMultiple"
     },
     "documentColumns": [
       {
@@ -10484,7 +10484,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "designDrawingPhasesFilter",
+    "filterApi": "DesignDrawingPhasesFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -10559,9 +10559,9 @@
     "documentViewPermission": 214,
     "documentPermission": 215,
     "documentApi": {
-      "get": "getLogsDrawingsSets",
-      "getCustom": "getLogsDrawingsSetsCustom",
-      "delete": "deleteLogsDrawingsSetsMultiple"
+      "get": "GetLogsDrawingsSetssByProjectId",
+      "getCustom": "GetLogsDrawingsSetssByProjectIdCustom",
+      "delete": "DeleteLogsDrawingsSetsMultiple"
     },
     "documentColumns": [
       {
@@ -10721,7 +10721,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "logsDrawingsSetsFilter",
+    "filterApi": "LogsDrawingsSetsFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -10809,9 +10809,9 @@
     "documentViewPermission": 322,
     "documentPermission": 323,
     "documentApi": {
-      "get": "getDesignDrawingList",
-      "getCustom": "getDesignDrawingListCustom",
-      "delete": "deleteDesignDrawingList"
+      "get": "GetDesignDrawingListsByProjectId",
+      "getCustom": "GetDesignDrawingListsByProjectIdCustom",
+      "delete": "DeleteDesignDrawingList"
     },
     "documentColumns": [
       {
@@ -10911,7 +10911,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "designDrawingListFilter",
+    "filterApi": "DesignDrawingListFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -10976,9 +10976,9 @@
     "documentDeletePermission": 579,
     "documentPermission": 581,
     "documentApi": {
-      "get": "getEstimationBase",
-      "getCustom": "getEstimationBaseCustom",
-      "delete": "estimationBaseDeleteMultiple"
+      "get": "GetEstimationBase",
+      "getCustom": "GetEstimationBaseCustom",
+      "delete": "EstimationBaseDeleteMultiple"
     },
     "documentColumns": [
       {
@@ -11066,7 +11066,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "estimationBaseFilter",
+    "filterApi": "EstimationBaseFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -11122,9 +11122,9 @@
     "documentDeletePermission": 411,
     "documentPermission": 413,
     "documentApi": {
-      "get": "getProjectProjectsExpensessByProjectId",
-      "getCustom": "getProjectProjectsExpensessByProjectId",
-      "delete": "deleteProjectProjectsExpensesMultiple"
+      "get": "GetProjectProjectsExpensessByProjectId",
+      "getCustom": "GetProjectProjectsExpensessByProjectId",
+      "delete": "DeleteProjectProjectsExpensesMultiple"
     },
     "documentColumns": [
       {
@@ -11152,7 +11152,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "projectProjectsExpensesFilter",
+    "filterApi": "ProjectProjectsExpensesFilter",
     "filters": [
       {
         "name": "expenseType",
@@ -11178,9 +11178,9 @@
     "documentDeletePermission": 687,
     "documentPermission": 689,
     "documentApi": {
-      "get": "getEstimationBudgetfilesByProjectId",
-      "getCustom": "getEstimationBudgetfilesByProjectId",
-      "delete": "deleteEstimationBudgetfileMultiple"
+      "get": "GetEstimationBudgetfilesByProjectId",
+      "getCustom": "GetEstimationBudgetfilesByProjectId",
+      "delete": "DeleteEstimationBudgetfileMultiple"
     },
     "documentColumns": [
       {
@@ -11316,7 +11316,7 @@
         "exportDataType": "n"
       }
     ],
-    "filterApi": "estimationBudgetfileFilter",
+    "filterApi": "EstimationBudgetfileFilter",
     "filters": [
       {
         "name": "unit",
@@ -11397,9 +11397,9 @@
     "documentViewPermission": 594,
     "documentPermission": 595,
     "documentApi": {
-      "get": "getProjectEstimate",
-      "getCustom": "getProjectEstimateCustom",
-      "delete": "deleteProjectEstimateMultiple"
+      "get": "GetProjectEstimateByProjectId",
+      "getCustom": "GetProjectEstimateByProjectId",
+      "delete": "DeleteProjectEstimateMultiple"
     },
     "documentColumns": [
       {
@@ -11583,7 +11583,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "estimationProjectEstimateFilter",
+    "filterApi": "EstimationProjectEstimateFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -11664,9 +11664,9 @@
     "documentViewPermission": 572,
     "documentPermission": 573,
     "documentApi": {
-      "get": "getTenderAnalysis",
-      "getCustom": "getTenderAnalysisCustom",
-      "delete": "deleteTenderAnalysisMultiple"
+      "get": "GetTenderAnalysisByProjectId",
+      "getCustom": "GetTenderAnalysisByProjectIdCustom",
+      "delete": "DeleteTenderAnalysisMultiple"
     },
     "documentColumns": [
       {
@@ -11850,7 +11850,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "estimationTenderAnalysisFilter",
+    "filterApi": "EstimationTenderAnalysisFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -11932,9 +11932,9 @@
     "documentDeletePermission": 31,
     "documentPermission": 33,
     "documentApi": {
-      "get": "projectScheduleGet",
-      "getCustom": "projectScheduleGetCustom",
-      "delete": "deleteMultipleProjectSchedule"
+      "get": "ProjectScheduleGet",
+      "getCustom": "ProjectScheduleGetCustom",
+      "delete": "DeleteMultipleProjectSchedule"
     },
     "documentColumns": [
       {
@@ -12118,7 +12118,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "scheduleFilter",
+    "filterApi": "ScheduleFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -12201,9 +12201,9 @@
     "documentViewPermission": 585,
     "documentPermission": 586,
     "documentApi": {
-      "get": "getPrimaveraSchedule",
-      "getCustom": "getPrimaveraScheduleCustom",
-      "delete": "primaveraScheduleMultipleDelete"
+      "get": "GetPrimaveraSchedule",
+      "getCustom": "GetPrimaveraScheduleCustom",
+      "delete": "PrimaveraScheduleMultipleDelete"
     },
     "documentColumns": [
       {
@@ -12387,7 +12387,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "primaveraFilter",
+    "filterApi": "PrimaveraFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -12471,9 +12471,9 @@
     "documentViewPermission": 3150,
     "documentPermission": 3151,
     "documentApi": {
-      "get": "getLogsClientSelectionsByProjectId",
-      "getCustom": "getLogsClientSelectionsByProjectIdCustom",
-      "delete": "deleteMultipleLogsClientSelectionById"
+      "get": "GetLogsClientSelectionsByProjectId",
+      "getCustom": "GetLogsClientSelectionsByProjectIdCustom",
+      "delete": "DeleteMultipleLogsClientSelectionById"
     },
     "documentColumns": [
       {
@@ -12778,7 +12778,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "clientSelectionFilter",
+    "filterApi": "ClientSelectionFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -12925,9 +12925,9 @@
     "documentViewPermission": 268,
     "documentPermission": 269,
     "documentApi": {
-      "get": "getLogsDailyReports",
-      "getCustom": "getLogsDailyReportsCustom",
-      "delete": "deleteMultipleLogsDailyReports"
+      "get": "GetLogsDailyReportsByProjectId",
+      "getCustom": "GetLogsDailyReportsCustom",
+      "delete": "DeleteMultipleLogsDailyReports"
     },
     "documentColumns": [
       {
@@ -13099,7 +13099,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "dailyReportsFilter",
+    "filterApi": "DailyReportsFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -13178,9 +13178,9 @@
     "documentViewPermission": 259,
     "documentPermission": 260,
     "documentApi": {
-      "get": "getLogsEquipmentsDelivery",
-      "getCustom": "getLogsEquipmentsDeliveryCustom",
-      "delete": "deleteMultipleLogsEquipmentsDelivery"
+      "get": "GetLogsEquipmentsDelivery",
+      "getCustom": "GetLogsEquipmentsDeliveryCustom",
+      "delete": "DeleteMultipleLogsEquipmentsDeliveryById"
     },
     "documentColumns": [
       {
@@ -13352,7 +13352,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "logsEquipmentsDeliveryFilter",
+    "filterApi": "LogsEquipmentsDeliveryFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -13429,9 +13429,9 @@
     "documentViewPermission": 369,
     "documentPermission": 370,
     "documentApi": {
-      "get": "getInspectionRequest",
-      "getCustom": "getInspectionRequestCustom",
-      "delete": "deleteMultipleInspectionRequest"
+      "get": "GetInspectionRequestByProjectId",
+      "getCustom": "GetInspectionRequestByProjectIdCustom",
+      "delete": "DeleteMultipleInspectionRequest"
     },
     "documentColumns": [
       {
@@ -13759,7 +13759,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "communicationRequestFilter",
+    "filterApi": "CommunicationRequestFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -13913,8 +13913,8 @@
     "documentViewPermission": 241,
     "documentPermission": 242,
     "documentApi": {
-      "get": "getMaterialDelivery",
-      "getCustom": "getMaterialDeliveryCustom",
+      "get": "GetMaterialDeliveryByProjectId",
+      "getCustom": "GetMaterialDeliveryCustom",
       "delete": "multipleDeleteMaterialDelivery"
     },
     "documentColumns": [
@@ -14099,7 +14099,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "logsMaterialDeliveryFilter",
+    "filterApi": "LogsMaterialDeliveryFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -14182,9 +14182,9 @@
     "documentViewPermission": 933,
     "documentPermission": 934,
     "documentApi": {
-      "get": "getMaterialInspectionRequest",
-      "getCustom": "getMaterialInspectionRequestCustom",
-      "delete": "deleteMultipleMaterialInspectionRequest"
+      "get": "GetMaterialInspectionRequest",
+      "getCustom": "GetMaterialInspectionRequestCustom",
+      "delete": "DeleteMultipleMaterialInspectionRequest"
     },
     "documentColumns": [
       {
@@ -14512,7 +14512,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "materialRequestFilter",
+    "filterApi": "MaterialRequestFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -14662,7 +14662,7 @@
     "documentViewPermission": 3435,
     "documentPermission": 3436,
     "documentApi": {
-      "get": "getInvoicesForPoForCustomLog"
+      "get": "GetInvoicesForPoForCustomLog"
     },
     "documentColumns": [
       {
@@ -14882,7 +14882,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "invoiceForPoFilterAll",
+    "filterApi": "InvoiceForPoFilterAll",
     "filters": [
       {
         "name": "numberAbb",
@@ -15011,7 +15011,7 @@
     "documentViewPermission": 3417,
     "documentPermission": 3418,
     "documentApi": {
-      "get": "getInspectionRequestForCustomLog"
+      "get": "GetInspectionRequestForCustomLog"
     },
     "documentColumns": [
       {
@@ -15291,7 +15291,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "communicationRequestFilterAll",
+    "filterApi": "CommunicationRequestFilterAll",
     "filters": [
       {
         "name": "numberAbb",
@@ -15449,7 +15449,7 @@
     "documentViewPermission": 3399,
     "documentPermission": 3400,
     "documentApi": {
-      "get": "getSiteInstructionsForCustomLog"
+      "get": "GetLogsSiteInstructionsForCustomLog"
     },
     "documentColumns": [
       {
@@ -15633,7 +15633,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "siteInstructionFilterAll",
+    "filterApi": "SiteInstructionFilterAll",
     "filters": [
       {
         "name": "numberAbb",
@@ -15740,7 +15740,7 @@
     "documentViewPermission": 3377,
     "documentPermission": 3378,
     "documentApi": {
-      "get": "getCommunicationNCRForCustomLog"
+      "get": "GetCommunicationNCRForCustomLog"
     },
     "documentColumns": [
       {
@@ -15984,7 +15984,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "nCRFilterAll",
+    "filterApi": "NCRFilterAll",
     "filters": [
       {
         "name": "numberAbb",
@@ -16109,7 +16109,7 @@
     "documentViewPermission": 3360,
     "documentPermission": 3361,
     "documentApi": {
-      "get": "getMaterialInspectionRequestForCustomLog"
+      "get": "GetMaterialInspectionRequestForCustomLog"
     },
     "documentColumns": [
       {
@@ -16377,7 +16377,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "materialRequestFilterAll",
+    "filterApi": "MaterialRequestFilterAll",
     "filters": [
       {
         "name": "numberAbb",
@@ -16515,8 +16515,7 @@
         "isCustom": false
       }
     ]
-  },
-
+  }, 
   "materialInventory": {
     "documentTitle": "materialInventory",
     "docTyp": 50,
@@ -16528,9 +16527,9 @@
     "documentViewPermission": 634,
     "documentPermission": 618,
     "documentApi": {
-      "get": "getLogsMaterialInventorysByProjectId",
-      "getCustom": "getLogsMaterialInventorysByProjectIdCustom",
-      "delete": "logsMaterialInventoryMultipleDelete"
+      "get": "GetLogsMaterialInventorysByProjectId",
+      "getCustom": "GetLogsMaterialInventorysByProjectIdCustom",
+      "delete": "LogsMaterialInventoryMultipleDelete"
     },
     "documentColumns": [
 
@@ -16759,7 +16758,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "logsMaterialInventoryFilter",
+    "filterApi": "LogsMaterialInventoryFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -16858,8 +16857,8 @@
     "documentViewPermission": 250,
     "documentPermission": 251,
     "documentApi": {
-      "get": "getLogsMaterialReleasesByProjectId",
-      "getCustom": "getLogsMaterialReleasesByProjectIdCustom",
+      "get": "GetLogsMaterialReleasesByProjectId",
+      "getCustom": "GetLogsMaterialReleasesByProjectIdCustom",
       "delete": "multipleDeleteLogsMaterialRelease"
     },
     "documentColumns": [
@@ -17080,7 +17079,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "logsMaterialReleaseFilter",
+    "filterApi": "LogsMaterialReleaseFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -17182,9 +17181,9 @@
     "documentViewPermission": 250,
     "documentPermission": 251,
     "documentApi": {
-      "get": "getLogMaterialReturnedByProjectId",
-      "getCustom": "getLogMaterialReturnedByProjectIdCustom",
-      "delete": "multipleDeleteLogsMaterialReturned"
+      "get": "GetLogMaterialReturnedByProjectId",
+      "getCustom": "GetLogMaterialReturnedByProjectIdCustom",
+      "delete": "MultipleDeleteLogsMaterialReturned"
     },
     "documentColumns": [
       {
@@ -17404,7 +17403,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "logsMaterialReturnedFilter",
+    "filterApi": "LogsMaterialReturnedFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -17505,9 +17504,9 @@
     "documentViewPermission": 277,
     "documentPermission": 278,
     "documentApi": {
-      "get": "getLogsPunchListsByProjectId",
-      "getCustom": "getLogsPunchListsByProjectIdCustom",
-      "delete": "deleteMultipleLogsPunchLists"
+      "get": "GetLogsPunchListsByProjectId",
+      "getCustom": "GetLogsPunchListsByProjectIdCustom",
+      "delete": "DeleteMultipleLogsPunchListsById"
     },
     "documentColumns": [
       {
@@ -17715,7 +17714,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "punchListFilter",
+    "filterApi": "PunchListFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -17815,9 +17814,9 @@
     "documentViewPermission": 286,
     "documentPermission": 287,
     "documentApi": {
-      "get": "getLogsQualityControl",
-      "getCustom": "getLogsQualityControlCustom",
-      "delete": "deleteMultipleLogsQualityControl"
+      "get": "GetLogsQualityControl",
+      "getCustom": "GetLogsQualityControlCustom",
+      "delete": "DeleteMultipleLogsQualityControlById"
     },
     "documentColumns": [
       {
@@ -18025,7 +18024,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "qualityControlFilter",
+    "filterApi": "QualityControlFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -18120,9 +18119,9 @@
     "documentViewPermission": 638,
     "documentPermission": 639,
     "documentApi": {
-      "get": "getLogsSiteInstructions",
-      "getCustom": "getLogsSiteInstructionsCustom",
-      "delete": "logsSiteInstructionsMultipleDelete"
+      "get": "GetLogsSiteInstructions",
+      "getCustom": "GetLogsSiteInstructionsCustom",
+      "delete": "LogsSiteInstructionsMultipleDelete"
     },
     "documentColumns": [
       {
@@ -18342,7 +18341,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "siteInstructionFilter",
+    "filterApi": "SiteInstructionFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -18449,9 +18448,9 @@
     "documentViewPermission": 223,
     "documentPermission": 224,
     "documentApi": {
-      "get": "getLogsSubmittalsFromStoredProc",
-      "getCustom": "getLogsSubmittalsFromStoredProcCustom",
-      "delete": "deleteMultipleLogsSubmittalsById"
+      "get": "GetLogsSubmittalsFromStoredProc",
+      "getCustom": "GetLogsSubmittalsFromStoredProcCustom",
+      "delete": "DeleteMultipleLogsSubmittalsById"
     },
     "documentColumns": [
       {
@@ -18743,7 +18742,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "submittalsFilter",
+    "filterApi": "SubmittalsFilter",
     "filters": [
       {
         "name": "refNo",
@@ -18891,9 +18890,9 @@
     "documentDeletePermission": 222,
     "documentPermission": 224,
     "documentApi": {
-      "get": "getApprovedLastCycleSubmittalsByProject",
-      "getCustom": "getApprovedLastCycleSubmittalsByProject",
-      "delete": "deleteMultipleLogsSubmittalsById"
+      "get": "GetApprovedLastCycleSubmittalsByProject",
+      "getCustom": "GetApprovedLastCycleSubmittalsByProject",
+      "delete": "DeleteMultipleLogsSubmittalsById"
     },
     "documentColumns": [
       {
@@ -19089,7 +19088,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "approvedLastCycleFilter",
+    "filterApi": "ApprovedLastCycleFilter",
     "filters": [
       {
         "name": "refNo",
@@ -19204,8 +19203,8 @@
     "documentDeletePermission": 231,
     "documentPermission": 233,
     "documentApi": {
-      "get": "getLogsSubmittalSets",
-      "getCustom": "getLogsSubmittalSetsCustom",
+      "get": "GetLogsSubmittalSetsByProjectId",
+      "getCustom": "GetLogsSubmittalSetsByProjectIdCustom",
       "delete": "deleteMultipleLogsSubmittalSets"
     },
     "documentColumns": [
@@ -19366,7 +19365,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "logsubmittalSetsFilter",
+    "filterApi": "LogsubmittalSetsFilter",
     "filters": [
       {
         "name": "numberAbb",
@@ -19461,9 +19460,9 @@
     "documentViewPermission": 787,
     "documentPermission": 788,
     "documentApi": {
-      "get": "getLogsWeeklyReports",
-      "getCustom": "getLogsWeeklyReportsCustom",
-      "delete": "logsWeeklyReportsMultipleDelete"
+      "get": "GetLogsWeeklyReports",
+      "getCustom": "GetLogsWeeklyReportsCustom",
+      "delete": "LogsWeeklyReportsMultipleDelete"
     },
     "documentColumns": [
       {
@@ -19635,7 +19634,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "weeklyReportsFilter",
+    "filterApi": "WeeklyReportsFilter",
     "filters": [
       {
         "name": "numberAbb",

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -17,6 +19,10 @@ const {
   MultiSelectFilter,
   SingleSelectFilter
 } = Filters;
+
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
 
 class NotCodedExpensesSummaryDetails extends Component {
   constructor(props) {
@@ -87,7 +93,8 @@ class NotCodedExpensesSummaryDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       }
     ];
 
@@ -131,6 +138,7 @@ class NotCodedExpensesSummaryDetails extends Component {
     ];
 
     this.state = {
+      pageTitle:Resources["notCodedExpensesSummary"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -150,11 +158,7 @@ class NotCodedExpensesSummaryDetails extends Component {
     }
 
     if (action) {
-      Api.get("GetNotCodedExpensesSummaryDetail?action=" + action).then(
-        result => {
-          result.map(item => {
-            item.docDate =moment(item.docDate).format("DD/MM/YYYY");
-          });
+      Api.get("GetNotCodedExpensesSummaryDetail?action=" + action).then(result => { 
           this.setState({
             rows: result,
             isLoading: false
@@ -172,23 +176,30 @@ class NotCodedExpensesSummaryDetails extends Component {
 
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
             <h3 className="zero">
-              {Resources["notCodedExpensesSummary"][currentLanguage]}
+              {this.state.pageTitle}
             </h3>
-            <span>45</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+             <span>{this.state.rows.length}</span>
+            <div  className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -235,7 +246,7 @@ class NotCodedExpensesSummaryDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -257,30 +268,12 @@ class NotCodedExpensesSummaryDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+            {btnExport}
+          </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div  className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+           {ComponantFilter}
           </div>
         </div>
 

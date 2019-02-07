@@ -3,7 +3,7 @@ let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
 
 const Domain = config.static
- 
+
 export default class Api {
 
     static headers() {
@@ -21,7 +21,7 @@ export default class Api {
     }
     static post(route, params) {
         return this.xhr(route, params, 'POST');
-    } 
+    }
 
     static xhr(route, params, verb) {
         const host = Domain + '/PM/api/Procoor/';
@@ -125,7 +125,7 @@ export default class Api {
     }
 
     static postFile(route, params, header) {
-
+        let json = ''
         const host = Domain + '/PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = {}
@@ -135,17 +135,33 @@ export default class Api {
             headers.doctypeid = header.docTypeId
             headers.parentid = header.parentId
         }
-        fetch(url, {
+        return  fetch(url, {
             method: 'POST',
             headers: {
 
                 ...headers
             },
             body: params
-        }).then(
-            response => response?response.json():''
-        )
+        }).then(resp => {
+            if (resp.status === 200) {
+                
+                json ="";
+                return json;
+            }
+            else if (resp.status === 500) {
+                json = null;
+
+                return json;
+            }
+
+            return json.then(err => {
+                throw err
+            });
+
+       });//.then(res=>{return json});
+
     }
+
 
     static getPassword(route, password) {
         const host = Domain + '/PM/api/Procoor/';
@@ -160,10 +176,7 @@ export default class Api {
                 ...headers
             },
             body: null
-        }).then(
-            response => response.json()
-
-        )
+        })
     }
 
     static getPublicIP() {
@@ -225,7 +238,7 @@ export default class Api {
     }
 
     static authorizationApi(route, params) {
-        const host = config.loginServer+'/api/'
+        const host = config.loginServer + '/api/'
         const url = `${host}${route}`;
         let json = null;
 

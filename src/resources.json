@@ -1119,10 +1119,7 @@
     "en": "Timesheet",
     "ar": "سجل الحضور"
   },
-  "timesheet": {
-    "en": "Timesheet",
-    "ar": "سجل الحضور"
-  },
+
   "docApproval": {
     "en": "Doc Approval",
     "ar": "اعتماد وثائق"
@@ -7674,5 +7671,9 @@
   "submit": {
     "en": "Submit",
     "ar": "تنفيذ"
-  }    
+  } , 
+  "chooseFile": {
+    "en": "Choose File",
+    "ar": "اختر الملف"
+  } 
 }

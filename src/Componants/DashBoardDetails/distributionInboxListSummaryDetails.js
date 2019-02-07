@@ -3,12 +3,13 @@ import Api from "../../api";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
-
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export"; 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import queryString from "query-string";
 import Resources from "../../resources.json";
-import moment from "moment";
+import moment from "moment"; 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -19,6 +20,23 @@ const {
   SingleSelectFilter
 } = Filters;
 
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+const statusButton = ({ value, row }) => {
+  let doc_view = "";
+    if(row){
+      if (row.status === true) {
+        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#CCC',width:'94%'}}>{Resources["read"][currentLanguage]}</div>
+      }else{
+        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#0dc083',width:'94%',color:'#FFF'}}>{Resources["unRead"][currentLanguage]}</div>
+      } 
+        return doc_view; 
+      }
+    return null;
+};
+
 class DistributionInboxListSummaryDetails extends Component {
   constructor(props) {
     super(props);
@@ -27,18 +45,19 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         key: "statusText",
         name: Resources["statusName"][currentLanguage],
-        width: "15%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:statusButton
       },
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 185,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -49,7 +68,7 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 155,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -60,7 +79,7 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         key: "fromAccountName",
         name: Resources["from"][currentLanguage],
-        width: "50%",
+        width: 155,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -71,7 +90,7 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         key: "comment",
         name: Resources["comment"][currentLanguage],
-        width: "50%",
+        width: 155,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -82,13 +101,14 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         key: "creationDate",
         name: Resources["sendDate"][currentLanguage],
-        width: "50%",
+        width: 155,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       }
     ];
 
@@ -140,7 +160,8 @@ class DistributionInboxListSummaryDetails extends Component {
       rows: [],
       filtersColumns: filtersColumns,
       isCustom: true,
-      title: ""
+      pageTitle: "",
+      apiFilter:""
     };
   }
  
@@ -149,24 +170,22 @@ class DistributionInboxListSummaryDetails extends Component {
     let action = null;
 
     const query = new URLSearchParams(this.props.location.search);
-    for (let param of query.entries()) {
-      if (param[0] === "id") {
-        id = param[1];
+      for (let param of query.entries()) {
+        if (param[0] === "id") {
+          id = param[1];
+        }
+        if (param[0] === "action") {
+          action = param[1];
+        }
       }
-      if (param[0] === "action") {
-        action = param[1];
-      }
-    }
 
     if (id === "0") {
       this.setState({
-        title: Resources["inboxSummary"][currentLanguage]
+        pageTitle: Resources["inboxSummary"][currentLanguage]
       });
       if (action) {
         Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
-          result.map(item => {
-            item.creationDate = moment(item.creationDate).format("DD/MM/YYYY");
-          });
+         
           this.setState({
             rows: result,
             isLoading: false
@@ -175,7 +194,7 @@ class DistributionInboxListSummaryDetails extends Component {
       }
     } else {
       this.setState({
-        title: Resources["distributionSummary"][currentLanguage]
+        pageTitle: Resources["distributionSummary"][currentLanguage]
       });
       if (action) {
         Api.get(
@@ -186,9 +205,7 @@ class DistributionInboxListSummaryDetails extends Component {
             "&pageSize=" +
             200
         ).then(result => {
-          result.map(item => {
-            item.creationDate = moment(item.creationDate).format("DD/MM/YYYY");
-          });
+        
           this.setState({
             rows: result,
             isLoading: false
@@ -198,29 +215,68 @@ class DistributionInboxListSummaryDetails extends Component {
     }
   }
 
+
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
+
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+      ) : <LoadingSection/>;
+
+      const btnExport = this.state.isLoading === false ? 
+      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+      : <LoadingSection /> ;
+
+      const ComponantFilter= this.state.isLoading === false ?   
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain} 
+      /> : <LoadingSection />;
+
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">{this.state.title}</h3>
-            <span>45</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+            <h3 className="zero">{this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
+            <div  className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -267,7 +323,7 @@ class DistributionInboxListSummaryDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -289,30 +345,14 @@ class DistributionInboxListSummaryDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+            {btnExport}
+          </div> 
         </div>
         <div
           className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+          style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}} >
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+          {ComponantFilter}
           </div>
         </div>
 

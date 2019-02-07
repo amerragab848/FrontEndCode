@@ -112,14 +112,6 @@ class SendTask extends Component {
                     startDate={this.state.sendingData.finishDate}
                     handleChange={this.finishDatehandleChange} />
 
-                <InputMelcous title='estimateTime'
-                    placeholderText='estimateTime'
-                    inputChangeHandler={this.inputEstimatedTimeChangeHandler} defaultValue='0' />
-
-                <Dropdown title='priority' data={this.state.PriorityData}
-                    handleChange={this.Priority_handelChange}
-                    placeholder='prioritySelect' />
-
                 <div className="dropBtn">
                     <button className="primaryBtn-1 btn" onClick={this.clickHandler}>
                         {Resources['save'][currentLanguage]}</button>
