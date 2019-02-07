@@ -13,13 +13,14 @@ import "./Styles/scss/en-us/reactCss.css";
 // import ViewAttachment from './Componants/OptionsPanels/ViewAttachmments'
 // import UploadAttachment from './Componants/OptionsPanels/UploadAttachment'
 // import Upload from './Componants/OptionsPanels/UploadAttachment'
-// import WFApproval from './Componants/OptionsPanels/wfApproval'
+  import WFApproval from './Componants/OptionsPanels/wfApproval'
 // import SendToInbox from './Componants/OptionsPanels/SendToInbox'
 // import CopyTo from "./Componants/OptionsPanels/CopyTo";
 // import SendByEmails from "./Componants/OptionsPanels/SendByEmails";
 // import WfApproval from './Componants/OptionsPanels/wfApproval';
 // import PopUp from './Componants/OptionsPanels/OptionContainer' 
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
+import ApprovalRejectDocument from './Componants/OptionsPanels/ApprovalRejectDocument';
  
 import PrivacySetting from './Componants/User/PrivacySetting'
 

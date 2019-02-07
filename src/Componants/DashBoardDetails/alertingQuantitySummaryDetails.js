@@ -18,7 +18,7 @@ const {
   MultiSelectFilter,
   SingleSelectFilter
 } = Filters;
-
+ 
 class AlertingQuantitySummaryDetails extends Component {
   constructor(props) {
     super(props);
@@ -300,13 +300,7 @@ class AlertingQuantitySummaryDetails extends Component {
           {btnExport}
           </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{maxHeight: this.state.viewfilter ? "" : "0px",overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
          {ComponantFilter}
           </div>
