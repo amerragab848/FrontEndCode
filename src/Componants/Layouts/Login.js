@@ -2,43 +2,42 @@ import React, { Component } from "react";
 import Api from "../../api";
 import { withRouter } from "react-router-dom";
 import tokenStore from '../../tokenStore'
-import language from "../../resources.json"; 
 import CryptoJS from 'crypto-js';
 import Cookies from 'react-cookies'
-import Router from "../../router";
 import platform from 'platform'
 import eyeShow from "../../Styles/images/eyepw.svg"
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 import config from "../../Services/Config";
-
+import Resources from '../../resources.json';
 const _ = require('lodash')
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
-    userName: Yup.string().required(language['userNameRequired'][currentLanguage]),
-    password: Yup.string().required(language['passwordRequired'][currentLanguage]),
+    userName: Yup.string().required(Resources['userNameRequired'][currentLanguage]),
+    password: Yup.string().required(Resources['passwordRequired'][currentLanguage]),
 })
 
 
-const publicConfiguarion= config.getPublicConfiguartion();
+const publicConfiguarion = config.getPublicConfiguartion();
 
 class Login extends Component {
 
-    constructor(props) { 
+    constructor(props) {
 
         super(props);
         this.state = {
-            type: false
+            type: false, isLoading: false
         }
- 
+
     }
 
     loginHandler = (input) => {
-        let companyId =publicConfiguarion.accountCompanyId// config["accountCompanyId"]
-        let loginServer =publicConfiguarion.loginServer// config["loginServer"]
+        this.setState({ isLoading: true })
+        let companyId = publicConfiguarion.accountCompanyId// config["accountCompanyId"]
+        let loginServer = publicConfiguarion.loginServer// config["loginServer"]
         let url = '/token'
         let param = 'grant_type=password&username=' + input.userName + '&password=' + input.password + '&companyId=' + companyId
         Api.Login(loginServer, url, param).then(Response => {
@@ -48,7 +47,7 @@ class Login extends Component {
                 let token = Response.access_token
                 tokenStore.setItem('userToken', 'Bearer ' + token)
                 let payLoad = {}
-                
+
                 Api.get('LoginSuccess').then(result => {
 
                     if (result) {
@@ -64,13 +63,13 @@ class Login extends Component {
                         payLoad.sub = result.sub
                         payLoad.ulp = result.ulp
                         payLoad.uty = result.uty
-                        payLoad.aci = result.aci 
+                        payLoad.aci = result.aci
                     }
-                     
+
                     let _payLoad = CryptoJS.enc.Utf8.parse(JSON.stringify(payLoad))
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(_payLoad)
                     tokenStore.setItem('claims', encodedPaylod)
-                   
+
                     let browserObj = this.createBrowserObject()
                     let cookie = this.getCookie();
                     if (publicConfiguarion.canSendAlert) {
@@ -99,7 +98,7 @@ class Login extends Component {
                         Api.post('UpdateAccountWebDeviceToken?webDeviceToken=' + deviceToken, null)
                     }
 
-                    Api.get('GetPrimeData?token=undefined').then(primeData => { 
+                    Api.get('GetPrimeData?token=undefined').then(primeData => {
                         if (primeData.permissions && primeData.permissions.length > 0) {
                             let permission = CryptoJS.enc.Utf8.parse(JSON.stringify(primeData.permissions))
                             let encodedPermission = CryptoJS.enc.Base64.stringify(permission)
@@ -113,14 +112,13 @@ class Login extends Component {
                         }
                         if (primeData.appComponants) {
                             tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
-                        } 
-                    }) 
-                   window.location.reload();
+                        }
+                    })
+                    window.location.reload();
                 })
-            } 
-        console.log("this.props : "+this.props);
-        
-        }) 
+            }
+            this.setState({ isLoading: false })
+        })
     }
 
     getCookie = () => {
@@ -154,14 +152,14 @@ class Login extends Component {
     toggle = () => {
         const currentType = this.state.type;
         this.setState({ type: !currentType })
- 
+
     }
 
     render() {
         return (
             <div className=" loginWrapper">
                 <div className="loginForm">
-                    <h3>login</h3>
+                    <h3>{Resources['logIn'][currentLanguage]}</h3>
 
                     <Formik
                         initialValues={{
@@ -171,7 +169,8 @@ class Login extends Component {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={values => {
-                            this.loginHandler(values)
+                            if (!this.state.isLoading)
+                                this.loginHandler(values)
                         }}
 
                     >
@@ -186,7 +185,7 @@ class Login extends Component {
                                         ) : "ui input inputDev"}
                                         >
                                             <input autoComplete="off" type="text" className="form-control" id="userName"
-                                                name="userName" placeholder="Username"
+                                                name="userName" placeholder={Resources['UserName'][currentLanguage]}
                                                 onBlur={handleBlur} onChange={handleChange} />
                                             {errors.userName && touched.userName ? (
                                                 <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
@@ -205,8 +204,8 @@ class Login extends Component {
                                         <div className="inputDev ui input">
                                             <span className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
                                                 <img src={eyeShow} />
-                                                <span className="show"> Show</span>
-                                                <span className="hide"> Hide</span>
+                                                <span className="show"> {Resources['show'][currentLanguage]}</span>
+                                                <span className="hide"> {Resources['hide'][currentLanguage]}</span>
                                             </span>
                                             <div className="inputDev ui input">
                                                 <div className={errors.password && touched.password ? (
@@ -216,7 +215,7 @@ class Login extends Component {
                                                 ) : "ui input inputDev"}
                                                 >
                                                     <input autoComplete="off" type={this.state.type ? 'text' : 'password'} className="form-control" name="password"
-                                                        onBlur={handleBlur} onChange={handleChange} placeholder="Password" />
+                                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['password'][currentLanguage]} />
                                                     {errors.password && touched.password ? (
                                                         <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
                                                     ) : !errors.password && touched.password ? (
@@ -233,11 +232,26 @@ class Login extends Component {
                                     </div>
                                 </div>
 
+                                <div className="fullWidthWrapper">
+                                    {this.state.isLoading === false ? (
+                                        <button
+                                            className="primaryBtn-1 btn largeBtn"
+                                            type="submit"
+                                        >  {Resources['logIn'][currentLanguage]}
+                                        </button>
+                                    ) :
+                                        (
+                                            <span className="primaryBtn-1 btn largeBtn disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </span>
+                                        )}
 
+                                </div>
 
-
-
-                                <button className="primaryBtn-1 btn" type='submit'>{language['logIn'][currentLanguage]}</button>
                             </Form>
                         )}
                     </Formik>

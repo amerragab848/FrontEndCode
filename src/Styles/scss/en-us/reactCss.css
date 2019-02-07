@@ -823,7 +823,7 @@ text-transform: capitalize
   min-height: 115px;
   border-radius: 4px;
   background-color: #FAFBFC;
-  border: 3px dashed #E9ECF0;
+  border: 4px dashed #E9ECF0;
   margin-bottom: 29px;
   position: relative;
 }

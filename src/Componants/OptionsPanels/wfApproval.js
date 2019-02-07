@@ -17,7 +17,7 @@ class wfApproval extends Component {
             approveData: [],
             password: '',
             passwordStatus: false,
-
+            submitLoading:false,
             sendingData: {
                 approvalStatus: true,
                 docId: 1114,
@@ -52,13 +52,16 @@ class wfApproval extends Component {
     }
 
     passwordHandleChange = (e) => {
+   
         Api.getPassword('GetPassWordEncrypt', e.target.value).then(result => {
+           
             this.setState({
                 passwordStatus: result
             });
         }).catch(ex => {
             throw ex
         });
+      
     }
     commentOnBlurHandler = (e) => {
 
@@ -101,8 +104,9 @@ class wfApproval extends Component {
                         return errors;
                     }}
                     onSubmit={values => {
-                        if (this.state.passwordStatus) {
-                            Api.post("SendWorkFlowApproval", this.state.sendingData);
+                        if (this.state.passwordStatus===true) {
+                            this.setState({submitLoading:true})
+                            Api.post("SendWorkFlowApproval", this.state.sendingData).then(  this.setState({submitLoading:true}));
                         }
                         else
                             alert("invalid Password")
@@ -127,10 +131,10 @@ class wfApproval extends Component {
                                                     "ui input inputDev has-success"
                                                 ) : "ui input inputDev"}
                                                 >
-                                                    <span class={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
+                                                    <span className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
                                                         <img src={eyeShow} />
-                                                        <span class="show"> Show</span>
-                                                        <span class="hide"> Hide</span>
+                                                        <span className="show"> Show</span>
+                                                        <span className="hide"> Hide</span>
                                                     </span>
                                                     <input name="password" type={this.state.type ? 'text' : 'password' }
                                                         className="form-control" id="password" placeholder='password' autoComplete='off'
@@ -164,9 +168,19 @@ class wfApproval extends Component {
                                             index='approve' isMulti='true' />
 
                                     </div>
+                                    { ! this.state.submitLoading ?
                                     <div className="fullWidthWrapper">
                                         <button className="primaryBtn-1 btn largeBtn" type="submit">Save</button>
                                     </div>
+                                    :   (
+                                    <span className="primaryBtn-1 btn largeBtn disabled">
+                                        <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                        </div>
+                                    </span>
+                                )}
                                 </div>
                             </div>
                         </Form>
