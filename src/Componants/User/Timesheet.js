@@ -287,7 +287,7 @@ export default class Timesheet extends Component {
                 <div className="mainContainer">
                     <div className="submittalFilter">
                         <div className="subFilter">
-                            <h3 className="zero"> {Resources['timesheet'][currentLanguage]}</h3>
+                            <h3 className="zero"> {Resources['timeSheet'][currentLanguage]}</h3>
                             <span>{this.state.rows.length}</span>
                             <span>
                                 <svg

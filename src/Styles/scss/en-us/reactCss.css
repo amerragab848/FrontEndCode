@@ -881,7 +881,7 @@ text-transform: capitalize
 }
 .removeBtn {
   position: absolute;
-  z-index: 99;
+  z-index: 10;
   right: 15px;
 }
 .thumbsContainer {

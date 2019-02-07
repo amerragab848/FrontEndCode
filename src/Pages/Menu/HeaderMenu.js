@@ -27,7 +27,7 @@ class HeaderMenu extends Component {
       activeClass: false,
       logOut: false,
       languageSelected: "en",
-      classRadio: true
+      classRadio: currentLanguage
     };
   }
 
@@ -55,10 +55,8 @@ class HeaderMenu extends Component {
     window.location.reload();
   }
 
-  logOutHandler(){
-    
-    this.props.history.push('/');
-
+  logOutHandler(){ 
+    this.props.history.push('/'); 
     localStorage.clear();
     window.location.reload();
   }
@@ -80,13 +78,7 @@ class HeaderMenu extends Component {
         </div>
         <div className="wrapper">
           <header className="main-header">
-            <div className="header-content">
-              {/* <ul className="nav-left">
-                <li className="titleproject1">
-                  <a href="">Technical office ·</a>
-                </li>
-                <li className="titleproject2">East town (P2)</li>
-              </ul> */}
+            <div className="header-content"> 
               <ul className="nav-right">
                 <li>
                   <a data-modal="modal1" className="notfiUI">
@@ -115,13 +107,7 @@ class HeaderMenu extends Component {
                 </li>
                 <li className="UserImg ">
                   <div
-                    className={
-                      this.state.activeClass === false
-                        ? "dropdownContent"
-                        : "dropdownContent active"
-                    }
-                    onClick={this.openProfile}
-                  >
+                    className={ this.state.activeClass === false ? "dropdownContent" : "dropdownContent active"} onClick={this.openProfile}>
                     <figure className="zero avatarProfile onlineAvatar">
                       <img alt="" title="" src={this.state.profilePath} />
                       <span className="avatarStatusCircle" />
@@ -132,10 +118,10 @@ class HeaderMenu extends Component {
                     <div className="ui dropdown classico basic">
                       <i className="dropdown icon" />
                       <div className="menu center left">
-                        <div className="item">
-                          <div className="item-content">
+                        <div className="item"> 
+                          <Link to="/ProfileSetting">
                             {Resources["profile"][currentLanguage]}
-                          </div>
+                          </Link>
                         </div>
                         <div className="item">
                           <div className="item-content">

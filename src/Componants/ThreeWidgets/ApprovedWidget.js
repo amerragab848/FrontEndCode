@@ -22,15 +22,15 @@ class ApprovedWidget extends Component {
 
   componentDidMount() {
     Api.get(this.props.props.api).then(result => {
-      result.map(res => {
-        if (res.action === 1) {
-          res.item = "High";
-        } else if (res.action === 2) {
-          res.item = "Normal";
-        } else {
-          res.item = "Low";
-        }
-      });
+      // result.map(res => {
+      //   if (res.action === 1) {
+      //     res.item = "High";
+      //   } else if (res.action === 2) {
+      //     res.item = "Normal";
+      //   } else {
+      //     res.item = "Low";
+      //   }
+      // });
 
       this.setState({
         dataList: result
