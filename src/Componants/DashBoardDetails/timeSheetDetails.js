@@ -88,7 +88,8 @@ class TimeSheetDetails extends Component {
       rows: [],
       filtersColumns: filtersColumns,
       isCustom: true,
-      apiFilter:"" 
+      apiFilter:"",
+      viewModal:false
     };
   }
 
@@ -142,6 +143,10 @@ class TimeSheetDetails extends Component {
       });
   };
 
+  expenseWorkFlowDetails = (index,value) => {
+      alert(index);
+  }
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
@@ -158,6 +163,11 @@ class TimeSheetDetails extends Component {
         apiFilter={this.state.apiFilter}
         filterMethod={this.filterMethodMain} 
       /> : <LoadingSection />;
+
+      const Details = this.state.viewModal === true?
+      (
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={true} onRowClick={(index) => this.expenseWorkFlowDetails(index,this.state.rows[index])} />
+      ) : <LoadingSection/>;
 
     return (
       <div className="mainContainer">
