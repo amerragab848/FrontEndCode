@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../../Componants/OptionsPanels/Export"; 
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export"; 
 import moment from "moment";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
