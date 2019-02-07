@@ -105,7 +105,7 @@ export default class Timesheet extends Component {
     }
 
     GetNextData = () => {
-        
+
         let pageNumber = this.state.pageNumber + 1;
         this.setState({
             isLoading: true,
@@ -221,9 +221,9 @@ export default class Timesheet extends Component {
 
     render() {
 
-        const btnExport = this.state.isLoading === false ?
+        const btnExport = 
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
-            : null;
+           
 
         return (
 
