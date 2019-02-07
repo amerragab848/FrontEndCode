@@ -726,9 +726,7 @@ table edition
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   margin-right: 0 !important;
 } 
-.gridfillter-container .primaryBtn-2.btn.smallBtn {
-    margin-top: 0 !important;
-}
+ 
 .gridfillter-container .fillter-status-container .fillter-item-c {
     margin-bottom: 0px !important;
 } 
@@ -1073,4 +1071,8 @@ text-transform: capitalize
   } 
 .sayedWrapper {
   position: relative;
+}
+
+.grid-container {
+  min-height: 650px;
 }
