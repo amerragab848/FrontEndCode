@@ -21,7 +21,7 @@ import "./Styles/scss/en-us/reactCss.css";
 // import PopUp from './Componants/OptionsPanels/OptionContainer' 
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
  
-import PrivacySetting from './Componants/User/PrivacySetting '
+import PrivacySetting from './Componants/User/PrivacySetting'
 
 import Expenses from './Componants/User/Expenses'
 
@@ -47,12 +47,9 @@ class App extends Component {
       : <Login />
 
     return (
-     // <User />
-     <Timesheet/>
-    
-      // <div>
-      //   {showComp}
-      // </div>
+      <div>
+        {showComp}
+      </div>
     );
   }
 }

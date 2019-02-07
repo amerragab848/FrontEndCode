@@ -21,17 +21,6 @@ const {
   SingleSelectFilter
 } = Filters;
 
-const subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-    doc_view =
-      "letterAddEdit/" + row.id + "/" + row.projectId + "/" + row.projectName;
-    subject = row.subject;
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -40,9 +29,11 @@ const dateFormate = ({ value }) => {
 class Letter extends Component { 
   _isMounted = false;
   
+
+
   constructor(props) {
     super(props); 
-     
+
     this.state = {
       isLoading: true,
       pageTitle: "",
@@ -246,6 +237,18 @@ class Letter extends Component {
  
     var documentObj = documentDefenition[documentName];
 
+    let  subjectLink = ({ value, row }) => {
+      let doc_view = "";
+      let subject = "";
+      if (row) {
+        doc_view ="/"+
+        documentObj.documentAddEditLink + row.id + "/" + row.projectId + "/" + row.projectName;
+        subject = row.subject;
+        return <a href={doc_view}> {subject} </a>;
+      }
+      return null;
+    };
+    
     var cNames = [];
 
     var filtersColumns = [];
@@ -282,6 +285,7 @@ class Letter extends Component {
     this.setState( {   
       pageTitle:Resources[documentObj.documentTitle][currentLanguage], 
       docType:documents,
+      routeAddEdit:documentObj.documentAddEditLink,
       apiFilter:documentObj.filterApi,
       api:documentObj.documentApi.get,
       apiDelete:documentObj.documentApi.delete  ,
@@ -398,7 +402,8 @@ class Letter extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false 
+               ? (
                 <span className="text active">
                   <span className="show-fillter">Show Fillter</span>
                   <span className="hide-fillter">Hide Fillter</span>
@@ -414,7 +419,6 @@ class Letter extends Component {
           <div className="filterBTNS"> 
             {btnExport}
             <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
-   
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">

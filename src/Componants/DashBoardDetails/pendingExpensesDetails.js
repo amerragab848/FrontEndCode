@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -17,6 +19,10 @@ const {
   MultiSelectFilter,
   SingleSelectFilter
 } = Filters;
+
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
 
 class PendingExpensesDetails extends Component {
   constructor(props) {
@@ -87,7 +93,8 @@ class PendingExpensesDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       },
       {
         key: "number",
@@ -193,6 +200,7 @@ class PendingExpensesDetails extends Component {
     ];
 
     this.state = {
+      pageTitle:Resources["pendingExpenses"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -204,10 +212,7 @@ class PendingExpensesDetails extends Component {
 
   componentDidMount() {
     Api.get("GetExpensesWorkFlowTransactionByContactId").then(result => {
-      result.map(item => {
-        item.requestDate = moment(item.requestDate).format("DD/MM/YYYY");
-      });
-
+     
       this.setState({
         rows: result,
         isLoading: false
@@ -221,20 +226,60 @@ class PendingExpensesDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+      ) : <LoadingSection/>;
+
+      const btnExport = this.state.isLoading === false ? 
+      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+      : <LoadingSection /> ;
+
+      const ComponantFilter= this.state.isLoading === false ?   
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain} 
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
             <h3 className="zero">
-              {Resources["pendingExpenses"][currentLanguage]}
+              {this.state.pageTitle}
             </h3>
-            <span>45</span>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -286,7 +331,7 @@ class PendingExpensesDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -308,7 +353,7 @@ class PendingExpensesDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
+            {btnExport}
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
@@ -323,18 +368,11 @@ class PendingExpensesDetails extends Component {
             </button>
           </div>
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div  className="filterHidden"  style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
-        </div>
-
+        </div> 
         <div>{dataGrid}</div>
       </div>
     );
