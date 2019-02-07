@@ -8,12 +8,8 @@ import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
-import Filter from "../FilterComponent/filterComponent";
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
-
 
 
 export default class Timesheet extends Component {
@@ -179,75 +175,62 @@ export default class Timesheet extends Component {
     ViewReport = () => {
         if (this.state.projectId) {
             this.setState({ btnisLoading: true, Loading: true })
-            setTimeout(() => {
-                Api.post('GetTimeSheetByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
-                    result => {
-                        this.setState({
-                            rows: result,
-                            isLoading: false,
-                            btnisLoading: false,
-                            Loading: false,
-                            totalRows: result.length
-                        })
-                    },
-                );
-            }, 100); this.setState({ isLoading: true, })
+            Api.post('GetTimeSheetByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
+                result => {
+                    this.setState({
+                        rows: result,
+                        isLoading: false,
+                        btnisLoading: false,
+                        Loading: false,
+                        totalRows: result.length
+                    })
+                }, this.setState({ isLoading: true })
+            );
         }
 
         else {
             this.setState({ btnisLoading: true, Loading: true })
-            setTimeout(() => {
-                Api.post('GetTimeSheetByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
-                    result => {
-                        this.setState({
-                            rows: result,
-                            isLoading: false,
-                            btnisLoading: false,
-                            Loading: false,
-                            totalRows: result.length
-                        });
-                    },
-                );
-            }, 100);
-            this.setState({
-                isLoading: true
-            })
+            Api.post('GetTimeSheetByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
+                result => {
+                    this.setState({
+                        rows: result,
+                        isLoading: false,
+                        btnisLoading: false,
+                        Loading: false,
+                        totalRows: result.length
+                    });
+                }, this.setState({ isLoading: true })
+            );
         }
     }
 
     sendRequest = () => {
         this.setState({ isLoadingsendRequest: true, statusClassSuccess: "disNone" })
-        setTimeout(() => {
-            Api.post('GetTimeSheetByRangePending', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: 0, pageSize: 200 }).then(
-                this.setState({ isLoadingsendRequest: false, statusClassSuccess: "animationBlock" }))
-        }, 200);
-
-        this.setState({ statusClassSuccess: "disNone" })
+        Api.post('GetTimeSheetByRangePending', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: 0, pageSize: 200 }).then(
+            result => {
+                this.setState({ isLoadingsendRequest: false, statusClassSuccess: "animationBlock" })
+            }, this.setState({ statusClassSuccess: "disNone" })
+        )
     }
 
     render() {
-        ;
-            const btnExport= this.state.isLoading === false ? 
-            <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName= {Resources['timesheet'][currentLanguage]} /> 
-            : null ;
+
+        const btnExport = this.state.isLoading === false ?
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['timesheet'][currentLanguage]} />
+            : null;
 
         return (
-            <div className="resetPassword">
 
+            <div className="mainContainer">
+             <div className="resetPassword"> 
                 <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
-
+            </div>
                 <div className="dropWrapper">
+                    <Dropdown title='Projects' data={this.state.Projects}
+                        handleChange={this.ProjectshandleChange} placeholder='Projects' />
 
-                    <Dropdown title='Projects'
-                        data={this.state.Projects} handleChange={this.ProjectshandleChange}
-                        placeholder='Projects' />
-
-                    <div>
-                        {btnExport}
-                    </div>
 
                     {this.state.isLoadingsendRequest === false ?
-
                         <button className="primaryBtn-1 btn" onClick={this.sendRequest} >
                             {Resources['sendRequest'][currentLanguage]}</button>
                         : <button className="primaryBtn-1 btn largeBtn"   >
@@ -259,13 +242,10 @@ export default class Timesheet extends Component {
                         </button>
                     }
 
-                    <DatePicker title='startDate'
-                        startDate={this.state.startDate}
+                    <DatePicker title='startDate' startDate={this.state.startDate}
                         handleChange={this.startDatehandleChange} />
 
-                    <DatePicker title='finishDate'
-
-                        startDate={this.state.finishDate}
+                    <DatePicker title='finishDate' startDate={this.state.finishDate}
                         handleChange={this.finishDatehandleChange} />
 
                     <div className="dropBtn">
@@ -284,54 +264,56 @@ export default class Timesheet extends Component {
                     </div>
                 </div>
 
-                <div className="mainContainer">
-                    <div className="submittalFilter">
-                        <div className="subFilter">
-                            <h3 className="zero"> {Resources['timesheet'][currentLanguage]}</h3>
-                            <span>{this.state.rows.length}</span>
-                            <span>
-                                <svg
-                                    width="16px"
-                                    height="18px"
-                                    viewBox="0 0 16 18"
-                                    version="1.1"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    xmlnsXlink="http://www.w3.org/1999/xlink" >
-                                    <g id="Symbols"
-                                        stroke="none"
-                                        strokeWidth="1"
-                                        fill="none"
-                                        fillRule="evenodd" >
-                                        <g id="Action-icons/Filters/Hide+text/24px/Grey_Base"
-                                            transform="translate(-4.000000, -3.000000)" >
-                                        </g>
+                <div className="submittalFilter">
+                    <div className="subFilter">
+                        <h3 className="zero"> {Resources['timesheet'][currentLanguage]}</h3>
+                        <span>{this.state.rows.length}</span>
+                        <span>
+                            <svg
+                                width="16px"
+                                height="18px"
+                                viewBox="0 0 16 18"
+                                version="1.1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlnsXlink="http://www.w3.org/1999/xlink" >
+                                <g id="Symbols"
+                                    stroke="none"
+                                    strokeWidth="1"
+                                    fill="none"
+                                    fillRule="evenodd" >
+                                    <g id="Action-icons/Filters/Hide+text/24px/Grey_Base"
+                                        transform="translate(-4.000000, -3.000000)" >
                                     </g>
-                                </svg>
-                            </span>
-                        </div>
-
-
-                        <div className="rowsPaginations">
-                            <div className="rowsPagiRange">
-                                <span>0</span> - <span>{this.state.pageSize}</span> of
-              <span>{this.state.totalRows}</span>
-                            </div>
-                            <button className="rowunActive">
-                                <i className="angle left icon" />
-                            </button>
-                            <button onClick={() => this.GetNextData()}>
-                                <i className="angle right icon" />
-                            </button>
-                        </div>
+                                </g>
+                            </svg>
+                        </span>
                     </div>
 
-                    {this.state.Loading ? <LoadingSection /> : null}
-                    {this.state.isLoading == false
-                        ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
-                        : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                    <div className="filterBTNS">
+                        {btnExport}
+                    </div>
 
+                    <div className="rowsPaginations">
+                        <div className="rowsPagiRange">
+                            <span>0</span> - <span>{this.state.pageSize}</span> of
+                   <span>{this.state.totalRows}</span>
+                        </div>
+                        <button className="rowunActive">
+                            <i className="angle left icon" />
+                        </button>
+                        <button onClick={() => this.GetNextData()}>
+                            <i className="angle right icon" />
+                        </button>
+                    </div>
                 </div>
 
+
+                {/* {this.state.Loading ? <LoadingSection /> : null} */}
+                {this.state.isLoading == false
+
+                    ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
+
+                    : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
             </div>
         )
     }
