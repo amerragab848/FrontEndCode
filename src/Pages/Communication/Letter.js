@@ -11,6 +11,14 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import documentDefenition from "../../documentDefenition.json";
 import Resources from "../../resources.json"; 
 
+import MinimizeV from '../../Styles/images/table1.png'
+import MinimizeH from '../../Styles/images/table2.png'
+// import MinimizeVBlue from '../../Styles/images/table1Blue.png'
+// import MinimizeHBlue from '../../Styles/images/table2Blue.png'
+
+import MinimizeVBlue from '../../Styles/images/table1.png'
+import MinimizeHBlue from '../../Styles/images/table2.png'
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -53,7 +61,8 @@ class Letter extends Component {
       query: "",
       isCustom: true,
       showDeleteModal: false,
-      selectedRows: []
+      selectedRows: [],
+      minimizeClick: false
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
@@ -257,7 +266,7 @@ class Letter extends Component {
       if (item.isCustom === true) {
         var obj = {
           key: item.field,
-          frozen: index < 2 ? false : false,
+          frozen: index < 2 ? true : false,
           name: Resources[item.friendlyName][currentLanguage],
           width: item.minWidth,
           draggable: true,
@@ -320,6 +329,13 @@ class Letter extends Component {
       });
   };
 
+  handleMinimize = () => {
+    const currentClass = this.state.minimizeClick
+      this.setState({
+        minimizeClick: !currentClass 
+      });
+  }
+
   render() {
     
     const showCheckbox=true;
@@ -333,11 +349,11 @@ class Letter extends Component {
           columns={this.state.columns}
         />      ) : <LoadingSection />;
 
-      const btnExport= this.state.isLoading === false ? 
+    const btnExport= this.state.isLoading === false ? 
             <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
             : <LoadingSection /> ;
 
-      const ComponantFilter= this.state.isLoading === false ?   
+    const ComponantFilter= this.state.isLoading === false ?   
                 <Filter
                   filtersColumns={this.state.filtersColumns}
                   apiFilter={this.state.apiFilter}
@@ -445,7 +461,19 @@ class Letter extends Component {
           </div>
         </div>
 
-        <div>{dataGrid}</div>
+        <div>
+           <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+            <div className="minimizeSpan"> 
+              <div className="H-tableSize" onClick={this.handleMinimize}>
+              { this.state.minimizeClick ? <img src={MinimizeVBlue} alt="" /> :  <img src={MinimizeV} alt="" /> }
+              </div>
+              <div className="V-tableSize">
+                <img src={MinimizeH} alt="" />
+              </div>
+            </div>
+            {dataGrid} 
+          </div>
+        </div>
         <div>
         { this.state.showDeleteModal == true ? (
             <ConfirmationModal

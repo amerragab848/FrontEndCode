@@ -23,6 +23,8 @@ import "./Styles/scss/en-us/reactCss.css";
  
 import PrivacySetting from './Componants/User/PrivacySetting'
 
+import Expenses from './Componants/User/Expenses'
+
 import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
 import Menu from "./Pages/Menu/Menu"; 
@@ -31,6 +33,7 @@ import Login from './Componants/Layouts/Login'
 import Route from './router';
 import api from './api';
 import User from './Componants/User/index'
+import Timesheet from "./Componants/User/Timesheet";
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  

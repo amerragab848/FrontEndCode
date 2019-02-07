@@ -725,13 +725,13 @@ table edition
 }
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   margin-right: 0 !important;
-}
+} 
 .gridfillter-container .primaryBtn-2.btn.smallBtn {
     margin-top: 0 !important;
 }
 .gridfillter-container .fillter-status-container .fillter-item-c {
     margin-bottom: 0px !important;
-}
+} 
 .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
   margin-bottom: 0 !important
 }
@@ -925,6 +925,9 @@ text-transform: capitalize
   transition: all 0.3s ease-in-out;
   animation-fill-mode: forwards;
 }
+.primaryBtn-1 .spinner > div {
+  background-color: rgb(198, 217, 253);
+}
 @keyframes opacity {
   0% {
     opacity: 1;
@@ -1068,3 +1071,6 @@ text-transform: capitalize
 .highcharts-container {
     margin: auto;
   } 
+.sayedWrapper {
+  position: relative;
+}

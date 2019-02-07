@@ -8,12 +8,12 @@ import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
-import Filter from "../FilterComponent/filterComponent";
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-
+const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
 
 
 export default class Timesheet extends Component {
@@ -29,6 +29,7 @@ export default class Timesheet extends Component {
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "description",
@@ -104,6 +105,7 @@ export default class Timesheet extends Component {
     }
 
     GetNextData = () => {
+
         let pageNumber = this.state.pageNumber + 1;
         this.setState({
             isLoading: true,
@@ -179,112 +181,56 @@ export default class Timesheet extends Component {
     ViewReport = () => {
         if (this.state.projectId) {
             this.setState({ btnisLoading: true, Loading: true })
-            setTimeout(() => {
-                Api.post('GetTimeSheetByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
-                    result => {
-                        this.setState({
-                            rows: result,
-                            isLoading: false,
-                            btnisLoading: false,
-                            Loading: false,
-                            totalRows: result.length
-                        })
-                    },
-                );
-            }, 100); this.setState({ isLoading: true, })
+            Api.post('GetTimeSheetByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
+                result => {
+                    this.setState({
+                        rows: result,
+                        isLoading: false,
+                        btnisLoading: false,
+                        Loading: false,
+                        totalRows: result.length
+                    })
+                }, this.setState({ isLoading: true })
+            );
         }
 
         else {
             this.setState({ btnisLoading: true, Loading: true })
-            setTimeout(() => {
-                Api.post('GetTimeSheetByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
-                    result => {
-                        this.setState({
-                            rows: result,
-                            isLoading: false,
-                            btnisLoading: false,
-                            Loading: false,
-                            totalRows: result.length
-                        });
-                    },
-                );
-            }, 100);
-            this.setState({
-                isLoading: true
-            })
+            Api.post('GetTimeSheetByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
+                result => {
+                    this.setState({
+                        rows: result,
+                        isLoading: false,
+                        btnisLoading: false,
+                        Loading: false,
+                        totalRows: result.length
+                    });
+                }, this.setState({ isLoading: true })
+            );
         }
     }
 
     sendRequest = () => {
         this.setState({ isLoadingsendRequest: true, statusClassSuccess: "disNone" })
-        setTimeout(() => {
-            Api.post('GetTimeSheetByRangePending', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: 0, pageSize: 200 }).then(
-                this.setState({ isLoadingsendRequest: false, statusClassSuccess: "animationBlock" }))
-        }, 200);
-
-        this.setState({ statusClassSuccess: "disNone" })
+        Api.post('GetTimeSheetByRangePending', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: 0, pageSize: 200 }).then(
+            result => {
+                this.setState({ isLoadingsendRequest: false, statusClassSuccess: "animationBlock" })
+            }, this.setState({ statusClassSuccess: "disNone" })
+        )
     }
 
     render() {
-        ;
-            const btnExport= this.state.isLoading === false ? 
-            <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName= {Resources['timesheet'][currentLanguage]} /> 
-            : null ;
+
+        const btnExport = 
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
+           
 
         return (
-            <div className="resetPassword">
 
-                <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
+            <div className="mainContainer">
+                <div className="resetPassword">
+                    <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
 
-                <div className="dropWrapper">
-
-                    <Dropdown title='Projects'
-                        data={this.state.Projects} handleChange={this.ProjectshandleChange}
-                        placeholder='Projects' />
-
-                    <div>
-                        {btnExport}
-                    </div>
-
-                    {this.state.isLoadingsendRequest === false ?
-
-                        <button className="primaryBtn-1 btn" onClick={this.sendRequest} >
-                            {Resources['sendRequest'][currentLanguage]}</button>
-                        : <button className="primaryBtn-1 btn largeBtn"   >
-                            <div className="spinner">
-                                <div className="bounce1" />
-                                <div className="bounce2" />
-                                <div className="bounce3" />
-                            </div>
-                        </button>
-                    }
-
-                    <DatePicker title='startDate'
-                        startDate={this.state.startDate}
-                        handleChange={this.startDatehandleChange} />
-
-                    <DatePicker title='finishDate'
-
-                        startDate={this.state.finishDate}
-                        handleChange={this.finishDatehandleChange} />
-
-                    <div className="dropBtn">
-                        {this.state.btnisLoading === false ? (
-                            <button className="primaryBtn-1 btn" onClick={this.ViewReport}>
-                                {Resources['View'][currentLanguage]}</button>
-                        ) : (
-                                <button className="primaryBtn-1 btn largeBtn" >
-                                    <div className="spinner">
-                                        <div className="bounce1" />
-                                        <div className="bounce2" />
-                                        <div className="bounce3" />
-                                    </div>
-                                </button>
-                            )}
-                    </div>
-                </div>
-
-                <div className="mainContainer">
                     <div className="submittalFilter">
                         <div className="subFilter">
                             <h3 className="zero"> {Resources['timeSheet'][currentLanguage]}</h3>
@@ -310,11 +256,25 @@ export default class Timesheet extends Component {
                             </span>
                         </div>
 
+                        <div className="filterBTNS">
+                            {this.state.isLoadingsendRequest === false ?
+                                <button className="primaryBtn-1 btn" onClick={this.sendRequest} >
+                                    {Resources['sendRequest'][currentLanguage]}</button>
+                                : <button className="primaryBtn-1 btn"   >
+                                    <div className="spinner">
+                                        <div className="bounce1" />
+                                        <div className="bounce2" />
+                                        <div className="bounce3" />
+                                    </div>
+                                </button>
+                            }
+                            {btnExport}
+                        </div>
 
                         <div className="rowsPaginations">
                             <div className="rowsPagiRange">
                                 <span>0</span> - <span>{this.state.pageSize}</span> of
-              <span>{this.state.totalRows}</span>
+                   <span>{this.state.totalRows}</span>
                             </div>
                             <button className="rowunActive">
                                 <i className="angle left icon" />
@@ -325,13 +285,47 @@ export default class Timesheet extends Component {
                         </div>
                     </div>
 
-                    {this.state.Loading ? <LoadingSection /> : null}
-                    {this.state.isLoading == false
-                        ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
-                        : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                    <div className="gridfillter-container">
+                        <div className="fillter-status-container">
+                            <div className="form-group fillterinput fillter-item-c">
+                                <Dropdown title='Projects' data={this.state.Projects}
+                                    handleChange={this.ProjectshandleChange} placeholder='Projects' />
+                            </div>
+                            <div className="form-group fillterinput fillter-item-c" >
+                                <DatePicker title='startDate' startDate={this.state.startDate}
+                                    handleChange={this.startDatehandleChange} />
+                            </div>
+                            <div className="form-group fillterinput fillter-item-c" >
 
+                                <DatePicker title='finishDate' startDate={this.state.finishDate}
+                                    handleChange={this.finishDatehandleChange} />
+                            </div>
+                            <div className="dropBtn">
+                                {this.state.btnisLoading === false ? (
+                                    <button className="primaryBtn-1 btn smallBtn" onClick={this.ViewReport}>
+                                        {Resources['View'][currentLanguage]}</button>
+                                ) : (
+                                        <button className="primaryBtn-1 btn smallBtn" >
+                                            <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                            </div>
+                                        </button>
+                                    )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="sayedWrapper">
+                        {this.state.Loading ? <LoadingSection /> : null}
+                        {this.state.isLoading == false
+
+                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
+
+                            : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                    </div>
                 </div>
-
             </div>
         )
     }

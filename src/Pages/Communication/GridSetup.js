@@ -2,7 +2,8 @@ import React, { useState,Component } from "react";
 import ReactDataGrid from "react-data-grid";    
 import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons"; 
 import "../../Styles/gridStyle.css";
-
+import "../../Styles/scss/en-us/dataGrid.css";
+ 
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const DraggableContainer = Draggable.Container;
@@ -27,7 +28,8 @@ class GridSetup extends Component {
             selectedIndexes:[],
             selectedRows:[],
             expandedRows: {}
-          }; 
+          };
+          
 
      this.groupColumn =this.groupColumn.bind(this); 
      this.onRowsSelected =this.onRowsSelected.bind(this); 
@@ -115,7 +117,7 @@ class GridSetup extends Component {
  
     const activeColumn = this.state.columns.find(c => c.key === columnKey);
 
-    const isNotInGroups =columnGroups.find(c => activeColumn.key === c.name) == null;
+    const isNotInGroups =columnGroups.find(c => activeColumn.key === c.key) == null;
     
     if (isNotInGroups) {
       columnGroups.push({ key: activeColumn.key, name: activeColumn.name });
@@ -123,15 +125,16 @@ class GridSetup extends Component {
     return columnGroups;
   };
 
-  ungroupColumn = (columnKey) => groupBy => {
-    return groupBy.filter(g =>
+  ungroupColumn = (columnKey) => {
+
+    let  columnGroups = this.state.groupBy.slice(0).filter(g =>
       typeof g === "string" ? g !== columnKey : g.key !== columnKey
     );
+
+    return columnGroups;
   };
 
-  onRowsSelected = (rows) => { 
-
-    alert('select row');
+  onRowsSelected = (rows) => {  
     let prevRows=this.state.selectedIndexes; 
     let prevRowsId=this.state.selectedRows; 
 
@@ -158,7 +161,7 @@ class GridSetup extends Component {
 
   onRowsDeselected =( rows) => {
 
-     alert(' De select row');
+     
      let prevRows=this.state.selectedIndexes; 
      let prevRowsId=this.state.selectedRows; 
     
@@ -191,7 +194,7 @@ class GridSetup extends Component {
   }
 
   onRowClick= (rows,value) => {
-    alert('row click');
+     
     if (value) {
        console.log('route to letterAddEdit/'+value.id); 
     } 
@@ -200,7 +203,7 @@ class GridSetup extends Component {
   clickHandlerDeleteRows = (e) => {  
     this.props.clickHandlerDeleteRows(this.state.selectedRows);
   }
-  
+   
   render() {    
       const { rows,groupBy} = this.state;
       const filteredRows = this.getRows(this.state.rows, this.state.filters);
@@ -239,7 +242,7 @@ class GridSetup extends Component {
           );
         };
 
-       return ( 
+       return (  
           <DraggableContainer > 
               <ReactDataGrid
                 rowKey="id"
@@ -283,7 +286,7 @@ class GridSetup extends Component {
                 onClearFilters={() =>  this.setState({ setFilters: {}}) }
                 getValidFilterValues={columnKey => this.getValidFilterValues(this.state.rows, columnKey)}
               /> 
-          </DraggableContainer>
+          </DraggableContainer> 
     );
   }
   
