@@ -336,12 +336,13 @@ table edition
 .mainContainer .customD_Menu {
   width: 100%;
 }
-.mainContainer .customD_Menu div{
-  border-width: 0;
-  outline: 0
-}
+.mainContainer .customD_Menu >div{
+  border-color: hsl(0,0%,80%) !important;
+  outline: 0;
+  box-shadow:none !important
+} 
 .mainContainer .customD_Menu div:hover{
-  border: none;
+  border-color: hsl(0,0%,80%) !important;
   box-shadow: none;
   outline: 0;
 }
@@ -724,13 +725,11 @@ table edition
 }
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   margin-right: 0 !important;
-}
-.gridfillter-container .primaryBtn-2.btn.smallBtn {
-    margin-top: 0 !important;
-}
+} 
+ 
 .gridfillter-container .fillter-status-container .fillter-item-c {
     margin-bottom: 0px !important;
-}
+} 
 .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
   margin-bottom: 0 !important
 }
@@ -880,7 +879,7 @@ text-transform: capitalize
 }
 .removeBtn {
   position: absolute;
-  z-index: 99;
+  z-index: 10;
   right: 15px;
 }
 .thumbsContainer {
@@ -923,6 +922,9 @@ text-transform: capitalize
   animation: opacity 3s linear;
   transition: all 0.3s ease-in-out;
   animation-fill-mode: forwards;
+}
+.primaryBtn-1 .spinner > div {
+  background-color: rgb(198, 217, 253);
 }
 @keyframes opacity {
   0% {
@@ -1067,3 +1069,10 @@ text-transform: capitalize
 .highcharts-container {
     margin: auto;
   } 
+.sayedWrapper {
+  position: relative;
+}
+
+.grid-container {
+  min-height: 650px;
+}

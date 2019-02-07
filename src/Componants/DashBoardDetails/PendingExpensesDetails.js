@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export"; 
+import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
-import Filter from "../FilterComponent/filterComponent";
+
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
@@ -17,57 +20,17 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class DocApprovalDetails extends Component {
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+class PendingExpensesDetails extends Component {
   constructor(props) {
     super(props);
 
     const columnsGrid = [
       {
-        key: "readStatusText",
-        name: Resources["statusName"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "creationDate",
-        name: Resources["docDate"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "duration2",
-        name: Resources["durationDays"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "arrange",
+        key: "arrangeLevel",
         name: Resources["levelNo"][currentLanguage],
         width: "50%",
         draggable: true,
@@ -78,30 +41,8 @@ class DocApprovalDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "actionBy",
-        name: Resources["actionByContact"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "openedBy",
-        name: Resources["openedBy"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "description",
-        name: Resources["description"][currentLanguage],
+        key: "subject",
+        name:Resources["subject"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -122,8 +63,8 @@ class DocApprovalDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "docType",
-        name: Resources["docType"][currentLanguage],
+        key: "contactName",
+        name: Resources["ContactName"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -133,8 +74,8 @@ class DocApprovalDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "refDoc",
-        name: Resources["docNo"][currentLanguage],
+        key: "total",
+        name: Resources["total"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -144,8 +85,20 @@ class DocApprovalDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "lastApproveDate",
-        name: Resources["lastApproveDate"][currentLanguage],
+        key: "requestDate",
+        name: Resources["requestDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "number",
+        name: Resources["arrange"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -155,8 +108,8 @@ class DocApprovalDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "delayDuration",
-        name: Resources["delay"][currentLanguage],
+        key: "expensesTypeName",
+        name: Resources["expensesType"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -166,8 +119,8 @@ class DocApprovalDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "dueDate",
-        name: Resources["dueDate"][currentLanguage],
+        key: "actionBy",
+        name: Resources["actionByContact"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -177,30 +130,8 @@ class DocApprovalDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "lastSendDate",
-        name: Resources["lastSendDate"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "lastSendTime",
-        name: Resources["lastSendTime"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "lastApproveTime",
-        name: Resources["lastApprovedTime"][currentLanguage],
+        key: "Attachments",
+        name: Resources["attachments"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -213,52 +144,14 @@ class DocApprovalDetails extends Component {
 
     const filtersColumns = [
       {
-        field: "readStatusText",
-        name: "statusName",
-        type: "toggle",
-        trueLabel: "oppened",
-        falseLabel: "closed",
+        field: "arrangeLevel",
+        name: "levelNo",
+        type: "number",
         isCustom: true
       },
       {
         field: "subject",
         name: "subject",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "creationDate",
-        name: "docDate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "duration2",
-        name: "durationDays",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "arrange",
-        name: "levelNo",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "actionBy",
-        name: "actionByContact",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "openedBy",
-        name: "openedBy",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "description",
-        name: "description",
         type: "string",
         isCustom: true
       },
@@ -269,116 +162,62 @@ class DocApprovalDetails extends Component {
         isCustom: true
       },
       {
-        field: "docType",
-        name: "docType",
+        field: "contactName",
+        name: "ContactName",
         type: "string",
         isCustom: true
       },
       {
-        field: "refDoc",
-        name: "docNo",
+        field: "total",
+        name: "total",
         type: "number",
         isCustom: true
       },
       {
-        field: "lastApprovalDate",
-        name: "lastApprovalDate",
+        field: "requestDate",
+        name: "requestDate",
         type: "date",
         isCustom: true
       },
       {
-        field: "delayDuration",
-        name: "delay",
-        type: "date",
+        field: "number",
+        name: "arrange",
+        type: "number",
         isCustom: true
       },
       {
-        field: "dueDate",
-        name: "dueDate",
-        type: "date",
+        field: "expensesTypeName",
+        name: "expensesType",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "actionBy",
+        name: "actionByContact",
+        type: "string",
         isCustom: true
       }
-      // ,
-      // {
-      //   field: "lastSendDate",
-      //   name: "lastSendDate",
-      //   type: "date",
-      //   isCustom: true
-      // },
-      // {
-      //   field: "lastSendTime",
-      //   name: "lastSendTime",
-      //   type: "string",
-      //   isCustom: true
-      // },
-      // {
-      //   field: "lastApproveTime",
-      //   name: "lastApprovedTime",
-      //   type: "string",
-      //   isCustom: true
-      // }
     ];
 
     this.state = {
+      pageTitle:Resources["pendingExpenses"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
-      isCustom: true,
-      title: ""
+      isCustom: true
     };
   }
 
   componentDidMount() {
-    const query = new URLSearchParams(this.props.location.search);
-
-    let action = null;
-
-    for (let param of query.entries()) {
-      action = param[1];
-    }
+    Api.get("GetExpensesWorkFlowTransactionByContactId").then(result => {
      
-    if (action === "1") {
       this.setState({
-        title: Resources["docRejected"][currentLanguage]
+        rows: result,
+        isLoading: false
       });
-
-      Api.get("GetRejectedRequestsDocApprove").then(result => {
-        result.map(item => {
-          item.creationDate = moment(item.creationDate).format("DD/MM/YYYY");
-          item.lastApprovalDate = moment(item.lastApprovalDate).format(
-            "DD/MM/YYYY"
-          );
-          item.delayDuration = moment(item.delayDuration).format("DD/MM/YYYY");
-          item.dueDate = moment(item.dueDate).format("DD/MM/YYYY");
-          item.lastSendDate = moment(item.lastSendDate).format("DD/MM/YYYY");
-        });
-        this.setState({
-          rows: result,
-          isLoading: false
-        });
-      });
-    } else {
-      this.setState({
-        title: Resources["docApproval"][currentLanguage]
-      });
-      Api.get("GetApprovalRequestsDocApprove").then(result => {
-        result.map(item => {
-          item.creationDate = moment(item.creationDate).format("DD/MM/YYYY");
-          item.lastApprovalDate = moment(item.lastApprovalDate).format(
-            "DD/MM/YYYY"
-          );
-          item.delayDuration = moment(item.delayDuration).format("DD/MM/YYYY");
-          item.dueDate = moment(item.dueDate).format("DD/MM/YYYY");
-          item.lastSendDate = moment(item.lastSendDate).format("DD/MM/YYYY");
-        });
-        this.setState({
-          rows: result,
-          isLoading: false
-        });
-      });
-    }
+    });
   }
 
   hideFilter(value) {
@@ -387,18 +226,60 @@ class DocApprovalDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+      ) : <LoadingSection/>;
+
+      const btnExport = this.state.isLoading === false ? 
+      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+      : <LoadingSection /> ;
+
+      const ComponantFilter= this.state.isLoading === false ?   
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain} 
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">{this.state.title}</h3>
-            <span>45</span>
+            <h3 className="zero">
+              {this.state.pageTitle}
+            </h3>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -450,7 +331,7 @@ class DocApprovalDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -472,7 +353,7 @@ class DocApprovalDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
+            {btnExport}
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
@@ -487,22 +368,15 @@ class DocApprovalDetails extends Component {
             </button>
           </div>
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div  className="filterHidden"  style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
-        </div>
-
+        </div> 
         <div>{dataGrid}</div>
       </div>
     );
   }
 }
 
-export default DocApprovalDetails;
+export default PendingExpensesDetails;

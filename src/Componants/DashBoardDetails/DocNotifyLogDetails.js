@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import moment from "moment";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -17,14 +20,90 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class TimeSheetDetails extends Component {
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+const statusButton = ({ value, row }) => {
+  let doc_view = "";
+    if(row){
+      if (row.readStatus === true) {
+        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#CCC',width:'94%'}}>{Resources["read"][currentLanguage]}</div>
+      }else{
+        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#0dc083',width:'94%',color:'#FFF'}}>{Resources["unRead"][currentLanguage]}</div>
+      } 
+        return doc_view; 
+    }
+    return null;
+};
+
+let  subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+    doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+    subject = row.subject;
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
+
+class DocNotifyLogDetails extends Component {
   constructor(props) {
     super(props);
 
-    const columnsGrid = [
+    var columnsGrid = [
       {
-        key: "requestCount",
-        name: Resources["requestCount"][currentLanguage],
+        key: "readStatusText",
+        name: Resources["statusName"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:statusButton
+      },
+      {
+        key: "subject",
+        name: Resources["subject"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:subjectLink
+      },
+      {
+        key: "creationDate",
+        name: Resources["docDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "openedBy",
+        name: Resources["openedBy"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "projectName",
+        name: Resources["projectName"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -34,8 +113,8 @@ class TimeSheetDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "requestFromUserName",
-        name: Resources["fromContact"][currentLanguage],
+        key: "docType",
+        name: Resources["docType"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -45,8 +124,8 @@ class TimeSheetDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "companyName",
-        name: Resources["fromCompany"][currentLanguage],
+        key: "refDoc",
+        name: Resources["docNo"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -54,31 +133,74 @@ class TimeSheetDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "dueDate",
+        name: Resources["dueDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       }
     ];
 
     const filtersColumns = [
       {
-        field: "requestCount",
-        name: "requestCount",
-        type: "number",
-        isCustom: true
-      },
-      {
-        field: "requestFromUserName",
-        name: "fromContact",
+        field: "readStatusText",
+        name: "statusName",
         type: "string",
         isCustom: true
       },
       {
-        field: "companyName",
-        name: "fromCompany",
+        field: "subject",
+        name: "subject",
         type: "string",
         isCustom: true
-      } 
+      },
+      {
+        field: "creationDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "openedBy",
+        name: "openedBy",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "projectName",
+        name: "projectName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docType",
+        name: "docType",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "refDoc",
+        name: "docNo",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "dueDate",
+        name: "dueDate",
+        type: "date",
+        isCustom: true
+      }
     ];
 
     this.state = {
+      pageTitle:Resources["docNotify"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -88,15 +210,14 @@ class TimeSheetDetails extends Component {
     };
   }
 
-  componentWillMount() {
-    Api.get("GetApprovalRequestsGroupByUserId?requestType=timeSheet").then(
-      result => {
-        this.setState({
-          rows: result,
-          isLoading: false
-        });
-      }
-    );
+  componentDidMount() {
+    Api.get("GetNotifyRequestsDocApprove").then(result => {
+  
+      this.setState({
+        rows: result,
+        isLoading: false
+      });
+    });
   }
 
   hideFilter(value) {
@@ -105,22 +226,58 @@ class TimeSheetDetails extends Component {
     return this.state.viewfilter;
   }
 
-  isCustomHandlel() {
-    this.setState({ isCustom: !this.state.isCustom });
-  }
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
 
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">{Resources["timeSheet"][currentLanguage]}</h3>
-            <span>45</span>
+          <h3 className="zero">{this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -172,7 +329,7 @@ class TimeSheetDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -193,31 +350,13 @@ class TimeSheetDetails extends Component {
               )}
             </div>
           </div>
-          <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+          <div className="filterBTNS"> 
+          {btnExport}
+          </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
         </div>
 
@@ -227,4 +366,4 @@ class TimeSheetDetails extends Component {
   }
 }
 
-export default TimeSheetDetails;
+export default DocNotifyLogDetails;

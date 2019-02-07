@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-
+import React, { Component } from "react"; 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css"; 
 import { WidgetData, Widgets, WidgetsWithText } from "./CounterWidget";
@@ -125,10 +124,7 @@ class Index extends Component {
   
   render() {
     return (
-      <Tabs
-        selectedIndex={this.state.tabIndex}
-        onSelect={tabIndex => this.setState({ tabIndex })}
-      >
+      <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
         <TabList>
           <Tab> Summaries</Tab>
           <Tab> PM Counters</Tab>

@@ -21,8 +21,9 @@ import "./Styles/scss/en-us/reactCss.css";
 // import PopUp from './Componants/OptionsPanels/OptionContainer' 
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
  
-import PrivacySetting from './Componants/User/PrivacySetting '
-import Index from './Componants/User/index'
+import PrivacySetting from './Componants/User/PrivacySetting'
+
+import Expenses from './Componants/User/Expenses'
 
 import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import DashBoard from "./Pages/DashBoard";
@@ -32,6 +33,7 @@ import Login from './Componants/Layouts/Login'
 import Route from './router';
 import api from './api';
 import User from './Componants/User/index'
+import Timesheet from "./Componants/User/Timesheet";
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -45,10 +47,9 @@ class App extends Component {
       : <Login />
 
     return (
-      <WfApproval />
-      // <div>
-      //   {showComp}
-      // </div>
+      <div>
+        {showComp}
+      </div>
     );
   }
 }

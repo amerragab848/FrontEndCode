@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
+import moment from "moment"; 
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
-import queryString from "query-string";
 import Resources from "../../resources.json";
-import moment from "moment";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -19,15 +20,19 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class DistributionInboxListSummaryDetails extends Component {
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+class NotCodedInvoicesSummaryDetails extends Component {
   constructor(props) {
     super(props);
 
     var columnsGrid = [
       {
-        key: "statusText",
-        name: Resources["statusName"][currentLanguage],
-        width: "15%",
+        key: "projectCode",
+        name: Resources["numberAbb"][currentLanguage],
+        width: "50%",
         draggable: true,
         sortable: true,
         resizable: true,
@@ -37,7 +42,7 @@ class DistributionInboxListSummaryDetails extends Component {
       },
       {
         key: "subject",
-        name: Resources["subject"][currentLanguage],
+        name:Resources["subject"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -58,8 +63,8 @@ class DistributionInboxListSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "fromAccountName",
-        name: Resources["from"][currentLanguage],
+        key: "total",
+        name: Resources["total"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -69,8 +74,8 @@ class DistributionInboxListSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "comment",
-        name: Resources["comment"][currentLanguage],
+        key: "balance",
+        name: Resources["balance"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -80,25 +85,36 @@ class DistributionInboxListSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "creationDate",
-        name: Resources["sendDate"][currentLanguage],
+        key: "docCloseDate",
+        name: Resources["docClosedate"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "docDate",
+        name:Resources["docDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       }
     ];
 
     const filtersColumns = [
       {
-        field: "statusText",
-        name: "statusName",
-        type: "toggle",
-        trueLabel: "oppened",
-        falseLabel: "closed",
+        field: "projectCode",
+        name: "numberAbb",
+        type: "string",
         isCustom: true
       },
       {
@@ -114,87 +130,61 @@ class DistributionInboxListSummaryDetails extends Component {
         isCustom: true
       },
       {
-        field: "fromAccountName",
-        name: "from",
-        type: "string",
+        field: "total",
+        name: "total",
+        type: "number",
         isCustom: true
       },
       {
-        field: "comment",
-        name: "comment",
-        type: "string",
+        field: "balance",
+        name: "balance",
+        type: "number",
         isCustom: true
       },
       {
-        field: "creationDate",
-        name: "sendDate",
+        field: "docClosedDate",
+        name: "docClosedDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "docDate",
+        name: "docDate",
         type: "date",
         isCustom: true
       }
     ];
 
     this.state = {
+      pageTitle:Resources["notCodedInvoicesSummary"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
-      isCustom: true,
-      title: ""
+      isCustom: true
     };
   }
- 
-  componentWillMount() {
-    let id = null;
+
+  componentDidMount() {
+    const query = new URLSearchParams(this.props.location.search);
+
     let action = null;
 
-    const query = new URLSearchParams(this.props.location.search);
     for (let param of query.entries()) {
-      if (param[0] === "id") {
-        id = param[1];
-      }
-      if (param[0] === "action") {
-        action = param[1];
-      }
+      action = param[1];
     }
 
-    if (id === "0") {
-      this.setState({
-        title: Resources["inboxSummary"][currentLanguage]
-      });
-      if (action) {
-        Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
-          result.map(item => {
-            item.creationDate = moment(item.creationDate).format("DD/MM/YYYY");
-          });
+    if (action) {
+      Api.get("GetInvoicesUserByRange?action=" + action).then(
+        result => {
+  
           this.setState({
             rows: result,
             isLoading: false
           });
-        });
-      }
-    } else {
-      this.setState({
-        title: Resources["distributionSummary"][currentLanguage]
-      });
-      if (action) {
-        Api.get(
-          "GetDocApprovalDetailsDistriburtionList?action=" +
-            action +
-            "&pageNumber=" +
-            0 +
-            "&pageSize=" +
-            200
-        ).then(result => {
-          result.map(item => {
-            item.creationDate = moment(item.creationDate).format("DD/MM/YYYY");
-          });
-          this.setState({
-            rows: result,
-            isLoading: false
-          });
-        });
-      }
+        }
+      );
     }
   }
 
@@ -204,18 +194,60 @@ class DistributionInboxListSummaryDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">{this.state.title}</h3>
-            <span>45</span>
+            <h3 className="zero">
+              {this.state.pageTitle}
+            </h3>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -267,7 +299,7 @@ class DistributionInboxListSummaryDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -289,30 +321,12 @@ class DistributionInboxListSummaryDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+          {btnExport}
+          </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{maxHeight: this.state.viewfilter ? "" : "0px",overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
         </div>
 
@@ -322,4 +336,4 @@ class DistributionInboxListSummaryDetails extends Component {
   }
 }
 
-export default DistributionInboxListSummaryDetails;
+export default NotCodedInvoicesSummaryDetails;

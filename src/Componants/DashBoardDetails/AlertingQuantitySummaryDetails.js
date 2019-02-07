@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import moment from "moment";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -18,14 +19,14 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class ScheduleAlertsSummaryDetails extends Component {
+class AlertingQuantitySummaryDetails extends Component {
   constructor(props) {
     super(props);
 
     var columnsGrid = [
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
+        key: "docSubject",
+        name: Resources["docSubject"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -35,8 +36,8 @@ class ScheduleAlertsSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "scheduleSubject",
-        name: Resources["schedule"][currentLanguage],
+        key: "description",
+        name: Resources["description"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -57,8 +58,8 @@ class ScheduleAlertsSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "docNo",
-        name: Resources["docNo"][currentLanguage],
+        key: "originalQnty",
+        name: Resources["originalQuantity"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -68,8 +69,8 @@ class ScheduleAlertsSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "delay",
-        name: Resources["delay"][currentLanguage],
+        key: "requestedQnty",
+        name: Resources["requestedQuantity"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -79,8 +80,8 @@ class ScheduleAlertsSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "alertDate",
-        name: Resources["alertDate"][currentLanguage],
+        key: "remainingQnty",
+        name: Resources["remainingQuantity"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -93,14 +94,14 @@ class ScheduleAlertsSummaryDetails extends Component {
 
     const filtersColumns = [
       {
-        field: "subject",
-        name: "subject",
+        field: "docSubject",
+        name: "docSubject",
         type: "string",
         isCustom: true
       },
       {
-        field: "scheduleSubject",
-        name: "schedule",
+        field: "description",
+        name: "description",
         type: "string",
         isCustom: true
       },
@@ -111,26 +112,27 @@ class ScheduleAlertsSummaryDetails extends Component {
         isCustom: true
       },
       {
-        field: "docNo",
-        name: "docNo",
-        type: "string",
+        field: "originalQnty",
+        name: "originalQuantity",
+        type: "number",
         isCustom: true
       },
       {
-        field: "delay",
-        name: "delay",
-        type: "string",
+        field: "requestedQnty",
+        name: "requestedQuantity",
+        type: "number",
         isCustom: true
       },
       {
-        field: "alertDate",
-        name: "alertDate",
-        type: "date",
+        field: "remainingQnty",
+        name: "remainingQuantity",
+        type: "number",
         isCustom: true
       }
     ];
 
     this.state = {
+      pageTitle:Resources["alertingQntySummary"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -150,19 +152,17 @@ class ScheduleAlertsSummaryDetails extends Component {
     }
 
     if (action) {
-      Api.get("GetScheduleAlertSummary?action=" + action).then(
-        result => {
-
-          result.map(item => {
-            item.alertDate = moment(item.alertDate).format("DD/MM/YYYY");
-          });
-
-          this.setState({
-            rows: result,
-            isLoading: false
-          });
-        }
-      );
+      Api.get(
+        "GetBoqQuantityRequestedAlertDetails?action=" +
+          action +
+          "&pageNumber=" +
+          0
+      ).then(result => {
+        this.setState({
+          rows: result,
+          isLoading: false
+        });
+      });
     }
   }
 
@@ -172,18 +172,58 @@ class ScheduleAlertsSummaryDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">{Resources["ScheduleAlertsSummary"][currentLanguage]}</h3>
-            <span>45</span>
+            <h3 className="zero">{this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -235,7 +275,7 @@ class ScheduleAlertsSummaryDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -257,20 +297,8 @@ class ScheduleAlertsSummaryDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+          {btnExport}
+          </div> 
         </div>
         <div
           className="filterHidden"
@@ -280,7 +308,7 @@ class ScheduleAlertsSummaryDetails extends Component {
           }}
         >
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+         {ComponantFilter}
           </div>
         </div>
 
@@ -290,4 +318,4 @@ class ScheduleAlertsSummaryDetails extends Component {
   }
 }
 
-export default ScheduleAlertsSummaryDetails;
+export default AlertingQuantitySummaryDetails;

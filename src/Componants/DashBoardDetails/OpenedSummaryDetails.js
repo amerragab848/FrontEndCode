@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -18,26 +20,19 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class PendingExpensesDetails extends Component {
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+class OpenedSummaryDetails extends Component {
   constructor(props) {
     super(props);
 
-    const columnsGrid = [
+    var columnsGrid = [
       {
-        key: "arrangeLevel",
-        name: Resources["levelNo"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "subject",
-        name:Resources["subject"][currentLanguage],
-        width: "50%",
+        key: "docNo",
+        name: Resources["docNo"][currentLanguage],
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -57,8 +52,8 @@ class PendingExpensesDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "contactName",
-        name: Resources["ContactName"][currentLanguage],
+        key: "subject",
+        name: Resources["subject"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -68,8 +63,8 @@ class PendingExpensesDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "total",
-        name: Resources["total"][currentLanguage],
+        key: "openedBy",
+        name: Resources["openedBy"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -79,8 +74,8 @@ class PendingExpensesDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "requestDate",
-        name: Resources["requestDate"][currentLanguage],
+        key: "docType",
+        name: Resources["docType"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -90,62 +85,24 @@ class PendingExpensesDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "number",
-        name: Resources["arrange"][currentLanguage],
+        key: "oppenedDate",
+        name: Resources["openedDate"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "expensesTypeName",
-        name: Resources["expensesType"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "actionBy",
-        name: Resources["actionByContact"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "Attachments",
-        name: Resources["attachments"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       }
     ];
 
     const filtersColumns = [
       {
-        field: "arrangeLevel",
-        name: "levelNo",
+        field: "docNo",
+        name: "docNo",
         type: "number",
-        isCustom: true
-      },
-      {
-        field: "subject",
-        name: "subject",
-        type: "string",
         isCustom: true
       },
       {
@@ -155,44 +112,33 @@ class PendingExpensesDetails extends Component {
         isCustom: true
       },
       {
-        field: "contactName",
-        name: "ContactName",
+        field: "subject",
+        name: "subject",
         type: "string",
         isCustom: true
       },
       {
-        field: "total",
-        name: "total",
-        type: "number",
+        field: "openedBy",
+        name: "openedBy",
+        type: "string",
         isCustom: true
       },
       {
-        field: "requestDate",
-        name: "requestDate",
+        field: "docType",
+        name: "docType",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "oppenedDate",
+        name: "openedDate",
         type: "date",
-        isCustom: true
-      },
-      {
-        field: "number",
-        name: "arrange",
-        type: "number",
-        isCustom: true
-      },
-      {
-        field: "expensesTypeName",
-        name: "expensesType",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "actionBy",
-        name: "actionByContact",
-        type: "string",
         isCustom: true
       }
     ];
 
     this.state = {
+      pageTitle:Resources["openedSummary"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -203,16 +149,32 @@ class PendingExpensesDetails extends Component {
   }
 
   componentDidMount() {
-    Api.get("GetExpensesWorkFlowTransactionByContactId").then(result => {
-      result.map(item => {
-        item.requestDate = moment(item.requestDate).format("DD/MM/YYYY");
-      });
+    const query = new URLSearchParams(this.props.location.search);
+    const queryes = this.props.location.search;
 
-      this.setState({
-        rows: result,
-        isLoading: false
+    let action = null;
+
+    for (let param of query.entries()) {
+      action = param[1];
+    }
+
+    if (action) {
+      Api.get(
+        "SelectDocTypeByProjectIdOpenedByAction?action=" +
+          action +
+          "&pageNumber=" +
+          0
+      ).then(result => {
+        result.map(item => {
+          item.oppenedDate = moment(item.oppenedDate).format("DD/MM/YYYY");
+        });
+
+        this.setState({
+          rows: result,
+          isLoading: false
+        });
       });
-    });
+    }
   }
 
   hideFilter(value) {
@@ -221,20 +183,60 @@ class PendingExpensesDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
             <h3 className="zero">
-              {Resources["pendingExpenses"][currentLanguage]}
+              {this.state.pageTitle}
             </h3>
-            <span>45</span>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -286,7 +288,7 @@ class PendingExpensesDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -308,19 +310,7 @@ class PendingExpensesDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
+           {btnExport}
           </div>
         </div>
         <div
@@ -331,7 +321,7 @@ class PendingExpensesDetails extends Component {
           }}
         >
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
         </div>
 
@@ -341,4 +331,4 @@ class PendingExpensesDetails extends Component {
   }
 }
 
-export default PendingExpensesDetails;
+export default OpenedSummaryDetails;

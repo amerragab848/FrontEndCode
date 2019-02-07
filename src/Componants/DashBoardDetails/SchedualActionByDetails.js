@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -18,14 +20,18 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class NotCodedExpensesSummaryDetails extends Component {
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+class SchedualActionByDetails extends Component {
   constructor(props) {
     super(props);
 
     var columnsGrid = [
       {
-        key: "description",
-        name: Resources["description"][currentLanguage],
+        key: "docNo",
+        name: Resources["docNo"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -35,8 +41,8 @@ class NotCodedExpensesSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
+        key: "subject",
+        name: Resources["subject"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -46,8 +52,8 @@ class NotCodedExpensesSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "expenseTypeName",
-        name: Resources["expenseType"][currentLanguage],
+        key: "docDelay",
+        name: Resources["delay"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -57,8 +63,20 @@ class NotCodedExpensesSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "total",
-        name: Resources["total"][currentLanguage],
+        key: "requiredDate",
+        name: Resources["requiredDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "statusText",
+        name: Resources["dateType"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -68,19 +86,8 @@ class NotCodedExpensesSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "unitRate",
-        name: Resources["unitRate"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
+        key: "companyName",
+        name: Resources["CompanyName"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -93,44 +100,45 @@ class NotCodedExpensesSummaryDetails extends Component {
 
     const filtersColumns = [
       {
-        field: "description",
-        name: "description",
+        field: "docNo",
+        name: "docNo",
         type: "string",
         isCustom: true
       },
       {
-        field: "projectName",
-        name: "projectName",
+        field: "subject",
+        name: "subject",
         type: "string",
         isCustom: true
       },
       {
-        field: "expenseTypeName",
-        name: "expenseType",
+        field: "docDelay",
+        name: "delay",
         type: "string",
         isCustom: true
       },
       {
-        field: "total",
-        name: "total",
-        type: "number",
-        isCustom: true
-      },
-      {
-        field: "unitRate",
-        name: "unitRate",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "docDate",
-        name: "docDate",
+        key: "requiredDate",
+        name: "requiredDate",
         type: "date",
+        isCustom: true
+      },
+      {
+        field: "statusText",
+        name: "dateType",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "companyName",
+        name: "CompanyName",
+        type: "string",
         isCustom: true
       }
     ];
 
-    this.state = {
+    this.state = {    
+      pageTitle:Resources["schedualActionBy"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -150,17 +158,20 @@ class NotCodedExpensesSummaryDetails extends Component {
     }
 
     if (action) {
-      Api.get("GetNotCodedExpensesSummaryDetail?action=" + action).then(
-        result => {
-          result.map(item => {
-            item.docDate =moment(item.docDate).format("DD/MM/YYYY");
-          });
+      Api.get("GetActionsBySchedualSummaryDetails?action=" + action).then(
+        result => { 
           this.setState({
             rows: result,
             isLoading: false
           });
         }
-      );
+      ).catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
     }
   }
 
@@ -170,25 +181,59 @@ class NotCodedExpensesSummaryDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">
-              {Resources["notCodedExpensesSummary"][currentLanguage]}
-            </h3>
-            <span>45</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+          <h3 className="zero"> {this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -235,7 +280,7 @@ class NotCodedExpensesSummaryDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -257,30 +302,12 @@ class NotCodedExpensesSummaryDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+           {btnExport}
+          </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px",overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
         </div>
 
@@ -290,4 +317,4 @@ class NotCodedExpensesSummaryDetails extends Component {
   }
 }
 
-export default NotCodedExpensesSummaryDetails;
+export default SchedualActionByDetails;

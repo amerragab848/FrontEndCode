@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import moment from "moment";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export"; 
 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
@@ -18,14 +19,14 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class DocNotifyLogDetails extends Component {
+class TimeSheetDetails extends Component {
   constructor(props) {
     super(props);
 
-    var columnsGrid = [
+    const columnsGrid = [
       {
-        key: "readStatusText",
-        name: Resources["statusName"][currentLanguage],
+        key: "requestCount",
+        name: Resources["requestCount"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -35,8 +36,8 @@ class DocNotifyLogDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
+        key: "requestFromUserName",
+        name: Resources["fromContact"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -46,63 +47,8 @@ class DocNotifyLogDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "creationDate",
-        name: Resources["docDate"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "openedBy",
-        name: Resources["openedBy"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "docType",
-        name: Resources["docType"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "refDoc",
-        name: Resources["docNo"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "dueDate",
-        name: Resources["dueDate"][currentLanguage],
+        key: "companyName",
+        name: Resources["fromCompany"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -115,104 +61,111 @@ class DocNotifyLogDetails extends Component {
 
     const filtersColumns = [
       {
-        field: "readStatusText",
-        name: "statusName",
+        field: "requestCount",
+        name: "requestCount",
+        type: "number",
+        isCustom: true
+      },
+      {
+        field: "requestFromUserName",
+        name: "fromContact",
         type: "string",
         isCustom: true
       },
       {
-        field: "subject",
-        name: "subject",
+        field: "companyName",
+        name: "fromCompany",
         type: "string",
         isCustom: true
-      },
-      {
-        field: "creationDate",
-        name: "docDate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "openedBy",
-        name: "openedBy",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "projectName",
-        name: "projectName",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "docType",
-        name: "docType",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "refDoc",
-        name: "docNo",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "dueDate",
-        name: "dueDate",
-        type: "date",
-        isCustom: true
-      }
+      } 
     ];
 
     this.state = {
+      pageTitle:Resources["timeSheet"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
-      isCustom: true
+      isCustom: true,
+      apiFilter:"" 
     };
   }
 
-  componentDidMount() {
-    Api.get("GetNotifyRequestsDocApprove").then(result => {
-
-      result.map(item => {
-        item.creationDate = moment(item.creationDate).format("DD/MM/YYYY");
-        item.openedBy = moment(item.openedBy).format("DD/MM/YYYY");
-        item.dueDate = moment(item.dueDate).format("DD/MM/YYYY");
-      });
-
-      this.setState({
-        rows: result,
-        isLoading: false
-      });
-    });
+  componentWillMount() {
+    Api.get("GetApprovalRequestsGroupByUserId?requestType=timeSheet").then(
+      result => {
+        this.setState({
+          rows: result,
+          isLoading: false
+        });
+      }
+    );
   }
-
+  
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
     return this.state.viewfilter;
   }
 
+  isCustomHandlel() {
+    this.setState({ isCustom: !this.state.isCustom });
+  }
+
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result, 
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+      ) : <LoadingSection/>;
+
+      const btnExport = this.state.isLoading === false ? 
+      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+      : <LoadingSection /> ;
+
+      const ComponantFilter= this.state.isLoading === false ?   
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain} 
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">{Resources["docNotify"][currentLanguage]}</h3>
-            <span>45</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+            <h3 className="zero">{this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -259,7 +212,7 @@ class DocNotifyLogDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -281,37 +234,20 @@ class DocNotifyLogDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+           {btnExport}
+          </div> 
         </div>
         <div
           className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+          style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter} 
           </div>
-        </div>
-
+        </div> 
         <div>{dataGrid}</div>
       </div>
     );
   }
 }
 
-export default DocNotifyLogDetails;
+export default TimeSheetDetails;

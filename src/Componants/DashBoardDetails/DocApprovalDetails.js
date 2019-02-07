@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
-import Filter from "../FilterComponent/filterComponent";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export"; 
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
-
+import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
@@ -18,36 +19,101 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class OpenedSummaryDetails extends Component {
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+const statusButton = ({ value, row }) => {
+  let doc_view = "";
+    if(row){
+      if (row.readStatus === true) {
+        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#CCC',width:'94%'}}>{Resources["read"][currentLanguage]}</div>
+      }else{
+        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#0dc083',width:'94%',color:'#FFF'}}>{Resources["unRead"][currentLanguage]}</div>
+      } 
+        return doc_view; 
+    }
+    return null;
+};
+
+
+let  subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+    doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+    subject = row.subject;
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
+
+class DocApprovalDetails extends Component {
   constructor(props) {
     super(props);
 
-    var columnsGrid = [
+    const columnsGrid = [
       {
-        key: "docNo",
-        name: Resources["docNo"][currentLanguage],
+        key: "readStatusText",
+        name: Resources["statusName"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:statusButton
       },
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:subjectLink
+      },
+      {
+        key: "creationDate",
+        name: Resources["docDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "duration2",
+        name: Resources["durationDays"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "arrange",
+        name: Resources["levelNo"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "actionBy",
+        name: Resources["actionByContact"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -68,6 +134,28 @@ class OpenedSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
+        key: "description",
+        name: Resources["description"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "projectName",
+        name: Resources["projectName"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
         key: "docType",
         name: Resources["docType"][currentLanguage],
         width: "50%",
@@ -79,8 +167,78 @@ class OpenedSummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "oppenedDate",
-        name: Resources["openedDate"][currentLanguage],
+        key: "refDoc",
+        name: Resources["docNo"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "lastApproveDate",
+        name: Resources["lastApproveDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "delayDuration",
+        name: Resources["delay"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "dueDate",
+        name: Resources["dueDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "lastSendDate",
+        name: Resources["lastSendDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "lastSendTime",
+        name: Resources["lastSendTime"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "lastApproveTime",
+        name: Resources["lastApprovedTime"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -93,15 +251,11 @@ class OpenedSummaryDetails extends Component {
 
     const filtersColumns = [
       {
-        field: "docNo",
-        name: "docNo",
-        type: "number",
-        isCustom: true
-      },
-      {
-        field: "projectName",
-        name: "projectName",
-        type: "string",
+        field: "readStatusText",
+        name: "statusName",
+        type: "toggle",
+        trueLabel: "oppened",
+        falseLabel: "closed",
         isCustom: true
       },
       {
@@ -111,8 +265,38 @@ class OpenedSummaryDetails extends Component {
         isCustom: true
       },
       {
+        field: "creationDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "duration2",
+        name: "durationDays",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "arrange",
+        name: "levelNo",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "actionBy",
+        name: "actionByContact",
+        type: "string",
+        isCustom: true
+      },
+      {
         field: "openedBy",
         name: "openedBy",
+        type: "string",
+        isCustom: true
+      }, 
+      {
+        field: "projectName",
+        name: "projectName",
         type: "string",
         isCustom: true
       },
@@ -123,44 +307,69 @@ class OpenedSummaryDetails extends Component {
         isCustom: true
       },
       {
-        field: "oppenedDate",
-        name: "openedDate",
+        field: "delayDuration",
+        name: "delay",
         type: "date",
         isCustom: true
       }
+      // ,
+      // {
+      //   field: "lastSendDate",
+      //   name: "lastSendDate",
+      //   type: "date",
+      //   isCustom: true
+      // },
+      // {
+      //   field: "lastSendTime",
+      //   name: "lastSendTime",
+      //   type: "string",
+      //   isCustom: true
+      // },
+      // {
+      //   field: "lastApproveTime",
+      //   name: "lastApprovedTime",
+      //   type: "string",
+      //   isCustom: true
+      // }
     ];
 
     this.state = {
+      pageTitle: "",
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
-      isCustom: true
+      isCustom: true ,
+      apiFilter:"" 
     };
   }
 
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);
-    const queryes = this.props.location.search;
 
     let action = null;
 
     for (let param of query.entries()) {
       action = param[1];
     }
+     
+    if (action === "1") {
+      this.setState({
+        pageTitle: Resources["docRejected"][currentLanguage]
+      });
 
-    if (action) {
-      Api.get(
-        "SelectDocTypeByProjectIdOpenedByAction?action=" +
-          action +
-          "&pageNumber=" +
-          0
-      ).then(result => {
-        result.map(item => {
-          item.oppenedDate = moment(item.oppenedDate).format("DD/MM/YYYY");
+      Api.get("GetRejectedRequestsDocApprove").then(result => { 
+        this.setState({
+          rows: result,
+          isLoading: false
         });
-
+      });
+    } else {
+      this.setState({
+        pageTitle: Resources["docApproval"][currentLanguage]
+      });
+      Api.get("GetApprovalRequestsDocApprove").then(result => { 
         this.setState({
           rows: result,
           isLoading: false
@@ -175,20 +384,58 @@ class OpenedSummaryDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+      ) : <LoadingSection/>;
+
+      const btnExport = this.state.isLoading === false ? 
+      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+      : <LoadingSection /> ;
+
+      const ComponantFilter= this.state.isLoading === false ?   
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain} 
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">
-              {Resources["openedSummary"][currentLanguage]}
-            </h3>
-            <span>45</span>
+            <h3 className="zero">{this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
@@ -240,7 +487,7 @@ class OpenedSummaryDetails extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -262,37 +509,18 @@ class OpenedSummaryDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+            {btnExport}
+          </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
-        </div>
-
+        </div> 
         <div>{dataGrid}</div>
       </div>
     );
   }
 }
 
-export default OpenedSummaryDetails;
+export default DocApprovalDetails;

@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import moment from "moment";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
+import "../../Styles/scss/en-us/layout.css"; 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
+import moment from "moment"; 
 import Resources from "../../resources.json";
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -17,15 +20,19 @@ const {
   SingleSelectFilter
 } = Filters;
 
-class ActionBySummaryDetails extends Component {
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+class ClosedSummaryDetails extends Component {
   constructor(props) {
     super(props);
 
     var columnsGrid = [
       {
         key: "docNo",
-        name:  Resources["numberAbb"][currentLanguage],
-        width: "50%",
+        name: Resources["docNo"][currentLanguage],
+        width: "15%",
         draggable: true,
         sortable: true,
         resizable: true,
@@ -35,7 +42,7 @@ class ActionBySummaryDetails extends Component {
       },
       {
         key: "projectName",
-        name:  Resources["projectName"][currentLanguage],
+        name: Resources["projectName"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -45,8 +52,8 @@ class ActionBySummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "actionBy",
-        name:  Resources["actionByContact"][currentLanguage],
+        key: "subject",
+        name: Resources["subject"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -56,7 +63,18 @@ class ActionBySummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "docTypeName",
+        key: "closedBy",
+        name: Resources["closedBy"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "docType",
         name: Resources["docType"][currentLanguage],
         width: "50%",
         draggable: true,
@@ -67,33 +85,23 @@ class ActionBySummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "docDelay",
-        name: Resources["delay"][currentLanguage],
+        key: "oppenedDate",
+        name: Resources["openedDate"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "requiredDate",
-        name: Resources["requiredDate"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
       }
     ];
 
     const filtersColumns = [
       {
         field: "docNo",
-        name: "numberAbb",
+        name: "docNo",
         type: "number",
         isCustom: true
       },
@@ -104,32 +112,33 @@ class ActionBySummaryDetails extends Component {
         isCustom: true
       },
       {
-        field: "actionBy",
-        name: "actionByContact",
+        field: "subject",
+        name: "subject",
         type: "string",
         isCustom: true
       },
       {
-        field: "docTypeName",
+        field: "closedBy",
+        name: "closedBy",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docType",
         name: "docType",
         type: "string",
         isCustom: true
       },
       {
-        field: "docDelay",
-        name: "delay",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "requiredDate",
-        name: "requiredDate",
+        field: "oppenedDate",
+        name: "openedDate",
         type: "date",
         isCustom: true
       }
     ];
 
     this.state = {
+      pageTitle:Resources["closedSummary"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
@@ -147,13 +156,17 @@ class ActionBySummaryDetails extends Component {
     for (let param of query.entries()) {
       action = param[1];
     }
+
     if (action) {
-      Api.get("GetActionsBySummaryDetails?action=" + action).then(result => {
-
+      Api.get(
+        "SelectDocTypeByProjectIdClosedByAction?action=" +
+          action +
+          "&pageNumber=" +
+          0
+      ).then(result => {
         result.map(item => {
-          item.requiredDate = moment(item.requiredDate).format("DD/MM/YYYY");
+          item.oppenedDate = moment(item.oppenedDate).format("DD/MM/YYYY");
         });
-
         this.setState({
           rows: result,
           isLoading: false
@@ -168,24 +181,60 @@ class ActionBySummaryDetails extends Component {
     return this.state.viewfilter;
   }
 
+  filterMethodMain = (event, query, apiFilter) => {
+    var stringifiedQuery = JSON.stringify(query);
+
+    this.setState({
+      isLoading: true,
+      query: stringifiedQuery
+    });
+
+    Api.get("").then(result => {
+        if (result.length > 0) {
+          this.setState({
+            rows: result,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      })
+      .catch(ex => {
+        alert(ex);
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      });
+  };
 
   render() {
+
     const dataGrid =
-      this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} />
-      ) : null;
+    this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+    ) : <LoadingSection/>;
+
+    const btnExport = this.state.isLoading === false ? 
+    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
+    : <LoadingSection /> ;
+
+    const ComponantFilter= this.state.isLoading === false ?   
+    <Filter
+      filtersColumns={this.state.filtersColumns}
+      apiFilter={this.state.apiFilter}
+      filterMethod={this.filterMethodMain} 
+    /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-            <h3 className="zero">{Resources["actionBySummary"][currentLanguage]}</h3>
-            <span>45</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+            <h3 className="zero">{this.state.pageTitle}</h3>
+            <span>{this.state.rows.length}</span>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -231,8 +280,7 @@ class ActionBySummaryDetails extends Component {
                   </g>
                 </svg>
               </span>
-
-              {this.state.viewfilter === true ? (
+              {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["howFillter"][currentLanguage]}
@@ -254,37 +302,18 @@ class ActionBySummaryDetails extends Component {
             </div>
           </div>
           <div className="filterBTNS">
-            <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>
-          </div>
-          <div className="rowsPaginations">
-            <div className="rowsPagiRange">
-              <span>0</span> - <span>30</span> of
-              <span> 156</span>
-            </div>
-            <button className="rowunActive">
-              <i className="angle left icon" />
-            </button>
-            <button>
-              <i className="angle right icon" />
-            </button>
-          </div>
+          {btnExport}
+          </div> 
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
           <div className="gridfillter-container">
-            <Filter filtersColumns={this.state.filtersColumns} apiFilter="" />
+            {ComponantFilter}
           </div>
         </div>
-
         <div>{dataGrid}</div>
       </div>
     );
   }
 }
 
-export default ActionBySummaryDetails;
+export default ClosedSummaryDetails;
