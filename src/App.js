@@ -34,7 +34,12 @@ import Login from './Componants/Layouts/Login'
 import Route from './router';
 import api from './api';
 import User from './Componants/User/index'
+import DocumentEmailNotification from './Componants/User/DocumentEmailNotification';
+
 import Timesheet from "./Componants/User/Timesheet";
+import Index from "./Componants/Index";
+import WFExpenses from './Componants/User/WFExpenses'
+
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -50,6 +55,8 @@ class App extends Component {
     return (
       <div>
         {showComp}
+        
+        {/* <WFExpenses /> */}
       </div>
     );
   }
