@@ -23,7 +23,6 @@ const {
 class TimeSheetDetails extends Component {
   constructor(props) {
     super(props);
-
     const columnsGrid = [
       {
         key: "requestCount",

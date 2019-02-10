@@ -20,6 +20,7 @@ import Router from "./URLRoutes";
 import PrivacySetting from '../src/Componants/User/PrivacySetting';
 import ProfileSetting  from "../src/Componants/User/index";
 import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
+import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
 
 // let generalMenu = [];
 // let communication = [];
@@ -77,6 +78,7 @@ let routes = (
     <Route path="/:document/:projectId" component={Letter} />,
     <Route path="/ProfileSetting" component={ProfileSetting} />,
     <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} />
+    <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
 </Switch> 
 );
 
