@@ -103,6 +103,7 @@ class PrivacySetting extends Component {
         });
 
         Api.getPassword('GetPassWordEncrypt', e.target.value).then(result => { 
+           
             if (result === false) {
                 setTimeout(() => {
                     this.setState({
@@ -121,6 +122,7 @@ class PrivacySetting extends Component {
  
             }
             else if (result === true) { 
+               
                 this.setState({
                     changePassword: result,
                     isChechingPassword: false,
@@ -230,7 +232,7 @@ class PrivacySetting extends Component {
                                     </div>
                                     <div className="loadingWrapper"> 
                                         {this.state.isChechingPassword ?
-                                           <LoadingSection />
+                                        null
                                             : null
                                         }
 

@@ -164,8 +164,8 @@ export default class Api {
 
 
     static getPassword(route, password) {
-        const host = Domain + '/PM/api/Procoor/';
-
+        const host = Domain+'/PM/api/Procoor/'; 
+  
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
@@ -176,7 +176,10 @@ export default class Api {
                 ...headers
             },
             body: null
-        })
+        }).then(
+            response => response.json()
+
+        )
     }
 
     static getPublicIP() {

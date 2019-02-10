@@ -279,3 +279,6 @@
 .miniRows .react-grid-Row .react-grid-Cell {
     height: 40px !important;
 }
+.react-grid-HeaderCell>.react-grid-checkbox-container {
+    padding: 0;
+}

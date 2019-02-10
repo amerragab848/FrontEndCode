@@ -18,7 +18,7 @@ const dateFormate = ({ value }) => {
 
 const Actions = ({ value }) => {
     let doc_view = "";   
-          doc_view = <div><button >{Resources["attachments"][currentLanguage]}</button></div>
+          doc_view = <div><button  >{Resources["attachments"][currentLanguage]}</button></div>
           return doc_view; 
   };
 
@@ -31,7 +31,7 @@ export default class Expenses extends Component {
             {
                 key: "id",
                 name: Resources["id"][currentLanguage],
-                width: "0%",
+                width: "20%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -40,7 +40,7 @@ export default class Expenses extends Component {
             {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
-                width: "60%",
+                width: "70%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -50,7 +50,7 @@ export default class Expenses extends Component {
             {
                 key: "description",
                 name: Resources["description"][currentLanguage],
-                width: "50%",
+                width: "70%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -60,7 +60,7 @@ export default class Expenses extends Component {
             {
                 key: "projectName",
                 name: Resources["projectName"][currentLanguage],
-                width: "50%",
+                width: "70%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -156,18 +156,13 @@ export default class Expenses extends Component {
             showDeleteModal: false,
         };
     }
-
-    onRowClick= (rows,value) => {
-        alert('row click');
-        if (value) {
-            console.log('GetExpensesUserForEdit?id='+value.id)
-        } 
-      }
-
+    attachments=()=>{
+        console.log("attachments")
+    }
 
     clickHandlerDeleteRowsMain=(selectedRows)=>{
-        this.setState({ selectedRows , showDeleteModal: true})
-        Api.post('DeleteUserExpensesMultiple',this.state.selectedRows)
+        this.setState({ selectedRows:selectedRows , showDeleteModal: true})
+        Api.post('DeleteUserExpensesMultiple',selectedRows)
         .then(result => {
             let originalRows = this.state.rows;
             this.state.selectedRows.map(i => {
@@ -388,8 +383,7 @@ export default class Expenses extends Component {
                         {this.state.isLoading == false
 
                             ? <GridSetup columns={this.state.columns} rows={this.state.rows}  pageSize={this.state.pageSize} 
-                                         showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} 
-                                         onRowClick={(index,value) => this.onRowClick(index,value)}/>
+                                         showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}/>
 
                             : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
                     </div>
@@ -398,7 +392,7 @@ export default class Expenses extends Component {
               closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal}
               clickHandlerCancel={this.clickHandlerCancelMain}
-              clickHandlerContinue={this.clickHandlerContinueMain}
+           
             />
           ) : null
         }
