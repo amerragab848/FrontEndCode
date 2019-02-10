@@ -148,6 +148,9 @@ export default class Timesheet extends Component {
 
     }
 
+    addRecord() {
+        alert("add new timesheet record....");
+    }
 
     componentDidMount = () => {
         this.GetData("GetAccountsProjectsByIdForList", 'projectName', 'projectId', 'Projects');
@@ -210,9 +213,9 @@ export default class Timesheet extends Component {
 
     render() {
 
-        const btnExport = 
+        const btnExport =
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
-           
+
 
         return (
 
@@ -244,7 +247,6 @@ export default class Timesheet extends Component {
                                 </svg>
                             </span>
                         </div>
-
                         <div className="filterBTNS">
                             {this.state.isLoadingsendRequest === false ?
                                 <button className="primaryBtn-1 btn" onClick={this.sendRequest} >
@@ -257,8 +259,13 @@ export default class Timesheet extends Component {
                                     </div>
                                 </button>
                             }
+                        </div>
+                        <div className="filterBTNS">
+
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>New</button>
                             {btnExport}
                         </div>
+
 
                         <div className="rowsPaginations">
                             <div className="rowsPagiRange">
