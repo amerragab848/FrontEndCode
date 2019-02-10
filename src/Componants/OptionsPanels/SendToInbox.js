@@ -36,6 +36,7 @@ class SendToInbox extends Component {
             validPriority: true,
             validToCompany: true,
             validAttention: true,
+            submitLoading: false 
         }
     }
     Priority_handelChange = (item) => {
@@ -94,7 +95,10 @@ class SendToInbox extends Component {
 
                     onSubmit={values => {
                         if (!this.state.validAttention && !this.state.validPriority && !this.state.validToCompany) {
-                            Api.post("SendByInbox", this.state.sendingData)
+                            this.setState({submitLoading:true})
+                            Api.post("SendByInbox", this.state.sendingData).then(
+                                this.setState({submitLoading:false})
+                            )
                         }
                     }}
 
@@ -145,9 +149,19 @@ class SendToInbox extends Component {
                                     index='ccContactsddinbox' isMulti="true" />
 
                             </div>
+                            { ! this.state.submitLoading ?
                             <div className="dropBtn">
                                 <button className="primaryBtn-1 btn" type="submit">{Resources['send'][currentLanguage]}</button>
                             </div>
+                              :   (
+                                <span className="primaryBtn-1 btn largeBtn disabled">
+                                    <div className="spinner">
+                                        <div className="bounce1" />
+                                        <div className="bounce2" />
+                                        <div className="bounce3" />
+                                    </div>
+                                </span>
+                            )}
                         </Form>
                     )}
                 </Formik>

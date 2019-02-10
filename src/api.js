@@ -38,8 +38,7 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-
-                json = resp.json();
+                json =resp.json();
                 return json;
             }
             else if (resp.status === 500) {
