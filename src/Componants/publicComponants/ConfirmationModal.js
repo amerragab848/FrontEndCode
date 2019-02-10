@@ -38,7 +38,7 @@ class ConfirmationModal extends Component {
               </button>
 
               <button className="smallBtn primaryBtn-1 btn approve" onClick={this.clickHandlerContinue}>
-                {this.props != null ?Resources[this.props.buttonName][currentLanguage]:Resources["edit"][currentLanguage]}
+                {this.props != null ?Resources[this.props.buttonName][currentLanguage]:Resources["goEdit"][currentLanguage]}
               </button>
             </div>
           </div>

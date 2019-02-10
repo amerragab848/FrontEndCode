@@ -235,7 +235,7 @@ sayed exp
   position: relative;
 }
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div >div{
-  z-index: 9;
+  z-index: 13;
 }
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div::after{
   content: '';
@@ -730,9 +730,9 @@ table edition
   margin-right: 0 !important;
 } 
  
-.gridfillter-container .fillter-status-container .fillter-item-c {
+/* .gridfillter-container .fillter-status-container .fillter-item-c {
     margin-bottom: 0px !important;
-} 
+}  */
 .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c {
   margin-bottom: 0 !important
 }
@@ -814,7 +814,7 @@ text-transform: capitalize
   background: #fff !important;
   top: 72px !important;
   overflow: hidden !important;
-  z-index: 10 !important;
+  z-index: 14 !important;
   position: sticky !important;
   width: 100% !important
 }
@@ -1088,4 +1088,36 @@ text-transform: capitalize
 }
 .customD_Menu .css-15k3avv {
   z-index: 155;
+}
+.approveReject {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 35px 20px;
+  border-radius: 5px;
+}
+.approveReject h3 {
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: 0.6px;
+  color: #252833;
+  font-family: font-xb;
+  text-transform: uppercase;
+  margin: 0;
+}
+.reject_approve {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.reject_approve button:first-child {
+  margin-right: 20px;
+}
+.customD_Menu {
+  width: 100%;
+  position: relative;
+  z-index: 12;
 }

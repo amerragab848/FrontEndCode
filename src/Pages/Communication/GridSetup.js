@@ -193,10 +193,9 @@ class GridSetup extends Component {
       this.setState({expandedRows: expandedRows});
   }
 
-  onRowClick= (rows,value) => {
-     
+  onRowClick= (rows,value) => { 
     if (value) {
-       console.log('route to letterAddEdit/'+value.id); 
+      this.props.onRowClick(value);
     } 
   }
   

@@ -22,7 +22,7 @@ class Export extends Component {
     render() { 
     	const style= { fill: { patternType: "solid", fgColor: {rgb: "FFCCEEFF"}},font: {sz: "7.5", bold: true}} ;
         return (
-            <ExcelFile element={ <button className="primaryBtn-2 btn mediumBtn">EXPORT</button>  } fileExtension="xlsx" filename={this.state.fileName}>
+            <ExcelFile element={ <button className="primaryBtn-2 btn mediumBtn">{Resources["export"][currentLanguage]}</button>  } fileExtension="xlsx" filename={this.state.fileName}>
                 <ExcelSheet data={this.props.rows} name={this.state.fileName}>
                 { this.state.columns.map((column,index)=>  
                 	<ExcelColumn label={column.name} width={column.width} value={column.key} key={index} style={style} /> )

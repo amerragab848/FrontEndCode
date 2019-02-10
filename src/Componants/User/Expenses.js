@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
-
+import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import NotifiMsg from '../publicComponants/NotifiMsg';
 import Api from '../../api'
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from '../../resources.json';
@@ -12,35 +11,27 @@ import Export from "../../Componants/OptionsPanels/Export";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
+
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
 const Actions = ({ value }) => {
-    let doc_view = "";   
-          doc_view = <div><button >{Resources["attachments"][currentLanguage]}</button></div>
-          return doc_view; 
-  };
+    let doc_view = "";
+    doc_view = <div><button  >{Resources["attachments"][currentLanguage]}</button></div>
+    return doc_view;
+};
 
-
-export default class Expenses extends Component {
+class Expenses extends Component {
     constructor(props) {
         super(props)
 
         const columnsGrid = [
-            {
-                key: "id",
-                name: Resources["id"][currentLanguage],
-                width: "0%",
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-            },
+
             {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
-                width: "60%",
+                width: "50%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -114,7 +105,7 @@ export default class Expenses extends Component {
                 sortDescendingFirst: true,
 
             }
-            ,{
+            , {
                 key: "comment",
                 name: Resources["comment"][currentLanguage],
                 width: "50%",
@@ -124,7 +115,7 @@ export default class Expenses extends Component {
                 sortDescendingFirst: true,
 
             }
-            ,{
+            , {
                 key: "statusText",
                 name: Resources["actions"][currentLanguage],
                 width: 120,
@@ -133,8 +124,8 @@ export default class Expenses extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter:Actions
-              }
+                formatter: Actions
+            }
         ];
 
         this.state = {
@@ -144,7 +135,7 @@ export default class Expenses extends Component {
             projectId: '',
             columns: columnsGrid,
             isLoading: true,
-            rows: [],        
+            rows: [],
             btnisLoading: false,
             isLoadingsendRequest: false,
             statusClassSuccess: "disNone",
@@ -156,48 +147,51 @@ export default class Expenses extends Component {
             showDeleteModal: false,
         };
     }
+    attachments = () => {
+        console.log("attachments")
+    }
 
-    onRowClick= (rows,value) => {
-        alert('row click');
-        if (value) {
-            console.log('GetExpensesUserForEdit?id='+value.id)
-        } 
-      }
+    clickHandlerDeleteRowsMain = (selectedRows) => {
+        this.setState({ selectedRows: selectedRows, showDeleteModal: true })
+        Api.post('DeleteUserExpensesMultiple', selectedRows)
+            .then(result => {
+                let originalRows = this.state.rows;
+                this.state.selectedRows.map(i => {
+                    originalRows = originalRows.filter(r => r.id !== i);
+                });
 
+                this.setState({
+                    rows: originalRows,
+                    totalRows: originalRows.length,
+                    isLoading: false,
+                    showDeleteModal: false
+                });
+            })
+            .catch(ex => {
+                this.setState({
+                    //isLoading: false,
+                    showDeleteModal: false
+                });
 
-    clickHandlerDeleteRowsMain=(selectedRows)=>{
-        this.setState({ selectedRows , showDeleteModal: true})
-        Api.post('DeleteUserExpensesMultiple',this.state.selectedRows)
-        .then(result => {
-            let originalRows = this.state.rows;
-            this.state.selectedRows.map(i => {
-              originalRows = originalRows.filter(r => r.id !== i);
             });
-    
-            this.setState({
-              rows: originalRows,
-              totalRows: originalRows.length,
-              isLoading: false,
-              showDeleteModal: false
-            });
-          })
-          .catch(ex => {
-            this.setState({
-              //isLoading: false,
-              showDeleteModal: false
-            });
-          
-          });
     }
 
     onCloseModal = () => {
         this.setState({ showDeleteModal: false });
-      };
-     
-      clickHandlerCancelMain = () => {
-        this.setState({ showDeleteModal: false });
-      };
+    };
 
+    clickHandlerCancelMain = () => {
+        this.setState({ showDeleteModal: false });
+    };
+
+    RouteHandler(obj) {
+        if (obj) {
+            this.props.history.push({
+                pathname: "/GetExpensesUserForEdit",
+                search: "?id=" + obj.id
+            });
+        }
+    }
 
     GetNextData = () => {
 
@@ -207,7 +201,7 @@ export default class Expenses extends Component {
             pageNumber: pageNumber
         });
         if (this.state.projectId) {
-            Api.post('GetTimeSheetByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
+            Api.post('GetExpensesByDates', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
                 let oldRows = this.state.rows;
                 const newRows = [...oldRows, ...result];
 
@@ -225,7 +219,7 @@ export default class Expenses extends Component {
             });
         }
         else {
-            Api.post('GetTimeSheetByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
+            Api.post('GetExpensesByDates', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
                 let oldRows = this.state.rows;
                 const newRows = [...oldRows, ...result];
 
@@ -242,9 +236,11 @@ export default class Expenses extends Component {
                 });
             });
         }
-
     }
 
+    addRecord() {
+        alert("add new expenses record....");
+    }
 
     componentDidMount = () => {
         this.GetData("ProjectProjectsGetAll", 'projectName', 'projectId', 'Projects');
@@ -297,16 +293,13 @@ export default class Expenses extends Component {
     }
 
     render() {
-
-        const btnExport = 
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
-           
+        const btnExport =
+            <Export rows={this.state.isLoading === false ? this.state.rows : []}
+            columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
 
         return (
-
             <div className="mainContainer">
                 <div className="resetPassword">
-                   
 
                     <div className="submittalFilter">
                         <div className="subFilter">
@@ -335,12 +328,13 @@ export default class Expenses extends Component {
 
                         <div className="filterBTNS">
                             {btnExport}
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>New</button>
                         </div>
 
                         <div className="rowsPaginations">
                             <div className="rowsPagiRange">
                                 <span>0</span> - <span>{this.state.pageSize}</span> of
-                   <span>{this.state.totalRows}</span>
+                             <span>{this.state.totalRows}</span>
                             </div>
                             <button className="rowunActive">
                                 <i className="angle left icon" />
@@ -386,22 +380,18 @@ export default class Expenses extends Component {
                     <div className="sayedWrapper">
                         {this.state.Loading ? <LoadingSection /> : null}
                         {this.state.isLoading == false
-
-                            ? <GridSetup columns={this.state.columns} rows={this.state.rows}  pageSize={this.state.pageSize} 
-                                         showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} 
-                                         onRowClick={(index,value) => this.onRowClick(index,value)}/>
-
+                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} pageSize={this.state.pageSize}
+                                showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} onRowClick={this.RouteHandler.bind(this)} />
                             : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
                     </div>
-                    { this.state.showDeleteModal == true ? (
-            <ConfirmationModal
-              closed={this.onCloseModal}
-              showDeleteModal={this.state.showDeleteModal}
-              clickHandlerCancel={this.clickHandlerCancelMain}
-              clickHandlerContinue={this.clickHandlerContinueMain}
-            />
-          ) : null
-        }
+
+                    {this.state.showDeleteModal == true ? (
+                        <ConfirmationModal
+                            closed={this.onCloseModal}
+                            showDeleteModal={this.state.showDeleteModal}
+                            clickHandlerCancel={this.clickHandlerCancelMain} />
+                    ) : null}
+
                 </div>
             </div>
         )
@@ -421,8 +411,8 @@ export default class Expenses extends Component {
             });
         }).catch(ex => {
         });
-
     }
 
 
 }
+export default withRouter(Expenses)

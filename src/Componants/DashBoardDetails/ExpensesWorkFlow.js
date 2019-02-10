@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import moment from "moment";
+import eyeShow from "../../Styles/images/eyepw.svg";
+import { Formik, Form } from "formik";
+import Rodal from "../../Styles/js/rodal";
+import "../../Styles/css/rodal.css";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../../Componants/OptionsPanels/Export"; 
+import Export from "../../Componants/OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
-
+import Approval from "../OptionsPanels/ApprovalRejectDocument";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
@@ -18,15 +23,42 @@ const {
   MultiSelectFilter,
   SingleSelectFilter
 } = Filters;
- 
-class AlertingQuantitySummaryDetails extends Component {
+
+const dateFormate = ({ value }) => {
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
+class ExpensesWorkFlow extends Component {
   constructor(props) {
     super(props);
 
     var columnsGrid = [
       {
-        key: "docSubject",
-        name: Resources["docSubject"][currentLanguage],
+        key: "projectName",
+        name: Resources["projectName"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "docDate",
+        name: Resources["docDate"][currentLanguage],
+        width: "50%",
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter: dateFormate
+      },
+      {
+        key: "taskName",
+        name: Resources["taskName"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -47,8 +79,8 @@ class AlertingQuantitySummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
+        key: "expenseValue",
+        name: Resources["hours"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -58,30 +90,8 @@ class AlertingQuantitySummaryDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "originalQnty",
-        name: Resources["originalQuantity"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "requestedQnty",
-        name: Resources["requestedQuantity"][currentLanguage],
-        width: "50%",
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "remainingQnty",
-        name: Resources["remainingQuantity"][currentLanguage],
+        key: "total",
+        name: Resources["total"][currentLanguage],
         width: "50%",
         draggable: true,
         sortable: true,
@@ -94,8 +104,20 @@ class AlertingQuantitySummaryDetails extends Component {
 
     const filtersColumns = [
       {
-        field: "docSubject",
-        name: "docSubject",
+        field: "projectName",
+        name: "projectName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "taskName",
+        name: "taskName",
         type: "string",
         isCustom: true
       },
@@ -106,64 +128,47 @@ class AlertingQuantitySummaryDetails extends Component {
         isCustom: true
       },
       {
-        field: "projectName",
-        name: "projectName",
+        field: "expenseValue",
+        name: "hours",
         type: "string",
         isCustom: true
       },
       {
-        field: "originalQnty",
-        name: "originalQuantity",
-        type: "number",
-        isCustom: true
-      },
-      {
-        field: "requestedQnty",
-        name: "requestedQuantity",
-        type: "number",
-        isCustom: true
-      },
-      {
-        field: "remainingQnty",
-        name: "remainingQuantity",
-        type: "number",
+        field: "total",
+        name: "total",
+        type: "string",
         isCustom: true
       }
     ];
 
     this.state = {
-      pageTitle:Resources["alertingQntySummary"][currentLanguage],
+      pageTitle: Resources["requestApproval"][currentLanguage],
       viewfilter: true,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
-      isCustom: true
+      isCustom: true,
+      isApprove: false,
+      type: false
     };
   }
 
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);
 
-    let action = null;
+    let id = null;
 
     for (let param of query.entries()) {
-      action = param[1];
+      id = param[1];
     }
 
-    if (action) {
-      Api.get(
-        "GetBoqQuantityRequestedAlertDetails?action=" +
-          action +
-          "&pageNumber=" +
-          0
-      ).then(result => {
-        this.setState({
-          rows: result,
-          isLoading: false
-        });
+    Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + id +"&type=timeSheet").then(result => {
+      this.setState({
+        rows: result,
+        isLoading: false
       });
-    }
+    });
   }
 
   hideFilter(value) {
@@ -180,7 +185,8 @@ class AlertingQuantitySummaryDetails extends Component {
       query: stringifiedQuery
     });
 
-    Api.get("").then(result => {
+    Api.get("")
+      .then(result => {
         if (result.length > 0) {
           this.setState({
             rows: result,
@@ -201,22 +207,28 @@ class AlertingQuantitySummaryDetails extends Component {
       });
   };
 
+  ApproveHandler(){
+      this.setState({
+        isApprove:!this.state.isApprove
+      });
+  }
+
+  toggle = () => {
+    const currentType = this.state.type;
+    this.setState({ type: !currentType });
+  };
+
   render() {
     const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+      this.state.isLoading === false ? (<GridSetup rows={this.state.rows} columns={this.state.columns} />) : 
+                                       (<LoadingSection />);
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport =
+      this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle}/>) :
+                                       ( <LoadingSection />);
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    const ComponantFilter =
+      this.state.isLoading === false ? (<Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain}/>) : (<LoadingSection />);
 
     return (
       <div className="mainContainer">
@@ -296,20 +308,114 @@ class AlertingQuantitySummaryDetails extends Component {
               )}
             </div>
           </div>
-          <div className="filterBTNS">
-          {btnExport}
-          </div> 
+          <div className="filterBTNS">{btnExport}</div>
         </div>
-        <div className="filterHidden" style={{maxHeight: this.state.viewfilter ? "" : "0px",overflow: this.state.viewfilter ? "" : "hidden"}}>
-          <div className="gridfillter-container">
-         {ComponantFilter}
-          </div>
+        <div>
+          <Approval ApproveHandler={this.ApproveHandler.bind(this)}/>
+        </div>
+        <div
+          className="filterHidden"
+          style={{
+            maxHeight: this.state.viewfilter ? "" : "0px",
+            overflow: this.state.viewfilter ? "" : "hidden"
+          }}
+        >
+          <div className="gridfillter-container">{ComponantFilter}</div>
         </div>
 
         <div>{dataGrid}</div>
+        {this.state.isApprove ? (
+          <Rodal visible={true} onClose={this.closeModal}>
+          <Formik
+          initialValues={{
+            password: ""
+          }}
+          validate={values => {
+            const errors = {};
+            if (values.password.length == 0) {
+              errors.password = Resources["passwordRequired"][currentLanguage];
+            }
+            return errors;
+          }}
+          onSubmit={values => {
+            if (this.state.passwordStatus) {
+              Api.post("SendWorkFlowApproval", this.state.sendingData);
+            } else alert("invalid Password");
+          }}
+        >
+          {({ errors, touched, handleBlur, handleChange }) => (
+            <Form id="signupForm1" className="proForm" noValidate="novalidate">
+              <div className="approvalDocument">
+                <div className="approvalWrapper">
+                  <div className="approvalTitle">
+                    <h3>Document Approval</h3>
+                  </div>
+                  <div className="inputPassContainer">
+                    <div className="form-group passwordInputs showPasswordArea">
+                      <label className="control-label">Password *</label>
+                      <div className="inputPassContainer">
+                        <div
+                          className={
+                            errors.password && touched.password
+                              ? "ui input inputDev has-error"
+                              : !errors.password && touched.password
+                              ? "ui input inputDev has-success"
+                              : "ui input inputDev"
+                          }
+                        >
+                          <span
+                            className={
+                              this.state.type
+                                ? "inputsideNote togglePW active-pw"
+                                : "inputsideNote togglePW "
+                            }
+                            onClick={this.toggle}
+                          >
+                            <img src={eyeShow} />
+                            <span className="show"> Show</span>
+                            <span className="hide"> Hide</span>
+                          </span>
+                          <input
+                            name="password"
+                            type={this.state.type ? "text" : "password"}
+                            className="form-control"
+                            id="password"
+                            placeholder="password"
+                            autoComplete="off" 
+                            onChange={handleChange}
+                          /> 
+                          {errors.password && touched.password ? (
+                            <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                          ) : !errors.password && touched.password ? (
+                            <span className="glyphicon form-control-feedback glyphicon-ok" />
+                          ) : null}
+                          {errors.password && touched.password ? (
+                            <em className="pError">{errors.password}</em>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
+                  <div className="textarea-group">
+                    <label>Comment</label>
+                    <textarea className="form-control"/>
+                  </div> 
+                  <div className="fullWidthWrapper">
+                    <button className="primaryBtn-1 btn largeBtn" type="submit">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Form>
+          )}
+        </Formik>
+    
+          </Rodal>
+        ) : null}
       </div>
     );
   }
 }
 
-export default AlertingQuantitySummaryDetails;
+export default ExpensesWorkFlow;
