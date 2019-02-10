@@ -17,7 +17,7 @@ class wfApproval extends Component {
       approveData: [],
       password: "",
       passwordStatus: false,
-
+      submitLoading: false,
       sendingData: {
         approvalStatus: true,
         docId: 1114,
@@ -33,7 +33,6 @@ class wfApproval extends Component {
     const currentType = this.state.type;
     this.setState({ type: !currentType });
   };
-
   componentDidMount = () => {
     let url =
       "GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" +
@@ -68,13 +67,11 @@ class wfApproval extends Component {
         throw ex;
       });
   };
-
   commentOnBlurHandler = e => {
     this.setState({
       sendingData: { ...this.state.sendingData, comment: e.target.value }
     });
   };
-
   selectHandleChange = e => {
     let contactId = [];
     e.forEach(element => {
@@ -108,8 +105,11 @@ class wfApproval extends Component {
             return errors;
           }}
           onSubmit={values => {
-            if (this.state.passwordStatus) {
-              Api.post("SendWorkFlowApproval", this.state.sendingData);
+            if (this.state.passwordStatus === true) {
+              this.setState({ submitLoading: true });
+              Api.post("SendWorkFlowApproval", this.state.sendingData).then(
+                this.setState({ submitLoading: true })
+              );
             } else alert("invalid Password");
           }}
         >
@@ -157,7 +157,8 @@ class wfApproval extends Component {
                               handleBlur(e);
                             }}
                             onChange={handleChange}
-                          /> 
+                          />
+
                           {errors.password && touched.password ? (
                             <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
                           ) : !errors.password && touched.password ? (
@@ -169,7 +170,7 @@ class wfApproval extends Component {
                         </div>
                       </div>
                     </div>
-                  </div> 
+                  </div>
                   <div className="textarea-group">
                     <label>Comment</label>
                     <textarea
@@ -177,7 +178,6 @@ class wfApproval extends Component {
                       onBlur={e => this.commentOnBlurHandler(e)}
                     />
                   </div>
-
                   <div className="fullWidthWrapper textLeft">
                     <Dropdown
                       title="approveTo"
@@ -187,11 +187,24 @@ class wfApproval extends Component {
                       isMulti="true"
                     />
                   </div>
-                  <div className="fullWidthWrapper">
-                    <button className="primaryBtn-1 btn largeBtn" type="submit">
-                      Save
-                    </button>
-                  </div>
+                  {!this.state.submitLoading ? (
+                    <div className="fullWidthWrapper">
+                      <button
+                        className="primaryBtn-1 btn largeBtn"
+                        type="submit"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="primaryBtn-1 btn largeBtn disabled">
+                      <div className="spinner">
+                        <div className="bounce1" />
+                        <div className="bounce2" />
+                        <div className="bounce3" />
+                      </div>
+                    </span>
+                  )}
                 </div>
               </div>
             </Form>

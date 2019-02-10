@@ -5,7 +5,7 @@ import "./Styles/scss/en-us/reactCss.css";
 
 // import CreateTransmittal from "./Componants/OptionsPanels/CreateTransmittal";
 // import SendTask from "./Componants/OptionsPanels/SendTask";
-// import DistributionList from "./Componants/OptionsPanels/DistributionList";
+ //import DistributionList from "./Componants/OptionsPanels/DistributionList";
 // import Filter from "./Componants/FilterComponent/filterComponent";
 // import TimeSheet from "./Componants/DashBoardDetails/TimeSheetDetails";
 // import SendWorkFlow from './Componants/OptionsPanels/SendWorkFlow';
@@ -17,7 +17,7 @@ import "./Styles/scss/en-us/reactCss.css";
 // import SendToInbox from './Componants/OptionsPanels/SendToInbox'
 // import CopyTo from "./Componants/OptionsPanels/CopyTo";
 // import SendByEmails from "./Componants/OptionsPanels/SendByEmails";
-// import WfApproval from './Componants/OptionsPanels/wfApproval';
+ import WfApproval from './Componants/OptionsPanels/wfApproval';
 // import PopUp from './Componants/OptionsPanels/OptionContainer' 
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import ApprovalRejectDocument from './Componants/OptionsPanels/ApprovalRejectDocument';

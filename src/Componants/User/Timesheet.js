@@ -92,11 +92,9 @@ export default class Timesheet extends Component {
             columns: columnsGrid,
             isLoading: true,
             rows: [],
-            isCustom: true,
             btnisLoading: false,
             isLoadingsendRequest: false,
             statusClassSuccess: "disNone",
-            isLoadingFirst: true,
             Loading: false,
             pageSize: 50,
             pageNumber: 0,
@@ -150,15 +148,6 @@ export default class Timesheet extends Component {
 
     }
 
-    hideFilter(value) {
-        this.setState({ viewfilter: !this.state.viewfilter });
-
-        return this.state.viewfilter;
-    }
-
-    isCustomHandlel() {
-        this.setState({ isCustom: !this.state.isCustom });
-    }
 
     componentDidMount = () => {
         this.GetData("GetAccountsProjectsByIdForList", 'projectName', 'projectId', 'Projects');
