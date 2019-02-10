@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Api from "../../api";
+import { withRouter } from "react-router-dom";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -89,7 +90,7 @@ class TimeSheetDetails extends Component {
       filtersColumns: filtersColumns,
       isCustom: true,
       apiFilter:"",
-      viewModal:false
+      viewModal:false 
     };
   }
 
@@ -142,15 +143,20 @@ class TimeSheetDetails extends Component {
         });
       });
   };
-
-  expenseWorkFlowDetails = (index,value) => {
-      alert(index);
+  
+  RouteHandler(obj){
+    if(obj){
+    this.props.history.push({
+        pathname: "/ExpensesWorkFlow",
+        search: "?id="+ obj.requestFromUserId
+      });
+    }
   }
 
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}  onRowClick={this.RouteHandler.bind(this)}/>
       ) : <LoadingSection/>;
 
       const btnExport = this.state.isLoading === false ? 
@@ -163,12 +169,7 @@ class TimeSheetDetails extends Component {
         apiFilter={this.state.apiFilter}
         filterMethod={this.filterMethodMain} 
       /> : <LoadingSection />;
-
-      const Details = this.state.viewModal === true?
-      (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={true} onRowClick={(index) => this.expenseWorkFlowDetails(index,this.state.rows[index])} />
-      ) : <LoadingSection/>;
-
+  
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
@@ -260,4 +261,4 @@ class TimeSheetDetails extends Component {
   }
 }
 
-export default TimeSheetDetails;
+export default withRouter(TimeSheetDetails);

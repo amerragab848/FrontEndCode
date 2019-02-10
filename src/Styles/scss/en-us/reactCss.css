@@ -1076,3 +1076,30 @@ text-transform: capitalize
 .grid-container {
   min-height: 650px;
 }
+.approveReject {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 35px 20px;
+  border-radius: 5px;
+}
+.approveReject h3 {
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: 0.6px;
+  color: #252833;
+  font-family: font-xb;
+  text-transform: uppercase;
+  margin: 0;
+}
+.reject_approve {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.reject_approve button:first-child {
+  margin-right: 20px;
+}

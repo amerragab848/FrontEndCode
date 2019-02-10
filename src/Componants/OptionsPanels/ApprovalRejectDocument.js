@@ -63,9 +63,9 @@ class ApprovalRejectDocument extends Component {
       <div>
         <div className="approveReject">
             <h3>Approve Document</h3>
-            <div className="reject_approve">
-                <span><img src={Approval} alt="" /></span>
-                <span><img src={Reject} alt="" /></span>
+            <div className="reject_approve"> 
+                <button className="primaryBtn-2 btn firstBtnApprov" onClick={this.props.ApproveHandler}>{Resources["reject"][currentLanguage]}</button>
+                <button className="primaryBtn-1 btn" onClick={this.props.ApproveHandler}>{Resources["approvalModalApprove"][currentLanguage]}</button>
             </div>
         </div>
       </div>
