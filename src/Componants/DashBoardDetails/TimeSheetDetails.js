@@ -147,7 +147,7 @@ class TimeSheetDetails extends Component {
   RouteHandler(obj){
     if(obj){
     this.props.history.push({
-        pathname: "/ExpensesWorkFlow",
+        pathname: "/TimeSheetWorkFlow",
         search: "?id="+ obj.requestFromUserId
       });
     }

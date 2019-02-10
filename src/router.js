@@ -19,7 +19,7 @@ import Letter from "./Pages/Communication/Letter";
 import Router from "./URLRoutes";
 import PrivacySetting from '../src/Componants/User/PrivacySetting';
 import ProfileSetting  from "../src/Componants/User/index";
-import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
+import TimeSheetWorkFlow  from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
 
 // let generalMenu = [];
 // let communication = [];
@@ -76,7 +76,7 @@ let routes = (
     <Route path="/PrivacySetting" component={PrivacySetting} />,
     <Route path="/:document/:projectId" component={Letter} />,
     <Route path="/ProfileSetting" component={ProfileSetting} />,
-    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} />
+    <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
 </Switch> 
 );
 
