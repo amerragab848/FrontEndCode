@@ -38,7 +38,10 @@ export default class Api {
 
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-                json =resp.json();
+             
+                json = resp.json();
+                if(json===undefined)
+                return null;
                 return json;
             }
             else if (resp.status === 500) {
@@ -57,7 +60,10 @@ export default class Api {
                 throw err
             });
 
-        }).then(json => (json.result ? json.result : json));
+        }).then(json => (json.result ? json.result : json)).catch(reason => {
+            return null;
+            // response is not a valid json string
+        });
     }
 
     static ConvertNumbers(number, decPlaces) {
@@ -134,7 +140,7 @@ export default class Api {
             headers.doctypeid = header.docTypeId
             headers.parentid = header.parentId
         }
-        return  fetch(url, {
+        return fetch(url, {
             method: 'POST',
             headers: {
 
@@ -143,8 +149,8 @@ export default class Api {
             body: params
         }).then(resp => {
             if (resp.status === 200) {
-                
-                json ="";
+
+                json = "";
                 return json;
             }
             else if (resp.status === 500) {
@@ -157,15 +163,15 @@ export default class Api {
                 throw err
             });
 
-       });//.then(res=>{return json});
+        });//.then(res=>{return json});
 
     }
 
 
     static getPassword(route, password) {
 
-        const host = Domain+'/PM/api/Procoor/'; 
-  
+        const host = Domain + '/PM/api/Procoor/';
+
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password
