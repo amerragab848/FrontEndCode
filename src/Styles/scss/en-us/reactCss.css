@@ -181,7 +181,7 @@ sayed exp
   padding: 25PX;
   display: flex;
   justify-content: space-between;
-  width: 730px;
+  width: auto;
   flex-wrap: wrap;
 }
 .dropWrapper .customD_Menu {
@@ -312,6 +312,9 @@ table edition
   overflow: visible;
   white-space: pre-wrap;
   align-items: center;
+}
+.ReactTable .rt-tr-group {
+  width: 100%;
 }
 .attachmentPage {
   width: 100%;
@@ -789,16 +792,20 @@ display: flex;
 align-items: center;
 text-transform: capitalize
 }
+.react-tabs__tab {
+  padding: 15px !important;
+  border-bottom: 3px solid transparent !important;
+}
 .react-tabs__tab--selected {
-  background: #dcdcdc !important;
-  border: 1px solid #dcdcdc !important;
+  background: #edf0f2 !important;
+  border: 1px solid transparent !important;
   color: black !important;
   border-radius: 0 !important;
   padding: 15px !important;
+  border-bottom: 3px solid #3570E6 !important;
 }
 .react-tabs__tab-list {
   border-bottom: 1px solid #e6e6e6 !important;
-  margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
   justify-content: center !important;
@@ -953,7 +960,7 @@ text-transform: capitalize
 .resetPassword  .ui.input.inputDev, .resetPassword .ui.input.inputDev input {
   width: 100% !important;
 }
-.resetPassword  .notifiActionsContainer{
+ .notifiActionsContainer{
   position: absolute;
   top: 0;
   right: 40px;
@@ -961,6 +968,10 @@ text-transform: capitalize
   width: auto;
   min-width: 300px;
   height: 50px;
+ /* z-index: 99999999; */
+}
+.rodal .notifiActionsContainer {
+  top: 30px;
 }
 .flexForm {
   display: flex !important;
@@ -1074,6 +1085,13 @@ text-transform: capitalize
 }
 .grid-container {
   min-height: 650px;
+}
+/**/
+.customD_Menu .css-vj8t7z {
+  z-index: 12;
+}
+.customD_Menu .css-15k3avv {
+  z-index: 155;
 }
 .approveReject {
   display: flex;

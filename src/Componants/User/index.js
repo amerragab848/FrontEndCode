@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import PrivacySetting from "./PrivacySetting";
 import Timesheet from './Timesheet';
 import Expenses from './Expenses';
+import DocumentEmailNotification from './DocumentEmailNotification';
 import Resources from "../../resources.json";
 
 let currentLanguage =
@@ -40,7 +41,7 @@ class Index extends Component {
           <Timesheet />
         </TabPanel>
         <TabPanel>
-          <Profile />
+          <DocumentEmailNotification />
         </TabPanel>
       </Tabs>
     );

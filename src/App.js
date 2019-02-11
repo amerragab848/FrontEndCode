@@ -34,10 +34,12 @@ import Login from './Componants/Layouts/Login'
 import Route from './router';
 import api from './api';
 import User from './Componants/User/index'
+import DocumentEmailNotification from './Componants/User/DocumentEmailNotification';
+
 import Timesheet from "./Componants/User/Timesheet";
-import AddTimeSheet_Inputs from './Componants/TimeSheet/AddTimeSheet_Inputs'
-import AddTimeSheet_Table from './Componants/TimeSheet/AddTimeSheet_Table'
-import DistributionInboxListSummaryDetails from "./Componants/DashBoardDetails/DistributionInboxListSummaryDetails";
+import Index from "./Componants/Index";
+import WFExpenses from './Componants/User/WFExpenses'
+
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -52,9 +54,15 @@ class App extends Component {
 
     return (
       <div>
+<<<<<<< HEAD
     {/* {showComp} */}
      <AddTimeSheet_Inputs/> 
     {/* <DistributionList/> */}
+=======
+        {showComp}
+        
+        {/* <WFExpenses /> */}
+>>>>>>> cbedb577481c8a6a5a211598303f9a65342fdb36
       </div>
     );
   }

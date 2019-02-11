@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
+import NotifiMsg from "../publicComponants/NotifiMsg";
 import eyeShow from "../../Styles/images/eyepw.svg";
 import { Formik, Form } from "formik";
 import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../../Componants/OptionsPanels/Export";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -14,8 +15,14 @@ import Approval from "../OptionsPanels/ApprovalRejectDocument";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import * as Yup from "yup";
+
+const SignupSchema = Yup.object().shape({
+  password: Yup.string().required("Required"),
+  comment: Yup.string()
+});
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -28,7 +35,10 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-class ExpensesWorkFlow extends Component {
+var listSelectedRows = [];
+var timeSheetId = null;
+
+class TimeSheetWorkFlow extends Component {
   constructor(props) {
     super(props);
 
@@ -150,8 +160,15 @@ class ExpensesWorkFlow extends Component {
       filtersColumns: filtersColumns,
       isCustom: true,
       isApprove: false,
-      type: false
+      type: false,
+      approvalStatus: null,
+      password: "",
+      comment: "",
+      viewMessage: false,
+      Message:""
     };
+
+    this.approveTimeSheet = this.approveTimeSheet.bind(this);
   }
 
   componentDidMount() {
@@ -161,9 +178,10 @@ class ExpensesWorkFlow extends Component {
 
     for (let param of query.entries()) {
       id = param[1];
+      timeSheetId = param[1];
     }
 
-    Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + id +"&type=timeSheet").then(result => {
+    Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + id + "&type=timeSheet" ).then(result => {
       this.setState({
         rows: result,
         isLoading: false
@@ -207,10 +225,18 @@ class ExpensesWorkFlow extends Component {
       });
   };
 
-  ApproveHandler(){
+  ApproveHandler(status) {
+    if (listSelectedRows.length > 0) {
       this.setState({
-        isApprove:!this.state.isApprove
+        approvalStatus: status,
+        isApprove: !this.state.isApprove
       });
+    } else {
+    this.setState({
+      Message:"Please Choose One Of Rows",
+      viewMessage:true
+    });
+    }
   }
 
   toggle = () => {
@@ -218,17 +244,105 @@ class ExpensesWorkFlow extends Component {
     this.setState({ type: !currentType });
   };
 
+  selectedRows(rows) {
+    listSelectedRows = [];
+
+    rows.map(item => {
+      listSelectedRows.push(item);
+    });
+  }
+
+  onRowsDeselected(rows) {
+    listSelectedRows = [];
+
+    rows.map(item => {
+      listSelectedRows.push(item);
+    });
+  }
+
+  approveTimeSheet(values) {
+    if (values["password"]) {
+      this.setState({
+        isLoading: true
+      }); 
+      Api.getPassword("GetPassWordEncrypt", values["password"]).then(res => {
+          if (res) {
+            listSelectedRows.map((id, index) => {
+              Api.post("EditExpensesUserApprovalStatus?id=" +id + "&comment=" + values["comment"] + "&type=" + this.state.approvalStatus).then(res => {
+                  if (index + 1 == listSelectedRows.length) {
+                    listSelectedRows = [];
+                    Api.get( "GetExpensesUserByContactIdType?requestFromUserId=" + timeSheetId + "&type=timeSheet").then(result => {
+                      this.setState({
+                        rows: result,
+                        isLoading: false,
+                        isApprove: false
+                      });
+                    });
+                  }
+                })
+                .catch(() =>
+                  this.setState({
+                    isLoading: false,
+                    viewMessage: true
+                  })
+                );
+            });
+          } else {
+            this.setState({
+              Message:Resources["invalidPassword"][currentLanguage],
+              isLoading: false,
+              viewMessage: true
+            });
+          }
+        })
+        .catch(res => {
+          this.setState({
+            isLoading: false
+          });
+        });
+    }
+  }
+
+  closeModal() {
+    this.setState({
+      isApprove: false
+    });
+  }
+
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (<GridSetup rows={this.state.rows} columns={this.state.columns} />) : 
-                                       (<LoadingSection />);
+      this.state.isLoading === false ? (
+        <GridSetup
+          rows={this.state.rows}
+          columns={this.state.columns}
+          selectedRows={this.selectedRows.bind(this)}
+          DeSelectedRows={this.onRowsDeselected.bind(this)}
+        />
+      ) : (
+        <LoadingSection />
+      );
 
     const btnExport =
-      this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle}/>) :
-                                       ( <LoadingSection />);
+      this.state.isLoading === false ? (
+        <Export
+          rows={this.state.isLoading === false ? this.state.rows : []}
+          columns={this.state.columns}
+          fileName={this.state.pageTitle}
+        />
+      ) : (
+        <LoadingSection />
+      );
 
     const ComponantFilter =
-      this.state.isLoading === false ? (<Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain}/>) : (<LoadingSection />);
+      this.state.isLoading === false ? (
+        <Filter
+          filtersColumns={this.state.filtersColumns}
+          apiFilter={this.state.apiFilter}
+          filterMethod={this.filterMethodMain}
+        />
+      ) : (
+        <LoadingSection />
+      );
 
     return (
       <div className="mainContainer">
@@ -236,11 +350,7 @@ class ExpensesWorkFlow extends Component {
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -286,7 +396,6 @@ class ExpensesWorkFlow extends Component {
                   </g>
                 </svg>
               </span>
-
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
@@ -311,106 +420,104 @@ class ExpensesWorkFlow extends Component {
           <div className="filterBTNS">{btnExport}</div>
         </div>
         <div>
-          <Approval ApproveHandler={this.ApproveHandler.bind(this)}/>
+          <Approval ApproveHandler={this.ApproveHandler.bind(this)} />
         </div>
-        <div
-          className="filterHidden"
-          style={{
-            maxHeight: this.state.viewfilter ? "" : "0px",
-            overflow: this.state.viewfilter ? "" : "hidden"
-          }}
-        >
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">{ComponantFilter}</div>
         </div>
-
         <div>{dataGrid}</div>
         {this.state.isApprove ? (
-          <Rodal visible={true} onClose={this.closeModal}>
-          <Formik
-          initialValues={{
-            password: ""
-          }}
-          validate={values => {
-            const errors = {};
-            if (values.password.length == 0) {
-              errors.password = Resources["passwordRequired"][currentLanguage];
-            }
-            return errors;
-          }}
-          onSubmit={values => {
-            if (this.state.passwordStatus) {
-              Api.post("SendWorkFlowApproval", this.state.sendingData);
-            } else alert("invalid Password");
-          }}
-        >
-          {({ errors, touched, handleBlur, handleChange }) => (
-            <Form id="signupForm1" className="proForm" noValidate="novalidate">
-              <div className="approvalDocument">
-                <div className="approvalWrapper">
-                  <div className="approvalTitle">
-                    <h3>Document Approval</h3>
-                  </div>
-                  <div className="inputPassContainer">
-                    <div className="form-group passwordInputs showPasswordArea">
-                      <label className="control-label">Password *</label>
+          <Rodal visible={true} onClose={this.closeModal.bind(this)}>
+            <Formik  initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)}>
+              {({ errors, touched, handleBlur, handleChange }) => (
+                <Form id="signupForm1" className="proForm" noValidate="novalidate">
+                  <div className="approvalDocument">
+                    {this.state.viewMessage === true ? (
+                      <NotifiMsg statusClass="animationBlock" IsSuccess="false" Msg={this.state.Message}/> ) : null}
+                    <div className="approvalWrapper">
+                      <div className="approvalTitle">
+                        <h3>Document Approval</h3>
+                      </div>
                       <div className="inputPassContainer">
-                        <div
-                          className={
-                            errors.password && touched.password
-                              ? "ui input inputDev has-error"
-                              : !errors.password && touched.password
-                              ? "ui input inputDev has-success"
-                              : "ui input inputDev"
-                          }
-                        >
-                          <span
-                            className={
-                              this.state.type
-                                ? "inputsideNote togglePW active-pw"
-                                : "inputsideNote togglePW "
-                            }
-                            onClick={this.toggle}
-                          >
-                            <img src={eyeShow} />
-                            <span className="show"> Show</span>
-                            <span className="hide"> Hide</span>
-                          </span>
-                          <input
-                            name="password"
-                            type={this.state.type ? "text" : "password"}
-                            className="form-control"
-                            id="password"
-                            placeholder="password"
-                            autoComplete="off" 
-                            onChange={handleChange}
-                          /> 
-                          {errors.password && touched.password ? (
-                            <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                          ) : !errors.password && touched.password ? (
-                            <span className="glyphicon form-control-feedback glyphicon-ok" />
-                          ) : null}
-                          {errors.password && touched.password ? (
-                            <em className="pError">{errors.password}</em>
-                          ) : null}
+                        <div className="form-group passwordInputs showPasswordArea">
+                          <label className="control-label">Password *</label>
+                          <div className="inputPassContainer">
+                            <div
+                              className={
+                                errors.password && touched.password
+                                  ? "ui input inputDev has-error"
+                                  : !errors.password && touched.password
+                                  ? "ui input inputDev has-success"
+                                  : "ui input inputDev"
+                              }
+                            >
+                              <span
+                                className={
+                                  this.state.type
+                                    ? "inputsideNote togglePW active-pw"
+                                    : "inputsideNote togglePW "
+                                }
+                                onClick={this.toggle}
+                              >
+                                <img src={eyeShow} />
+                                <span className="show"> Show</span>
+                                <span className="hide"> Hide</span>
+                              </span>
+                              <input
+                                name="password"
+                                type={this.state.type ? "text" : "password"}
+                                className="form-control"
+                                id="password"
+                                placeholder="password"
+                                autoComplete="off"
+                                onChange={handleChange}
+                              />
+                              {errors.password && touched.password ? (
+                                <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                              ) : !errors.password && touched.password ? (
+                                <span className="glyphicon form-control-feedback glyphicon-ok" />
+                              ) : null}
+                              {errors.password && touched.password ? (
+                                <em className="pError">{errors.password}</em>
+                              ) : null}
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <div className="textarea-group">
+                        <label>Comment</label>
+                        <textarea
+                          name="comment"
+                          className="form-control"
+                          id="comment"
+                          placeholder="comment"
+                          autoComplete="off"
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="fullWidthWrapper">
+                        {this.state.isLoading != true ? (
+                          <button
+                            className="primaryBtn-1 btn largeBtn"
+                            type="submit"
+                          >
+                            Save
+                          </button>
+                        ) : (
+                          <button className="primaryBtn-2 btn smallBtn fillter-item-c">
+                            <div className="spinner">
+                              <div className="bounce1" />
+                              <div className="bounce2" />
+                              <div className="bounce3" />
+                            </div>
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div> 
-                  <div className="textarea-group">
-                    <label>Comment</label>
-                    <textarea className="form-control"/>
-                  </div> 
-                  <div className="fullWidthWrapper">
-                    <button className="primaryBtn-1 btn largeBtn" type="submit">
-                      Save
-                    </button>
                   </div>
-                </div>
-              </div>
-            </Form>
-          )}
-        </Formik>
-    
+                </Form>
+              )}
+            </Formik>
           </Rodal>
         ) : null}
       </div>
@@ -418,4 +525,4 @@ class ExpensesWorkFlow extends Component {
   }
 }
 
-export default ExpensesWorkFlow;
+export default TimeSheetWorkFlow;

@@ -27,7 +27,7 @@ class ConfirmationModal extends Component {
   render() {
     return (
       <div>
-        <Rodal visible={true} onClose={this.closeModal}>
+        <Rodal visible={true} onClose={this.closeModal.bind(this)}>
           <div className="ui modal smallModal" id="smallModal">
             <div className="header zero">
               {this.props.title} 

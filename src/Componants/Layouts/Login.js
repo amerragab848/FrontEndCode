@@ -241,13 +241,13 @@ class Login extends Component {
                                         </button>
                                     ) :
                                         (
-                                            <span className="primaryBtn-1 btn largeBtn disabled">
+                                            <button className="primaryBtn-1 btn largeBtn disabled" disabled="disabled">
                                                 <div className="spinner">
                                                     <div className="bounce1" />
                                                     <div className="bounce2" />
                                                     <div className="bounce3" />
                                                 </div>
-                                            </span>
+                                            </button>
                                         )}
 
                                 </div>
