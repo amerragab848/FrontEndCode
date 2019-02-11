@@ -19,7 +19,8 @@ import Letter from "./Pages/Communication/Letter";
 import Router from "./URLRoutes";
 import PrivacySetting from '../src/Componants/User/PrivacySetting';
 import ProfileSetting  from "../src/Componants/User/index";
-import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
+import TimeSheetWorkFlow  from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
+// import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
 import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
 
 // let generalMenu = [];
@@ -77,7 +78,8 @@ let routes = (
     <Route path="/PrivacySetting" component={PrivacySetting} />,
     <Route path="/:document/:projectId" component={Letter} />,
     <Route path="/ProfileSetting" component={ProfileSetting} />,
-    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} />
+    <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
+    {/* <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> */}
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
 </Switch> 
 );

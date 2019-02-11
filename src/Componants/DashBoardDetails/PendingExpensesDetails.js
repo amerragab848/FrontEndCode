@@ -254,11 +254,12 @@ class PendingExpensesDetails extends Component {
         });
       });
   };
+ 
 
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
       ) : <LoadingSection/>;
 
       const btnExport = this.state.isLoading === false ? 
