@@ -5,7 +5,7 @@ import "./Styles/scss/en-us/reactCss.css";
 
 // import CreateTransmittal from "./Componants/OptionsPanels/CreateTransmittal";
 // import SendTask from "./Componants/OptionsPanels/SendTask";
- //import DistributionList from "./Componants/OptionsPanels/DistributionList";
+ import DistributionList from "./Componants/OptionsPanels/DistributionList";
 // import Filter from "./Componants/FilterComponent/filterComponent";
 // import TimeSheet from "./Componants/DashBoardDetails/TimeSheetDetails";
 // import SendWorkFlow from './Componants/OptionsPanels/SendWorkFlow';
@@ -35,21 +35,26 @@ import Route from './router';
 import api from './api';
 import User from './Componants/User/index'
 import Timesheet from "./Componants/User/Timesheet";
+import AddTimeSheet_Inputs from './Componants/TimeSheet/AddTimeSheet_Inputs'
+import AddTimeSheet_Table from './Componants/TimeSheet/AddTimeSheet_Table'
+import DistributionInboxListSummaryDetails from "./Componants/DashBoardDetails/DistributionInboxListSummaryDetails";
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
 class App extends Component {
   render() {
-    const showComp = IsAuthorize ?
-      <div>
-        <Menu />
-        {Route}
-      </div>
-      : <Login />
+  //  const showComp = IsAuthorize ?
+      // <div>
+      //   <Menu />
+      //   {Route}
+      // </div>
+      // : <Login />
 
     return (
       <div>
-        {showComp}
+    {/* {showComp} */}
+     <AddTimeSheet_Inputs/> 
+    {/* <DistributionList/> */}
       </div>
     );
   }

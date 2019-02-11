@@ -1107,3 +1107,13 @@ text-transform: capitalize
   position: relative;
   z-index: 12;
 }
+.fullColumn {
+  background: #5E6475;
+}
+.fullColumn .contentCell a {
+  color: #e9edf2 !important;
+}
+tfoot tr {
+  height: 40px;
+  background-color: #E9ECF0
+}
