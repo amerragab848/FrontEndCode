@@ -22,8 +22,7 @@ const SignupSchema = Yup.object().shape({
   comment: Yup.string()
 });
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -165,8 +164,10 @@ class TimeSheetWorkFlow extends Component {
       approvalStatus: null,
       password: "",
       comment: "",
-      viewMessage:false
+      viewMessage: false,
+      Message:""
     };
+
     this.approveTimeSheet = this.approveTimeSheet.bind(this);
   }
 
@@ -180,11 +181,7 @@ class TimeSheetWorkFlow extends Component {
       timeSheetId = param[1];
     }
 
-    Api.get(
-      "GetExpensesUserByContactIdType?requestFromUserId=" +
-        id +
-        "&type=timeSheet"
-    ).then(result => {
+    Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + id + "&type=timeSheet" ).then(result => {
       this.setState({
         rows: result,
         isLoading: false
@@ -229,10 +226,17 @@ class TimeSheetWorkFlow extends Component {
   };
 
   ApproveHandler(status) {
+    if (listSelectedRows.length > 0) {
+      this.setState({
+        approvalStatus: status,
+        isApprove: !this.state.isApprove
+      });
+    } else {
     this.setState({
-      approvalStatus: status,
-      isApprove: !this.state.isApprove
+      Message:"Please Choose One Of Rows",
+      viewMessage:true
     });
+    }
   }
 
   toggle = () => {
@@ -260,36 +264,35 @@ class TimeSheetWorkFlow extends Component {
     if (values["password"]) {
       this.setState({
         isLoading: true
-      });
-
-      Api.getPassword("GetPassWordEncrypt", values["password"])
-        .then(res => {
+      }); 
+      Api.getPassword("GetPassWordEncrypt", values["password"]).then(res => {
           if (res) {
             listSelectedRows.map((id, index) => {
-              Api.post("EditExpensesUserApprovalStatus?id=" + id + "&comment=" + values["comment"] + "&type=" + this.state.approvalStatus).then(res => {
-                if ((index+1) == listSelectedRows.length) {
-                  listSelectedRows = [];
-                  Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + timeSheetId + "&type=timeSheet").then(result => {
-                    this.setState({
-                      rows: result,
-                      isLoading: false,
-                      isApprove:false, 
+              Api.post("EditExpensesUserApprovalStatus?id=" +id + "&comment=" + values["comment"] + "&type=" + this.state.approvalStatus).then(res => {
+                  if (index + 1 == listSelectedRows.length) {
+                    listSelectedRows = [];
+                    Api.get( "GetExpensesUserByContactIdType?requestFromUserId=" + timeSheetId + "&type=timeSheet").then(result => {
+                      this.setState({
+                        rows: result,
+                        isLoading: false,
+                        isApprove: false
+                      });
                     });
-                  });
-                }
-              }).catch(() =>   
-                this.setState({
-                  isLoading: false,
-                  viewMessage:true
+                  }
                 })
-
+                .catch(() =>
+                  this.setState({
+                    isLoading: false,
+                    viewMessage: true
+                  })
                 );
             });
           } else {
             this.setState({
+              Message:Resources["invalidPassword"][currentLanguage],
               isLoading: false,
-              viewMessage:true
-            }); 
+              viewMessage: true
+            });
           }
         })
         .catch(res => {
@@ -300,6 +303,12 @@ class TimeSheetWorkFlow extends Component {
     }
   }
 
+  closeModal() {
+    this.setState({
+      isApprove: false
+    });
+  }
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
@@ -307,7 +316,7 @@ class TimeSheetWorkFlow extends Component {
           rows={this.state.rows}
           columns={this.state.columns}
           selectedRows={this.selectedRows.bind(this)}
-          DeSelectedRows={this.onRowsDeselected.bind(this)} 
+          DeSelectedRows={this.onRowsDeselected.bind(this)}
         />
       ) : (
         <LoadingSection />
@@ -413,17 +422,18 @@ class TimeSheetWorkFlow extends Component {
         <div>
           <Approval ApproveHandler={this.ApproveHandler.bind(this)} />
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">{ComponantFilter}</div>
-        </div> 
+        </div>
         <div>{dataGrid}</div>
         {this.state.isApprove ? (
-          <Rodal visible={true} onClose={this.closeModal}>
-            <Formik initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)} >
+          <Rodal visible={true} onClose={this.closeModal.bind(this)}>
+            <Formik  initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)}>
               {({ errors, touched, handleBlur, handleChange }) => (
                 <Form id="signupForm1" className="proForm" noValidate="novalidate">
-                  <div className="approvalDocument">      
-                  {this.state.viewMessage === true ? <NotifiMsg statusClass="animationBlock" IsSuccess="false" Msg={Resources["invalidPassword"][currentLanguage]} />:null } 
+                  <div className="approvalDocument">
+                    {this.state.viewMessage === true ? (
+                      <NotifiMsg statusClass="animationBlock" IsSuccess="false" Msg={this.state.Message}/> ) : null}
                     <div className="approvalWrapper">
                       <div className="approvalTitle">
                         <h3>Document Approval</h3>
@@ -432,8 +442,23 @@ class TimeSheetWorkFlow extends Component {
                         <div className="form-group passwordInputs showPasswordArea">
                           <label className="control-label">Password *</label>
                           <div className="inputPassContainer">
-                            <div className={ errors.password && touched.password ? "ui input inputDev has-error" : !errors.password && touched.password ? "ui input inputDev has-success" : "ui input inputDev"}>
-                              <span className={ this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
+                            <div
+                              className={
+                                errors.password && touched.password
+                                  ? "ui input inputDev has-error"
+                                  : !errors.password && touched.password
+                                  ? "ui input inputDev has-success"
+                                  : "ui input inputDev"
+                              }
+                            >
+                              <span
+                                className={
+                                  this.state.type
+                                    ? "inputsideNote togglePW active-pw"
+                                    : "inputsideNote togglePW "
+                                }
+                                onClick={this.toggle}
+                              >
                                 <img src={eyeShow} />
                                 <span className="show"> Show</span>
                                 <span className="hide"> Hide</span>
@@ -461,11 +486,21 @@ class TimeSheetWorkFlow extends Component {
                       </div>
                       <div className="textarea-group">
                         <label>Comment</label>
-                        <textarea name="comment" className="form-control" id="comment" placeholder="comment" autoComplete="off" onChange={handleChange}/>
+                        <textarea
+                          name="comment"
+                          className="form-control"
+                          id="comment"
+                          placeholder="comment"
+                          autoComplete="off"
+                          onChange={handleChange}
+                        />
                       </div>
                       <div className="fullWidthWrapper">
                         {this.state.isLoading != true ? (
-                          <button className="primaryBtn-1 btn largeBtn" type="submit">
+                          <button
+                            className="primaryBtn-1 btn largeBtn"
+                            type="submit"
+                          >
                             Save
                           </button>
                         ) : (
