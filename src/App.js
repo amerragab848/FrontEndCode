@@ -39,7 +39,7 @@ import DocumentEmailNotification from './Componants/User/DocumentEmailNotificati
 import Timesheet from "./Componants/User/Timesheet";
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
-
+import Companies from './Componants/GeneralSetting/Companies/Index'
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -54,9 +54,9 @@ class App extends Component {
 
     return (
       <div>
-        {showComp}
-        
-        {/* <WFExpenses /> */}
+        {/* {showComp}
+         */}
+        <Companies />
       </div>
     );
   }
