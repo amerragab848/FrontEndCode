@@ -1,5 +1,7 @@
 import React, { Component } from "react";
- 
+
+//import { Route, Switch } from "react-router-dom";
+
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css";
 
@@ -40,6 +42,7 @@ import Timesheet from "./Componants/User/Timesheet";
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
 import Companies from './Componants/GeneralSetting/Companies/Index'
+import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -53,11 +56,12 @@ class App extends Component {
       : <Login />
 
     return (
+    
       <div>
-        {/* {showComp}
-         */}
-        <Companies />
+   {showComp}
       </div>
+
+   
     );
   }
 }

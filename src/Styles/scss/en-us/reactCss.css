@@ -144,7 +144,7 @@ sayed exp
   border: 1px solid #2AA832;
 }
 .dropWrapper .fillter-item-c {
-  min-width: 45%;
+  min-width: 48%;
   margin-bottom: 10px;
 }
 .dropWrapper .filterWrapper {
@@ -1122,6 +1122,4 @@ text-transform: capitalize
 }
 .customD_Menu {
   width: 100%;
-  position: relative;
-  z-index: 12;
 }

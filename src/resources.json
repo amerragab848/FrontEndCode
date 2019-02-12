@@ -7675,5 +7675,9 @@
   "chooseFile": {
     "en": "Choose File",
     "ar": "اختر الملف"
-  } 
+  } ,
+  "contacts": {
+    "en": "Contacts",
+    "ar": "الاشخاص"
+  }
 }

@@ -26,6 +26,7 @@ class GridSetup extends Component {
       groupBy: [],
       selectedIndexes: [],
       selectedRows: [],
+      selectedRow: [],
       expandedRows: {}
     };
 
@@ -33,7 +34,7 @@ class GridSetup extends Component {
     this.onRowsSelected = this.onRowsSelected.bind(this);
   }
 
-  componentWillMount = () => {};
+  componentWillMount = () => { };
 
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
@@ -208,16 +209,25 @@ class GridSetup extends Component {
     this.setState({ expandedRows: expandedRows });
   }
 
-  onRowClick = (rows, value) => {
+  onRowClick = (rows, value, index) => {
     if (value) {
       if (this.props.onRowClick != undefined) {
-        this.props.onRowClick(value);
+        this.props.onRowClick(value, index);
+        this.setState({ selectedRow: value })
       }
     }
   };
 
   clickHandlerDeleteRows = e => {
     this.props.clickHandlerDeleteRows(this.state.selectedRows);
+  };
+
+
+
+  onCellSelected = ({ rowIdx, idx }) => {
+    if (this.props.cellClick)
+      this.props.cellClick(rowIdx, idx)
+
   };
 
   render() {
@@ -265,16 +275,18 @@ class GridSetup extends Component {
       );
     };
 
+
     return (
       <DraggableContainer>
         <ReactDataGrid
           rowKey="id"
           minHeight={650}
-          isScrolling={false}
+          isScrolling={true}
           columns={this.state.columns}
           rowGetter={i => groupedRows[i]}
           rowsCount={groupedRows.length}
-          enableCellSelect={false}
+          enableCellSelect={true}
+          onCellSelected={this.onCellSelected}
           onColumnResize={(idx, width, event) => {
             //console.log(this.state.columns[idx-1]);
             // console.log(`Column ${idx} has been resized to ${width}`);

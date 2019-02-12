@@ -77,7 +77,7 @@ export default class DocumentEmailNotification extends Component {
         ]
 
         return (
-            <div>
+            <div  className="mainContainer">
                 <Dropdown title="docAlerts" data={this.state.DocumentData} handleChange={this.DocumentAlertChange}
                     index='DocumentAlert' name="DocumentAlert" selectedValue={this.state.SelectedDoc} />
 
