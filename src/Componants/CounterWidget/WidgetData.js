@@ -32,15 +32,7 @@ let Widgets = [{
     //     isModal: 'true',
     //     route: 'route-to-view'
     // },
-    {
-        id: 'wt_materialRequestCounts_5',
-        title: 'materialRequestcount',
-        api: 'GetMaterialRequestCounting',
-        apiDetails:'GetTotalMaterialRequestCounting',
-        isModal: 'true',
-        route: 'route-to-view',
-        permission:3343
-    },
+
     {
         id: 'wt_materialRequestCounts_5',
         title: 'materialRequestcount',
@@ -186,21 +178,21 @@ let Widgets = [{
         permission:3515
     },
     {
-        id: 'wt_materialRequestCounts_22',
-        title: 'monthlyPaymentRequisitions',
-        api: 'GetMaterialRequestCounting',
-        apiDetails:'GetTotalMaterialRequestCounting',
+        id: 'wt_monitorTasks_22',
+        title: 'monitorTasks',
+        api: 'GetCountMonitorTasks',
+        apiDetails:'',
         isModal: 'true',
-        route: 'route-to-view',
+        route:"MonitorTasks" ,
         permission:3770
     },
     {
-        id: 'wt_monthlyPaymentRequisitions_23',
-        title: 'monthlyPaymentRequisitions',
-        api: 'GetTotalPayment',
-        apiDetails:'GetTotalPaymentDetails',
+        id: 'wt_monthlyTaskss_23',
+        title: 'monthlyTasks',
+        api: 'GetCounMonthlyTasks',
+        apiDetails:'',
         isModal: 'true',
-        route: 'route-to-view',
+        route: "MonthlyTasksDetails",
         permission:3771
     },
 ];

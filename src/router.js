@@ -23,6 +23,8 @@ import TimeSheetWorkFlow  from "../src/Componants/DashBoardDetails/TimeSheetWork
 // import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
 import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
 import AddNewCompany from '../src/Componants/GeneralSetting/Companies/AddCompany';
+import MonthlyTasksDetails from "./Componants/DashBoardDetails/MonthlyTasksDetails";
+import MonitorTasks from "./Componants/DashBoardDetails/MonitorTasks";
 
 // let generalMenu = [];
 // let communication = [];
@@ -84,6 +86,9 @@ let routes = (
     {/* <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> */}
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
     <Route path="/AddNewCompany" component={AddNewCompany} /> 
+    
+    <Route path="/MonthlyTasksDetails" component={MonthlyTasksDetails} /> 
+    <Route path="/MonitorTasks" component={MonitorTasks} /> 
 </Switch> 
 );
 
