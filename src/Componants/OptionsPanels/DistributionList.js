@@ -97,7 +97,7 @@ class DistributionList extends Component {
     Company_handleChange = (item) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
         this.GetData(url, "contactName", "id", "ContactNameData");
-        this.setState({ selectedCompany: item, CompanyValidation: false });
+        this.setState({ selectedCompany: item, CompanyValidation: false ,selectedConstact:''});
     }
     Contact_handleChange = (item) => {
         this.setState({ selectedConstact: item, ContactValidation: false });

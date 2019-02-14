@@ -1122,8 +1122,8 @@ text-transform: capitalize
 }
 .customD_Menu {
   width: 100%;
-  position: relative;
-  z-index: 12;
+  /* position: relative;
+  z-index: 12; */
 }
 .fullColumn {
   background: #5E6475;
@@ -1133,5 +1133,96 @@ text-transform: capitalize
 }
 tfoot tr {
   height: 40px;
-  background-color: #E9ECF0
+  background-color: #A8B0BF
+}
+tfoot tr td p{
+  padding-left: 20px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.noPadding {
+  padding-left:0;
+  padding-right: 0; 
+}
+.timeSheetInput .fillter-item-c {
+  margin-bottom: 20px;
+}
+.timeSheetInput .fillter-item-c .spanValidation,.timeSheetInput .fullWidthWrapper label {
+  margin-bottom: 10px;
+  display: block;
+}
+.customD_Menu .css-vj8t7z {
+  z-index: 12;
+}
+.customD_Menu .css-15k3avv {
+  z-index: 155;
+}
+.table__inputs {
+  display: flex;
+}
+.table__inputs .halfWindow{
+  width: 37%;
+  margin-right: 30px;
+}
+.table__inputs .tableWindow{
+    width: 60%;
+}
+.taskInfo .incomingInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 10px 10px;
+  border: 1px solid #e9edf2;
+  border-top: none;
+}
+.taskInfo .incomingInfo:first-of-type {
+  border-top: 1px solid #e9edf2
+}
+.taskInfo .incomingInfo a {
+  font-size: 16px;
+  color: #5E6475;
+}
+.taskInfo {
+  max-height: inherit;
+}
+.taskInfo.taskMaxHeight {
+  transition: all 0.3s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+}
+.collapseIcon {
+  overflow: hidden;
+  display: block;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 20px 0;
+}
+.collapseIcon .plusSpan {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.collapseIcon .greenSpan {
+  background-color: #356e35;
+}
+.collapseIcon .redSpan {
+  background-color: #a90329;
+}
+.table__inputs .halfWindow .proForm .inputDev{
+  width: 100%;
+  margin: 0 0 20px;
+}
+.table__inputs .halfWindow .proForm .inputDev input{
+  width: 100%;
+}
+.table__inputs .halfWindow label {
+  margin-bottom: 10px;
+  display: block;
 }

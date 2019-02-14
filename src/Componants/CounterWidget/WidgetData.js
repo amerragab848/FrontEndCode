@@ -42,13 +42,13 @@ let Widgets = [{
         permission:3343
     },
     {
-        id: 'wt_monthlyPaymentRequisitions_6',
-        title: 'monthlyPaymentRequisitions',
-        api: 'GetTotalPayment',
-        apiDetails:'GetTotalPaymentDetails',
+        id: 'wt_materialRequestCounts_5',
+        title: 'materialRequestcount',
+        api: 'GetMaterialRequestCounting',
+        apiDetails:'GetTotalMaterialRequestCounting',
         isModal: 'true',
         route: 'route-to-view',
-        permission:3198
+        permission:3343
     },
     {
         id: 'wt_rejectedTimesheets_7',
@@ -184,7 +184,25 @@ let Widgets = [{
         isModal: 'false',
         route: 'route-to-view',
         permission:3515
-    }
+    },
+    {
+        id: 'wt_materialRequestCounts_22',
+        title: 'monthlyPaymentRequisitions',
+        api: 'GetMaterialRequestCounting',
+        apiDetails:'GetTotalMaterialRequestCounting',
+        isModal: 'true',
+        route: 'route-to-view',
+        permission:3770
+    },
+    {
+        id: 'wt_monthlyPaymentRequisitions_23',
+        title: 'monthlyPaymentRequisitions',
+        api: 'GetTotalPayment',
+        apiDetails:'GetTotalPaymentDetails',
+        isModal: 'true',
+        route: 'route-to-view',
+        permission:3771
+    },
 ];
 
 let CounterWidgetsWithDetails = [{

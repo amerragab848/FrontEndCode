@@ -21,7 +21,7 @@ import "./Styles/scss/en-us/reactCss.css";
 // import PopUp from './Componants/OptionsPanels/OptionContainer' 
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import ApprovalRejectDocument from './Componants/OptionsPanels/ApprovalRejectDocument';
- 
+  import MonitorTasks from "./Componants/DashBoardDetails/MonitorTasks";
 import PrivacySetting from './Componants/User/PrivacySetting'
 
 import Expenses from './Componants/User/Expenses'
@@ -39,30 +39,26 @@ import DocumentEmailNotification from './Componants/User/DocumentEmailNotificati
 import Timesheet from "./Componants/User/Timesheet";
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
-
+import AddTimeSheet_Table from "./Componants/TimeSheet/AddTimeSheet_Table";
+import AddTimeSheet_Inputs from "./Componants/TimeSheet/AddTimeSheet_Inputs";
+import AddLateTimeSheet from "./Componants/TimeSheet/AddTimeSheet";
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
 class App extends Component {
   render() {
-  //  const showComp = IsAuthorize ?
-      // <div>
-      //   <Menu />
-      //   {Route}
-      // </div>
-      // : <Login />
+    // const showComp = IsAuthorize ?
+    //    <div>
+    //      <Menu />
+    //      {Route}
+    //    </div>
+    //    : <Login />
 
     return (
       <div>
-<<<<<<< HEAD
-    {/* {showComp} */}
-     <AddTimeSheet_Inputs/> 
-    {/* <DistributionList/> */}
-=======
-        {showComp}
-        
-        {/* <WFExpenses /> */}
->>>>>>> cbedb577481c8a6a5a211598303f9a65342fdb36
+          {/* {showComp}  */}
+        <AddLateTimeSheet/>
+         {/* <AddTimeSheet_Inputs />  */}
       </div>
     );
   }

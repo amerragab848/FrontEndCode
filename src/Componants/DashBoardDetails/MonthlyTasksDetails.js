@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react'
-
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import NotifiMsg from '../publicComponants/NotifiMsg';
 import Api from '../../api'
-import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from '../../resources.json';
-import DatePicker from '../OptionsPanels/DatePicker'
+
 import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const dateFormate = ({ value }) => {
@@ -16,30 +14,31 @@ const dateFormate = ({ value }) => {
 };
 
 
-export default class OverTime extends Component {
+export default class MonthlyTasksDetails extends Component {
     constructor(props) {
         super(props)
 
         const columnsGrid = [
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
+                key: "arrange",
+                name: Resources["arrange"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
-                formatter: dateFormate
+                // formatter: dateFormate
             },
+            
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
+                key: "subject",
+                name: Resources["subject"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
-                filterable: true,
+                // formatter: dateFormate
             },
             {
                 key: "projectName",
@@ -50,11 +49,33 @@ export default class OverTime extends Component {
                 resizable: true,
                 sortDescendingFirst: true,
                 filterable: true,
+            },
+            {
+                key: "docDate",
+                name: Resources["docDate"][currentLanguage],
+                width: "50%",
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                sortDescendingFirst: true,
+                filterable: true,
+                formatter: dateFormate
 
             },
             {
-                key: "totalHours",
-                name: Resources["overtimeHours"][currentLanguage],
+                key: "finishDate",
+                name: Resources["finishDate"][currentLanguage],
+                width: "50%",
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+
+            },
+            {
+                key: "bicCompanyName",
+                name: Resources["CompanyName"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -63,8 +84,8 @@ export default class OverTime extends Component {
 
             },
             {
-                key: "approvalStatusName",
-                name: Resources["status"][currentLanguage],
+                key: "bicContactName",
+                name: Resources["ContactName"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -73,8 +94,8 @@ export default class OverTime extends Component {
 
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
+                key: "remaining",
+                name: Resources["remaining"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -85,15 +106,15 @@ export default class OverTime extends Component {
         ];
 
         this.state = {
+            renderGrid:false,
             startDate: moment(),
             finishDate: moment(),
-            Projects: [],
-            projectId: '',
+            contact : [],
+            contactId: '',
             columns: columnsGrid,
             isLoading: true,
             rows: [],
             btnisLoading: false,
-          
             statusClassSuccess: "disNone",
             Loading: false,
             pageSize: 50,
@@ -102,63 +123,10 @@ export default class OverTime extends Component {
         };
     }
 
-    GetNextData = () => {
 
-        let pageNumber = this.state.pageNumber + 1;
+    ContacthandleChange = (e) => {
         this.setState({
-            isLoading: true,
-            pageNumber: pageNumber
-        });
-        if (this.state.projectId) {
-            Api.post('GetOverTimeByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
-                let oldRows = this.state.rows;
-                const newRows = [...oldRows, ...result];
-
-                this.setState({
-                    rows: newRows,
-                    totalRows: newRows.length,
-                    isLoading: false
-                });
-            }).catch(ex => {
-                let oldRows = this.state.rows;
-                this.setState({
-                    rows: oldRows,
-                    isLoading: false
-                });
-            });
-        }
-        else {
-            Api.post('GetOverTimeByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
-                let oldRows = this.state.rows;
-                const newRows = [...oldRows, ...result];
-
-                this.setState({
-                    rows: newRows,
-                    totalRows: newRows.length,
-                    isLoading: false
-                });
-            }).catch(ex => {
-                let oldRows = this.state.rows;
-                this.setState({
-                    rows: oldRows,
-                    isLoading: false
-                });
-            });
-        }
-
-    }
-
-    addRecord() {
-        alert("add new overtime record....");
-    }
-
-    componentDidMount = () => {
-        this.GetData("GetAccountsProjectsByIdForList", 'projectName', 'projectId', 'Projects');
-    }
-
-    ProjectshandleChange = (e) => {
-        this.setState({
-            projectId: e.value,
+            contactId: e.value,
         })
     }
 
@@ -171,7 +139,6 @@ export default class OverTime extends Component {
     }
 
     ViewReport = () => {
-        if (this.state.projectId) {
             this.setState({ btnisLoading: true, Loading: true })
             Api.post('GetOverTimeByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
                 result => {
@@ -184,39 +151,33 @@ export default class OverTime extends Component {
                     })
                 }, this.setState({ isLoading: true })
             );
-        }
-
-        else {
-            this.setState({ btnisLoading: true, Loading: true })
-            Api.post('GetOverTimeByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
-                result => {
-                    this.setState({
-                        rows: result,
-                        isLoading: false,
-                        btnisLoading: false,
-                        Loading: false,
-                        totalRows: result.length
-                    });
-                }, this.setState({ isLoading: true })
-            );
-        }
     }
 
-    render() {
+    componentDidMount = () => {
+        Api.get('GetMonthlyTaskDetails').then
+            (
+                res => {             
+                        this.setState({
+                            renderGrid:true,
+                            rows: res
+                        })
+                }
+            )
+    }
 
+
+    render() {
         const btnExport =
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['overtime'][currentLanguage]} />
+            <Export rows={this.state.rows} columns={this.state.columns} fileName={Resources['monitorTasks'][currentLanguage]} />
 
 
         return (
 
             <div className="mainContainer">
                 <div className="resetPassword">
-                    <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
-
                     <div className="submittalFilter">
                         <div className="subFilter">
-                            <h3 className="zero"> {Resources['overtime'][currentLanguage]}</h3>
+                            <h3 className="zero"> {Resources['monitorTasks'][currentLanguage]}</h3>
                             <span>{this.state.rows.length}</span>
                             <span>
                                 <svg
@@ -238,28 +199,19 @@ export default class OverTime extends Component {
                                 </svg>
                             </span>
                         </div>
-                   
-                        <div className="filterBTNS">
 
-                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>New</button>
+                        <div className="filterBTNS">
                             {btnExport}
                         </div>
 
 
                         <div className="rowsPaginations">
                             <div className="rowsPagiRange">
-                                <span>0</span> - <span>{this.state.pageSize}</span> of
-                   <span>{this.state.totalRows}</span>
+                                 <span>{this.state.rows.length}</span> of
+                            <span>{this.state.rows.length}</span>
                             </div>
-                            <button className="rowunActive">
-                                <i className="angle left icon" />
-                            </button>
-                            <button onClick={() => this.GetNextData()}>
-                                <i className="angle right icon" />
-                            </button>
                         </div>
                     </div>
-
                     <div className="gridfillter-container">
                         <div className="fillter-status-container">
                             <div className="form-group fillterinput fillter-item-c">
@@ -292,35 +244,15 @@ export default class OverTime extends Component {
                         </div>
                     </div>
 
-                    <div className="sayedWrapper">
-                        {this.state.Loading ? <LoadingSection /> : null}
-                        {this.state.isLoading == false
-
-                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
-
-                            : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                    <div>
+                     {this.state.renderGrid?
+                        <GridSetup rows={this.state.rows} columns={this.state.columns}  showCheckbox={false} />
+                        :null}
                     </div>
+
                 </div>
             </div>
         )
     }
-
-    GetData = (url, label, value, currState) => {
-        let Data = []
-        Api.get(url).then(result => {
-            (result).forEach(item => {
-                var obj = {};
-                obj.label = item[label];
-                obj.value = item[value];
-                Data.push(obj);
-            });
-            this.setState({
-                [currState]: [...Data]
-            });
-        }).catch(ex => {
-        });
-
-    }
-
 
 }
