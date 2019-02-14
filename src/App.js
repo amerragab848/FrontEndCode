@@ -1,11 +1,13 @@
 import React, { Component } from "react";
- 
+
+//import { Route, Switch } from "react-router-dom";
+
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css";
 
 // import CreateTransmittal from "./Componants/OptionsPanels/CreateTransmittal";
 // import SendTask from "./Componants/OptionsPanels/SendTask";
- import DistributionList from "./Componants/OptionsPanels/DistributionList";
+ //import DistributionList from "./Componants/OptionsPanels/DistributionList";
 // import Filter from "./Componants/FilterComponent/filterComponent";
 // import TimeSheet from "./Componants/DashBoardDetails/TimeSheetDetails";
 // import SendWorkFlow from './Componants/OptionsPanels/SendWorkFlow';
@@ -39,27 +41,27 @@ import DocumentEmailNotification from './Componants/User/DocumentEmailNotificati
 import Timesheet from "./Componants/User/Timesheet";
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
-import AddTimeSheet_Table from "./Componants/TimeSheet/AddTimeSheet_Table";
-import AddTimeSheet_Inputs from "./Componants/TimeSheet/AddTimeSheet_Inputs";
-import AddLateTimeSheet from "./Componants/TimeSheet/AddTimeSheet";
+import Companies from './Componants/GeneralSetting/Companies/Index'
+import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
 class App extends Component {
   render() {
-    // const showComp = IsAuthorize ?
-    //    <div>
-    //      <Menu />
-    //      {Route}
-    //    </div>
-    //    : <Login />
+    const showComp = IsAuthorize ?
+      <div>
+        <Menu />
+        {Route}
+      </div>
+      : <Login />
 
     return (
+    
       <div>
-          {/* {showComp}  */}
-        <AddLateTimeSheet/>
-         {/* <AddTimeSheet_Inputs />  */}
+   {showComp}
       </div>
+
+   
     );
   }
 }

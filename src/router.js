@@ -22,6 +22,7 @@ import ProfileSetting  from "../src/Componants/User/index";
 import TimeSheetWorkFlow  from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
 // import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
 import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
+import AddNewCompany from '../src/Componants/GeneralSetting/Companies/AddCompany';
 
 // let generalMenu = [];
 // let communication = [];
@@ -53,6 +54,7 @@ let Routes = [
   <Route path="/TimeSheetDetails" component={TimeSheetDetails} />,
   <Route path="/DocApprovalDetails" component={DocApprovalDetails} />,
   <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />
+
 ];
 const routesModule = Router.map((r, index) => { 
     Routes.push(<Route path={ r.route} component={Letter} key={index} />);
@@ -81,6 +83,7 @@ let routes = (
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
     {/* <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> */}
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
+    <Route path="/AddNewCompany" component={AddNewCompany} /> 
 </Switch> 
 );
 

@@ -7684,5 +7684,9 @@
   "monthlyTasks": {
     "en": "Monthly Tasks",
     "ar": "المهام الشهريه"
+  } ,
+  "contacts": {
+    "en": "Contacts",
+    "ar": "الاشخاص"
   }
 }
