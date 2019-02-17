@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-
+import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import NotifiMsg from '../publicComponants/NotifiMsg';
 import Api from '../../api'
@@ -9,6 +9,7 @@ import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const dateFormate = ({ value }) => {
@@ -16,7 +17,7 @@ const dateFormate = ({ value }) => {
 };
 
 
-export default class OverTime extends Component {
+ class OverTime extends Component {
     constructor(props) {
         super(props)
 
@@ -93,7 +94,6 @@ export default class OverTime extends Component {
             isLoading: true,
             rows: [],
             btnisLoading: false,
-          
             statusClassSuccess: "disNone",
             Loading: false,
             pageSize: 50,
@@ -149,7 +149,9 @@ export default class OverTime extends Component {
     }
 
     addRecord() {
-        alert("add new overtime record....");
+        this.props.history.push({
+            pathname: 'AddOverTime'
+        })
     }
 
     componentDidMount = () => {
@@ -171,9 +173,13 @@ export default class OverTime extends Component {
     }
 
     ViewReport = () => {
+
+        let sdate= moment( this.state.startDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SS");
+        let fdate= moment( this.state.finishDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SS");
+
         if (this.state.projectId) {
             this.setState({ btnisLoading: true, Loading: true })
-            Api.post('GetOverTimeByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
+            Api.post('GetOverTimeByRange', { projectId: this.state.projectId, startDate: sdate, finishDate: fdate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
                 result => {
                     this.setState({
                         rows: result,
@@ -188,7 +194,7 @@ export default class OverTime extends Component {
 
         else {
             this.setState({ btnisLoading: true, Loading: true })
-            Api.post('GetOverTimeByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
+            Api.post('GetOverTimeByRange', { startDate:sdate, finishDate: fdate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
                 result => {
                     this.setState({
                         rows: result,
@@ -321,6 +327,5 @@ export default class OverTime extends Component {
         });
 
     }
-
-
 }
+export default withRouter(OverTime)

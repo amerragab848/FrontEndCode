@@ -25,7 +25,10 @@ import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdi
 import AddNewCompany from '../src/Componants/GeneralSetting/Companies/AddCompany';
 import MonthlyTasksDetails from "./Componants/DashBoardDetails/MonthlyTasksDetails";
 import MonitorTasks from "./Componants/DashBoardDetails/MonitorTasks";
-
+import AddTimeSheet from './Componants/TimeSheet/AddTimeSheet';
+import AddOverTime from './Componants/TimeSheet/AddOverTime'
+import AddLateTimeSheet from './Componants/TimeSheet/AddLateTimeSheet'
+import OverTime from './Componants/TimeSheet/OverTime'
 // let generalMenu = [];
 // let communication = [];
 // let procurementMenu = [];
@@ -89,6 +92,11 @@ let routes = (
     
     <Route path="/MonthlyTasksDetails" component={MonthlyTasksDetails} /> 
     <Route path="/MonitorTasks" component={MonitorTasks} /> 
+    <Route path="/AddTimeSheet" component={AddTimeSheet} /> 
+    <Route path="/AddOverTime" component={AddOverTime} /> 
+    <Route path="/AddLateTimeSheet" component={AddLateTimeSheet} /> 
+    <Route path="/OverTime" component={OverTime} /> 
+
 </Switch> 
 );
 
