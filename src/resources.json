@@ -1883,7 +1883,7 @@
       "successTitle": "Operation completed successfuly",
       "successContent": "<i>Record Added Successfuly...</i>",
       "failureTitle": "Operation was canceled",
-      "failureContent": "<i>Your Maximum Allowed Value for Working Hours is</i>"
+      "failureContent": "Your Maximum Allowed Value for Working Hours is"
     },
     "ar": {
       "successTitle": "تمت العملية بنجاح",
@@ -1895,7 +1895,7 @@
   "smartVacationMessage": {
     "en": {
       "title": "Operation was canceled",
-      "content": "<i>Cannot add Time Sheet on a Vacation Date...</i>"
+      "content": "Cannot add Time Sheet on a Vacation Date..."
     },
     "ar": {
       "title": "تم الغاء العملية",
@@ -7675,6 +7675,15 @@
   "chooseFile": {
     "en": "Choose File",
     "ar": "اختر الملف"
+  } 
+  ,
+  "monitorTasks": {
+    "en": "Monitor Tasks",
+    "ar": "مراقبه المهام"
+  },
+  "monthlyTasks": {
+    "en": "Monthly Tasks",
+    "ar": "المهام الشهريه"
   } ,
   "contacts": {
     "en": "Contacts",

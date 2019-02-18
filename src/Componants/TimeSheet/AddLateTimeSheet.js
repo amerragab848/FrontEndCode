@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import DropdownMelcous from '../OptionsPanels/DropdownMelcous';
+import DatePicker from '../OptionsPanels/DatePicker';
 import moment from 'moment';
 import Api from '../../api';
 import NotifiMsg from '../publicComponants/NotifiMsg'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Resources from '../../resources.json';
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import ConfirmationModal from "../publicComponants/ConfirmationModal";
 import _ from "lodash";
 import { Formik, Form ,withFormik} from 'formik';
 import * as Yup from 'yup';
@@ -18,18 +19,8 @@ let vacationDays = timeSheetSettings['vacationDays'];
 let total = '';
 let day = moment(moment().format()).day();
 day = day === 6 ? 1 : day + 2;
-let date = moment().format();
-let LastDate = ((moment().day() == 0) ? moment().subtract(3, "days").format() : moment().subtract(1, "days").format());
-let yesterday = moment(LastDate).format("YYYY-MM-DD[T]HH:mm:ss.SS");
-let Today = moment(date).format("YYYY-MM-DD[T]HH:mm:ss.SS");
-let TodayTitle = "Today - " + moment(Today).format("DD-MM-YYYY");
-let YesterdayTitle = "Yesterday - " + moment(LastDate).format("DD-MM-YYYY");
 
-const options = [
-    { value: 'NoDate', label: 'Please Select Date' },
-    { value: 'felmeshmesh', label: TodayTitle },
-    { value: 'felmeshmesh2', label: YesterdayTitle }
-]
+
 
 const workHoursValid = Yup.object().shape({
     workHours: Yup.number()
@@ -41,9 +32,8 @@ let vacationDay = vacationDays.find(function (i) {
     return i === day;
 })
 
-
 let deleteRowId = '';
-class AddOverSheet extends Component {
+class AddLateTimeSheet extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -70,7 +60,7 @@ class AddOverSheet extends Component {
             locationValidation: true,
             projectsValidation: true,
             TimeSheetData: [],
-            docDate: today,
+            docDate:moment().format("DD-MM-YYYY"),
             tableView: false,
             statusClass: "disNone",
             maxError: false,
@@ -78,6 +68,7 @@ class AddOverSheet extends Component {
             ConfirmDelete: false,
             DeleteDone: false,
             VacationDayMSG: false,
+            dataError:false,
             isNewMode:true
         };
     }
@@ -109,7 +100,7 @@ class AddOverSheet extends Component {
     ConfirmDeleteTask = () => {
         Api.post('DeleteSheet?id=' + deleteRowId + '').then(
             setTimeout(() => {
-                Api.get('GetOvertimeByDate?date=' + this.state.docDate + '').then(
+                Api.get('GetTimeSheetByDate?date=' + this.state.docDate + '').then(
                     res => {
                         this.setState({
                             tableView: true,
@@ -137,43 +128,18 @@ class AddOverSheet extends Component {
         })
     }
 
-    date_handleChange = (e) => {
-        console.log(day)
-        console.log(vacationDay)
-        if (e.value == 'NoDate') {
-            this.setState({
-                date: '',
-                dateValidation: true
-            })
-        }
-
-        if (e.value === 'felmeshmesh') {
-            Api.get('GetOvertimeByDate?date=' + Today + '').then(
-                res => {
-                    this.setState({
-                        tableView: true,
-                        TimeSheetData: res,
-                        dateValidation: false,
-                        docDate: Today,
-                    })
-                }
-            )
-        }
-
-        if (e.value === 'felmeshmesh2') {
-            Api.get('GetOvertimeByDate?date=' + yesterday + '').then(
-                res => {
-                    this.setState({
-                        tableView: true,
-                        TimeSheetData: res,
-                        docDate: yesterday,
-                        dateValidation: false
-                    })
-                }
-            )
-        }
-
-
+    date_handleChange = (date) => {
+        let dataFormat= moment(date,"DD-MM-YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SS");
+             Api.get('GetTimeSheetByDate?date='+dataFormat+'').then(
+                 res => {
+                     this.setState({
+                         tableView: true,
+                         TimeSheetData: res,
+                         dateValidation: false,
+                         docDate: date,
+                     })
+                 }
+             )
     }
 
     collapseTaskInfo = () => {
@@ -294,8 +260,9 @@ class AddOverSheet extends Component {
         total = _.sum(count);
 
         return (
-            <div className="timeSheetInput">
-            {this.state.isNewMode ?
+      
+            <div className="timeSheetInput"> 
+                {this.state.isNewMode ?
                 <div className="mainContainer">
                     {this.state.maxError ?
                         <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['smartAddMessage'][currentLanguage].failureContent + (defaultHours * 2)} />
@@ -304,6 +271,9 @@ class AddOverSheet extends Component {
                     {this.state.DeleteDone ?
                         <NotifiMsg statusClass={this.state.statusClass} IsSuccess="true" Msg={Resources['smartDeleteMessage'][currentLanguage].successTitle} />
                         : null}
+                         {this.state.dataError ?
+                        <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['messageLateTimeSheet'][currentLanguage]} />
+                        : null}
                     {this.state.VacationDayMSG ?
                         <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['smartVacationMessage'][currentLanguage].content} />
                         : null}
@@ -311,6 +281,7 @@ class AddOverSheet extends Component {
                     <div className="table__inputs">
                         <div className="halfWindow">
                             <Formik
+                               enableReinitialize={false}
                                 initialValues={{
                                     dateValidation: '',
                                     projectsValidation: '',
@@ -328,6 +299,33 @@ class AddOverSheet extends Component {
                                 }}
 
                                 onSubmit={(values,actions) => {
+                                    let currDate= moment().format("DD");
+                                    let currMonth= moment().format("MM");
+                                    let DateTimeSheet = moment(this.state.docDate,"DD-MM-YYYY").format("DD");
+                                    let MonthTimeSheet=moment(this.state.docDate,"DD-MM-YYYY").format("MM");
+                                    console.log('currDate')
+                                    console.log(currDate)
+                                    console.log('currMonth')
+                                    console.log(currMonth)
+                                    console.log('DateTimeSheet')
+                                    console.log(DateTimeSheet)
+                                    console.log('MonthTimeSheet')
+                                    console.log(currDate)
+                                   if( parseInt(DateTimeSheet)>=currDate || parseInt(DateTimeSheet) === currDate-1 && (parseInt(MonthTimeSheet)>=currMonth))
+                                    {
+                                        this.setState({
+                                            dataError: true,
+                                            statusClass: "animationBlock"
+                                        })
+                                        setTimeout(() => {
+                                            this.setState({
+                                                statusClass: "disNone",
+                                                dataError: false,
+                                            })
+                                        }, 1000);
+                                    }
+                                    else
+                                    {
                                     if (!this.state.dateValidation && !this.state.projectsValidation && !this.state.countryValidation && !this.state.locationValidation) {
 
                                         if (this.state.workHours > (defaultHours - total)) {
@@ -347,12 +345,25 @@ class AddOverSheet extends Component {
                                                 this.setState({
                                                     isLoading: true
                                                 })
-                                                Api.post("AddOvertime", {
+                                                Api.post("AddLateTimeSheet", {
                                                     projectId: this.state.projectId.value, taskId: this.state.taskId.value, countryId: this.state.countryId.value, locationId: this.state.locationId.value,
-                                                    totalHours: this.state.workHours, description: this.state.description, docDate: this.state.docDate,
+                                                    expenseValue: this.state.workHours, description: this.state.description, docDate: this.state.docDate,
                                                     taskDropDownDisabled: timeSheetPolicy === 'projects' ? true : ''
                                                 }).then(
+
                                                     result => {
+                                                        actions.setSubmitting(false);
+                                                    actions.resetForm({});
+                                                  withFormik({ 
+                                                    enableReinitialize: true,
+                                                    initialValues:{
+                                                        dateValidation: '',
+                                                        projectsValidation: '',
+                                                        countryValidation: '',
+                                                        locationValidation: '',
+                                                        workHours: ' '
+                                                      }  
+                                                    })   
                                                         this.setState({
                                                             taskId: '',
                                                             countryId: '',
@@ -370,8 +381,8 @@ class AddOverSheet extends Component {
                                                                 isNewMode:true
                                                             })
                                                         }, 3000);
-
-                                                        Api.get('GetOvertimeByDate?date=' + this.state.docDate + '').then(
+                                                        let dataFormat= moment( this.state.docDate,"DD-MM-YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SS");
+                                                        Api.get('GetTimeSheetByDate?date=' + dataFormat+ '').then(
                                                             res => {
                                                                 this.setState({
                                                                     TimeSheetData: res,
@@ -393,19 +404,16 @@ class AddOverSheet extends Component {
                                                 })
                                             }
                                         }
-                                    }
+                                    }}
                                 }}
                                 onReset={(values) => { }}
                             >
                                {({ errors, touched, handleBlur, handleChange  , handleReset,handleSubmit , isSubmitting}) => (
                                      <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit}>
-                                        <div className={this.state.dateValidation && touched.dateValidation ? ("has-error") :
-                                            !this.state.dateValidation && touched.dateValidation ? "" : ""} >
-                                            <DropdownMelcous title="date" data={options}
-                                                handleChange={this.date_handleChange}
-                                                index='dateValidation' name="dateValidation" />
-                                            {this.state.dateValidation && touched.dateValidation ? (
-                                                <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+
+                                        <div>
+                                          <DatePicker title='date' startDate={this.state.docDate}
+                                          handleChange={this.date_handleChange} />
                                         </div>
 
 
@@ -450,7 +458,7 @@ class AddOverSheet extends Component {
 
                                         </div>
 
-                                        <label className="control-label">{Resources['overtimeHours'][currentLanguage]} </label>
+                                        <label className="control-label">{Resources['workHours'][currentLanguage]} </label>
                                         <div className={errors.workHours && touched.workHours ?
                                             ("ui input inputDev has-error") : "ui input inputDev"} >
                                             <input name='workHours'
@@ -536,7 +544,7 @@ class AddOverSheet extends Component {
                                         </th>
                                         <th>
                                             <div className="headCell tableCell-3">
-                                                <span>{Resources['overtimeHours'][currentLanguage]}</span>
+                                                <span>{Resources['workHours'][currentLanguage]}</span>
                                             </div>
                                         </th>
 
@@ -573,8 +581,9 @@ class AddOverSheet extends Component {
                         />
                     ) : null}
                 </div>
-          :null}   </div>
-        )
+            :null}  </div>
+          )
+                
     }
 
     GetData = (url, label, value, currState) => {
@@ -598,4 +607,4 @@ class AddOverSheet extends Component {
 
 
 
-export default AddOverSheet;
+export default AddLateTimeSheet;

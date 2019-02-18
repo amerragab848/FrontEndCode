@@ -160,7 +160,7 @@ class PrivacySetting extends Component {
             <div className="mainContainer">
                 {this.state.isNewMode === true ?
                     <Formik
-                        enableReinitialize={true}
+                        enableReinitialize={false}
                         initialValues={this.state.obj} 
                         validate={values => {
                             let errors = {};

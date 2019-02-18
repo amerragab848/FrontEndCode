@@ -21,7 +21,7 @@ import "./Styles/scss/en-us/reactCss.css";
 // import PopUp from './Componants/OptionsPanels/OptionContainer' 
 // import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow";
 import ApprovalRejectDocument from './Componants/OptionsPanels/ApprovalRejectDocument';
- 
+  import MonitorTasks from "./Componants/DashBoardDetails/MonitorTasks";
 import PrivacySetting from './Componants/User/PrivacySetting'
 
 import Expenses from './Componants/User/Expenses'
@@ -39,8 +39,10 @@ import DocumentEmailNotification from './Componants/User/DocumentEmailNotificati
 import Timesheet from "./Componants/User/Timesheet";
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
-import Companies from './Componants/GeneralSetting/Companies/Index';
-import AddCompanies from './Componants/GeneralSetting/Companies/AddCompany';
+import Companies from './Componants/GeneralSetting/Companies/Index'
+import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
+
+import MonthlyTasksDetails from './Componants/DashBoardDetails/MonthlyTasksDetails';
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -48,7 +50,7 @@ class App extends Component {
   render() {
     const showComp = IsAuthorize ?
       <div>
-        <Menu />
+         <Menu />
         {Route}
       </div>
       : <Login />
@@ -57,7 +59,7 @@ class App extends Component {
       <div>
       <Switch>
         <Route exact path="/" component={Companies} />
-        <Route  path="/AddCompanies/:companyID" component={AddCompanies} />
+        <Route  path="/AddCompanies/:companyID" component={AddNewCompany} />
       </Switch>
       
         </div>

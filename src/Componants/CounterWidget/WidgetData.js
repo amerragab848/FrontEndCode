@@ -32,6 +32,7 @@ let Widgets = [{
     //     isModal: 'true',
     //     route: 'route-to-view'
     // },
+
     {
         id: 'wt_materialRequestCounts_5',
         title: 'materialRequestcount',
@@ -40,15 +41,6 @@ let Widgets = [{
         isModal: 'true',
         route: 'route-to-view',
         permission:3343
-    },
-    {
-        id: 'wt_monthlyPaymentRequisitions_6',
-        title: 'monthlyPaymentRequisitions',
-        api: 'GetTotalPayment',
-        apiDetails:'GetTotalPaymentDetails',
-        isModal: 'true',
-        route: 'route-to-view',
-        permission:3198
     },
     {
         id: 'wt_rejectedTimesheets_7',
@@ -184,7 +176,25 @@ let Widgets = [{
         isModal: 'false',
         route: 'route-to-view',
         permission:3515
-    }
+    },
+    {
+        id: 'wt_monitorTasks_22',
+        title: 'monitorTasks',
+        api: 'GetCountMonitorTasks',
+        apiDetails:'',
+        isModal: 'true',
+        route:"MonitorTasks" ,
+        permission:3770
+    },
+    {
+        id: 'wt_monthlyTaskss_23',
+        title: 'monthlyTasks',
+        api: 'GetCounMonthlyTasks',
+        apiDetails:'',
+        isModal: 'true',
+        route: "MonthlyTasksDetails",
+        permission:3771
+    },
 ];
 
 let CounterWidgetsWithDetails = [{

@@ -40,7 +40,9 @@ class Index extends Component {
         api={widget.api}
         value={widget.value}
         apiDetails={widget.apiDetails}
-        isModal={widget.isModal}/> 
+        isModal={widget.isModal}
+        route={widget.route}
+        /> 
        : null
     ));
     return component;
@@ -57,7 +59,8 @@ class Index extends Component {
           total={widgetDetails.total}
           api={widgetDetails.api}
           apiDetails={widgetDetails.apiDetails}
-          isModal={widgetDetails.isModal}/>  
+          isModal={widgetDetails.isModal}
+          route={widgetDetails.route}/>  
         : null
     ));
 

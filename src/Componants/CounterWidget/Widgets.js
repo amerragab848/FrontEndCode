@@ -1,4 +1,5 @@
 import React, { Component } from 'react'; 
+import { withRouter } from "react-router-dom";
 import Resources from '../../resources.json';
 import Api from '../../api';
    
@@ -36,14 +37,17 @@ class Widgets extends Component {
     }
 
     onOpenModal = () => {
-        if (this.props.isModal === 'true') {
-            this.setState({ open: true });
-            Api.get(this.props.apiDetails).then(res => {
-                this.setState({
-                    detailsData: res
-                });
-            });
-        }
+        this.props.history.push({
+            pathname: this.props.route
+        })
+        // if (this.props.isModal === 'true') {
+        //     this.setState({ open: true });
+        //     Api.get(this.props.apiDetails).then(res => {
+        //         this.setState({
+        //             detailsData: res
+        //         });
+        //     });
+        // }
     };
 
     onCloseModal = () => {
@@ -62,7 +66,7 @@ class Widgets extends Component {
                 <div className="summerisItem">
                     <div className="content">
                         <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-                        <p className="number" style={this.props.isModal === 'true' ? hoverPointer :{} } onClick={this.onOpenModal}>{this.state.value}</p>
+                        <p className="number" style={this.props.isModal === 'true' ? hoverPointer :{} } onClick={this.onOpenModal.bind(this)}>{this.state.value}</p>
                     </div>
                 </div>
             </div>
@@ -70,4 +74,4 @@ class Widgets extends Component {
     }
 }
 
-export default Widgets;
+export default withRouter(Widgets);

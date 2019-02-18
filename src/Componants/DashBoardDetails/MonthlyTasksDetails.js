@@ -1,14 +1,17 @@
 import React, { Component, Fragment } from 'react'
-import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import NotifiMsg from '../publicComponants/NotifiMsg';
-import Api from '../../api'
-import Dropdown from "../OptionsPanels/DropdownMelcous";
+import Api from '../../api';
+import { Formik, Form } from 'formik';
 import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
+import Dropdown from "../OptionsPanels/DropdownMelcous";
 import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
+import { truncateSync } from 'fs';
+import fastForward from 'material-ui/svg-icons/av/fast-forward';
+
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -17,30 +20,31 @@ const dateFormate = ({ value }) => {
 };
 
 
- class OverTime extends Component {
+export default class MonthlyTasksDetails extends Component {
     constructor(props) {
         super(props)
 
         const columnsGrid = [
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
+                key: "arrange",
+                name: Resources["arrange"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
-                formatter: dateFormate
+                // formatter: dateFormate
             },
+
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
+                key: "subject",
+                name: Resources["subject"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
-                filterable: true,
+                // formatter: dateFormate
             },
             {
                 key: "projectName",
@@ -51,11 +55,33 @@ const dateFormate = ({ value }) => {
                 resizable: true,
                 sortDescendingFirst: true,
                 filterable: true,
+            },
+            {
+                key: "docDate",
+                name: Resources["docDate"][currentLanguage],
+                width: "50%",
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                sortDescendingFirst: true,
+                filterable: true,
+                formatter: dateFormate
 
             },
             {
-                key: "totalHours",
-                name: Resources["overtimeHours"][currentLanguage],
+                key: "finishDate",
+                name: Resources["finishDate"][currentLanguage],
+                width: "50%",
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+
+            },
+            {
+                key: "bicCompanyName",
+                name: Resources["CompanyName"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -64,8 +90,8 @@ const dateFormate = ({ value }) => {
 
             },
             {
-                key: "approvalStatusName",
-                name: Resources["status"][currentLanguage],
+                key: "bicContactName",
+                name: Resources["ContactName"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -74,8 +100,8 @@ const dateFormate = ({ value }) => {
 
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
+                key: "remaining",
+                name: Resources["remaining"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -86,81 +112,27 @@ const dateFormate = ({ value }) => {
         ];
 
         this.state = {
+            renderGrid: false,
             startDate: moment(),
             finishDate: moment(),
-            Projects: [],
-            projectId: '',
+            contactId: '',
             columns: columnsGrid,
             isLoading: true,
             rows: [],
             btnisLoading: false,
-            statusClassSuccess: "disNone",
             Loading: false,
-            pageSize: 50,
-            pageNumber: 0,
             totalRows: 0,
+            Contacts: [],
+            ContactIsEmpty: true,
+            valid: false
         };
     }
 
-    GetNextData = () => {
-
-        let pageNumber = this.state.pageNumber + 1;
+    ContacthandleChange = (e) => {
         this.setState({
-            isLoading: true,
-            pageNumber: pageNumber
-        });
-        if (this.state.projectId) {
-            Api.post('GetOverTimeByRange', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
-                let oldRows = this.state.rows;
-                const newRows = [...oldRows, ...result];
-
-                this.setState({
-                    rows: newRows,
-                    totalRows: newRows.length,
-                    isLoading: false
-                });
-            }).catch(ex => {
-                let oldRows = this.state.rows;
-                this.setState({
-                    rows: oldRows,
-                    isLoading: false
-                });
-            });
-        }
-        else {
-            Api.post('GetOverTimeByRange', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
-                let oldRows = this.state.rows;
-                const newRows = [...oldRows, ...result];
-
-                this.setState({
-                    rows: newRows,
-                    totalRows: newRows.length,
-                    isLoading: false
-                });
-            }).catch(ex => {
-                let oldRows = this.state.rows;
-                this.setState({
-                    rows: oldRows,
-                    isLoading: false
-                });
-            });
-        }
-
-    }
-
-    addRecord() {
-        this.props.history.push({
-            pathname: 'AddOverTime'
-        })
-    }
-
-    componentDidMount = () => {
-        this.GetData("GetAccountsProjectsByIdForList", 'projectName', 'projectId', 'Projects');
-    }
-
-    ProjectshandleChange = (e) => {
-        this.setState({
-            projectId: e.value,
+            contactId: e.value,
+            ContactIsEmpty: false,
+            valid: false
         })
     }
 
@@ -173,13 +145,13 @@ const dateFormate = ({ value }) => {
     }
 
     ViewReport = () => {
+        if (this.state.ContactIsEmpty === false) {
+            this.setState({
+                btnisLoading: true,
+                Loading: true
+            })
 
-        let sdate= moment( this.state.startDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SS");
-        let fdate= moment( this.state.finishDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SS");
-
-        if (this.state.projectId) {
-            this.setState({ btnisLoading: true, Loading: true })
-            Api.post('GetOverTimeByRange', { projectId: this.state.projectId, startDate: sdate, finishDate: fdate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
+            Api.post('GetMonthlyTaskDetailsByContactId', { startDate: this.state.startDate, finishDate: this.state.finishDate, contactId: this.state.contactId }).then(
                 result => {
                     this.setState({
                         rows: result,
@@ -191,38 +163,35 @@ const dateFormate = ({ value }) => {
                 }, this.setState({ isLoading: true })
             );
         }
-
         else {
-            this.setState({ btnisLoading: true, Loading: true })
-            Api.post('GetOverTimeByRange', { startDate:sdate, finishDate: fdate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
-                result => {
-                    this.setState({
-                        rows: result,
-                        isLoading: false,
-                        btnisLoading: false,
-                        Loading: false,
-                        totalRows: result.length
-                    });
-                }, this.setState({ isLoading: true })
-            );
+            this.setState({
+                valid: true,
+            })
         }
+
     }
 
+    componentDidMount = () => {
+        Api.get('GetMonthlyTaskDetails').then(res => {
+            this.setState({
+                renderGrid: true, rows: res
+            })
+        }
+        )
+        this.GetData("GetAllContactsWithUser", 'contactName', 'id', 'Contacts');
+    }
+
+
     render() {
-
         const btnExport =
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['overtime'][currentLanguage]} />
-
-
+            <Export rows={this.state.rows} columns={this.state.columns} fileName={Resources['monthlyTasks'][currentLanguage]} />
         return (
 
             <div className="mainContainer">
                 <div className="resetPassword">
-                    <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
-
                     <div className="submittalFilter">
                         <div className="subFilter">
-                            <h3 className="zero"> {Resources['overtime'][currentLanguage]}</h3>
+                            <h3 className="zero"> {Resources['monthlyTasks'][currentLanguage]}</h3>
                             <span>{this.state.rows.length}</span>
                             <span>
                                 <svg
@@ -244,43 +213,39 @@ const dateFormate = ({ value }) => {
                                 </svg>
                             </span>
                         </div>
-                   
-                        <div className="filterBTNS">
 
-                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>New</button>
+                        <div className="filterBTNS">
                             {btnExport}
                         </div>
-
-
                         <div className="rowsPaginations">
                             <div className="rowsPagiRange">
-                                <span>0</span> - <span>{this.state.pageSize}</span> of
-                   <span>{this.state.totalRows}</span>
+                                <span>{this.state.rows.length}</span> of
+                            <span>{this.state.rows.length}</span>
                             </div>
-                            <button className="rowunActive">
-                                <i className="angle left icon" />
-                            </button>
-                            <button onClick={() => this.GetNextData()}>
-                                <i className="angle right icon" />
-                            </button>
                         </div>
                     </div>
-
                     <div className="gridfillter-container">
                         <div className="fillter-status-container">
+
+
                             <div className="form-group fillterinput fillter-item-c">
-                                <Dropdown title='Projects' data={this.state.Projects}
-                                    handleChange={this.ProjectshandleChange} placeholder='Projects' />
+
+                                <div className={this.state.valid ? "has-error" : ""}>
+                                    <Dropdown title='ContactName' data={this.state.Contacts}
+                                        handleChange={this.ContacthandleChange} placeholder='ContactName' />
+                                </div>
                             </div>
+
                             <div className="form-group fillterinput fillter-item-c" >
                                 <DatePicker title='startDate' startDate={this.state.startDate}
                                     handleChange={this.startDatehandleChange} />
                             </div>
-                            <div className="form-group fillterinput fillter-item-c" >
 
+                            <div className="form-group fillterinput fillter-item-c" >
                                 <DatePicker title='finishDate' startDate={this.state.finishDate}
                                     handleChange={this.finishDatehandleChange} />
                             </div>
+
                             <div className="dropBtn">
                                 {this.state.btnisLoading === false ? (
                                     <button className="primaryBtn-1 btn smallBtn" onClick={this.ViewReport}>
@@ -295,21 +260,22 @@ const dateFormate = ({ value }) => {
                                         </button>
                                     )}
                             </div>
+
+
                         </div>
                     </div>
 
-                    <div className="sayedWrapper">
-                        {this.state.Loading ? <LoadingSection /> : null}
-                        {this.state.isLoading == false
-
-                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
-
-                            : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                    <div>
+                        {this.state.renderGrid ?
+                            <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+                            : null}
                     </div>
+
                 </div>
             </div>
         )
     }
+
 
     GetData = (url, label, value, currState) => {
         let Data = []
@@ -325,7 +291,5 @@ const dateFormate = ({ value }) => {
             });
         }).catch(ex => {
         });
-
     }
 }
-export default withRouter(OverTime)
