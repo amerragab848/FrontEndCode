@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-
-//import { Route, Switch } from "react-router-dom";
-
+import { Route, Switch } from "react-router-dom";
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css";
 
@@ -33,7 +31,7 @@ import DashBoard from "./Pages/DashBoard";
 import Menu from "./Pages/Menu/Menu"; 
 import Letter from "./Pages/Communication/Letter"; 
 import Login from './Componants/Layouts/Login'
-import Route from './router';
+//import Route from './router';
 import api from './api';
 import User from './Componants/User/index'
 import DocumentEmailNotification from './Componants/User/DocumentEmailNotification';
@@ -41,8 +39,8 @@ import DocumentEmailNotification from './Componants/User/DocumentEmailNotificati
 import Timesheet from "./Componants/User/Timesheet";
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
-import Companies from './Componants/GeneralSetting/Companies/Index'
-import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
+import Companies from './Componants/GeneralSetting/Companies/Index';
+import AddCompanies from './Componants/GeneralSetting/Companies/AddCompany';
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
@@ -56,12 +54,13 @@ class App extends Component {
       : <Login />
 
     return (
-    
       <div>
-   {showComp}
-      </div>
-
-   
+      <Switch>
+        <Route exact path="/" component={Companies} />
+        <Route  path="/AddCompanies/:companyID" component={AddCompanies} />
+      </Switch>
+      
+        </div>
     );
   }
 }
