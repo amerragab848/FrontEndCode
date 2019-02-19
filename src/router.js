@@ -54,19 +54,17 @@ let routes = (
     <Route path="/PrivacySetting" component={PrivacySetting} />,
     <Route path="/:document/:projectId" component={CommonLog} />,
     <Route path="/ProfileSetting" component={ProfileSetting} />,
-    <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
-    {/* <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> */}
+    <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} /> 
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
     <Route path="/AddNewCompany" component={AddNewCompany} /> 
-    
+     
     <Route path="/MonthlyTasksDetails" component={MonthlyTasksDetails} /> 
     <Route path="/MonitorTasks" component={MonitorTasks} /> 
     <Route path="/AddTimeSheet" component={AddTimeSheet} /> 
     <Route path="/AddOverTime" component={AddOverTime} /> 
     <Route path="/AddLateTimeSheet" component={AddLateTimeSheet} /> 
     <Route path="/OverTime" component={OverTime} /> 
-
-
+ 
 </Switch> 
 ); 
 export default routes;
