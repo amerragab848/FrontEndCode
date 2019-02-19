@@ -10,9 +10,7 @@ import Moment from 'moment';
 import Resources from '../../resources.json';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
-
-//import "../../Styles//scss/en-us/layout22.css"
-
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
@@ -23,9 +21,9 @@ class ViewWorkFlow extends Component {
         super(props)
         this.state = { 
             cycles: [],
-            projectId: this.props.projectId != null ? this.props.projectId :3721,
-            docId: this.props.docId !=null ? this.props.docId :63,
-            docType: this.props.docType !=null ?this.props.docType :25
+            projectId: this.props.projectId != null ? this.props.projectId :0,
+            docId: this.props.docId !=null ? this.props.docId :0,
+            docType: this.props.docType !=null ?this.props.docType :0
         }
     }
 
@@ -92,7 +90,7 @@ class ViewWorkFlow extends Component {
                             </div> 
                             <div className="MultiPeinding"> 
                             { items.map((level,idx) =>  level.arrange === i.level ?
-                                    <div className= {level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
+                                    <div key={idx} className= {level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
                                         <div className={ level.statusVal == null ? "signature-h signaturePendingd" : "signature-h" }>
                                             <figure className="avatarProfile smallAvatarSize">
                                                 <img alt="" title="" src={Avatar} />

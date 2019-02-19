@@ -1226,3 +1226,6 @@ tfoot tr td p{
   margin-bottom: 10px;
   display: block;
 }
+.documents-stepper .doc-container .step-content.fullWidthContent {
+  width: 100%;
+}
