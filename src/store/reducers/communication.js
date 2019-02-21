@@ -56,6 +56,13 @@ export default function(state = initialState.app.communication, action) {
                 }; 
                 break;
 
+       case types.Update_Field:
+                return {
+                    ...state,
+                    document: action.document 
+                }; 
+                break;
+                
         default: 
             return {
                 ...state

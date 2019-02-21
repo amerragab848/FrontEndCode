@@ -12,10 +12,10 @@ class CreateTransmittal extends Component {
         super(props)
         this.state = {
             sendingData: {
-                projectId: "4330",
-                docId: "138",
+                projectId: this.props.projectId,
+                docId: this.props.docId,
                 arrange: "",
-                docType: "64",
+                docTypeId: this.props.docTypeId,
                 priorityId: "",
                 toCompanyId: "",
                 Subject: "",
@@ -29,6 +29,7 @@ class CreateTransmittal extends Component {
             AttentionData: [],
             selectedOption: 'true',
         }
+        this.radioChange = this.radioChange.bind(this);
     }
     clickHandler = (e) => {
         let inboxDto={...this.state.sendingData};      
@@ -36,6 +37,7 @@ class CreateTransmittal extends Component {
            Api.post("CreateTransmittal", inboxDto)
     }
     radioChange(e) {
+        alert(e.currentTarget.value);
         this.setState({
           selectedOption: e.currentTarget.value,
           sendingData: { ...this.state.sendingData, status: e.currentTarget.value }
@@ -47,7 +49,7 @@ class CreateTransmittal extends Component {
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
         this.GetData("GetAccountsDefaultList?listType=transmittalsubmittedfor&pageNumber=0&pageSize=10000", 'title', 'id', 'SubmittedForData')
-        this.radioChange = this.radioChange.bind(this);
+        
     }
 
     To_company_handleChange = (selectedOption) => {
@@ -82,9 +84,7 @@ class CreateTransmittal extends Component {
 
     render() {
             return (
-                        <div className="dropWrapper">  
-
-                   
+                        <div className="dropWrapper">   
 
                             <InputMelcous  title='subject'
                                            placeholderText='subject'
@@ -120,8 +120,7 @@ class CreateTransmittal extends Component {
                                             <input type="radio"  className="hidden" name="Close-open" value="false"
                                              checked={this.state.selectedOption === "false"} onChange={this.radioChange} />
                                             <label> {Resources['closed'][currentLanguage]}</label>
-                                        </div>
-
+                                        </div> 
                                 </div>
                             </form>
 

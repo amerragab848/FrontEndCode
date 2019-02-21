@@ -65,3 +65,18 @@ export function uploadFile(BlobUpload,formData,header) {
     }
 }
  
+ export function updateField(field,value, document) {
+    
+    console.log('in Actions updateField '); 
+    let oldDoc={...document};
+    oldDoc[field]=value;
+
+    console.log(oldDoc);
+    
+    return (dispatch, getState) => { 
+           dispatch({
+                    type: types.Update_Field,
+                    document: oldDoc
+            });
+    }
+}

@@ -12,10 +12,10 @@ class DropdownMelcous extends Component {
         this.props.handleChange(e,'sokary')
     }
 
-    render() {
+    render() { 
 
         return (
-            <div className={"fillter-status fillter-item-c " + (this.props.className ? (this.props.className) : "")} key={this.props.index}>
+            <div className={"fillter-status fillter-item-c " + this.props.className} key={this.props.index}>
                 <div className="spanValidation">
                     <label className="control-label">{this.props.title ? Resources[this.props.title][currentLanguage] : ""}</label>
                     {
