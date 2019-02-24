@@ -9,6 +9,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 
+import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { connect } from 'react-redux';
@@ -21,13 +22,14 @@ import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
+const _ = require('lodash')
 class LettersAddEdit extends Component {
     constructor(props) {
         super(props);
 
         let docId = 0;
         let projectId = 0;
-        console.log(this.props.location.search);
+        // console.log(this.props.location.search);
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
@@ -46,8 +48,14 @@ class LettersAddEdit extends Component {
             letters: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
                         { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-                        { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 }]
-        }
+                        { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 }],
+            selectedFromCompany: {label: Resources.fromCompanyRequired[currentLanguage],value: "0"},
+            selectedToCompany: {label: Resources.toCompanyRequired[currentLanguage],value: "0"},
+            selectedFromContact: {label: Resources.fromContactRequired[currentLanguage],value: "0"},
+            selectedToContact: {label: Resources.toContactRequired[currentLanguage],value: "0"}, 
+            selectedDiscpline: {label: Resources.disciplineRequired[currentLanguage],value: "0"}, 
+            selectedReplyLetter: {label: Resources.replyletter[currentLanguage],value: "0"}
+          }
     }
     componentDidMount() {
         // alert('in lettersAddEdit page componentDidMount');
@@ -55,19 +63,22 @@ class LettersAddEdit extends Component {
 
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id) {
-            this.setState({ document: nextProps.document });
-        }
+            this.setState({ document: nextProps.document }); 
+            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+        } 
     };
 
-    componentWillMount() {
+    componentWillMount() { 
+        //this.props.actions.documentForAdding(letter);  
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
+           
         } else {
             let letter = {
                 subject: ' new ',
-                id: '',
-                projectId: '',
+                id: 0,
+                projectId: this.state.projectId,
                 arrange: '',
                 fromCompanyId: '',
                 fromContactId: '',
@@ -82,34 +93,71 @@ class LettersAddEdit extends Component {
                 message: ''
             };
             this.setState({ document: letter });
-            //this.props.actions.documentForAdding(letter);  
-        }
+            this.fillDropDowns(false);
+        } 
+    };
 
-        let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId;
-        dataservice.GetDataList(url, 'companyName', 'companyId').then(result => {
-            this.setState({
-                companies: [...result]
-            });
+    fillDropDowns(isEdit){ 
+        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+              let selectedCompany={}; 
+              let selectedToCompany={}; 
+              if (isEdit) { 
+                 let companyId = this.props.document.fromCompanyId; 
+                 if (companyId) {  
+                    this.setState({  
+                        selectedFromCompany: {label:this.props.document.fromCompanyName ,value: companyId}  
+                    });
+                 }
+                
+                let toCompanyId = this.props.document.toCompanyId; 
+                 if (toCompanyId) {  
+                    this.setState({  
+                        selectedToCompany: {label:this.props.document.toCompanyName ,value: toCompanyId}  
+                    });
+                 }
+              }    
+              this.setState({
+                  companies: [...result]  
+              });
         });
-
-        url = "GetaccountsDefaultListForList?listType=discipline";
-        dataservice.GetDataList(url, 'title', 'id').then(result => {
+ 
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+            if (isEdit) { 
+                   let disciplineId = this.props.document.disciplineId; 
+                   let discpline={};
+                   if (disciplineId) { 
+                      discpline = _.find(result, function(i) { return i.value == disciplineId; }); 
+             
+                      this.setState({  
+                          selectedDiscpline: discpline  
+                      });
+                   }
+            }   
             this.setState({
                 discplines: [...result]
             });
-        });
+        }); 
 
-        url = "GetLettersByProjectId?projectId=" + this.state.projectId + "&pageNumber=0&pageSize=100";
-        dataservice.GetDataList(url, 'subject', 'id').then(result => {
+        dataservice.GetDataList("GetLettersByProjectId?projectId=" + this.state.projectId + "&pageNumber=0&pageSize=100", 'subject', 'id').then(result => {
+                if (isEdit) { 
+                       let replyId = this.props.document.replyId; 
+                       let replyLetter={};
+                       if (replyId) { 
+                         replyLetter = _.find(result, function(i) { return i.value == replyId; });  
+                            this.setState({  
+                                [replyLetter]: replyLetter  
+                            });
+                       }
+                }  
             this.setState({
                 letters: [...result]
             });
         });
 
-    };
+    }
 
     handleChange(e, field) {
-        //console.log(e.target.value);
+        console.log(field,e);
         //this.props.actions.updateField('subject',e.target.value);
 
         let original_document = { ...this.state.document };
@@ -125,29 +173,53 @@ class LettersAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param) {
-        //console.log(e.target.value);
+    handleChangeDate(e, field) {
+        console.log(field,e);
         //this.props.actions.updateField('subject',e.target.value);
 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
 
-        updated_document[field] = event.value;
+        updated_document[field] = e;
 
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
             document: updated_document
         });
+    }
+
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param,selectedValue,subSelectedValue) {
+      //event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId'
+        //console.log(event.value);
+        //this.props.actions.updateField('subject',e.target.value);
+        // selectedCompany = _.find(result, function(i) { return i.value == companyId; }); 
+                   
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+        console.log(selectedValue);
+        this.setState({
+            document: updated_document,
+            [selectedValue]: event  
+        });
+ 
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(
                 result => {
+                     // let toCompanyId = this.props.document.toCompanyId; 
+                     // if (toCompanyId) {  
+                     //    this.setState({  
+                     //        [subSelectedValue]: {label:this.props.document.toCompanyName ,value: toCompanyId}  
+                     //    });
+                     // }
                     this.setState({
                         [targetState]: result
                     });
-                });
+            });
         }
     }
 
@@ -158,10 +230,12 @@ class LettersAddEdit extends Component {
     }
 
     saveAndExit(event) {
-        this.props.history.push({
-            pathname: "/CoomonLog",
-            search: "?projectId=" + this.state.projectId
-        });
+      let letter = { ...this.state.document };
+      console.log(letter);
+        // this.props.history.push({
+        //     pathname: "/CoomonLog",
+        //     search: "?projectId=" + this.state.projectId
+        // });
     }
 
     render() {
@@ -199,7 +273,7 @@ class LettersAddEdit extends Component {
                                         this.props.changeStatus == true ?
                                             <header>
                                                 <h2 className="zero">
-                                                    {Resources.add.currentLanguage}
+                                                    {Resources.add[currentLanguage]}
                                                 </h2>
                                                 <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
                                             </header>
@@ -217,11 +291,11 @@ class LettersAddEdit extends Component {
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                 <div className="ui checkbox radio radioBoxBlue checked">
-                                                    <input type="radio" checked="" tabIndex="0" className="hidden" checked={this.state.document.status} name="Close-open" />
+                                                    <input type="radio" checked="" tabIndex="0"  onChange={e=>{this.setState({ document:{...document,status: true}})}}  className="hidden" checked={this.state.document.status} name="Close-open" />
                                                     <label>{Resources.oppened[currentLanguage]}</label>
                                                 </div>
                                                 <div className="ui checkbox radio radioBoxBlue">
-                                                    <input type="radio" tabIndex="0" className="hidden" checked={!this.state.document.status} name="Close-open" />
+                                                    <input type="radio" tabIndex="0" onChange={e=>{this.setState({ document:{...document,status: false}})}} className="hidden" checked={!this.state.document.status} name="Close-open" />
                                                     <label>{Resources.closed[currentLanguage]}</label>
                                                 </div>
                                             </div>
@@ -229,12 +303,23 @@ class LettersAddEdit extends Component {
                                         <form className="proForm datepickerContainer">
                                             <div className="linebylineInput ">
                                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                                    <DatePicker
-                                                        title='docDate'
-                                                        onChange={e => this.handleChange(e, 'docDate')}
-                                                        index="letter-docDate"
-                                                        key="letter-docDate"
-                                                    />
+                                                    
+                                                     <div className="customDatepicker fillter-status fillter-item-c "> 
+                                                        <div className="proForm datepickerContainer"> 
+                                                        <label className="control-label">{ Resources.docDate[currentLanguage]  }</label>
+                                                            <div className="linebylineInput" >
+                                                                <div className="inputDev ui input input-group date NormalInputDate">
+                                                                    <ModernDatepicker 
+                                                                        date={this.state.document.docDate}
+                                                                        format={'DD-MM-YYYY'}
+                                                                        showBorder
+                                                                        onChange={e => this.handleChangeDate(e, 'docDate')}
+                                                                        placeholder={'Select a date'}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                  </div> 
                                                 </div>
                                             </div>
                                             <div className="linebylineInput valid-input">
@@ -258,8 +343,9 @@ class LettersAddEdit extends Component {
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown
                                                     title="fromCompany"
-                                                    data={this.state.companies}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId')}
+                                                    data={this.state.companies} 
+                                                    selectedValue={this.state.selectedFromCompany} 
+                                                    handleChange={event => this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId','selectedFromCompany')}
                                                     index="letter-fromCompany"
                                                 />
                                             </div>
@@ -277,7 +363,8 @@ class LettersAddEdit extends Component {
                                                 <Dropdown
                                                     title="toCompany"
                                                     data={this.state.companies}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId')}
+                                                    selectedValue={this.state.selectedToCompany} 
+                                                    handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId','selectedToCompany')}
                                                     index="letter-toCompany"
                                                 />
                                             </div>
@@ -286,6 +373,7 @@ class LettersAddEdit extends Component {
                                                 <Dropdown
                                                     title="toContactName"
                                                     data={this.state.ToContacts}
+                                                    selectedValue={this.state.selectedToContact} 
                                                     handleChange={event => this.handleChangeDropDown(event, 'toContactId')}
                                                     index="letter-toContactName"
                                                 />
@@ -295,7 +383,8 @@ class LettersAddEdit extends Component {
                                                 <Dropdown
                                                     title="discipline"
                                                     data={this.state.discplines}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'disciplineId')}
+                                                    selectedValue={this.state.selectedDiscpline} 
+                                                    handleChange={event => this.handleChangeDropDown(event, 'disciplineId',false,'','','','selectedDiscpline')}
                                                     index="letter-discipline"
                                                 />
                                             </div>
@@ -303,8 +392,9 @@ class LettersAddEdit extends Component {
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown
                                                     title="replyletter"
-                                                    data={this.state.letters}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'replyId')}
+                                                    data={this.state.letters} 
+                                                    selectedValue={this.state.selectedReplyLetter} 
+                                                    handleChange={event => this.handleChangeDropDown(event, 'replyId',false,'','','','selectedReplyLetter')}
                                                     index="letter-replyId"
                                                 />
                                             </div>
@@ -339,9 +429,9 @@ class LettersAddEdit extends Component {
                             </header>
                             <div className="title">
                                 {this.state.docId === 0 ?
-                                    <button className="primaryBtn-1 btn mediumBtn" onClick={this.saveLetter}>{Resources.save[currentLanguage]}</button>
+                                    <button className="primaryBtn-1 btn mediumBtn" onClick={e=>this.saveLetter(e)}>{Resources.save[currentLanguage]}</button>
                                     :
-                                    <button className="primaryBtn-1 btn mediumBtn" onClick={this.saveAndExit}>{Resources.saveAndExit[currentLanguage]}</button>
+                                    <button className="primaryBtn-1 btn mediumBtn" onClick={e=>this.saveAndExit(e)}>{Resources.saveAndExit[currentLanguage]}</button>
                                 }
                                 <hr />
                             </div>

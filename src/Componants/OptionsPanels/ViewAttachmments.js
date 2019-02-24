@@ -28,19 +28,20 @@ class ViewAttachmments extends Component {
         }
     }
 
-    deletehandler = (id) => {
-        let urlDelete = 'DeleteAttachFileById?id=' + id
-        Api.post(urlDelete).then(result => {
-            console.log("success")
+    deletehandler = (file) => {
+        let urlDelete = 'DeleteAttachFileById?id=' + file.id
+        Api.post(urlDelete).then(result => { 
+              this.props.actions.deleteFile(file);
         }).catch(ex => {
+            this.props.actions.deleteFile(null);
         });
-        this.getData()
+ 
     }
 
     versionHandler = (parentId) => {
 
         let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
-        Api.post(urlVersion).then(result => {
+        Api.get(urlVersion).then(result => {
             console.log("success")
         }).catch(ex => {
         });
@@ -80,7 +81,7 @@ class ViewAttachmments extends Component {
                                 </td>
                                 <td className="tdHover">
                                     <div className="attachmentAction">
-                                        <a className="attachRecycle" onClick={() => this.deletehandler(item['id'])} >
+                                        <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
                                             <img src={Recycle} alt="del" width="100%" height="100%" />
                                         </a>
                                         <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
@@ -133,8 +134,7 @@ class ViewAttachmments extends Component {
         )
     }
 
-    getData() {
-
+    getData() { 
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
         this.props.actions.GetUploadedFiles(url);
     }

@@ -3,7 +3,7 @@ import Api from '../../api';
 
 export function documentForEdit(urlAction) {
     return (dispatch, getState) => {
-        console.log('//first step action 000000 documentForEdit');
+        //console.log('//first step action 000000 documentForEdit');
         //'GetLettersById?id='
         return Api.get(urlAction).then(resp => { 
             
@@ -48,10 +48,18 @@ export function GetUploadedFiles(urlAction) {
     }
 }
 
+export function deleteFile(file) {
+    return (dispatch, getState) => {  
+           dispatch({
+                    type: types.Delete_File,
+                    file: file
+            });
+    }
+}
 export function uploadFile(BlobUpload,formData,header) {
     return (dispatch, getState) => { 
         return Api.postFile(BlobUpload,formData,header).then(resp => { 
-            console.log('in uploadFile',resp); 
+            //console.log('in uploadFile',resp); 
             dispatch({
                     type: types.File_Upload,
                     file: resp[0]
@@ -65,13 +73,13 @@ export function uploadFile(BlobUpload,formData,header) {
     }
 }
  
- export function updateField(field,value, document) {
+export function updateField(field,value, document) {
     
-    console.log('in Actions updateField '); 
+    //console.log('in Actions updateField '); 
     let oldDoc={...document};
     oldDoc[field]=value;
 
-    console.log(oldDoc);
+    //console.log(oldDoc);
     
     return (dispatch, getState) => { 
            dispatch({

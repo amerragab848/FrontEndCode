@@ -5,4 +5,5 @@ export const File_Upload = 'File_Upload';
 export const Send_WorkFlow = 'Send_WorkFlow';
 export const Get_Files = 'Get_Files';
 
-export const Update_Field = 'Update_Field';
+export const Update_Field = 'Update_Field'; 
+export const Delete_File = 'Delete_File';
