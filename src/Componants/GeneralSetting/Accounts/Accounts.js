@@ -288,23 +288,24 @@ class Accounts extends Component {
     }
 
     BtnTaskAdmin = () => {
-        return <button>TaskAdmin</button>
+        return <button className="icon__btn"><i className="fa fa-tasks"></i></button>
     }
 
     BtnCompanies = () => {
-        return <button >BtnCompanies</button>
+        return <button className="icon__btn"><i className="fa fa-building"></i></button>
     }
 
     BtnEPS = () => {
-        return <button>BtnEPS</button>
+        return <button className="icon__btn"><i className="fa fa-briefcase"></i></button>
     }
 
     BtnProjects = () => {
-        return <button >BtnProjects</button>
+        return <button className="icon__btn"><i className="fa fa-file-powerpoint-o"></i>
+        </button>
     }
 
     BtnResetPassword = () => {
-        return <button>BtnResetPassword</button>
+        return <button className="icon__btn"><i className="fa fa-key"></i> </button>
     }
 
     componentDidMount() {
@@ -546,8 +547,6 @@ class Accounts extends Component {
             <div className="mainContainer">
                 <div className="submittalFilter">
                     <div className="subFilter">
-                        {this.state.IsActiveShow ?
-                            <button onClick={this.IsActiveFun}>BtnEPS</button> : null}
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
                         <div
@@ -616,6 +615,8 @@ class Accounts extends Component {
                         </div>
                     </div>
                     <div className="filterBTNS">
+                    {this.state.IsActiveShow ?
+                            <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
                         {btnExport}
                         <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button>
                     </div>

@@ -983,10 +983,12 @@ text-transform: capitalize
   justify-content: center;
   flex-flow: column;
   background-color: rgba(255, 255, 255, 0.9);
-  z-index: 2;
+  z-index: 20;
 }
+.cutome__inputs .dashboardLoading {
+  position: fixed !important;
 
-
+}
 .dashboardLoading span {
     width: 64px;
     height: 64px;
@@ -1277,14 +1279,14 @@ tfoot tr td p{
     letter-spacing: -0.2px;
     color: #252833;
   }
-.cutome__inputs  .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+.cutome__inputs .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width: 360px;
  }
 .cutome__inputs  .linebylineInput .proForm.datepickerContainer {
   margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .cutome__inputs  .linebylineInput .proForm.datepickerContainer .linebylineInput {
   margin-bottom: 0 !important;
@@ -1323,7 +1325,6 @@ tfoot tr td p{
 }
 .submittalActions__add .css-1hwfws3 {
   justify-content: center;
-
 }
 .submittalActions__add .css-1hwfws3 .css-1492t68 {
   color: rgba(0,0,0,.87);
@@ -1334,3 +1335,29 @@ tfoot tr td p{
   max-height: 600px;
   overflow-y: auto;
 } 
+.proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
+  margin-right: 40px !important;
+}
+.icon__btn {
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  padding: 7px;
+}
+.icon__btn i {
+  color: #A8B0BF;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+.icon__btn:hover i {
+  color: #3570E6;
+}
+.activeBtnCheck {
+  margin: 0 10px;
+}
+.activeBtnCheck i {
+  font-size: 20px;
+}
+.filterBTNS {
+  display: flex;
+}
