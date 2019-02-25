@@ -21,6 +21,7 @@ import MinimizeH from '../../Styles/images/table2.png'
 import MinimizeVBlue from '../../Styles/images/table1.png'
 import MinimizeHBlue from '../../Styles/images/table2.png'
 
+import CryptoJS from 'crypto-js';
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -114,12 +115,16 @@ class CommonLog extends Component {
   addRecord() {
  
     let addView =this.state.routeAddEdit.split("/")[0];
- 
+    
+    let obj = {
+        docId: 0,
+        projectId:this.state.projectId 
+    };
+
     this.props.history.push({
       pathname:"/"+addView,
-      search: "?docId=0&projectId="+ this.state.projectId 
+      search: "?id=0&projectId="+ this.state.projectId 
     });
-
   }
 
   GetNextData() {
@@ -257,8 +262,15 @@ class CommonLog extends Component {
       let doc_view = "";
       let subject = "";
       if (row) {
-        doc_view ="/"+
-        documentObj.documentAddEditLink + row.id + "/" + row.projectId + "/" + row.projectName;
+        //doc_view ="/"+ documentObj.documentAddEditLink + row.id + "/" + row.projectId + "/" + row.projectName;
+        let obj={
+          docId:row.id ,
+          projectId:row.projectId,
+          projectName:row.projectName
+        };
+        let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+        doc_view ="/"+ documentObj.documentAddEditLink.replace('/','') +"?id="+ encodedPaylod//row.id + "&projectId=" + row.projectId + "&projectName=" + encodedPaylod;
         subject = row.subject;
         return <a href={doc_view}> {subject} </a>;
       }
@@ -270,7 +282,7 @@ class CommonLog extends Component {
     var filtersColumns = [];
  
     documentObj.documentColumns.map((item, index) => {
-      if (item.isCustom === true) {
+     // if (item.isCustom === true) {
         var obj = {
           key: item.field,
           frozen: index < 2 ? true : false,
@@ -287,17 +299,12 @@ class CommonLog extends Component {
               : item.dataType === "date"
               ? dateFormate
               : ""
-        };
-
-        filtersColumns.push({
-          field: item.field,
-          name: item.friendlyName,
-          type: item.dataType
-        });
-
+        }; 
         cNames.push(obj);
-      }
-    }); 
+      //}
+    });  
+
+    filtersColumns =documentObj.filters;
     this.setState( {   
       pageTitle:Resources[documentObj.documentTitle][currentLanguage], 
       docType:documents,

@@ -280,7 +280,7 @@ class GridSetup extends Component {
       <DraggableContainer>
         <ReactDataGrid
           rowKey="id"
-          minHeight={650}
+          minHeight={450}
           isScrolling={true}
           columns={this.state.columns}
           rowGetter={i => groupedRows[i]}
