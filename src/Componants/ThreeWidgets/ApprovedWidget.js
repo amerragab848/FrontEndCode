@@ -109,12 +109,7 @@ class ApprovedWidget extends Component {
         <div className="summerisItem">
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
-            <p
-              className="number"
-              onClick={() =>
-                this.onOpenModal(high.action, high[this.props.value])
-              }
-            >
+            <p className="number" onClick={() => this.onOpenModal(high.action, high[this.props.value])}>
               {high ? high[this.props.value] : 0}
             </p>
             <p className="status">
@@ -127,23 +122,13 @@ class ApprovedWidget extends Component {
             </ul>
             <div className="summerisList">
               <div className="first">
-                <span
-                  className="mediumModal"
-                  onClick={() =>
-                    this.onOpenModal(normal.action, normal[this.props.value])
-                  }
-                >
+                <span className="mediumModal" onClick={() => this.onOpenModal(normal.action, normal[this.props.value])}>
                   {normal ? normal[this.props.value] : 0}
                 </span>
                 {normal ? language[normal[this.props.text]][currentLanguage]: ""}
               </div>
               <div>
-                <span
-                  className="mediumModal"
-                  onClick={() =>
-                    this.onOpenModal(low.action, low[this.props.value])
-                  }
-                >
+                <span className="mediumModal" onClick={() => this.onOpenModal(low.action, low[this.props.value])}>
                   {low ? low[this.props.value] : ""}
                 </span>
                 {low ? language[low[this.props.text]][currentLanguage] : ""}

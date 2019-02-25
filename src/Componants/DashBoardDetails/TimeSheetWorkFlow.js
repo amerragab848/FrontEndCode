@@ -233,8 +233,7 @@ class TimeSheetWorkFlow extends Component {
       });
     } else {
     this.setState({
-      Message:"Please Choose One Of Rows",
-      viewMessage:true
+       viewMessage:true
     });
     }
   }

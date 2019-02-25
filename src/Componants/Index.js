@@ -1,26 +1,32 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css"; 
+import LoadingSection from "../Componants/publicComponants/LoadingSection";
+import "react-tabs/style/react-tabs.css";
 import { WidgetData, Widgets, WidgetsWithText } from "./CounterWidget";
-import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets"; 
+import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
-
+import DashBoard from './DashBoard';
 import language from "../resources.json";
-//import '../Styles/css/semantic.min.css';
-import Api from '../api';
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
- 
-  
+import Api from "../api";
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 class Index extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       tabIndex: 0,
+      dashBoardIndex: 0,
       value: 0,
       counterData: [],
       counterDataDetails: [],
       chartData: ChartWidgetsData,
-      threeWidgets: ThreeWidgetsData
+      threeWidgets: ThreeWidgetsData,
+      viewDashBoard: false,  
+      viewSub: false,
+      viewMenu:0,
+      isLoading:false
     };
   }
 
@@ -32,24 +38,24 @@ class Index extends Component {
   }
 
   renderCounter() {
-    let component = this.state.counterData.map(widget => (
-     Api.IsAllow(widget.permission) === true ?
-      <Widgets
-        key={widget.id}
-        title={widget.title}
-        api={widget.api}
-        value={widget.value}
-        apiDetails={widget.apiDetails}
-        isModal={widget.isModal}/> 
-       : null
-    ));
+    let component = this.state.counterData.map(widget =>
+      Api.IsAllow(widget.permission) === true ? (
+        <Widgets
+          key={widget.id}
+          title={widget.title}
+          api={widget.api}
+          value={widget.value}
+          apiDetails={widget.apiDetails}
+          isModal={widget.isModal}
+        />
+      ) : null
+    );
     return component;
   }
 
   renderCounterDetails() {
-    let component = this.state.counterDataDetails.map(widgetDetails => (
-
-      Api.IsAllow(widgetDetails.permission) === true ?  
+    let component = this.state.counterDataDetails.map(widgetDetails =>
+      Api.IsAllow(widgetDetails.permission) === true ? (
         <WidgetsWithText
           key={widgetDetails.id}
           title={widgetDetails.title}
@@ -57,9 +63,10 @@ class Index extends Component {
           total={widgetDetails.total}
           api={widgetDetails.api}
           apiDetails={widgetDetails.apiDetails}
-          isModal={widgetDetails.isModal}/>  
-        : null
-    ));
+          isModal={widgetDetails.isModal}
+        />
+      ) : null
+    );
 
     return component;
   }
@@ -101,18 +108,17 @@ class Index extends Component {
   }
 
   renderThreeCard() {
-     
     let ThreeCard = (
       <div className="SummeriesContainer ">
         <div className="SummeriesContainerContent">
           {this.state.threeWidgets.map((panel, i) => {
             return panel.permission ? (
-              <ApprovedWidget 
+              <ApprovedWidget
                 key={panel.id}
                 {...panel}
                 value={panel.props.value}
                 text={panel.props.listType}
-                title={language[panel.title][currentLanguage]} 
+                title={language[panel.title][currentLanguage]}
               />
             ) : null;
           })}
@@ -121,31 +127,45 @@ class Index extends Component {
     );
     return ThreeCard;
   }
+
+  viewDashBoardHandler() {
+    this.setState({
+      viewDashBoard: !this.state.viewDashBoard
+    });
+  }
   
+  closeModal() {
+    this.setState({
+      viewDashBoard: false
+    });
+  }  
+
   render() {
     return (
-      <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
-        <TabList>
-          <Tab> Summaries</Tab>
-          <Tab> PM Counters</Tab>
-          <Tab> Charts</Tab>
-        </TabList>
-
-        <TabPanel>{this.renderThreeCard()}</TabPanel>
-
-        <TabPanel>
-          <div className="SummeriesContainer">
-            <div className="SummeriesContainerContent">
-              {this.renderCounterDetails()} {this.renderCounter()}
-
+      <div className="customeTabs">
+        <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+          <TabList>
+            <Tab> Summaries</Tab>
+            <Tab> PM Counters</Tab>
+            <Tab> Charts</Tab>
+          </TabList>
+          <TabPanel>{this.renderThreeCard()}</TabPanel>
+          <TabPanel>
+            <div className="SummeriesContainer">
+              <div className="SummeriesContainerContent">
+                {this.renderCounterDetails()} {this.renderCounter()}
+              </div>
             </div>
-          </div>
-        </TabPanel>
-
-        <TabPanel className="App">
-          <div className="row">{this.renderCharts()}</div>
-        </TabPanel>
-      </Tabs>
+          </TabPanel>
+          <TabPanel className="App">
+            <div className="row">{this.renderCharts()}</div>
+          </TabPanel>
+        </Tabs>
+        <div className="customizeBtn" onClick={this.viewDashBoardHandler.bind(this)}>
+          <button>Add</button>
+        </div>
+        {this.state.viewDashBoard ? <DashBoard  opened={this.state.viewDashBoard} closed={this.closeModal.bind(this)}/> : null}
+      </div>
     );
   }
 }

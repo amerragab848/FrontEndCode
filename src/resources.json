@@ -7675,5 +7675,29 @@
   "chooseFile": {
     "en": "Choose File",
     "ar": "اختر الملف"
-  } 
+  } , 
+  "mainAlerts": {
+    "en": "Main Alerts",
+    "ar": "التنبيهات الرئيسية"
+  }, 
+  "pmCounters": {
+    "en": "PM counters",
+    "ar": "عدادات ادارة المشروعات"
+  }, 
+  "projectsLogs": {
+    "en": "Projects Logs",
+    "ar": "سجلات المشاريع"
+  }, 
+  "summaries": {
+    "en": "Summaries",
+    "ar": "الملخصات"
+  }, 
+  "counters": {
+    "en": "Counters",
+    "ar": "المجموع"
+  }, 
+  "respondingTime": {
+    "en": "Responding time",
+    "ar": "Responding time"
+  }
 }
