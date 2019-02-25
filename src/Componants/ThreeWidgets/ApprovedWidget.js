@@ -31,11 +31,12 @@ class ApprovedWidget extends Component {
 
   onOpenModal = (action, value) => {
     if (value > 0) {
+      //DistributionInboxListSummaryDetails?id=0&action="
       let arr = this.props.props.route;
       if (arr.length === 1) {
         let arr = this.props.props.route[0].split("?");
         let url = arr[0];
-        let param = arr[1];
+        let param = arr[1]; //id=0&action=
 
         this.props.history.push({
           pathname: url,

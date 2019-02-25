@@ -7688,5 +7688,9 @@
   "contacts": {
     "en": "Contacts",
     "ar": "الاشخاص"
+  },
+  "editCompany": {
+    "en": "Edit-Companies",
+    "ar": "تعديل الشركة"
   }
 }

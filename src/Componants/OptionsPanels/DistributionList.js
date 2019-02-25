@@ -8,8 +8,8 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import moment from 'moment';
 import { Formik, Form } from 'formik';
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import NotifiMsg from '../publicComponants/NotifiMsg' 
+// import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+// import NotifiMsg from '../publicComponants/NotifiMsg' 
 
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -23,17 +23,16 @@ class DistributionList extends Component {
         super(props)
         this.state = {
             sendingData: {
-                projectId: "4330",
-                docId: "138",
+                projectId: this.props.projectId,
+                docId: this.props.docId,
                 DistributionListId: "",
                 Priority: "",
                 RequiredDate: moment().toDate(),
-                docTypeId: "64",
+                docTypeId: this.props.docTypeId,
                 itemContacts: [],
                 redDays: 1,
                 yellowDays: 1,
-                greenDays: 1
-
+                greenDays: 1 
             },
             PriorityData: [],
             CompanyData: [],
@@ -49,8 +48,7 @@ class DistributionList extends Component {
             removedContact: [],
             submitLoading: false 
 
-        };
-
+        }; 
     }
 
     onDelete(key, e) {
@@ -97,7 +95,9 @@ class DistributionList extends Component {
     Company_handleChange = (item) => {
         let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
         this.GetData(url, "contactName", "id", "ContactNameData");
-        this.setState({ selectedCompany: item, CompanyValidation: false ,selectedConstact:''});
+ 
+        this.setState({ selectedCompany: item, CompanyValidation: false,selectedConstact:'' });
+ 
     }
     Contact_handleChange = (item) => {
         this.setState({ selectedConstact: item, ContactValidation: false });
@@ -124,7 +124,7 @@ class DistributionList extends Component {
         this.setState({ sendingData: { ...this.state.sendingData, Priority: item.value }, PriorityValidation: false })
     }
     componentDidMount = () => {
-        let url = "getProjectDistributionList?projectId=" + this.state.sendingData.projectId;
+        let url = "getProjectDistributionList?projectId=" + this.props.projectId;
         let url2 = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
         this.GetData(url, 'subject', 'id', 'DistributionListDate');
         this.GetData("GetaccountsDefaultListForList?listType=priority", 'title', 'id', 'PriorityData');

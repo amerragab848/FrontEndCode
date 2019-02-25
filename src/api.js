@@ -150,7 +150,7 @@ export default class Api {
         }).then(resp => {
             if (resp.status === 200) {
 
-                json = "";
+                json = resp.json();
                 return json;
             }
             else if (resp.status === 500) {
@@ -165,9 +165,7 @@ export default class Api {
 
         });//.then(res=>{return json});
 
-    }
-
-
+    } 
     static getPassword(route, password) {
 
         const host = Domain + '/PM/api/Procoor/';
@@ -288,6 +286,7 @@ export default class Api {
         if (localStorage.getItem('userToken')) {
             authorize = true;
         }
+         
         return authorize;
     }
 }

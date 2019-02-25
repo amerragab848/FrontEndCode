@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import Api from "../../../api";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../../Componants/OptionsPanels/Export";
@@ -9,7 +10,6 @@ import GridSetup from "../../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import moment from "moment";
 import Resources from "../../../resources.json";
-import { withRouter } from "react-router-dom";
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -186,6 +186,7 @@ class Index extends Component {
             pageNumber: 0,
             pageTitle: Resources['Companies'][currentLanguage],
             api: 'GetProjectCompaniesGrid?',
+            selectedCompany: 0
 
         };
     }
@@ -214,8 +215,14 @@ class Index extends Component {
     }
 
     cellClick = (rowID, colID) => {
+         
         if (colID == 1)
             this.viewContact(this.state.rows[rowID])
+        else if (colID != 0) { 
+            this.props.history.push({
+                pathname: "/AddCompanies/" + this.state.rows[rowID]['id'],
+            });
+        }
     }
     GetNextData = () => {
         if (!this.state.search) {
@@ -234,13 +241,13 @@ class Index extends Component {
             alert("de bta3t search")
         }
     }
-    
+
     hideFilter(value) {
         this.setState({ viewfilter: !this.state.viewfilter });
         return this.state.viewfilter;
     }
 
-    filterMethodMain = (query) => {
+    filterMethodMain = (e, query) => {
 
         var stringifiedQuery = JSON.stringify(query)
         if (stringifiedQuery.includes("companyName") || stringifiedQuery.includes("roleTitle") || stringifiedQuery.includes("keyContactName")) {
@@ -274,9 +281,9 @@ class Index extends Component {
     };
 
     addRecord = () => {
-   
+
         this.props.history.push({
-            pathname: "AddNewCompany"
+            pathname: "/AddCompanies/0",
         });
     }
 
@@ -376,7 +383,7 @@ class Index extends Component {
                     </div>
                     <div className="filterBTNS">
                         {btnExport}
-                        <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button>
+                        <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>NEW</button>
                     </div>
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">

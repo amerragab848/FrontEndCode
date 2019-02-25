@@ -2,7 +2,7 @@
   "Letters": {
     "documentTitle": "lettertitle",
     "docTyp": 19,
-    "documentAddEditLink": "lettersAddEdit/",
+    "documentAddEditLink": "LettersAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 48,
     "documentEditPermission": 49,

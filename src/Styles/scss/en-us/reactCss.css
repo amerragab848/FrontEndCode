@@ -549,15 +549,6 @@ table edition
   align-items: center !important;
   justify-content: center !important;
 }
-.skylight-dialog{
-
-  min-height: 400px;
-  position: relative !important;
-  margin-top: 0px !important;
-  margin-left: 0px !important;
-  top: 0 !important;
-  left: 0!important;
-}
 .ReactTable .rt-tbody {
     flex: 99999 1 auto;
     display: flex;
@@ -1268,3 +1259,78 @@ tfoot tr td p{
   border-right: none #DADEE6;
   border-bottom: 1px solid #DADEE6;
 }
+.documents-stepper .doc-container .step-content.fullWidthContent {
+  width: 100%;
+}
+.cutome__inputs .linebylineInput .fillter-status.fillter-item-c {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.cutome__inputs .linebylineInput .fillter-status.fillter-item-c label{
+    width: 130px;
+    text-align: right;
+    margin-right: 16px;
+    font-family: font-opensb;
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.2px;
+    color: #252833;
+  }
+.cutome__inputs  .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+  width: 360px;
+ }
+.cutome__inputs  .linebylineInput .proForm.datepickerContainer {
+  margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cutome__inputs  .linebylineInput .proForm.datepickerContainer .linebylineInput {
+  margin-bottom: 0 !important;
+}
+.submittalActions__add {
+  background-color: transparent;
+  align-items: center;
+  width: 25%;
+  border-left: 1px solid #e9ecf0;
+  height: 100vh;
+  flex-shrink: 0;
+}
+.submittalActions__add header {
+  border-bottom: 1px solid #e9ecf0;
+  padding: 21.3px 0;
+  text-align: center;
+  margin-bottom: 28px;
+  height: 72px;
+}
+.submittalActions__add .customD_Menu >div , .submittalActions__add .customD_Menu div:hover{
+  border-color: transparent !important;
+}
+.submittalActions__add .css-vj8t7z {
+  border-color: transparent !important;
+  background: #E9ECF0;
+}
+.submittalActions__add .css-19bqh2r {
+  display: inline-block;
+  fill: black;
+  line-height: 1;
+  stroke: currentColor;
+  stroke-width: 0;
+}
+.submittalActions__add .css-d8oujb {
+  display: none;
+}
+.submittalActions__add .css-1hwfws3 {
+  justify-content: center;
+
+}
+.submittalActions__add .css-1hwfws3 .css-1492t68 {
+  color: rgba(0,0,0,.87);
+  font-size: 14px;
+  font-weight: bold;
+}
+.skylight-dialog{
+  max-height: 600px;
+  overflow-y: auto;
+} 
