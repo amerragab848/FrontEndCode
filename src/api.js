@@ -246,13 +246,13 @@ export default class Api {
         }).then(json => (json.result ? json.result : json));
     }
 
-    static authorizationApi(route, params) {
+    static authorizationApi(route, params,method) {
         const host = config.loginServer + '/api/'
         const url = `${host}${route}`;
         let json = null;
 
         let options = Object.assign({
-            method: 'Put'
+            method: method === null ? 'PUT':method
         }, params ? {
             body: JSON.stringify(params)
         } : null);
@@ -280,6 +280,8 @@ export default class Api {
 
         }).then(json => (json.result ? json.result : json));
     }
+
+
 
     static IsAuthorized() {
         let authorize = false;

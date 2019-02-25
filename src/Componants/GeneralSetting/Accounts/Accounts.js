@@ -1,57 +1,51 @@
 import React, { Component } from "react";
 import Api from "../../../api";
+import SkyLight from 'react-skylight';
+import TaskAdmin from './TaskAdmin'
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../../Componants/OptionsPanels/Export";
 import Filter from "../../FilterComponent/filterComponent";
 import "../../../Styles/css/semantic.min.css";
 import "../../../Styles/scss/en-us/layout.css";
+import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import GridSetup from "../../../Pages/Communication/GridSetup";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
+
 import moment from "moment";
+import CryptoJS from 'crypto-js';
+import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
-
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+const _ = require('lodash')
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
-
-
-const filtersColumns = [
-    {
-        field: "companyName",
-        name: "CompanyName",
-        type: "string"
-    },
-    {
-        field: "roleTitle",
-        name: "companyRole",
-        type: "string"
-    },
-    {
-        field: "disciplineTitle",
-        name: "disciplineTitle",
-        type: "string"
-    },
-    {
-        field: "keyContactName",
-        name: "keyContact",
-        type: "string"
-    }
-];
-
-
-class Index extends Component {
+const publicConfiguarion = config.getPayload();
+let rwIdse = '';
+class Accounts extends Component {
     constructor(props) {
         super(props);
 
-
         const columnsGrid = [
             {
-                formatter: this.customButton,
-                key: 'customBtn'
+                formatter: this.BtnTaskAdmin,
+                key: 'BtnTaskAdmin'
+            },
+            {
+                formatter: this.BtnEPS,
+                key: 'BtnEPS'
+            },
+            {
+                formatter: this.BtnProjects,
+                key: 'BtnProjects'
+            },
+            {
+                formatter: this.BtnCompanies,
+                key: 'BtnCompanies'
+            },
+            {
+                formatter: this.BtnResetPassword,
+                key: 'BtnResetPassword'
 
             },
             {
@@ -59,6 +53,26 @@ class Index extends Component {
                 visible: false,
                 width: '140%',
                 frozen: true
+            },
+            {
+                key: "userName",
+                name: Resources["UserName"][currentLanguage],
+                width: "50%",
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "empCode",
+                name: Resources["employeeCode"][currentLanguage],
+                width: "50%",
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
             },
             {
                 key: "companyName",
@@ -71,8 +85,8 @@ class Index extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "roleTitle",
-                name: Resources["companyRole"][currentLanguage],
+                key: "contactName",
+                name: Resources["ContactName"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -81,8 +95,8 @@ class Index extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "disciplineTitle",
-                name: Resources["disciplineTitle"][currentLanguage],
+                key: "position",
+                name: Resources["position"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -91,8 +105,8 @@ class Index extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "keyContactName",
-                name: Resources["KeyContact"][currentLanguage],
+                key: "supervisorCompanyName",
+                name: Resources["SupervisorCompany"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -101,8 +115,8 @@ class Index extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "location",
-                name: Resources["location"][currentLanguage],
+                key: "activationStatus",
+                name: Resources["activationStatus"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -111,8 +125,8 @@ class Index extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "contactsTel",
-                name: Resources["Telephone"][currentLanguage],
+                key: "supervisorName",
+                name: Resources["SupervisorName"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -121,50 +135,8 @@ class Index extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "contactsMobile",
-                name: Resources["Mobile"][currentLanguage],
-                width: "50%",
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "contactsFax",
-                name: Resources["Fax"][currentLanguage],
-                width: "50%",
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "grade",
-                name: Resources["Grade"][currentLanguage],
-                width: "50%",
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
-            ,
-            {
-                key: "enteredBy",
-                name: Resources["enteredBy"][currentLanguage],
-                width: "50%",
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
-            ,
-            {
-                key: "lastModified",
-                name: Resources["lastModified"][currentLanguage],
+                key: "groupName",
+                name: Resources["GroupName"][currentLanguage],
                 width: "50%",
                 draggable: true,
                 sortable: true,
@@ -174,28 +146,167 @@ class Index extends Component {
             }
         ];
 
-
+        const filtersColumns = [
+            {
+                field: "userName",
+                name: "UserName",
+                type: "string",
+                isCustom: true
+            },
+            {
+                field: "contactName",
+                name: "position",
+                type: "string",
+                isCustom: true
+            },
+            {
+                field: "empCode",
+                name: "employeeCode",
+                type: "string",
+                isCustom: true
+            },
+            {
+                field: "supervisorName",
+                name: "SupervisorName",
+                type: "string",
+                isCustom: true
+            },
+            {
+                field: "companyName",
+                name: "CompanyName",
+                type: "string",
+                isCustom: true
+            },
+            {
+                field: "userType",
+                name: "userType",
+                type: "string",
+                isCustom: true
+            }
+            ,
+            {
+                field: "groupName",
+                name: "GroupName",
+                type: "string",
+                isCustom: true
+            }
+            ,
+            {
+                field: "active",
+                name: "activationStatus",
+                type: "toggle",
+                trueLabel: "active",
+                falseLabel: "inActive",
+                isCustom: true
+            }
+        ];
 
         this.state = {
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
-            rows: [], filtersColumns: [],
+            rows: [],
+            selectedRows: [],
+            filtersColumns: filtersColumns,
             viewfilter: true,
             totalRows: 0,
             pageSize: 10,
             pageNumber: 0,
-            pageTitle: Resources['Companies'][currentLanguage],
-            api: 'GetProjectCompaniesGrid?',
-
-        };
+            pageTitle: Resources['accounts'][currentLanguage],
+            api: 'GetAccountsChunk?',
+            IsActiveShow: false,
+            rowSelectedId: '',
+            showPopupTaskAdmin: false,
+            showDeleteModal: false , 
+            NewPassword:'',
+            showResetPasswordModal:false
+        }
     }
 
+    DeleteAccount = (rowId) => {
+        rwIdse = rowId;
+        this.setState({
+            showDeleteModal: true,
+            rowSelectedId: rowId,
+        })
+    }
 
-
-    customButton = () => {
-
-        return <button onClick={this.clickHandler} >{Resources["contacts"][currentLanguage]}</button>;
+    onCloseModal = () => {
+        this.setState({ showDeleteModal: false,showResetPasswordModal: false });
     };
+
+    clickHandlerCancelMain = () => {
+        this.setState({ showDeleteModal: false, showResetPasswordModal: false  });
+    };
+
+    // onCloseModalResetPassword = () => {
+    //     this.setState({ showResetPasswordModal: false });
+    // };
+
+    // clickHandlerCancelMainResetPassword = () => {
+    //     this.setState({ showResetPasswordModal: false });
+    // };
+
+    addRecord = () => {
+        this.props.history.push({
+            pathname: "AddAccount"
+        });
+    }
+       
+    ConfirmDeleteAccount = () => {
+        let id = '';
+        this.setState({ showDeleteModal: true })
+        let rowsData = this.state.rows;
+        this.state.rowSelectedId.map(i => {
+            id = i
+        })
+        let   userName = _.find(rowsData, { 'id': id })
+        console.log(userName.userName)
+        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'DElETE').then(
+            Api.post('accountDeleteById?id=' + id)
+                .then(result => {
+                    let originalRows = this.state.rows;
+                    this.state.rowSelectedId.map(i => {
+                        originalRows = originalRows.filter(r => r.id !== i);
+                    });
+                    this.setState({
+                        rows: originalRows,
+                        totalRows: originalRows.length,
+                        isLoading: false,
+                        showDeleteModal: false,
+                        isLoading: false,
+                    });
+                })
+                .catch(ex => {
+                    this.setState({
+                        showDeleteModal: false
+                    })
+                })
+        ).catch(ex => { })
+        this.setState({
+            isLoading: true,
+        })
+    }
+
+    BtnTaskAdmin = () => {
+        return <button>TaskAdmin</button>
+    }
+
+    BtnCompanies = () => {
+        return <button >BtnCompanies</button>
+    }
+
+    BtnEPS = () => {
+        return <button>BtnEPS</button>
+    }
+
+    BtnProjects = () => {
+        return <button >BtnProjects</button>
+    }
+
+    BtnResetPassword = () => {
+        return <button>BtnResetPassword</button>
+    }
+
     componentDidMount() {
         let pageNumber = this.state.pageNumber + 1
         Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
@@ -204,19 +315,98 @@ class Index extends Component {
                 isLoading: false,
                 pageNumber: pageNumber,
                 totalRows: result.length,
-                search: false
+                search: false,
             });
         });
 
     }
-    viewContact = (rowSelected) => {
-        console.log(rowSelected.id)
+
+    ClickTaskAdmin = (rowSelected) => {
+        this.props.history.push({
+            pathname: '/TaskAdmin',
+            search: "?id=" + rowSelected.id
+        })
     }
 
-    cellClick = (rowID, colID) => {
-        if (colID == 1)
-            this.viewContact(this.state.rows[rowID])
+    ClickBtnCompanies = (rowSelected) => {
+        this.props.history.push({
+            pathname: '/AccountsCompaniesPermissions',
+            search: "?id=" + rowSelected.id
+        })
     }
+
+    ClickBtnEPS = (rowSelected) => {
+        this.props.history.push({
+            pathname: '/AccountsEPSPermissions',
+            search: "?id=" + rowSelected.id
+        })
+    }
+
+    ClickBtnProjects = (rowSelected) => {
+        this.props.history.push({
+            pathname: '/UserProjects',
+            search: "?id=" + rowSelected.id
+        })
+    }
+
+    ClickBtnResetPassword = (rowSelected) => {
+        let text="";
+        let possible= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (var i = 0; i < 7; i++)
+        {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        let _newPassEncode = CryptoJS.enc.Utf8.parse(JSON.stringify(text))
+        let newPassEncode = CryptoJS.enc.Base64.stringify(_newPassEncode)
+      // console.log(newPassEncode)
+       let q = rowSelected.id
+     //  console.log(q)
+       this.setState({
+           NewPassword:newPassEncode,
+           showResetPasswordModal:true ,
+           rowSelectedId:q ,
+       })
+    }
+
+   ConfirmResetPassword=()=>{
+    let id =this.state.rowSelectedId;
+    console.log(id)
+    this.setState({ showDeleteModal: true })
+    let rowsData = this.state.rows;
+    let   userName = _.find(rowsData, { 'id': id })
+
+    Api.authorizationApi('ProcoorAuthorization?username='+userName.userName+'&emailOrPassword='+this.state.NewPassword+'&companyId='+publicConfiguarion.cmi+'&changePassword=true', null, 'PUT').then(
+   Api.post('ResetPassword?accountId='+id+'&password='+this.state.NewPassword+'').then(
+        this.setState({ showResetPasswordModal:false}))
+
+           )
+   }
+
+    cellClick = (rowID, colID) => {
+        if (colID == 1) {
+            this.ClickTaskAdmin(this.state.rows[rowID])
+            this.setState({
+                showPopupTaskAdmin: false
+            })
+        }
+        else if (colID == 2)
+            this.ClickBtnEPS(this.state.rows[rowID])
+
+        else if (colID == 3)
+            this.ClickBtnProjects(this.state.rows[rowID])
+
+        else if (colID == 4)
+            this.ClickBtnCompanies(this.state.rows[rowID])
+
+
+        else if (colID == 5) {
+            this.ClickBtnResetPassword(this.state.rows[rowID])
+        }
+        else if (colID != 0) {
+            this.AccountsEdit(this.state.rows[rowID])
+        }
+    }
+
     GetNextData = () => {
         if (!this.state.search) {
             let pageNumber = this.state.pageNumber + 1
@@ -234,19 +424,24 @@ class Index extends Component {
             alert("de bta3t search")
         }
     }
-    
+
     hideFilter(value) {
         this.setState({ viewfilter: !this.state.viewfilter });
         return this.state.viewfilter;
     }
 
-    filterMethodMain = (query) => {
-
-        var stringifiedQuery = JSON.stringify(query)
-        if (stringifiedQuery.includes("companyName") || stringifiedQuery.includes("roleTitle") || stringifiedQuery.includes("keyContactName")) {
+    filterMethodMain = (event, query, apiFilter) => {
+        var stringifiedQuery = JSON.stringify(query);
+        this.setState({
+            isLoading: true,
+            query: stringifiedQuery
+        });
+        if (stringifiedQuery.includes("userName") || stringifiedQuery.includes("contactName") || stringifiedQuery.includes("empCode") ||
+            stringifiedQuery.includes("supervisorName") || stringifiedQuery.includes("companyName") || stringifiedQuery.includes("userType") ||
+            stringifiedQuery.includes("groupName") || stringifiedQuery.includes("active")) {
             this.setState({ isLoading: true, search: true })
             let _query = stringifiedQuery.split(',"isCustom"')
-            let url = 'ProjectCompaniesFilter?query=' + _query[0] + '}'
+            let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
             Api.get(url).then(result => {
                 this.setState({
                     rows: result,
@@ -258,26 +453,71 @@ class Index extends Component {
         }
         else {
             this.setState({ isLoading: true })
-
-            Api.get(this.state.api + "pageNumber=" + 0 + "&pageSize=" + this.state.pageSize).then(result => {
+            let pageNumber = this.state.pageNumber + 1
+            Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
                     rows: result,
                     isLoading: false,
-                    pageNumber: 1,
+                    pageNumber: pageNumber,
                     totalRows: result.length,
                     search: false
                 });
             });
-
         }
-
     };
 
-    addRecord = () => {
-   
-        this.props.history.push({
-            pathname: "AddNewCompany"
-        });
+    AccountsEdit(obj) {
+        if (obj) {
+            this.props.history.push({
+                pathname: "/EditAccount",
+                search: "?id=" + obj.id
+            });
+        }
+    }
+
+    onselectRowEven = () => {
+        console.log('onselectRowEven')
+    }
+
+    IsActive = (rows) => {
+
+        this.setState({
+            IsActiveShow: true,
+            rowSelectedId: rows
+        })
+        console.log('IsActive', rows[0])
+    }
+
+    IsActiveFun = () => {
+        let id = '';
+        let rowsData = this.state.rows;
+        let s = this.state.rowSelectedId.map(i => {
+            id = i
+        })
+        let userName = _.find(rowsData, { 'id': id })
+        let pageNumber = this.state.pageNumber + 1
+        console.log(userName.userName)
+        setTimeout(() => {
+            Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&companyId=2&isActive=' + userName.active + '', null, 'PUT').then(
+                Api.get('UpdateAccountActivation?id=' + id)
+                    .then(
+                        this.setState({ isLoading: false }),
+                        Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                            this.setState({
+                                rows: result,
+                                isLoading: false,
+                                pageNumber: pageNumber,
+                                totalRows: result.length,
+                                search: false,
+                            })
+                        })
+                    )
+                    .catch(ex => { })
+            ).catch(ex => { })
+        }, 500);
+        this.setState({
+            isLoading: true,
+        })
     }
 
     render() {
@@ -286,10 +526,9 @@ class Index extends Component {
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
                     showCheckbox={true}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                   viewContactHandler={this.clickHandler}
-                    cellClick={this.cellClick}
+                    IsActiv={this.IsActive}
+                    cellClick={this.cellClick} clickHandlerDeleteRows={this.DeleteAccount} />
 
-                />
             ) : <LoadingSection />;
 
 
@@ -299,7 +538,7 @@ class Index extends Component {
 
         const ComponantFilter = this.state.isLoading === false ?
             <Filter
-                filtersColumns={filtersColumns}
+                filtersColumns={this.state.filtersColumns}
                 filterMethod={this.filterMethodMain}
             /> : null;
 
@@ -307,6 +546,8 @@ class Index extends Component {
             <div className="mainContainer">
                 <div className="submittalFilter">
                     <div className="subFilter">
+                        {this.state.IsActiveShow ?
+                            <button onClick={this.IsActiveFun}>BtnEPS</button> : null}
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
                         <div
@@ -397,8 +638,7 @@ class Index extends Component {
                     style={{
                         maxHeight: this.state.viewfilter ? "" : "0px",
                         overflow: this.state.viewfilter ? "" : "hidden"
-                    }}
-                >
+                    }}>
                     <div className="gridfillter-container">
                         {ComponantFilter}
                     </div>
@@ -406,11 +646,29 @@ class Index extends Component {
                 <div className="grid-container">
                     {dataGrid}
                 </div>
+                {this.state.showPopupTaskAdmin ? <TaskAdmin /> : null}
+                 {this.state.showDeleteModal == true ? (
+                    <ConfirmationModal
+                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        closed={this.onCloseModal}
+                        showDeleteModal={this.state.showDeleteModal}
+                        clickHandlerCancel={this.clickHandlerCancelMain}
+                        buttonName='delete' clickHandlerContinue={this.ConfirmDeleteAccount}
+                    />
+                ) : null} 
 
-
+                  {this.state.showResetPasswordModal == true ? (
+                    <ConfirmationModal
+                        title='Are you sure you want to Reset Your Password ?'
+                        closed={this.onCloseModal}
+                        showDeleteModal={this.state.showResetPasswordModal}
+                        clickHandlerCancel={this.clickHandlerCancelMain}
+                        buttonName='save' clickHandlerContinue={this.ConfirmResetPassword}
+                    />
+                ) : null}
             </div>
         );
     }
 }
 
-export default withRouter(Index);
+export default withRouter(Accounts)

@@ -112,13 +112,15 @@ class CreateTransmittal extends Component {
 
                                         <div className="ui checkbox radio radioBoxBlue">
                                             <input type="radio"  className="hidden" name="Close-open" value="true" 
-                                                   checked={this.state.selectedOption === "true"} onChange={this.radioChange} />
+                                                //   checked={this.state.selectedOption === "true"}
+                                                 onChange={this.radioChange} />
                                             <label>{Resources['oppened'][currentLanguage]}</label>
                                         </div>
 
                                         <div className="ui checkbox radio radioBoxBlue checked">
-                                            <input type="radio"  className="hidden" name="Close-open" value="false"
-                                             checked={this.state.selectedOption === "false"} onChange={this.radioChange} />
+                                            <input type="radio"   name="Close-open" value="false"
+                                            // checked={this.state.selectedOption === "false"}
+                                             onChange={this.radioChange} />
                                             <label> {Resources['closed'][currentLanguage]}</label>
                                         </div>
 

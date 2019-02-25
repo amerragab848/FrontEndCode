@@ -1226,3 +1226,45 @@ tfoot tr td p{
   margin-bottom: 10px;
   display: block;
 }
+.taskAdminTable {
+  border-spacing: 0;
+  border: 1px solid #DADEE6;
+  width: 100%;
+}
+.taskAdminTable thead {
+  text-align: left;
+}
+/* .taskAdminTable .checked label::after {
+  background-color: #4382F9;
+  border-radius: 0.21428571rem;
+  color: #ffffff;
+  content: '\E800';
+  opacity: 1;
+  color: rgba(0,0,0,.95);
+  content: url(/static/media/checkmark.61246eb7.svg);
+  font-family: Checkbox;
+} */
+.taskAdminTable thead tr th{
+  border-right: 1px solid #DADEE6;
+  border-bottom: 1px solid #DADEE6;
+  padding: 10px;
+}
+.taskAdminTable thead tr th:first-of-type{
+  border-left: 1px solid #DADEE6;
+}
+.taskAdminTable thead tr th:last-of-type{
+  border-right: none;
+}
+.taskAdminTable tbody tr td {
+  border-right: 1px solid #DADEE6;
+  border-bottom: 1px solid #DADEE6;
+  border-left: none;
+  padding: 10px;
+}
+.taskAdminTable tbody tr td:first-of-type {
+  border-left: 1px solid #DADEE6; 
+}
+.taskAdminTable tbody tr td:last-of-type {
+  border-right: none #DADEE6;
+  border-bottom: 1px solid #DADEE6;
+}

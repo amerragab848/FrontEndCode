@@ -27,7 +27,7 @@ class DropdownMelcous extends Component {
                     <div className="customD_Menu" style={{ outline: "none" }}>
                         <Select key={this.props.index} ref={this.props.index}
                             name="form-field-name"
-                            value={this.props.selectedValue}
+                            value={this.props.selectedValue1}
                             //  valueKey={this.props.index}
                             onChange={this.props.handleChange}
                             options={this.props.data}
@@ -36,6 +36,7 @@ class DropdownMelcous extends Component {
                             defaultValue={this.props.selectedValue}
                             isMulti={this.props.isMulti}
                             onBlur={this.props.onblur}
+                           //isClearable={true}
                         />
                     </div>
                 </div>

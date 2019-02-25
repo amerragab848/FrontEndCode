@@ -43,26 +43,30 @@ import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
 import Companies from './Componants/GeneralSetting/Companies/Index'
 import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
-
 import MonthlyTasksDetails from './Componants/DashBoardDetails/MonthlyTasksDetails';
+ import Accounts from './Componants/GeneralSetting/Accounts/Accounts'
+import accountCircle from "material-ui/svg-icons/action/account-circle";
+import AccountsEPSPermissions from './Componants/GeneralSetting/Accounts/AccountsEPSPermissions'
+import AddAccount from './Componants/GeneralSetting/Accounts/AddAccount'
 // let IsAuthorize= !localStorage.getItem('userToken') ? this.props.history.push({pathname: "/"}): null;
 const IsAuthorize = api.IsAuthorized()
  
 class App extends Component {
   render() {
-    const showComp = IsAuthorize ?
-      <div>
-         <Menu />
-        {Route}
-      </div>
-      : <Login />
+    //  const showComp = IsAuthorize ?
+    //    <div>
+    //       <Menu />
+    //      {Route}
+    //    </div>
+    //    : <Login />
 
     return (
     
       <div>
-    {showComp} 
-   {/* <MonthlyTasksDetails/> */}
- 
+    {/* {showComp}  */}
+
+ {/* <Companies/>  */}
+ {Route}
       </div>
 
    
