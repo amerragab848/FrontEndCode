@@ -1361,3 +1361,16 @@ tfoot tr td p{
 .filterBTNS {
   display: flex;
 }
+.react-grid-Cell--frozen:last-of-type {
+  box-shadow: 2px 0 5px -2px hsla(0,0%,53%,.3);
+}
+  .card-status .MultiPeinding {
+    display: flex;
+    margin: 0 2px; 
+  }
+  .workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
+    color: #fff
+  }
+  .attachmentTable tbody tr .contentCell.tableCell-4 {
+    max-width: 185px
+  }

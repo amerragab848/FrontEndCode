@@ -130,13 +130,10 @@ class ApprovedWidget extends Component {
               <div className="first">
                 <span
                   className="mediumModal"
-                  onClick={() =>
-                    this.onOpenModal(normal.action, normal[this.props.value])
-                  }
-                >
-                  {normal ? normal[this.props.value] : 0}
+                  onClick={() => this.onOpenModal(normal.action, normal[this.props.value]) } >
+                  {normal ? normal[this.props.value] : 0} 
                 </span>
-                {normal ? language[normal[this.props.text]][currentLanguage]: ""}
+                {normal ? " "+language[normal[this.props.text]][currentLanguage]: ""}
               </div>
               <div>
                 <span
@@ -147,7 +144,7 @@ class ApprovedWidget extends Component {
                 >
                   {low ? low[this.props.value] : ""}
                 </span>
-                {low ? language[low[this.props.text]][currentLanguage] : ""}
+                {low ? " "+language[low[this.props.text]][currentLanguage] : ""}
               </div>
             </div>
           </div>

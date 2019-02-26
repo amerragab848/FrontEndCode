@@ -76,7 +76,7 @@ class ViewAttachmments extends Component {
                                 </td>
                                 <td>
                                     <div className="contentCell tableCell-4">
-                                        <h6 className="zero">{item['uploadedBy']} </h6>
+                                        <p className="zero">{item['uploadedBy']} </p>
                                     </div>
                                 </td>
                                 <td className="tdHover">

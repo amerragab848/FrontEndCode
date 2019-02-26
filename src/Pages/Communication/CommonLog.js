@@ -46,7 +46,7 @@ class CommonLog extends Component {
     this.state = {
       isLoading: true,
       pageTitle: "",
-      viewfilter: true,
+      viewfilter: false,
       projectId: props.match.params.projectId,
       documentName:props.match.params.document, 
       filtersColumns: [],
@@ -54,7 +54,7 @@ class CommonLog extends Component {
       rows: [],
       totalRows: 0,
       columns: [],
-      pageSize: 22,
+      pageSize: 50,
       pageNumber: 0, 
       apiFilter: "",
       api: "",
@@ -452,8 +452,8 @@ class CommonLog extends Component {
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
-              <span>0</span> - <span>{this.state.pageSize}</span> of
-              <span>{this.state.totalRows}</span>
+              <span>0</span> - <span>{this.state.pageSize}</span> of 
+              <span> {this.state.totalRows}</span>
             </div>
             <button className="rowunActive">
               <i className="angle left icon" />

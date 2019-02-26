@@ -117,16 +117,14 @@ class HeaderMenu extends Component {
                       <i className="dropdown icon" />
                       <div className="menu center left">
                         <div className="item"> 
-                          <Link to="/ProfileSetting">
+                          <Link to="/ProfileSetting" className="item-content">
                             {Resources["profile"][currentLanguage]}
                           </Link>
                         </div>
-                        <div className="item">
-                          <div className="item-content">
-                          <Link to="/PrivacySetting">
+                        <div className="item"> 
+                          <Link to="/PrivacySetting" className="item-content">
                             {Resources["privacySettings"][currentLanguage]}
-                          </Link>
-                          </div>
+                          </Link> 
                         </div>
                         <div className="item">
                           <div className="item-content">

@@ -72,8 +72,6 @@ class LettersAddEdit extends Component {
             selectedDiscpline: {label: Resources.disciplineRequired[currentLanguage],value: "0"}, 
             selectedReplyLetter: {label: Resources.replyletter[currentLanguage],value: "0"}
           }
-
-
     }
     componentDidMount() {
       //componentWillUnmount
@@ -94,6 +92,9 @@ class LettersAddEdit extends Component {
             let url = "GetLettersById?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
            
+          if (Config.IsAllow(48) || Config.IsAllow(49) || Config.IsAllow(51)) {
+            
+          }
         } else {
             let letter = {
                 subject: ' new ',
@@ -286,6 +287,7 @@ class LettersAddEdit extends Component {
                         </div>
                     </div>
                     <div className="doc-container">
+                    
                         <div className="step-content fullWidthContent cutome__inputs">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">

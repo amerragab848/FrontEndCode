@@ -5469,7 +5469,9 @@ ul {
       letter-spacing: 0.2px;
       color: #858D9E;
       padding: 0;
-      overflow: visible; }
+      overflow: visible;
+      cursor: pointer;
+       }
 
 .attachmentTable {
   width: 100%;
@@ -8692,7 +8694,7 @@ ul {
   padding-left: 16px; }
   .card-status .MultiPeinding {
     display: flex;
-    margin: 0 16px; }
+    margin: 0 2px; }
     .card-status .MultiPeinding .card-box {
       margin-left: 4px; }
   .card-status .card-box {
