@@ -1227,16 +1227,7 @@ tfoot tr td p{
 .taskAdminTable thead {
   text-align: left;
 }
-/* .taskAdminTable .checked label::after {
-  background-color: #4382F9;
-  border-radius: 0.21428571rem;
-  color: #ffffff;
-  content: '\E800';
-  opacity: 1;
-  color: rgba(0,0,0,.95);
-  content: url(/static/media/checkmark.61246eb7.svg);
-  font-family: Checkbox;
-} */
+ 
 .taskAdminTable thead tr th{
   border-right: 1px solid #DADEE6;
   border-bottom: 1px solid #DADEE6;
@@ -1360,17 +1351,26 @@ tfoot tr td p{
 }
 .filterBTNS {
   display: flex;
-}
+} 
 .react-grid-Cell--frozen:last-of-type {
   box-shadow: 2px 0 5px -2px hsla(0,0%,53%,.3);
 }
-  .card-status .MultiPeinding {
-    display: flex;
-    margin: 0 2px; 
-  }
-  .workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
-    color: #fff
-  }
-  .attachmentTable tbody tr .contentCell.tableCell-4 {
-    max-width: 185px
-  }
+.card-status .MultiPeinding {
+  display: flex;
+  margin: 0 2px; 
+}
+.workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
+  color: #fff
+}
+.attachmentTable tbody tr .contentCell.tableCell-4 {
+  max-width: 185px
+} 
+.daysCheckbox .ui.checkbox {
+  margin: 0 10px;
+}
+.daysCheckbox .ui.checkbox:first-of-type {
+  margin-left: 0;
+}
+.daysCheckbox .ui.checkbox:last-of-type {
+  margin-right: 0;
+} 

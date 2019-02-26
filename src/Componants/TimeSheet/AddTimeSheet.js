@@ -483,7 +483,7 @@ class AddTimeSheet extends Component {
                                             <DropdownMelcous title='country' data={this.state.countryData} selectedValue={this.state.countryId}
                                                 handleChange={this.country_handelChange} placeholder='country' name="countryValidation" />
                                             {this.state.countryValidation && touched.countryValidation ? (
-                                                <em className="pError">adadadad</em>) : null}
+                                                <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
                                         </div>
 
 
