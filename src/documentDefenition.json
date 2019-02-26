@@ -280,6 +280,12 @@
         "isCustom": true
       },
       {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
         "name": "docClosedate",
         "field": "docClosedate",
         "type": "date",
@@ -290,31 +296,13 @@
         "field": "disciplineName",
         "type": "string",
         "isCustom": false
-      },
-      {
-        "name": "docDate",
-        "field": "docDate",
-        "type": "date",
-        "isCustom": true
-      },
-      {
-        "name": "replyDate",
-        "field": "replyDate",
-        "type": "date",
-        "isCustom": false
-      },
+      }, 
       {
         "name": "refDoc",
         "field": "refDoc",
         "type": "string",
         "isCustom": true
-      },
-      {
-        "name": "lastSendDate",
-        "field": "lastSendDate",
-        "type": "date",
-        "isCustom": false
-      }
+      } 
     ]
   },
   "customeCorrespondenceReceived": {
@@ -8746,13 +8734,7 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-      },
-      {
-        "name": "docClosedate",
-        "field": "docCloseDate",
-        "type": "date",
-        "isCustom": false
-      },
+      }, 
       {
         "name": "originalContractSum",
         "field": "originalContractSum",
@@ -8764,13 +8746,7 @@
         "field": "totalEarned",
         "type": "number",
         "isCustom": false
-      },
-      {
-        "name": "totalWorkExecute",
-        "field": "currentPaymentDue",
-        "type": "number",
-        "isCustom": false
-      },
+      }, 
       {
         "name": "paymentDue",
         "field": "currentPaymentDueExcuted",
@@ -8811,18 +8787,6 @@
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "isCustom": false
-      },
-      {
-        "name": "transactionType",
-        "field": "transactionName",
-        "type": "string",
-        "isCustom": true
-      },
-      {
-        "name": "collected",
-        "field": "collected",
-        "type": "number",
         "isCustom": false
       }
     ]
@@ -14892,12 +14856,6 @@
 
       },
       {
-        "name": "projectCode",
-        "field": "projectCode",
-        "type": "string",
-        "isCustom": false
-      },
-      {
         "name": "status",
         "field": "status",
         "type": "toggle",
@@ -14905,12 +14863,6 @@
 
         "trueLabel": "oppened",
         "falseLabel": "closed"
-      },
-      {
-        "name": "projectName",
-        "field": "projectName",
-        "type": "string",
-        "isCustom": false
       },
       {
         "name": "subject",
@@ -14955,13 +14907,7 @@
         "field": "collectedStatus",
         "type": "string",
         "isCustom": false
-      },
-      {
-        "name": "comment",
-        "field": "comment",
-        "type": "string",
-        "isCustom": false
-      },
+      } ,
       {
         "name": "docClosedate",
         "field": "docCloseDate",
@@ -18777,44 +18723,8 @@
         "isCustom": true
       },
       {
-        "name": "lastApproveDate",
-        "field": "approvedDate",
-        "type": "date",
-        "isCustom": false
-      },
-      {
-        "name": "lastWorkFlow",
-        "field": "lastWorkFlow",
-        "type": "string",
-        "isCustom": false
-      },
-      {
-        "name": "contractSubject",
-        "field": "contractName",
-        "type": "string",
-        "isCustom": true
-      },
-      {
-        "name": "durationDays",
-        "field": "duration",
-        "type": "number",
-        "isCustom": false
-      },
-      {
         "name": "docClosedate",
         "field": "docCloseDate",
-        "type": "date",
-        "isCustom": false
-      },
-      {
-        "name": "cycleDate",
-        "field": "cycleDate",
-        "type": "date",
-        "isCustom": false
-      },
-      {
-        "name": "cycleCloseDate",
-        "field": "cycleCloseDate",
         "type": "date",
         "isCustom": false
       },
@@ -18822,12 +18732,6 @@
         "name": "submittalType",
         "field": "submittalType",
         "type": "string",
-        "isCustom": false
-      },
-      {
-        "name": "cyclesCount",
-        "field": "cyclesCount",
-        "type": "number",
         "isCustom": false
       },
       {

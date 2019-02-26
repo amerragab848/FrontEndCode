@@ -17,26 +17,42 @@ import {
     bindActionCreators
 } from 'redux';
 
+import Config from "../../Services/Config.js";
+import CryptoJS from 'crypto-js';
 import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
+let docId = 0;
+let projectId = 0;
+let projectName = 0;
 const _ = require('lodash')
 class LettersAddEdit extends Component {
     constructor(props) {
         super(props);
 
-        let docId = 0;
-        let projectId = 0;
         // console.log(this.props.location.search);
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
-            index == 0 ? (docId = param[1]) : (projectId = param[1]);
+            if (index == 0 ) {  
+              try{
+              let obj= JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+              
+                docId = obj.docId;
+                projectId=obj.projectId; 
+                projectName=obj.projectName;
+             }
+             catch{
+               this.props.history.goBack();
+             }
+          } 
             index++;
         }
         this.state = {
+            isView: false,
+            hasWorkFlow:false,
             docId: docId,
             docTypeId: 19,
             projectId: projectId,
@@ -56,8 +72,11 @@ class LettersAddEdit extends Component {
             selectedDiscpline: {label: Resources.disciplineRequired[currentLanguage],value: "0"}, 
             selectedReplyLetter: {label: Resources.replyletter[currentLanguage],value: "0"}
           }
+
+
     }
     componentDidMount() {
+      //componentWillUnmount
         // alert('in lettersAddEdit page componentDidMount');
     };
 
@@ -70,6 +89,7 @@ class LettersAddEdit extends Component {
 
     componentWillMount() { 
         //this.props.actions.documentForAdding(letter);  
+        
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
@@ -244,7 +264,7 @@ class LettersAddEdit extends Component {
                 <div className="documents-stepper">
                     <div className="submittalHead">
                         <h2 className="zero">{Resources.lettertitle[currentLanguage]}
-                            <span>Uptown cairo · Technical office</span>
+                            <span>{projectName.replace(/_/gi,' ')} · Communication</span>
                         </h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -273,7 +293,7 @@ class LettersAddEdit extends Component {
                                         this.props.changeStatus == true ?
                                             <header>
                                                 <h2 className="zero">
-                                                    {Resources.add[currentLanguage]}
+                                                    {Resources.goEdit[currentLanguage]}
                                                 </h2>
                                                 <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
                                             </header>
@@ -302,8 +322,7 @@ class LettersAddEdit extends Component {
                                         </form>
                                         <form className="proForm datepickerContainer">
                                             <div className="linebylineInput ">
-                                                <div className="inputDev ui input input-group date NormalInputDate">
-                                                    
+                                                <div className="inputDev ui input input-group date NormalInputDate"> 
                                                      <div className="customDatepicker fillter-status fillter-item-c "> 
                                                         <div className="proForm datepickerContainer"> 
                                                         <label className="control-label">{ Resources.docDate[currentLanguage]  }</label>
