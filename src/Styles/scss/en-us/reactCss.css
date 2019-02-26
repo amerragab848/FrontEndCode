@@ -1361,3 +1361,12 @@ tfoot tr td p{
 .filterBTNS {
   display: flex;
 }
+.daysCheckbox .ui.checkbox {
+  margin: 0 10px;
+}
+.daysCheckbox .ui.checkbox:first-of-type {
+  margin-left: 0;
+}
+.daysCheckbox .ui.checkbox:last-of-type {
+  margin-right: 0;
+}
