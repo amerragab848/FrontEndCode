@@ -29,7 +29,13 @@ import AddTimeSheet from './Componants/TimeSheet/AddTimeSheet';
 import AddOverTime from './Componants/TimeSheet/AddOverTime'
 import AddLateTimeSheet from './Componants/TimeSheet/AddLateTimeSheet'
 import OverTime from './Componants/TimeSheet/OverTime'
-
+import Accounts  from './Componants/GeneralSetting/Accounts/Accounts'
+import AccountsCompaniesPermissions  from './Componants/GeneralSetting/Accounts/AccountsCompaniesPermissions'
+import AddAccount  from './Componants/GeneralSetting/Accounts/AddAccount'
+import EditAccount  from './Componants/GeneralSetting/Accounts/EditAccount'
+import UserProjects  from './Componants/GeneralSetting/Accounts/UserProjects'
+import TaskAdmin  from './Componants/GeneralSetting/Accounts/TaskAdmin'
+import AccountsEPSPermissions  from './Componants/GeneralSetting/Accounts/AccountsEPSPermissions'
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
    
 let routes = (
@@ -64,6 +70,15 @@ let routes = (
     <Route path="/AddOverTime" component={AddOverTime} /> 
     <Route path="/AddLateTimeSheet" component={AddLateTimeSheet} /> 
     <Route path="/OverTime" component={OverTime} /> 
+
+    <Route path="/Accounts" component={Accounts} /> 
+    <Route path="/AccountsCompaniesPermissions" component={AccountsCompaniesPermissions} /> 
+    <Route path="/AccountsEPSPermissions" component={AccountsEPSPermissions} /> 
+    <Route path="/AddAccount" component={AddAccount} /> 
+    <Route path="/EditAccount" component={EditAccount} /> 
+    <Route path="/UserProjects" component={UserProjects} /> 
+    <Route path="/TaskAdmin" component={TaskAdmin} /> 
+    
  
 </Switch> 
 ); 
