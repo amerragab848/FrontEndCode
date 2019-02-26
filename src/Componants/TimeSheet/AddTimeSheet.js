@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 
 import today from 'material-ui/svg-icons/action/today';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let timeSheetSettings = JSON.parse(localStorage.getItem('timeSheetSettings'))
+let timeSheetSettings =localStorage.getItem('timeSheetSettings') ?  JSON.parse(localStorage.getItem('timeSheetSettings')):{defaultHours: 0,timeSheetPolicy:0,vacationDays:[]}
 let defaultHours = timeSheetSettings['defaultHours'];
 let timeSheetPolicy = timeSheetSettings['timeSheetPolicy'];
 let vacationDays = timeSheetSettings['vacationDays'];
