@@ -68,6 +68,12 @@ export default function(state = initialState.app.communication, action) {
                 }; 
                 break;
 
+       case types.SendByEmail:
+                return {
+                    ...state,
+                    showModal: action.showModal
+                }; 
+                break;
        case types.Update_Field:
                 return {
                     ...state,

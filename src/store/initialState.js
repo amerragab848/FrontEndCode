@@ -10,7 +10,8 @@ export default {
 			projectId: 0,
 			isLoading: false,
 			isLoadingFiles: false,
-			file:{}
+			file:{},
+			showModal:false
     	}
 	}
 }

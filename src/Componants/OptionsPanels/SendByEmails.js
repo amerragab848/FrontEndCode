@@ -3,8 +3,15 @@ import Api from "../../api";
 import Dropdown from "./DropdownMelcous";
 import "react-table/react-table.css";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
+
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class SendByEmails extends Component {
   constructor(props) {
@@ -202,10 +209,9 @@ class SendByEmails extends Component {
 
   SendEmailHandler() {
     var emailObj = { ...this.state.emailObj };
-    console.log("this.state.emailObj : " + emailObj);
-    Api.post("SendByEmail", emailObj).then(result => {
-      console.log("Done");
-    });
+      
+    this.props.actions.SendByEmail("SendByEmail",emailObj);
+
   }
 
   render() {
@@ -270,4 +276,19 @@ class SendByEmails extends Component {
   }
 }
 
-export default SendByEmails;
+function mapStateToProps(state) {
+    
+    return {
+      showModal: false
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+export default  connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendByEmails);

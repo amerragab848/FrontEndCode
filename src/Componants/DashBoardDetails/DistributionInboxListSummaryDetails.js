@@ -197,7 +197,7 @@ class DistributionInboxListSummaryDetails extends Component {
       });
       if (action) {
         Api.get(
-          "GetDocApprovalDetailsDistriburtionList?action=" +
+          "GetDocApprovalDetailsDistributionList?action=" +
             action +
             "&pageNumber=" +
             0 +

@@ -2,9 +2,7 @@ import * as types from './types';
 import Api from '../../api';
 
 export function documentForEdit(urlAction) {
-    return (dispatch, getState) => {
-        //console.log('//first step action 000000 documentForEdit');
-        //'GetLettersById?id='
+    return (dispatch, getState) => { 
         return Api.get(urlAction).then(resp => { 
             
            dispatch({
@@ -86,5 +84,21 @@ export function updateField(field,value, document) {
                     type: types.Update_Field,
                     document: oldDoc
             });
+    }
+}
+
+export function SendByEmail(url,formData) {
+    return (dispatch, getState) => { 
+        return Api.post(url,formData).then(resp => {  
+            dispatch({
+                    type: types.SendByEmail,
+                    showModal: false
+            });
+        }).catch((ex) => {
+            dispatch({
+                    type: types.SendByEmail,
+                    showModal: true
+            });
+        });
     }
 }
