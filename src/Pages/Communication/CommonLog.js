@@ -127,6 +127,36 @@ class CommonLog extends Component {
     });
   }
 
+  GetPrevoiusData() {
+    let pageNumber = this.state.pageNumber - 1;
+
+    this.setState({
+      isLoading: true,
+      pageNumber: pageNumber
+    });
+
+    let url =(this.state.query == "" ? this.state.api : this.state.apiFilter) +"?projectId=" +this.state.projectId +"&pageNumber=" + pageNumber +
+      "&pageSize=" + this.state.pageSize +(this.state.query == "" ? "" : "&query=" + this.state.query);
+
+    Api.get(url).then(result => {
+      let oldRows =[];// this.state.rows;
+      const newRows = [...oldRows, ...result]; 
+
+      this.setState({
+        rows: newRows,
+        totalRows: newRows.length,
+        isLoading: false
+      });
+    }) .catch(ex => {
+         let oldRows = this.state.rows;
+        this.setState({
+          rows: oldRows,
+          isLoading: false
+        });
+      });;
+  }
+
+
   GetNextData() {
     let pageNumber = this.state.pageNumber + 1;
 
@@ -455,9 +485,11 @@ class CommonLog extends Component {
               <span>0</span> - <span>{this.state.pageSize}</span> of 
               <span> {this.state.totalRows}</span>
             </div>
-            <button className="rowunActive">
+            
+            <button className={this.state.pageNumber==0? "rowunActive" : "" }   onClick={() => this.GetPrevoiusData()}>
               <i className="angle left icon" />
             </button>
+
             <button onClick={() => this.GetNextData()}>
               <i className="angle right icon" />
             </button>

@@ -7,7 +7,7 @@ import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
 import Dropzone from "react-dropzone";
 import Resources from "../../../resources.json";
 import TokenStore from '../../../tokenStore'
-import config from "../../../Services/Config";
+ 
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 

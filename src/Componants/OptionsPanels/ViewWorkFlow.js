@@ -6,8 +6,7 @@
 
 import React, { Component, Fragment } from 'react'
 import Api from '../../api';
-import Moment from 'moment';
-import Resources from '../../resources.json';
+import Moment from 'moment'; 
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
  
