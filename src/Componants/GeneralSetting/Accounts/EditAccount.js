@@ -23,14 +23,14 @@ let id = null;
 let DefaultUserName = '';
 let DefaultEmpCode = '';
 const validationSchema = Yup.object().shape({
-        WorkingHours: Yup.number()
+    WorkingHours: Yup.number()
         .typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['isRequiredField'][currentLanguage]),
     RateHours: Yup.number()
         .typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['isRequiredField'][currentLanguage]),
-        UserName:Yup.string().required(Resources['isRequiredField'][currentLanguage]),
-        EmpCode:Yup.string().required(Resources['isRequiredField'][currentLanguage])
+    UserName: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
+    EmpCode: Yup.string().required(Resources['isRequiredField'][currentLanguage])
 });
 
 class EditAccount extends Component {
@@ -38,8 +38,8 @@ class EditAccount extends Component {
         super(props)
         this.state = {
             UserName: ' ',
-            WorkingHours:0,
-            HoursRate:0,
+            WorkingHours: 0,
+            HoursRate: 0,
             SupervisorNameData: [],
             GroupNameData: [],
             GroupNameId: {},
@@ -99,7 +99,6 @@ class EditAccount extends Component {
     componentDidMount = () => {
 
         this.GetData('SelectAllAccountsActive?id=' + id + '', 'userName', 'id', 'AlternativeAccount')
-
 
         dataservice.GetDataList('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id').then(
             result => {
@@ -271,6 +270,7 @@ class EditAccount extends Component {
     changeEmpCode = (e) => {
         this.setState({ EmpCode: e.target.value })
     }
+
     hoursRateChange = (e) => {
         this.setState({ HoursRate: e.target.value })
     }
@@ -313,6 +313,7 @@ class EditAccount extends Component {
                         <div className="step-content">
                             <div className="subiTabsContent">
                                 <div className="document-fields">
+
                                     {this.state.ErrorSameUserName ?
                                         <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['userNameAlreadyExisted'][currentLanguage]} />
                                         : null
@@ -325,21 +326,20 @@ class EditAccount extends Component {
 
                                     {this.state.LoadingVaildation ? <LoadingSection /> : null}
                                     <Formik
-
                                         initialValues={{
                                             UserName: this.state.UserName,
                                             WorkingHours: this.state.WorkingHours,
                                             EmpCode: this.state.EmpCode,
                                             RateHours: this.state.HoursRate,
-                                            SupervisorCompanyValidation:'',
-                                            SupervisorNameValidation: '',
-                                            CompanyValidation: '',
-                                            ContactValidation: '',
+                                            // SupervisorCompanyValidation:'',
+                                            // SupervisorNameValidation: '',
+                                            // CompanyValidation: '',
+                                            // ContactValidation: '',
                                         }}
 
                                         validationSchema={validationSchema}
 
-                                          onSubmit={(values, actions) => {
+                                        onSubmit={(values, actions) => {
                                             Api.post('EditAccount',
                                                 {
                                                     'id': id,
@@ -376,16 +376,16 @@ class EditAccount extends Component {
                                             this.props.history.push({
                                                 pathname: '/Accounts',
                                             })
-                                    
-                                    }}
-                                    
-                                    onReset={(values) => { }} >
+
+                                        }}
+
+                                        onReset={(values) => { }} >
                                         {({ errors, touched, handleBlur, handleChange, handleReset, handleSubmit, isSubmitting }) => (
-                                            <Form id="signupForm1" className="proForm proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
+                                            <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                 <div className="linebylineInput valid-input">
                                                     <label className="control-label">{Resources['UserName'][currentLanguage]} </label>
-                                                    <div className={errors.UserName && touched.UserName  ?
+                                                    <div className={errors.UserName && touched.UserName ?
                                                         ("ui input inputDev has-error") : "ui input inputDev"} >
                                                         <input name='UserName' value={this.state.UserName}
                                                             className="form-control" id="UserName" placeholder={Resources['UserName'][currentLanguage]} autoComplete='off'
@@ -397,7 +397,7 @@ class EditAccount extends Component {
                                                                 this.changeUserName(e)
                                                                 handleChange(e)
                                                             }} />
-                                                        {errors.UserName && touched.UserName  ? (
+                                                        {errors.UserName && touched.UserName ? (
                                                             <em className="pError">{errors.UserName}</em>
                                                         ) : null}
                                                     </div>
@@ -405,20 +405,20 @@ class EditAccount extends Component {
 
                                                 <div className="linebylineInput valid-input">
                                                     <label className="control-label">{Resources['workHours'][currentLanguage]} </label>
-                                                    <div className={errors.WorkingHours && touched.WorkingHours  ?
+                                                    <div className={errors.WorkingHours && touched.WorkingHours ?
                                                         ("ui input inputDev has-error") : "ui input inputDev"} >
                                                         <input name='WorkingHours' value={this.state.WorkingHours}
                                                             className="form-control" id="WorkingHours" placeholder={Resources['workHours'][currentLanguage]} autoComplete='off'
                                                             onBlur={(e) => {
                                                                 this.workHoursChangeHandler(e)
                                                                 handleBlur(e)
-                                                            }} 
+                                                            }}
                                                             onChange={(e) => {
                                                                 this.workHoursChange(e)
                                                                 handleChange(e)
                                                             }}
-                                                             />
-                                                        {errors.WorkingHours && touched.WorkingHours  ? (
+                                                        />
+                                                        {errors.WorkingHours && touched.WorkingHours ? (
                                                             <em className="pError">{errors.WorkingHours}</em>
                                                         ) : null}
                                                     </div>
@@ -454,7 +454,7 @@ class EditAccount extends Component {
                                                                 this.changeEmpCode(e)
                                                                 handleChange(e)
                                                             }}
-                                                             />
+                                                        />
                                                         {errors.EmpCode && touched.EmpCode ? (
                                                             <em className="pError">{errors.EmpCode}</em>
                                                         ) : null}
@@ -464,7 +464,7 @@ class EditAccount extends Component {
                                                 <div className="linebylineInput valid-input">
                                                     <DropdownMelcous title='GroupName'
                                                         data={this.state.GroupNameData}
-                                                        handleChange={this.GroupNameData.bind(this)}
+                                                        handleChange={this.GroupNameData}
                                                         placeholder='GroupName'
                                                         selectedValue={this.state.GroupNameId} />
                                                 </div>
@@ -476,34 +476,36 @@ class EditAccount extends Component {
                                                         placeholder='alternativeAccount'
                                                         selectedValue={this.state.AlternativeAccountId} />
                                                 </div>
-
-                                                <div className="linebylineInput valid-input alternativeDate">
-
-                                                    <DatePicker title='alternativeDate'
-                                                        startDate={this.state.AccountData.alternativDate === null ? this.state.AlternativeDate : moment(this.state.AccountData.alternativDate).format("DD-MM-YYYY")}
-                                                        handleChange={this.AlternativeDatehandleChange} />
-                                                    <div className="ui checkbox checkBoxGray300 checked">
-                                                        <input type="checkbox" value='1' onChange={this.ReplacmenthandleCheck} defaultChecked={this.state.Acchecked} />
-                                                        <label> {Resources['replacment'][currentLanguage]}</label>
+                                            
+                                                <Fragment>
+                                                    {this.state.alternativAccountId === null ?null:                                                    <div className="linebylineInput valid-input alternativeDate">
+                                                        <DatePicker title='alternativeDate'
+                                                            startDate={this.state.AccountData.alternativDate === null ? this.state.AlternativeDate : moment(this.state.AccountData.alternativDate).format("DD-MM-YYYY")}
+                                                            handleChange={this.AlternativeDatehandleChange} />
+                                                        <div className="ui checkbox checkBoxGray300 checked">
+                                                            <input type="checkbox" value='1' onChange={this.ReplacmenthandleCheck} defaultChecked={this.state.Acchecked} />
+                                                            <label> {Resources['replacment'][currentLanguage]}</label>
+                                                        </div>
                                                     </div>
+                                                    }
 
-                                                </div>
+                                                </Fragment>
 
                                                 <div className="linebylineInput valid-input">
                                                     <label className="control-label">{Resources['hoursRate'][currentLanguage]} </label>
-                                                    <div className={errors.RateHours && touched.RateHours  ?
+                                                    <div className={errors.RateHours && touched.RateHours ?
                                                         ("ui input inputDev has-error") : "ui input inputDev"} >
                                                         <input name='RateHours' value={this.state.HoursRate}
                                                             className="form-control" id="RateHours" placeholder={Resources['hoursRate'][currentLanguage]} autoComplete='off'
                                                             onBlur={(e) => {
                                                                 this.hoursRateChangeHandler(e)
                                                                 handleBlur(e)
-                                                            }} 
+                                                            }}
                                                             onChange={(e) => {
                                                                 this.hoursRateChange(e)
                                                                 handleChange(e)
-                                                            }}  />
-                                                        {errors.RateHours && touched.RateHours  ? (
+                                                            }} />
+                                                        {errors.RateHours && touched.RateHours ? (
                                                             <em className="pError">{errors.RateHours}</em>
                                                         ) : null}
                                                     </div>
@@ -569,7 +571,7 @@ class EditAccount extends Component {
                                                 </div>
 
                                                 <div className="dropBtn">
-                                                    <button className="primaryBtn-1 btn"  type="submit"  >
+                                                    <button className="primaryBtn-1 btn" type="submit"  >
                                                         {Resources['save'][currentLanguage]}</button>
                                                 </div>
                                             </Form>
