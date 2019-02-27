@@ -3,7 +3,7 @@ import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
-
+ 
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -233,8 +233,7 @@ class GridSetup extends Component {
   onCellSelected = ({ rowIdx, idx }) => {
     if (this.props.cellClick)
       this.props.cellClick(rowIdx, idx)
-  };
-
+  }; 
 
   onselectRowEven=({selectedRows})=>{
     if (this.props.onselectRowEven)
@@ -339,6 +338,7 @@ class GridSetup extends Component {
           getValidFilterValues={columnKey =>
             this.getValidFilterValues(this.state.rows, columnKey)
           }
+          getCellActions={this.props.getCellActions}
         />
       </DraggableContainer>
     );
