@@ -57,13 +57,13 @@ class Index extends Component {
             {
                 key: "id",
                 visible: false,
-                width: '140%',
+                width: 140,
                 frozen: true
             },
             {
                 key: "companyName",
                 name: Resources["CompanyName"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -73,7 +73,7 @@ class Index extends Component {
             {
                 key: "roleTitle",
                 name: Resources["companyRole"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -83,7 +83,7 @@ class Index extends Component {
             {
                 key: "disciplineTitle",
                 name: Resources["disciplineTitle"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -93,7 +93,7 @@ class Index extends Component {
             {
                 key: "keyContactName",
                 name: Resources["KeyContact"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -103,7 +103,7 @@ class Index extends Component {
             {
                 key: "location",
                 name: Resources["location"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -113,7 +113,7 @@ class Index extends Component {
             {
                 key: "contactsTel",
                 name: Resources["Telephone"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -123,7 +123,7 @@ class Index extends Component {
             {
                 key: "contactsMobile",
                 name: Resources["Mobile"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -133,7 +133,7 @@ class Index extends Component {
             {
                 key: "contactsFax",
                 name: Resources["Fax"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -143,7 +143,7 @@ class Index extends Component {
             {
                 key: "grade",
                 name: Resources["Grade"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -154,7 +154,7 @@ class Index extends Component {
             {
                 key: "enteredBy",
                 name: Resources["enteredBy"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -165,7 +165,7 @@ class Index extends Component {
             {
                 key: "lastModified",
                 name: Resources["lastModified"][currentLanguage],
-                width: "50%",
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -311,7 +311,7 @@ class Index extends Component {
             /> : null;
 
         return (
-            <div className="mainContainer">
+            <div >
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
