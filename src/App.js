@@ -17,6 +17,7 @@ import api from './api';
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
 import Companies from './Componants/GeneralSetting/Companies/Index'
+//import Settings from './Componants/GeneralSetting/Settings'
 import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
 
 import DocumentEmailNotification from './Componants/User/DocumentEmailNotification';

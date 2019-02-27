@@ -306,7 +306,7 @@ class Accounts extends Component {
     }
 
     GetNextData = () => {
-        if (!this.state.search) {
+      //  if (!this.state.search) {
             let pageNumber = this.state.pageNumber + 1
             this.setState({ isLoading: true })
             let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
@@ -317,10 +317,12 @@ class Accounts extends Component {
                     pageNumber: pageNumber
                 });
             });
-        }
-        else {
-           
-        }
+        // }
+        // else {
+        //     alert("de bta3t search")
+        // }
+        
+      
     }
 
     hideFilter(value) {
@@ -373,9 +375,6 @@ class Accounts extends Component {
         }
     }
 
-    onselectRowEven = () => {
-        console.log('onselectRowEven')
-    }
 
     IsActive = (rows) => {
 
@@ -498,7 +497,7 @@ class Accounts extends Component {
             /> : null;
 
         return (
-            <div className="mainContainer">
+            <div >
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>

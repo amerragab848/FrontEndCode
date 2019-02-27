@@ -60,7 +60,7 @@ class DropdownMelcous extends Component {
                                 options={this.props.data}
                                 placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
                                 isSearchable="true"
-                                //defaultValue={this.props.selectedValue}
+                                defaultValue={this.props.defaultValue}
                                 value={this.props.selectedValue}
                                 //onOptionSelected={this.props.selectedValue}
                                 isMulti={this.props.isMulti}

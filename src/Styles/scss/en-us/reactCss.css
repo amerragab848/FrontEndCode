@@ -1374,3 +1374,41 @@ tfoot tr td p{
 .daysCheckbox .ui.checkbox:last-of-type {
   margin-right: 0;
 } 
+.settings-tabs-items .react-tabs__tab-list {
+  border-bottom: 1px solid #e6e6e6 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-flow: column;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  background: #fff !important;
+  overflow: hidden !important;
+  z-index: 14 !important;
+  position: unset !important;
+}
+.settings-tabs-items .react-tabs__tab {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.settings-tabs-items .react-tabs__tab {
+  padding: 0 !important;
+  border-bottom: 0 solid transparent !important;
+  border-left: 6px solid transparent !important;
+  padding-left: 34px !important;
+  width: 100%;
+}
+.settings-tabs-items .react-tabs__tab--selected {
+  border: 0 solid transparent !important;
+  padding: 0 !important;
+  border-bottom: 0 solid #3570E6 !important;
+  border-left: 6px solid #4382f9 !important;
+  background-color: #E9ECF0 !important;
+  padding-left: 34px !important;
+}
