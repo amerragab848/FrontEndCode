@@ -8,7 +8,7 @@ import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export"; 
 
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
+import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

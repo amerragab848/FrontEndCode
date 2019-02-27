@@ -30,8 +30,7 @@ let projectName = 0;
 const _ = require('lodash')
 class LettersAddEdit extends Component {
     constructor(props) {
-        super(props);
-
+        super(props); 
         // console.log(this.props.location.search);
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
@@ -50,6 +49,7 @@ class LettersAddEdit extends Component {
           } 
             index++;
         }
+
         this.state = {
             isView: false,
             hasWorkFlow:false,
@@ -72,6 +72,8 @@ class LettersAddEdit extends Component {
             selectedDiscpline: {label: Resources.disciplineRequired[currentLanguage],value: "0"}, 
             selectedReplyLetter: {label: Resources.replyletter[currentLanguage],value: "0"}
           }
+
+        this.radioChange = this.radioChange.bind(this);
     }
     componentDidMount() {
       //componentWillUnmount
@@ -259,6 +261,11 @@ class LettersAddEdit extends Component {
         // });
     }
 
+    radioChange(e) {
+        console.log(e.currentTarget.value);
+      //  this.setState({ document: {...document, status: e.currentTarget.value}}); 
+    }
+
     render() {
         return (
             <div className="mainContainer">
@@ -287,7 +294,7 @@ class LettersAddEdit extends Component {
                         </div>
                     </div>
                     <div className="doc-container">
-                    
+
                         <div className="step-content fullWidthContent cutome__inputs">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -312,12 +319,12 @@ class LettersAddEdit extends Component {
                                             </div>
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
-                                                <div className="ui checkbox radio radioBoxBlue checked">
-                                                    <input type="radio" checked="" tabIndex="0"  onChange={e=>{this.setState({ document:{...document,status: true}})}}  className="hidden" checked={this.state.document.status} name="Close-open" />
+                                                <div className="ui checkbox radio radioBoxBlue">
+                                                    <input type="radio" value={this.state.document.status} onChange={e => this.handleChange(e,'status')} name='letter-status' className="hidden" checked={this.state.document.status === true} />
                                                     <label>{Resources.oppened[currentLanguage]}</label>
                                                 </div>
                                                 <div className="ui checkbox radio radioBoxBlue">
-                                                    <input type="radio" tabIndex="0" onChange={e=>{this.setState({ document:{...document,status: false}})}} className="hidden" checked={!this.state.document.status} name="Close-open" />
+                                                    <input type="radio" value={!this.state.document.status} onChange={e => this.handleChange(e,'status')} name='letter-s' className="hidden" checked={this.state.document.status === false} />
                                                     <label>{Resources.closed[currentLanguage]}</label>
                                                 </div>
                                             </div>

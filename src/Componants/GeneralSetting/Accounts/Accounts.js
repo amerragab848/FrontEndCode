@@ -29,35 +29,40 @@ class Accounts extends Component {
         const columnsGrid = [
             {
                 formatter: this.BtnTaskAdmin,
-                key: 'BtnTaskAdmin'
+                key: 'BtnTaskAdmin',
+                width: 45
             },
             {
                 formatter: this.BtnEPS,
+                width: 45,
                 key: 'BtnEPS'
             },
             {
                 formatter: this.BtnProjects,
+                width: 45,
                 key: 'BtnProjects'
             },
             {
                 formatter: this.BtnCompanies,
+                width: 45,
                 key: 'BtnCompanies'
             },
             {
                 formatter: this.BtnResetPassword,
+                width: 45,
                 key: 'BtnResetPassword'
 
             },
             {
                 key: "id",
                 visible: false,
-                width: '140%',
+                width: 50,
                 frozen: true
             },
             {
                 key: "userName",
                 name: Resources["UserName"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -67,7 +72,7 @@ class Accounts extends Component {
             {
                 key: "empCode",
                 name: Resources["employeeCode"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -77,7 +82,7 @@ class Accounts extends Component {
             {
                 key: "companyName",
                 name: Resources["CompanyName"][currentLanguage],
-                width: "50%",
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -87,7 +92,7 @@ class Accounts extends Component {
             {
                 key: "contactName",
                 name: Resources["ContactName"][currentLanguage],
-                width: "50%",
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -97,7 +102,7 @@ class Accounts extends Component {
             {
                 key: "position",
                 name: Resources["position"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -107,7 +112,7 @@ class Accounts extends Component {
             {
                 key: "supervisorCompanyName",
                 name: Resources["SupervisorCompany"][currentLanguage],
-                width: "50%",
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -117,7 +122,7 @@ class Accounts extends Component {
             {
                 key: "activationStatus",
                 name: Resources["activationStatus"][currentLanguage],
-                width: "50%",
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -127,7 +132,7 @@ class Accounts extends Component {
             {
                 key: "supervisorName",
                 name: Resources["SupervisorName"][currentLanguage],
-                width: "50%",
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -137,7 +142,7 @@ class Accounts extends Component {
             {
                 key: "groupName",
                 name: Resources["GroupName"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -209,7 +214,7 @@ class Accounts extends Component {
             filtersColumns: filtersColumns,
             viewfilter: true,
             totalRows: 0,
-            pageSize: 10,
+            pageSize: 50,
             pageNumber: 0,
             pageTitle: Resources['accounts'][currentLanguage],
             api: 'GetAccountsChunk?',
@@ -237,15 +242,7 @@ class Accounts extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false, showResetPasswordModal: false  });
     };
-
-    // onCloseModalResetPassword = () => {
-    //     this.setState({ showResetPasswordModal: false });
-    // };
-
-    // clickHandlerCancelMainResetPassword = () => {
-    //     this.setState({ showResetPasswordModal: false });
-    // };
-
+ 
     addRecord = () => {
         this.props.history.push({
             pathname: "AddAccount"
@@ -369,19 +366,22 @@ class Accounts extends Component {
        })
     }
 
-   ConfirmResetPassword=()=>{
-    let id =this.state.rowSelectedId;
-    console.log(id)
-    this.setState({ showDeleteModal: true })
-    let rowsData = this.state.rows;
-    let   userName = _.find(rowsData, { 'id': id })
+    ConfirmResetPassword=()=>{
+        let id =this.state.rowSelectedId;
+        console.log(id)
+        this.setState({ showDeleteModal: true })
+        let rowsData = this.state.rows;
+        let   userName = _.find(rowsData, { 'id': id })
 
-    Api.authorizationApi('ProcoorAuthorization?username='+userName.userName+'&emailOrPassword='+this.state.NewPassword+'&companyId='+publicConfiguarion.cmi+'&changePassword=true', null, 'PUT').then(
-   Api.post('ResetPassword?accountId='+id+'&password='+this.state.NewPassword+'').then(
-        this.setState({ showResetPasswordModal:false}))
+        Api.authorizationApi('ProcoorAuthorization?username='+userName.userName+
+            '&emailOrPassword='+this.state.NewPassword+
+            '&companyId='+publicConfiguarion.cmi+
+            '&changePassword=true', null, 'PUT').then(
+               Api.post('ResetPassword?accountId='+id+'&password='+this.state.NewPassword+'').then(
+                    this.setState({ showResetPasswordModal:false}))
 
-           )
-   }
+        )
+    }
 
     cellClick = (rowID, colID) => {
         if (colID == 1) {
@@ -623,7 +623,7 @@ class Accounts extends Component {
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
                             <span>{((this.state.pageNumber - 1) * this.state.pageSize) + 1}</span> - <span>{(this.state.pageNumber) * this.state.pageSize}</span> of
-                            <span>{this.state.totalRows}</span>
+                            <span> {this.state.totalRows}</span>
                         </div>
                         <button className="rowunActive">
                             <i className="angle left icon" />
