@@ -249,7 +249,7 @@ class AddAccount extends Component {
                                         : null}
 
                                     {this.state.LoadingVaildation ? <LoadingSection /> : null}
-                                    <Form className="proForm datepickerContainer">
+                             
                                         <Formik
                                             initialValues={{
                                                 UserName: '',
@@ -333,7 +333,7 @@ class AddAccount extends Component {
                                             onReset={(values) => { }}
                                         >
                                             {({ errors, touched, handleBlur, handleChange, handleReset, handleSubmit, isSubmitting }) => (
-                                                <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="linebylineInput valid-input">
                                                         {this.state.ErrorSameUserName ?
@@ -474,7 +474,7 @@ class AddAccount extends Component {
                                                         }
                                                     </div>
 
-                                                    <form className="proForm">
+                                                    <div className="proForm">
                                                         <div className="linebylineInput">
                                                             <label className="control-label"> {Resources['designTeam'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
@@ -487,9 +487,9 @@ class AddAccount extends Component {
                                                             </div>
 
                                                         </div>
-                                                    </form>
+                                                    </div>
 
-                                                    <form className="proForm">
+                                                    <div className="proForm">
                                                         <div className="linebylineInput">
                                                             <label className="control-label"> {Resources['isTaskAdmin'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
@@ -502,9 +502,9 @@ class AddAccount extends Component {
                                                             </div>
 
                                                         </div>
-                                                    </form>
+                                                    </div>
 
-                                                    <form className="proForm">
+                                                    <div className="proForm">
                                                         <div className="linebylineInput">
                                                             <label className="control-label"> {Resources['active'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
@@ -517,9 +517,9 @@ class AddAccount extends Component {
                                                             </div>
 
                                                         </div>
-                                                    </form>
+                                                    </div>
 
-                                                    <form className="proForm">
+                                                    <div className="proForm">
                                                         <div className="linebylineInput">
                                                             <label className="control-label"> {Resources['usePermissionsOnLogs'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
@@ -532,7 +532,7 @@ class AddAccount extends Component {
                                                             </div>
 
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                   
                                                   <div className="linebylineInput daysCheckbox">
                                                         <label> HR Vacation Days</label>
@@ -573,7 +573,7 @@ class AddAccount extends Component {
                                                 </Form>
                                             )}
                                         </Formik>
-                                    </Form>
+                                    
                                 </div>
                             </div>
                         </div>
