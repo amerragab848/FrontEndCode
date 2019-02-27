@@ -168,6 +168,11 @@ class GridSetup extends Component {
   };
 
   onRowsDeselected = rows => {
+    if( this.props.IsActiv !== undefined )
+    {
+      this.props.UnSelectIsActiv()
+    }
+    
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 

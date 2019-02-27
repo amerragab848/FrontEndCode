@@ -36,7 +36,7 @@ import EditAccount  from './Componants/GeneralSetting/Accounts/EditAccount'
 import UserProjects  from './Componants/GeneralSetting/Accounts/UserProjects'
 import TaskAdmin  from './Componants/GeneralSetting/Accounts/TaskAdmin'
 import AccountsEPSPermissions  from './Componants/GeneralSetting/Accounts/AccountsEPSPermissions'
-import Settings  from './Componants/GeneralSetting/Settings'
+import TemplatesSettings  from './Componants/GeneralSetting/TemplatesSettings'
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
    
 let routes = (
@@ -79,7 +79,7 @@ let routes = (
     <Route path="/EditAccount" component={EditAccount} /> 
     <Route path="/UserProjects" component={UserProjects} /> 
     <Route path="/TaskAdmin" component={TaskAdmin} /> 
-    <Route path="/Settings" component={Settings} /> 
+    <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
     
 </Switch> 
 ); 

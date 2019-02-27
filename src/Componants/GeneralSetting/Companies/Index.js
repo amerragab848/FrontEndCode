@@ -182,7 +182,7 @@ class Index extends Component {
             rows: [], filtersColumns: [],
             viewfilter: true,
             totalRows: 0,
-            pageSize: 10,
+            pageSize: 50,
             pageNumber: 0,
             pageTitle: Resources['Companies'][currentLanguage],
             api: 'GetProjectCompaniesGrid?',
@@ -225,7 +225,7 @@ class Index extends Component {
         }
     }
     GetNextData = () => {
-        if (!this.state.search) {
+        // if (!this.state.search) {
             let pageNumber = this.state.pageNumber + 1
             this.setState({ isLoading: true })
             let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
@@ -236,10 +236,10 @@ class Index extends Component {
                     pageNumber: pageNumber
                 });
             });
-        }
-        else {
-            alert("de bta3t search")
-        }
+        // }
+        // else {
+        //     alert("de bta3t search")
+        // }
     }
 
     hideFilter(value) {

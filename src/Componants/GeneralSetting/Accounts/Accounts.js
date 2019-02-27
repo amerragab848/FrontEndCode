@@ -9,7 +9,7 @@ import "../../../Styles/css/semantic.min.css";
 import "../../../Styles/scss/en-us/layout.css";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import GridSetup from "../../../Pages/Communication/GridSetup";
-
+import NotifiMsg from '../../publicComponants/NotifiMsg'
 import moment from "moment";
 import CryptoJS from 'crypto-js';
 import config from "../../../Services/Config";
@@ -23,17 +23,17 @@ const dateFormate = ({ value }) => {
 const publicConfiguarion = config.getPayload();
 
 let rwIdse = '';
- 
+
 class Accounts extends Component {
-    
+
     constructor(props) {
         super(props);
 
         const columnsGrid = [
-            { 
+            {
                 key: 'BtnActions',
                 width: 150
-            }, 
+            },
             {
                 key: "id",
                 visible: false,
@@ -202,11 +202,11 @@ class Accounts extends Component {
             IsActiveShow: false,
             rowSelectedId: '',
             showPopupTaskAdmin: false,
-            showDeleteModal: false , 
-            NewPassword:'',
-            showResetPasswordModal:false            
+            showDeleteModal: false,
+            NewPassword: '',
+            showResetPasswordModal: false
         }
-        this.GetCellActions=this.GetCellActions.bind(this);
+        this.GetCellActions = this.GetCellActions.bind(this);
     }
 
     DeleteAccount = (rowId) => {
@@ -219,20 +219,20 @@ class Accounts extends Component {
 
     onCloseModal() {
         this.setState({
-         showDeleteModal: false,showResetPasswordModal: false 
+            showDeleteModal: false, showResetPasswordModal: false
         });
     }
 
     clickHandlerCancelMain = () => {
-        this.setState({ showDeleteModal: false, showResetPasswordModal: false  });
+        this.setState({ showDeleteModal: false, showResetPasswordModal: false });
     };
- 
+
     addRecord = () => {
         this.props.history.push({
             pathname: "AddAccount"
         });
     }
-       
+
     ConfirmDeleteAccount = () => {
         let id = '';
         this.setState({ showDeleteModal: true })
@@ -240,7 +240,7 @@ class Accounts extends Component {
         this.state.rowSelectedId.map(i => {
             id = i
         })
-        let   userName = _.find(rowsData, { 'id': id })
+        let userName = _.find(rowsData, { 'id': id })
         console.log(userName.userName)
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'DElETE').then(
             Api.post('accountDeleteById?id=' + id)
@@ -255,11 +255,13 @@ class Accounts extends Component {
                         isLoading: false,
                         showDeleteModal: false,
                         isLoading: false,
+                        IsActiveShow: false
                     });
                 })
                 .catch(ex => {
                     this.setState({
-                        showDeleteModal: false
+                        showDeleteModal: false,
+                        IsActiveShow: false
                     })
                 })
         ).catch(ex => { })
@@ -267,62 +269,60 @@ class Accounts extends Component {
             isLoading: true,
         })
     }
-  
+
     componentDidMount() {
-        let pageNumber = this.state.pageNumber + 1
-        Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-            this.setState({
-                rows: result,
-                isLoading: false,
-                pageNumber: pageNumber,
-                totalRows: result.length,
-                search: false,
+
+        if (config.IsAllow(794)) {
+            let pageNumber = this.state.pageNumber + 1
+            Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                this.setState({
+                    rows: result,
+                    isLoading: false,
+                    pageNumber: pageNumber,
+                    totalRows: result.length,
+                    search: false,
+                });
             });
-        });
+        }
+        else {
+            alert('ssss')
+        }
+    }
 
-    } 
-
-    ConfirmResetPassword=()=>{
-        let id =this.state.rowSelectedId;
+    ConfirmResetPassword = () => {
+        let id = this.state.rowSelectedId;
         console.log(id)
         this.setState({ showDeleteModal: true })
         let rowsData = this.state.rows;
-        let   userName = _.find(rowsData, { 'id': id })
+        let userName = _.find(rowsData, { 'id': id })
 
-        Api.authorizationApi('ProcoorAuthorization?username='+userName.userName+
-            '&emailOrPassword='+this.state.NewPassword+
-            '&companyId='+publicConfiguarion.cmi+
+        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName +
+            '&emailOrPassword=' + this.state.NewPassword +
+            '&companyId=' + publicConfiguarion.cmi +
             '&changePassword=true', null, 'PUT').then(
-               Api.post('ResetPassword?accountId='+id+'&password='+this.state.NewPassword+'').then(
-                    this.setState({ showResetPasswordModal:false}))
+                Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword + '').then(
+                    this.setState({ showResetPasswordModal: false }))
 
-        )
+            )
     }
 
-    cellClick = (rowID, colID) => { 
-        if (colID != 0&& colID != 1) {
+    cellClick = (rowID, colID) => {
+        if (colID != 0 && colID != 1) {
             this.AccountsEdit(this.state.rows[rowID])
         }
     }
 
     GetNextData = () => {
-      //  if (!this.state.search) {
-            let pageNumber = this.state.pageNumber + 1
-            this.setState({ isLoading: true })
-            let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
-            Api.get(url).then(result => {
-                this.setState({
-                    rows: result,
-                    isLoading: false,
-                    pageNumber: pageNumber
-                });
+        let pageNumber = this.state.pageNumber + 1
+        this.setState({ isLoading: true })
+        let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
+        Api.get(url).then(result => {
+            this.setState({
+                rows: result,
+                isLoading: false,
+                pageNumber: pageNumber
             });
-        // }
-        // else {
-        //     alert("de bta3t search")
-        // }
-        
-      
+        });
     }
 
     hideFilter(value) {
@@ -375,7 +375,6 @@ class Accounts extends Component {
         }
     }
 
-
     IsActive = (rows) => {
 
         this.setState({
@@ -386,14 +385,14 @@ class Accounts extends Component {
     }
 
     IsActiveFun = () => {
-        let id = '';
+        let id = 0;
+        let userName = ''
         let rowsData = this.state.rows;
         let s = this.state.rowSelectedId.map(i => {
             id = i
         })
-        let userName = _.find(rowsData, { 'id': id })
-        let pageNumber = this.state.pageNumber + 1
-        console.log(userName.userName)
+        userName = rowsData.filter(s => s.id === id)
+        // let pageNumber = this.state.pageNumber 
         setTimeout(() => {
             Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&companyId=2&isActive=' + userName.active + '', null, 'PUT').then(
                 Api.get('UpdateAccountActivation?id=' + id)
@@ -403,7 +402,6 @@ class Accounts extends Component {
                             this.setState({
                                 rows: result,
                                 isLoading: false,
-                                pageNumber: pageNumber,
                                 totalRows: result.length,
                                 search: false,
                             })
@@ -414,78 +412,84 @@ class Accounts extends Component {
         }, 500);
         this.setState({
             isLoading: true,
+            IsActiveShow: false,
         })
     }
- 
-    GetCellActions(column, row) { 
-        if(column.key === 'BtnActions'){
-            return [{               
+
+    GetCellActions(column, row) {
+        if (column.key === 'BtnActions') {
+            return [{
                 icon: "fa fa-pencil",
                 actions: [
-                  {
-                    text: "Tasks",
-                    callback: (e) => {   
-                       this.props.history.push({
-                            pathname: '/TaskAdmin',
-                            search: "?id=" + row.id
-                        })
-                  }
-                  },
-                  {
-                    text: "EPS",
-                    callback: () => {
-                       this.props.history.push({
-                            pathname: '/AccountsEPSPermissions',
-                            search: "?id=" + row.id
-                        })
-                    }
-                  },
-                  {
-                    text: "Projects",
-                    callback: () => { 
-                       this.props.history.push({
-                            pathname: '/UserProjects',
-                            search: "?id=" + row.id
-                        })
-                    }
-                  },
-                  {
-                    text: "Reset Password",
-                    callback: () => {
-                              let text="";
-                            let possible= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                            for (var i = 0; i < 7; i++)
-                            {
+                    {
+                        text: "Tasks",
+                        callback: (e) => {
+                            this.props.history.push({
+                                pathname: '/TaskAdmin',
+                                search: "?id=" + row.id
+                            })
+                        }
+                    },
+                    {
+                        text: "EPS",
+                        callback: () => {
+                            this.props.history.push({
+                                pathname: '/AccountsEPSPermissions',
+                                search: "?id=" + row.id
+                            })
+                        }
+                    },
+                    {
+                        text: "Projects",
+                        callback: () => {
+                            this.props.history.push({
+                                pathname: '/UserProjects',
+                                search: "?id=" + row.id
+                            })
+                        }
+                    },
+                    {
+                        text: "Reset Password",
+                        callback: () => {
+                            let text = "";
+                            let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                            for (var i = 0; i < 7; i++) {
                                 text += possible.charAt(Math.floor(Math.random() * possible.length));
                             }
                             let _newPassEncode = CryptoJS.enc.Utf8.parse(JSON.stringify(text))
                             let newPassEncode = CryptoJS.enc.Base64.stringify(_newPassEncode)
-                            
-                           this.setState({
-                               NewPassword:newPassEncode,
-                               showResetPasswordModal:true ,
-                               rowSelectedId:row.id ,
-                           })
+
+                            this.setState({
+                                NewPassword: newPassEncode,
+                                showResetPasswordModal: true,
+                                rowSelectedId: row.id,
+                            })
+                        }
                     }
-                  }
                 ]
-              }]; 
-        } 
+            }];
+        }
     }
 
+    UnSelectIsActiv = () => {
+        this.setState({
+            IsActiveShow: false,
+        })
+    }
     render() {
+
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
                     showCheckbox={true}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     IsActiv={this.IsActive}
-                    cellClick={this.cellClick} 
-                    clickHandlerDeleteRows={this.DeleteAccount} 
-                    getCellActions={this.GetCellActions} />
-
+                    cellClick={this.cellClick}
+                    clickHandlerDeleteRows={this.DeleteAccount}
+                    getCellActions={this.GetCellActions}
+                    UnSelectIsActiv={this.UnSelectIsActiv} />
             ) : <LoadingSection />;
- 
+
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
             : null;
@@ -568,7 +572,7 @@ class Accounts extends Component {
                         </div>
                     </div>
                     <div className="filterBTNS">
-                    {this.state.IsActiveShow ?
+                        {this.state.IsActiveShow ?
                             <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
                         {btnExport}
                         <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button>
@@ -600,8 +604,9 @@ class Accounts extends Component {
                 <div className="grid-container">
                     {dataGrid}
                 </div>
+                
                 {this.state.showPopupTaskAdmin ? <TaskAdmin /> : null}
-                 {this.state.showDeleteModal == true ? (
+                {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources['smartDeleteMessage'][currentLanguage].content}
                         closed={this.onCloseModal}
@@ -609,9 +614,9 @@ class Accounts extends Component {
                         clickHandlerCancel={this.clickHandlerCancelMain}
                         buttonName='delete' clickHandlerContinue={this.ConfirmDeleteAccount}
                     />
-                ) : null} 
+                ) : null}
 
-                  {this.state.showResetPasswordModal == true ? (
+                {this.state.showResetPasswordModal == true ? (
                     <ConfirmationModal
                         title='Are you sure you want to Reset Your Password ?'
                         closed={this.onCloseModal}
