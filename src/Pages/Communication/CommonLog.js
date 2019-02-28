@@ -71,8 +71,7 @@ class CommonLog extends Component {
   }
  
   componentDidMount() {   
-   console.log('componentDidMount in Letter Componants 0000');
-   this.renderComponent(this.state.documentName,this.state.projectId);
+   this.renderComponent(this.state.documentName,this.state.projectId,!this.state.minimizeClick);
                          
   }
  
@@ -80,19 +79,23 @@ class CommonLog extends Component {
      console.log('componentWillUnmount in Letter Componants 0000');
      this._isMounted = false; 
      this.setState({ 
-      isLoading: true 
+      isLoading: true ,
+      isCustom:true
      });
   }
     
-  componentWillReceiveProps(nextProps){
-    if(nextProps.match !== this.props.match  ){ 
+  componentWillReceiveProps(nextProps,prevState){
+
+     if(nextProps.match !== this.props.match ){ 
       this._isMounted = false;  
       this.setState({ 
-          isLoading: true 
-      });  
-      console.log('componentWillReceiveProps in Letter Componants 0000'); 
-      this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId);
+          isLoading: true,
+          isCustom:true 
+      });    
  
+      this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId,true);
+ 
+      //this.renderComponent(this.state.documentName,this.state.projectId,nextState.isCustom);
     }
   }
   
@@ -280,8 +283,8 @@ class CommonLog extends Component {
     console.log("000001");
   };
 
-  renderComponent(documentName,projectId){
-     
+  renderComponent(documentName,projectId, isCustom){
+    console.log('renderComponent',isCustom);
     var projectId = projectId;
 
     var documents = documentName;
@@ -312,7 +315,7 @@ class CommonLog extends Component {
     var filtersColumns = [];
  
     documentObj.documentColumns.map((item, index) => {
-     // if (item.isCustom === true) {
+      
         var obj = {
           key: item.field,
           frozen: index < 2 ? true : false,
@@ -330,8 +333,16 @@ class CommonLog extends Component {
               ? dateFormate
               : ""
         }; 
-        cNames.push(obj);
-      //}
+        if (isCustom !== true) {
+            cNames.push(obj); 
+        }
+        else{
+          if (item.isCustom===true) {
+            cNames.push(obj); 
+          }
+          
+        }
+      
     });  
 
     filtersColumns =documentObj.filters;
@@ -374,10 +385,15 @@ class CommonLog extends Component {
   };
 
   handleMinimize = () => {
-    const currentClass = this.state.minimizeClick
+    const currentClass = this.state.minimizeClick; 
+    const isCustom = this.state.isCustom;
+      
       this.setState({
-        minimizeClick: !currentClass 
-      });
+        minimizeClick: !currentClass,
+        isCustom :!isCustom,
+        isLoading: true
+      }); 
+      this.renderComponent(this.state.documentName,this.state.projectId,!this.state.isCustom);
   }
 
   render() {
