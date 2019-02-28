@@ -3,6 +3,7 @@ import Api from "../../../api";
 import "../../../Styles/css/semantic.min.css";
 import "../../../Styles/scss/en-us/layout.css";
 import Resources from "../../../resources.json";
+import config from "../../../Services/Config";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Recycle from '../../../Styles/images/attacheRecycle.png'
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous'
@@ -35,7 +36,8 @@ class UserProjects extends Component {
     };
 
     componentDidMount() {
-
+        if (config.IsAllow(1001104)) 
+        {
         const query = new URLSearchParams(this.props.location.search);
         for (let param of query.entries()) {
             id = param[1];
@@ -53,6 +55,11 @@ class UserProjects extends Component {
                 })
         )
         this.setState({ LoadingTable: false })
+            }
+        else {
+            alert('You Don`t Have Permissions')
+            this.props.history.goBack()
+        }
     }
 
     DeleteProject = (rowId, index) => {
@@ -93,9 +100,11 @@ class UserProjects extends Component {
         })
         console.log(Ids)
         Api.post("AddAccountsProjectsList?accountId=" + id, Ids)
-        this.props.history.push({
-            pathname: '/Accounts',
-        })
+       
+    }
+
+    goBack=()=>{
+        this.props.history.goBack()
     }
 
     render() {
@@ -116,16 +125,18 @@ class UserProjects extends Component {
         })
 
         return (
-            <div className="mainContainer">
+            <div className="mainContainer dropdownMulti">
                 <h3> {Resources['userProjects'][currentLanguage]}</h3>
                 <DropdownMelcous title='selectProjects' data={this.state.ProjectsData}
                     handleChange={this.ProjectshandleChange} placeholder='selectProjects' isMulti={true} />
-                <div className="gridfillter-container">
+              
 
                     <div className="dropBtn">
+                    <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
+                            <span className="border" ></span>
                         <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveProjects}>
                             {Resources['save'][currentLanguage]}</button>
-                    </div>
+                 
                 </div>
                 <table className="taskAdminTable">
                     <thead>

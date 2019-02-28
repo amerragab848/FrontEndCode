@@ -193,7 +193,7 @@ class Accounts extends Component {
             rows: [],
             selectedRows: [],
             filtersColumns: filtersColumns,
-            viewfilter: true,
+            viewfilter: false,
             totalRows: 0,
             pageSize: 50,
             pageNumber: 0,
@@ -204,9 +204,11 @@ class Accounts extends Component {
             showPopupTaskAdmin: false,
             showDeleteModal: false,
             NewPassword: '',
-            showResetPasswordModal: false
+            showResetPasswordModal: false,
+            showCheckbox: false
         }
         this.GetCellActions = this.GetCellActions.bind(this);
+
     }
 
     DeleteAccount = (rowId) => {
@@ -270,8 +272,7 @@ class Accounts extends Component {
         })
     }
 
-    componentDidMount() {
-
+    componentDidMount = () => {
         if (config.IsAllow(794)) {
             let pageNumber = this.state.pageNumber + 1
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
@@ -285,8 +286,13 @@ class Accounts extends Component {
             });
         }
         else {
-            alert('ssss')
+            alert('You Don`t Have Permissions')
+            this.props.history.goBack()
         }
+        if (config.IsAllow(798))
+            this.setState({ showCheckbox: true })
+        else
+            this.setState({ showCheckbox: false })
     }
 
     ConfirmResetPassword = () => {
@@ -307,23 +313,62 @@ class Accounts extends Component {
     }
 
     cellClick = (rowID, colID) => {
-        if (colID != 0 && colID != 1) {
-            this.AccountsEdit(this.state.rows[rowID])
+        if (config.IsAllow(797)) {
+            if (colID != 0 && colID != 1) {
+                this.AccountsEdit(this.state.rows[rowID])
+            }
         }
     }
 
-    GetNextData = () => {
-        let pageNumber = this.state.pageNumber + 1
-        this.setState({ isLoading: true })
-        let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
-        Api.get(url).then(result => {
-            this.setState({
-                rows: result,
-                isLoading: false,
-                pageNumber: pageNumber
-            });
+    GetNextData() {
+        let pageNumber = this.state.pageNumber + 1;
+    
+        this.setState({
+          isLoading: true,
+          pageNumber: pageNumber
         });
-    }
+        let url = this.state.api + "pageNumber=" + pageNumber+ "&pageSize=" + this.state.pageSize
+        Api.get(url).then(result => {
+          let oldRows = this.state.rows;
+          const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+          this.setState({
+            rows: newRows,
+            totalRows: newRows.length,
+            isLoading: false
+          });
+        }) .catch(ex => {
+             let oldRows = this.state.rows;
+            this.setState({
+              rows: oldRows,
+              isLoading: false
+            });
+          });;
+      }
+
+    GetPrevoiusData() {
+        let pageNumber = this.state.pageNumber - 1;
+        this.setState({
+          isLoading: true,
+          pageNumber: pageNumber
+        });
+          let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+         Api.get(url).then(result => {
+          let oldRows =[];// this.state.rows;
+          const newRows = [...oldRows, ...result]; 
+    
+          this.setState({
+            rows: newRows,
+            totalRows: newRows.length,
+            isLoading: false
+          });
+        }) .catch(ex => {
+             let oldRows = this.state.rows;
+            this.setState({
+              rows: oldRows,
+              isLoading: false
+            });
+          });;
+      }
 
     hideFilter(value) {
         this.setState({ viewfilter: !this.state.viewfilter });
@@ -367,21 +412,23 @@ class Accounts extends Component {
     };
 
     AccountsEdit(obj) {
-        if (obj) {
-            this.props.history.push({
-                pathname: "/EditAccount",
-                search: "?id=" + obj.id
-            });
+        if (config.IsAllow(797)) {
+            if (obj) {
+                this.props.history.push({
+                    pathname: "/EditAccount",
+                    search: "?id=" + obj.id
+                });
+            }
         }
     }
 
     IsActive = (rows) => {
-
-        this.setState({
-            IsActiveShow: true,
-            rowSelectedId: rows
-        })
-        console.log('IsActive', rows[0])
+        if (config.IsAllow(798)) {
+            this.setState({
+                IsActiveShow: true,
+                rowSelectedId: rows
+            })
+        }
     }
 
     IsActiveFun = () => {
@@ -422,48 +469,67 @@ class Accounts extends Component {
                 icon: "fa fa-pencil",
                 actions: [
                     {
-                        text: "Tasks",
+                        text: Resources['isTaskAdmin'][currentLanguage],
                         callback: (e) => {
-                            this.props.history.push({
-                                pathname: '/TaskAdmin',
-                                search: "?id=" + row.id
-                            })
+                            if (config.IsAllow(1001102)) {
+                                this.props.history.push({
+                                    pathname: '/TaskAdmin',
+                                    search: "?id=" + row.id
+                                })
+                            }
                         }
                     },
                     {
-                        text: "EPS",
+                        text: 'EPS',
                         callback: () => {
-                            this.props.history.push({
-                                pathname: '/AccountsEPSPermissions',
-                                search: "?id=" + row.id
-                            })
+                            if (config.IsAllow(1001103)) {
+                                this.props.history.push({
+                                    pathname: '/AccountsEPSPermissions',
+                                    search: "?id=" + row.id
+                                })
+                            }
                         }
                     },
                     {
-                        text: "Projects",
+                        text: Resources['Projects'][currentLanguage],
                         callback: () => {
-                            this.props.history.push({
-                                pathname: '/UserProjects',
-                                search: "?id=" + row.id
-                            })
+                            if (config.IsAllow(1001104)) {
+                                this.props.history.push({
+                                    pathname: '/UserProjects',
+                                    search: "?id=" + row.id
+                                })
+                            }
+                        }
+                    },
+                    {
+                        text: Resources['Companies'][currentLanguage],
+                        callback: () => {
+                            if (config.IsAllow(1001105)) {
+                                this.props.history.push({
+                                    pathname: '/AccountsCompaniesPermissions',
+                                    search: "?id=" + row.id
+                                })
+                            }
                         }
                     },
                     {
                         text: "Reset Password",
                         callback: () => {
-                            let text = "";
-                            let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                            for (var i = 0; i < 7; i++) {
-                                text += possible.charAt(Math.floor(Math.random() * possible.length));
-                            }
-                            let _newPassEncode = CryptoJS.enc.Utf8.parse(JSON.stringify(text))
-                            let newPassEncode = CryptoJS.enc.Base64.stringify(_newPassEncode)
+                            if (config.IsAllow(1001106)) {
+                                let text = "";
+                                let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                                for (var i = 0; i < 7; i++) {
+                                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+                                }
+                                let _newPassEncode = CryptoJS.enc.Utf8.parse(JSON.stringify(text))
+                                let newPassEncode = CryptoJS.enc.Base64.stringify(_newPassEncode)
 
-                            this.setState({
-                                NewPassword: newPassEncode,
-                                showResetPasswordModal: true,
-                                rowSelectedId: row.id,
-                            })
+                                this.setState({
+                                    NewPassword: newPassEncode,
+                                    showResetPasswordModal: true,
+                                    rowSelectedId: row.id,
+                                })
+                            }
                         }
                     }
                 ]
@@ -476,12 +542,12 @@ class Accounts extends Component {
             IsActiveShow: false,
         })
     }
-    render() {
 
+    render() {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={true}
+                    showCheckbox={this.state.showCheckbox}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     IsActiv={this.IsActive}
                     cellClick={this.cellClick}
@@ -575,19 +641,24 @@ class Accounts extends Component {
                         {this.state.IsActiveShow ?
                             <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
                         {btnExport}
-                        <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button>
+                        {config.IsAllow(801) ?
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button>
+                            : null}
                     </div>
+
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
                             <span>{((this.state.pageNumber - 1) * this.state.pageSize) + 1}</span> - <span>{(this.state.pageNumber) * this.state.pageSize}</span> of
                             <span> {this.state.totalRows}</span>
                         </div>
-                        <button className="rowunActive">
-                            <i className="angle left icon" />
+                
+                        <button className={this.state.pageNumber==0? "rowunActive" : "" }   onClick={() => this.GetPrevoiusData()}>
+                        <i className="angle left icon" />
                         </button>
-                        <button onClick={() => this.GetNextData()}>
+                         <button onClick={() => this.GetNextData()}>
                             <i className="angle right icon" />
                         </button>
+                       
                     </div>
 
                 </div>
@@ -604,7 +675,7 @@ class Accounts extends Component {
                 <div className="grid-container">
                     {dataGrid}
                 </div>
-                
+
                 {this.state.showPopupTaskAdmin ? <TaskAdmin /> : null}
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal

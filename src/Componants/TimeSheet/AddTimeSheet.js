@@ -146,6 +146,7 @@ class AddTimeSheet extends Component {
                 date: '',
                 dateValidation: true
             })
+
         }
 
         if (e.value === 'felmeshmesh') {
@@ -156,9 +157,11 @@ class AddTimeSheet extends Component {
                         TimeSheetData: res,
                         dateValidation: false,
                         docDate: Today,
-                    })
+                 })
+        
                 }
             )
+
         }
 
         if (e.value === 'felmeshmesh2') {
@@ -170,6 +173,7 @@ class AddTimeSheet extends Component {
                         docDate: yesterday,
                         dateValidation: false
                     })
+    
                 }
             )
         }
@@ -214,8 +218,9 @@ class AddTimeSheet extends Component {
 
     render() {
         const items = this.state.TimeSheetData;
+        console.log(items)
         let count = [];
-        const allItems = this.state.tableView == true ? items.length ? (items.map(item => {
+        const allItems = this.state.tableView === true ? items !==null ? (items.map(item => {
             count.push(item.workHours);
             return (
                 <Fragment key={Math.random()}>
