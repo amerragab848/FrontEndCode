@@ -4,6 +4,7 @@ import Api from "../../../api";
 import "../../../Styles/scss/en-us/layout.css";
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
+import config from "../../../Services/Config";
 import SkyLight from 'react-skylight';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let id = null;
@@ -20,16 +21,17 @@ class TaskAdmin extends Component {
         }
     }
     componentDidMount() {
+        if (config.IsAllow(1001102)) 
+        {
         const query = new URLSearchParams(this.props.location.search);
         for (let param of query.entries()) {
             id = param[1];
         }
-
         // if(this.props.show===true)
         // {
         // 
         // }
-//this.simpleDialog.show();
+        //this.simpleDialog.show();
         Api.get("GetAccountsProjectsById?accountId="+id).then(
             res => {
                 this.setState({
@@ -37,7 +39,13 @@ class TaskAdmin extends Component {
                 })
             }
         ) 
+        }
+        else {
+            alert('You Don`t Have Permissions')
+            this.props.history.goBack()
+        }
     }
+
     SelectFun = (e) => {
        this.setState({
           clickCheck:false
@@ -55,9 +63,7 @@ class TaskAdmin extends Component {
              )
             )  
     }
-    ssss=()=>{
-     
-    }
+
     render() {
         let data=this.state.TaskAdminData;
         let RenderTable = data.map((item) => {

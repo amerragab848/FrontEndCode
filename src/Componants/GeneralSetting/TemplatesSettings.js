@@ -20,9 +20,8 @@ class TemplatesSettings extends Component {
                         <div className="settings-tabs-items">
                             <h3 className="zero">Settings</h3>
                             <TabList>
-
-                            <li className="title">
-                                    <h4 className="zero">{Resources['userMenu'][currentLanguage]}</h4>
+                                <li className="title">
+                                        <h4 className="zero">{Resources['userMenu'][currentLanguage]}</h4>
                                 </li>
 
                                 <Tab>
@@ -33,7 +32,7 @@ class TemplatesSettings extends Component {
                                     <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
                                 </Tab>
 
-                        
+                       
                                 <li className="title">
                                     <h4 className="zero">Project</h4>
                                 </li>
@@ -51,7 +50,7 @@ class TemplatesSettings extends Component {
                                 </li>
                                 <Tab>
                                     <span className="subUlTitle">Menu Default Data1</span>
-                                </Tab>
+                                </Tab> 
                             </TabList>
                         </div>
             
@@ -64,7 +63,6 @@ class TemplatesSettings extends Component {
                             <TabPanel>
                                 <Companies />
                             </TabPanel>
-
                         </div>
                     </Tabs> 
 

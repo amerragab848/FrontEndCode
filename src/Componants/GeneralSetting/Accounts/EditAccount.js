@@ -71,6 +71,8 @@ class EditAccount extends Component {
     }
 
     componentWillMount = () => {
+        if (config.IsAllow(797)) 
+        {
         const query = new URLSearchParams(this.props.location.search);
         for (let param of query.entries()) {
             id = param[1];
@@ -93,6 +95,11 @@ class EditAccount extends Component {
                 })
             }
         )
+        }
+        else{
+            alert('You Don`t Have Permissions')
+            this.props.history.goBack()
+        }
     }
 
 

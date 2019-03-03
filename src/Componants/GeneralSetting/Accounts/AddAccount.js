@@ -68,9 +68,15 @@ class AddAccount extends Component {
     }
 
     componentDidMount = () => {
+        if (config.IsAllow(801)) {  
         this.GetData('GetCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id', 'CompanyData');
         this.GetData('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id', 'GroupNameData');
         this.DesignTeamChange = this.DesignTeamChange.bind(this);
+        }
+        else{
+            alert('You Don`t Have Permissions')
+            this.props.history.goBack()
+        }
     }
 
     workHoursChangeHandler = (e) => {

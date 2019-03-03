@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Select from 'react-select';
 import Resources from '../../resources.json';
+import { isNullOrUndefined } from 'util';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class DropdownMelcous extends Component {
@@ -60,8 +61,8 @@ class DropdownMelcous extends Component {
                                 options={this.props.data}
                                 placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
                                 isSearchable="true"
-                                defaultValue={this.props.selectedValue}
-                                 value={this.props.selectedValue}
+                                defaultValue= {this.props.isMulti ? this.props.selectedValue : this.props.value}
+                                value={ this.props.isMulti ? this.props.value : this.props.selectedValue}
                                 //onOptionSelected={this.props.selectedValue}
                                 isMulti={this.props.isMulti}
                                 onBlur={this.props.onblur}

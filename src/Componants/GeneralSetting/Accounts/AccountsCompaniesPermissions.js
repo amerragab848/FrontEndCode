@@ -2,13 +2,12 @@ import React, { Component, Fragment } from "react";
 import Api from "../../../api";
 import "../../../Styles/css/semantic.min.css";
 import "../../../Styles/scss/en-us/layout.css";
+import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous'
 import { withRouter } from "react-router-dom";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-let id = null;
-
-
+let id = 0;
 
 class AccountsCompaniesPermissions extends Component {
     constructor(props) {
@@ -19,43 +18,46 @@ class AccountsCompaniesPermissions extends Component {
             data: [],
             render: false
         }
-
     }
     componentDidMount() {
-        const query = new URLSearchParams(this.props.location.search);
+        if (config.IsAllow(1001105)) {
+            const query = new URLSearchParams(this.props.location.search);
+            for (let param of query.entries()) {
+                id = param[1];
+            }
+            let Data = []
+            Api.get("GetCompaniesForAccounts?accountId=" + id).then(result => {
+                (result).forEach(item => {
+                    var obj = {};
+                    obj.label = item['companyName'];
+                    obj.value = item['id'];
+                    Data.push(obj);
+                });
+                this.setState({
+                    CompaniesData: [...Data]
+                });
+            }).catch(ex => {
+            });
 
-        for (let param of query.entries()) {
-            id = param[1];
+            let Data2 = []
+            Api.get("GetuserCompanies?accountId=" + id).then(result => {
+                (result).forEach(item => {
+                    var obj = {};
+                    obj.label = item['companyName'];
+                    obj.value = item['companyId'];
+                    Data2.push(obj);
+                });
+                this.setState({
+                    CompaniesDefaultData: [...Data2],
+                    render: true
+                });
+            }).catch(ex => {
+            });
         }
-
-        let Data = []
-        Api.get("GetCompaniesForAccounts?accountId=" + id).then(result => {
-            (result).forEach(item => {
-                var obj = {};
-                obj.label = item['companyName'];
-                obj.value = item['id'];
-                Data.push(obj);
-            });
-            this.setState({
-                CompaniesData: [...Data]
-            });
-        }).catch(ex => {
-        });
-
-        let Data2 = []
-        Api.get("GetuserCompanies?accountId=" + id).then(result => {
-            (result).forEach(item => {
-                var obj = {};
-                obj.label = item['companyName'];
-                obj.value = item['companyId'];
-                Data2.push(obj);
-            });
-            this.setState({
-                CompaniesDefaultData: [...Data2],
-                render: true
-            });
-        }).catch(ex => {
-        });
+        else {
+            alert('You Don`t Have Permissions')
+            this.props.history.goBack()
+        }
     }
 
 
@@ -65,33 +67,36 @@ class AccountsCompaniesPermissions extends Component {
     }
 
     SaveCompanies = () => {
-        this.state.data.forEach(function (item) {
-            var obj = {};
-            obj.accountId = id
-            obj.companyId = item.value
-            obj.deletable = true
-            Api.post("AdduserCompaniesList", obj)
-        })
-        this.props.history.push({
-            pathname: '/Accounts',
-        })
+      
+            this.state.data.forEach(function (item) {
+                var obj = {};
+                obj.accountId = parseInt(id)
+                obj.companyId = item.value
+              //  obj.deletable = true
+                Api.post("AdduserCompaniesList", obj)
+            })
+        
+   
+    }
+    goBack=()=>{
+        this.props.history.goBack()
     }
     render() {
         return (
 
-            <div className="mainContainer">
+            <div className="mainContainer dropdownMulti">
                 <h3> {Resources['accountsCompaniesPermissions'][currentLanguage]}</h3>
                 {this.state.render === true ?
                     <Fragment>
                         <DropdownMelcous title='UserCompanies' data={this.state.CompaniesData}
                             selectedValue={this.state.CompaniesDefaultData}
                             handleChange={this.CompanieshandleChange} placeholder='UserCompanies' isMulti={true} />
-                        <div className="gridfillter-container">
 
-                            <div className="dropBtn">
-                                <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveCompanies}>
-                                    {Resources['save'][currentLanguage]}</button>
-                            </div>
+                        <div className="dropBtn">
+                            <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
+                            <span className="border" ></span>
+                            <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveCompanies}>
+                                {Resources['save'][currentLanguage]}</button>
                         </div>
                     </Fragment> : null}
             </div>

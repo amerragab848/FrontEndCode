@@ -1412,3 +1412,32 @@ tfoot tr td p{
   background-color: #E9ECF0 !important;
   padding-left: 34px !important;
 }
+.dropBtn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.dropBtn .border {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background-color: #e9ecf0;
+  margin: 0 24px;
+}
+.dropdownMulti .customD_Menu .css-1hwfws3 {
+  max-height: inherit;
+}
+.dropdownMulti .fillter-status.fillter-item-c {
+  display: flex;
+}
+.dropdownMulti .fillter-status.fillter-item-c .spanValidation { 
+  width: 130px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 15px;
+}
+.dropdownMulti .fillter-status.fillter-item-c >div:last-of-type {
+  width: 100%;
+} 
