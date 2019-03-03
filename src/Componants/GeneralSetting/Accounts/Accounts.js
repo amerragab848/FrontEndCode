@@ -322,53 +322,53 @@ class Accounts extends Component {
 
     GetNextData() {
         let pageNumber = this.state.pageNumber + 1;
-    
+
         this.setState({
-          isLoading: true,
-          pageNumber: pageNumber
+            isLoading: true,
+            pageNumber: pageNumber
         });
-        let url = this.state.api + "pageNumber=" + pageNumber+ "&pageSize=" + this.state.pageSize
+        let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
         Api.get(url).then(result => {
-          let oldRows = this.state.rows;
-          const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
-          this.setState({
-            rows: newRows,
-            totalRows: newRows.length,
-            isLoading: false
-          });
-        }) .catch(ex => {
-             let oldRows = this.state.rows;
+            let oldRows = this.state.rows;
+            const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
             this.setState({
-              rows: oldRows,
-              isLoading: false
+                rows: newRows,
+                totalRows: newRows.length,
+                isLoading: false
             });
-          });;
-      }
+        }).catch(ex => {
+            let oldRows = this.state.rows;
+            this.setState({
+                rows: oldRows,
+                isLoading: false
+            });
+        });;
+    }
 
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
         this.setState({
-          isLoading: true,
-          pageNumber: pageNumber
+            isLoading: true,
+            pageNumber: pageNumber
         });
-          let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
-         Api.get(url).then(result => {
-          let oldRows =[];// this.state.rows;
-          const newRows = [...oldRows, ...result]; 
-    
-          this.setState({
-            rows: newRows,
-            totalRows: newRows.length,
-            isLoading: false
-          });
-        }) .catch(ex => {
-             let oldRows = this.state.rows;
+        let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
+        Api.get(url).then(result => {
+            let oldRows = [];// this.state.rows;
+            const newRows = [...oldRows, ...result];
+
             this.setState({
-              rows: oldRows,
-              isLoading: false
+                rows: newRows,
+                totalRows: newRows.length,
+                isLoading: false
             });
-          });;
-      }
+        }).catch(ex => {
+            let oldRows = this.state.rows;
+            this.setState({
+                rows: oldRows,
+                isLoading: false
+            });
+        });;
+    }
 
     hideFilter(value) {
         this.setState({ viewfilter: !this.state.viewfilter });
@@ -553,11 +553,14 @@ class Accounts extends Component {
                     cellClick={this.cellClick}
                     clickHandlerDeleteRows={this.DeleteAccount}
                     getCellActions={this.GetCellActions}
-                    UnSelectIsActiv={this.UnSelectIsActiv} />
-            ) : <LoadingSection />;
+                    UnSelectIsActiv={this.UnSelectIsActiv}
+                    pageSize={this.state.pageSize}
+                />
+            ) : <LoadingSection />
 
+        let Exportcolumns = this.state.columns.filter(s => s.key !== 'BtnActions')
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={Exportcolumns} fileName={this.state.pageTitle} />
             : null;
 
         const ComponantFilter = this.state.isLoading === false ?
@@ -648,17 +651,17 @@ class Accounts extends Component {
 
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
-                            <span>{((this.state.pageNumber - 1) * this.state.pageSize) + 1}</span> - <span>{(this.state.pageNumber) * this.state.pageSize}</span> of
-                            <span> {this.state.totalRows}</span>
+                            <span>0</span> - <span>{this.state.pageSize}</span> of
+                           <span> {this.state.totalRows}</span>
                         </div>
-                
-                        <button className={this.state.pageNumber==0? "rowunActive" : "" }   onClick={() => this.GetPrevoiusData()}>
-                        <i className="angle left icon" />
+
+                        <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+                            <i className="angle left icon" />
                         </button>
-                         <button onClick={() => this.GetNextData()}>
+                        <button onClick={() => this.GetNextData()}>
                             <i className="angle right icon" />
                         </button>
-                       
+
                     </div>
 
                 </div>
