@@ -90,8 +90,6 @@ let routes = (
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
     <Route path="/AddNewCompany" component={AddNewCompany} /> 
     
-<<<<<<< HEAD
-=======
     <Route path="/MonthlyTasksDetails" component={MonthlyTasksDetails} /> 
     <Route path="/MonitorTasks" component={MonitorTasks} /> 
     <Route path="/AddTimeSheet" component={AddTimeSheet} /> 
@@ -99,7 +97,6 @@ let routes = (
     <Route path="/AddLateTimeSheet" component={AddLateTimeSheet} /> 
     <Route path="/OverTime" component={OverTime} /> 
 
->>>>>>> c18230e550cf5907f4fd2cbf45849a1c42906448
 </Switch> 
 );
 
