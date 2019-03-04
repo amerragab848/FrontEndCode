@@ -38,7 +38,8 @@ import TaskAdmin  from './Componants/GeneralSetting/Accounts/TaskAdmin'
 import AccountsEPSPermissions  from './Componants/GeneralSetting/Accounts/AccountsEPSPermissions'
 import TemplatesSettings  from './Componants/GeneralSetting/TemplatesSettings'
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
-   
+import GeneralList  from './Componants/GeneralSetting/MenuDefaultData/GeneralList'
+
 let routes = (
 <Switch>
     <Route exact path="/" component={DashBoard} />,
@@ -80,6 +81,7 @@ let routes = (
     <Route path="/UserProjects" component={UserProjects} /> 
     <Route path="/TaskAdmin" component={TaskAdmin} /> 
     <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
+    <Route path="/GeneralList" component={GeneralList} /> 
     
 </Switch> 
 ); 

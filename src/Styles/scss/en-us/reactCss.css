@@ -1441,3 +1441,12 @@ tfoot tr td p{
 .dropdownMulti .fillter-status.fillter-item-c >div:last-of-type {
   width: 100%;
 } 
+.label__block label {
+  display: block;
+}
+.label__block .inputDev {
+  width: 100%;
+}
+.spanValidation {
+  margin-bottom: 10px;
+}
