@@ -68,7 +68,7 @@ class SendWorkFlow extends Component {
                 index='ddlApproveTo' className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} />
   
                 <div className="dropBtn">
-                    <button className="workFlowDataBtn-1 btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
+                    <button className="workFlowDataBtn-1 primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
                 </div>
             </div>
         );

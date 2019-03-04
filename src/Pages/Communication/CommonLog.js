@@ -79,22 +79,26 @@ class CommonLog extends Component {
      console.log('componentWillUnmount in Letter Componants 0000');
      this._isMounted = false; 
      this.setState({ 
-      isLoading: true ,
+      isLoading: true,
       isCustom:true
      });
   }
     
   componentWillReceiveProps(nextProps,prevState){
 
-     if(nextProps.match !== this.props.match ){ 
-      this._isMounted = false;  
-      this.setState({ 
-          isLoading: true,
-          isCustom:true 
-      });    
- 
-      this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId,true);
- 
+     if(nextProps.match !== this.props.match ) { 
+
+        this._isMounted = false;  
+
+        this.setState({ 
+            isLoading: true,
+            isCustom:true,
+            documentName: nextProps.match.params.document,
+            projectId:nextProps.match.params.projectId
+        });    
+  
+        this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true);
+        console.log(nextProps.match.params.document);
       //this.renderComponent(this.state.documentName,this.state.projectId,nextState.isCustom);
     }
   }
@@ -115,25 +119,27 @@ class CommonLog extends Component {
     return this.state.viewfilter;
   }
  
-  addRecord() {
- 
+  addRecord() { 
     let addView =this.state.routeAddEdit.split("/")[0];
     
     let obj = {
         docId: 0,
-        projectId:this.state.projectId 
+        projectId:this.state.projectId, 
+        projectName: 'row.projectName'
     };
 
+    let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    
     this.props.history.push({
-      pathname:"/"+addView,
-      search: "?id=0&projectId="+ this.state.projectId 
+      pathname:"/" + addView,
+      search: "?id=" + encodedPaylod
     });
   }
 
-  GetPrevoiusData() {
-    
+  GetPrevoiusData() { 
     let pageNumber = this.state.pageNumber - 1;
-    if(pageNumber >= 0 ){
+    if(pageNumber >= 0 ) { 
         this.setState({
           isLoading: true,
           pageNumber: pageNumber
@@ -160,42 +166,44 @@ class CommonLog extends Component {
           });
     }
   }
-
-
+ 
   GetNextData() {
     let pageNumber = this.state.pageNumber + 1;
+    let maxRows=this.state.totalRows;
 
-    this.setState({
-      isLoading: true,
-      pageNumber: pageNumber
-    });
-
-    let url =
-      (this.state.query == "" ? this.state.api : this.state.apiFilter) +
-      "?projectId=" +
-      this.state.projectId +
-      "&pageNumber=" +
-      pageNumber +
-      "&pageSize=" +
-      this.state.pageSize +
-      (this.state.query == "" ? "" : "&query=" + this.state.query);
-
-    Api.get(url).then(result => {
-      let oldRows =[];// this.state.rows;
-      const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
-
-      this.setState({
-        rows: newRows,
-        totalRows: newRows.length,
-        isLoading: false
-      });
-    }) .catch(ex => {
-         let oldRows = this.state.rows;
+    if( ((this.state.pageSize*this.state.pageNumber)) <= maxRows ) {
         this.setState({
-          rows: oldRows,
-          isLoading: false
+          isLoading: true,
+          pageNumber: pageNumber
         });
-      });;
+
+        let url =
+          (this.state.query == "" ? this.state.api : this.state.apiFilter) +
+          "?projectId=" +
+          this.state.projectId +
+          "&pageNumber=" +
+          pageNumber +
+          "&pageSize=" +
+          this.state.pageSize +
+          (this.state.query == "" ? "" : "&query=" + this.state.query);
+
+        Api.get(url).then(result => {
+          let oldRows =[];// this.state.rows;
+          const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+
+          this.setState({
+            rows: newRows,
+            totalRows: newRows.length,
+            isLoading: false
+          });
+        }) .catch(ex => {
+            let oldRows = this.state.rows;
+            this.setState({
+              rows: oldRows,
+              isLoading: false
+            });
+          }); 
+    }
   }
 
   filterMethodMain = (event, query, apiFilter) => {
@@ -348,6 +356,7 @@ class CommonLog extends Component {
     });  
 
     filtersColumns =documentObj.filters;
+
     this.setState( {   
       pageTitle:Resources[documentObj.documentTitle][currentLanguage], 
       docType:documents,
@@ -358,22 +367,22 @@ class CommonLog extends Component {
       columns: cNames,
       filtersColumns: filtersColumns
     });  
+    //getCustom
     
-    this.GetRecordOfLog(documentObj.documentApi.get);
+    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom: documentObj.documentApi.get);
   }
 
   GetRecordOfLog(api) { 
-     
     let url = api + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
-    this.GetLogData(url, "rows");
+    this.GetLogData(url);
   }
 
-  GetLogData(url, currState)  {
+  GetLogData(url)  {
     Api.get(url).then(result => { 
          
         this.setState({
-          rows: result,
-          totalRows: result.length,
+          rows: result.data,
+          totalRows: result.total,
           isLoading: false  
         });
 
@@ -381,8 +390,7 @@ class CommonLog extends Component {
         
       })
       .catch(ex => { 
-         this.setState({isLoading: false}) 
-        
+         this.setState({isLoading: false}) ;
       });
   };
 
@@ -400,7 +408,7 @@ class CommonLog extends Component {
 
   render() {
     
-    const showCheckbox=true;
+    const showCheckbox = true;
 
     const dataGrid = this.state.isLoading === false ? (
         <GridSetup
