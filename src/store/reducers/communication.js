@@ -82,9 +82,8 @@ export default function(state = initialState.app.communication, action) {
                 break;
                 
        case types.NextArrange:
-       let newdoc={ ...state.document ,...action.arrange };
-
-       console.log(newdoc);
+                let newdoc={ ...state.document,...action.arrange };
+                console.log(newdoc);
                 return {
                     ...state,
                     document: { ...state.document ,...action.arrange }
