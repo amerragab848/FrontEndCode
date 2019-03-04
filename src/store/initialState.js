@@ -11,7 +11,8 @@ export default {
 			isLoading: false,
 			isLoadingFiles: false,
 			file:{},
-			showModal:false
+			showModal:false,
+			arrange:0
     	}
 	}
 }

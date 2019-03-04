@@ -21,4 +21,12 @@ export default class Dataservice {
 			return result;
         }).catch(ex =>  {});
     };
+
+    static GetNextArrangeMainDocument = (url) => {
+     let Data =0
+     return   Api.get(url).then(result => {
+            
+			return result;
+        }).catch(ex =>  Data);
+    };
 }

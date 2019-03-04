@@ -27,12 +27,13 @@ class DropdownMelcous extends Component {
                     <div className="customD_Menu" style={{ outline: "none" }}>
                         <Select key={this.props.index} ref={this.props.index}
                             name="form-field-name"
-                            value={this.props.selectedValue} 
+                            //value={this.props.selectedValue} 
                             onChange={this.props.handleChange}
                             options={this.props.data}
                             placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
                             isSearchable="true"
-                            defaultValue={this.props.selectedValue}
+                            defaultValue= {this.props.isMulti ? this.props.selectedValue : this.props.value}
+                            value={ this.props.isMulti ? this.props.value : this.props.selectedValue}
                             isMulti={this.props.isMulti}
                             onBlur={this.props.onblur}
                         />
