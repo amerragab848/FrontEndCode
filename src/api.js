@@ -11,6 +11,7 @@ export default class Api {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'dataType': 'json',
+            'isNewVersion': 'true',
             'Lang': localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'),
             'Authorization': localStorage.getItem('userToken')
         }

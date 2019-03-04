@@ -6,16 +6,28 @@ let currentLanguage =
  export default class NotifiMsg extends Component {
     constructor(props) {
       super(props);
+      
+      this.state = { 
+        statusClass: "disNone",
+        animationBlock: "animationBlock"
+      }
 
     }
+    
+    componentWillReceiveProps(nextProps, prevProps) {
+      if (nextProps.showNotify != nextProps.showNotify) {
+        this.setState({
+          animationBlock: "disNone"
+      });
+      }
+  };
 
     render() {
        
       return (
-          <div className={this.props.statusClass}>
-        <div className={this.props.IsSuccess === "true" ? "notfiSuccess notifiActionsContainer" : "notifiError notifiActionsContainer" }>
-            <span className="notfiSpan">{this.props.Msg}</span>
-            {/* <a href="" className="notifiActionBtn">DISMISS</a> */}
+          <div className={this.props.showNotify === true ? this.state.animationBlock : this.state.statusClass}>
+        <div className={this.props.IsSuccess === true ? "notfiSuccess notifiActionsContainer" : "notifiError notifiActionsContainer" }>
+            <span className="notfiSpan">{this.props.Msg}</span> 
         </div> 
         </div>
       )   
