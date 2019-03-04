@@ -1416,7 +1416,6 @@ tfoot tr td p{
 .dropdownMulti .fillter-status.fillter-item-c >div:last-of-type {
   width: 100%;
 } 
-<<<<<<< HEAD
 .label__block label {
   display: block;
 }
@@ -1425,16 +1424,8 @@ tfoot tr td p{
 }
 .spanValidation {
   margin-bottom: 10px;
-=======
 
-
-
-
-
-
-
-
-
+}
 /* noTabs */ 
 .noTabs__document .submittalHead {
   justify-content: center;
@@ -1669,5 +1660,4 @@ tfoot tr td p{
   text-decoration: underline;
   margin-left: 15px;
   cursor: pointer;
->>>>>>> 169fa22b4a73f6cf259b4dce3c53728fadaf176f
 }

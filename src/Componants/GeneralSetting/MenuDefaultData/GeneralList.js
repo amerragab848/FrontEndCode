@@ -7,7 +7,7 @@ import NotifiMsg from '../../publicComponants/NotifiMsg'
 import Export from "../../../Componants/OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import Select from '../../OptionsPanels/DropdownMelcous';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import config from "../../../Services/Config";
 import * as Yup from 'yup';
 import dataservice from "../../../Dataservice";
@@ -18,19 +18,17 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 
 const ValidtionSchema = Yup.object().shape({
     ARTitle: Yup.string()
-        .required('Required'),
-
+        .required(Resources['titleArValid'][currentLanguage]),
     Abbreviation: Yup.string()
-        .required('Required'),
+        .required(Resources['abbreviationValid'][currentLanguage]),
 
 });
 
 const validationEdit = Yup.object().shape({
     ARTitleForEdit: Yup.string()
-        .required('Required'),
-
+        .required(Resources['titleArValid'][currentLanguage]),
     AbbreviationForEdit: Yup.string()
-        .required('Required'),
+        .required(Resources['abbreviationValid'][currentLanguage]),
 });
 
 class GeneralList extends Component {
@@ -66,15 +64,66 @@ class GeneralList extends Component {
             totalRows: 0,
             pageSize: 50,
             pageNumber: 0,
-            pageTitle: Resources['accounts'][currentLanguage],
             showDeleteModal: false,
             listType: '',
             ShowPopup: false,
             EditListData: {},
             IsEdit: false,
-            selectedrow: ''
-
+            selectedrow: '',
+            showNotify: false,
+            api: 'GetAccountsDefaultList?',
+            showNotifyError: false ,
+            showNotifyPermissions:false
         }
+    }
+
+    GetNextData() {
+        let pageNumber = this.state.pageNumber + 1;
+        this.setState({
+            isLoading: true,
+            pageNumber: pageNumber
+        });
+        let url = this.state.api + "listType=" + this.state.listType + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+        Api.get(url).then(result => {
+            let oldRows = this.state.rows;
+            const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+            this.setState({
+                rows: newRows,
+                totalRows: newRows.length,
+                isLoading: false
+            });
+        }).catch(ex => {
+            let oldRows = this.state.rows;
+            this.setState({
+                rows: oldRows,
+                isLoading: false
+            });
+        });;
+    }
+
+    GetPrevoiusData() {
+        let pageNumber = this.state.pageNumber - 1;
+        this.setState({
+            isLoading: true,
+            pageNumber: pageNumber
+        });
+        let url = this.state.api + "listType=" + this.state.listType + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+        Api.get(url).then(result => {
+            let oldRows = [];// this.state.rows;
+            const newRows = [...oldRows, ...result];
+
+            this.setState({
+                rows: newRows,
+                totalRows: newRows.length,
+                isLoading: false
+            });
+        }).catch(ex => {
+            let oldRows = this.state.rows;
+            this.setState({
+                rows: oldRows,
+                isLoading: false
+            });
+        });;
     }
 
     componentWillMount = () => {
@@ -112,6 +161,16 @@ class GeneralList extends Component {
                 showDeleteModal: true
             })
         }
+        else {
+            setTimeout(() => {
+                this.setState({
+                    showNotifyError: true,
+                })
+            }, 500);
+            this.setState({
+                showNotifyError: false,
+            })
+        }
     }
 
     ConfirmDelete = () => {
@@ -130,10 +189,21 @@ class GeneralList extends Component {
                     showDeleteModal: false,
                     isLoading: false,
                 })
+                setTimeout(() => {
+                    this.setState({
+                        showNotify: true,
+                    })
+                }, 500);
             }
-        )
+        ).catch(ex => {
+            this.setState({
+                isLoading: true,
+                showNotify: false,
+            })
+        });
         this.setState({
-            isLoading: true
+            isLoading: true,
+            showNotify: false,
         })
 
     }
@@ -151,7 +221,7 @@ class GeneralList extends Component {
             isLoading: true,
             listType: e.value
         })
-        Api.get('GetAccountsDefaultList?listType=' + e.value + '&pageNumber=0&pageSize=200').then(
+        Api.get('GetAccountsDefaultList?listType=' + e.value + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '').then(
             res => {
                 this.setState({
                     rows: res,
@@ -178,6 +248,28 @@ class GeneralList extends Component {
                     }
                 )
             }
+
+            else {
+                setTimeout(() => {
+                    this.setState({
+                        showNotifyError: true,
+                    })
+                }, 500);
+                this.setState({
+                    showNotifyError: false,
+                })
+
+            }
+        }
+        else{
+            setTimeout(() => {
+                this.setState({
+                    showNotifyPermissions: true,
+                })
+            }, 500);
+            this.setState({
+                showNotifyPermissions: false,
+            })
         }
     }
 
@@ -193,13 +285,18 @@ class GeneralList extends Component {
                     onRowClick={this.cellClick.bind(this)}
                 />
             ) : <LoadingSection />
+
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []}
                 columns={this.state.columns} fileName={Resources['AccountsDefaultList'][currentLanguage]} />
             : null;
-        return (
 
+        return (
             <Fragment >
+
+                <NotifiMsg showNotify={this.state.showNotify} IsSuccess={true} Msg={Resources['successAlert'][currentLanguage]} />
+                <NotifiMsg showNotify={this.state.showNotifyError} IsSuccess={false} Msg={Resources['adminItemEditable'][currentLanguage]} />
+                <NotifiMsg showNotify={this.state.showNotifyPermissions} IsSuccess={false} Msg={Resources['missingPermissions'][currentLanguage]} />
 
                 <div className="linebylineInput valid-input">
                     <Select title='AccountsDefaultList' placeholder='AccountsDefaultList' data={this.state.GeneralList} handleChange={this.GeneralListHandelChange} />
@@ -231,16 +328,19 @@ class GeneralList extends Component {
 
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
-                            <span>0</span> - <span>{this.state.pageSize}</span> of
-                   <span>{this.state.totalRows}</span>
+                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
+               <span> {this.state.totalRows}</span>
                         </div>
-                        <button className="rowunActive">
+
+                        <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                             <i className="angle left icon" />
                         </button>
-                        <button onClick={() => this.GetNextData()}>
+
+                        <button className={this.state.totalRows !== (this.state.pageSize * this.state.pageNumber) + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
                             <i className="angle right icon" />
                         </button>
                     </div>
+
                 </div>
 
                 <div className="grid-container">
@@ -260,23 +360,29 @@ class GeneralList extends Component {
                                 this.setState({
                                     isLoading: true,
                                 })
-                                {
-
-                                    Api.post('EditAccountsDefaultList', this.state.EditListData).then(
-                                        res => {
-                                            this.setState({
-                                                rows: res,
-                                                isLoading: false,
-                                                IsEdit: false
-                                            })
-                                        }
-                                    )
+                                Api.post('EditAccountsDefaultList', this.state.EditListData).then(
+                                    res => {
+                                        this.setState({
+                                            rows: res,
+                                            isLoading: false,
+                                            IsEdit: false
+                                        })
+                                    }
+                                )
+                                this.setState({
+                                    isLoading: true,
+                                    ShowPopup: false,
+                                    IsEdit: false
+                                })
+                                setTimeout(() => {
                                     this.setState({
-                                        isLoading: true,
-                                        ShowPopup: false,
-                                        IsEdit: false
+                                        showNotify: true,
                                     })
-                                }
+                                }, 500);
+                                this.setState({
+                                    showNotify: false,
+                                })
+
                             }} >
 
                             {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
@@ -371,6 +477,14 @@ class GeneralList extends Component {
                                 this.setState({
                                     isLoading: true,
                                     ShowPopup: false
+                                })
+                                setTimeout(() => {
+                                    this.setState({
+                                        showNotify: true,
+                                    })
+                                }, 500);
+                                this.setState({
+                                    showNotify: false,
                                 })
                             }} >
 

@@ -4,6 +4,7 @@ import Accounts from './Accounts/Accounts'
 import Companies from './Companies/Index';
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import config from "../../Services/Config";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -57,16 +58,25 @@ class TemplatesSettings extends Component {
             
                         <div className="setting-tabs-contant">
 
+                        {(config.IsAllow(794)) ?
                             <TabPanel>
                                 <Accounts />
                             </TabPanel>
-
+                            :null}
+                            
+                              {(config.IsAllow(1001105)) ?
                             <TabPanel>
                                 <Companies />
                             </TabPanel>
+                            :null}
+
+
+                            {(config.IsAllow(1179)) ?
                             <TabPanel>
                                 <GeneralList />
                             </TabPanel>
+
+                            :null}
                         </div>
                     </Tabs> 
 
