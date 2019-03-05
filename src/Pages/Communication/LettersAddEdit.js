@@ -33,6 +33,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
+let isApproveMode = 0;
 const _ = require('lodash')
 class LettersAddEdit extends Component {
         
@@ -50,6 +51,7 @@ class LettersAddEdit extends Component {
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
+                    isApproveMode=obj.isApproveMode;
                 }
                 catch{
                     this.props.history.goBack();
@@ -59,9 +61,10 @@ class LettersAddEdit extends Component {
         }
 
         this.state = {
+            isViewMode: false,
+            isApproveMode: isApproveMode,
             addComplete: false, 
-            isView: false,
-            hasWorkFlow: false,
+            isView: false, 
             docId: docId,
             docTypeId: 19,
             projectId: projectId,
@@ -72,8 +75,8 @@ class LettersAddEdit extends Component {
             discplines: [],
             letters: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 }],
+                        { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
+                        { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -92,15 +95,53 @@ class LettersAddEdit extends Component {
     componentDidMount() {
         //componentWillUnmount
         // alert('in lettersAddEdit page componentDidMount');
+        this.checkDocumentIsView();
     };
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
-            this.setState({ document: nextProps.document });
+        if (nextProps.document && nextProps.document.id && (nextProps.changeStatus!= prevProps.changeStatus) && (nextProps.hasWorkflow != prevProps.hasWorkflow)) {
+            this.setState({ 
+                document: nextProps.document,
+                hasWorkflow: nextProps.hasWorkflow
+             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            // alert(nextProps.hasWorkflow);
+            // alert(this.props.hasWorkflow);
+            this.checkDocumentIsView();
         }
     };
      
+    checkDocumentIsView(){
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(49))) {
+                //$('#letterEditForm fieldset').prop('disabled', 'disabled');
+                this.setState({ isViewMode: true }); 
+            }
+
+            //if not approval mode 
+            //check current document ssent on workflow or no & check have edit permission
+            if (this.state.isApproveMode == false && Config.IsAllow(49)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
+                    if (this.props.document.status == true && Config.IsAllow(49)) {
+                        this.setState({ isViewMode: false }); 
+                         
+                        //$('#letterEditForm fieldset').prop('disabled', false);
+                    } else {
+                        this.setState({ isViewMode: true }); 
+
+                       // $('#letterEditForm fieldset').prop('disabled', 'disabled');
+                    } 
+                } else {
+                    this.setState({ isViewMode: true }); 
+                    // $('#letterEditForm fieldset').prop('disabled', 'disabled');
+                }
+            }
+        }
+        else { 
+            this.setState({ isViewMode: false }); 
+        }
+    }
+
     componentWillMount() {
         //this.props.actions.documentForAdding(letter);  
 
@@ -129,8 +170,7 @@ class LettersAddEdit extends Component {
                 sharedSettings: '',
                 message: RichTextEditor.createEmptyValue()
             };
-           
-
+            
             this.setState({ document: letter });
             this.fillDropDowns(false);
         }
@@ -323,14 +363,7 @@ class LettersAddEdit extends Component {
             this.setState({
                 isLoading: true,
                 addComplete:true
-            });
-            
-            setTimeout(() => {
-                this.setState({
-                    addComplete: false
-                });
-            }, 3000); 
-
+            }); 
             this.props.history.push({
                 pathname: "/letters/" + this.state.projectId
             });
@@ -627,6 +660,7 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
+        hasWorkflow: state.communication.hasWorkflow
     }
 }
 

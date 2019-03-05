@@ -1,6 +1,8 @@
 import * as types from './types';
 import Api from '../../api';
 
+const _ = require('lodash')
+
 export function documentForEdit(urlAction) {
     return (dispatch, getState) => { 
         return Api.get(urlAction).then(resp => { 
@@ -17,7 +19,7 @@ export function documentForEdit(urlAction) {
             });
         });
     }
-}
+} 
 
 export function documentForAdding(doc) {
     return (dispatch, getState) => { 
@@ -27,6 +29,7 @@ export function documentForAdding(doc) {
             });
     }
 }
+
 export function GetUploadedFiles(urlAction) {
     return (dispatch, getState) => { 
        
@@ -54,6 +57,7 @@ export function deleteFile(file) {
             });
     }
 }
+
 export function uploadFile(BlobUpload,formData,header) {
     return (dispatch, getState) => { 
         return Api.postFile(BlobUpload,formData,header).then(resp => { 
@@ -120,3 +124,63 @@ export function GetNextArrange(urlAction) {
         });
     }
 }
+
+export function GetWorkFlowCycles(urlAction) {
+    return (dispatch, getState) => { 
+       
+        return Api.get(urlAction).then(resp => { 
+            
+          let result=  BuildWorkFlowCycleStracture(resp);
+            //alert(result.hasWorkFlow);
+           dispatch({
+                    type: types.Cycles_WorkFlow,
+                    workFlowCycles: result.cycles,
+                    hasWorkflow: result.hasWorkFlow
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                    type: types.Cycles_WorkFlow,
+                    workFlowCycles: [],
+                    hasWorkflow: false
+            });
+        });
+    }
+}
+
+function BuildWorkFlowCycleStracture(result) {
+    let levels = [];
+    let cycles = [];
+    
+    let workFlowCycles = _.uniqBy(result, 'subject');
+    const poolLevels = _.orderBy(result, ['arrange'], 'asc');
+    let returnObj={};
+
+    let hasWorkFlow=  poolLevels.filter((t) => t.statusVal == null).length > 0 ? true: false;
+
+    returnObj.hasWorkFlow = hasWorkFlow;
+
+    workFlowCycles.forEach(function (item) {
+        var obj = {};
+
+        obj.subject = item.subject;
+        obj.creationDate=item.creationDate;
+
+        obj.accountDocWorkFlowId = item.accountDocWorkFlowId;
+
+        //all levels in same subject
+        levels = _.filter(poolLevels, function (i) {
+            return i.accountDocWorkFlowId === item.accountDocWorkFlowId;
+        });
+
+        obj.levels = levels;
+
+        let maxArrange=_.maxBy(levels,'arrange');
+            
+        obj.currentLevel= maxArrange.arrange;
+        cycles.push(obj);
+    });
+    
+    returnObj.cycles=cycles;
+    return returnObj;
+}; 

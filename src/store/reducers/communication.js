@@ -14,7 +14,7 @@ export default function(state = initialState.app.communication, action) {
                     document: action.document, 
                     changeStatus: true
                 };
-                break;
+                 
  
         case types.Document_Adding: 
                 return {
@@ -22,7 +22,7 @@ export default function(state = initialState.app.communication, action) {
                     document: action.document, 
                     changeStatus: false
                 };
-                break;
+                 
 
         case types.Document_Add:
                 return {
@@ -30,7 +30,7 @@ export default function(state = initialState.app.communication, action) {
                     document: action.document,
                     changeStatus: false
                 }; 
-                break;
+                 
             
         case types.File_Upload: 
                 return {
@@ -38,7 +38,7 @@ export default function(state = initialState.app.communication, action) {
                     files: [...state.files, action.file],
                     isLoadingFiles: true
                 };
-                break;
+                 
 
         case types.Delete_File: 
 
@@ -49,9 +49,9 @@ export default function(state = initialState.app.communication, action) {
                 }
                 return {
                     ...state,
-                    files: files//[...state.files, action.file] 
+                    files: files 
                 };
-                break;
+                 
 
         case types.Get_Files:
                 return {
@@ -59,41 +59,50 @@ export default function(state = initialState.app.communication, action) {
                     files: [...state.files, ...action.files],
                     isLoadingFiles: true
                 };
-                break;
-
+                 
+  
+        case types.Cycles_WorkFlow:
+                
+                return {
+                    ...state,
+                    workFlowCycles: action.workFlowCycles,
+                    hasWorkflow: action.hasWorkflow
+                };  
+                 
+ 
        case types.Send_WorkFlow:
                 return {
                     ...state,
                     cycles: action.cycles
                 }; 
-                break;
+                 
 
        case types.SendByEmail:
                 return {
                     ...state,
                     showModal: action.showModal
                 }; 
-                break;
+                 
        case types.Update_Field:
                 return {
                     ...state,
                     document: action.document 
                 }; 
-                break;
+                 
                 
        case types.NextArrange:
                 let newdoc={ ...state.document,...action.arrange };
-                console.log(newdoc);
+                 
                 return {
                     ...state,
                     document: { ...state.document ,...action.arrange }
                 }; 
-                break;
+                 
        
         default: 
             return {
                 ...state
             };
-                break;
+                 
     }
 }
