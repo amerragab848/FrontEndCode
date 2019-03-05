@@ -548,6 +548,11 @@ table edition
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  position: relative;
+  z-index: 999999;
+}
+.skylight-wrapper .skylight-close-button {
+  top: 10px !important;
 }
 .ReactTable .rt-tbody {
     flex: 99999 1 auto;
