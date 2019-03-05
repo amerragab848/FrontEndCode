@@ -76,7 +76,8 @@ class LettersAddEdit extends Component {
             letters: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
                         { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-                        { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 }],
+                        { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
+                        { name: 'viewAttachments', code: 3317 },{ name: 'deleteAttachments', code: 840 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -87,53 +88,53 @@ class LettersAddEdit extends Component {
         }
         
         if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
-            this.props.history.push({
-                pathname: "/Letters/"+projectId 
-            });
+            //alert('Dont have Permissions');
+            // this.props.history.push({
+            //     pathname: "/Letters/"+projectId 
+            // });
+            this.props.history.goBack();
         }
     }
     componentDidMount() {
         //componentWillUnmount
         // alert('in lettersAddEdit page componentDidMount');
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+           if ((i+1)%2 == 0) {
+            links[i].classList.add('even');
+           }
+           else {
+            links[i].classList.add('odd');
+           }
+        }
         this.checkDocumentIsView();
     };
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id && (nextProps.changeStatus!= prevProps.changeStatus) && (nextProps.hasWorkflow != prevProps.hasWorkflow)) {
+        if (nextProps.document && nextProps.document.id ) {//&& (nextProps.changeStatus!= prevProps.changeStatus) ){//&& (nextProps.hasWorkflow != prevProps.hasWorkflow)) {
             this.setState({ 
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow
              });
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            // alert(nextProps.hasWorkflow);
-            // alert(this.props.hasWorkflow);
+            //this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
     };
      
     checkDocumentIsView(){
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(49))) {
-                //$('#letterEditForm fieldset').prop('disabled', 'disabled');
+            if (!(Config.IsAllow(49))) { 
                 this.setState({ isViewMode: true }); 
-            }
-
-            //if not approval mode 
-            //check current document ssent on workflow or no & check have edit permission
-            if (this.state.isApproveMode == false && Config.IsAllow(49)) {
+            } 
+            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
                     if (this.props.document.status == true && Config.IsAllow(49)) {
-                        this.setState({ isViewMode: false }); 
-                         
-                        //$('#letterEditForm fieldset').prop('disabled', false);
+                        this.setState({ isViewMode: false });  
                     } else {
-                        this.setState({ isViewMode: true }); 
-
-                       // $('#letterEditForm fieldset').prop('disabled', 'disabled');
+                        this.setState({ isViewMode: true });  
                     } 
                 } else {
-                    this.setState({ isViewMode: true }); 
-                    // $('#letterEditForm fieldset').prop('disabled', 'disabled');
+                    this.setState({ isViewMode: true });  
                 }
             }
         }
@@ -142,9 +143,7 @@ class LettersAddEdit extends Component {
         }
     }
 
-    componentWillMount() {
-        //this.props.actions.documentForAdding(letter);  
-
+    componentWillMount() { 
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
@@ -365,7 +364,7 @@ class LettersAddEdit extends Component {
                 addComplete:true
             }); 
             this.props.history.push({
-                pathname: "/letters/" + this.state.projectId
+                pathname: "/Letters/" + this.state.projectId
             });
         });
     }
@@ -401,8 +400,16 @@ class LettersAddEdit extends Component {
         }
         return btn;
     }
-    render() {
-
+    viewAttachments(){
+       return (
+           this.state.docId > 0 ? (
+            Config.IsAllow(3317) === true ? 
+                <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840}  />
+                :null )
+            : null
+        )
+    }
+    render() {  
         return (
             <div className="mainContainer">
                 {
@@ -410,7 +417,7 @@ class LettersAddEdit extends Component {
                         <NotifiMsg showNotify={this.state.addComplete} IsSuccess={true} Msg={Resources['smartSentAccountingMessage'][currentLanguage].successTitle} /> :
                         null
                 }
-                <div className="documents-stepper noTabs__document">
+                <div className= { this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
                         <h2 className="zero">{Resources.lettertitle[currentLanguage]}
@@ -482,7 +489,7 @@ class LettersAddEdit extends Component {
                                                                 <div className="inputDev ui input input-group date NormalInputDate">
                                                                     <ModernDatepicker
                                                                         date={this.state.document.docDate}
-                                                                        format={'DD/MM/YYYY'}
+                                                                        format={'DD-MM-YYYY'}
                                                                         showBorder
                                                                         onChange={e => this.handleChangeDate(e, 'docDate')}
                                                                         placeholder={'Select a date'}
@@ -609,10 +616,7 @@ class LettersAddEdit extends Component {
                                                 <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                 : null
                                             }
-                                            {this.state.docId > 0 ?
-                                                <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            {this.viewAttachments()}
 
                                             {this.props.changeStatus === true ?
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -631,7 +635,7 @@ class LettersAddEdit extends Component {
                                 <div className="approveDocument">
                                     <h2 className="zero">ACTIONS</h2>
                                     <div className="approveDocumentBTNS">
-                                        <button className="primaryBtn-1 btn middle__btn" onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
+                                        <button className= { this.state.isViewMode === true ?  "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn" }onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
                                             <button className="primaryBtn-1 btn ">APPROVE</button>
                                             : null

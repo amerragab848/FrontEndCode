@@ -4,9 +4,7 @@ import * as types from '../../store/actions/types';
 import initialState from '../initialState';
 
 export default function(state = initialState.app.communication, action) {
-     
-    let com_state =  {};
-
+    //let com_state =  {};
     switch (action.type) {
         case types.Document_for_Edit: 
                 return {
@@ -14,8 +12,7 @@ export default function(state = initialState.app.communication, action) {
                     document: action.document, 
                     changeStatus: true
                 };
-                 
- 
+                  
         case types.Document_Adding: 
                 return {
                     ...state,
@@ -23,7 +20,6 @@ export default function(state = initialState.app.communication, action) {
                     changeStatus: false
                 };
                  
-
         case types.Document_Add:
                 return {
                     ...state,
@@ -31,17 +27,14 @@ export default function(state = initialState.app.communication, action) {
                     changeStatus: false
                 }; 
                  
-            
         case types.File_Upload: 
                 return {
                     ...state,
                     files: [...state.files, action.file],
                     isLoadingFiles: true
                 };
-                 
-
+                  
         case types.Delete_File: 
-
                 let files=[...state.files];
                 let index = files.indexOf(action.file);
                 if (index !== -1) {
@@ -52,17 +45,14 @@ export default function(state = initialState.app.communication, action) {
                     files: files 
                 };
                  
-
         case types.Get_Files:
                 return {
                     ...state,
                     files: [...state.files, ...action.files],
                     isLoadingFiles: true
                 };
-                 
-  
+                  
         case types.Cycles_WorkFlow:
-                
                 return {
                     ...state,
                     workFlowCycles: action.workFlowCycles,
@@ -76,7 +66,6 @@ export default function(state = initialState.app.communication, action) {
                     cycles: action.cycles
                 }; 
                  
-
        case types.SendByEmail:
                 return {
                     ...state,
@@ -88,17 +77,13 @@ export default function(state = initialState.app.communication, action) {
                     ...state,
                     document: action.document 
                 }; 
-                 
-                
-       case types.NextArrange:
-                let newdoc={ ...state.document,...action.arrange };
-                 
+                  
+       case types.NextArrange: 
                 return {
                     ...state,
                     document: { ...state.document ,...action.arrange }
                 }; 
-                 
-       
+                  
         default: 
             return {
                 ...state

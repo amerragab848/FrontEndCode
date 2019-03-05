@@ -49,12 +49,19 @@ export function GetUploadedFiles(urlAction) {
     }
 }
 
-export function deleteFile(file) {
-    return (dispatch, getState) => {  
-           dispatch({
+export function deleteFile(urlDelete,file) { 
+    return (dispatch, getState) => { 
+        return Api.post(urlDelete).then(resp => {  
+            dispatch({
                     type: types.Delete_File,
                     file: file
             });
+        }).catch((ex) => {
+            dispatch({
+                    type: types.Delete_File,
+                    file: file
+            });
+        });
     }
 }
 
