@@ -31,11 +31,12 @@ class ApprovedWidget extends Component {
 
   onOpenModal = (action, value) => {
     if (value > 0) {
+      //DistributionInboxListSummaryDetails?id=0&action="
       let arr = this.props.props.route;
       if (arr.length === 1) {
         let arr = this.props.props.route[0].split("?");
         let url = arr[0];
-        let param = arr[1];
+        let param = arr[1]; //id=0&action=
 
         this.props.history.push({
           pathname: url,
@@ -129,13 +130,10 @@ class ApprovedWidget extends Component {
               <div className="first">
                 <span
                   className="mediumModal"
-                  onClick={() =>
-                    this.onOpenModal(normal.action, normal[this.props.value])
-                  }
-                >
-                  {normal ? normal[this.props.value] : 0}
+                  onClick={() => this.onOpenModal(normal.action, normal[this.props.value]) } >
+                  {normal ? normal[this.props.value] : 0} 
                 </span>
-                {normal ? language[normal[this.props.text]][currentLanguage]: ""}
+                {normal ? " "+language[normal[this.props.text]][currentLanguage]: ""}
               </div>
               <div>
                 <span
@@ -146,7 +144,7 @@ class ApprovedWidget extends Component {
                 >
                   {low ? low[this.props.value] : ""}
                 </span>
-                {low ? language[low[this.props.text]][currentLanguage] : ""}
+                {low ? " "+language[low[this.props.text]][currentLanguage] : ""}
               </div>
             </div>
           </div>

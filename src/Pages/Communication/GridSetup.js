@@ -133,10 +133,25 @@ class GridSetup extends Component {
   };
 
   onRowsSelected = rows => {
+
+    if (this.props.IsActiv !== undefined) {
+      let Id = '';
+      Id = rows.map(r => r.row.id);
+      this.props.IsActiv(Id)
+    }
+
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
+   
 
-    if (rows.length > 1) {
+    if (this.props.single == true) {
+      prevRows = [];
+      prevRowsId = [];
+      prevRows.push(rows[0].rowIdx);
+      prevRowsId.push(rows[0].row.id);
+    }
+
+   else if (rows.length > 1) {
       prevRows = [];
       prevRowsId = [];
       prevRows = rows.map(r => r.rowIdx);
@@ -160,6 +175,10 @@ class GridSetup extends Component {
   };
 
   onRowsDeselected = rows => {
+    if (this.props.IsActiv !== undefined) {
+      this.props.UnSelectIsActiv()
+    }
+
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -222,12 +241,15 @@ class GridSetup extends Component {
     this.props.clickHandlerDeleteRows(this.state.selectedRows);
   };
 
-
-
   onCellSelected = ({ rowIdx, idx }) => {
     if (this.props.cellClick)
       this.props.cellClick(rowIdx, idx)
+  };
 
+  onselectRowEven = ({ selectedRows }) => {
+    if (this.props.onselectRowEven)
+      this.props.onselectRowEven(selectedRows)
+    console.log('onselectRowEven', selectedRows)
   };
 
   render() {
@@ -287,6 +309,7 @@ class GridSetup extends Component {
           rowsCount={groupedRows.length}
           enableCellSelect={true}
           onCellSelected={this.onCellSelected}
+
           onColumnResize={(idx, width, event) => {
             //console.log(this.state.columns[idx-1]);
             // console.log(`Column ${idx} has been resized to ${width}`);
@@ -314,10 +337,12 @@ class GridSetup extends Component {
             enableShiftSelect: true,
             onRowsSelected: this.onRowsSelected,
             onRowsDeselected: this.onRowsDeselected,
+            enableRowSelect: 'single',
             selectBy: {
               indexes: this.state.selectedIndexes
             }
           }}
+
           onRowClick={(index, value) => this.onRowClick(index, value)}
           onAddFilter={filter =>
             this.setState({ setFilters: this.handleFilterChange(filter) })
@@ -326,6 +351,7 @@ class GridSetup extends Component {
           getValidFilterValues={columnKey =>
             this.getValidFilterValues(this.state.rows, columnKey)
           }
+          getCellActions={this.props.getCellActions}
         />
       </DraggableContainer>
     );

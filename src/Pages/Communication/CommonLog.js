@@ -11,6 +11,8 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import documentDefenition from "../../documentDefenition.json";
 import Resources from "../../resources.json"; 
 
+import { withRouter } from "react-router-dom";
+
 import MinimizeV from '../../Styles/images/table1.png'
 import MinimizeH from '../../Styles/images/table2.png'
 // import MinimizeVBlue from '../../Styles/images/table1Blue.png'
@@ -19,6 +21,7 @@ import MinimizeH from '../../Styles/images/table2.png'
 import MinimizeVBlue from '../../Styles/images/table1.png'
 import MinimizeHBlue from '../../Styles/images/table2.png'
 
+import CryptoJS from 'crypto-js';
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -34,10 +37,8 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-class Letter extends Component { 
-  _isMounted = false;
-  
-
+class CommonLog extends Component { 
+  _isMounted = false; 
 
   constructor(props) {
     super(props); 
@@ -45,15 +46,15 @@ class Letter extends Component {
     this.state = {
       isLoading: true,
       pageTitle: "",
-      viewfilter: true,
+      viewfilter: false,
       projectId: props.match.params.projectId,
-      documentName:props.match.params.document,
+      documentName:props.match.params.document, 
       filtersColumns: [],
       docType: "" ,
       rows: [],
       totalRows: 0,
       columns: [],
-      pageSize: 22,
+      pageSize: 50,
       pageNumber: 0, 
       apiFilter: "",
       api: "",
@@ -70,8 +71,7 @@ class Letter extends Component {
   }
  
   componentDidMount() {   
-   console.log('componentDidMount in Letter Componants 0000');
-   this.renderComponent(this.state.documentName,this.state.projectId);
+   this.renderComponent(this.state.documentName,this.state.projectId,!this.state.minimizeClick);
                          
   }
  
@@ -79,19 +79,23 @@ class Letter extends Component {
      console.log('componentWillUnmount in Letter Componants 0000');
      this._isMounted = false; 
      this.setState({ 
-      isLoading: true 
+      isLoading: true ,
+      isCustom:true
      });
   }
     
-  componentWillReceiveProps(nextProps){
-    if(nextProps.match !== this.props.match){ 
+  componentWillReceiveProps(nextProps,prevState){
+
+     if(nextProps.match !== this.props.match ){ 
       this._isMounted = false;  
       this.setState({ 
-          isLoading: true 
-      });  
-      console.log('componentWillReceiveProps in Letter Componants 0000'); 
-      this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId);
+          isLoading: true,
+          isCustom:true 
+      });    
  
+      this.renderComponent(nextProps.match.params.document,nextProps.match.params.projectId,true);
+ 
+      //this.renderComponent(this.state.documentName,this.state.projectId,nextState.isCustom);
     }
   }
   
@@ -112,8 +116,49 @@ class Letter extends Component {
   }
  
   addRecord() {
-    alert("under Construction function....");
+ 
+    let addView =this.state.routeAddEdit.split("/")[0];
+    
+    let obj = {
+        docId: 0,
+        projectId:this.state.projectId 
+    };
+
+    this.props.history.push({
+      pathname:"/"+addView,
+      search: "?id=0&projectId="+ this.state.projectId 
+    });
   }
+
+  GetPrevoiusData() {
+    let pageNumber = this.state.pageNumber - 1;
+
+    this.setState({
+      isLoading: true,
+      pageNumber: pageNumber
+    });
+
+    let url =(this.state.query == "" ? this.state.api : this.state.apiFilter) +"?projectId=" +this.state.projectId +"&pageNumber=" + pageNumber +
+      "&pageSize=" + this.state.pageSize +(this.state.query == "" ? "" : "&query=" + this.state.query);
+
+    Api.get(url).then(result => {
+      let oldRows =[];// this.state.rows;
+      const newRows = [...oldRows, ...result]; 
+
+      this.setState({
+        rows: newRows,
+        totalRows: newRows.length,
+        isLoading: false
+      });
+    }) .catch(ex => {
+         let oldRows = this.state.rows;
+        this.setState({
+          rows: oldRows,
+          isLoading: false
+        });
+      });;
+  }
+
 
   GetNextData() {
     let pageNumber = this.state.pageNumber + 1;
@@ -238,8 +283,8 @@ class Letter extends Component {
     console.log("000001");
   };
 
-  renderComponent(documentName,projectId){
-     
+  renderComponent(documentName,projectId, isCustom){
+    console.log('renderComponent',isCustom);
     var projectId = projectId;
 
     var documents = documentName;
@@ -250,8 +295,15 @@ class Letter extends Component {
       let doc_view = "";
       let subject = "";
       if (row) {
-        doc_view ="/"+
-        documentObj.documentAddEditLink + row.id + "/" + row.projectId + "/" + row.projectName;
+        //doc_view ="/"+ documentObj.documentAddEditLink + row.id + "/" + row.projectId + "/" + row.projectName;
+        let obj={
+          docId:row.id ,
+          projectId:row.projectId,
+          projectName:row.projectName
+        };
+        let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+        doc_view ="/"+ documentObj.documentAddEditLink.replace('/','') +"?id="+ encodedPaylod//row.id + "&projectId=" + row.projectId + "&projectName=" + encodedPaylod;
         subject = row.subject;
         return <a href={doc_view}> {subject} </a>;
       }
@@ -263,7 +315,7 @@ class Letter extends Component {
     var filtersColumns = [];
  
     documentObj.documentColumns.map((item, index) => {
-      if (item.isCustom === true) {
+      
         var obj = {
           key: item.field,
           frozen: index < 2 ? true : false,
@@ -280,17 +332,20 @@ class Letter extends Component {
               : item.dataType === "date"
               ? dateFormate
               : ""
-        };
+        }; 
+        if (isCustom !== true) {
+            cNames.push(obj); 
+        }
+        else{
+          if (item.isCustom===true) {
+            cNames.push(obj); 
+          }
+          
+        }
+      
+    });  
 
-        filtersColumns.push({
-          field: item.field,
-          name: item.friendlyName,
-          type: item.dataType
-        });
-
-        cNames.push(obj);
-      }
-    }); 
+    filtersColumns =documentObj.filters;
     this.setState( {   
       pageTitle:Resources[documentObj.documentTitle][currentLanguage], 
       docType:documents,
@@ -330,10 +385,15 @@ class Letter extends Component {
   };
 
   handleMinimize = () => {
-    const currentClass = this.state.minimizeClick
+    const currentClass = this.state.minimizeClick; 
+    const isCustom = this.state.isCustom;
+      
       this.setState({
-        minimizeClick: !currentClass 
-      });
+        minimizeClick: !currentClass,
+        isCustom :!isCustom,
+        isLoading: true
+      }); 
+      this.renderComponent(this.state.documentName,this.state.projectId,!this.state.isCustom);
   }
 
   render() {
@@ -438,12 +498,14 @@ class Letter extends Component {
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
-              <span>0</span> - <span>{this.state.pageSize}</span> of
-              <span>{this.state.totalRows}</span>
+              <span>0</span> - <span>{this.state.pageSize}</span> of 
+              <span> {this.state.totalRows}</span>
             </div>
-            <button className="rowunActive">
+            
+            <button className={this.state.pageNumber==0? "rowunActive" : "" }   onClick={() => this.GetPrevoiusData()}>
               <i className="angle left icon" />
             </button>
+
             <button onClick={() => this.GetNextData()}>
               <i className="angle right icon" />
             </button>
@@ -492,4 +554,4 @@ class Letter extends Component {
   }
 }
 
-export default Letter;
+export default withRouter(CommonLog);

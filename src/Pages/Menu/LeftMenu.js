@@ -216,60 +216,60 @@ class LeftMenu extends Component {
   };
 
   ModuleHandler = () => {
-    if(this.state.projectId){
-    if (this.state.ActivePanal === 1) {
-      accordion = false;
+      if(this.state.projectId){
+      if (this.state.ActivePanal === 1) {
+        accordion = false;
+        this.setState(state => {
+          return {
+            // accordion : false
+            viewEps: false,
+            viewModules: true,
+            viewProjects: false,
+            ActivePanal: 2
+          };
+        });
+
+        viewEps = false;
+        viewModules = true;
+        viewProjects = false;
+        ActivePanal = 2;
+      } else {
+        this.setState(state => {
+          return {
+            viewEps: true,
+            viewModules: false,
+            viewProjects: false,
+            ActivePanal: 1
+          };
+        });
+        viewEps = true;
+        viewModules = false;
+        viewProjects = false;
+        ActivePanal = 1;
+      }
+      }else{
+        accordion = false;
+        this.setState(state => {
+          return {
+            // accordion : false
+            viewEps: false,
+            viewModules: true,
+            viewProjects: false,
+            ActivePanal: 2
+          };
+        });
+
+        viewEps = false;
+        viewModules = true;
+        viewProjects = false;
+        ActivePanal = 2;
+      }
+
       this.setState(state => {
         return {
-          // accordion : false
-          viewEps: false,
-          viewModules: true,
-          viewProjects: false,
-          ActivePanal: 2
+          projectId: state.projectId
         };
       });
-
-      viewEps = false;
-      viewModules = true;
-      viewProjects = false;
-      ActivePanal = 2;
-    } else {
-      this.setState(state => {
-        return {
-          viewEps: true,
-          viewModules: false,
-          viewProjects: false,
-          ActivePanal: 1
-        };
-      });
-      viewEps = true;
-      viewModules = false;
-      viewProjects = false;
-      ActivePanal = 1;
-    }
-  }else{
-    accordion = false;
-    this.setState(state => {
-      return {
-        // accordion : false
-        viewEps: false,
-        viewModules: true,
-        viewProjects: false,
-        ActivePanal: 2
-      };
-    });
-
-    viewEps = false;
-    viewModules = true;
-    viewProjects = false;
-    ActivePanal = 2;
-  }
-
-    this.setState(state => {
-      return {
-        projectId: state.projectId
-      };
-    });
   };
 
   OpenSubMenu = (id) => {
@@ -409,9 +409,9 @@ class LeftMenu extends Component {
                     <img src={Logo} alt="logo" title="logo" />
                   </NavLink>
                 </div>
-                <div className="mainProjectsList" onClick={this.ProjectHandler}>
+              {/*  <div className="mainProjectsList" onClick={this.ProjectHandler}>
                   <div className="mainProjectName">PM</div>
-                </div>
+                </div>*/}
                 <div className="clearfix" />
               </div>
             </div>
@@ -476,7 +476,7 @@ class LeftMenu extends Component {
                             </g>
                           </svg>
                         </span>
-                        <a>
+                        
                           <span className="backToModulesBK">
                             <i
                               className="fa fa-angle-left"
@@ -484,7 +484,7 @@ class LeftMenu extends Component {
                             />
                             {Resources["backtoprojects"][currentLanguage]}
                           </span>
-                        </a>
+                       
                       </div>
                       <div className="backToModulesName">
                         <h2 className="zero">{this.state.titleProject}</h2>

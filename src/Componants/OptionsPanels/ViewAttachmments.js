@@ -7,85 +7,94 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
 import Api from '../../api';
-import Resources from '../../resources.json';
-//import '../../Styles/scss/en-us/layout33.css';
+import Resources from '../../resources.json'; 
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-class NewAttachment extends Component {
-    constructor(props) {
+class ViewAttachmments extends Component {
+  
+   constructor(props) {
         super(props)
         this.state = {
             data: [],
-            docTypeId: '64',
-            docId: '158'
+            docTypeId: this.props.docTypeId,
+            docId: this.props.docId,
         }
     }
-    deletehandler = (id) => {
-        let urlDelete = 'DeleteAttachFileById?id=' + id
-        Api.post(urlDelete).then(result => {
-            console.log("success")
+
+    deletehandler = (file) => {
+        let urlDelete = 'DeleteAttachFileById?id=' + file.id
+        Api.post(urlDelete).then(result => { 
+              this.props.actions.deleteFile(file);
         }).catch(ex => {
+            this.props.actions.deleteFile(null);
         });
-        this.getData()
+ 
     }
 
     versionHandler = (parentId) => {
 
         let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
-        Api.post(urlVersion).then(result => {
+        Api.get(urlVersion).then(result => {
             console.log("success")
         }).catch(ex => {
         });
-
     }
 
-    componentDidMount = () => {
-        this.getData()
-
+    componentDidMount () {
+        this.getData() 
     }
+
     render() {
-        let tabel = this.state.data.map((item, Index) => {
+
+        let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
             let extension = item['fileName'].split(".")[1] === 'xlsx' ? xlsx : (item['fileName'].split(".")[1] === 'pdf' ? pdf : doc)
-            return (
-                <tr key={Index}>
-                    <td>
-                        <div className="contentCell tableCell-1">
-                            <span>
-                                <img src={extension} alt="pdf" width="100%" height="100%" />
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <div className="contentCell tableCell-2">
-                            <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item['fileName']}</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div className="contentCell tableCell-3">
-                            <p className="zero status">{item['uploadDate']}</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div className="contentCell tableCell-4">
-                            <h6 className="zero">{item['uploadedBy']} </h6>
-                        </div>
-                    </td>
-                    <td className="tdHover">
-                        <div className="attachmentAction">
-                            <a className="attachRecycle" onClick={() => this.deletehandler(item['id'])} >
-                                <img src={Recycle} alt="del" width="100%" height="100%" />
-                            </a>
-                            <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
-                                <img src={Download} alt="dLoad" width="100%" height="100%" />
-                            </a>
-                            <a className="attachPend" onClick={() => this.versionHandler(item['parentId'])}>
-                                <img src={Pending} alt="pend" width="100%" height="100%" />
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            );
-        })
+                        return (
+                            <tr key={Index}>
+                                <td>
+                                    <div className="contentCell tableCell-1">
+                                        <span>
+                                            <img src={extension} alt="pdf" width="100%" height="100%" />
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell tableCell-2">
+                                        <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item['fileName']}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell tableCell-3">
+                                        <p className="zero status">{item['uploadDate']}</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell tableCell-4">
+                                        <p className="zero">{item['uploadedBy']} </p>
+                                    </div>
+                                </td>
+                                <td className="tdHover">
+                                    <div className="attachmentAction">
+                                        <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
+                                            <img src={Recycle} alt="del" width="100%" height="100%" />
+                                        </a>
+                                        <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
+                                            <img src={Download} alt="dLoad" width="100%" height="100%" />
+                                        </a>
+                                        <a className="attachPend" onClick={() => this.versionHandler(item['parentId'])}>
+                                            <img src={Pending} alt="pend" width="100%" height="100%" />
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+        }): null
 
         return (
             <table className="attachmentTable">
@@ -125,23 +134,26 @@ class NewAttachment extends Component {
         )
     }
 
-    getData() {
-        let url = "GetAzureFiles?docTypeId=" + this.state.docTypeId + "&docId=" + this.state.docId
-        Api.get(url).then(result => {
-            result.map(item => {
-                if (item['fileName']) {
+    getData() { 
+        let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
+        this.props.actions.GetUploadedFiles(url);
+    }
+} 
 
-                    item['fileName'] = item['fileName'].replace(new RegExp('%20', 'g'), " ").replace(new RegExp('%23', 'g'), "#")
-                        .replace(new RegExp('%2C', 'g'), ",").replace(new RegExp('%28', 'g'), "(").replace(new RegExp('%29', 'g'), ")")
-                }
-
-            })
-
-            this.setState({
-                data: [...result]
-            });
-        }).catch(ex => {
-        });
+function mapStateToProps(state, ownProps) {
+    return {
+      files: state.communication.files,
+      isLoadingFiles: state.communication.isLoadingFiles
     }
 }
-export default NewAttachment;
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewAttachmments)

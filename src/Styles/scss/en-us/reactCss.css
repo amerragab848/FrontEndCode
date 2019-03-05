@@ -549,15 +549,6 @@ table edition
   align-items: center !important;
   justify-content: center !important;
 }
-.skylight-dialog{
-
-  min-height: 400px;
-  position: relative !important;
-  margin-top: 0px !important;
-  margin-left: 0px !important;
-  top: 0 !important;
-  left: 0!important;
-}
 .ReactTable .rt-tbody {
     flex: 99999 1 auto;
     display: flex;
@@ -992,10 +983,12 @@ text-transform: capitalize
   justify-content: center;
   flex-flow: column;
   background-color: rgba(255, 255, 255, 0.9);
-  z-index: 2;
+  z-index: 20;
 }
+.cutome__inputs .dashboardLoading {
+  position: fixed !important;
 
-
+}
 .dashboardLoading span {
     width: 64px;
     height: 64px;
@@ -1225,4 +1218,239 @@ tfoot tr td p{
 .table__inputs .halfWindow label {
   margin-bottom: 10px;
   display: block;
+}
+.taskAdminTable {
+  border-spacing: 0;
+  border: 1px solid #DADEE6;
+  width: 100%;
+}
+.taskAdminTable thead {
+  text-align: left;
+}
+ 
+.taskAdminTable thead tr th{
+  border-right: 1px solid #DADEE6;
+  border-bottom: 1px solid #DADEE6;
+  padding: 10px;
+}
+.taskAdminTable thead tr th:first-of-type{
+  border-left: 1px solid #DADEE6;
+}
+.taskAdminTable thead tr th:last-of-type{
+  border-right: none;
+}
+.taskAdminTable tbody tr td {
+  border-right: 1px solid #DADEE6;
+  border-bottom: 1px solid #DADEE6;
+  border-left: none;
+  padding: 10px;
+}
+.taskAdminTable tbody tr td:first-of-type {
+  border-left: 1px solid #DADEE6; 
+}
+.taskAdminTable tbody tr td:last-of-type {
+  border-right: none #DADEE6;
+  border-bottom: 1px solid #DADEE6;
+}
+.documents-stepper .doc-container .step-content.fullWidthContent {
+  width: 100%;
+}
+.cutome__inputs .linebylineInput .fillter-status.fillter-item-c {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.cutome__inputs .linebylineInput .fillter-status.fillter-item-c label{
+    width: 130px;
+    text-align: right;
+    margin-right: 16px;
+    font-family: font-opensb;
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.2px;
+    color: #252833;
+  }
+.cutome__inputs .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+  width: 360px;
+ }
+.cutome__inputs  .linebylineInput .proForm.datepickerContainer {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cutome__inputs  .linebylineInput .proForm.datepickerContainer .linebylineInput {
+  margin-bottom: 0 !important;
+}
+.submittalActions__add {
+  background-color: transparent;
+  align-items: center;
+  width: 25%;
+  border-left: 1px solid #e9ecf0;
+  height: 100vh;
+  flex-shrink: 0;
+}
+.submittalActions__add header {
+  border-bottom: 1px solid #e9ecf0;
+  padding: 21.3px 0;
+  text-align: center;
+  margin-bottom: 28px;
+  height: 72px;
+}
+.submittalActions__add .customD_Menu >div , .submittalActions__add .customD_Menu div:hover{
+  border-color: transparent !important;
+}
+.submittalActions__add .css-vj8t7z {
+  border-color: transparent !important;
+  background: #E9ECF0;
+}
+.submittalActions__add .css-19bqh2r {
+  display: inline-block;
+  fill: black;
+  line-height: 1;
+  stroke: currentColor;
+  stroke-width: 0;
+}
+.submittalActions__add .css-d8oujb {
+  display: none;
+}
+.submittalActions__add .css-1hwfws3 {
+  justify-content: center;
+}
+.submittalActions__add .css-1hwfws3 .css-1492t68 {
+  color: rgba(0,0,0,.87);
+  font-size: 14px;
+  font-weight: bold;
+}
+.skylight-dialog{
+  max-height: 500px;
+  overflow-y: auto;
+} 
+.proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
+  margin-right: 40px !important;
+}
+.icon__btn {
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  padding: 7px;
+}
+.icon__btn i {
+  color: #A8B0BF;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+.icon__btn:hover i {
+  color: #3570E6;
+}
+.activeBtnCheck {
+  margin: 0 10px;
+}
+.activeBtnCheck i {
+  font-size: 20px;
+}
+.filterBTNS {
+  display: flex;
+} 
+.react-grid-Cell--frozen:last-of-type {
+  box-shadow: 2px 0 5px -2px hsla(0,0%,53%,.3);
+}
+.card-status .MultiPeinding {
+  display: flex;
+  margin: 0 2px; 
+}
+.workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
+  color: #fff
+}
+.attachmentTable tbody tr .contentCell.tableCell-4 {
+  max-width: 185px
+} 
+.daysCheckbox .ui.checkbox {
+  margin: 0 10px;
+}
+.daysCheckbox .ui.checkbox:first-of-type {
+  margin-left: 0;
+}
+.daysCheckbox .ui.checkbox:last-of-type {
+  margin-right: 0;
+} 
+.settings-tabs-items .react-tabs__tab-list {
+  border-bottom: 1px solid #e6e6e6 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-flow: column;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  background: #fff !important;
+  overflow: hidden !important;
+  z-index: 14 !important;
+  position: unset !important;
+}
+.settings-tabs-items .react-tabs__tab {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.settings-tabs-items .react-tabs__tab {
+  padding: 0 !important;
+  border-bottom: 0 solid transparent !important;
+  border-left: 6px solid transparent !important;
+  padding-left: 34px !important;
+  width: 100%;
+}
+.settings-tabs-items .react-tabs__tab--selected {
+  border: 0 solid transparent !important;
+  padding: 0 !important;
+  border-bottom: 0 solid #3570E6 !important;
+  border-left: 6px solid #4382f9 !important;
+  background-color: #E9ECF0 !important;
+  padding-left: 34px !important;
+}
+.dropBtn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.dropBtn .border {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background-color: #e9ecf0;
+  margin: 0 24px;
+}
+.dropdownMulti .customD_Menu .css-1hwfws3 {
+  max-height: inherit;
+}
+.dropdownMulti .fillter-status.fillter-item-c {
+  display: flex;
+}
+.dropdownMulti .fillter-status.fillter-item-c .spanValidation { 
+  width: 130px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 15px;
+}
+.dropdownMulti .fillter-status.fillter-item-c >div:last-of-type {
+  width: 100%;
+} 
+.companies_icon {
+  color: #5E6475;
+  font-size: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.skylight-wrapper .dropWrapper .proForm .ui.input.inputDev .glyphicon {
+  position: absolute;
+  top: 22px;
+  right: 4px;
+  width: 25px;
 }

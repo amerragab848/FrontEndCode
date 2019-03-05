@@ -11,10 +11,12 @@ import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class Index extends Component {
-  constructor(props, context) {
-    super(props, context);
+
+  constructor(props) {
+    super(props);
+    
     this.state = {
-      tabIndex: 0,
+      tabIndex: 0
     };
   }
 

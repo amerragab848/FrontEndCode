@@ -6,7 +6,7 @@ import "../../Styles/scss/en-us/layout.css";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../../Componants/OptionsPanels/Export"; 
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Toolbar, Data, Filters } from "react-data-grid-addons"; 
+import { Filters } from "react-data-grid-addons"; 
 import Resources from "../../resources.json";
 import moment from "moment"; 
 let currentLanguage =
@@ -197,7 +197,7 @@ class DistributionInboxListSummaryDetails extends Component {
       });
       if (action) {
         Api.get(
-          "GetDocApprovalDetailsDistriburtionList?action=" +
+          "GetDocApprovalDetailsDistributionList?action=" +
             action +
             "&pageNumber=" +
             0 +

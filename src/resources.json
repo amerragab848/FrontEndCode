@@ -1833,7 +1833,7 @@
       "successContent": "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
       "failureTitle": "Operation was canceled",
       "failureContent": "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
-      "refCodeExist": "<i class='fa fa-clock-o'></i> <i>Referance Code Already Exist...</i>",
+      "refCodeExist": "Referance Code Already Exist...",
       "notAssignedTothisProject": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
       "userNameExist": "<i class='fa fa-clock-o'></i> <i>User Name Already Exist ...</i>",
       "yes": "Yes",
@@ -6505,8 +6505,8 @@
     "ar": "هل القيمة  مقطوعيه"
   },
   "emailFormat": {
-    "en": "Your email address must be in the format of name@domain.com",
-    "ar": " (name@domain.com) البريد الإلكترونى يجب أن يكون بهذا الشكل "
+    "en": "email format must be 'name@domain.com' ",
+    "ar": " (name@domain.com) البريد الإلكترونى يجب أن يكون "
   },
   "selectBOQCostCoding": {
     "en": "-- Please Select BOQ Cost Coding --",
