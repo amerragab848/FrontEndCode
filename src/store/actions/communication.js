@@ -54,6 +54,7 @@ export function deleteFile(file) {
             });
     }
 }
+
 export function uploadFile(BlobUpload,formData,header) {
     return (dispatch, getState) => { 
         return Api.postFile(BlobUpload,formData,header).then(resp => { 

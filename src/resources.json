@@ -1031,6 +1031,10 @@
     "en": "Expenses ",
     "ar": " المصروفات"
   },
+  "expensesTypeName": {
+    "en": "Expenses Type Name ",
+    "ar": " اسم نوع المصروفات"
+  },
   "expensesUserReport": {
     "en": "Users' Expenses Report ",
     "ar": " تقرير مصروفات الموظف"
@@ -1318,6 +1322,10 @@
   },
   "title": {
     "en": "Address",
+    "ar": "العنوان"
+  },
+  "generalListTitle": {
+    "en": "Title",
     "ar": "العنوان"
   },
   "empTitle": {
