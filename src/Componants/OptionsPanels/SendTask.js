@@ -16,10 +16,11 @@ class SendTask extends Component {
         super(props)
         this.state = {
             sendingData: {
-                docId: "183",
-                arrange: "1",
-                docTypeId: '64',
+                projectId: this.props.projectId,
+                docId: this.props.docId,
+                docType: this.props.docTypeId,
                 bicContactId: "",
+                arrange: "1",
                 bicCompanyId: "",
                 Subject: "",
                 Priority: "",
@@ -27,7 +28,6 @@ class SendTask extends Component {
                 startDate: moment(),
                 finishDate: moment(),
                 estimateTime: "",
-                projectId: "4330",
             },
 
             PriorityData: [],

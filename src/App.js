@@ -18,7 +18,7 @@ import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
 import Companies from './Componants/GeneralSetting/Companies/Index'
 //import Settings from './Componants/GeneralSetting/Settings'
-import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
+import AddEditCompany from './Componants/GeneralSetting/Companies/AddEditCompany';
 
 import DocumentEmailNotification from './Componants/User/DocumentEmailNotification';
 import MonthlyTasksDetails from './Componants/DashBoardDetails/MonthlyTasksDetails';

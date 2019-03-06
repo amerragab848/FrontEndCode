@@ -11,8 +11,8 @@ import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class TemplatesSettings extends Component {
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.state = {
             tabIndex: 0,
             showNotify:false
@@ -99,7 +99,6 @@ class TemplatesSettings extends Component {
                     </Tabs> 
 
             </div>
-
         )
     }
 }

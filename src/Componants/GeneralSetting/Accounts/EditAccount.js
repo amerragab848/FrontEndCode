@@ -77,6 +77,7 @@ class EditAccount extends Component {
         for (let param of query.entries()) {
             id = param[1];
         }
+        
         Api.get('GetAccountById?id=' + id + '').then(
             res => {
                 DefaultUserName = res.userName
@@ -381,7 +382,7 @@ class EditAccount extends Component {
                                                     }
                                                 )
                                             this.props.history.push({
-                                                pathname: '/Accounts',
+                                                pathname: '/TemplatesSettings',
                                             })
 
                                         }}

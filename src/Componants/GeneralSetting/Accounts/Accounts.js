@@ -209,6 +209,7 @@ class Accounts extends Component {
         }
         this.GetCellActions = this.GetCellActions.bind(this);
 
+        console.log('accounts');
     }
 
     DeleteAccount = (rowId) => {

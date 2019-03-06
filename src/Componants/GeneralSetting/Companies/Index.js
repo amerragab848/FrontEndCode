@@ -7,18 +7,13 @@ import Filter from "../../FilterComponent/filterComponent";
 import "../../../Styles/css/semantic.min.css";
 import "../../../Styles/scss/en-us/layout.css";
 import GridSetup from "../../../Pages/Communication/GridSetup";
-import { Filters } from "react-data-grid-addons";
-import moment from "moment";
 import Resources from "../../../resources.json";
+import Config from '../../../Services/Config'
+import ConfirmationModal from "../../publicComponants/ConfirmationModal";
+const _ = require('lodash')
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-
 const filtersColumns = [
     {
         field: "companyName",
@@ -47,6 +42,68 @@ class Index extends Component {
     constructor(props) {
         super(props);
 
+       this.ExportColumns = [
+          
+            {
+                key: "companyName",
+                name: Resources["CompanyName"][currentLanguage],
+             
+            },
+            {
+                key: "roleTitle",
+                name: Resources["companyRole"][currentLanguage],
+             
+            },
+            {
+                key: "disciplineTitle",
+                name: Resources["disciplineTitle"][currentLanguage],
+               
+            },
+            {
+                key: "keyContactName",
+                name: Resources["KeyContact"][currentLanguage],
+                width: 100,
+              
+            },
+            {
+                key: "location",
+                name: Resources["location"][currentLanguage],
+              
+            },
+            {
+                key: "contactsTel",
+                name: Resources["Telephone"][currentLanguage],
+              
+            },
+            {
+                key: "contactsMobile",
+                name: Resources["Mobile"][currentLanguage],
+             
+            },
+            {
+                key: "contactsFax",
+                name: Resources["Fax"][currentLanguage],
+                width: 100,
+            
+            },
+            {
+                key: "grade",
+                name: Resources["Grade"][currentLanguage],
+             
+            }
+            ,
+            {
+                key: "enteredBy",
+                name: Resources["enteredBy"][currentLanguage],
+          
+            }
+            ,
+            {
+                key: "lastModified",
+                name: Resources["lastModified"][currentLanguage],
+          
+            }
+        ];
 
         const columnsGrid = [
             {
@@ -57,13 +114,13 @@ class Index extends Component {
             {
                 key: "id",
                 visible: false,
-                width: 140,
+                width: 20,
                 frozen: true
             },
             {
                 key: "companyName",
                 name: Resources["CompanyName"][currentLanguage],
-                width: 50,
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -73,7 +130,7 @@ class Index extends Component {
             {
                 key: "roleTitle",
                 name: Resources["companyRole"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -83,7 +140,7 @@ class Index extends Component {
             {
                 key: "disciplineTitle",
                 name: Resources["disciplineTitle"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -93,7 +150,7 @@ class Index extends Component {
             {
                 key: "keyContactName",
                 name: Resources["KeyContact"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -103,7 +160,7 @@ class Index extends Component {
             {
                 key: "location",
                 name: Resources["location"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -113,7 +170,7 @@ class Index extends Component {
             {
                 key: "contactsTel",
                 name: Resources["Telephone"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -123,7 +180,7 @@ class Index extends Component {
             {
                 key: "contactsMobile",
                 name: Resources["Mobile"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -133,7 +190,7 @@ class Index extends Component {
             {
                 key: "contactsFax",
                 name: Resources["Fax"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -143,7 +200,7 @@ class Index extends Component {
             {
                 key: "grade",
                 name: Resources["Grade"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -154,7 +211,7 @@ class Index extends Component {
             {
                 key: "enteredBy",
                 name: Resources["enteredBy"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -165,7 +222,7 @@ class Index extends Component {
             {
                 key: "lastModified",
                 name: Resources["lastModified"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -174,72 +231,111 @@ class Index extends Component {
             }
         ];
 
-
-
         this.state = {
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
-            rows: [], filtersColumns: [],
-            viewfilter: true,
+            rows: [],
+            filtersColumns: [],
+            viewfilter: false,
             totalRows: 0,
             pageSize: 50,
             pageNumber: 0,
             pageTitle: Resources['Companies'][currentLanguage],
             api: 'GetProjectCompaniesGrid?',
-            selectedCompany: 0
+            selectedCompany: 0,
+            Previous: false,
+            rowSelectedId: '',
 
         };
     }
-
-
-
     customButton = () => {
 
-        return <button onClick={this.clickHandler} >{Resources["contacts"][currentLanguage]}</button>;
+        return <button className="companies_icon" onClick={this.clickHandler} ><i className="fa fa-users"></i></button>;
     };
     componentDidMount() {
-        let pageNumber = this.state.pageNumber + 1
-        Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-            this.setState({
-                rows: result,
-                isLoading: false,
-                pageNumber: pageNumber,
-                totalRows: result.length,
-                search: false
+        if (Config.IsAllow(1001105)) {
+            Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                this.setState({
+                    rows: result,
+                    isLoading: false,
+                    totalRows: result.length
+                });
             });
-        });
+        }
 
     }
     viewContact = (rowSelected) => {
-        console.log(rowSelected.id)
+        if ( Config.IsAllow(14) ) {
+            this.props.history.push({
+                pathname: "/Contacts/" + rowSelected,
+            });
+        }
     }
 
     cellClick = (rowID, colID) => {
-         
+        let id = this.state.rows[rowID]['id']
         if (colID == 1)
-            this.viewContact(this.state.rows[rowID])
-        else if (colID != 0) { 
+            this.viewContact(id)
+        else if (colID != 0 && (Config.IsAllow(1256) || Config.IsAllow(1257))) {
+
             this.props.history.push({
-                pathname: "/AddCompanies/" + this.state.rows[rowID]['id'],
+                pathname: "/AddEditCompany/" + id,
             });
         }
     }
     GetNextData = () => {
-        // if (!this.state.search) {
-            let pageNumber = this.state.pageNumber + 1
-            this.setState({ isLoading: true })
-            let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
-            Api.get(url).then(result => {
-                this.setState({
-                    rows: result,
-                    isLoading: false,
-                    pageNumber: pageNumber
-                });
+        let pageNumber = this.state.pageNumber + 1;
+
+        this.setState({
+            isLoading: true,
+            pageNumber: pageNumber
+        });
+        let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+        Api.get(url).then(result => {
+            let oldRows = this.state.rows;
+            const newRows = [...oldRows, ...result];
+            this.setState({
+                rows: newRows,
+                totalRows: newRows.length,
+                isLoading: false
             });
-        // }
-        // else {
-        //     alert("de bta3t search")
-        // }
+        }).catch(ex => {
+            let oldRows = this.state.rows;
+            this.setState({
+                rows: oldRows,
+                isLoading: false
+            });
+        });
+
+
+    }
+
+    GetPreviousData = () => {
+        let pageNumber = this.state.pageNumber - 1;
+        if (pageNumber >= 0) {
+            this.setState({
+                isLoading: true,
+                pageNumber: pageNumber
+            });
+
+            let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+            Api.get(url).then(result => {
+                let oldRows = [];
+                const newRows = [...oldRows, ...result];
+                this.setState({
+                    rows: newRows,
+                    totalRows: newRows.length,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                let oldRows = this.state.rows;
+                this.setState({
+                    rows: oldRows,
+                    isLoading: false
+                });
+            });;
+
+        }
     }
 
     hideFilter(value) {
@@ -251,7 +347,7 @@ class Index extends Component {
 
         var stringifiedQuery = JSON.stringify(query)
         if (stringifiedQuery.includes("companyName") || stringifiedQuery.includes("roleTitle") || stringifiedQuery.includes("keyContactName")) {
-            this.setState({ isLoading: true, search: true })
+            this.setState({ isLoading: true })
             let _query = stringifiedQuery.split(',"isCustom"')
             let url = 'ProjectCompaniesFilter?query=' + _query[0] + '}'
             Api.get(url).then(result => {
@@ -271,8 +367,7 @@ class Index extends Component {
                     rows: result,
                     isLoading: false,
                     pageNumber: 1,
-                    totalRows: result.length,
-                    search: false
+                    totalRows: result.length
                 });
             });
 
@@ -281,27 +376,77 @@ class Index extends Component {
     };
 
     addRecord = () => {
-
+        if(Config.IsAllow(1256))
         this.props.history.push({
-            pathname: "/AddCompanies/0",
+            pathname: "/AddEditCompany/0",
+        });
+        else
+        alert("not allow to add new company")
+    }
+
+    
+    clickHandlerDeleteRowsMain = selectedRows => {
+        this.setState({
+          showDeleteModal: true,
+          selectedRows: selectedRows
+        });
+      };
+    onCloseModal() {
+        this.setState({
+            showDeleteModal: false
         });
     }
 
+    clickHandlerCancelMain = () => {
+        this.setState({ showDeleteModal: false });
+    };
+
+
+    ConfirmDeleteComanies = () => {
+        this.setState({ showDeleteModal: true })
+        let rowsData = this.state.rows;
+        if(Config.IsAllow(1258))
+        {
+            Api.post('ProjectCompaniesDelete?id='+this.state.selectedRows)
+                .then(result => {
+                    let originalRows =  this.state.rows.filter(r => r.id !==this.state.selectedRows);
+                  
+                    this.setState({
+                        rows: originalRows,
+                        totalRows: originalRows.length,
+                        isLoading: false,
+                        showDeleteModal: false,
+                        IsActiveShow: false
+                    });
+                })
+                .catch(ex => {
+                    this.setState({
+                        showDeleteModal: false,
+                        IsActiveShow: false
+                    })
+                })
+            }
+            else
+            alert('not allowed to delete')
+        
+    }
+
+ 
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
                     showCheckbox={true}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                   viewContactHandler={this.clickHandler}
+                    viewContactHandler={this.clickHandler}
                     cellClick={this.cellClick}
+                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+                    single={true}
 
                 />
             ) : <LoadingSection />;
-
-
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} />
             : null;
 
         const ComponantFilter = this.state.isLoading === false ?
@@ -387,13 +532,14 @@ class Index extends Component {
                     </div>
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
-                            <span>{((this.state.pageNumber - 1) * this.state.pageSize) + 1}</span> - <span>{(this.state.pageNumber) * this.state.pageSize}</span> of
+                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
                             <span>{this.state.totalRows}</span>
                         </div>
-                        <button className="rowunActive">
+
+                        <button className={this.state.pageNumber <= 0 ? "rowunActive" : ""} onClick={this.GetPreviousData}>
                             <i className="angle left icon" />
                         </button>
-                        <button onClick={() => this.GetNextData()}>
+                        <button onClick={this.GetNextData}>
                             <i className="angle right icon" />
                         </button>
                     </div>
@@ -414,6 +560,15 @@ class Index extends Component {
                     {dataGrid}
                 </div>
 
+                {this.state.showDeleteModal == true ? (
+                    <ConfirmationModal
+                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        closed={this.onCloseModal}
+                        showDeleteModal={this.state.showDeleteModal}
+                        clickHandlerCancel={this.clickHandlerCancelMain}
+                        buttonName='delete' clickHandlerContinue={this.ConfirmDeleteComanies}
+                    />
+                ) : null}
 
             </div>
         );

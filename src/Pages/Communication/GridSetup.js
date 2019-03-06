@@ -3,7 +3,7 @@ import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
- 
+
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -134,45 +134,51 @@ class GridSetup extends Component {
 
   onRowsSelected = rows => {
 
-    if( this.props.IsActiv !== undefined )
-    {
-     let Id = '';
-     Id = rows.map(r => r.row.id);
+    if (this.props.IsActiv !== undefined) {
+      let Id = '';
+      Id = rows.map(r => r.row.id);
       this.props.IsActiv(Id)
     }
-     
-      let prevRows = this.state.selectedIndexes;
-      let prevRowsId = this.state.selectedRows;
 
-      if (rows.length > 1) {
-        prevRows = [];
-        prevRowsId = [];
-        prevRows = rows.map(r => r.rowIdx);
-        prevRowsId = rows.map(r => r.row.id);
-      } else {
-        let exist = prevRows.indexOf(rows[0].rowIdx) === -1 ? false : true;
-        if (exist === false) {
-          prevRows.push(rows[0].rowIdx);
-          prevRowsId.push(rows[0].row.id);
-        }
+    let prevRows = this.state.selectedIndexes;
+    let prevRowsId = this.state.selectedRows;
+   
+
+    if (this.props.single == true) {
+      prevRows = [];
+      prevRowsId = [];
+      prevRows.push(rows[0].rowIdx);
+      prevRowsId.push(rows[0].row.id);
+    }
+
+   else if (rows.length > 1) {
+      prevRows = [];
+      prevRowsId = [];
+      prevRows = rows.map(r => r.rowIdx);
+      prevRowsId = rows.map(r => r.row.id);
+    } else {
+      let exist = prevRows.indexOf(rows[0].rowIdx) === -1 ? false : true;
+      if (exist === false) {
+        prevRows.push(rows[0].rowIdx);
+        prevRowsId.push(rows[0].row.id);
       }
+    }
 
-      this.setState({
-        selectedIndexes: prevRows,
-        selectedRows: prevRowsId
-      });
+    this.setState({
+      selectedIndexes: prevRows,
+      selectedRows: prevRowsId
+    });
 
-      if (this.props.selectedRows != undefined) {
-        this.props.selectedRows(this.state.selectedRows);
-      }
+    if (this.props.selectedRows != undefined) {
+      this.props.selectedRows(this.state.selectedRows);
+    }
   };
 
   onRowsDeselected = rows => {
-    if( this.props.IsActiv !== undefined )
-    {
+    if (this.props.IsActiv !== undefined) {
       this.props.UnSelectIsActiv()
     }
-    
+
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -234,18 +240,18 @@ class GridSetup extends Component {
   clickHandlerDeleteRows = e => {
     this.props.clickHandlerDeleteRows(this.state.selectedRows);
   };
- 
+
   onCellSelected = ({ rowIdx, idx }) => {
     if (this.props.cellClick)
       this.props.cellClick(rowIdx, idx)
-  }; 
-
-  onselectRowEven=({selectedRows})=>{
-    if (this.props.onselectRowEven)
-    this.props.onselectRowEven(selectedRows)
-    console.log('onselectRowEven',selectedRows)
   };
- 
+
+  onselectRowEven = ({ selectedRows }) => {
+    if (this.props.onselectRowEven)
+      this.props.onselectRowEven(selectedRows)
+    console.log('onselectRowEven', selectedRows)
+  };
+
   render() {
     const { rows, groupBy } = this.state;
     const filteredRows = this.getRows(this.state.rows, this.state.filters);
@@ -302,7 +308,8 @@ class GridSetup extends Component {
           rowGetter={i => groupedRows[i]}
           rowsCount={groupedRows.length}
           enableCellSelect={true}
-          onCellSelected={this.onCellSelected} 
+          onCellSelected={this.onCellSelected}
+
           onColumnResize={(idx, width, event) => {
             //console.log(this.state.columns[idx-1]);
             // console.log(`Column ${idx} has been resized to ${width}`);
@@ -328,13 +335,14 @@ class GridSetup extends Component {
             showCheckbox: this.props.showCheckbox,
             defaultChecked: false,
             enableShiftSelect: true,
-            onRowsSelected: this.onRowsSelected, 
+            onRowsSelected: this.onRowsSelected,
             onRowsDeselected: this.onRowsDeselected,
+            enableRowSelect: 'single',
             selectBy: {
               indexes: this.state.selectedIndexes
             }
           }}
-       
+
           onRowClick={(index, value) => this.onRowClick(index, value)}
           onAddFilter={filter =>
             this.setState({ setFilters: this.handleFilterChange(filter) })

@@ -3,13 +3,13 @@ import React, { Component } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from "../../../api";
-import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
+import Dropdown from "../../OptionsPanels/DropdownMelcous";
 import Dropzone from "react-dropzone";
 import Resources from "../../../resources.json";
 import TokenStore from '../../../tokenStore'
- 
+
 import { withRouter } from "react-router-dom";
-import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
+import LoadingSection from "../../publicComponants/LoadingSection";
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
 const validationSchema1 = Yup.object().shape({
 
 })
-class AddCompany extends Component {
+class AddEditCompany extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -75,21 +75,21 @@ class AddCompany extends Component {
     }
 
 
-
-    disciplinehandleChange = (item) => {
-        this.setState({ selectedDiscipline: item })
-        console.log("path", this.state.signPreview)
-
+    handleChange = (item, name) => {
+        switch (name) {
+            case "title":
+                this.setState({ selectedTitle: item, TitleValidation: false })
+                break;
+            case "companyRole":
+                this.setState({ selectedCompanyRole: item })
+                break;
+            case "discipline":
+                this.setState({ selectedDiscipline: item })
+                break;
+            default:
+                break;
+        }
     }
-
-    CompanyRolehandleChange = (item) => {
-        this.setState({ selectedCompanyRole: item })
-
-    }
-    TitlehandleChange = (item) => {
-        this.setState({ selectedTitle: item, TitleValidation: false })
-    }
-
 
     componentDidMount = () => {
         this.setState({ sectionLoading: true })
@@ -150,13 +150,13 @@ class AddCompany extends Component {
             this.state.companyID == 0 ? Api.post('AddCompanyContact', SendingObject).then(
                 this.setState({ isLoading: false }),
                 this.props.history.push({
-                    pathname: "/"
+                    pathname: "/TemplatesSettings"
                 })
             )
                 : Api.post('EditProjectCompanies', SendingObject).then(
                     this.setState({ isLoading: false }),
                     this.props.history.push({
-                        pathname: "/"
+                        pathname: "/TemplatesSettings"
                     })
                 )
         }
@@ -188,7 +188,7 @@ class AddCompany extends Component {
                                 addressAr: '',
                                 Telephone: ''
                             }}
-                            enableReinitialize= {true}
+                            enableReinitialize={true}
                             validationSchema={this.state.companyID > 0 ? validationSchema1 : validationSchema}
                             onSubmit={(values) => {
                                 if ((this.state.selectedDiscipline != '' && this.state.selectedCompanyRole != '') &&
@@ -251,7 +251,7 @@ class AddCompany extends Component {
                                     ) : "ui input inputDev fillter-item-c"}
                                     >
                                         <Dropdown title="discipline" data={this.state.disciplineData}
-                                            handleChange={this.disciplinehandleChange} selectedValue={this.state.selectedDiscipline}
+                                            handleChange={(e) => this.handleChange(e, "discipline")} selectedValue={this.state.selectedDiscipline}
                                             index='discipline' name="disciplineValidation" handleBlur={handleBlur} />
                                         {this.state.disciplineValidation && touched.disciplineValidation ? (
                                             <em className="pError">{this.state.disciplineValidation}</em>
@@ -271,7 +271,7 @@ class AddCompany extends Component {
                                     ) : "ui input inputDev fillter-item-c"}
                                     >
                                         <Dropdown title="companyRole" data={this.state.CompanyRoleData}
-                                            handleChange={this.CompanyRolehandleChange} selectedValue={this.state.selectedCompanyRole}
+                                            handleChange={(e) => this.handleChange(e, "companyRole")} selectedValue={this.state.selectedCompanyRole}
                                             index='CompanyRole' name="CompanyRoleValidation" />
                                         {this.state.CompanyRoleValidation && touched.CompanyRoleValidation ? (
                                             <em className="pError">{this.state.CompanyRoleValidation}</em>
@@ -322,17 +322,10 @@ class AddCompany extends Component {
                                                     <button className="primaryBtn-2 btn smallBtn" type='button'
                                                         onClick={this.RemoveHandlerSign}>{Resources['clear'][currentLanguage]}</button>
                                                 </div> : null}
-
-
                                         </section>
-
-
                                     </div>
-
-
-
                                     {this.state.companyID == 0 ?
-                                        <div >
+                                        <div className="dropWrapper">
                                             <div className="fullWidthWrapper">
                                                 <h2 className="twoLineHeader">{Resources['KeyContact'][currentLanguage]}</h2>
                                             </div>
@@ -344,7 +337,7 @@ class AddCompany extends Component {
                                             ) : "ui input inputDev fillter-item-c"}
                                             >
                                                 <Dropdown title="empTitle" data={this.state.TitleData}
-                                                    handleChange={this.TitlehandleChange}
+                                                    handleChange={(e) => this.handleChange(e, "title")}
                                                     index='Title' name="TitleValidation" />
                                                 {this.state.TitleValidation && touched.TitleValidation ? (
                                                     <em className="pError">{this.state.TitleValidation}</em>
@@ -450,7 +443,7 @@ class AddCompany extends Component {
                                             ) : !errors.password && touched.password ? (
                                                 "ui input inputDev fillter-item-c has-success"
                                             ) : "ui input inputDev fillter-item-c"}
-                                            > 
+                                            >
                                                 <label className="control-label"> {Resources['Telephone'][currentLanguage]} </label>
                                                 <input autoComplete="off" type='text' className="form-control" name="Telephone"
                                                     onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Telephone'][currentLanguage]} />
@@ -533,4 +526,4 @@ class AddCompany extends Component {
 
 }
 
-export default withRouter(AddCompany);
+export default withRouter(AddEditCompany);

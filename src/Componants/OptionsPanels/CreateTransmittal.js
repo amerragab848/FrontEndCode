@@ -14,8 +14,8 @@ class CreateTransmittal extends Component {
             sendingData: {
                 projectId: this.props.projectId,
                 docId: this.props.docId,
-                arrange: "",
                 docTypeId: this.props.docTypeId,
+                arrange: "",
                 priorityId: "",
                 toCompanyId: "",
                 Subject: "",

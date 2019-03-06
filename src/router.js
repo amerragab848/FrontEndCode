@@ -22,7 +22,9 @@ import ProfileSetting  from "../src/Componants/User/index";
 import TimeSheetWorkFlow  from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
 // import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
 import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
-import AddNewCompany from '../src/Componants/GeneralSetting/Companies/AddCompany';
+import Companies from './Componants/GeneralSetting/Companies/Index';
+import AddEditCompany from './Componants/GeneralSetting/Companies/AddEditCompany';
+import Contacts from './Componants/GeneralSetting/Contacts/Index';
 import MonthlyTasksDetails from "./Componants/DashBoardDetails/MonthlyTasksDetails";
 import MonitorTasks from "./Componants/DashBoardDetails/MonitorTasks";
 import AddTimeSheet from './Componants/TimeSheet/AddTimeSheet';
@@ -64,11 +66,16 @@ let routes = (
     <Route path="/DocApprovalDetails" component={DocApprovalDetails} />,
     <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />,
     <Route path="/PrivacySetting" component={PrivacySetting} />,
+    <Route path="/Companies/" component={Companies} /> 
+    <Route path="/Contacts/:companyID" component={Contacts} /> 
+    
+    <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> 
+    
     <Route path="/:document/:projectId" component={CommonLog} />,
+
     <Route path="/ProfileSetting" component={ProfileSetting} />,
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} /> 
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
-    <Route path="/AddNewCompany" component={AddNewCompany} /> 
      
     <Route path="/MonthlyTasksDetails" component={MonthlyTasksDetails} /> 
     <Route path="/MonitorTasks" component={MonitorTasks} /> 

@@ -1,5 +1,5 @@
- 
-import * as types from '../../store/actions/types'; 
+
+import * as types from '../../store/actions/types';
 
 import initialState from '../initialState';
 

@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+  
  export default class NotifiMsg extends Component {
     constructor(props) {
       super(props);

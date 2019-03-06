@@ -6513,8 +6513,8 @@
     "ar": "هل القيمة  مقطوعيه"
   },
   "emailFormat": {
-    "en": "Your email address must be in the format of name@domain.com",
-    "ar": " (name@domain.com) البريد الإلكترونى يجب أن يكون بهذا الشكل "
+    "en": "email format must be 'name@domain.com' ",
+    "ar": " (name@domain.com) البريد الإلكترونى يجب أن يكون "
   },
   "selectBOQCostCoding": {
     "en": "-- Please Select BOQ Cost Coding --",

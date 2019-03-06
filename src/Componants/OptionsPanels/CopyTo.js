@@ -12,9 +12,9 @@ class CopyTo extends Component {
     super(props);
     this.state = {
       objCopyTo: {
-        projectId: null,
-        docId: "992",
-        docType: "19"
+        projectId: this.props.projectId,
+        docId: this.props.docId,
+        docType: this.props.docTypeId,
       },
       Projects: []
     };

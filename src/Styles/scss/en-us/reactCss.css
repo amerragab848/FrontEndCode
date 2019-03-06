@@ -1303,7 +1303,7 @@ tfoot tr td p{
   font-weight: bold;
 }
 .skylight-dialog{
-  max-height: 600px;
+  max-height: 500px;
   overflow-y: auto;
 } 
 .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
@@ -1486,21 +1486,6 @@ tfoot tr td p{
       .noTabs__document .doc-container .step-content {
         width: 91%; } }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     .noTabs__document .doc-container .step-content .document-fields {
       padding: 14px 0; }
       .noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
@@ -1669,6 +1654,12 @@ tfoot tr td p{
   text-decoration: underline;
   margin-left: 15px;
   cursor: pointer;
+}
+button.companies_icon {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #252833;
 }
 
 
