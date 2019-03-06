@@ -1797,7 +1797,9 @@ tfoot tr td p{
           padding-right: 20px; } }
     .one__tab.one_step .doc-container .step-content .document-fields {
       padding-left: 110px;
-      padding-right: 80px; }
+      padding-right: 80px; 
+      padding-top: 50px;
+    }
       @media screen and (max-width: 1300px) {
         .one__tab.one_step .doc-container .step-content .document-fields {
           padding-left: 35px;
@@ -1834,7 +1836,9 @@ tfoot tr td p{
     flex: 0.2 1;
   }
 }
-
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
+  padding-top: 0;
+}
 /* 
 .readOnly_inputs .doc-container .step-content .document-fields .proForm.datepickerContainer {
   display: flex;
