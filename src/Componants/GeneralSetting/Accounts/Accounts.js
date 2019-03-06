@@ -273,7 +273,7 @@ class Accounts extends Component {
     }
 
     componentDidMount = () => {
-        if (config.IsAllow(794)) {
+         if (config.IsAllow(794)) {
             let pageNumber = this.state.pageNumber + 1
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
@@ -285,14 +285,14 @@ class Accounts extends Component {
                 });
             });
         }
-        else {
-            alert('You Don`t Have Permissions')
-            this.props.history.goBack()
-        }
-        if (config.IsAllow(798))
-            this.setState({ showCheckbox: true })
-        else
-            this.setState({ showCheckbox: false })
+         else {
+             alert('You Don`t Have Permissions')
+             this.props.history.goBack()
+         }
+         if (config.IsAllow(798))
+             this.setState({ showCheckbox: true })
+         else
+             this.setState({ showCheckbox: false })
     }
 
     ConfirmResetPassword = () => {

@@ -25,7 +25,7 @@ export default class Api {
     }
 
     static xhr(route, params, verb) {
-        const host = Domain + '/PM/api/Procoor/';
+        const host = Domain + '/api/Procoor/';
         const url = `${host}${route}`;
         let json = null;
 
@@ -132,7 +132,7 @@ export default class Api {
 
     static postFile(route, params, header) {
         let json = ''
-        const host = Domain + '/PM/api/Procoor/';
+        const host = Domain + '/api/Procoor/';
         const url = `${host}${route}`;
         let headers = {}
         headers.Authorization = localStorage.getItem('userToken')
@@ -169,7 +169,7 @@ export default class Api {
     } 
     static getPassword(route, password) {
 
-        const host = Domain + '/PM/api/Procoor/';
+        const host = Domain + '/api/Procoor/';
 
         const url = `${host}${route}`;
         let headers = Api.headers();

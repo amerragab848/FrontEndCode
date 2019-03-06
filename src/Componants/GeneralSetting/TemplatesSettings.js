@@ -70,17 +70,17 @@ class TemplatesSettings extends Component {
             
                         <div className="setting-tabs-contant">
 
-                        {(config.IsAllow(794)) ?
+                     {(config.IsAllow(794)) ? 
                             <TabPanel>
                                 <Accounts />
                             </TabPanel>
-                            :null}
+                          :null} 
                             
-                            {(config.IsAllow(1001105)) ?
+                            {(config.IsAllow(1001105)) ? 
                             <TabPanel>
                                 <Companies />
                             </TabPanel>
-                            :null}
+                             :null} 
 
                 
                            {(config.IsAllow(1001105)) ?
