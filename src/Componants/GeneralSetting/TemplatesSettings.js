@@ -2,7 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import Accounts from './Accounts/Accounts'
 import Companies from './Companies/Index';
+import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import config from "../../Services/Config";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -32,7 +34,7 @@ class TemplatesSettings extends Component {
                                     <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
                                 </Tab>
 
-                       
+{/*                        
                                 <li className="title">
                                     <h4 className="zero">Project</h4>
                                 </li>
@@ -43,26 +45,38 @@ class TemplatesSettings extends Component {
 
                                 <Tab>
                                     <span className="subUlTitle">Project2</span>
-                                </Tab>
+                                </Tab> */}
 
                                 <li className="title">
-                                    <h4 className="zero">Menu Default Data</h4>
+                                    <h4 className="zero">{Resources['menuDefaultData'][currentLanguage]}</h4>
                                 </li>
                                 <Tab>
-                                    <span className="subUlTitle">Menu Default Data1</span>
+                                    <span className="subUlTitle">{Resources['AccountsDefaultList'][currentLanguage]}</span>
                                 </Tab> 
                             </TabList>
                         </div>
             
                         <div className="setting-tabs-contant">
 
+                        {(config.IsAllow(794)) ?
                             <TabPanel>
                                 <Accounts />
                             </TabPanel>
-
+                            :null}
+                            
+                              {(config.IsAllow(1001105)) ?
                             <TabPanel>
                                 <Companies />
                             </TabPanel>
+                            :null}
+
+
+                            {(config.IsAllow(1179)) ?
+                            <TabPanel>
+                                <GeneralList />
+                            </TabPanel>
+
+                            :null}
                         </div>
                     </Tabs> 
 

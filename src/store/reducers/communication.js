@@ -81,33 +81,31 @@ export default function (state = initialState.app.communication, action) {
             };
             break;
 
-        case types.Update_Contact:
-            state.companyContact = action.data
-            return {
-                ...state
-            };
-            break;
-            case types.Add_Contact:
-            state.companyContact.push(action.data)
-            state.showPopUp = false
-            return {
-                ...state
-            };
-            break;
-            case types.ShowPopUp_Contact:
-            state.showPopUp = true
-            return {
-                ...state
-            };
-            break;
-            case types.HidePopUp_Contact:
-            state.showPopUp = false
-            return {
-                ...state
-            };
-            break;
+        
 
-        default:
+       case types.SendByEmail:
+                return {
+                    ...state,
+                    showModal: action.showModal
+                }; 
+                break;
+       case types.Update_Field:
+                return {
+                    ...state,
+                    document: action.document 
+                }; 
+                break;
+                
+       case types.NextArrange:
+                let newdoc={ ...state.document,...action.arrange };
+                console.log(newdoc);
+                return {
+                    ...state,
+                    document: { ...state.document ,...action.arrange }
+                }; 
+                break;
+       
+        default: 
             return {
                 ...state
             };

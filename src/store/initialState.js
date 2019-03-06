@@ -11,10 +11,15 @@ export default {
 			isLoading: false,
 			isLoadingFiles: false,
 			file:{},
+			arrange:0,
 			showModal:false,
-			showPopUp:false,
-			companyContact:[]
 
-    	}
+		},
+		comapnies:{
+			popUp:false,
+			notifyMessage:false,
+			companyContact:[],
+			getingData: false
+		}
 	}
 }

@@ -266,7 +266,6 @@ class Index extends Component {
     }
     viewContact = (rowSelected) => {
         if ( Config.IsAllow(14) ) {
-
             this.props.history.push({
                 pathname: "/Contacts/" + rowSelected,
             });

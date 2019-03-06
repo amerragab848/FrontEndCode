@@ -102,3 +102,21 @@ export function SendByEmail(url,formData) {
         });
     }
 }
+
+export function GetNextArrange(urlAction) {
+    return (dispatch, getState) => { 
+        return Api.get(urlAction).then(resp => { 
+            
+           dispatch({
+                    type: types.NextArrange,
+                    arrange: resp
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                    type: types.NextArrange,
+                    arrange: 0
+            });
+        });
+    }
+}

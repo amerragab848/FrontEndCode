@@ -12,7 +12,12 @@ import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import { SkyLightStateless } from 'react-skylight';
 import AddNewContact from './AddNewContact'
 import { connect } from 'react-redux'
-import { Add_Contact, Update_Contact, ShowPopUp_Contact, HidePopUp_Contact } from '../../../store/actions/types'
+import { ShowPopUp_Contact, HidePopUp_Contact, ShowNotifyMessage } from '../../../store/actions/types'
+import NotifiMsg from '../../publicComponants/NotifiMsg'
+import * as AdminstrationActions from '../../../store/actions/Adminstration'
+import {
+    bindActionCreators
+} from 'redux';
 const _ = require('lodash')
 
 let currentLanguage =
@@ -21,15 +26,14 @@ let currentLanguage =
 
 class Index extends Component {
     constructor(props) {
-        console.log(props)
         super(props);
         this.columnsGrid = [
             {
-                formatter: <button >{Resources['changeCompany'][currentLanguage]}</button>,
+                formatter: <button className="primary-1 btn smallBtn">{Resources['changeCompany'][currentLanguage]}</button>,
                 key: 'customBtn',
             },
             {
-                formatter: <button>{Resources['KeyContact'][currentLanguage]}</button>,
+                formatter: <button className="primaryBtn-1 btn smallBtn">{Resources['KeyContact'][currentLanguage]}</button>,
                 key: 'customBtn1',
             },
 
@@ -145,11 +149,11 @@ class Index extends Component {
 
         this.state = {
             isLoading: true,
-            rows: [],
+            rows: this.props.companies.companyContact,
             ProjectCompanies: [],
             AccountsDefaultList: [],
-            titleData:[],
-            totalRows: 0,
+            titleData: [],
+            totalRows: this.props.companies.companyContact.length,
             pageSize: 50,
             pageNumber: 0,
             pageTitle: Resources['contacts'][currentLanguage],
@@ -158,42 +162,42 @@ class Index extends Component {
             companyID: this.props.match.params.companyID,
             currentComponent: '',
             currentTitle: 'addContact',
-            popShow: false
+            showNotify: false,
+            showDeleteModal: false
         }
     }
-componentWillReceiveProps(){
-    this.setState({ popShow: this.props.communication.showPopUp,
-        rows: this.props.communication.companyContact,
-        totalRows:this.props.communication.companyContact.length})
-   
-}
+    componentWillReceiveProps(nextProps, prevProps) {
+        console.log(this.props.companies)
+      //  this.setState({showNotify:this.props.companies.ShowNotifyMessage})
+    //   if(this.state.rows.length!=this.props.companies.companyContact.length&&this.props.companies.getingData)
+    //   {
+         
+    //        this.props.actions.toggleLoading();
+
+    //   }
+    }
+
+
     componentDidMount() {
         if (Config.IsAllow(14)) {
-            Api.get('GetCompanyContacts?companyId=' + this.state.companyID).then(result => {
-             
-                this.props.dispatch({ type: Update_Contact, data: result })
-                this.setState({isLoading:false})
-            });
+            let url = 'GetCompanyContacts?companyId=' + this.state.companyID
+            this.props.actions.GetCompaniesContact(url);
             Api.get('GetProjectCompanies?accountOwnerId=2').then(result => {
-                this.setState({
-                    ProjectCompanies: result,
-                });
+                this.setState({ ProjectCompanies: result });
             });
             Api.get('GetAccountsDefaultList?listType=contacttitle&pageNumber=0&pageSize=10000').then(result => {
                 let _data = []
                 result.forEach(element => {
                     _data.push({ label: element.title, value: element.id })
                 });
-                this.setState({titleData:_data})
-                
+                this.setState({ titleData: _data })
+
             });
         }
-
     }
 
-
     cellClick = (rowID, colID) => {
-        let id = this.state.rows[rowID]['id']
+        let id = this.props.companies.companyContact[rowID]['id']
         if (colID == 1)
             alert("change")
         else if (colID == 2)
@@ -201,14 +205,15 @@ componentWillReceiveProps(){
 
     }
     addRecord = () => {
+
         if (Config.IsAllow(10)) {
             this.setState({ currentComponent: <AddNewContact titleData={this.state.titleData} companyID={this.state.companyID} /> })
-            this.props.dispatch({ type: ShowPopUp_Contact })
+            this.props.actions.TogglePopUp();
+            
         }
         else
             alert("not allow to add new company")
     }
-
 
     clickHandlerDeleteRowsMain = selectedRows => {
         this.setState({
@@ -217,64 +222,51 @@ componentWillReceiveProps(){
         });
     };
     onCloseModal() {
-        this.setState({
-            showDeleteModal: false
-        });
+        this.setState({ showDeleteModal: false });
     }
 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
 
+
     ConfirmDeleteComanies = () => {
         this.setState({ showDeleteModal: true })
-        let rowsData = this.state.rows;
-        if (Config.IsAllow(1258)) {
-            Api.post('ProjectCompaniesDelete?id=' + this.state.selectedRows)
-                .then(result => {
-                    let originalRows = this.state.rows.filter(r => r.id !== this.state.selectedRows);
+        if (Config.IsAllow(12)) {
+            let url = 'CompanyContactDelete?id=' + this.state.selectedRows[0]
+            this.props.actions.deleteContact(url, this.state.selectedRows[0]);
+            this.setState({ showDeleteModal: false });
 
-                    this.setState({
-                        rows: originalRows,
-                        totalRows: originalRows.length,
-                        isLoading: false,
-                        showDeleteModal: false,
-                        IsActiveShow: false
-                    });
-                })
-                .catch(ex => {
-                    this.setState({
-                        showDeleteModal: false,
-                        IsActiveShow: false
-                    })
-                })
         }
         else
             alert('not allowed to delete')
 
     }
 
-
     render() {
-        const dataGrid =
-            this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.columnsGrid}
-                    showCheckbox={true}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    cellClick={this.cellClick}
-                    single={true}
-                />
-            ) : <LoadingSection />;
+        const dataGrid = this.props.companies.getingData === false ? (
+            <GridSetup rows={this.props.companies.companyContact} columns={this.columnsGrid}
+                showCheckbox={true}
+                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+                cellClick={this.cellClick}
+                single={true}
+            />
+        ) : <LoadingSection />;
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.rows} columns={this.ExportColumns} fileName={this.state.pageTitle} />
             : null;
         return (
             <div className="mainContainer">
-                <div className="largePopup" style={{ display: this.state.popShow ? 'block' : 'none' }}>
+                {
+                    this.props.companies.NotifiMsg?
+                        <NotifiMsg showNotify={true} IsSuccess={true} Msg={Resources['smartSentAccountingMessage'][currentLanguage].successTitle} />
+                        : null
+                }
+                <div className="largePopup" style={{ display: this.props.companies.popUp ? 'block' : 'none' }}>
 
                     <SkyLightStateless
-                        isVisible={this.state.popShow}
-                        onCloseClicked={() => {  this.props.dispatch({ type: HidePopUp_Contact })}}
+                        isVisible={this.props.companies.popUp}
+                        onCloseClicked={() => { this.props.actions.TogglePopUp() }}
                     >
                         {this.state.currentComponent}
                     </SkyLightStateless>
@@ -282,7 +274,7 @@ componentWillReceiveProps(){
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
-                        <span>{this.state.rows.length}</span>
+                        <span>{this.props.companies.companyContact.length}</span>
                     </div>
 
                     <div className="filterBTNS">
@@ -292,16 +284,18 @@ componentWillReceiveProps(){
                 </div>
                 <div>
                     <div className="grid-container">
-                        {dataGrid}
+                        {this.props.companies.getingData === false ? dataGrid : <LoadingSection />}
                     </div>
                 </div>
                 <div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
+                            title={Resources['smartDeleteMessage'][currentLanguage].content}
                             closed={this.onCloseModal}
+                            buttonName='delete'
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}
-                            clickHandlerContinue={this.clickHandlerContinueMain}
+                            clickHandlerContinue={this.ConfirmDeleteComanies}
                         />
                     ) : null
                     }
@@ -315,5 +309,10 @@ const mapStateToProps = (state) => {
     let sState = state;
     return sState;
 }
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(AdminstrationActions, dispatch)
+    };
+}
 
-export default withRouter(connect(mapStateToProps)(Index));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Index));

@@ -7,7 +7,11 @@ import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../publicComponants/LoadingSection";
 import { connect } from 'react-redux'
-import { Add_Contact, HidePopUp_Contact } from '../../../store/actions/types'
+import { Add_Contact, HidePopUp_Contact,ShowNotifyMessage } from '../../../store/actions/types'
+import * as AdminstrationActions from '../../../store/actions/Adminstration'
+import {
+    bindActionCreators
+} from 'redux';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -20,7 +24,6 @@ const validationSchema = Yup.object().shape({
 })
 class AddNewContact extends Component {
     constructor(props) {
-        console.log(props)
         super(props);
         this.state = {
             selectedTitle: '',
@@ -56,7 +59,6 @@ class AddNewContact extends Component {
         }
     }
     Save = (values) => {
-        this.props.dispatch({ type: HidePopUp_Contact })
         let SendingObject = {
             titleId: this.state.selectedTitle.value,
             title: this.state.selectedTitle.label,
@@ -71,9 +73,10 @@ class AddNewContact extends Component {
             email: values.email,
             companyId: this.props.companyID
         }
-        Api.post('AddCompanyContactOnly', SendingObject).then(result => {
-            this.props.dispatch({ type: Add_Contact, data: result })
-        })
+
+        let url ='AddCompanyContactOnly' 
+        this.props.actions.addContact(url,SendingObject);
+     //   this.props.actions.ToggleLoading();
     }
     render() {
         return (
@@ -264,4 +267,10 @@ const mapStateToProps = (state) => {
     return sState;
 }
 
-export default withRouter(connect(mapStateToProps)(AddNewContact));
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(AdminstrationActions, dispatch)
+    };
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(AddNewContact));
