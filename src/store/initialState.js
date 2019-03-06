@@ -3,8 +3,9 @@ export default {
 		communication: {
 			document: {},
 			files: [],
-			workflowCycle:[],
+			workFlowCycles:[],
 			changeStatus: false,
+			hasWorkflow: false,
 			docId: 0,
 			doctypeId: 0,
 			projectId: 0,

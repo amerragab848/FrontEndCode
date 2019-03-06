@@ -31,6 +31,49 @@ const validationEdit = Yup.object().shape({
         .required(Resources['abbreviationValid'][currentLanguage]),
 });
 
+const DropGeneralData=
+       [ { label:   Resources["approvalStatus"][currentLanguage], value: "approvalstatus" },
+        { label:   Resources["area"][currentLanguage], value: "area" },
+        { label:   Resources["buildingNumber"][currentLanguage], value: "buildingno" },
+        { label:   Resources["companyRole"][currentLanguage], value: "companyrole" },
+        { label:   Resources["ContactName"][currentLanguage], value: "contacttitle" },
+        { label:   Resources["currency"][currentLanguage], value: "currency" },
+        { label:   Resources["clientSelectionType"][currentLanguage], value: "clinetselectionstype" },
+        { label:   Resources["country"][currentLanguage], value: "country" },
+        { label:   Resources["cvrRecommendations"][currentLanguage], value: "CVR Recommendations" },
+        { label:   Resources["dayName"][currentLanguage], value: "dayname" },
+        { label:   Resources["desginProjectType"][currentLanguage], value: "Desgin Project Type" },
+        { label:   Resources["discipline"][currentLanguage], value: "discipline" },
+        { label:   Resources["reviewResult"][currentLanguage], value: "Drawing Item Status" },
+        { label:   Resources["distributionAction"][currentLanguage], value: "distribution_action" },
+        { label:   Resources["drawingFileNumber"][currentLanguage], value: "drawingfilenumber" },
+        { label:   Resources["equipmentCode"][currentLanguage], value: "equipmentcode" },
+        { label:   Resources["equipmentType"][currentLanguage], value: "equipmenttype" },
+        { label:   Resources["expenseType"][currentLanguage], value: "expensestype" },
+        { label:   Resources["fieldForce"][currentLanguage], value: "fieldforce" },
+        { label:   Resources["itemType"][currentLanguage], value: "Item Type" },
+        { label:   Resources["location"][currentLanguage], value: "location" },
+        { label:   Resources["materialCode"][currentLanguage], value: "materialcode" },
+        { label:   Resources["materialTitle"][currentLanguage], value: "materialtitle" },
+        { label:   Resources["priority"][currentLanguage], value: "priority" },
+        { label:   Resources["projectType"][currentLanguage], value: "projecttype" },
+        { label:   Resources["project_Type"][currentLanguage], value: "project_type" },
+        { label:   Resources["reportsTypes"][currentLanguage], value: "Reports Types" },
+        { label:   Resources["reasonForIssue"][currentLanguage], value: "reasonforissue" },
+        { label:   Resources["reviewResult"][currentLanguage], value: "reviewresult" },
+        { label:   Resources["sendingMethod"][currentLanguage], value: "sendingmethods" },
+        { label:   Resources["specsSection"][currentLanguage], value: "specssection" },
+        { label:   Resources["transmittalSubmittedFor"][currentLanguage], value: "transmittalsubmittedfor" },
+        { label:   Resources["transactionType"][currentLanguage], value: "transactiontype" },
+        { label:   Resources["timeSheetLocation"][currentLanguage], value: "timesheetlocation" },
+        { label:   Resources["weather"][currentLanguage], value: "weather" },
+        { label:   Resources["weatherFromTo"][currentLanguage], value: "weatherfromto" },
+        { label:   Resources["unit"][currentLanguage], value: "unit" },
+        { label:   Resources["apartmentNumber"][currentLanguage], value: "Apartment Number" },
+        { label:   Resources["boqItemType"][currentLanguage], value: "estimationitemtype" },
+        { label:   Resources["EstimationType"][currentLanguage], value: "EstimationType" },
+        { label:   Resources["dailyreporttype"][currentLanguage], value: "dailyreporttype" }]
+
 class GeneralList extends Component {
     constructor(props) {
 
@@ -43,7 +86,7 @@ class GeneralList extends Component {
             },
             {
                 key: "title",
-                name: Resources["title"][currentLanguage],
+                name: Resources["generalListTitle"][currentLanguage],
                 width: 250,
                 draggable: true,
                 sortable: true,
@@ -55,7 +98,6 @@ class GeneralList extends Component {
         super(props)
 
         this.state = {
-            GeneralList: [],
             showCheckbox: false,
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
@@ -130,17 +172,18 @@ class GeneralList extends Component {
         if (config.IsAllow(1179)) {
             if (config.IsAllow(1181)) {
                 this.setState({
-                    showCheckbox: true
+                    showCheckbox: true ,
+                     isLoading: false
                 })
             }
-            dataservice.GetDataList('GetListTypesOnly', 'listType', 'listType').then(
-                res => {
-                    this.setState({
-                        GeneralList: res,
-                        isLoading: false
-                    })
-                }
-            )
+            // dataservice.GetDataList('GetListTypesOnly', 'listType', 'listType').then(
+            //     res => {
+            //         this.setState({
+            //             GeneralList: res,
+            //             isLoading: false
+            //         })
+            //     }
+            // )
         }
     }
 
@@ -275,7 +318,7 @@ class GeneralList extends Component {
 
 
     render() {
-        console.log(this.state.EditListData)
+    
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
@@ -298,14 +341,11 @@ class GeneralList extends Component {
                 <NotifiMsg showNotify={this.state.showNotifyError} IsSuccess={false} Msg={Resources['adminItemEditable'][currentLanguage]} />
                 <NotifiMsg showNotify={this.state.showNotifyPermissions} IsSuccess={false} Msg={Resources['missingPermissions'][currentLanguage]} />
 
-                <div className="linebylineInput valid-input">
-                    <Select title='AccountsDefaultList' placeholder='AccountsDefaultList' data={this.state.GeneralList} handleChange={this.GeneralListHandelChange} />
-                </div>
+              
 
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['AccountsDefaultList'][currentLanguage]}</h3>
-                        <span>{this.state.rows.length}</span>
                         <span>
                             <svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" >
@@ -342,7 +382,11 @@ class GeneralList extends Component {
                     </div>
 
                 </div>
-
+               
+                <div className="linebylineInput valid-input">
+                    <Select title='AccountsDefaultList' placeholder='AccountsDefaultList' data={DropGeneralData} handleChange={this.GeneralListHandelChange} />
+                </div>
+               
                 <div className="grid-container">
                     {dataGrid}
                 </div>

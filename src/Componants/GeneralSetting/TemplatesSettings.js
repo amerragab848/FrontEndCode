@@ -2,9 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import Accounts from './Accounts/Accounts'
 import Companies from './Companies/Index';
+import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
+import NotifiMsg from '../publicComponants/NotifiMsg'
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -12,21 +14,32 @@ class TemplatesSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabIndex: 0
+            tabIndex: 0,
+            showNotify:false
         };
+    }
+    NoPermission=()=>{
+        this.setState({
+            showNotify:true
+        })
+        setTimeout(() => {
+            this.setState({
+                showNotify:false
+            })
+        }, 1000);
     }
     render() {
         return (
             <div className='mainContainer'>    
-                    <Tabs className="settings-container" selectedIndex={this.state.tabIndex} 
-                                                         onSelect={tabIndex => this.setState({ tabIndex })}>
+           
+
+                    <Tabs className="settings-container" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
                         <div className="settings-tabs-items">
                             <h3 className="zero">Settings</h3>
                             <TabList>
                                 <li className="title">
                                         <h4 className="zero">{Resources['userMenu'][currentLanguage]}</h4>
                                 </li>
-
                                 <Tab>
                                     <span className="subUlTitle">{Resources['titleAccounts'][currentLanguage]}</span>
                                 </Tab>
@@ -34,39 +47,45 @@ class TemplatesSettings extends Component {
                                     <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
                                 </Tab>
 
-{/*                        
                                 <li className="title">
-                                    <h4 className="zero">Project</h4>
+                                    <h4 className="zero">{Resources['Project'][currentLanguage]}</h4>
                                 </li>
-
+                                {(config.IsAllow(1179)) ?
                                 <Tab>
-                                    <span className="subUlTitle">Project1</span>
-                                </Tab>
+                                    <span className="subUlTitle">{Resources['expensesWorkFlow'][currentLanguage]}</span>
+                                </Tab> :null}
 
-                                <Tab>
-                                    <span className="subUlTitle">Project2</span>
-                                </Tab> */}
 
                                 <li className="title">
                                     <h4 className="zero">{Resources['menuDefaultData'][currentLanguage]}</h4>
                                 </li>
+                                {(config.IsAllow(1179)) ?
                                 <Tab>
                                     <span className="subUlTitle">{Resources['AccountsDefaultList'][currentLanguage]}</span>
-                                </Tab> 
+                                </Tab> :null}
+
+
                             </TabList>
                         </div>
             
                         <div className="setting-tabs-contant">
 
-                        {(config.IsAllow(794)) ?
+                     {(config.IsAllow(794)) ? 
                             <TabPanel>
                                 <Accounts />
                             </TabPanel>
-                            :null}
+                          :null} 
                             
-                              {(config.IsAllow(1001105)) ?
+                            {(config.IsAllow(1001105)) ? 
                             <TabPanel>
                                 <Companies />
+                            </TabPanel>
+                             :null} 
+
+                
+                           {(config.IsAllow(1001105)) ?
+                            <TabPanel>
+                                <ExpensesWorkFlowLog />
                             </TabPanel>
                             :null}
 
@@ -75,8 +94,7 @@ class TemplatesSettings extends Component {
                             <TabPanel>
                                 <GeneralList />
                             </TabPanel>
-
-                            :null}
+                             : null  }
                         </div>
                     </Tabs> 
 

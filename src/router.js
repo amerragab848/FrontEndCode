@@ -41,6 +41,10 @@ import AccountsEPSPermissions  from './Componants/GeneralSetting/Accounts/Accoun
 import TemplatesSettings  from './Componants/GeneralSetting/TemplatesSettings'
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
 import GeneralList  from './Componants/GeneralSetting/MenuDefaultData/GeneralList'
+import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
+
+import ExpensesWorkFlow  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlow'
+import ExpensesWorkFlowAddEdit  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit'
 
 let routes = (
 <Switch>
@@ -89,6 +93,11 @@ let routes = (
     <Route path="/TaskAdmin" component={TaskAdmin} /> 
     <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
     <Route path="/GeneralList" component={GeneralList} /> 
+    <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> 
+
+
+    <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} /> 
+    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> 
     
 </Switch> 
 ); 
