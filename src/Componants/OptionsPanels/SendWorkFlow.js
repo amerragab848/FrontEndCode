@@ -3,6 +3,14 @@ import Api from '../../api'
 import Dropdown from "./DropdownMelcous"; 
 
 import Resources from '../../resources.json';
+
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
@@ -13,10 +21,10 @@ class SendWorkFlow extends Component {
         this.state = {
 
             workFlowData: {
-                projectId: "4330",
-                docId: "138",
+                projectId: this.props.projectId,
+                docId: this.props.docId,
+                docTypeId: this.props.docTypeId,
                 arrange: "",
-                docType: "64",
                 workFlowId: "", 
                 toAccountId:"",
                 dueDate: ""
@@ -53,11 +61,11 @@ class SendWorkFlow extends Component {
     clickHandler = (e) => { 
             let workFlowObj={...this.state.workFlowData};
             workFlowObj.toAccountId=this.state.selectedApproveId.value;
-             
-            Api.post("SnedToWorkFlow", workFlowObj)
+            let url='GetCycleWorkflowByDocIdDocType?docId='+this.props.docId+'&docType='+this.props.docTypeId+'&projectId='+this.props.projectId;
+            this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj,url); 
+            //Api.post("SnedToWorkFlow", workFlowObj)
     }
- 
-
+  
     render() {
         return (
             <div className="dropWrapper">
@@ -110,4 +118,21 @@ class SendWorkFlow extends Component {
     } 
 }
  
-export default SendWorkFlow;
+function mapStateToProps(state) {
+    
+    return {
+        workFlowCycles: state.communication.workFlowCycles,
+        hasWorkflow: state.communication.hasWorkflow 
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendWorkFlow);

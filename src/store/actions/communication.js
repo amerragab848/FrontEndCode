@@ -132,13 +132,30 @@ export function GetNextArrange(urlAction) {
     }
 }
 
+export function SnedToWorkFlow(url,formData,urlCycle) {
+    return (dispatch, getState) => { 
+        return Api.post(url,formData).then(resp => {  
+
+            // dispatch({
+            //         type: types.Send_WorkFlow,
+            //         hasWorkflow: true
+            // });
+           this.GetWorkFlowCycles(urlCycle);
+        }).catch((ex) => {
+            dispatch({
+                    type: types.Send_WorkFlow,
+                    hasWorkflow: false
+            });
+        });
+    }
+}
 export function GetWorkFlowCycles(urlAction) {
     return (dispatch, getState) => { 
        
         return Api.get(urlAction).then(resp => { 
             
           let result=  BuildWorkFlowCycleStracture(resp);
-            //alert(result.hasWorkFlow);
+           
            dispatch({
                     type: types.Cycles_WorkFlow,
                     workFlowCycles: result.cycles,

@@ -120,7 +120,14 @@ class LettersAddEdit extends Component {
             this.checkDocumentIsView();
         }
     };
-     
+    
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+            this.checkDocumentIsView();
+        }
+    }
+
     checkDocumentIsView(){
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(49))) { 
