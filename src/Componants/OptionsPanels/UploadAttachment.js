@@ -4,8 +4,7 @@ import classNames from 'classnames'
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
 import 'react-table/react-table.css'
-import Api from '../../api';
-
+ 
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -39,23 +38,16 @@ class UploadAttachment extends Component {
         }, 500)
 
         acceptedFiles.forEach(element => {
-            let formData = new FormData();
-            
-            formData.append("file",element)
-           
-            let header={'docTypeId':this.props.docTypeId,'docId':this.props.docId,'parentId':this.state.parentId}
-            
-            //Api.postFile("BlobUpload",formData,header)  
-            //let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-
+            let formData = new FormData(); 
+            formData.append("file",element) 
+            let header={'docTypeId':this.props.docTypeId,'docId':this.props.docId,'parentId':this.state.parentId} 
             this.props.actions.uploadFile("BlobUpload",formData,header);
         }); 
         setTimeout(() => {
             this.setState({ _className: "zeropercent" })
         }, 1000) 
     }
-
-
+ 
     render() {
         return (
             <div>
