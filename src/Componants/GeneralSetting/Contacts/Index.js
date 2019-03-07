@@ -9,12 +9,12 @@ import GridSetup from "../../../Pages/Communication/GridSetup";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import { SkyLightStateless } from 'react-skylight';
 import AddNewContact from './AddNewContact'
 import { connect } from 'react-redux'
 import { ShowPopUp_Contact, HidePopUp_Contact, ShowNotifyMessage } from '../../../store/actions/types'
-import NotifiMsg from '../../publicComponants/NotifiMsg'
 import * as AdminstrationActions from '../../../store/actions/Adminstration'
+import NotifiMsg from '../../publicComponants/NotifiMsg'
+
 import {
     bindActionCreators
 } from 'redux';
@@ -162,19 +162,20 @@ class Index extends Component {
             companyID: this.props.match.params.companyID,
             currentComponent: '',
             currentTitle: 'addContact',
-            showNotify: false,
-            showDeleteModal: false
+            showDeleteModal: false,
+            showComponent:false
         }
     }
     componentWillReceiveProps(nextProps, prevProps) {
-        console.log(this.props.companies)
-      //  this.setState({showNotify:this.props.companies.ShowNotifyMessage})
-    //   if(this.state.rows.length!=this.props.companies.companyContact.length&&this.props.companies.getingData)
-    //   {
-         
-    //        this.props.actions.toggleLoading();
+        console.log(this.props)
+        //   if(this.state.showNotify!=this.props.companies.notifyMessage)
+        //   {
 
-    //   }
+        //     alert("not")
+        //     //   this.setState({
+        //     //     showNotify:this.props.companies.notifyMessage
+        //     //   })
+        //   }
     }
 
 
@@ -205,11 +206,9 @@ class Index extends Component {
 
     }
     addRecord = () => {
-
         if (Config.IsAllow(10)) {
-            this.setState({ currentComponent: <AddNewContact titleData={this.state.titleData} companyID={this.state.companyID} /> })
-            this.props.actions.TogglePopUp();
-            
+            this.setState({ currentComponent: <AddNewContact titleData={this.state.titleData} companyID={this.state.companyID} /> ,showComponent: true })
+             this.props.actions.TogglePopUp();
         }
         else
             alert("not allow to add new company")
@@ -223,10 +222,12 @@ class Index extends Component {
     };
     onCloseModal() {
         this.setState({ showDeleteModal: false });
+
     }
 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
+
     };
 
 
@@ -236,7 +237,6 @@ class Index extends Component {
             let url = 'CompanyContactDelete?id=' + this.state.selectedRows[0]
             this.props.actions.deleteContact(url, this.state.selectedRows[0]);
             this.setState({ showDeleteModal: false });
-
         }
         else
             alert('not allowed to delete')
@@ -257,20 +257,12 @@ class Index extends Component {
             : null;
         return (
             <div className="mainContainer">
-                {
-                    this.props.companies.NotifiMsg?
-                        <NotifiMsg showNotify={true} IsSuccess={true} Msg={Resources['smartSentAccountingMessage'][currentLanguage].successTitle} />
-                        : null
-                }
-                <div className="largePopup" style={{ display: this.props.companies.popUp ? 'block' : 'none' }}>
+               {this.props.companies.notifyMessage ?
+                    <NotifiMsg showNotify={this.props.companies.notifyMessage} IsSuccess={true} Msg={Resources['smartSentAccountingMessage'][currentLanguage].successTitle} />
+                    : null}
+                
+             {this.state.showComponent?this.state.currentComponent:null}
 
-                    <SkyLightStateless
-                        isVisible={this.props.companies.popUp}
-                        onCloseClicked={() => { this.props.actions.TogglePopUp() }}
-                    >
-                        {this.state.currentComponent}
-                    </SkyLightStateless>
-                </div>
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>

@@ -44,11 +44,6 @@ export function GetCompaniesContact(url) {
 export function addContact(url,Contact) {
    
     return (dispatch, getState) => {
-        
-        // dispatch({
-        //     type: types.getingData
-        // }); 
-
         return Api.post(url,Contact).then(resp => { 
             dispatch({
                 type: types.Add_Contact,
@@ -77,6 +72,16 @@ export function toggleLoading() {
     return (dispatch, getState) => {
             dispatch({
                 type: types.toggleLoading
+            });
+       
+    }
+}
+
+export function toggleNotifyMessage() {
+   
+    return (dispatch, getState) => {
+            dispatch({
+                type: types.toggleNotifyMessage
             });
        
     }

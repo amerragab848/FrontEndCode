@@ -24,9 +24,8 @@ export default function (state = initialState.app.comapnies, action) {
 
         case types.Add_Contact:
             state.companyContact.unshift(action.data)
-            state.notifyMessage = true
             state.popUp = false 
-           // state.getingData = ! state.getingData
+            state.notifyMessage = true 
             return {
                 ...state
             };
