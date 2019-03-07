@@ -3,7 +3,6 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js';
 import "react-tabs/style/react-tabs.css";
 import { SortablePane, Pane } from "react-sortable-pane";
-import "react-sortable-tree/style.css";
 import Rodal from "../Styles/js/rodal";
 import "../Styles/css/rodal.css";
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
