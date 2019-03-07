@@ -6,12 +6,16 @@
 
 import React, { Component, Fragment } from 'react'
 import Api from '../../api';
-import Moment from 'moment';
-import Resources from '../../resources.json';
+import Moment from 'moment'; 
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
- 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+  
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
 
 const _ = require('lodash')
 
@@ -20,48 +24,25 @@ class ViewWorkFlow extends Component {
     constructor(props) {
         super(props)
         this.state = { 
-            cycles: [],
+            workFlowCycles: [],
+            visualCycle:[],
             projectId: this.props.projectId != null ? this.props.projectId :0,
             docId: this.props.docId !=null ? this.props.docId :0,
             docType: this.props.docType !=null ?this.props.docType :0
         }
     }
 
-    componentDidMount() {
-        let levels = [];
-        let cycles = [];
-
-        Api.get('GetCycleWorkflowByDocIdDocType?docId='+this.state.docId+'&docType='+this.state.docType+'&projectId='+this.state.projectId).then(result => {
-
-            let workFlowCycles = _.uniqBy(result, 'subject');
-            const poolLevels = _.orderBy(result, ['arrange'], 'asc');
-
-            workFlowCycles.forEach(function (item) {
-                var obj = {};
-
-                obj.subject = item.subject;
-                obj.creationDate=item.creationDate;
-
-                obj.accountDocWorkFlowId = item.accountDocWorkFlowId;
-
-                //all levels in same subject
-                levels = _.filter(poolLevels, function (i) {
-                    return i.accountDocWorkFlowId === item.accountDocWorkFlowId;
-                });
-
-                obj.levels = levels;
- 
-                let maxArrange=_.maxBy(levels,'arrange');
-                 
-                obj.currentLevel=maxArrange.arrange;
-                cycles.push(obj);
-            });
-
-            this.setState({ 
-                cycles:cycles
-            });
-        });
-    }
+    componentWillMount() { 
+        let url='GetCycleWorkflowByDocIdDocType?docId='+this.state.docId+'&docType='+this.state.docType+'&projectId='+this.state.projectId;
+        this.props.actions.GetWorkFlowCycles(url); 
+       
+    } 
+    componentWillReceiveProps(nextProps, prevProps) {
+        if (nextProps.workFlowCycles != prevProps.workFlowCycles) { 
+            this.setState({ workFlowCycles: nextProps.workFlowCycles }); 
+            this.renderCycles(nextProps.workFlowCycles); 
+        }
+    };
 
     renderLevels(items) {
  
@@ -77,7 +58,7 @@ class ViewWorkFlow extends Component {
             groupedLevels.push(obj);
         }); 
  
-   let mapLevels = groupedLevels.map((i,index) => {
+        let mapLevels = groupedLevels.map((i,index) => {
          return (
             <div className="StepperNum1 StepperNum workFlowStep" key={index}>
                         <div>
@@ -115,11 +96,12 @@ class ViewWorkFlow extends Component {
             </div>
             )
          })
+
        return mapLevels;
     }
  
-    renderCycles() {
-        let cycles = this.state.cycles.map(cycle => {
+    renderCycles(workFlowCycles) { 
+        let cycles = workFlowCycles.map(cycle => {
             return ( 
                 <div className="workflowWrapper" key={Math.random()}>
                     <div className="workflow-header">
@@ -131,18 +113,36 @@ class ViewWorkFlow extends Component {
                 </div>
             )
         })
-
+        this.setState({
+            visualCycle:cycles
+        });
+        console.log('renderCycles',cycles)
         return cycles
     }
 
     render() {
         return (
             <Fragment >
-                {this.renderCycles()}
+                {this.state.visualCycle}
             </Fragment>
         )
     }
 }
 
-export default ViewWorkFlow;
+function mapStateToProps(state) {
+    return {
+        workFlowCycles: state.communication.workFlowCycles,
+        hasWorkflow:  state.communication.hasWorkflow
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ViewWorkFlow);
 

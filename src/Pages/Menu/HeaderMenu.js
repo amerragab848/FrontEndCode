@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link,withRouter } from "react-router-dom";
+import { Link,withRouter,NavLink } from "react-router-dom";
 import Api from "../../api"; 
 import "../../Styles/css/rodal.css";
 import "react-table/react-table.css";
@@ -88,13 +88,19 @@ class HeaderMenu extends Component {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="Templates_Settings.html"
+                <NavLink to='/TemplatesSettings' >
+                  <img alt="" title="" src={Setting} />
+                
+                                  
+                 </NavLink>
+                  {/* <a
+                    href="/TemplatesSettings"
                     data-modal="modal2"
                     className="notfiUI settingIcon"
                   >
                     <img alt="" title="" src={Setting} />
-                  </a>
+                  </a> */}
+
                 </li>
                 <li className="notifi-icon">
                   <a>
@@ -120,16 +126,14 @@ class HeaderMenu extends Component {
                       <i className="dropdown icon" />
                       <div className="menu center left">
                         <div className="item"> 
-                          <Link to="/ProfileSetting">
+                          <Link to="/ProfileSetting" className="item-content">
                             {Resources["profile"][currentLanguage]}
                           </Link>
                         </div>
-                        <div className="item">
-                          <div className="item-content">
-                          <Link to="/PrivacySetting">
+                        <div className="item"> 
+                          <Link to="/PrivacySetting" className="item-content">
                             {Resources["privacySettings"][currentLanguage]}
-                          </Link>
-                          </div>
+                          </Link> 
                         </div>
                         <div className="item">
                           <div className="item-content">

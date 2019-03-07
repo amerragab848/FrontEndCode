@@ -17,30 +17,12 @@ import api from './api';
 import Index from "./Componants/Index";
 import WFExpenses from './Componants/User/WFExpenses'
 import Companies from './Componants/GeneralSetting/Companies/Index'
-import AddNewCompany from './Componants/GeneralSetting/Companies/AddCompany';
+//import Settings from './Componants/GeneralSetting/Settings'
+import AddEditCompany from './Componants/GeneralSetting/Companies/AddEditCompany';
 
 import DocumentEmailNotification from './Componants/User/DocumentEmailNotification';
 import MonthlyTasksDetails from './Componants/DashBoardDetails/MonthlyTasksDetails';
-
-// import CreateTransmittal from "./Componants/OptionsPanels/CreateTransmittal";
-// import SendTask from "./Componants/OptionsPanels/SendTask";
- //import DistributionList from "./Componants/OptionsPanels/DistributionList";
-// import Filter from "./Componants/FilterComponent/filterComponent";
-// import TimeSheet from "./Componants/DashBoardDetails/TimeSheetDetails";
-// import SendWorkFlow from './Componants/OptionsPanels/SendWorkFlow'; 
-// import ViewAttachment from './Componants/OptionsPanels/ViewAttachmments'
-// import UploadAttachment from './Componants/OptionsPanels/UploadAttachment'
-// import Upload from './Componants/OptionsPanels/UploadAttachment'
-// import SendToInbox from './Componants/OptionsPanels/SendToInbox'
-// import CopyTo from "./Componants/OptionsPanels/CopyTo";
-// import SendByEmails from "./Componants/OptionsPanels/SendByEmails";
-// import WfApproval from './Componants/OptionsPanels/wfApproval';
-// import PopUp from './Componants/OptionsPanels/OptionContainer' 
-// import ViewWorkFlow from "./Componants/OptionsPanels/ViewWorkFlow"; 
-//import Expenses from './Componants/User/Expenses' 
-//import User from './Componants/User/index' 
-//import Timesheet from "./Componants/User/Timesheet";
-
+ 
 import {
     Provider
 } from 'react-redux';

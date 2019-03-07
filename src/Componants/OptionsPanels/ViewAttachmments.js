@@ -14,6 +14,7 @@ import {
 } from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
+import Config from '../../Services/Config';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -30,12 +31,7 @@ class ViewAttachmments extends Component {
 
     deletehandler = (file) => {
         let urlDelete = 'DeleteAttachFileById?id=' + file.id
-        Api.post(urlDelete).then(result => { 
-              this.props.actions.deleteFile(file);
-        }).catch(ex => {
-            this.props.actions.deleteFile(null);
-        });
- 
+        this.props.actions.deleteFile(urlDelete,file);  
     }
 
     versionHandler = (parentId) => {
@@ -76,14 +72,18 @@ class ViewAttachmments extends Component {
                                 </td>
                                 <td>
                                     <div className="contentCell tableCell-4">
-                                        <h6 className="zero">{item['uploadedBy']} </h6>
+                                        <p className="zero">{item['uploadedBy']} </p>
                                     </div>
                                 </td>
                                 <td className="tdHover">
                                     <div className="attachmentAction">
+                                        {Config.IsAllow(this.props.deleteAttachments)?
                                         <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
                                             <img src={Recycle} alt="del" width="100%" height="100%" />
-                                        </a>
+                                        </a>:
+                                         null
+                                        }
+
                                         <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
                                             <img src={Download} alt="dLoad" width="100%" height="100%" />
                                         </a>

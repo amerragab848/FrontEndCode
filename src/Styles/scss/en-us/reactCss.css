@@ -548,6 +548,11 @@ table edition
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  position: relative;
+  z-index: 999999;
+}
+.skylight-wrapper .skylight-close-button {
+  top: 10px !important;
 }
 .ReactTable .rt-tbody {
     flex: 99999 1 auto;
@@ -944,6 +949,8 @@ text-transform: capitalize
   animation: opacity 3s linear;
   transition: all 0.3s ease-in-out;
   animation-fill-mode: forwards;
+  position: relative;
+  z-index: 999999;
 }
 .primaryBtn-1 .spinner > div {
   background-color: rgb(198, 217, 253);
@@ -976,14 +983,14 @@ text-transform: capitalize
   width: 100% !important;
 }
  .notifiActionsContainer{
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 40px;
   right: 40px;
   max-width: 500px;
   width: auto;
   min-width: 300px;
   height: 50px;
- /* z-index: 99999999; */
+  z-index: 99999999; 
 }
 .rodal .notifiActionsContainer {
   top: 30px;
@@ -1011,7 +1018,6 @@ text-transform: capitalize
 }
 .cutome__inputs .dashboardLoading {
   position: fixed !important;
-
 }
 .dashboardLoading span {
     width: 64px;
@@ -1386,16 +1392,7 @@ tfoot tr td p{
 .taskAdminTable thead {
   text-align: left;
 }
-/* .taskAdminTable .checked label::after {
-  background-color: #4382F9;
-  border-radius: 0.21428571rem;
-  color: #ffffff;
-  content: '\E800';
-  opacity: 1;
-  color: rgba(0,0,0,.95);
-  content: url(/static/media/checkmark.61246eb7.svg);
-  font-family: Checkbox;
-} */
+ 
 .taskAdminTable thead tr th{
   border-right: 1px solid #DADEE6;
   border-bottom: 1px solid #DADEE6;
@@ -1423,33 +1420,6 @@ tfoot tr td p{
 .documents-stepper .doc-container .step-content.fullWidthContent {
   width: 100%;
 }
-.cutome__inputs .linebylineInput .fillter-status.fillter-item-c {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-.cutome__inputs .linebylineInput .fillter-status.fillter-item-c label{
-    width: 130px;
-    text-align: right;
-    margin-right: 16px;
-    font-family: font-opensb;
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.2px;
-    color: #252833;
-  }
-.cutome__inputs .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
-  width: 360px;
- }
-.cutome__inputs  .linebylineInput .proForm.datepickerContainer {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cutome__inputs  .linebylineInput .proForm.datepickerContainer .linebylineInput {
-  margin-bottom: 0 !important;
-}
 .submittalActions__add {
   background-color: transparent;
   align-items: center;
@@ -1467,6 +1437,7 @@ tfoot tr td p{
 }
 .submittalActions__add .customD_Menu >div , .submittalActions__add .customD_Menu div:hover{
   border-color: transparent !important;
+  color: black !important;
 }
 .submittalActions__add .css-vj8t7z {
   border-color: transparent !important;
@@ -1491,7 +1462,7 @@ tfoot tr td p{
   font-weight: bold;
 }
 .skylight-dialog{
-  max-height: 600px;
+  max-height: 500px;
   overflow-y: auto;
 } 
 .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
@@ -1563,3 +1534,566 @@ tfoot tr td p{
   margin-right: 3px;
   cursor: pointer;
 }
+ 
+.react-grid-Cell--frozen:last-of-type {
+  box-shadow: 2px 0 5px -2px hsla(0,0%,53%,.3);
+}
+.card-status .MultiPeinding {
+  display: flex;
+  margin: 0 2px; 
+}
+.workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
+  color: #fff
+}
+.attachmentTable tbody tr .contentCell.tableCell-4 {
+  max-width: 185px
+} 
+.daysCheckbox .ui.checkbox {
+  margin: 0 10px;
+}
+.daysCheckbox .ui.checkbox:first-of-type {
+  margin-left: 0;
+}
+.daysCheckbox .ui.checkbox:last-of-type {
+  margin-right: 0;
+} 
+.settings-tabs-items .react-tabs__tab-list {
+  border-bottom: 1px solid #e6e6e6 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-flow: column;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  background: #fff !important;
+  overflow: hidden !important;
+  z-index: 14 !important;
+  position: unset !important;
+}
+.settings-tabs-items .react-tabs__tab {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.settings-tabs-items .react-tabs__tab {
+  padding: 0 !important;
+  border-bottom: 0 solid transparent !important;
+  border-left: 6px solid transparent !important;
+  padding-left: 34px !important;
+  width: 100%;
+}
+.settings-tabs-items .react-tabs__tab--selected {
+  border: 0 solid transparent !important;
+  padding: 0 !important;
+  border-bottom: 0 solid #3570E6 !important;
+  border-left: 6px solid #4382f9 !important;
+  background-color: #E9ECF0 !important;
+  padding-left: 34px !important;
+}
+.dropBtn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.dropBtn .border {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background-color: #e9ecf0;
+  margin: 0 24px;
+}
+.dropdownMulti .customD_Menu .css-1hwfws3 {
+  max-height: inherit;
+}
+.dropdownMulti .fillter-status.fillter-item-c {
+  display: flex;
+}
+.dropdownMulti .fillter-status.fillter-item-c .spanValidation { 
+  width: 130px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 15px;
+}
+.dropdownMulti .fillter-status.fillter-item-c >div:last-of-type {
+  width: 100%;
+} 
+.label__block label {
+  display: block;
+}
+.label__block .inputDev {
+  width: 100%;
+}
+.spanValidation {
+  margin-bottom: 10px;
+
+}
+/* noTabs */ 
+.noTabs__document .submittalHead {
+  justify-content: center;
+  padding-left: 0;
+  z-index: 2; }
+.noTabs__document .doc-container {
+  background: #fff;
+  flex-flow: column; }
+  .noTabs__document .doc-container .main__header {
+    width: 100%;
+    padding: 0;
+    border-bottom: 1px solid #e9ecf0; }
+    .noTabs__document .doc-container .main__header .main__header--div {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: space-between;
+      width: 75%;
+      margin: 0 auto;
+      height: 72px; }
+      @media screen and (max-width: 1250px) {
+        .noTabs__document .doc-container .main__header .main__header--div {
+          width: 91%; } }
+
+    .noTabs__document .doc-container .main__header h2 {
+      font-family: font-b;
+      font-size: 20px;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833; }
+    .noTabs__document .doc-container .main__header p {
+      font-family: font-opens;
+      font-size: 12px;
+      line-height: 1.33;
+      letter-spacing: -0.2px;
+      color: #a8b0bf;
+      /* width: 100%; */
+      text-align: right; }
+  .noTabs__document .doc-container .step-content {
+    width: 75%;
+    border-right: 0;
+    background-color: #ffffff;
+    margin: auto;
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 70px; }
+    @media screen and (max-width: 1250px) {
+      .noTabs__document .doc-container .step-content {
+        width: 91%; } }
+
+    .noTabs__document .doc-container .step-content .document-fields {
+      padding: 14px 0; }
+      .noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 0;
+      }
+      .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform {
+        display: flex;
+        justify-content: space-between;
+        padding-right: 0;
+        flex-wrap: wrap;
+        align-items: center; }
+        .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:last-of-type {
+          flex-flow: row;
+          margin-bottom: 0; }
+      .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput {
+        margin-bottom: 16px;
+        width: 43%;
+        margin-right: 50px;
+        flex-shrink: 0;
+        flex-flow: column;
+        align-items: flex-start; }
+        .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput > label {
+          width: auto;
+          text-align: left;
+          margin-right: 32px;
+          font-family: font-opensb;
+          font-size: 14px;
+          line-height: 1.43;
+          letter-spacing: -0.2px;
+          color: #252833;
+          margin-bottom: 4px; }
+        @media screen and (max-width: 1250px) {
+          .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.even {
+            margin-right: 0; } }
+    .noTabs__document .doc-container .step-content .doc-pre-cycle {
+      padding: 0; }
+      .noTabs__document .doc-container .step-content .doc-pre-cycle header {
+        padding: 40px 0; }
+        .noTabs__document .doc-container .step-content .doc-pre-cycle header h2 {
+          border-bottom: 1px solid #e1e3e8;
+          width: 100%;
+          padding-bottom: 12px;
+          padding-left: 0;
+          font-family: font-r;
+          font-size: 20px;
+          line-height: 1.4;
+          letter-spacing: -0.2px;
+          color: #252833; }
+      .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
+        padding-top: 55px;
+        padding-left: 0; }
+.noTabs__document .approveDocument {
+  position: fixed;
+  bottom: 0;
+  right: 40px;
+  left: 130px;
+  z-index: 19;
+  height: 72px;
+  border-radius: 3px;
+  box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 0 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+  .noTabs__document .approveDocument .spanValidation{
+    margin: 0;
+  }
+  .noTabs__document .approveDocument h2 {
+    flex: 0.5;
+    line-height: 1.17;
+    letter-spacing: -0.5px;
+    color: #252833;
+    opacity: 0.3;
+    font-family: font-b; }
+  .noTabs__document .approveDocument .approveDocumentBTNS {
+    flex: 1.5;
+    display: flex;
+    justify-content: flex-end; }
+    .noTabs__document .approveDocument .approveDocumentBTNS .border {
+      display: block;
+      width: 1px;
+      height: 40px;
+      background-color: #e9ecf0;
+      margin: 0 24px; }
+    .noTabs__document .approveDocument .approveDocumentBTNS .middle__btn {
+      margin: 0 6px; }
+
+
+
+
+
+/* new css notabs */
+      .noTabs__document .doc-container  .step-content .linebylineInput .fillter-status.fillter-item-c label{
+        width: auto;
+        text-align: left;
+        margin-right: 32px;
+        font-family: font-opensb;
+        font-size: 14px;
+        line-height: 1.43;
+        letter-spacing: -0.2px;
+        color: #252833;
+        margin-bottom: 4px;
+        }
+        .noTabs__document .doc-container  .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+        width: 360px;
+       }
+       .noTabs__document .doc-container .step-content .linebylineInput .proForm.datepickerContainer {
+        margin: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-flow: column;
+      }
+      .noTabs__document .doc-container .step-content  .linebylineInput .proForm.datepickerContainer .linebylineInput {
+        margin-bottom: 0 !important;
+      }
+      .noTabs__document .doc-container .step-content .document-fields .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+        width: 192px;
+      }
+/* new css notabs */
+/* noTabs */ 
+
+.document__action--menu .customD_Menu .css-vj8t7z {
+  background: #E9ECF0;
+  border: 1px solid #E9ECF0;
+}
+.document__action--menu .customD_Menu .css-1hwfws3 {
+  min-width: 135px;
+  text-align: center;
+}
+.document__action--menu .customD_Menu .css-xp4uvy {
+  color: #5E6475;
+  font-size: 15px;
+  font-weight: 800;
+  max-width: calc(100% - 8px);
+  width: 100%;
+}
+.document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
+    height: 200px;
+    overflow-y: auto;
+    top: -210px;
+} 
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
+    height: auto;
+    overflow-y: auto;
+    top: 100%;
+} 
+.shareLinks {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.shareLinks a {
+  font-family: font-opensb;
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: -0.3px;
+  color: #4382f9;
+  text-decoration: underline;
+  margin-left: 15px;
+  cursor: pointer;
+}
+button.companies_icon {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #252833;
+}
+
+
+/* sayed step page */
+
+.one__tab {
+  padding-bottom: 90px; }
+  .one__tab .submittalHead {
+    justify-content: center;
+    padding-left: 0;
+    z-index: 2; }
+  .one__tab .doc-container {
+    background: #fff;
+    flex-flow: row; }
+    .one__tab .doc-container .docstepper-levels {
+      border-left: 1px solid #eef5ff; }
+    .one__tab .doc-container .subiTabsContent > header.main__header {
+      padding: 0; }
+      .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
+        width: 100%;
+        margin: 0 auto;
+        height: 72px; }
+    .one__tab .doc-container .subiTabContainer {
+      width: 70%;
+      flex-flow: column; }
+      @media screen and (max-width: 1200px) {
+        .one__tab .doc-container .subiTabContainer {
+          width: 78%; } }
+      .one__tab .doc-container .subiTabContainer .main__header {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 0 56px; }
+      .one__tab .doc-container .subiTabContainer .step-content {
+        width: 100%;
+        padding: 0 57px; }
+        .one__tab .doc-container .subiTabContainer .step-content.activeTab {
+          display: none; }
+        .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
+          font-family: font-opens;
+          font-size: 12px;
+          line-height: 1.33;
+          letter-spacing: -0.2px;
+          color: #a8b0bf;
+          width: 100%;
+          margin-bottom: 32px; }
+        .one__tab .doc-container .subiTabContainer .step-content .document-fields {
+          padding: 14px 0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .subitTabs {
+            width: 24%;
+            height: 100vh;
+            border-right: 1px solid #e9ecf0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
+            margin-right: 0; }
+            .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+              width: 100%;
+              padding: 0; }
+              .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
+                width: 100%; }
+    .one__tab .doc-container .doc-pre-cycle {
+      padding: 0; }
+      .one__tab .doc-container .doc-pre-cycle header {
+        padding: 40px 0; }
+        .one__tab .doc-container .doc-pre-cycle header h2 {
+          border-bottom: 1px solid #e1e3e8;
+          width: 100%;
+          padding-bottom: 12px;
+          padding-left: 0;
+          font-family: font-r;
+          font-size: 20px;
+          line-height: 1.4;
+          letter-spacing: -0.2px;
+          color: #252833; }
+      .one__tab .doc-container .doc-pre-cycle .slider-Btns {
+        padding-top: 55px;
+        padding-left: 0; }
+  .one__tab .approveDocument {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    z-index: 19;
+    height: 72px;
+    border-radius: 3px;
+    box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 0 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center; }
+    .one__tab .approveDocument h2 {
+      flex: 0.5;
+      line-height: 1.17;
+      letter-spacing: -0.5px;
+      color: #252833;
+      opacity: 0.3;
+      font-family: font-b; }
+    .one__tab .approveDocument .approveDocumentBTNS {
+      flex: 1.5;
+      display: flex;
+      justify-content: flex-end; }
+      .one__tab .approveDocument .approveDocumentBTNS .border {
+        display: block;
+        width: 1px;
+        height: 40px;
+        background-color: #e9ecf0;
+        margin: 0 24px; }
+      .one__tab .approveDocument .approveDocumentBTNS .middle__btn {
+        margin: 0 6px; }
+  .one__tab.one_step .doc-container .step-content {
+    width: calc(100% - 250px); }
+    .one__tab.one_step  .doc-container .docstepper-levels {
+      width: 250px;
+      position: relative;
+  }
+    .one__tab.one_step .doc-container .step-content .main__header {
+      padding-left: 110px;
+      padding-right: 80px; }
+      @media screen and (max-width: 1300px) {
+        .one__tab.one_step .doc-container .step-content .main__header {
+          padding-left: 35px;
+          padding-right: 20px; } }
+    .one__tab.one_step .doc-container .step-content .document-fields {
+      padding-left: 110px;
+      padding-right: 80px; 
+      padding-top: 50px;
+    }
+      @media screen and (max-width: 1300px) {
+        .one__tab.one_step .doc-container .step-content .document-fields {
+          padding-left: 35px;
+          padding-right: 20px; } }
+      .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
+        margin-right: 0; }
+        @media screen and (max-width: 1200px) {
+          .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input {
+            width: 100%; } }
+      @media screen and (max-width: 1200px) {
+        .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform {
+          flex-flow: column;
+          align-items: flex-start; } }
+      @media screen and (max-width: 1200px) {
+        .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput {
+          width: 77%; } }
+      .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
+        width: 300px; }
+        @media screen and (max-width: 1200px) {
+          .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
+            width: 360px; } }
+    .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
+      padding-left: 110px;
+      padding-right: 80px; }
+      @media screen and (max-width: 1300px) {
+        .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
+          padding-left: 35px;
+          padding-right: 20px; } }
+
+
+/* sayed step page */
+@media screen and (max-width: 1200px) {
+  .noTabs__document .approveDocument h2 {
+    flex: 0.2 1;
+  }
+}
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
+  padding-top: 0;
+}
+/* 
+.readOnly_inputs .doc-container .step-content .document-fields .proForm.datepickerContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; }
+.readOnly_inputs .doc-container .step-content .document-fields .proForm.first-proform {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 0;
+  flex-wrap: wrap;
+  align-items: center; }
+  .readOnly_inputs .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:last-of-type {
+    flex-flow: row;
+    margin-bottom: 0; }
+.readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput {
+  margin-bottom: 16px;
+  width: 43%;
+  margin-right: 50px;
+  flex-shrink: 0;
+  flex-flow: row;
+  align-items: center; }
+  .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput label {
+    width: 130px;
+    position: relative;
+    flex-shrink: 0;
+    font-family: font-openb;
+    text-align: right; }
+    @media screen and (max-width: 1200px) {
+      .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput label {
+        width: 86px;
+        position: relative;
+        flex-shrink: 0;
+        font-family: font-openb;
+        font-size: 12px; } }
+    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput label::after {
+      content: ' : ';
+      position: absolute;
+      right: -20px;
+      font-size: 14px; } */
+  .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
+    /* background: transparent;
+    border-color: transparent; */
+    -webkit-pointer-events: none;
+    -moz-pointer-events: none;
+    -ms-pointer-events: none;
+    pointer-events: none;
+    cursor: not-allowed;
+    /*padding: 0;*/ 
+  }
+
+    .readOnly_inputs .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+      -webkit-pointer-events: none;
+      -moz-pointer-events: none;
+      -ms-pointer-events: none;
+      pointer-events: none;
+    }
+/*     
+    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input:hover {
+      border-color: transparent; }
+    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input:focus {
+      border-color: transparent; }
+  @media screen and (max-width: 1200px) {
+    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
+      margin-right: 0; } } */

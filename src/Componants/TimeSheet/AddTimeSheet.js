@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 
 import today from 'material-ui/svg-icons/action/today';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let timeSheetSettings = JSON.parse(localStorage.getItem('timeSheetSettings'))
+let timeSheetSettings =localStorage.getItem('timeSheetSettings') ?  JSON.parse(localStorage.getItem('timeSheetSettings')):{defaultHours: 0,timeSheetPolicy:0,vacationDays:[]}
 let defaultHours = timeSheetSettings['defaultHours'];
 let timeSheetPolicy = timeSheetSettings['timeSheetPolicy'];
 let vacationDays = timeSheetSettings['vacationDays'];
@@ -146,6 +146,7 @@ class AddTimeSheet extends Component {
                 date: '',
                 dateValidation: true
             })
+
         }
 
         if (e.value === 'felmeshmesh') {
@@ -156,9 +157,11 @@ class AddTimeSheet extends Component {
                         TimeSheetData: res,
                         dateValidation: false,
                         docDate: Today,
-                    })
+                 })
+        
                 }
             )
+
         }
 
         if (e.value === 'felmeshmesh2') {
@@ -170,6 +173,7 @@ class AddTimeSheet extends Component {
                         docDate: yesterday,
                         dateValidation: false
                     })
+    
                 }
             )
         }
@@ -214,8 +218,9 @@ class AddTimeSheet extends Component {
 
     render() {
         const items = this.state.TimeSheetData;
+        console.log(items)
         let count = [];
-        const allItems = this.state.tableView == true ? items.length ? (items.map(item => {
+        const allItems = this.state.tableView === true ? items !==null ? (items.map(item => {
             count.push(item.workHours);
             return (
                 <Fragment key={Math.random()}>
@@ -483,7 +488,7 @@ class AddTimeSheet extends Component {
                                             <DropdownMelcous title='country' data={this.state.countryData} selectedValue={this.state.countryId}
                                                 handleChange={this.country_handelChange} placeholder='country' name="countryValidation" />
                                             {this.state.countryValidation && touched.countryValidation ? (
-                                                <em className="pError">adadadad</em>) : null}
+                                                <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
                                         </div>
 
 

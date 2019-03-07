@@ -7,7 +7,7 @@ import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
+import {  Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

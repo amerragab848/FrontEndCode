@@ -14,8 +14,8 @@ class CreateTransmittal extends Component {
             sendingData: {
                 projectId: this.props.projectId,
                 docId: this.props.docId,
-                arrange: "",
                 docTypeId: this.props.docTypeId,
+                arrange: "",
                 priorityId: "",
                 toCompanyId: "",
                 Subject: "",
@@ -37,12 +37,12 @@ class CreateTransmittal extends Component {
            Api.post("CreateTransmittal", inboxDto)
     }
     radioChange(e) {
-        alert(e.currentTarget.value);
+         
         this.setState({
           selectedOption: e.currentTarget.value,
           sendingData: { ...this.state.sendingData, status: e.currentTarget.value }
         });
-      }
+    }
 
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;

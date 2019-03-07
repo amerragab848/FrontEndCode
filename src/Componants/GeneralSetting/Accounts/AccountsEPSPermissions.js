@@ -5,6 +5,7 @@ import "../../../Styles/scss/en-us/layout.css";
 import Resources from "../../../resources.json";
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous'
 import { withRouter } from "react-router-dom";
+import config from "../../../Services/Config";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let id = null;
 class AccountsEPSPermissions extends Component {
@@ -17,6 +18,8 @@ class AccountsEPSPermissions extends Component {
         }
     }
     componentDidMount() {
+        if (config.IsAllow(1001103)) 
+        {
         const query = new URLSearchParams(this.props.location.search);
         for (let param of query.entries()) {
             id = param[1];
@@ -50,7 +53,11 @@ class AccountsEPSPermissions extends Component {
             });
         }).catch(ex => {
         });
-
+    }
+    else {
+        alert('You Don`t Have Permissions')
+        this.props.history.goBack()
+    }
     }
 
 
@@ -68,25 +75,27 @@ class AccountsEPSPermissions extends Component {
             obj.titleEn = ''
             Api.post("AddAccountsEps", obj)
         })
-        this.props.history.push({
-            pathname: '/Accounts',
-        })
+    }
+    goBack=()=>{
+        this.props.history.goBack()
     }
     render() {
         return (
-            <div className="mainContainer">
+            <div className="mainContainer dropdownMulti">
              <h3> {Resources['accountsEPSPermissions'][currentLanguage]}</h3>
              {this.state.render === true ?
                     <Fragment>
                 <DropdownMelcous title='chooseEPS' data={this.state.EPSData}
                     selectedValue={this.state.EPSDefaultData}
                     handleChange={this.EPShandleChange} placeholder='chooseEPS' isMulti={true} />
-                <div className="gridfillter-container">
+             
 
                     <div className="dropBtn">
+                    <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
+                            <span className="border" ></span>
                         <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveEps}>
                             {Resources['save'][currentLanguage]}</button>
-                    </div>
+                
                 </div>
                 </Fragment> : null}
             </div>

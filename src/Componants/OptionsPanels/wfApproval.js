@@ -11,7 +11,7 @@ class wfApproval extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      docApprovalId: 431,
+      docApprovalId: this.props.docApprovalId,
       data: [],
       type: false,
       approveData: [],
@@ -19,13 +19,14 @@ class wfApproval extends Component {
       passwordStatus: false,
       submitLoading: false,
       sendingData: {
-        approvalStatus: true,
-        docId: 1114,
+        approvalStatus: true, 
+        projectId: this.props.projectId,
+        docId: this.props.docId,
+        docTypeId: this.props.docTypeId,
         contacts: [],
         comment: "",
-        currentArrange: 2,
-        accountDocId: 431,
-        docTypeId: 28
+        currentArrange: this.props.currentArrange,
+        accountDocId: this.props.docApprovalId 
       }
     };
   }

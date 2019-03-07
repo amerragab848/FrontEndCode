@@ -12,6 +12,13 @@ import Resources from '../../resources.json';
 import Config from '../../Services/Config';
 import permissions from '../../permissions.json';
  
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require("lodash")
@@ -19,16 +26,12 @@ const _ = require("lodash")
 class OptionContainer extends React.Component {
     constructor(props) {
         super(props); 
-        // let permissionDoc=permissions.authorization;
-        // console.log(permissionDoc);
-        // let mod=_.find(permissionDoc, function(o) { return o.id === 7; });
-        // let permissinsList=_.find(mod.modules, function(o) { return o.id === 19; });
-        // console.log(permissinsList);
-
+         
         this.state = {
             currentComponent: '',
             currentTitle: 'LogControls',
             selectedPanels: [],
+            showModal: false,
             defualtValue:{label: Resources["LogControls"][currentLanguage],value: '0'},
             data: [ 
                     { title: "sendByEmail", value: <SendByEmails docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendByEmail"][currentLanguage] },
@@ -39,12 +42,20 @@ class OptionContainer extends React.Component {
                     { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] }] 
         }
     }
+    
+    componentWillReceiveProps(nextProps, prevState) {
+        if (nextProps.showModal != prevState.showModal) {
+            this.setState({ showModal: nextProps.showModal });  
+        } 
+    };
 
     handleChange = (item) => {
         if(item.value!="0"){
+            console.log(this.state.showModal);
             this.setState({
                 currentComponent: item.value,
-                currentTitle: item.title
+                currentTitle: item.title,
+                showModal:true
             })
             this.simpleDialog.show()
         }   
@@ -66,11 +77,12 @@ class OptionContainer extends React.Component {
         })
         this.setState({ selectedPanels: allowPanel })
     }
+
     render() { 
         return (
             <div>
                 <DropDown data={this.state.selectedPanels} name="panel" handleChange={this.handleChange} index='panelIndex'  selectedValue={this.state.defualtValue} />
-                <div className="largePopup">
+                <div className="largePopup"  style={{ display: this.state.showModal ? 'block': 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
                     </SkyLight>
@@ -80,5 +92,19 @@ class OptionContainer extends React.Component {
     }
 }
 
+ function mapStateToProps(state, ownProps) {
+    return {
+      showModal: state.communication.showModal 
+    }
+}
 
-export default OptionContainer;
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OptionContainer);
