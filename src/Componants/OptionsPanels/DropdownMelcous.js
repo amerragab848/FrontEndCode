@@ -12,6 +12,10 @@ class DropdownMelcous extends Component {
         this.props.handleChange(e,'sokary')
     }
 
+    // handleBlur = () => {
+    //     this.props.onBlur("topics", true);
+    // };
+    
     render() { 
 
         return (
@@ -26,8 +30,10 @@ class DropdownMelcous extends Component {
                 <div>
                     <div className="customD_Menu" style={{ outline: "none" }}>
                         <Select key={this.props.index} ref={this.props.index}
-                            name="form-field-name"
-                            //value={this.props.selectedValue} 
+                            name="form-field-name" 
+                            
+                            //onBlur={this.props.handleBlur}
+
                             onChange={this.props.handleChange}
                             options={this.props.data}
                             placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
@@ -37,6 +43,12 @@ class DropdownMelcous extends Component {
                             isMulti={this.props.isMulti}
                             onBlur={this.props.onblur}
                         />
+                        
+                        {/* {!!this.props.error && this.props.touched && (
+                        <div style={{ color: "red", marginTop: ".5rem" }}>
+                            {this.props.error}
+                        </div>
+                        )} */}
                     </div>
                 </div>
             </div>

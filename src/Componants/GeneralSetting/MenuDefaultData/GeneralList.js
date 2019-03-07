@@ -175,15 +175,7 @@ class GeneralList extends Component {
                     showCheckbox: true ,
                      isLoading: false
                 })
-            }
-            // dataservice.GetDataList('GetListTypesOnly', 'listType', 'listType').then(
-            //     res => {
-            //         this.setState({
-            //             GeneralList: res,
-            //             isLoading: false
-            //         })
-            //     }
-            // )
+            } 
         }
     }
 
