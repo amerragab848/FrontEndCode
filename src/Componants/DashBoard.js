@@ -613,9 +613,7 @@ class DashBoard extends Component {
     let parent = getfirstKey[0] + "-" + getfirstKey[1];
     
     let original_widgets = [...this.state.widgets];
-
-    //let widgets_Order = this.getFromLS("Widgets_Order") || {};
-
+ 
     let widgets_Order =  CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
  
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
@@ -664,6 +662,10 @@ class DashBoard extends Component {
           return i.refrence === parseInt(parentKey);
       });
 
+      let getIndexx = checkList.findIndex(function(i) {
+          return i.key === parent;
+      });
+
       if(checkList.length > 0){
 
         checkList.forEach((value, index) => {
@@ -691,7 +693,7 @@ class DashBoard extends Component {
             widgets.push({
               key: val.key,
               order: i + 1,
-              checked: !val.checked,
+              checked: val.checked,
               parentId: value.key,
               title : val.title,
               type:val.type,
@@ -704,10 +706,11 @@ class DashBoard extends Component {
             });
           }
           }else{
+            if(val.key === id){ 
             widgets.push({
             key: val.key,
             order: i + 1,
-            checked: val.checked,
+            checked: !val.checked,
             parentId: value.key,
             title : val.title,
             type:val.type,
@@ -718,6 +721,22 @@ class DashBoard extends Component {
               route:val.props.route
             }
           });
+            }else{
+              widgets.push({
+                key: val.key,
+                order: i + 1,
+                checked: val.checked,
+                parentId: value.key,
+                title : val.title,
+                type:val.type,
+                props:{
+                  api:val.props.api,
+                  value: val.props.value,
+                  listType: val.props.listType,
+                  route:val.props.route
+                }
+              });
+            }
           } 
         });
 
@@ -735,7 +754,7 @@ class DashBoard extends Component {
       var objChild = {};
 
       objChild[parentKey] = setOrder;
-
+  
       let allObj =  Object.assign(objChild, widgets_Order);
 
       let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
@@ -744,7 +763,7 @@ class DashBoard extends Component {
       this.saveToLS("Widgets_Order", encodedsetLocalStorage);
 
       this.setState({
-        childRef:objChild[parentKey].widgets
+        childRef:objChild[parentKey][getIndexx].widgets 
       }); 
     } 
   }
