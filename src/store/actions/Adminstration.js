@@ -81,3 +81,13 @@ export function toggleLoading() {
        
     }
 }
+
+export function toggleNotifyMessage() {
+   
+    return (dispatch, getState) => {
+            dispatch({
+                type: types.toggleNotifyMessage
+            });
+       
+    }
+}

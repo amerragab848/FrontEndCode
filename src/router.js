@@ -73,6 +73,16 @@ let routes = (
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} /> 
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
     {/* <Route path="/AddNewCompany" component={AddNewCompany} />    */}
+    <Route path="/Contacts/:companyID" component={Contacts} /> 
+    
+    <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> 
+    
+    <Route path="/:document/:projectId" component={CommonLog} />,
+
+    <Route path="/ProfileSetting" component={ProfileSetting} />,
+    <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} /> 
+    <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
+     
     <Route path="/MonthlyTasksDetails" component={MonthlyTasksDetails} /> 
     <Route path="/MonitorTasks" component={MonitorTasks} /> 
     <Route path="/AddTimeSheet" component={AddTimeSheet} /> 
@@ -92,6 +102,14 @@ let routes = (
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />  
     <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} /> 
     <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} />  
+    <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
+    <Route path="/GeneralList" component={GeneralList} /> 
+    <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> 
+
+
+    <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} /> 
+    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> 
+    
 </Switch> 
 ); 
 export default routes;

@@ -7736,5 +7736,9 @@
   "lastApprovalDate": {
     "en": "Last Approval Date",
     "ar": "أخر ميعاد للموافقة"
+  },
+  "item": {
+    "en": "item",
+    "ar": "العنصر"
   }
 }

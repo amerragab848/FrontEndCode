@@ -1534,7 +1534,7 @@ tfoot tr td p{
   margin-right: 3px;
   cursor: pointer;
 }
- 
+  
 .react-grid-Cell--frozen:last-of-type {
   box-shadow: 2px 0 5px -2px hsla(0,0%,53%,.3);
 }

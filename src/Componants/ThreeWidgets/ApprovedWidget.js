@@ -63,6 +63,8 @@ class ApprovedWidget extends Component {
         return i.action === 3;
       });
 
+      console.log("high : " + this.props.title);
+
       return (
         <div className="summerisItem">
           <div className="content">
@@ -80,16 +82,18 @@ class ApprovedWidget extends Component {
             </ul>
             <div className="summerisList">
               <div className="first">
-                <span className="mediumModal" onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value])}>
-                  {normal ? normal[this.props.props.value] : 0}
+                <span
+                  className="mediumModal"
+                  onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value]) } >
+                  {normal ? normal[this.props.props.value] : 0} 
                 </span>
-                {normal ? language[normal[this.props.props.listType]][currentLanguage]: ""}
+                {normal ? " "+language[normal[this.props.props.listType]][currentLanguage]: ""}
               </div>
               <div>
                 <span className="mediumModal" onClick={() => this.onOpenModal(low.action, low[this.props.props.value])}>
                   {low ? low[this.props.props.value] : ""}
                 </span>
-                {low ? language[low[this.props.props.listType]][currentLanguage] : ""}
+                {low ? " "+language[low[this.props.props.listType]][currentLanguage] : ""}
               </div>
             </div>
           </div>
