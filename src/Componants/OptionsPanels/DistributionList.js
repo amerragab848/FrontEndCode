@@ -25,10 +25,10 @@ class DistributionList extends Component {
             sendingData: {
                 projectId: this.props.projectId,
                 docId: this.props.docId,
+                docTypeId: this.props.docTypeId,
                 DistributionListId: "",
                 Priority: "",
                 RequiredDate: moment().toDate(),
-                docTypeId: this.props.docTypeId,
                 itemContacts: [],
                 redDays: 1,
                 yellowDays: 1,

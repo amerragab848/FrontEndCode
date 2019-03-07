@@ -8,155 +8,157 @@ import Export from "../../../../Componants/OptionsPanels/Export";
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import Api from '../../../../api';
+import DropDown from '../../../OptionsPanels/DropdownMelcous'
+import DatePicker from '../../../OptionsPanels/DatePicker'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let CurrProject = localStorage.getItem('lastSelectedprojectName')
 
 class ExpensesWorkFlow extends Component {
     constructor(props) {
+        const columnsGrid = [
+            {
+                key: "id",
+                visible: false,
+                width: 50,
+                frozen: true
+            },
+            {
+                key: "arrange",
+                name: Resources["arrange"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "subject",
+                name: Resources["subject"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }]
+            
         super(props)
         this.state = {
-
+          rows:[] ,
+          columns: columnsGrid.filter(column => column.visible !== false),
+            showCheckbox:true
         }
+
     }
+
+
     componentDidMount = () => {
 
     }
+
     render() {
+
         return (
-            <div>
-                <div id="step1" className="step-content-body">
-                    <div className="subiTabsContent">
-                        <header className="main__header">
-                            <div className="main__header--div">
-                                <h2 className="zero"> POs    </h2>
-                                <p className="doc-infohead"><span>#Ubtec (SD#001)</span> - <span>villas 128 & 132</span> - <span>12·09·2017</span></p>
-                            </div>
-                        </header>
-                        <div className="doc-pre-cycle">
-                            <header>
-                                <h2 className="zero">Previous cycle</h2>
-                            </header>
+            <div className="document-fields">
 
-                            <div className="precycle-grid">
-
-                            </div>
-
+                <form className="proForm datepickerContainer">
+                    <div className="linebylineInput valid-input">
+                        <div className="inputDev ui input">
+                            <DropDown />
                         </div>
                     </div>
-                </div>
-                <div className="document-fields">
-                    <form className="proForm first-proform">
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">Subject</label>
-                            <div className="inputDev ui input">
-                                <input autoComplete="off" type="text" className="form-control fsadfsadsa" id="firstname1" name="firstname1" placeholder="" />
-                            </div>
-                        </div>
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">Status</label>
-                            <div className="ui checkbox radio  radioBoxBlue">
-                                <input type="radio" checked="" tabIndex="0" className="hidden" name="Close-open" />
-                                <label>Opened</label>
-                            </div>
-                            <div className="ui checkbox radio  radioBoxBlue">
-                                <input type="radio" tabIndex="0" className="hidden" name="Close-open" />
-                                <label>Closed</label>
-                            </div>
-                        </div>
-                    </form>
-                    <form className="proForm datepickerContainer">
-                        <div className="linebylineInput ">
-                            <label className="control-label">Cycle date</label>
-                            <div className="inputDev ui input input-group date NormalInputDate">
-                                <input autoComplete="off" type="text" className="form-control" placeholder="Please select date" />
-                                <span className="input-group-addon"></span>
-                            </div>
-                        </div>
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">No.</label>
-                            <div className="inputDev ui input">
-                                <input autoComplete="off" type="text" className="form-control" id="firstname1" name="firstname1" placeholder="" />
-                            </div>
-                        </div>
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">Approval status</label>
 
-                            <div className="ui fluid selection dropdown singleDropDown" tabIndex="0">
-
-                                <input type="hidden" name="country" />
-                                <i className="dropdown icon"></i>
-                                <div className="default text">
-                                    Select status
-                                        </div>
-                                <div className="menu transition hidden" tabIndex="-1">
-                                    <div className="item">
-                                        Offline
-                                            </div>
-                                    <div className="item">
-                                        Opend
-                                            </div>
-                                    <div className="item">
-                                        Closed
-                                            </div>
-                                </div>
-                            </div>
+                    <div className="linebylineInput valid-input">
+                        <div className="inputDev ui input">
+                            <DropDown />
                         </div>
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">Company</label>
-                            <div className="ui fluid selection dropdown singleDropDown" tabIndex="0">
-                                <input type="hidden" name="country" />
-                                <i className="dropdown icon"></i>
-                                <div className="default text">
-                                    Select status
-                                        </div>
-                                <div className="menu transition hidden" tabIndex="-1">
-                                    <div className="item">
-                                        Offline
-                                            </div>
-                                    <div className="item">
-                                        Opend
-                                            </div>
-                                    <div className="item">
-                                        Closed
-                                            </div>
-
-                                </div>
-                            </div>
+                    </div>
+                    <div className="linebylineInput valid-input">
+                        <label className="control-label">dsadadadasd</label>
+                        <div className="inputDev ui input">
+                            <input autoComplete="off" type="text" className="form-control fsadfsadsa" id="firstname1" name="firstname1" placeholder="" />
                         </div>
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">Contact</label>
+                    </div>
 
-                            <div className="ui fluid selection dropdown singleDropDown" tabIndex="0">
+                    <div className="linebylineInput valid-input">
+                        <label className="control-label">dsadadadasd</label>
+                        <div className="inputDev ui input">
+                            <input autoComplete="off" type="text" className="form-control fsadfsadsa" id="firstname1" name="firstname1" placeholder="" />
+                        </div>
+                    </div>
 
-                                <input type="hidden" name="country" />
-                                <i className="dropdown icon"></i>
-                                <div className="default text">
-                                    Select status
-                                        </div>
-                                <div className="menu transition hidden" tabIndex="-1">
-                                    <div className="item">
-                                        Offline
-                                            </div>
-                                    <div className="item">
-                                        Opend
-                                            </div>
-                                    <div className="item">
-                                        Closed
-                                            </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="linebylineInput">
-                            <label className="control-label">Date approved</label>
-                            <div className="inputDev ui input input-group date NormalInputDate">
-                                <input autoComplete="off" type="text" className="form-control" placeholder="Please select date" />
-                                <span className="input-group-addon"></span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                </form>
 
             </div>
         )
     }
+
 }
+
 export default withRouter(ExpensesWorkFlow)
+
+export let MultiApproval = () => {
+    // const dataGrid =
+
+    //     <GridSetup  columns={this.state.columns}
+    //         showCheckbox={this.state.showCheckbox}
+    //         clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+    //     // onRowClick={this.cellClick.bind(this)}
+    //     />
+  
+    return (
+        <Fragment>
+            <header>
+                <h2 className="zero">Multi Approval</h2>
+            </header>
+            <div className="precycle-grid">
+                <table className="ui table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Subject</th>
+                           
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><DropDown data={[{label:'Multi', value:true},{label:'Single', value:false}]}/></td>
+                            <td>
+                                <img alt="" title="" src="images/table3Dots.png"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="submittalFilter">
+                    <div className="subFilter">
+                        <h3 className="zero">{CurrProject + ' - ' + Resources['expensesWorkFlow'][currentLanguage]}</h3>
+                        <span>
+                            <svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" >
+                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" >
+                                    <g id="Action-icons/Filters/Hide+text/24px/Grey_Base"
+                                        transform="translate(-4.000000, -3.000000)" >
+                                    </g>
+                                </g>
+                            </svg>
+                        </span>
+                    </div>
+
+
+                    <div className="filterBTNS">
+                        {config.IsAllow(1182) ?
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.setState({ ShowPopup: true })}>New</button>
+                            : null}
+                        {/* {btnExport} */}
+                    </div>
+
+                </div>
+                <div className="grid-container">
+                    {/* {dataGrid} */}
+                </div>
+        </Fragment>
+            )
+}  

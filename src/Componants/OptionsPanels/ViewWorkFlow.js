@@ -40,8 +40,7 @@ class ViewWorkFlow extends Component {
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.workFlowCycles != prevProps.workFlowCycles) { 
             this.setState({ workFlowCycles: nextProps.workFlowCycles }); 
-            this.renderCycles(nextProps.workFlowCycles);
-
+            this.renderCycles(nextProps.workFlowCycles); 
         }
     };
 
