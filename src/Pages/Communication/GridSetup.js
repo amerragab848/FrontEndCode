@@ -26,6 +26,7 @@ class GridSetup extends Component {
       groupBy: [],
       selectedIndexes: [],
       selectedRows: [],
+      selectedRow: [],
       expandedRows: {}
     };
 
@@ -33,7 +34,7 @@ class GridSetup extends Component {
     this.onRowsSelected = this.onRowsSelected.bind(this);
   }
 
-  componentWillMount = () => {};
+  componentWillMount = () => { };
 
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
@@ -132,6 +133,14 @@ class GridSetup extends Component {
   };
 
   onRowsSelected = rows => {
+
+  if( this.props.IsActiv !== undefined )
+  {
+   let Id = '';
+   Id = rows.map(r => r.row.id);
+    this.props.IsActiv(Id)
+  }
+   
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -208,10 +217,11 @@ class GridSetup extends Component {
     this.setState({ expandedRows: expandedRows });
   }
 
-  onRowClick = (rows, value) => {
+  onRowClick = (rows, value, index) => {
     if (value) {
       if (this.props.onRowClick != undefined) {
-        this.props.onRowClick(value);
+        this.props.onRowClick(value, index);
+        this.setState({ selectedRow: value })
       }
     }
   };
@@ -219,6 +229,22 @@ class GridSetup extends Component {
   clickHandlerDeleteRows = e => {
     this.props.clickHandlerDeleteRows(this.state.selectedRows);
   };
+
+
+
+  onCellSelected = ({ rowIdx, idx }) => {
+    if (this.props.cellClick)
+      this.props.cellClick(rowIdx, idx)
+
+  };
+
+
+  onselectRowEven=({selectedRows})=>{
+  if (this.props.onselectRowEven)
+  this.props.onselectRowEven(selectedRows)
+  console.log('onselectRowEven',selectedRows)
+};
+
 
   render() {
     const { rows, groupBy } = this.state;
@@ -265,16 +291,19 @@ class GridSetup extends Component {
       );
     };
 
+
     return (
       <DraggableContainer>
         <ReactDataGrid
           rowKey="id"
           minHeight={650}
-          isScrolling={false}
+          isScrolling={true}
           columns={this.state.columns}
           rowGetter={i => groupedRows[i]}
           rowsCount={groupedRows.length}
-          enableCellSelect={false}
+          enableCellSelect={true}
+          onCellSelected={this.onCellSelected}
+       //   onselectRowEven={this.onselectRowEven}
           onColumnResize={(idx, width, event) => {
             //console.log(this.state.columns[idx-1]);
             // console.log(`Column ${idx} has been resized to ${width}`);
@@ -301,11 +330,13 @@ class GridSetup extends Component {
             defaultChecked: false,
             enableShiftSelect: true,
             onRowsSelected: this.onRowsSelected,
+           // onRowsSelected:this.onselectRowEven,
             onRowsDeselected: this.onRowsDeselected,
             selectBy: {
               indexes: this.state.selectedIndexes
             }
           }}
+       
           onRowClick={(index, value) => this.onRowClick(index, value)}
           onAddFilter={filter =>
             this.setState({ setFilters: this.handleFilterChange(filter) })

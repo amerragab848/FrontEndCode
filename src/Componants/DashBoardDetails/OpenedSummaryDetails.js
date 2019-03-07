@@ -43,7 +43,7 @@ class OpenedSummaryDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -54,7 +54,7 @@ class OpenedSummaryDetails extends Component {
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -65,7 +65,7 @@ class OpenedSummaryDetails extends Component {
       {
         key: "openedBy",
         name: Resources["openedBy"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -76,7 +76,7 @@ class OpenedSummaryDetails extends Component {
       {
         key: "docType",
         name: Resources["docType"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -87,7 +87,7 @@ class OpenedSummaryDetails extends Component {
       {
         key: "oppenedDate",
         name: Resources["openedDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -139,7 +139,7 @@ class OpenedSummaryDetails extends Component {
 
     this.state = {
       pageTitle:Resources["openedSummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

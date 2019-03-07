@@ -34,6 +34,7 @@ class InputMelcous extends Component {
             name={this.props.name}
             defaultValue={this.props.defaultValue}
             onChange={this.props.inputChangeHandler}
+            onBlur={this.props.onBlurEvent}
           />
         </div>
       </div>

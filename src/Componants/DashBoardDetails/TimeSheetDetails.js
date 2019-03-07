@@ -27,7 +27,7 @@ class TimeSheetDetails extends Component {
       {
         key: "requestCount",
         name: Resources["requestCount"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -38,7 +38,7 @@ class TimeSheetDetails extends Component {
       {
         key: "requestFromUserName",
         name: Resources["fromContact"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -49,7 +49,7 @@ class TimeSheetDetails extends Component {
       {
         key: "companyName",
         name: Resources["fromCompany"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -82,7 +82,7 @@ class TimeSheetDetails extends Component {
 
     this.state = {
       pageTitle:Resources["timeSheet"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

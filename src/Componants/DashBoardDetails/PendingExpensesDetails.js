@@ -32,7 +32,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "arrangeLevel",
         name: Resources["levelNo"][currentLanguage],
-        width: "50%",
+        width:100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -43,7 +43,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "subject",
         name:Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -54,7 +54,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -65,7 +65,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "contactName",
         name: Resources["ContactName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -76,7 +76,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "total",
         name: Resources["total"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -87,7 +87,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "requestDate",
         name: Resources["requestDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -99,7 +99,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "number",
         name: Resources["arrange"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -110,7 +110,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "expensesTypeName",
         name: Resources["expensesType"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -121,7 +121,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "actionBy",
         name: Resources["actionByContact"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -132,7 +132,7 @@ class PendingExpensesDetails extends Component {
       {
         key: "Attachments",
         name: Resources["attachments"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -201,7 +201,7 @@ class PendingExpensesDetails extends Component {
 
     this.state = {
       pageTitle:Resources["pendingExpenses"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

@@ -7,6 +7,7 @@ import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
+import { withRouter } from "react-router-dom";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -16,7 +17,7 @@ const dateFormate = ({ value }) => {
 };
 
 
-export default class Timesheet extends Component {
+ class Timesheet extends Component {
     constructor(props) {
         super(props)
 
@@ -103,7 +104,6 @@ export default class Timesheet extends Component {
     }
 
     GetNextData = () => {
-
         let pageNumber = this.state.pageNumber + 1;
         this.setState({
             isLoading: true,
@@ -149,7 +149,9 @@ export default class Timesheet extends Component {
     }
 
     addRecord() {
-        alert("add new timesheet record....");
+        this.props.history.push({
+            pathname: 'AddTimeSheet'
+        })
     }
 
     componentDidMount = () => {
@@ -345,3 +347,4 @@ export default class Timesheet extends Component {
 
 
 }
+export default withRouter(Timesheet)

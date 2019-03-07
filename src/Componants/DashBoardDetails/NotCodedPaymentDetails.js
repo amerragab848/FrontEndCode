@@ -31,7 +31,7 @@ class NotCodedPaymentDetails extends Component {
       {
         key: "arrange",
         name: Resources["numberAbb"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -41,7 +41,7 @@ class NotCodedPaymentDetails extends Component {
       }, {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -52,7 +52,7 @@ class NotCodedPaymentDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -63,7 +63,7 @@ class NotCodedPaymentDetails extends Component {
       {
         key: "currentPaymentDue",
         name: Resources["paymentDue"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -74,7 +74,7 @@ class NotCodedPaymentDetails extends Component {
       {
         key: "docCloseDate",
         name: Resources["docClosedate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -86,7 +86,7 @@ class NotCodedPaymentDetails extends Component {
       {
         key: "docDate",
         name: Resources["docDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -138,7 +138,7 @@ class NotCodedPaymentDetails extends Component {
 
     this.state = {
       pageTitle:Resources["notCodedPaymentSummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

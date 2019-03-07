@@ -36,6 +36,10 @@ export default class Api {
 
         options.headers = Api.headers();
 
+        // if(signal) {
+        //     options.signal = signal;
+        // }
+        
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
              
@@ -150,7 +154,7 @@ export default class Api {
         }).then(resp => {
             if (resp.status === 200) {
 
-                json = "";
+                json = resp.json();
                 return json;
             }
             else if (resp.status === 500) {
@@ -165,9 +169,7 @@ export default class Api {
 
         });//.then(res=>{return json});
 
-    }
-
-
+    } 
     static getPassword(route, password) {
 
         const host = Domain + '/PM/api/Procoor/';
@@ -246,13 +248,13 @@ export default class Api {
         }).then(json => (json.result ? json.result : json));
     }
 
-    static authorizationApi(route, params) {
+    static authorizationApi(route, params,method) {
         const host = config.loginServer + '/api/'
         const url = `${host}${route}`;
         let json = null;
 
         let options = Object.assign({
-            method: 'Put'
+            method: method === null ? 'PUT':method
         }, params ? {
             body: JSON.stringify(params)
         } : null);
@@ -281,11 +283,14 @@ export default class Api {
         }).then(json => (json.result ? json.result : json));
     }
 
+
+
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem('userToken')) {
             authorize = true;
         }
+         
         return authorize;
     }
 }

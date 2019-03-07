@@ -11,6 +11,8 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import documentDefenition from "../../documentDefenition.json";
 import Resources from "../../resources.json"; 
 
+import { withRouter } from "react-router-dom";
+
 import MinimizeV from '../../Styles/images/table1.png'
 import MinimizeH from '../../Styles/images/table2.png'
 // import MinimizeVBlue from '../../Styles/images/table1Blue.png'
@@ -34,10 +36,8 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-class Letter extends Component { 
-  _isMounted = false;
-  
-
+class CommonLog extends Component { 
+  _isMounted = false; 
 
   constructor(props) {
     super(props); 
@@ -47,7 +47,7 @@ class Letter extends Component {
       pageTitle: "",
       viewfilter: true,
       projectId: props.match.params.projectId,
-      documentName:props.match.params.document,
+      documentName:props.match.params.document, 
       filtersColumns: [],
       docType: "" ,
       rows: [],
@@ -84,7 +84,7 @@ class Letter extends Component {
   }
     
   componentWillReceiveProps(nextProps){
-    if(nextProps.match !== this.props.match){ 
+    if(nextProps.match !== this.props.match  ){ 
       this._isMounted = false;  
       this.setState({ 
           isLoading: true 
@@ -112,7 +112,14 @@ class Letter extends Component {
   }
  
   addRecord() {
-    alert("under Construction function....");
+ 
+    let addView =this.state.routeAddEdit.split("/")[0];
+ 
+    this.props.history.push({
+      pathname:"/"+addView,
+      search: "?docId=0&projectId="+ this.state.projectId 
+    });
+
   }
 
   GetNextData() {
@@ -492,4 +499,4 @@ class Letter extends Component {
   }
 }
 
-export default Letter;
+export default withRouter(CommonLog);

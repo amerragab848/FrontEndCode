@@ -32,7 +32,7 @@ class ClosedSummaryDetails extends Component {
       {
         key: "docNo",
         name: Resources["docNo"][currentLanguage],
-        width: "15%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -43,7 +43,7 @@ class ClosedSummaryDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -54,7 +54,7 @@ class ClosedSummaryDetails extends Component {
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -65,7 +65,7 @@ class ClosedSummaryDetails extends Component {
       {
         key: "closedBy",
         name: Resources["closedBy"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -76,7 +76,7 @@ class ClosedSummaryDetails extends Component {
       {
         key: "docType",
         name: Resources["docType"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -87,7 +87,7 @@ class ClosedSummaryDetails extends Component {
       {
         key: "oppenedDate",
         name: Resources["openedDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -139,7 +139,7 @@ class ClosedSummaryDetails extends Component {
 
     this.state = {
       pageTitle:Resources["closedSummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
@@ -164,9 +164,7 @@ class ClosedSummaryDetails extends Component {
           "&pageNumber=" +
           0
       ).then(result => {
-        result.map(item => {
-          item.oppenedDate = moment(item.oppenedDate).format("DD/MM/YYYY");
-        });
+        
         this.setState({
           rows: result,
           isLoading: false

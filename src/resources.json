@@ -1833,7 +1833,7 @@
       "successContent": "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
       "failureTitle": "Operation was canceled",
       "failureContent": "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
-      "refCodeExist": "<i class='fa fa-clock-o'></i> <i>Referance Code Already Exist...</i>",
+      "refCodeExist": "Referance Code Already Exist...</i>",
       "notAssignedTothisProject": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
       "userNameExist": "<i class='fa fa-clock-o'></i> <i>User Name Already Exist ...</i>",
       "yes": "Yes",
@@ -1883,7 +1883,7 @@
       "successTitle": "Operation completed successfuly",
       "successContent": "<i>Record Added Successfuly...</i>",
       "failureTitle": "Operation was canceled",
-      "failureContent": "<i>Your Maximum Allowed Value for Working Hours is</i>"
+      "failureContent": "Your Maximum Allowed Value for Working Hours is"
     },
     "ar": {
       "successTitle": "تمت العملية بنجاح",
@@ -1895,7 +1895,7 @@
   "smartVacationMessage": {
     "en": {
       "title": "Operation was canceled",
-      "content": "<i>Cannot add Time Sheet on a Vacation Date...</i>"
+      "content": "Cannot add Time Sheet on a Vacation Date..."
     },
     "ar": {
       "title": "تم الغاء العملية",
@@ -7699,5 +7699,34 @@
   "respondingTime": {
     "en": "Responding time",
     "ar": "Responding time"
+  } 
+  ,
+  "monitorTasks": {
+    "en": "Monitor Tasks",
+    "ar": "مراقبه المهام"
+  },
+  "monthlyTasks": {
+    "en": "Monthly Tasks",
+    "ar": "المهام الشهريه"
+  } ,
+  "contacts": {
+    "en": "Contacts",
+    "ar": "الاشخاص"
+  },
+  "editCompany": {
+    "en": "Edit-Companies",
+    "ar": "تعديل الشركة"
+  },
+  "titleDashboard": {
+    "en": "Welcome to your Dashboard",
+    "ar": "مرحبا بك فى لوحة التحكم"
+  },
+  "respondTime": {
+    "en": "Respond Time",
+    "ar": "متوسط الاستجابه"
+  },
+  "lastApprovalDate": {
+    "en": "Last Approval Date",
+    "ar": "أخر ميعاد للموافقة"
   }
 }

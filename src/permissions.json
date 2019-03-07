@@ -5,6 +5,7 @@
         "en": "Project Setup",
         "ar": "اعدادات المشروع"
       },
+      "id": 1,
       "modules": [
         {
           "title": {
@@ -760,56 +761,7 @@
               "value": false
             }
           ]
-        },
-        {
-          "title": {
-            "en": "Check List",
-            "ar": "قائمةالاختيار "
-          },
-          "id": 105,
-          "permissions": [
-            {
-              "code": 815,
-              "title": {
-                "en": "Add",
-                "ar": "اضافة قائمةالاختيار"
-              },
-              "value": false
-            },
-            {
-              "code": 816,
-              "title": {
-                "en": "Edit",
-                "ar": "تعديل قائمةالاختيار"
-              },
-              "value": false
-            },
-            {
-              "code": 817,
-              "title": {
-                "en": "Delete",
-                "ar": "حذف قائمةالاختيار"
-              },
-              "value": false
-            },
-            {
-              "code": 818,
-              "title": {
-                "en": "View",
-                "ar": "عرض قائمةالاختيار"
-              },
-              "value": false
-            },
-            {
-              "code": 819,
-              "title": {
-                "en": "View All",
-                "ar": "عرض جميع قوائم الاختيار"
-              },
-              "value": false
-            }
-          ]
-        },
+        }, 
         {
           "title": {
             "en": "General Forms",
@@ -970,6 +922,7 @@
         "en": "Procurement",
         "ar": "العروض"
       },
+      "id": 2,
       "modules": [
         {
           "title": {
@@ -2458,15 +2411,13 @@
           ]
         }
       ]
-    },
-
-
-
+    }, 
     {
       "title": {
         "en": "Item Of Inventory",
         "ar": "تقرير المخازن"
       },
+        "id": 3,
       "modules": [
         {
           "title": {
@@ -2537,17 +2488,13 @@
           ]
         }
       ]
-    },
-
-
-
-
-
+    }, 
     {
       "title": {
         "en": "Time Coordination",
         "ar": "ادارة الجداول الزمنية"
       },
+        "id": 4,
       "modules": [
         {
           "title": {
@@ -3056,6 +3003,7 @@
         "en": "Contract Coordination",
         "ar": "اداره تعاقدات المشروع"
       },
+        "id": 5,
       "modules": [
         {
           "title": {
@@ -4683,6 +4631,7 @@
         "en": "Site Coordination",
         "ar": "سجلات المشروع"
       },
+        "id": 6,
       "modules": [
         {
           "title": {
@@ -7150,6 +7099,7 @@
         "en": "Communication",
         "ar": "الاتصالات"
       },
+        "id": 7,
       "modules": [
         {
           "title": {
@@ -9302,6 +9252,7 @@
         "en": "Design Coordination",
         "ar": "تنسيق التصميم"
       },
+        "id": 8,
       "modules": [
         {
           "title": {
@@ -10093,6 +10044,7 @@
         "en": "Estimation",
         "ar": "تسعير المشاريع"
       },
+        "id": 9,
       "modules": [
         {
           "title": {
@@ -10570,6 +10522,7 @@
         "en": "Report Center",
         "ar": "مركز التقارير"
       },
+        "id": 10,
       "modules": [
         {
           "title": {
@@ -11793,6 +11746,7 @@
         "en": "Default Data",
         "ar": "البيانات الرئيسية"
       },
+        "id": 11,
       "modules": [
         {
           "title": {
@@ -11932,6 +11886,7 @@
         "en": "Administration",
         "ar": "الادارة"
       },
+        "id": 12,
       "modules": [
         {
           "title": {
@@ -12210,6 +12165,7 @@
         "en": "General Logs",
         "ar": "السجلات العامه"
       },
+        "id": 13,
       "modules": [
         {
           "title": {

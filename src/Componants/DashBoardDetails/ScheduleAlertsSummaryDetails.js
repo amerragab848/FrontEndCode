@@ -32,7 +32,7 @@ class ScheduleAlertsSummaryDetails extends Component {
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -43,7 +43,7 @@ class ScheduleAlertsSummaryDetails extends Component {
       {
         key: "scheduleSubject",
         name: Resources["schedule"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -54,7 +54,7 @@ class ScheduleAlertsSummaryDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -65,7 +65,7 @@ class ScheduleAlertsSummaryDetails extends Component {
       {
         key: "docNo",
         name: Resources["docNo"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -76,7 +76,7 @@ class ScheduleAlertsSummaryDetails extends Component {
       {
         key: "delay",
         name: Resources["delay"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -87,7 +87,7 @@ class ScheduleAlertsSummaryDetails extends Component {
       {
         key: "alertDate",
         name: Resources["alertDate"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -139,7 +139,7 @@ class ScheduleAlertsSummaryDetails extends Component {
 
     this.state = {
       pageTitle:Resources["ScheduleAlertsSummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
@@ -160,11 +160,7 @@ class ScheduleAlertsSummaryDetails extends Component {
     if (action) {
       Api.get("GetScheduleAlertSummary?action=" + action).then(
         result => {
-
-          result.map(item => {
-            item.alertDate = moment(item.alertDate).format("DD/MM/YYYY");
-          });
-
+  
           this.setState({
             rows: result,
             isLoading: false

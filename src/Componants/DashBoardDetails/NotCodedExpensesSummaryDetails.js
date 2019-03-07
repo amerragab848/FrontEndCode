@@ -32,7 +32,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       {
         key: "description",
         name: Resources["description"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -43,7 +43,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -54,7 +54,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       {
         key: "expenseTypeName",
         name: Resources["expenseType"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -65,7 +65,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       {
         key: "total",
         name: Resources["total"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -76,7 +76,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       {
         key: "unitRate",
         name: Resources["unitRate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -87,7 +87,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       {
         key: "docDate",
         name: Resources["docDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -139,7 +139,7 @@ class NotCodedExpensesSummaryDetails extends Component {
 
     this.state = {
       pageTitle:Resources["notCodedExpensesSummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

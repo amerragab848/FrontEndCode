@@ -32,7 +32,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       {
         key: "projectCode",
         name: Resources["numberAbb"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -43,7 +43,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       {
         key: "subject",
         name:Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -54,7 +54,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -65,7 +65,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       {
         key: "total",
         name: Resources["total"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -76,7 +76,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       {
         key: "balance",
         name: Resources["balance"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -87,7 +87,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       {
         key: "docCloseDate",
         name: Resources["docClosedate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -99,7 +99,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       {
         key: "docDate",
         name:Resources["docDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -143,7 +143,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       },
       {
         field: "docClosedDate",
-        name: "docClosedDate",
+        name: "docClosedate",
         type: "date",
         isCustom: true
       },
@@ -157,7 +157,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
 
     this.state = {
       pageTitle:Resources["notCodedInvoicesSummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

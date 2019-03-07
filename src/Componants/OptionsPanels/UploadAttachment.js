@@ -6,30 +6,28 @@ import AttachDrag from '../../Styles/images/attachDraggable.png';
 import 'react-table/react-table.css'
 import Api from '../../api';
 
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
 
 class UploadAttachment extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            docTypeId: '64',
-            docId: '138',
+            docTypeId: this.props.docTypeId,
+            docId: this.props.docId,
             parentId:'',
             _className: ''
         }
     }
-    onDrop = (acceptedFiles, rejectedFiles) => {
-
-
-        this.setState({ _className: " dragHover dropHover fullProgressBar" })
-
+    onDrop = (acceptedFiles, rejectedFiles) => { 
+        this.setState({ _className: " dragHover dropHover fullProgressBar" }) 
     }
 
-    onDropRejected = (rejectedFiles) => {
-        rejectedFiles.forEach(element => {
-           
-        });
-
-        //  console.log("accepted")
+    onDropRejected = (rejectedFiles) => { 
         setTimeout(() => {
             this.setState({ _className: "hundredPercent" })
         }, 1000)
@@ -45,29 +43,26 @@ class UploadAttachment extends Component {
             
             formData.append("file",element)
            
-            let header={'docTypeId':this.state.docTypeId,'docId':this.state.docId,'parentId':this.state.parentId}
+            let header={'docTypeId':this.props.docTypeId,'docId':this.props.docId,'parentId':this.state.parentId}
             
-               Api.postFile("BlobUpload",formData,header)
-              
-        
-            
-        });
+            //Api.postFile("BlobUpload",formData,header)  
+            //let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
 
-        //  console.log("accepted")
+            this.props.actions.uploadFile("BlobUpload",formData,header);
+        }); 
         setTimeout(() => {
             this.setState({ _className: "zeropercent" })
-        }, 1000)
-
+        }, 1000) 
     }
 
 
     render() {
         return (
             <div>
-                <Dropzone  onDrop={e => this.onDrop(e)}
-                    onDragLeave={e => this.setState({ _className: " " })}
-                    onDragOver={e => this.setState({ _className: "dragHover" })} onDropAccepted={e=>this.onDropAcceptedHandler(e)}
-                    onDropRejected={this.onDropRejected} >
+                <Dropzone   onDrop={e => this.onDrop(e)}
+                            onDragLeave={e => this.setState({ _className: " " })}
+                            onDragOver={e => this.setState({ _className: "dragHover" })} onDropAccepted={e=>this.onDropAcceptedHandler(e)}
+                            onDropRejected={this.onDropRejected} >
                     {({ getRootProps, getInputProps, isDragActive }) => {
                         return (
                             <div
@@ -100,8 +95,7 @@ class UploadAttachment extends Component {
                                         </div>
                                     </div>
                                 }
-                            </div>
-
+                            </div> 
                         )
                     }}
                 </Dropzone>
@@ -111,4 +105,24 @@ class UploadAttachment extends Component {
     }
 }
 
-export default UploadAttachment;
+
+function mapStateToProps(state) {
+    
+    return {
+      file: state.communication.file,
+      files: state.communication.files,
+      isLoadingFiles: state.communication.isLoadingFiles
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UploadAttachment)
+ 

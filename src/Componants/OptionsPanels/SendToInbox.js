@@ -15,10 +15,10 @@ class SendToInbox extends Component {
         this.state = {
 
             sendingData: {
-                projectId: "4330",
-                docId: "138",
+                projectId: this.props.projectId,
+                docId: this.props.docId,
                 arrange: "",
-                docType: "64",
+                docType: this.props.docTypeId,
                 priorityId: "",
                 toCompanyId: "",
                 toContactId: "",

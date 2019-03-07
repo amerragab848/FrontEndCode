@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Api from "../../api";
 import moment from "moment";
 import NotifiMsg from "../publicComponants/NotifiMsg";
@@ -46,7 +46,7 @@ class TimeSheetWorkFlow extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -57,7 +57,7 @@ class TimeSheetWorkFlow extends Component {
       {
         key: "docDate",
         name: Resources["docDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -69,7 +69,7 @@ class TimeSheetWorkFlow extends Component {
       {
         key: "taskName",
         name: Resources["taskName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -80,7 +80,7 @@ class TimeSheetWorkFlow extends Component {
       {
         key: "description",
         name: Resources["description"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -91,7 +91,7 @@ class TimeSheetWorkFlow extends Component {
       {
         key: "expenseValue",
         name: Resources["hours"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -102,7 +102,7 @@ class TimeSheetWorkFlow extends Component {
       {
         key: "total",
         name: Resources["total"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -153,7 +153,7 @@ class TimeSheetWorkFlow extends Component {
 
     this.state = {
       pageTitle: Resources["requestApproval"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
@@ -274,7 +274,8 @@ class TimeSheetWorkFlow extends Component {
                       this.setState({
                         rows: result,
                         isLoading: false,
-                        isApprove: false
+                        isApprove: false,
+                        viewMessage: true
                       });
                     });
                   }
@@ -321,6 +322,8 @@ class TimeSheetWorkFlow extends Component {
         <LoadingSection />
       );
 
+      const alert =this.state.viewMessage === true ? (<NotifiMsg statusClass="animationBlock" IsSuccess="false" Msg={this.state.Message}/> ) : null
+
     const btnExport =
       this.state.isLoading === false ? (
         <Export
@@ -351,8 +354,7 @@ class TimeSheetWorkFlow extends Component {
             <span>{this.state.rows.length}</span>
             <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
-                <svg
-                  width="16px"
+                <svg width="16px"
                   height="18px"
                   viewBox="0 0 16 18"
                   version="1.1"
@@ -425,14 +427,13 @@ class TimeSheetWorkFlow extends Component {
           <div className="gridfillter-container">{ComponantFilter}</div>
         </div>
         <div>{dataGrid}</div>
+        <Fragment>{alert}</Fragment>
         {this.state.isApprove ? (
           <Rodal visible={true} onClose={this.closeModal.bind(this)}>
             <Formik  initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)}>
               {({ errors, touched, handleBlur, handleChange }) => (
                 <Form id="signupForm1" className="proForm" noValidate="novalidate">
                   <div className="approvalDocument">
-                    {this.state.viewMessage === true ? (
-                      <NotifiMsg statusClass="animationBlock" IsSuccess="false" Msg={this.state.Message}/> ) : null}
                     <div className="approvalWrapper">
                       <div className="approvalTitle">
                         <h3>Document Approval</h3>
@@ -441,36 +442,17 @@ class TimeSheetWorkFlow extends Component {
                         <div className="form-group passwordInputs showPasswordArea">
                           <label className="control-label">Password *</label>
                           <div className="inputPassContainer">
-                            <div
-                              className={
-                                errors.password && touched.password
-                                  ? "ui input inputDev has-error"
-                                  : !errors.password && touched.password
-                                  ? "ui input inputDev has-success"
-                                  : "ui input inputDev"
-                              }
-                            >
-                              <span
-                                className={
-                                  this.state.type
-                                    ? "inputsideNote togglePW active-pw"
-                                    : "inputsideNote togglePW "
-                                }
-                                onClick={this.toggle}
-                              >
+                            <div className={ errors.password && touched.password ? "ui input inputDev has-error" : !errors.password && touched.password ? "ui input inputDev has-success" : "ui input inputDev"}>
+                              <span className={ this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW " } onClick={this.toggle}>
                                 <img src={eyeShow} />
                                 <span className="show"> Show</span>
                                 <span className="hide"> Hide</span>
                               </span>
-                              <input
-                                name="password"
-                                type={this.state.type ? "text" : "password"}
-                                className="form-control"
+                              <input name="password" type={this.state.type ? "text" : "password"} className="form-control"
                                 id="password"
                                 placeholder="password"
                                 autoComplete="off"
-                                onChange={handleChange}
-                              />
+                                onChange={handleChange} />
                               {errors.password && touched.password ? (
                                 <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
                               ) : !errors.password && touched.password ? (
@@ -496,10 +478,7 @@ class TimeSheetWorkFlow extends Component {
                       </div>
                       <div className="fullWidthWrapper">
                         {this.state.isLoading != true ? (
-                          <button
-                            className="primaryBtn-1 btn largeBtn"
-                            type="submit"
-                          >
+                          <button className="primaryBtn-1 btn largeBtn" type="submit">
                             Save
                           </button>
                         ) : (
