@@ -19,60 +19,60 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const ValidtionSchema = Yup.object().shape({
     ARTitle: Yup.string()
         .required(Resources['titleArValid'][currentLanguage]),
-    Abbreviation: Yup.string()
-        .required(Resources['abbreviationValid'][currentLanguage]),
+    EnTitle: Yup.string()
+        .required(Resources['titleEnValid'][currentLanguage]),
 
 });
 
 const validationEdit = Yup.object().shape({
     ARTitleForEdit: Yup.string()
         .required(Resources['titleArValid'][currentLanguage]),
-    AbbreviationForEdit: Yup.string()
-        .required(Resources['abbreviationValid'][currentLanguage]),
+    EnTitleForEdit: Yup.string()
+        .required(Resources['titleEnValid'][currentLanguage]),
 });
 
-const DropGeneralData=
-       [ { label:   Resources["approvalStatus"][currentLanguage], value: "approvalstatus" },
-        { label:   Resources["area"][currentLanguage], value: "area" },
-        { label:   Resources["buildingNumber"][currentLanguage], value: "buildingno" },
-        { label:   Resources["companyRole"][currentLanguage], value: "companyrole" },
-        { label:   Resources["ContactName"][currentLanguage], value: "contacttitle" },
-        { label:   Resources["currency"][currentLanguage], value: "currency" },
-        { label:   Resources["clientSelectionType"][currentLanguage], value: "clinetselectionstype" },
-        { label:   Resources["country"][currentLanguage], value: "country" },
-        { label:   Resources["cvrRecommendations"][currentLanguage], value: "CVR Recommendations" },
-        { label:   Resources["dayName"][currentLanguage], value: "dayname" },
-        { label:   Resources["desginProjectType"][currentLanguage], value: "Desgin Project Type" },
-        { label:   Resources["discipline"][currentLanguage], value: "discipline" },
-        { label:   Resources["reviewResult"][currentLanguage], value: "Drawing Item Status" },
-        { label:   Resources["distributionAction"][currentLanguage], value: "distribution_action" },
-        { label:   Resources["drawingFileNumber"][currentLanguage], value: "drawingfilenumber" },
-        { label:   Resources["equipmentCode"][currentLanguage], value: "equipmentcode" },
-        { label:   Resources["equipmentType"][currentLanguage], value: "equipmenttype" },
-        { label:   Resources["expenseType"][currentLanguage], value: "expensestype" },
-        { label:   Resources["fieldForce"][currentLanguage], value: "fieldforce" },
-        { label:   Resources["itemType"][currentLanguage], value: "Item Type" },
-        { label:   Resources["location"][currentLanguage], value: "location" },
-        { label:   Resources["materialCode"][currentLanguage], value: "materialcode" },
-        { label:   Resources["materialTitle"][currentLanguage], value: "materialtitle" },
-        { label:   Resources["priority"][currentLanguage], value: "priority" },
-        { label:   Resources["projectType"][currentLanguage], value: "projecttype" },
-        { label:   Resources["project_Type"][currentLanguage], value: "project_type" },
-        { label:   Resources["reportsTypes"][currentLanguage], value: "Reports Types" },
-        { label:   Resources["reasonForIssue"][currentLanguage], value: "reasonforissue" },
-        { label:   Resources["reviewResult"][currentLanguage], value: "reviewresult" },
-        { label:   Resources["sendingMethod"][currentLanguage], value: "sendingmethods" },
-        { label:   Resources["specsSection"][currentLanguage], value: "specssection" },
-        { label:   Resources["transmittalSubmittedFor"][currentLanguage], value: "transmittalsubmittedfor" },
-        { label:   Resources["transactionType"][currentLanguage], value: "transactiontype" },
-        { label:   Resources["timeSheetLocation"][currentLanguage], value: "timesheetlocation" },
-        { label:   Resources["weather"][currentLanguage], value: "weather" },
-        { label:   Resources["weatherFromTo"][currentLanguage], value: "weatherfromto" },
-        { label:   Resources["unit"][currentLanguage], value: "unit" },
-        { label:   Resources["apartmentNumber"][currentLanguage], value: "Apartment Number" },
-        { label:   Resources["boqItemType"][currentLanguage], value: "estimationitemtype" },
-        { label:   Resources["EstimationType"][currentLanguage], value: "EstimationType" },
-        { label:   Resources["dailyreporttype"][currentLanguage], value: "dailyreporttype" }]
+const DropGeneralData =
+    [{ label: Resources["approvalStatus"][currentLanguage], value: "approvalstatus" },
+    { label: Resources["area"][currentLanguage], value: "area" },
+    { label: Resources["buildingNumber"][currentLanguage], value: "buildingno" },
+    { label: Resources["companyRole"][currentLanguage], value: "companyrole" },
+    { label: Resources["ContactName"][currentLanguage], value: "contacttitle" },
+    { label: Resources["currency"][currentLanguage], value: "currency" },
+    { label: Resources["clientSelectionType"][currentLanguage], value: "clinetselectionstype" },
+    { label: Resources["country"][currentLanguage], value: "country" },
+    { label: Resources["cvrRecommendations"][currentLanguage], value: "CVR Recommendations" },
+    { label: Resources["dayName"][currentLanguage], value: "dayname" },
+    { label: Resources["desginProjectType"][currentLanguage], value: "Desgin Project Type" },
+    { label: Resources["discipline"][currentLanguage], value: "discipline" },
+    { label: Resources["reviewResult"][currentLanguage], value: "Drawing Item Status" },
+    { label: Resources["distributionAction"][currentLanguage], value: "distribution_action" },
+    { label: Resources["drawingFileNumber"][currentLanguage], value: "drawingfilenumber" },
+    { label: Resources["equipmentCode"][currentLanguage], value: "equipmentcode" },
+    { label: Resources["equipmentType"][currentLanguage], value: "equipmenttype" },
+    { label: Resources["expenseType"][currentLanguage], value: "expensestype" },
+    { label: Resources["fieldForce"][currentLanguage], value: "fieldforce" },
+    { label: Resources["itemType"][currentLanguage], value: "Item Type" },
+    { label: Resources["location"][currentLanguage], value: "location" },
+    { label: Resources["materialCode"][currentLanguage], value: "materialcode" },
+    { label: Resources["materialTitle"][currentLanguage], value: "materialtitle" },
+    { label: Resources["priority"][currentLanguage], value: "priority" },
+    { label: Resources["projectType"][currentLanguage], value: "projecttype" },
+    { label: Resources["project_Type"][currentLanguage], value: "project_type" },
+    { label: Resources["reportsTypes"][currentLanguage], value: "Reports Types" },
+    { label: Resources["reasonForIssue"][currentLanguage], value: "reasonforissue" },
+    { label: Resources["reviewResult"][currentLanguage], value: "reviewresult" },
+    { label: Resources["sendingMethod"][currentLanguage], value: "sendingmethods" },
+    { label: Resources["specsSection"][currentLanguage], value: "specssection" },
+    { label: Resources["transmittalSubmittedFor"][currentLanguage], value: "transmittalsubmittedfor" },
+    { label: Resources["transactionType"][currentLanguage], value: "transactiontype" },
+    { label: Resources["timeSheetLocation"][currentLanguage], value: "timesheetlocation" },
+    { label: Resources["weather"][currentLanguage], value: "weather" },
+    { label: Resources["weatherFromTo"][currentLanguage], value: "weatherfromto" },
+    { label: Resources["unit"][currentLanguage], value: "unit" },
+    { label: Resources["apartmentNumber"][currentLanguage], value: "Apartment Number" },
+    { label: Resources["boqItemType"][currentLanguage], value: "estimationitemtype" },
+    { label: Resources["EstimationType"][currentLanguage], value: "EstimationType" },
+    { label: Resources["dailyreporttype"][currentLanguage], value: "dailyreporttype" }]
 
 class GeneralList extends Component {
     constructor(props) {
@@ -115,7 +115,9 @@ class GeneralList extends Component {
             showNotify: false,
             api: 'GetAccountsDefaultList?',
             showNotifyError: false,
-            showNotifyPermissions: false
+            showNotifyPermissions: false,
+            showState: true,
+            msgStateNotify: Resources['smartSentAccountingMessage'][currentLanguage].successTitle
         }
     }
 
@@ -172,8 +174,8 @@ class GeneralList extends Component {
         if (config.IsAllow(1179)) {
             if (config.IsAllow(1181)) {
                 this.setState({
-                    showCheckbox: true ,
-                     isLoading: false
+                    showCheckbox: true,
+                    isLoading: false
                 })
             } 
         }
@@ -193,17 +195,14 @@ class GeneralList extends Component {
         if (editable === true) {
             this.setState({
                 selectedRows,
+                showNotify: false,
                 showDeleteModal: true
             })
         }
         else {
-            setTimeout(() => {
-                this.setState({
-                    showNotifyError: true,
-                })
-            }, 500);
             this.setState({
-                showNotifyError: false,
+                showNotify: true,
+                msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
             })
         }
     }
@@ -223,23 +222,16 @@ class GeneralList extends Component {
                     rows: originalRows,
                     showDeleteModal: false,
                     isLoading: false,
+                    showNotify: true,
+                    showState: true
                 })
-                setTimeout(() => {
-                    this.setState({
-                        showNotify: true,
-                    })
-                }, 500);
             }
         ).catch(ex => {
             this.setState({
                 isLoading: true,
-                showNotify: false,
+
             })
         });
-        this.setState({
-            isLoading: true,
-            showNotify: false,
-        })
 
     }
 
@@ -278,39 +270,42 @@ class GeneralList extends Component {
                             IsEdit: true,
                             ShowPopup: true,
                             EditListData: res,
-                            selectedrow: obj.id
+                            selectedrow: obj.id,
+                            showNotify: false,
                         })
                     }
                 )
             }
-
             else {
-                setTimeout(() => {
-                    this.setState({
-                        showNotifyError: true,
-                    })
-                }, 500);
                 this.setState({
-                    showNotifyError: false,
-                })
+                    showNotify: true,
+                    showState: false,
+                    msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
 
+                })
             }
         }
         else {
-            setTimeout(() => {
-                this.setState({
-                    showNotifyPermissions: true,
-                })
-            }, 500);
             this.setState({
-                showNotifyPermissions: false,
+                showNotify: true,
+                showNotifyPermissions: true,
+                showState: false,
+                msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
+
             })
         }
     }
 
+    showAdd = (e) => {
+        this.setState({
+            showNotify: false,
+            ShowPopup: true
+        });
+
+    }
 
     render() {
-    
+
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
@@ -328,12 +323,7 @@ class GeneralList extends Component {
 
         return (
             <Fragment >
-
-                <NotifiMsg showNotify={this.state.showNotify} IsSuccess={true} Msg={Resources['successAlert'][currentLanguage]} />
-                <NotifiMsg showNotify={this.state.showNotifyError} IsSuccess={false} Msg={Resources['adminItemEditable'][currentLanguage]} />
-                <NotifiMsg showNotify={this.state.showNotifyPermissions} IsSuccess={false} Msg={Resources['missingPermissions'][currentLanguage]} />
-
-              
+                <NotifiMsg showNotify={this.state.showNotify} IsSuccess={this.state.showState} Msg={this.state.msgStateNotify} />
 
                 <div className="submittalFilter">
                     <div className="subFilter">
@@ -353,8 +343,9 @@ class GeneralList extends Component {
                     {this.state.listType ?
                         <div className="filterBTNS">
                             {config.IsAllow(1182) ?
-                                <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.setState({ ShowPopup: true })}>New</button>
-                                : null}{btnExport}
+                                <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
+                                : null}
+                            {btnExport}
                         </div>
                         : null}
 
@@ -374,222 +365,217 @@ class GeneralList extends Component {
                     </div>
 
                 </div>
-               
+
                 <div className="linebylineInput valid-input">
                     <Select title='AccountsDefaultList' placeholder='AccountsDefaultList' data={DropGeneralData} handleChange={this.GeneralListHandelChange} />
                 </div>
-               
+
                 <div className="grid-container">
                     {dataGrid}
                 </div>
 
-                <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false, IsEdit: false })} title={this.state.IsEdit ?
+                <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false, IsEdit: false, showNotify: false })} title={this.state.IsEdit ?
                     Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['editTitle'][currentLanguage]
                     : Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['goAdd'][currentLanguage]}
-                    onCloseClicked={() => this.setState({ ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}
+                    onCloseClicked={() => this.setState({ showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}
                 >
-                        {this.state.IsEdit ?
-                            <Formik
-                                initialValues={{
-                                    EnTitleForEdit: '',
-                                    ARTitleForEdit: '',
-                                    AbbreviationForEdit: ''
-                                }}
+                    {this.state.IsEdit ?
+                        <Formik
+                             initialValues={{
+                                 EnTitleForEdit: '',
+                                 ARTitleForEdit: '',
+                                 AbbreviationForEdit: ''
+                             }}
 
-                                validationSchema={validationEdit}
+                            validationSchema={validationEdit}
 
-                                onSubmit={() => {
-                                    this.setState({
-                                        isLoading: true,
-                                    })
-                                    Api.post('EditAccountsDefaultList', this.state.EditListData).then(
-                                        res => {
-                                            this.setState({
-                                                rows: res,
-                                                isLoading: false,
-                                                IsEdit: false
-                                            })
-                                        }
-                                    )
-                                    this.setState({
-                                        isLoading: true,
-                                        ShowPopup: false,
-                                        IsEdit: false
-                                    })
-                                    setTimeout(() => {
+                            onSubmit={() => {
+                                this.setState({
+                                    isLoading: true,
+                                })
+                                Api.post('EditAccountsDefaultList', this.state.EditListData).then(
+                                    res => {
                                         this.setState({
+                                            rows: res,
+                                            isLoading: false,
+                                            ShowPopup: false,
                                             showNotify: true,
+                                            IsEdit: false
                                         })
-                                    }, 500);
-                                    this.setState({
-                                        showNotify: false,
-                                    })
+                                    }
+                                )
 
-                                }} >
+                            }} >
 
-                                {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
+                            {({ errors, touched, handleBlur, handleChange, handleSubmit ,values }) => (
 
-                                    <Form onSubmit={handleSubmit}>
-                                        <div className="dropWrapper">
+                                <Form onSubmit={handleSubmit}>
+                                    <div className="dropWrapper">
 
-                                            <div className="fillter-status fillter-item-c">
-                                                <div className="linebylineInput valid-input label__block">
-                                                    <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                                    <div className="ui input inputDev" >
-                                                        <input type='text' name='EnTitleForEdit' className="form-control" autoComplete='off'
-                                                            value={this.state.EditListData.title} placeholder={Resources['titleEn'][currentLanguage]}
-                                                            onBlur={(e) => { handleBlur(e) }}
-                                                            onChange={(e) => {
-                                                                handleChange(e)
-                                                                this.setState({ EditListData: { ...this.state.EditListData, title: e.target.value } })
-                                                            }
-                                                            } />
-                                                    </div>
+
+
+                                        <div className="fillter-status fillter-item-c">
+                                            <div className="linebylineInput valid-input label__block">
+                                                <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
+                                                <div className={errors.EnTitleForEdit && touched.EnTitleForEdit ?
+                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
+                                                    <input name='EnTitleForEdit' autoComplete='off' className="form-control"
+                                                        value={this.state.EditListData.title} placeholder={Resources['titleEn'][currentLanguage]}
+                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => {handleChange(e)
+                                                            this.setState({ EditListData:{ ...this.state.EditListData, title: e.target.value } })}} />
+                                                    {errors.EnTitleForEdit && touched.EnTitleForEdit  ? (<em className="pError">{errors.EnTitleForEdit}</em>) : null}
                                                 </div>
                                             </div>
-
-                                            <div className="fillter-status fillter-item-c">
-                                                <div className="linebylineInput valid-input label__block">
-                                                    <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                                    <div className={errors.ARTitleForEdit && touched.ARTitleForEdit ?
-                                                        ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                        <input name='ARTitleForEdit' className="form-control" autoComplete='off'
-                                                            value={this.state.EditListData.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
-                                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
-                                                                handleChange(e)
-                                                                this.setState({ EditListData: { ...this.state.EditListData, titleAr: e.target.value } })
-                                                            }} />
-                                                        {errors.ARTitleForEdit && touched.ARTitleForEdit ? (
-                                                            <em className="pError">{errors.ARTitleForEdit}</em>) : null}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="fillter-status fillter-item-c">
-                                                <div className="linebylineInput valid-input label__block">
-                                                    <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
-                                                    <div className={errors.AbbreviationForEdit && touched.AbbreviationForEdit ?
-                                                        ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                        <input name='AbbreviationForEdit' autoComplete='off'
-                                                            value={this.state.EditListData.abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
-                                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
-                                                                handleChange(e)
-                                                                this.setState({ EditListData: { ...this.state.EditListData, abbreviation: e.target.value } })
-                                                            }} />
-                                                        {errors.AbbreviationForEdit && touched.AbbreviationForEdit ? (
-                                                            <em className="pError">{errors.AbbreviationForEdit}</em>) : null}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="fullWidthWrapper">
-                                                <button className="primaryBtn-1 btn" type='submit'   >
-                                                    {Resources['save'][currentLanguage]}</button>
-                                            </div>
-                                        
                                         </div>
-                                    </Form>
-                                )}
-                            </Formik>
-                            :
-                            <Formik
 
-                                initialValues={{
-                                    EnTitle: '',
-                                    ARTitle: '',
-                                    Abbreviation: ''
-                                }}
 
-                                validationSchema={ValidtionSchema}
+                                        <div className="fillter-status fillter-item-c">
+                                            <div className="linebylineInput valid-input label__block">
+                                                <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
+                                                <div className={errors.ARTitleForEdit && touched.ARTitleForEdit ?
+                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
+                                                    <input name='ARTitleForEdit' className="form-control" autoComplete='off'
+                                                        value={this.state.EditListData.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
+                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => {handleChange(e)
+                                                        this.setState({ EditListData: { ...this.state.EditListData, titleAr: e.target.value } })}} />
+                                                    {errors.ARTitleForEdit && touched.ARTitleForEdit ? (<em className="pError">{errors.ARTitleForEdit}</em>) : null}
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                onSubmit={(values, actions) => {
-                                    this.setState({
-                                        isLoading: true,
-                                    })
+                                        <div className="fillter-status fillter-item-c">
+                                            <div className="linebylineInput valid-input label__block">
+                                                <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
+                                                <div className="ui input inputDev">
+                                                    <input  autoComplete='off'
+                                                        value={this.state.EditListData.abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
+                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
+                                                            handleChange(e)
+                                                            this.setState({ EditListData: { ...this.state.EditListData, abbreviation: e.target.value } })
+                                                        }} />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                    Api.post('AddAccountsDefaultList', { 'title': values.EnTitle, 'titleAr': values.ARTitle, 'abbreviation': values.Abbreviation, 'listType': this.state.listType }).then(
-                                        res => {
-                                            this.setState({
-                                                rows: res,
-                                                isLoading: false,
-                                            })
-                                        }
-                                    )
+                                        <div className="fullWidthWrapper">
+                                            <button className="primaryBtn-1 btn" type='submit'   >
+                                                {Resources['save'][currentLanguage]}</button>
+                                        </div>
 
-                                    actions.setSubmitting(false);
-                                    values.EnTitle = ''
-                                    values.ARTitle = ''
-                                    values.Abbreviation = ''
-                                    this.setState({
-                                        isLoading: true,
-                                        ShowPopup: false
-                                    })
-                                    setTimeout(() => {
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                        :
+                        <Formik
+
+                             initialValues={{
+                                 EnTitle: '',
+                                 ARTitle: '',
+                                 Abbreviation: ''
+                             }}
+
+                            validationSchema={ValidtionSchema}
+
+                            onSubmit={(values, actions) => {
+                                this.setState({
+                                    isLoading: true,
+                                })
+
+                                Api.post('AddAccountsDefaultList', { 'title': values.EnTitle, 'titleAr': values.ARTitle, 'abbreviation': values.Abbreviation, 'listType': this.state.listType }).then(
+                                    res => {
                                         this.setState({
-                                            showNotify: true,
+                                            rows: res,
+                                            isLoading: false,
                                         })
-                                    }, 500);
-                                    this.setState({
-                                        showNotify: false,
-                                    })
-                                }} >
+                                    }
+                                )
 
-                                {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
-                                    <Form onSubmit={handleSubmit}>
-                                        <div className="dropWrapper">
-                                        
-                                            <div className="fillter-status fillter-item-c">
-                                                <div className="linebylineInput valid-input label__block">
-                                                    <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                                    <div className="ui input inputDev" >
-                                                        <input type='text' name='EnTitle' className="form-control" autoComplete='off'
-                                                            value={values.EnTitle} placeholder={Resources['titleEn'][currentLanguage]}
-                                                            onBlur={(e) => { handleBlur(e) }}
-                                                            onChange={(e) => { handleChange(e) }
-                                                            } />
+                                actions.setSubmitting(false);
+                                values.EnTitle = ''
+                                values.ARTitle = ''
+                                values.Abbreviation = ''
+                                this.setState({
+                                    isLoading: true,
+                                    ShowPopup: false
+                                })
 
-                                                    </div>
+                                this.setState({
+                                    showNotify: true,
+                                })
+
+
+                            }} >
+
+                            {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
+                                <Form onSubmit={handleSubmit}>
+                                    <div className="dropWrapper">
+
+                                        <div className="fillter-status fillter-item-c">
+                                            <div className="linebylineInput valid-input label__block">
+                                                <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
+                                                <div className={errors.EnTitle && touched.EnTitle ?
+                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
+                                                    <input name='EnTitle' autoComplete='off'
+                                                        value={values.EnTitle} className="form-control" placeholder={Resources['titleEn'][currentLanguage]}
+                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
+                                                    {errors.EnTitle && touched.EnTitle ? (
+                                                        <em className="pError">{errors.EnTitle}</em>) : null}
                                                 </div>
                                             </div>
-
-                                            <div className="fillter-status fillter-item-c">
-                                                <div className="linebylineInput valid-input label__block">
-                                                    <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                                    <div className={errors.ARTitle && touched.ARTitle ?
-                                                        ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                        <input name='ARTitle' className="form-control" autoComplete='off'
-                                                            value={values.ARTitle} placeholder={Resources['titleAr'][currentLanguage]}
-                                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
-                                                        {errors.ARTitle && touched.ARTitle ? (
-                                                            <em className="pError">{errors.ARTitle}</em>) : null}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="fillter-status fillter-item-c">
-                                                <div className="linebylineInput valid-input label__block">
-                                                    <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
-                                                    <div className={errors.Abbreviation && touched.Abbreviation ?
-                                                        ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                        <input name='Abbreviation' autoComplete='off'
-                                                            value={values.Abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
-                                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
-                                                        {errors.Abbreviation && touched.Abbreviation ? (
-                                                            <em className="pError">{errors.Abbreviation}</em>) : null}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="fullWidthWrapper">
-                                                <button className="primaryBtn-1 btn" type='submit'   >
-                                                    {Resources['save'][currentLanguage]}</button>
-                                            </div>
-                                    
                                         </div>
-                                    </Form>
-                                )}
-                            </Formik>
-                        }
+
+                                        {/* 
+                                        <div className="fillter-status fillter-item-c">
+                                            <div className="linebylineInput valid-input label__block">
+                                                <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
+                                                <div className="ui input inputDev" >
+                                                    <input type='text' name='EnTitle' className="form-control" autoComplete='off'
+                                                        value={values.EnTitle} placeholder={Resources['titleEn'][currentLanguage]}
+                                                        onBlur={(e) => { handleBlur(e) }}
+                                                        onChange={(e) => { handleChange(e) }
+                                                        } />
+
+                                                </div>
+                                            </div>
+                                        </div> */}
+
+                                        <div className="fillter-status fillter-item-c">
+                                            <div className="linebylineInput valid-input label__block">
+                                                <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
+                                                <div className={errors.ARTitle && touched.ARTitle ?
+                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
+                                                    <input name='ARTitle' className="form-control" autoComplete='off'
+                                                        value={values.ARTitle} placeholder={Resources['titleAr'][currentLanguage]}
+                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
+                                                    {errors.ARTitle && touched.ARTitle ? (
+                                                        <em className="pError">{errors.ARTitle}</em>) : null}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="fillter-status fillter-item-c">
+                                            <div className="linebylineInput valid-input label__block">
+                                                <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
+                                                <div className="ui input inputDev" >
+                                                    <input name='Abbreviation' autoComplete='off'
+                                                        value={values.Abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
+                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="fullWidthWrapper">
+                                            <button className="primaryBtn-1 btn" type='submit'   >
+                                                {Resources['save'][currentLanguage]}</button>
+                                        </div>
+
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    }
 
                 </SkyLightStateless>
 

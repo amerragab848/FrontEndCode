@@ -32,7 +32,7 @@ class SchedualActionByDetails extends Component {
       {
         key: "docNo",
         name: Resources["docNo"][currentLanguage],
-        width: "50%",
+        width:100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -43,7 +43,7 @@ class SchedualActionByDetails extends Component {
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -54,7 +54,7 @@ class SchedualActionByDetails extends Component {
       {
         key: "docDelay",
         name: Resources["delay"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -65,7 +65,7 @@ class SchedualActionByDetails extends Component {
       {
         key: "requiredDate",
         name: Resources["requiredDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -77,7 +77,7 @@ class SchedualActionByDetails extends Component {
       {
         key: "statusText",
         name: Resources["dateType"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -88,7 +88,7 @@ class SchedualActionByDetails extends Component {
       {
         key: "companyName",
         name: Resources["CompanyName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -139,7 +139,7 @@ class SchedualActionByDetails extends Component {
 
     this.state = {    
       pageTitle:Resources["schedualActionBy"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
@@ -158,7 +158,7 @@ class SchedualActionByDetails extends Component {
     }
 
     if (action) {
-      Api.get("GetActionsBySchedualSummaryDetails?action=" + action).then(
+      Api.get("GetActionsByScheduleSummaryDetails?action=" + action).then(
         result => { 
           this.setState({
             rows: result,

@@ -37,6 +37,10 @@ export default class Api {
 
         options.headers = Api.headers();
 
+        // if(signal) {
+        //     options.signal = signal;
+        // }
+        
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
              

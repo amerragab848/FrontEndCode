@@ -1,77 +1,63 @@
-import React, { Component } from 'react'; 
+import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import Resources from '../../resources.json';
-import Api from '../../api';
-   
-import Modal from 'react-responsive-modal';
+import Resources from "../../resources.json";
+import Api from "../../api";
 
-
-
-
+import Modal from "react-responsive-modal";
 
 var hoverPointer = {
-    cursor: 'Pointer'
-}
+  cursor: "Pointer"
+};
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Widgets extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 0,
-            open: false,
-            detailsData: []
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: 0,
+      open: false,
+      detailsData: []
     };
+  }
 
-    componentDidMount() {
-        Api.get(this.props.api).then(result => {
-            this.setState({
-                value: result
-            });
-        }); 
+  componentDidMount() {
+    Api.get(this.props.props.api).then(result => {
+      this.setState({
+        value: result != null ? result : 0
+      });
+    });
+  }
 
-         
+  onOpenModal = () => {
+    if(this.state.value > 0){
+      this.props.history.push(this.props.props.route);
     }
+  };
 
-    onOpenModal = () => {
-        this.props.history.push({
-            pathname: this.props.route
-        })
-        // if (this.props.isModal === 'true') {
-        //     this.setState({ open: true });
-        //     Api.get(this.props.apiDetails).then(res => {
-        //         this.setState({
-        //             detailsData: res
-        //         });
-        //     });
-        // }
-    };
+  onCloseModal = () => {
+    this.setState({ open: false });
+  };
 
-    onCloseModal = () => {
-        this.setState({ open: false });
-    };
+  render() {
+    const { open } = this.state;
 
-    render() {
-        const { open } = this.state;
-
-            return (
-            <div>
-                <div>
-                    <Modal open={open} onClose={this.onCloseModal} center>              
-                    </Modal>
-                </div>
-                <div className="summerisItem">
-                    <div className="content">
-                        <h4 className="title">{Resources[this.props.title][currentLanguage]}</h4>
-                        <p className="number" style={this.props.isModal === 'true' ? hoverPointer :{} } onClick={this.onOpenModal.bind(this)}>{this.state.value}</p>
-                    </div>
-                </div>
-            </div>
-            )
-    }
+    return (
+      <Fragment>
+        <div className="summerisItem">
+          <div className="content">
+            <h4 className="title">
+              {Resources[this.props.title][currentLanguage]}
+            </h4>
+            <p className="number"  onClick={this.onOpenModal.bind(this)}>
+              {this.state.value}
+            </p>
+          </div>
+        </div>
+      </Fragment>
+    );
+  }
 }
 
 export default withRouter(Widgets);

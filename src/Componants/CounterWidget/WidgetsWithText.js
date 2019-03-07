@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import Resources from '../../resources.json';
 import Api from '../../api'; 
 import Modal from 'react-responsive-modal';
-
-
-
-
-
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class WidgetsWithText extends Component {
+ 
     constructor(props) {
         super(props);
         this.state = {
@@ -18,29 +15,39 @@ class WidgetsWithText extends Component {
             open: false,
             detailsData: []
         }
+
+
+        console.log(props);
     };
 
     componentDidMount() {
-        Api.get(this.props.api).then(data => {
-            let _value = this.props.value.split('-');
-            let _total = this.props.total.split('-');
+
+        this.abortController = new AbortController();
+
+        let signal = this.abortController.signal;
+
+        Api.get(this.props.props.api, signal).then(data => {
+            let _value = this.props.props.value.split('-');
+            let _total = this.props.props.total.split('-');
 
             this.setState({
-                count: data[_value[1]][_value[0]],
-                total: data[_total[1]][_total[0]],
+                count: data[_value[1]][_value[0]] != null ? data[_value[1]][_value[0]]:0,
+                total: data[_total[1]][_total[0]] != null ? data[_total[1]][_total[0]]:0,
             });
         });
     }
 
-    onOpenModal = () => {
+    componentWillUnmount() {
+        this.abortController.abort();
+    }
 
+    onOpenModal = () => { 
         this.setState({ open: true });
         Api.get(this.props.apiDetails).then(res => {
             this.setState({
                 detailsData: res
             });
-        });
-
+        }); 
     };
 
     onCloseModal = () => {
@@ -61,13 +68,11 @@ class WidgetsWithText extends Component {
                     </div>
                 </div>
                 <div>
-                    <Modal open={open} onClose={this.onCloseModal} center>
-                      
-                    </Modal>
+                <Modal open={open} onClose={this.onCloseModal} center>
+                    
+                </Modal>
                 </div>
-            </div>
-
-
+            </div> 
         )
     }
 }

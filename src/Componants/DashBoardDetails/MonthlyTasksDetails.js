@@ -19,7 +19,6 @@ const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-
 export default class MonthlyTasksDetails extends Component {
     constructor(props) {
         super(props)
@@ -28,18 +27,18 @@ export default class MonthlyTasksDetails extends Component {
             {
                 key: "arrange",
                 name: Resources["arrange"][currentLanguage],
-                width: "50%",
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
-                // formatter: dateFormate
+                formatter: dateFormate
             },
 
             {
                 key: "subject",
                 name: Resources["subject"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -49,50 +48,47 @@ export default class MonthlyTasksDetails extends Component {
             {
                 key: "projectName",
                 name: Resources["projectName"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
-                filterable: true,
+                filterable: true 
             },
             {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
                 filterable: true,
-                formatter: dateFormate
-
+                formatter: dateFormate 
             },
             {
                 key: "finishDate",
                 name: Resources["finishDate"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 sortDescendingFirst: true,
-                formatter: dateFormate
-
+                formatter: dateFormate 
             },
             {
                 key: "bicCompanyName",
                 name: Resources["CompanyName"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                sortDescendingFirst: true,
-
+                sortDescendingFirst: true 
             },
             {
                 key: "bicContactName",
                 name: Resources["ContactName"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -102,12 +98,11 @@ export default class MonthlyTasksDetails extends Component {
             {
                 key: "remaining",
                 name: Resources["remaining"][currentLanguage],
-                width: "50%",
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                sortDescendingFirst: true,
-
+                sortDescendingFirst: true 
             }
         ];
 

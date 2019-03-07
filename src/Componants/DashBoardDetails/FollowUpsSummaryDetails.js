@@ -6,9 +6,8 @@ import Export from "../../Componants/OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
-
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Filters } from "react-data-grid-addons";
+import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -23,48 +22,55 @@ const {
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
- 
-
-const statusButton = ({ value, row }) => {
-  let doc_view = "";
-    if(row){
-      if (row.readStatus === true) {
-        doc_view = <div style={{textAlign:'center',margin:'4px auto',padding:'4px 10px',borderRadius:'26px',backgroundColor:'#5FD45F',width:'100%',color:'#fff', fontSize: '12px'}}>{Resources["read"][currentLanguage]}</div>
-      }else{
-        doc_view = <div style={{textAlign:'center',padding:'4px 10px',margin:'4px auto',borderRadius:'26px',backgroundColor:'#E74C3C',width:'100%',color:'#FFF'}}>{Resources["unRead"][currentLanguage]}</div>
-      } 
-        return doc_view; 
-    }
-    return null;
-};
 
 let  subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-    doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
-    subject = row.subject;
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
+    let doc_view = "";
+    let subject = "";
+    if (row) {
+      doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+      subject = row.subject;
+      return <a href={doc_view}> {subject} </a>;
+    }
+    return null;
+  };
 
-class DocNotifyLogDetails extends Component {
+class FollowUpsSummaryDetails extends Component {
   constructor(props) {
     super(props);
 
     var columnsGrid = [
       {
-        key: "readStatusText",
-        name: Resources["statusName"][currentLanguage],
+        key: "projectName",
+        name:  Resources["projectName"][currentLanguage],
+        width: 150,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "fromCompany",
+        name:  Resources["fromCompany"][currentLanguage],
+        width: 150,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
+      },
+      {
+        key: "arrange",
+        name:  Resources["arrange"][currentLanguage],
         width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:statusButton
+        filterRenderer: SingleSelectFilter
       },
       {
         key: "subject",
@@ -79,32 +85,8 @@ class DocNotifyLogDetails extends Component {
         formatter:subjectLink
       },
       {
-        key: "creationDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
-      },
-      {
-        key: "openedBy",
-        name: Resources["openedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
+        key: "actionByContactName",
+        name: Resources["actionByContact"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
@@ -114,31 +96,65 @@ class DocNotifyLogDetails extends Component {
         filterRenderer: SingleSelectFilter
       },
       {
-        key: "docType",
+        key: "approvalStatusName",
+        name: Resources["approvalStatus"][currentLanguage],
+        width:150,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter 
+      },
+      {
+        key: "docTypeName",
         name: Resources["docType"][currentLanguage],
-        width: 150,
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter 
       },
       {
-        key: "refDoc",
-        name: Resources["docNo"][currentLanguage],
-        width: 150,
+        key: "delayDuration",
+        name: Resources["delay"][currentLanguage],
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter 
       },
       {
-        key: "dueDate",
-        name: Resources["dueDate"][currentLanguage],
-        width: 150,
+        key: "duration2",
+        name: Resources["durationDays"][currentLanguage],
+        width:150,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter 
+      },
+      {
+        key: "sendDate",
+        name: Resources["sendDate"][currentLanguage],
+        width:150,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter,
+        formatter:dateFormate
+      },
+      {
+        key: "lastApprovalDate",
+        name: Resources["lastApprovalDate"][currentLanguage],
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -151,9 +167,21 @@ class DocNotifyLogDetails extends Component {
 
     const filtersColumns = [
       {
-        field: "readStatusText",
-        name: "statusName",
+        field: "projectName",
+        name: "projectName",
         type: "string",
+        isCustom: true
+      },
+      {
+        field: "fromCompany",
+        name: "fromCompany",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "arrange",
+        name: "arrange",
+        type: "number",
         isCustom: true
       },
       {
@@ -163,45 +191,51 @@ class DocNotifyLogDetails extends Component {
         isCustom: true
       },
       {
-        field: "creationDate",
-        name: "docDate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "openedBy",
-        name: "openedBy",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "projectName",
-        name: "projectName",
+        field: "actionByContactName",
+        name: "actionByContact",
         type: "string",
         isCustom: true
       },
       {
-        field: "docType",
+        field: "approvalStatusName",
+        name: "approvalStatus",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docTypeName",
         name: "docType",
         type: "string",
         isCustom: true
       },
       {
-        field: "refDoc",
-        name: "docNo",
+        field: "delayDuration",
+        name: "delay",
         type: "string",
         isCustom: true
       },
       {
-        field: "dueDate",
-        name: "dueDate",
+        field: "duration2",
+        name: "durationDays",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "sendDate",
+        name: "sendDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "lastApprovalDate",
+        name: "lastApprovalDate",
         type: "date",
         isCustom: true
       }
     ];
 
     this.state = {
-      pageTitle:Resources["docNotify"][currentLanguage],
+      pageTitle:Resources["followUpsSummaryDetails"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
@@ -212,13 +246,14 @@ class DocNotifyLogDetails extends Component {
   }
 
   componentDidMount() {
-    Api.get("GetNotifyRequestsDocApprove").then(result => {
   
-      this.setState({
-        rows: result,
-        isLoading: false
-      });
-    });
+      Api.get("GetFollowing").then(result => {
+  
+        this.setState({
+          rows: result,
+          isLoading: false
+        });
+      }); 
   }
 
   hideFilter(value) {
@@ -256,6 +291,8 @@ class DocNotifyLogDetails extends Component {
       });
   };
 
+
+
   render() {
     const dataGrid =
     this.state.isLoading === false ? (
@@ -277,7 +314,7 @@ class DocNotifyLogDetails extends Component {
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-          <h3 className="zero">{this.state.pageTitle}</h3>
+            <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
@@ -351,8 +388,8 @@ class DocNotifyLogDetails extends Component {
               )}
             </div>
           </div>
-          <div className="filterBTNS"> 
-          {btnExport}
+          <div className="filterBTNS">
+            {btnExport}
           </div> 
         </div>
         <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
@@ -367,4 +404,4 @@ class DocNotifyLogDetails extends Component {
   }
 }
 
-export default DocNotifyLogDetails;
+export default FollowUpsSummaryDetails;

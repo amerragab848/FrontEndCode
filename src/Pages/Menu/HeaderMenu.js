@@ -13,6 +13,7 @@ import config from "../../Services/Config";
 import "../../Styles/css/font-awesome.min.css";
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+ 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -28,6 +29,8 @@ class HeaderMenu extends Component {
       languageSelected: currentLanguage == "en" ?  "en" : "ar" ,
       classRadio: currentLanguage == "en" ? true:false
     };
+
+    config.contactName = this.props.contactName;
   }
 
   componentWillMount = () => {};

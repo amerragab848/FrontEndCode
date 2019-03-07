@@ -9,8 +9,8 @@ import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import Api from '../../../../api';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-let CurrProject=localStorage.getItem('lastSelectedprojectName')
-
+let CurrProject = localStorage.getItem('lastSelectedprojectName')
+const _ = require('lodash')
 class ExpensesWorkFlowLog extends Component {
     constructor(props) {
         super(props)
@@ -62,7 +62,7 @@ class ExpensesWorkFlowLog extends Component {
                 sortDescendingFirst: true
             },
         ]
-        
+
         this.state = {
             showCheckbox: true,
             columns: columnsGrid.filter(column => column.visible !== false),
@@ -71,6 +71,7 @@ class ExpensesWorkFlowLog extends Component {
             selectedRows: [],
             showDeleteModal: false,
             showNotify: false,
+            MaxArrange: 0
         }
     }
 
@@ -80,6 +81,7 @@ class ExpensesWorkFlowLog extends Component {
                 this.setState({
                     rows: res,
                     isLoading: false,
+                    MaxArrange: Math.max.apply(Math, res.map(function (o) { return o.arrange + 1 }))
                 })
             }
         )
@@ -92,7 +94,7 @@ class ExpensesWorkFlowLog extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
-    
+
     clickHandlerDeleteRowsMain = (selectedRows) => {
         this.setState({
             selectedRows,
@@ -136,6 +138,8 @@ class ExpensesWorkFlowLog extends Component {
 
 
     render() {
+
+        console.log(this.state.MaxArrange)
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
@@ -174,7 +178,7 @@ class ExpensesWorkFlowLog extends Component {
                             : null}
                         {btnExport}
                     </div>
-                    
+
                 </div>
                 <div className="grid-container">
                     {dataGrid}
