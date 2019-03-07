@@ -2097,3 +2097,6 @@ button.companies_icon {
   @media screen and (max-width: 1200px) {
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
       margin-right: 0; } } */
+      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+        max-width: 100%;
+    }

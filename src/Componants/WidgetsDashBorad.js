@@ -37,7 +37,7 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false 
         },
           checked:false
         },
@@ -119,7 +119,7 @@ var widgets = [
           props: {
             api: "GetCountMonitorTasks",
             apiDetails: "",
-            route: "",
+            route: "MonitorTasks",
             value: "total",
             listType: "item",
             action: "action",
@@ -136,7 +136,7 @@ var widgets = [
           props: {
             api: "GetCounMonthlyTasks",
             apiDetails: "",
-            route: "",
+            route: "MonthlyTasksDetails",
             value: "total",
             listType: "item",
             action: "action",

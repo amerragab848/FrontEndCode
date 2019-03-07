@@ -62,9 +62,7 @@ class ApprovedWidget extends Component {
       var low = widgetes.find(function(i) {
         return i.action === 3;
       });
-
-      console.log("high : " + this.props.title);
-
+  
       return (
         <div className="summerisItem">
           <div className="content">
@@ -105,20 +103,7 @@ class ApprovedWidget extends Component {
   render() {
     return (
       <Fragment>
-       {this.drawThreeCard()}
-        {/* <div>
-          {this.state.open ? (
-            <Modales
-              title={this.props.title}
-              opened={this.state.open}
-              closed={this.onCloseModal}
-              id={this.props.id}
-              key={this.props.id}
-              apiDetails={this.props.props.apiDetails}
-              action={this.state.action}
-            />
-          ) : null}
-        </div> */}
+       {this.drawThreeCard()} 
       </Fragment>
     );
   }
