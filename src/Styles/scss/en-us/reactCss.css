@@ -2094,7 +2094,6 @@ button.companies_icon {
   @media screen and (max-width: 1200px) {
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
       margin-right: 0; } } */
-<<<<<<< HEAD
 
 
 .fullLinearInput .linebylineInput {
@@ -2124,8 +2123,6 @@ button.companies_icon {
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
   margin-right: 0 
 }
-=======
       .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
         max-width: 100%;
     }
->>>>>>> 644a313ed9a8c69ead4750093cb7fe1349407775
