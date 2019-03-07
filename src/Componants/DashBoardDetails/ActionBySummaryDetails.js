@@ -31,7 +31,7 @@ class ActionBySummaryDetails extends Component {
       {
         key: "docNo",
         name:  Resources["numberAbb"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -42,7 +42,7 @@ class ActionBySummaryDetails extends Component {
       {
         key: "projectName",
         name:  Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -53,7 +53,7 @@ class ActionBySummaryDetails extends Component {
       {
         key: "actionBy",
         name:  Resources["actionByContact"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -64,7 +64,7 @@ class ActionBySummaryDetails extends Component {
       {
         key: "docTypeName",
         name: Resources["docType"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -75,7 +75,7 @@ class ActionBySummaryDetails extends Component {
       {
         key: "docDelay",
         name: Resources["delay"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -86,7 +86,7 @@ class ActionBySummaryDetails extends Component {
       {
         key: "requiredDate",
         name: Resources["requiredDate"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -138,7 +138,7 @@ class ActionBySummaryDetails extends Component {
 
     this.state = {
       pageTitle:Resources["actionBySummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
@@ -157,10 +157,6 @@ class ActionBySummaryDetails extends Component {
     }
     if (action) {
       Api.get("GetActionsBySummaryDetails?action=" + action).then(result => {
-
-        result.map(item => {
-          item.requiredDate = moment(item.requiredDate).format("DD/MM/YYYY");
-        });
 
         this.setState({
           rows: result,

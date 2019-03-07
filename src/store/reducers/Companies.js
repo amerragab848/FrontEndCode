@@ -27,6 +27,8 @@ export default function (state = initialState.app.comapnies, action) {
             state.notifyMessage = true
             state.popUp = false 
            // state.getingData = ! state.getingData
+            state.popUp = false 
+            state.notifyMessage = true 
             return {
                 ...state
             };

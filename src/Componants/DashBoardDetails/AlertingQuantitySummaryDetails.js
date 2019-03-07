@@ -27,7 +27,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "docSubject",
         name: Resources["docSubject"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -38,7 +38,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "description",
         name: Resources["description"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -49,7 +49,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -60,7 +60,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "originalQnty",
         name: Resources["originalQuantity"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -71,7 +71,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "requestedQnty",
         name: Resources["requestedQuantity"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -82,7 +82,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "remainingQnty",
         name: Resources["remainingQuantity"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -133,7 +133,7 @@ class AlertingQuantitySummaryDetails extends Component {
 
     this.state = {
       pageTitle:Resources["alertingQntySummary"][currentLanguage],
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

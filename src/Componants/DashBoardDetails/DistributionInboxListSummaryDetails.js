@@ -21,18 +21,18 @@ const {
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+}; 
 
 const statusButton = ({ value, row }) => {
   let doc_view = "";
     if(row){
       if (row.status === true) {
-        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#CCC',width:'94%'}}>{Resources["read"][currentLanguage]}</div>
+        doc_view = <div style={{textAlign:'center',margin:'4px auto',padding:'4px 10px',borderRadius:'26px',backgroundColor:'#5FD45F',width:'100%',color:'#fff', fontSize: '12px'}}>{Resources["read"][currentLanguage]}</div>
       }else{
-        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#0dc083',width:'94%',color:'#FFF'}}>{Resources["unRead"][currentLanguage]}</div>
+        doc_view = <div style={{textAlign:'center',padding:'4px 10px',margin:'4px auto',borderRadius:'26px',backgroundColor:'#E74C3C',width:'100%',color:'#FFF',fontSize: '12px'}}>{Resources["unRead"][currentLanguage]}</div>
       } 
         return doc_view; 
-      }
+    }
     return null;
 };
 
@@ -44,7 +44,7 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         key: "statusText",
         name: Resources["statusName"][currentLanguage],
-        width: 100,
+        width: 90,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -56,7 +56,7 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: 185,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -153,7 +153,7 @@ class DistributionInboxListSummaryDetails extends Component {
     ];
 
     this.state = {
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

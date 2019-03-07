@@ -40,16 +40,15 @@ import TaskAdmin  from './Componants/GeneralSetting/Accounts/TaskAdmin'
 import AccountsEPSPermissions  from './Componants/GeneralSetting/Accounts/AccountsEPSPermissions'
 import TemplatesSettings  from './Componants/GeneralSetting/TemplatesSettings'
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
+import FollowUpsSummaryDetails from "./Componants/DashBoardDetails/FollowUpsSummaryDetails"; 
 import GeneralList  from './Componants/GeneralSetting/MenuDefaultData/GeneralList'
-import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
-
+import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog' 
 import ExpensesWorkFlow  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlow'
 import ExpensesWorkFlowAddEdit  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit'
 
 let routes = (
 <Switch>
-    <Route exact path="/" component={DashBoard} />,
-
+    <Route exact path="/" component={DashBoard} />, 
     <Route path="/LettersAddEdit" component={LettersAddEdit} />
     <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />,
     <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />,
@@ -67,6 +66,13 @@ let routes = (
     <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />,
     <Route path="/PrivacySetting" component={PrivacySetting} />,
     <Route path="/Companies/" component={Companies} /> 
+    <Route path="/Contacts/:companyID" component={Contacts} />  
+    <Route path="/AddEditCompany/:companyID" component={AddEditCompany} />  
+    <Route path="/:document/:projectId" component={CommonLog} />, 
+    <Route path="/ProfileSetting" component={ProfileSetting} />,
+    <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} /> 
+    <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
+    {/* <Route path="/AddNewCompany" component={AddNewCompany} />    */}
     <Route path="/Contacts/:companyID" component={Contacts} /> 
     
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> 
@@ -82,8 +88,7 @@ let routes = (
     <Route path="/AddTimeSheet" component={AddTimeSheet} /> 
     <Route path="/AddOverTime" component={AddOverTime} /> 
     <Route path="/AddLateTimeSheet" component={AddLateTimeSheet} /> 
-    <Route path="/OverTime" component={OverTime} /> 
-
+    <Route path="/OverTime" component={OverTime} />  
     <Route path="/Accounts" component={Accounts} /> 
     <Route path="/AccountsCompaniesPermissions" component={AccountsCompaniesPermissions} /> 
     <Route path="/AccountsEPSPermissions" component={AccountsEPSPermissions} /> 
@@ -91,6 +96,12 @@ let routes = (
     <Route path="/EditAccount" component={EditAccount} /> 
     <Route path="/UserProjects" component={UserProjects} /> 
     <Route path="/TaskAdmin" component={TaskAdmin} /> 
+    <Route path="/FollowUpsSummaryDetails" component={FollowUpsSummaryDetails} />
+    <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
+    <Route path="/GeneralList" component={GeneralList} /> 
+    <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />  
+    <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} /> 
+    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} />  
     <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
     <Route path="/GeneralList" component={GeneralList} /> 
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> 
