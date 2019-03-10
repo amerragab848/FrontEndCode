@@ -253,7 +253,7 @@ class GeneralList extends Component {
         })
     }
 
-    cellClick = (obj) => {
+    onRowClick = (obj) => {
         if (config.IsAllow(1180)) {
             if (obj.editable) {
                 Api.get('GetAccountsDefaultListForEdit?id=' + obj.id + '').then(
@@ -344,7 +344,7 @@ class GeneralList extends Component {
                     showCheckbox={this.state.showCheckbox}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     pageSize={this.state.pageSize}
-                    onRowClick={this.cellClick.bind(this)}
+                    onRowClick={this.onRowClick.bind(this)}
                 />
             ) : <LoadingSection />
 
@@ -409,7 +409,7 @@ class GeneralList extends Component {
                 <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false, IsEdit: false, showNotify: false })} title={this.state.IsEdit ?
                     Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['editTitle'][currentLanguage]
                     : Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['goAdd'][currentLanguage]}
-                    onCloseClicked={() => this.setState({ showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}>
+                    onCloseClicked={() => this.setState({showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}>
                    
                     <Formik
                         initialValues={{

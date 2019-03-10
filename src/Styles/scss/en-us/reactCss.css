@@ -1737,7 +1737,7 @@ tfoot tr td p{
           line-height: 1.4;
           letter-spacing: -0.2px;
           color: #252833; }
-      .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
+      .noTabs__document .doc-container .step-content .slider-Btns , .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-left: 0; }
 .noTabs__document .approveDocument {
@@ -1991,6 +1991,9 @@ button.companies_icon {
       padding-right: 80px; 
       padding-top: 50px;
     }
+    .one__tab.one_step .doc-container .step-content .feilds__top .document-fields {
+      padding-top: 0; 
+    }
       @media screen and (max-width: 1300px) {
         .one__tab.one_step .doc-container .step-content .document-fields {
           padding-left: 35px;
@@ -2123,6 +2126,9 @@ button.companies_icon {
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
   margin-right: 0 
 }
-      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-        max-width: 100%;
-    }
+.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+  max-width: 100%;
+}
+.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev.NormalInputDate {
+  max-width: inherit;
+}

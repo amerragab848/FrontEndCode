@@ -42,6 +42,8 @@ class DropdownMelcous extends Component {
                             value={ this.props.isMulti ? this.props.value : this.props.selectedValue}
                             isMulti={this.props.isMulti}
                             onBlur={this.props.onblur}
+                            isClearable={this.props.isClear? true : false }
+        
                         />
                         
                         {/* {!!this.props.error && this.props.touched && (

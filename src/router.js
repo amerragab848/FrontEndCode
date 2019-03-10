@@ -43,7 +43,6 @@ import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
 import FollowUpsSummaryDetails from "./Componants/DashBoardDetails/FollowUpsSummaryDetails"; 
 import GeneralList  from './Componants/GeneralSetting/MenuDefaultData/GeneralList'
 import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog' 
-import ExpensesWorkFlow  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlow'
 import ExpensesWorkFlowAddEdit  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit'
 
 let routes = (
@@ -100,15 +99,11 @@ let routes = (
     <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
     <Route path="/GeneralList" component={GeneralList} /> 
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />  
-    <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} /> 
-    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} />  
+    <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />  
     <Route path="/TemplatesSettings" component={TemplatesSettings} /> 
     <Route path="/GeneralList" component={GeneralList} /> 
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> 
-
-
     <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} /> 
-    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> 
     
 </Switch> 
 ); 
