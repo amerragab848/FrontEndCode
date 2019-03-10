@@ -274,7 +274,7 @@ class Accounts extends Component {
     }
 
     componentDidMount = () => {
-         if (config.IsAllow(794)) {
+        if (config.IsAllow(794)) {
             let pageNumber = this.state.pageNumber + 1
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
@@ -286,14 +286,14 @@ class Accounts extends Component {
                 });
             });
         }
-         else {
-             alert('You Don`t Have Permissions')
-             this.props.history.goBack()
-         }
-         if (config.IsAllow(798))
-             this.setState({ showCheckbox: true })
-         else
-             this.setState({ showCheckbox: false })
+        else {
+            alert('You Don`t Have Permissions')
+            this.props.history.goBack()
+        }
+        if (config.IsAllow(798))
+            this.setState({ showCheckbox: true })
+        else
+            this.setState({ showCheckbox: false })
     }
 
     ConfirmResetPassword = () => {
@@ -384,7 +384,8 @@ class Accounts extends Component {
         });
         if (stringifiedQuery.includes("userName") || stringifiedQuery.includes("contactName") || stringifiedQuery.includes("empCode") ||
             stringifiedQuery.includes("supervisorName") || stringifiedQuery.includes("companyName") || stringifiedQuery.includes("userType") ||
-            stringifiedQuery.includes("groupName") || stringifiedQuery.includes("active")) {
+            stringifiedQuery.includes("groupName") || stringifiedQuery.includes("active")
+        ) {
             this.setState({ isLoading: true, search: true })
             let _query = stringifiedQuery.split(',"isCustom"')
             let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
@@ -560,6 +561,7 @@ class Accounts extends Component {
             ) : <LoadingSection />
 
         let Exportcolumns = this.state.columns.filter(s => s.key !== 'BtnActions')
+
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={Exportcolumns} fileName={this.state.pageTitle} />
             : null;
@@ -573,6 +575,7 @@ class Accounts extends Component {
         return (
             <div >
                 <div className="submittalFilter">
+
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
@@ -641,6 +644,7 @@ class Accounts extends Component {
                                 )}
                         </div>
                     </div>
+
                     <div className="filterBTNS">
                         {this.state.IsActiveShow ?
                             <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
@@ -666,8 +670,8 @@ class Accounts extends Component {
                     </div>
 
                 </div>
-                <div
-                    className="filterHidden"
+
+                <div className="filterHidden"
                     style={{
                         maxHeight: this.state.viewfilter ? "" : "0px",
                         overflow: this.state.viewfilter ? "" : "hidden"
@@ -676,6 +680,7 @@ class Accounts extends Component {
                         {ComponantFilter}
                     </div>
                 </div>
+
                 <div className="grid-container">
                     {dataGrid}
                 </div>

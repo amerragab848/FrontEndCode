@@ -1465,9 +1465,6 @@ tfoot tr td p{
   max-height: 500px;
   overflow-y: auto;
 } 
-.proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
-  margin-right: 40px !important;
-}
 .icon__btn {
   background: transparent;
   border: 1px solid transparent;
@@ -2097,6 +2094,35 @@ button.companies_icon {
   @media screen and (max-width: 1200px) {
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
       margin-right: 0; } } */
+
+
+.fullLinearInput .linebylineInput {
+  width: 100%;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox {
+  flex-flow: row;
+  width: 100%;
+}
+.documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .fullLinearInput .control-label {
+  padding-right: 0;
+  width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.documents-stepper .doc-container .step-content .document-fields #UserName {
+  width: 360px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate{
+  display: flex;
+  flex-flow: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-right: 12px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
+  margin-right: 0 
+}
       .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
         max-width: 100%;
     }
