@@ -23,7 +23,7 @@ class ApprovedWidget extends Component {
     Api.get(this.props.props.api).then(result => {
       
       this.setState({
-        dataList: result
+        dataList: result != null ? result : []
       });
     });
   }

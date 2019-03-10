@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -18,8 +18,7 @@ import RichTextEditor from 'react-rte';
 import { connect } from 'react-redux';
 import {
     bindActionCreators
-} from 'redux';
-
+} from 'redux'; 
 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
@@ -33,29 +32,30 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    arrange: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
+    arrange: Yup.number(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['arrangeRequired'][currentLanguage]),
+
     refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
-    fromCompany: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .min(1, Resources['fromCompanyRequired'][currentLanguage])
+
+    fromCompanyId: Yup.string() 
         .required(Resources['fromCompanyRequired'][currentLanguage]),
-    fromContact: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .required(Resources['fromContactRequired'][currentLanguage]),
-    toCompany: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
+
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+
+    toCompanyId: Yup.string() 
         .required(Resources['toCompanyRequired'][currentLanguage]),
-    toContact: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
+
+    toContactId: Yup.string() 
         .required(Resources['toContactRequired'][currentLanguage])
+
 })
 
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
+let docApprovalId = 0;
+let arrange = 0;
 const _ = require('lodash')
 class LettersAddEdit extends Component {
 
@@ -74,6 +74,8 @@ class LettersAddEdit extends Component {
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
+                    docApprovalId = obj.docApprovalId;
+                    arrange = obj.arrange;
                 }
                 catch{
                     this.props.history.goBack();
@@ -118,8 +120,6 @@ class LettersAddEdit extends Component {
         }
     }
     componentDidMount() {
-        //componentWillUnmount
-        // alert('in lettersAddEdit page componentDidMount');
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -133,12 +133,11 @@ class LettersAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {//&& (nextProps.changeStatus!= prevProps.changeStatus) ){//&& (nextProps.hasWorkflow != prevProps.hasWorkflow)) {
+        if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow
             });
-            //this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
     };
@@ -314,8 +313,6 @@ class LettersAddEdit extends Component {
 
     handleChange(e, field) {
         console.log(field, e);
-        //this.props.actions.updateField('subject',e.target.value);
-
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -357,8 +354,7 @@ class LettersAddEdit extends Component {
         });
 
         if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId
-                + "&contactId=" + event.value;
+            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
             this.props.actions.GetNextArrange(url);
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
@@ -373,9 +369,7 @@ class LettersAddEdit extends Component {
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
-
-                this.setState({
-                    //[subDatasource]: result
+                this.setState({ 
                     [targetState]: result
                 });
             });
@@ -400,14 +394,17 @@ class LettersAddEdit extends Component {
 
     saveLetter(event) {
         let saveDocument = { ...this.state.document };
-        console.log(saveDocument);
-        // saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
 
-        // dataservice.addObject('AddLetters', saveDocument).then(result => {
-        //     this.setState({
-        //         docId: result
-        //     });
-        // });
+        console.log('valid');
+
+        saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
+
+        console.log(saveDocument);
+        dataservice.addObject('AddLetters', saveDocument).then(result => {
+            this.setState({
+                docId: result
+            });
+        }); 
     }
 
     saveAndExit(event) {
@@ -438,6 +435,7 @@ class LettersAddEdit extends Component {
                 : null
         )
     }
+
     render() {
         return (
             <div className="mainContainer">
@@ -488,30 +486,19 @@ class LettersAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-
-                                            onSubmit={(values, actions) => {
-                                                if (!this.state.document.fromContactId && !this.state.document.toContactId) {
-                                                    if (this.props.changeStatus === false) {
-                                                        //this.saveLetter();
-                                                    } else {
-                                                        // this.editLetter();
-                                                    }
-                                                }
-                                            }}
-                                            onReset={(values) => { }}
-                                        >
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
+                                            
+                                            onReset={(values) => { }} >
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="proForm first-proform">
 
-                                                        <div className={"linebylineInput valid-input"}>
+                                                        <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input"+ (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete='off'
@@ -539,8 +526,9 @@ class LettersAddEdit extends Component {
                                                         </div>
 
                                                     </div>
+
                                                     <div className="proForm datepickerContainer">
-                                                        
+
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -561,7 +549,7 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.subject && touched.subject ? (" has-error") : " ")} >
@@ -618,101 +606,72 @@ class LettersAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-error"
-                                                            ) : !errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-success"
-                                                            ) : "ui input inputDev fillter-item-c"}
-                                                            >
+                                                            <div className={"ui input inputDev fillter-item-c" + ((errors.fromCompanyId && touched.fromCompanyId) ? " has-error" : (!errors.fromCompanyId && !touched.fromCompanyId) ? (" has-success") : " ")}>
                                                                 <Dropdown
                                                                     title="fromCompany"
                                                                     data={this.state.companies}
                                                                     isMulti={false}
                                                                     selectedValue={this.state.selectedFromCompany}
-                                                                    handleBlur={handleBlur}
-                                                                    handleChange={event =>
-                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')}
-                                                                    index="letter-fromCompany"
-                                                                />
-                                                                {this.state.document.fromCompanyId && touched.fromCompany ? (<em className="pError">{this.state.document.fromCompanyId}</em>) : null}
-                                                                {this.state.document.fromCompanyId && touched.fromCompany ? (<em className="pError">{errors.fromCompany}</em>) : null}
+                                                                    handleBlur={setFieldValue}
+                                                                    handleChange={event => {
+                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                    }}
+                                                                    index="fromCompanyId"
+                                                                    name="fromCompanyId"
+                                                                    id="fromCompanyId" /> 
+                                                                {(touched.fromCompanyId && errors.fromCompanyId  ) ? ( <em className="pError">{errors.fromCompanyId}</em>) : null}
+                                                                {/* {JSON.stringify(touched)} */}
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-error"
-                                                            ) : !errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-success"
-                                                            ) : "ui input inputDev fillter-item-c"}
-                                                            >
+                                                            <div className={"ui input inputDev fillter-item-c " + (this.state.document.fromContactId ? (" has-error") : !errors.fromContactId ? (" has-success") : " ")}>
                                                                 <Dropdown
                                                                     title="fromContact"
                                                                     isMulti={false}
                                                                     data={this.state.fromContacts}
                                                                     selectedValue={this.state.selectedFromContact}
+
+                                                                    handleBlur={handleBlur}  
                                                                     handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-                                                                    index="letter-fromContact"
-                                                                />
-
-                                                                {this.state.document.fromContactId && touched.fromContact ? (
-                                                                    <em className="pError">{this.state.document.fromContactId}</em>
-                                                                ) : null}
-
-                                                                {this.state.document.fromContactId && touched.fromContact ? (
-                                                                    <em className="pError">{errors.fromContact}</em>
-                                                                ) : null}
+                                                                    index="letter-fromContact" 
+                                                                    name="fromCompanyId"
+                                                                    id="fromCompanyId" />
+                                                                {touched.fromContactId ? (<em className="pError">{errors.fromContactId}</em>) : null}
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-error"
-                                                            ) : !errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-success"
-                                                            ) : "ui input inputDev fillter-item-c"}
-                                                            >
+                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toCompanyId && touched.toCompanyId ? (" has-error") : !errors.toCompanyId && touched.toCompanyId ? (" has-success") : " ")}>
+
                                                                 <Dropdown
-                                                                    title="toCompany"
+                                                                    title="toCompany" 
+                                                                    isMulti={false}
                                                                     data={this.state.companies}
                                                                     selectedValue={this.state.selectedToCompany}
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                                     index="letter-toCompany"
-                                                                />
-
-                                                                {this.state.document.fromContactId && touched.fromContact ? (
-                                                                    <em className="pError">{this.state.document.fromContactId}</em>
-                                                                ) : null}
-
-                                                                {this.state.document.fromContactId && touched.fromContact ? (
-                                                                    <em className="pError">{errors.fromContact}</em>
-                                                                ) : null}
+                                                                    name="fromCompanyId"
+                                                                    id="fromCompanyId" />
+                                                                {touched.toCompanyId ? (<em className="pError">{errors.toCompanyId}</em>) : null}
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-error"
-                                                            ) : !errors.fromCompany && touched.fromCompany ? (
-                                                                "ui input inputDev fillter-item-c has-success"
-                                                            ) : "ui input inputDev fillter-item-c"}
-                                                            >
+                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toContactId && touched.toContactId ? (" has-error") : !errors.toContactId && touched.toContactId ? (" has-success") : "")}>
                                                                 <Dropdown
                                                                     title="toContactName"
+                                                                    isMulti={false}
                                                                     data={this.state.ToContacts}
                                                                     selectedValue={this.state.selectedToContact}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
                                                                     index="letter-toContactName"
-                                                                />
+                                                                    name="fromCompanyId"
+                                                                    id="fromCompanyId" />
+                                                                {touched.toContactId ? (<em className="pError">{errors.toContactId}</em>) : null}
 
-                                                                {this.state.document.fromContactId && touched.fromContact ? (
-                                                                    <em className="pError">{this.state.document.fromContactId}</em>
-                                                                ) : null}
-
-                                                                {this.state.document.fromContactId && touched.fromContact ? (
-                                                                    <em className="pError">{errors.fromContact}</em>
-                                                                ) : null}
+                                                                {/* {JSON.stringify(errors)} */}
                                                             </div>
                                                         </div>
 
@@ -747,13 +706,12 @@ class LettersAddEdit extends Component {
                                                         </div>
 
                                                     </div>
-                                                    
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
                                                     </div>
                                                 </Form>
                                             )}
-                                        </Formik>
+                                        </Formik> 
                                     </div>
                                     <div className="doc-pre-cycle">
                                         <div>
