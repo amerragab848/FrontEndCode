@@ -54,6 +54,8 @@ let docId = 0;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
+let docApprovalId = 0;
+let arrange = 0;
 const _ = require('lodash')
 class LettersAddEdit extends Component {
 
@@ -72,6 +74,8 @@ class LettersAddEdit extends Component {
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
+                    docApprovalId = obj.docApprovalId;
+                    arrange = obj.arrange;
                 }
                 catch{
                     this.props.history.goBack();
