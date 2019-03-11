@@ -41,7 +41,7 @@ class SendWorkFlow extends Component {
         this.setState({
             selectedWorkFlow: item,
             workFlowData: { ...this.state.workFlowData, workFlowId: item.value }
-        }); 
+        });
 
          let url = "GetProjectWorkFlowContactsFirstLevelForList?workFlow=" + item.value;
         

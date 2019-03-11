@@ -1267,9 +1267,6 @@ tfoot tr td p{
   white-space: nowrap;
   max-width: 255px;
 }
-.dash__content .project__content::{
-
-}
 .customeTabs .react-tabs__tab-panel--selected {
   width: 100%;
 }
