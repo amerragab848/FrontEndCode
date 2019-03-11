@@ -21,15 +21,15 @@ const {
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+}; 
 
 const statusButton = ({ value, row }) => {
   let doc_view = "";
     if(row){
       if (row.readStatus === true) {
-        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#CCC',width:'94%'}}>{Resources["read"][currentLanguage]}</div>
+        doc_view = <div style={{textAlign:'center',margin:'4px auto',padding:'4px 10px',borderRadius:'26px',backgroundColor:'#5FD45F',width:'100%',color:'#fff', fontSize: '12px'}}>{Resources["read"][currentLanguage]}</div>
       }else{
-        doc_view = <div style={{textAlign:'center',paddingTop:'3px',margin:'4px auto',borderRadius:'2px',backgroundColor:'#0dc083',width:'94%',color:'#FFF'}}>{Resources["unRead"][currentLanguage]}</div>
+        doc_view = <div style={{textAlign:'center',padding:'4px 10px',margin:'4px auto',borderRadius:'26px',backgroundColor:'#E74C3C',width:'100%',color:'#FFF', fontSize: '12px'}}>{Resources["unRead"][currentLanguage]}</div>
       } 
         return doc_view; 
     }
@@ -56,7 +56,7 @@ class DocApprovalDetails extends Component {
       {
         key: "readStatusText",
         name: Resources["statusName"][currentLanguage],
-        width: "50%",
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -68,7 +68,7 @@ class DocApprovalDetails extends Component {
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -80,7 +80,7 @@ class DocApprovalDetails extends Component {
       {
         key: "creationDate",
         name: Resources["docDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -92,7 +92,7 @@ class DocApprovalDetails extends Component {
       {
         key: "duration2",
         name: Resources["durationDays"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -103,7 +103,7 @@ class DocApprovalDetails extends Component {
       {
         key: "arrange",
         name: Resources["levelNo"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -114,7 +114,7 @@ class DocApprovalDetails extends Component {
       {
         key: "actionBy",
         name: Resources["actionByContact"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -125,7 +125,7 @@ class DocApprovalDetails extends Component {
       {
         key: "openedBy",
         name: Resources["openedBy"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -136,7 +136,7 @@ class DocApprovalDetails extends Component {
       {
         key: "description",
         name: Resources["description"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -147,7 +147,7 @@ class DocApprovalDetails extends Component {
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -158,7 +158,7 @@ class DocApprovalDetails extends Component {
       {
         key: "docType",
         name: Resources["docType"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -169,7 +169,7 @@ class DocApprovalDetails extends Component {
       {
         key: "refDoc",
         name: Resources["docNo"][currentLanguage],
-        width: "50%",
+        width:150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -180,7 +180,7 @@ class DocApprovalDetails extends Component {
       {
         key: "lastApproveDate",
         name: Resources["lastApproveDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -192,7 +192,7 @@ class DocApprovalDetails extends Component {
       {
         key: "delayDuration",
         name: Resources["delay"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -204,7 +204,7 @@ class DocApprovalDetails extends Component {
       {
         key: "dueDate",
         name: Resources["dueDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -216,7 +216,7 @@ class DocApprovalDetails extends Component {
       {
         key: "lastSendDate",
         name: Resources["lastSendDate"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -228,7 +228,7 @@ class DocApprovalDetails extends Component {
       {
         key: "lastSendTime",
         name: Resources["lastSendTime"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -239,7 +239,7 @@ class DocApprovalDetails extends Component {
       {
         key: "lastApproveTime",
         name: Resources["lastApprovedTime"][currentLanguage],
-        width: "50%",
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -335,7 +335,7 @@ class DocApprovalDetails extends Component {
 
     this.state = {
       pageTitle: "",
-      viewfilter: true,
+      viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],

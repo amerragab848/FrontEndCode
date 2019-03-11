@@ -73,8 +73,7 @@ class AddEditCompany extends Component {
         })
 
     }
-
-
+ 
     handleChange = (item, name) => {
         switch (name) {
             case "title":
@@ -160,8 +159,7 @@ class AddEditCompany extends Component {
                     })
                 )
         }
-    }
-
+    } 
 
     render() {
         return (

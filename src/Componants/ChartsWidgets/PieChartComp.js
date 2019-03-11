@@ -61,8 +61,12 @@ class PieChartComp extends Component {
         }
     }
     componentDidMount(){
+        this.abortController = new AbortController();
+
+        let signal = this.abortController.signal;
+
         let _series=[]
-        Api.get(this.props.api).then(results => {
+        Api.get(this.props.api, signal).then(results => {
             results.map((obj)=>{
                 _series.push({name:obj[this.props.name] , y:obj[this.props.y] });
                 return null;
@@ -70,9 +74,13 @@ class PieChartComp extends Component {
             this.setState({options:{ series: { name:this.props.seriesName , data :_series} }});
          }).catch ((ex) => {
             console.log(ex);
-         });
-
+         }); 
     }
+
+    componentWillUnmount() {
+        this.abortController.abort();
+    }
+
     render() { 
         return ( 
                 <div className="panel">

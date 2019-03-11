@@ -1,171 +1,79 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from "../../api";
-import LoadingSection from "../publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
-import moment from "moment";
-import Filter from "../FilterComponent/filterComponent";
-import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css"; 
-import GridSetup from "../../Pages/Communication/GridSetup";
-import {  Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import moment from "moment";
+import GridSetup from "../../Pages/Communication/GridSetup";
+import Export from "../../Componants/OptionsPanels/Export";
+import DashBoardDefenition from "./DashBoardDefenition";
+import Filter from "../FilterComponent/filterComponent";
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-class NotCodedPaymentDetails extends Component {
+export default class DashBoardCounterLog extends Component {
   constructor(props) {
     super(props);
 
-    var columnsGrid = [
-      {
-        key: "arrange",
-        name: Resources["numberAbb"][currentLanguage],
-        width: 100,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      }, {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "currentPaymentDue",
-        name: Resources["paymentDue"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "docCloseDate",
-        name: Resources["docClosedate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
-      } 
-    ];
+    const query = new URLSearchParams(this.props.location.search);
 
-    const filtersColumns = [
-      {
-        field: "arrange",
-        name: "numberAbb",
-        type: "number",
-        isCustom: true
-      },
-      {
-        field: "subject",
-        name: "subject",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "projectName",
-        name: "projectName",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "currentPaymentDue",
-        name: "paymentDue",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "docCloseDate",
-        name: "docClosedate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "docDate",
-        name: "docDate",
-        type: "date",
-        isCustom: true
-      }
-    ];
+    let key = null;
 
-    this.state = {
-      pageTitle:Resources["notCodedPaymentSummary"][currentLanguage],
-      viewfilter: false,
-      columns: columnsGrid,
-      isLoading: true,
-      rows: [],
-      filtersColumns: filtersColumns,
-      isCustom: true
-    };
+    let getkeyDetails = null;
+
+    for (let param of query.entries()) {
+      key = param[1];
+    }
+
+    if (key) {
+      getkeyDetails = DashBoardDefenition.find(i => i.key === key);
+
+      getkeyDetails.columns.forEach(item => {
+        if (item.formatter) {
+          item.formatter = dateFormate;
+        }
+      });
+
+      this.state = {
+        columns: getkeyDetails.columns,
+        rows: [],
+        isLoading: true,
+        filtersColumns: getkeyDetails.filters,
+        viewfilter: false,
+        apiDetails: getkeyDetails.apiDetails,
+        pageTitle: getkeyDetails.title
+      };
+    }
   }
 
   componentDidMount() {
-    const query = new URLSearchParams(this.props.location.search);
+    if (this.state.apiDetails) {
+      let spliteData = this.state.apiDetails.split("-");
 
-    let action = null;
+      if (spliteData.length > 1) {
+        let data = spliteData[1].split("&");
+        let obj = {};
 
-    for (let param of query.entries()) {
-      action = param[1];
-    }
+        obj.pageNumber = data[0].split("=")[1];
+        obj.pageSize = data[1].split("=")[1];
 
-    if (action) {
-      Api.get("GetPaymentUserByRange?action=" + action).then(
-        result => {
-  
+        Api.post(spliteData[0], obj).then(result => {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
-        }
-      );
+        });
+      } else {
+        Api.get(this.state.apiDetails).then(result => {
+          this.setState({
+            rows: result != null ? result : [],
+            isLoading: false
+          });
+        });
+      }
     }
   }
 
@@ -175,61 +83,26 @@ class NotCodedPaymentDetails extends Component {
     return this.state.viewfilter;
   }
 
-  filterMethodMain = (event, query, apiFilter) => {
-    var stringifiedQuery = JSON.stringify(query);
-
-    this.setState({
-      isLoading: true,
-      query: stringifiedQuery
-    });
-
-    Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result,
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
-      .catch(ex => {
-        alert(ex);
-        this.setState({
-          rows: [],
-          isLoading: false
-        });
-      });
-  };
-
   render() {
-  const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+    const dataGrid =
+      this.state.isLoading === false ? (<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} /> ) : (<LoadingSection />);
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources[this.state.pageTitle][currentLanguage]} />
+      ) : (<LoadingSection />);
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    const ComponantFilter = this.state.isLoading === false ? (<Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> ) : (
+        <LoadingSection />
+      );
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
             <h3 className="zero">
-              {this.state.pageTitle}
+              {Resources[this.state.pageTitle][currentLanguage]}
             </h3>
             <span>{this.state.rows.length}</span>
-            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)} >
               <span>
                 <svg
                   width="16px"
@@ -297,20 +170,13 @@ class NotCodedPaymentDetails extends Component {
               )}
             </div>
           </div>
-          <div className="filterBTNS">
-                {btnExport}
-          </div> 
+          <div className="filterBTNS">{btnExport}</div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px",overflow: this.state.viewfilter ? "" : "hidden"}}>
-          <div className="gridfillter-container">
-           {ComponantFilter}
-          </div>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
+          <div className="gridfillter-container">{ComponantFilter}</div>
         </div>
-
         <div>{dataGrid}</div>
       </div>
     );
   }
 }
-
-export default NotCodedPaymentDetails;

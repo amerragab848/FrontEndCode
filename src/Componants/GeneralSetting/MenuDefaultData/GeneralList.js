@@ -21,14 +21,6 @@ const ValidtionSchema = Yup.object().shape({
         .required(Resources['titleArValid'][currentLanguage]),
     EnTitle: Yup.string()
         .required(Resources['titleEnValid'][currentLanguage]),
-
-});
-
-const validationEdit = Yup.object().shape({
-    ARTitleForEdit: Yup.string()
-        .required(Resources['titleArValid'][currentLanguage]),
-    EnTitleForEdit: Yup.string()
-        .required(Resources['titleEnValid'][currentLanguage]),
 });
 
 const DropGeneralData =
@@ -117,7 +109,7 @@ class GeneralList extends Component {
             showNotifyError: false,
             showNotifyPermissions: false,
             showState: true,
-            msgStateNotify: Resources['smartSentAccountingMessage'][currentLanguage].successTitle
+            msgStateNotify: Resources['smartSentAccountingMessage'][currentLanguage].successTitle,
         }
     }
 
@@ -177,15 +169,7 @@ class GeneralList extends Component {
                     showCheckbox: true,
                     isLoading: false
                 })
-            }
-            // dataservice.GetDataList('GetListTypesOnly', 'listType', 'listType').then(
-            //     res => {
-            //         this.setState({
-            //             GeneralList: res,
-            //             isLoading: false
-            //         })
-            //     }
-            // )
+            } 
         }
     }
 
@@ -269,7 +253,7 @@ class GeneralList extends Component {
         })
     }
 
-    cellClick = (obj) => {
+    onRowClick = (obj) => {
         if (config.IsAllow(1180)) {
             if (obj.editable) {
                 Api.get('GetAccountsDefaultListForEdit?id=' + obj.id + '').then(
@@ -312,6 +296,46 @@ class GeneralList extends Component {
 
     }
 
+    AddEditSave = (values, actions) => {
+        this.setState({
+            isLoading: true,
+        })
+        if (this.state.IsEdit) {
+            Api.post('EditAccountsDefaultList', this.state.EditListData).then(
+                res => {
+                    this.setState({
+                        rows: res,
+                        isLoading: false,
+                        ShowPopup: false,
+                        showNotify: true,
+                        IsEdit: false
+                    })
+                }
+            )
+        }
+        else {
+            Api.post('AddAccountsDefaultList', { 'title': values.EnTitle, 'titleAr': values.ARTitle, 'abbreviation': values.Abbreviation, 'listType': this.state.listType }).then(
+                res => {
+                    this.setState({
+                        rows: res,
+                        isLoading: false,
+                    })
+                }
+            )
+        }
+        actions.setSubmitting(false);
+        values.EnTitle = ''
+        values.ARTitle = ''
+        values.Abbreviation = ''
+        this.setState({
+            isLoading: true,
+            ShowPopup: false
+        })
+        this.setState({
+            showNotify: true,
+        })
+    }
+
     render() {
 
         const dataGrid =
@@ -320,7 +344,7 @@ class GeneralList extends Component {
                     showCheckbox={this.state.showCheckbox}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     pageSize={this.state.pageSize}
-                    onRowClick={this.cellClick.bind(this)}
+                    onRowClick={this.onRowClick.bind(this)}
                 />
             ) : <LoadingSection />
 
@@ -385,205 +409,91 @@ class GeneralList extends Component {
                 <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false, IsEdit: false, showNotify: false })} title={this.state.IsEdit ?
                     Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['editTitle'][currentLanguage]
                     : Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['goAdd'][currentLanguage]}
-                    onCloseClicked={() => this.setState({ showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}
-                >
-                    {this.state.IsEdit ?
-                        <Formik
-                             initialValues={{
-                                 EnTitleForEdit: '',
-                                 ARTitleForEdit: '',
-                                 AbbreviationForEdit: ''
-                             }}
+                    onCloseClicked={() => this.setState({showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}>
+                   
+                    <Formik
+                        initialValues={{
+                            EnTitle: this.state.IsEdit ? ' ' : '',
+                            ARTitle: this.state.IsEdit ? ' ' : '',
+                            Abbreviation: this.state.IsEdit ? ' ' : '',
+                        }}
 
-                            validationSchema={validationEdit}
+                        enableReinitialize={true}
 
-                            onSubmit={() => {
-                                this.setState({
-                                    isLoading: true,
-                                })
-                                Api.post('EditAccountsDefaultList', this.state.EditListData).then(
-                                    res => {
-                                        this.setState({
-                                            rows: res,
-                                            isLoading: false,
-                                            ShowPopup: false,
-                                            showNotify: true,
-                                            IsEdit: false
-                                        })
-                                    }
-                                )
+                        validationSchema={ValidtionSchema}
 
-                            }} >
+                        onSubmit={(values, actions) => {
+                            this.AddEditSave(values, actions)
+                        }}>
 
-                            {({ errors, touched, handleBlur, handleChange, handleSubmit ,values }) => (
+                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
+                            <Form onSubmit={handleSubmit}>
 
-                                <Form onSubmit={handleSubmit}>
-                                    <div className="dropWrapper">
+                                <div className="dropWrapper">
 
-
-
-                                        <div className="fillter-status fillter-item-c">
-                                            <div className="linebylineInput valid-input label__block">
-                                                <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                                <div className={errors.EnTitleForEdit && touched.EnTitleForEdit ?
-                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                    <input name='EnTitleForEdit' autoComplete='off' className="form-control"
-                                                        value={this.state.EditListData.title} placeholder={Resources['titleEn'][currentLanguage]}
-                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => {handleChange(e)
-                                                            this.setState({ EditListData:{ ...this.state.EditListData, title: e.target.value } })}} />
-                                                    {errors.EnTitleForEdit && touched.EnTitleForEdit  ? (<em className="pError">{errors.EnTitleForEdit}</em>) : null}
-                                                </div>
+                                    <div className="fillter-status fillter-item-c">
+                                        <div className="linebylineInput valid-input label__block">
+                                            <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
+                                            <div className={'ui input inputDev ' + (errors.EnTitle && touched.EnTitle ? 'has-error' : null) + ' '}>
+                                                <input name='EnTitle' autoComplete='off'
+                                                    value={this.state.IsEdit ? this.state.EditListData.title : values.EnTitle} className="form-control" placeholder={Resources['titleEn'][currentLanguage]}
+                                                    onBlur={(e) => { handleBlur(e) }}
+                                                    onChange={(e) => {
+                                                        handleChange(e)
+                                                        if (this.state.IsEdit) {
+                                                            this.setState({ EditListData: { ...this.state.EditListData, title: e.target.value } })
+                                                        }
+                                                    }} />
+                                                {errors.EnTitle && touched.EnTitle ? (
+                                                    <em className="pError">{errors.EnTitle}</em>) : null}
                                             </div>
                                         </div>
+                                    </div>
 
-
-                                        <div className="fillter-status fillter-item-c">
-                                            <div className="linebylineInput valid-input label__block">
-                                                <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                                <div className={errors.ARTitleForEdit && touched.ARTitleForEdit ?
-                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                    <input name='ARTitleForEdit' className="form-control" autoComplete='off'
-                                                        value={this.state.EditListData.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
-                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => {handleChange(e)
-                                                        this.setState({ EditListData: { ...this.state.EditListData, titleAr: e.target.value } })}} />
-                                                    {errors.ARTitleForEdit && touched.ARTitleForEdit ? (<em className="pError">{errors.ARTitleForEdit}</em>) : null}
-                                                </div>
+                                    <div className="fillter-status fillter-item-c">
+                                        <div className="linebylineInput valid-input label__block">
+                                            <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
+                                            <div className={'ui input inputDev ' + (errors.ARTitle && touched.ARTitle ? 'has-error' : null) + ' '}>
+                                                <input name='ARTitle' className="form-control" autoComplete='off'
+                                                    value={this.state.IsEdit ? this.state.EditListData.titleAr : values.ARTitle} placeholder={Resources['titleAr'][currentLanguage]}
+                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
+                                                        handleChange(e)
+                                                        if (this.state.IsEdit) {
+                                                            this.setState({ EditListData: { ...this.state.EditListData, titleAr: e.target.value } })
+                                                        }
+                                                    }} />
+                                                {errors.ARTitle && touched.ARTitle ? (
+                                                    <em className="pError">{errors.ARTitle}</em>) : null}
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div className="fillter-status fillter-item-c">
-                                            <div className="linebylineInput valid-input label__block">
-                                                <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
-                                                <div className="ui input inputDev">
-                                                    <input  autoComplete='off'
-                                                        value={this.state.EditListData.abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
-                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
-                                                            handleChange(e)
+                                    <div className="fillter-status fillter-item-c">
+                                        <div className="linebylineInput valid-input label__block">
+                                            <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
+                                            <div className="ui input inputDev" >
+                                                <input name='Abbreviation' autoComplete='off'
+                                                    value={this.state.IsEdit ? this.state.EditListData.abbreviation : values.Abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
+                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
+                                                        handleChange(e)
+                                                        if (this.state.IsEdit) {
                                                             this.setState({ EditListData: { ...this.state.EditListData, abbreviation: e.target.value } })
-                                                        }} />
-                                                </div>
+                                                        }
+                                                    }} />
                                             </div>
                                         </div>
-
-                                        <div className="fullWidthWrapper">
-                                            <button className="primaryBtn-1 btn" type='submit'   >
-                                                {Resources['save'][currentLanguage]}</button>
-                                        </div>
-
                                     </div>
-                                </Form>
-                            )}
-                        </Formik>
-                        :
-                        <Formik
 
-                             initialValues={{
-                                 EnTitle: '',
-                                 ARTitle: '',
-                                 Abbreviation: ''
-                             }}
-
-                            validationSchema={ValidtionSchema}
-
-                            onSubmit={(values, actions) => {
-                                this.setState({
-                                    isLoading: true,
-                                })
-
-                                Api.post('AddAccountsDefaultList', { 'title': values.EnTitle, 'titleAr': values.ARTitle, 'abbreviation': values.Abbreviation, 'listType': this.state.listType }).then(
-                                    res => {
-                                        this.setState({
-                                            rows: res,
-                                            isLoading: false,
-                                        })
-                                    }
-                                )
-
-                                actions.setSubmitting(false);
-                                values.EnTitle = ''
-                                values.ARTitle = ''
-                                values.Abbreviation = ''
-                                this.setState({
-                                    isLoading: true,
-                                    ShowPopup: false
-                                })
-
-                                this.setState({
-                                    showNotify: true,
-                                })
-
-
-                            }} >
-
-                            {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
-                                <Form onSubmit={handleSubmit}>
-                                    <div className="dropWrapper">
-
-                                        <div className="fillter-status fillter-item-c">
-                                            <div className="linebylineInput valid-input label__block">
-                                                <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                                <div className={errors.EnTitle && touched.EnTitle ?
-                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                    <input name='EnTitle' autoComplete='off'
-                                                        value={values.EnTitle} className="form-control" placeholder={Resources['titleEn'][currentLanguage]}
-                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
-                                                    {errors.EnTitle && touched.EnTitle ? (
-                                                        <em className="pError">{errors.EnTitle}</em>) : null}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* 
-                                        <div className="fillter-status fillter-item-c">
-                                            <div className="linebylineInput valid-input label__block">
-                                                <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                                <div className="ui input inputDev" >
-                                                    <input type='text' name='EnTitle' className="form-control" autoComplete='off'
-                                                        value={values.EnTitle} placeholder={Resources['titleEn'][currentLanguage]}
-                                                        onBlur={(e) => { handleBlur(e) }}
-                                                        onChange={(e) => { handleChange(e) }
-                                                        } />
-
-                                                </div>
-                                            </div>
-                                        </div> */}
-
-                                        <div className="fillter-status fillter-item-c">
-                                            <div className="linebylineInput valid-input label__block">
-                                                <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                                <div className={errors.ARTitle && touched.ARTitle ?
-                                                    ("ui input inputDev has-error") : "ui input inputDev"} >
-                                                    <input name='ARTitle' className="form-control" autoComplete='off'
-                                                        value={values.ARTitle} placeholder={Resources['titleAr'][currentLanguage]}
-                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
-                                                    {errors.ARTitle && touched.ARTitle ? (
-                                                        <em className="pError">{errors.ARTitle}</em>) : null}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="fillter-status fillter-item-c">
-                                            <div className="linebylineInput valid-input label__block">
-                                                <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
-                                                <div className="ui input inputDev" >
-                                                    <input name='Abbreviation' autoComplete='off'
-                                                        value={values.Abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
-                                                        onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }} />
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="fullWidthWrapper">
-                                            <button className="primaryBtn-1 btn" type='submit'   >
-                                                {Resources['save'][currentLanguage]}</button>
-                                        </div>
-
+                                    <div className="fullWidthWrapper">
+                                        <button className="primaryBtn-1 btn" type='submit'>
+                                            {Resources['save'][currentLanguage]}</button>
                                     </div>
-                                </Form>
-                            )}
-                        </Formik>
-                    }
+
+                                </div>
+
+                            </Form>
+                        )}
+                    </Formik>
 
                 </SkyLightStateless>
 

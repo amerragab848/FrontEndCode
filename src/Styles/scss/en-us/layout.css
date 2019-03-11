@@ -5309,7 +5309,7 @@ ul {
     .dashboard__Project .dash__content.smallTabs {
       width: 100%; }
     .dashboard__Project .dash__content .project__content {
-      width: 100%;
+      width: 48%;
       display: flex;
       flex-wrap: wrap; }
       .dashboard__Project .dash__content .project__content .project__select {

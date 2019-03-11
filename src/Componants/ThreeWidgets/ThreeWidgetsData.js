@@ -2,6 +2,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-AssessmentSummary-1",
         title: "assessmentSummary",
+        key:"0-101-1001",
         props: {
             api: "GetAssessmentSummary",
             apiDetails: "",
@@ -17,6 +18,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-InboxSummary-2",
         title: "inboxSummary",
+        key: "0-101-1002",
         props: {
             api: "GetInboxSummary",
             apiDetails: "",
@@ -32,6 +34,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-ClosedSummary-3",
         title: "closedSummary",
+        key: "0-101-1003",
         props: {
             api: "GetClosedDocumentsSummaryCount",
             apiDetails: "SelectDocTypeByProjectIdClosedByAction?action=",
@@ -47,6 +50,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-DistributionSummary-4",
         title: "distributionSummary",
+        key: "0-101-1004",
         props: {
             api: "GetDistributionInboxSummary",
             apiDetails: "",
@@ -62,6 +66,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-ActionBySummary-5",
         title: "actionBySummary",
+        key: "0-101-1005",
         props: {
             api: "GetActionByCount",
             apiDetails: "GetActionsBySummaryDetails?action=",
@@ -77,6 +82,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-NotCodedExpensesSummary-6",
         title: "notCodedExpensesSummary",
+        key: "0-101-1006",
         props: {
             api: "GetNotCodedExpensesSummary",
             apiDetails: "GetNotCodedExpensesSummaryDetail?action=",
@@ -92,6 +98,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-RejecerdItem-7",
         title: "rejecerdItem",
+        key: "0-102-1007",
         props: {
             api: "GetWorkFlowSummary",
             apiDetails: "",
@@ -107,6 +114,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-NotCodedPayment-8",
         title: "notCodedPayment",
+        key: "0-102-1008",
         props: {
             api: "GetNotCodedPaymentsSummary",
             apiDetails: "GetPaymentUserByRange?action=",
@@ -122,6 +130,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-OpenedSummary-9",
         title: "openedSummary",
+        key: "0-102-1009",
         props: {
             api: "GetOppenedDocumentsSummaryCount",
             apiDetails: "SelectDocTypeByProjectIdOpened?action=",
@@ -137,6 +146,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-SchedualActionBy-10",
         title: "schedualActionBy",
+        key: "0-102-1010",
         props: {
             api: "GetActionByScheduleCount",
             apiDetails: "GetActionsByScheduleSummaryDetails?action=",
@@ -152,6 +162,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-ScheduleAlertsSummary-11",
         title: "ScheduleAlertsSummary",
+        key: "0-102-1011",
         props: {
             api: "GetScheduleAlertSummaryCount",
             apiDetails: "GetScheduleAlertSummary?action=",
@@ -167,6 +178,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-AlertingQntySummary-12",
         title: "alertingQntySummary",
+        key: "0-102-1012",
         props: {
             api: "GetBoqQuantityRequestedAlert",
             apiDetails: "GetBoqQuantityRequestedAlertDetails",
@@ -182,6 +194,7 @@ let ThreeWidgetsData = [
     {
         id: "wt-NotCodedInvoicesSummary-13",
         title: "notCodedInvoicesSummary",
+        key: "0-102-1013",
         props: {
             api: "GetNotCodedInvoicesSummary",
             apiDetails: "GetInvoicesUserByRange?action=",
