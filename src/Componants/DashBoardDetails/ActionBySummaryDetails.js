@@ -159,7 +159,7 @@ class ActionBySummaryDetails extends Component {
       Api.get("GetActionsBySummaryDetails?action=" + action).then(result => {
 
         this.setState({
-          rows: result,
+          rows: result != null ?result : [],
           isLoading: false
         });
       });
@@ -280,7 +280,7 @@ class ActionBySummaryDetails extends Component {
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -289,7 +289,7 @@ class ActionBySummaryDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}

@@ -16,11 +16,13 @@ export default {
 			showModal:false,
 
 		},
-		comapnies:{
+		adminstration:{
 			popUp:false,
-			notifyMessage:false,
+			notifyMessage:'',
 			companyContact:[],
-			getingData: false
+			getingData: false,
+			companyList:[],
+			tabIndex:0
 		}
 	}
 }

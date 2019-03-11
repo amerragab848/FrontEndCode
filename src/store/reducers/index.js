@@ -3,9 +3,9 @@ import {
 } from 'redux';
 
 import communication from './communication';
-import companies from './Companies';
+import Adminstration from './Adminstration';
 
 export default combineReducers({
 		communication,
-		companies
+		Adminstration
 });

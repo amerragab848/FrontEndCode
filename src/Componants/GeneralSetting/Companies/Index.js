@@ -10,6 +10,9 @@ import GridSetup from "../../../Pages/Communication/GridSetup";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
+import { connect } from 'react-redux'
+import * as AdminstrationActions from '../../../store/actions/Adminstration'
+import {  bindActionCreators} from 'redux';
 const _ = require('lodash')
 
 let currentLanguage =
@@ -261,6 +264,7 @@ class Index extends Component {
                     totalRows: result.length
                 });
             });
+            this.props.actions.GetCompaniesList(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize)
         }
 
     }
@@ -574,5 +578,14 @@ class Index extends Component {
         );
     }
 }
+const mapStateToProps = (state) => {
+    let sState = state;
+    return sState;
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(AdminstrationActions, dispatch)
+    };
+}
 
-export default withRouter(Index);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Index));

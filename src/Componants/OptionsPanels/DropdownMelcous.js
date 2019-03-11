@@ -6,6 +6,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 class DropdownMelcous extends Component {
     constructor(props) {
         super(props) 
+       
     }
    
     handleChange =(e)=>{
@@ -37,6 +38,9 @@ class DropdownMelcous extends Component {
                             defaultValue= {this.props.isMulti ? this.props.selectedValue : this.props.value}
                             value={ this.props.isMulti ? this.props.value : this.props.selectedValue}
                             isMulti={this.props.isMulti}
+                            onBlur={this.props.onblur}
+                            isClearable={this.props.isClear? true : false }
+        
 
                             name={this.props.name ? this.props.index: this.props.name} 
                             id={this.props.id ? this.props.index: this.props.id} 

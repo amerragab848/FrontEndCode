@@ -354,7 +354,7 @@ table edition
 }
 .filterHidden {
   transition: all 0.4s ease-in-out;
-  max-height: 250px;
+  max-height: 850px;
 }
 .gridfillter-container {
   transition: all 0.4s ease-in-out;
@@ -1737,7 +1737,7 @@ tfoot tr td p{
           line-height: 1.4;
           letter-spacing: -0.2px;
           color: #252833; }
-      .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
+      .noTabs__document .doc-container .step-content .slider-Btns , .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-left: 0; }
 .noTabs__document .approveDocument {
@@ -1991,6 +1991,9 @@ button.companies_icon {
       padding-right: 80px; 
       padding-top: 50px;
     }
+    .one__tab.one_step .doc-container .step-content .feilds__top .document-fields {
+      padding-top: 0; 
+    }
       @media screen and (max-width: 1300px) {
         .one__tab.one_step .doc-container .step-content .document-fields {
           padding-left: 35px;
@@ -2094,6 +2097,24 @@ button.companies_icon {
   @media screen and (max-width: 1200px) {
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
       margin-right: 0; } } */
+.proForm .has-error label.control-label {
+  color: #26344c !important;
+}
+.proForm .ui.input.inputDev.has-error .glyphicon {
+  top: 24px;
+}
+.proForm .ui.input.inputDev.has-success .glyphicon {
+  top: 24px;
+}
+.changeCompany__select .skylight-dialog {
+  min-height: 250px !important;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between
+}
+.changeCompany__select .skylight-dialog .fillter-status.fillter-item-c {
+  width: 100%;
+}
 
 
 .fullLinearInput .linebylineInput {
@@ -2123,6 +2144,9 @@ button.companies_icon {
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
   margin-right: 0 
 }
-      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-        max-width: 100%;
-    }
+.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+  max-width: 100%;
+}
+.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev.NormalInputDate {
+  max-width: inherit;
+}
