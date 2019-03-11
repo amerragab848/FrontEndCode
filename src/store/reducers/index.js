@@ -3,11 +3,11 @@ import {
 } from 'redux';
 
 import communication from './communication';
-import companies from './Companies';
+import Adminstration from './Adminstration';
 import ProjectReducer from './ProjectReducer';
 
 export default combineReducers({
 		communication,
-		companies ,
+		Adminstration ,
 		ProjectReducer,
 });

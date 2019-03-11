@@ -159,7 +159,7 @@ class AlertingQuantitySummaryDetails extends Component {
           0
       ).then(result => {
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       });
@@ -183,7 +183,7 @@ class AlertingQuantitySummaryDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -278,7 +278,7 @@ class AlertingQuantitySummaryDetails extends Component {
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -287,7 +287,7 @@ class AlertingQuantitySummaryDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}

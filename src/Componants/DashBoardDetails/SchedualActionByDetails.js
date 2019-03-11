@@ -161,7 +161,7 @@ class SchedualActionByDetails extends Component {
       Api.get("GetActionsByScheduleSummaryDetails?action=" + action).then(
         result => { 
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         }
@@ -192,7 +192,7 @@ class SchedualActionByDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -283,7 +283,7 @@ class SchedualActionByDetails extends Component {
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -292,7 +292,7 @@ class SchedualActionByDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}

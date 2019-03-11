@@ -16,16 +16,24 @@ export default {
 			showModal: false,
 
 		},
-		comapnies: {
-			popUp: false,
-			notifyMessage: false,
-			companyContact: [],
-			getingData: false
-		},
+		// comapnies: {
+		// 	popUp: false,
+		// 	notifyMessage: false,
+		// 	companyContact: [],
+		// 	getingData: false
+		// },
 		expensesWorkFlow: {
 			expensesWorkFlowData:[],
 			contactData:[],
 			multiApproval:[]
+		},
+		adminstration:{
+			popUp:false,
+			notifyMessage:'',
+			companyContact:[],
+			getingData: false,
+			companyList:[],
+			tabIndex:0
 		}
 	}
 }

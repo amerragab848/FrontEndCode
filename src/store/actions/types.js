@@ -10,13 +10,17 @@ export const Update_Field = 'Update_Field';
 export const Delete_File = 'Delete_File';
 export const SendByEmail = 'SendByEmail';
 export const Add_Contact = 'AddContact';
+export const edit_Contact = 'edit_Contact';
 export const Get_Contacts = 'Get_Contacts';
+export const Get_Companies = 'Get_Companies';
+export const Change_Company = 'Change_Company';
 export const togglePopUp = 'togglePopUp';
-export const toggleNotifyMessage = 'toggleNotifyMessage';
 export const NextArrange = 'NextArrange';
 export const Delete_Contact = 'Delete_Contact';
 export const toggleLoading = 'toggleLoading';
 export const getingData = 'getingData';
+export const makeKeyContact = 'makeKeyContact';
+export const routeToTabIndex = 'routeToTabIndex';
 
 // ProjectActionsTypes
 
@@ -30,3 +34,4 @@ export const GetContactExpensesWorkFlow = 'GetContactExpensesWorkFlow';
 export const AddContactExpensesWorkFlow = 'AddContactExpensesWorkFlow';
 export const UpdateContactExpensesWorkFlow = 'UpdateContactExpensesWorkFlow';
 export const DeleteContactExpensesWorkFlow = 'DeleteContactExpensesWorkFlow';
+

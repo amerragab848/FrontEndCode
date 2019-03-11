@@ -166,7 +166,7 @@ class ClosedSummaryDetails extends Component {
       ).then(result => {
         
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       });
@@ -190,7 +190,7 @@ class ClosedSummaryDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -281,7 +281,7 @@ class ClosedSummaryDetails extends Component {
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -290,7 +290,7 @@ class ClosedSummaryDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}

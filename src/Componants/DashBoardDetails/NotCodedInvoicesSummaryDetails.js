@@ -180,7 +180,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
         result => {
   
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         }
@@ -205,7 +205,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -302,7 +302,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -311,7 +311,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}

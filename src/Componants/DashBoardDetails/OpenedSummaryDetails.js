@@ -159,18 +159,10 @@ class OpenedSummaryDetails extends Component {
     }
 
     if (action) {
-      Api.get(
-        "SelectDocTypeByProjectIdOpenedByAction?action=" +
-          action +
-          "&pageNumber=" +
-          0
-      ).then(result => {
-        result.map(item => {
-          item.oppenedDate = moment(item.oppenedDate).format("DD/MM/YYYY");
-        });
-
+      Api.get("SelectDocTypeByProjectIdOpenedByAction?action=" + action + "&pageNumber=" + 0 ).then(result => {
+       
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       });
@@ -194,7 +186,7 @@ class OpenedSummaryDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -291,7 +283,7 @@ class OpenedSummaryDetails extends Component {
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -300,7 +292,7 @@ class OpenedSummaryDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}

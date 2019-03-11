@@ -142,7 +142,7 @@ class GridSetup extends Component {
 
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
-   
+
 
     if (this.props.single == true) {
       prevRows = [];
@@ -151,7 +151,7 @@ class GridSetup extends Component {
       prevRowsId.push(rows[0].row.id);
     }
 
-   else if (rows.length > 1) {
+    else if (rows.length > 1) {
       prevRows = [];
       prevRowsId = [];
       prevRows = rows.map(r => r.rowIdx);
@@ -228,10 +228,10 @@ class GridSetup extends Component {
     this.setState({ expandedRows: expandedRows });
   }
 
-  onRowClick = (rows, value, index) => {
+  onRowClick = (index, value, column) => {
     if (value) {
       if (this.props.onRowClick != undefined) {
-        this.props.onRowClick(value, index);
+        this.props.onRowClick(value, index,column);
         this.setState({ selectedRow: value })
       }
     }
@@ -343,7 +343,7 @@ class GridSetup extends Component {
             }
           }}
 
-          onRowClick={(index, value) => this.onRowClick(index, value)}
+          onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
           onAddFilter={filter =>
             this.setState({ setFilters: this.handleFilterChange(filter) })
           }
