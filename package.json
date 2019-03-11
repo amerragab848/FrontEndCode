@@ -56,6 +56,7 @@
     "react-skylight": "^0.5.1",
     "react-table": "^6.8.6",
     "react-tabs": "^3.0.0",
+    "react-toastify": "^4.5.2",
     "react-validation": "^3.0.7",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",

@@ -1894,3 +1894,21 @@ button.companies_icon {
   @media screen and (max-width: 1200px) {
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
       margin-right: 0; } } */
+.proForm .has-error label.control-label {
+  color: #26344c !important;
+}
+.proForm .ui.input.inputDev.has-error .glyphicon {
+  top: 24px;
+}
+.proForm .ui.input.inputDev.has-success .glyphicon {
+  top: 24px;
+}
+.changeCompany__select .skylight-dialog {
+  min-height: 250px !important;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between
+}
+.changeCompany__select .skylight-dialog .fillter-status.fillter-item-c {
+  width: 100%;
+}

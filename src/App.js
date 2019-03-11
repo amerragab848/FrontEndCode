@@ -29,7 +29,8 @@ import {
 
 import configureStore from './store/configureStore';
 import initialState from './store/initialState';
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const store = configureStore();
  
 const IsAuthorize = api.IsAuthorized()
@@ -47,6 +48,7 @@ class App extends Component {
       <Provider store={store}>
           <div>
             {showComp}   
+            <ToastContainer autoClose={3000} />
           </div>  
       </Provider>
  
