@@ -2,7 +2,6 @@ import * as types from './types';
 import Api from '../../api';
 import { toast } from "react-toastify";
 
-
 export function deleteContact(url, ContactID) {
 
     return (dispatch, getState) => {
@@ -68,9 +67,7 @@ export function GetCompaniesContact(url) {
 }
 export function GetCompaniesList(url) {
     return (dispatch, getState) => {
-        dispatch({
-            type: types.toggleLoading
-        });
+      
         return Api.get(url).then(resp => {
             let _data = []
             resp.forEach(element => {

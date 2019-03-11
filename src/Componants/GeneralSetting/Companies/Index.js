@@ -12,9 +12,9 @@ import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import { connect } from 'react-redux'
 import * as AdminstrationActions from '../../../store/actions/Adminstration'
-import {  bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
+import { toast } from "react-toastify";
 const _ = require('lodash')
-
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const filtersColumns = [
@@ -40,74 +40,71 @@ const filtersColumns = [
     }
 ];
 
-
 class Index extends Component {
     constructor(props) {
         super(props);
+        this.ExportColumns = [
 
-       this.ExportColumns = [
-          
             {
                 key: "companyName",
                 name: Resources["CompanyName"][currentLanguage],
-             
+
             },
             {
                 key: "roleTitle",
                 name: Resources["companyRole"][currentLanguage],
-             
+
             },
             {
                 key: "disciplineTitle",
                 name: Resources["disciplineTitle"][currentLanguage],
-               
+
             },
             {
                 key: "keyContactName",
                 name: Resources["KeyContact"][currentLanguage],
                 width: 100,
-              
+
             },
             {
                 key: "location",
                 name: Resources["location"][currentLanguage],
-              
+
             },
             {
                 key: "contactsTel",
                 name: Resources["Telephone"][currentLanguage],
-              
+
             },
             {
                 key: "contactsMobile",
                 name: Resources["Mobile"][currentLanguage],
-             
+
             },
             {
                 key: "contactsFax",
                 name: Resources["Fax"][currentLanguage],
                 width: 100,
-            
+
             },
             {
                 key: "grade",
                 name: Resources["Grade"][currentLanguage],
-             
+
             }
             ,
             {
                 key: "enteredBy",
                 name: Resources["enteredBy"][currentLanguage],
-          
+
             }
             ,
             {
                 key: "lastModified",
                 name: Resources["lastModified"][currentLanguage],
-          
+
             }
         ];
-
         const columnsGrid = [
             {
                 formatter: this.customButton,
@@ -233,7 +230,6 @@ class Index extends Component {
                 sortDescendingFirst: true
             }
         ];
-
         this.state = {
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
@@ -252,7 +248,6 @@ class Index extends Component {
         };
     }
     customButton = () => {
-
         return <button className="companies_icon" onClick={this.clickHandler} ><i className="fa fa-users"></i></button>;
     };
     componentDidMount() {
@@ -264,15 +259,19 @@ class Index extends Component {
                     totalRows: result.length
                 });
             });
-            this.props.actions.GetCompaniesList(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize)
         }
+        else
+        toast.warning("you don't have permission");
 
     }
     viewContact = (rowSelected) => {
-        if ( Config.IsAllow(14) ) {
+        if (Config.IsAllow(14)) {
             this.props.history.push({
                 pathname: "/Contacts/" + rowSelected,
             });
+        }
+        else { 
+            toast.warning("you don't have permission");
         }
     }
 
@@ -280,8 +279,10 @@ class Index extends Component {
         let id = this.state.rows[rowID]['id']
         if (colID == 1)
             this.viewContact(id)
-        else if (colID != 0 && (Config.IsAllow(1256) || Config.IsAllow(1257))) {
-
+        else if (!Config.IsAllow(1257)) {
+            toast.warning("you don't have permission");
+        }
+        else if (colID != 0) {
             this.props.history.push({
                 pathname: "/AddEditCompany/" + id,
             });
@@ -289,7 +290,6 @@ class Index extends Component {
     }
     GetNextData = () => {
         let pageNumber = this.state.pageNumber + 1;
-
         this.setState({
             isLoading: true,
             pageNumber: pageNumber
@@ -321,7 +321,6 @@ class Index extends Component {
                 isLoading: true,
                 pageNumber: pageNumber
             });
-
             let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
             Api.get(url).then(result => {
                 let oldRows = [];
@@ -338,7 +337,6 @@ class Index extends Component {
                     isLoading: false
                 });
             });;
-
         }
     }
 
@@ -348,7 +346,6 @@ class Index extends Component {
     }
 
     filterMethodMain = (e, query) => {
-
         var stringifiedQuery = JSON.stringify(query)
         if (stringifiedQuery.includes("companyName") || stringifiedQuery.includes("roleTitle") || stringifiedQuery.includes("keyContactName")) {
             this.setState({ isLoading: true })
@@ -365,7 +362,6 @@ class Index extends Component {
         }
         else {
             this.setState({ isLoading: true })
-
             Api.get(this.state.api + "pageNumber=" + 0 + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
                     rows: result,
@@ -374,27 +370,23 @@ class Index extends Component {
                     totalRows: result.length
                 });
             });
-
         }
-
     };
 
     addRecord = () => {
-        if(Config.IsAllow(1256))
-        this.props.history.push({
-            pathname: "/AddEditCompany/0",
-        });
+        if (Config.IsAllow(1256))
+            this.props.history.push({
+                pathname: "/AddEditCompany/0",
+            });
         else
-        alert("not allow to add new company")
+            toast.warning("you don't have permission");
     }
-
-    
     clickHandlerDeleteRowsMain = selectedRows => {
         this.setState({
-          showDeleteModal: true,
-          selectedRows: selectedRows
+            showDeleteModal: true,
+            selectedRows: selectedRows
         });
-      };
+    };
     onCloseModal() {
         this.setState({
             showDeleteModal: false
@@ -404,17 +396,16 @@ class Index extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
-
-
     ConfirmDeleteComanies = () => {
         this.setState({ showDeleteModal: true })
-        let rowsData = this.state.rows;
-        if(Config.IsAllow(1258))
-        {
-            Api.post('ProjectCompaniesDelete?id='+this.state.selectedRows)
+        if (Config.IsAllow(1258)) {
+            this.setState({ isLoading: true })
+            Api.post('ProjectCompaniesDelete?id=' + this.state.selectedRows)
                 .then(result => {
-                    let originalRows =  this.state.rows.filter(r => r.id !==this.state.selectedRows);
-                  
+                    console.log("befor=",this.state.rows.length)
+                    let originalRows = this.state.rows.filter(r => r.id !== this.state.selectedRows);
+                    console.log("after=",originalRows.length)
+
                     this.setState({
                         rows: originalRows,
                         totalRows: originalRows.length,
@@ -422,6 +413,7 @@ class Index extends Component {
                         showDeleteModal: false,
                         IsActiveShow: false
                     });
+                    toast.success("operation complete successful")
                 })
                 .catch(ex => {
                     this.setState({
@@ -429,13 +421,13 @@ class Index extends Component {
                         IsActiveShow: false
                     })
                 })
-            }
-            else
-            alert('not allowed to delete')
-        
+        }
+        else
+            toast.warning("you don't have permission");
+
     }
 
- 
+
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
@@ -515,7 +507,6 @@ class Index extends Component {
                                     </g>
                                 </svg>
                             </span>
-
                             {this.state.viewfilter === false
                                 ? (
                                     <span className="text active">
@@ -524,22 +515,21 @@ class Index extends Component {
                                     </span>
                                 ) : (
                                     <span className="text">
-                                        <span className="show-fillter">Show Fillter</span>
-                                        <span className="hide-fillter">Hide Fillter</span>
+                                        <span className="show-fillter">{Resources['showFillter'][currentLanguage]}</span>
+                                        <span className="hide-fillter">{Resources['hideFillter'][currentLanguage]}</span>
                                     </span>
                                 )}
                         </div>
                     </div>
                     <div className="filterBTNS">
                         {btnExport}
-                        <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>NEW</button>
+                        <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>{Resources['add'][currentLanguage]}</button>
                     </div>
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
                             <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
                             <span>{this.state.totalRows}</span>
                         </div>
-
                         <button className={this.state.pageNumber <= 0 ? "rowunActive" : ""} onClick={this.GetPreviousData}>
                             <i className="angle left icon" />
                         </button>
@@ -563,7 +553,6 @@ class Index extends Component {
                 <div className="grid-container">
                     {dataGrid}
                 </div>
-
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources['smartDeleteMessage'][currentLanguage].content}
@@ -578,14 +567,6 @@ class Index extends Component {
         );
     }
 }
-const mapStateToProps = (state) => {
-    let sState = state;
-    return sState;
-}
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(AdminstrationActions, dispatch)
-    };
-}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Index));
+
+export default withRouter(Index);
