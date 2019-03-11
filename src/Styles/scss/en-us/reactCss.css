@@ -354,7 +354,7 @@ table edition
 }
 .filterHidden {
   transition: all 0.4s ease-in-out;
-  max-height: 250px;
+  max-height: 850px;
 }
 .gridfillter-container {
   transition: all 0.4s ease-in-out;
