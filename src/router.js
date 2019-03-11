@@ -42,8 +42,7 @@ import TemplatesSettings  from './Componants/GeneralSetting/TemplatesSettings';
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
 import FollowUpsSummaryDetails from "./Componants/DashBoardDetails/FollowUpsSummaryDetails"; 
 import GeneralList  from './Componants/GeneralSetting/MenuDefaultData/GeneralList';
-import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog';
-import ExpensesWorkFlow  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlow';
+import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog'; 
 import ExpensesWorkFlowAddEdit  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
 
@@ -98,12 +97,10 @@ let routes = (
     <Route path="/GeneralList" component={GeneralList} /> ,
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> ,
     <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} /> ,
-    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} />  ,
     <Route path="/TemplatesSettings" component={TemplatesSettings} /> ,
     <Route path="/GeneralList" component={GeneralList} /> ,
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> ,
     <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />, 
-    <Route path="/ExpensesWorkFlow" component={ExpensesWorkFlow} /> ,
     <Route path="/DashBoardCounterLog" component={DashBoardCounterLog}/>
 </Switch> 
 ); 
