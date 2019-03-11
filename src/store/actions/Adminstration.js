@@ -22,6 +22,7 @@ export function deleteContact(url,ContactID) {
         });
     }
 }
+
 export function GetCompaniesContact(url) {
     return (dispatch, getState) => { 
         dispatch({
