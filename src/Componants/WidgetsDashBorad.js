@@ -20,7 +20,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-1",
          },
           checked:false
         },
@@ -37,7 +38,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false 
+            isModal: false ,
+            key: "0-1-2"
         },
           checked:false
         },
@@ -55,7 +57,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-3"
          }
         },
         { 
@@ -72,7 +75,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-4"
          }
         },
         { 
@@ -89,7 +93,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-5"
          }
         },
         { 
@@ -106,7 +111,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-6"
          }
         }, 
         { 
@@ -123,7 +129,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-7"
          }
         },
         { 
@@ -140,7 +147,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-8"
          }
         },
         { 
@@ -157,7 +165,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-1-9"
          }
         }
       ]
@@ -184,7 +193,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: true
+            isModal: true,
+            key: "0-2-1"
          },
         },
         { 
@@ -201,7 +211,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: true
+            isModal: true,
+            key: "0-2-2"
          }
         },
         { 
@@ -218,7 +229,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-2-3"
          }
         },
         { 
@@ -235,7 +247,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-2-4"
         }
         },
         { 
@@ -252,7 +265,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: true
+            isModal: true,
+            key: "0-2-5"
          }
         },
         { 
@@ -269,7 +283,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "0-2-6"
          }
         },
         { 
@@ -286,7 +301,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: true
+            isModal: true,
+            key: "0-2-7"
          }
         },
         { 
@@ -303,7 +319,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key:"0-2-8"
          }
         }, 
         { 
@@ -320,7 +337,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: true
+            isModal: true,
+            key: "0-2-9"
          }
         }, 
         { 
@@ -337,7 +355,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: true
+            isModal: true,
+            key: "0-2-10"
          }
         },
         { 
@@ -354,7 +373,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: true
+            isModal: true,
+            key: "0-2-11"
          }
         }
       ]
@@ -377,11 +397,12 @@ var widgets = [
           props: {
             api: "GetTotalPo",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-1-1"
          }
         },  
         { 
@@ -394,11 +415,12 @@ var widgets = [
           props: {
             api: "GetMaterialRequestCounting",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-1-2"
          }
         },
         { 
@@ -411,11 +433,12 @@ var widgets = [
           props: {
             api: "GetRejectedTimesheetBySystemCount",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-1-3"
          }
         },{ 
           title: "monthlyPaymentRequisitions",
@@ -427,11 +450,12 @@ var widgets = [
           props: {
             api: "GetTotalPayment",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-1-4"
          }
         }
       ]
@@ -454,11 +478,12 @@ var widgets = [
           props: {
             api: "GetApprocalStatusCount?status=true",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total-0",
             total: "total-1",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-2-1"
          }
         },{ 
           title: "openedSubmittals",
@@ -470,11 +495,12 @@ var widgets = [
           props: {
             api: "getOpenedDocumentsCount?docType=42",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "count-0",
             total: "total-1",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-2-2"
          }
         },
         { 
@@ -487,11 +513,12 @@ var widgets = [
           props: {
             api: "GetApprocalStatusCount?status=false",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total-0",
             total: "total-1",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-2-3"
          }
         } 
       ]
@@ -514,11 +541,12 @@ var widgets = [
           props: {
             api: "getOpenedDocumentsCount?docType=19",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "count-0",
             total: "total-1",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-3-1"
          }
         },{ 
           title: "openedIR",
@@ -530,11 +558,12 @@ var widgets = [
           props: {
             api: "getOpenedDocumentsCount?docType=25",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "count-0",
             total: "total-1",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-3-2"
          }
         },
         { 
@@ -547,11 +576,12 @@ var widgets = [
           props: {
             api: "GetRfiOpenCount",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total-0",
             total: "total-1",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-3-3"
          }
         },
         { 
@@ -564,11 +594,12 @@ var widgets = [
           props: {
             api: "getOpenedDocumentsCount?docType=28",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "count-0",
             total: "total-1",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-3-4"
          }
         } 
       ]
@@ -591,11 +622,12 @@ var widgets = [
           props: {
             api: "GetCountinspection?status=null",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-4-1"
          }
         },{ 
           title: "countinspectionReject",
@@ -607,11 +639,12 @@ var widgets = [
           props: {
             api: "GetCountinspection?status=false",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-4-2"
          }
         },
         { 
@@ -624,11 +657,12 @@ var widgets = [
           props: {
             api: "GetCountinspection?status=true",
             apiDetails: "",
-            route: "",
+            route: "DashBoardCounterLog",
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-4-3"
          }
         } 
       ]
@@ -654,7 +688,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-5-1"
          }
         },{ 
           title: "avgRespondTimeTransmittals",
@@ -670,7 +705,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-5-2"
          }
         },
         { 
@@ -687,7 +723,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-5-3"
          }
         },
         { 
@@ -704,7 +741,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-5-4"
          }
         },
         { 
@@ -721,7 +759,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-5-5"
          }
         },
         { 
@@ -738,7 +777,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-5-6"
          }
         },
         { 
@@ -755,7 +795,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "1-5-7"
          }
         }
       ]
@@ -782,7 +823,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "2-1-1"
          }
         },{ 
           title: "inspectionRequestCount",
@@ -798,7 +840,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "2-1-2"
          }
         },{ 
           title: "NCRCount",
@@ -814,7 +857,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "2-1-3"
          }
         },{ 
           title: "siteInstructionsCount",
@@ -830,7 +874,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key: "2-1-4"
          }
         }    
       ]   
@@ -857,7 +902,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key:"2-2-1"
          }
         },{ 
           title: "projectInventory",
@@ -873,7 +919,8 @@ var widgets = [
             value: "total",
             listType: "item",
             action: "action",
-            isModal: false
+            isModal: false,
+            key:"2-2-2"
          }
         } 
       ]

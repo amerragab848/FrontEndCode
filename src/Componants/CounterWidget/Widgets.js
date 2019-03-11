@@ -32,17 +32,15 @@ class Widgets extends Component {
 
   onOpenModal = () => {
     if(this.state.value > 0){
-      this.props.history.push(this.props.props.route);
+      this.props.history.push({
+        pathname: this.props.props.route,
+        search: "?key=" + this.props.props.key
+      });
     }
   };
+ 
 
-  onCloseModal = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { open } = this.state;
-
+  render() { 
     return (
       <Fragment>
         <div className="summerisItem">
