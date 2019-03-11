@@ -148,7 +148,7 @@ export default class MonthlyTasksDetails extends Component {
         contactId: this.state.contactId
       }).then(result => {
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false,
           btnisLoading: false,
           Loading: false,
@@ -163,10 +163,10 @@ export default class MonthlyTasksDetails extends Component {
   };
 
   componentDidMount = () => {
-    Api.get("GetMonthlyTaskDetails").then(res => {
+    Api.get("GetMonthlyTaskDetails").then(result => {
       this.setState({
         renderGrid: true,
-        rows: res
+        rows: result != null ? result : [],
       });
     });
     this.GetData("GetAllContactsWithUser", "contactName", "id", "Contacts");

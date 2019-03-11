@@ -158,11 +158,9 @@ class ScheduleAlertsSummaryDetails extends Component {
     }
 
     if (action) {
-      Api.get("GetScheduleAlertSummary?action=" + action).then(
-        result => {
-  
+      Api.get("GetScheduleAlertSummary?action=" + action).then(result => {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         }
@@ -187,7 +185,7 @@ class ScheduleAlertsSummaryDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {

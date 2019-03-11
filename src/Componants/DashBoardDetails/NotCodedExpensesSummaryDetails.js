@@ -160,7 +160,7 @@ class NotCodedExpensesSummaryDetails extends Component {
     if (action) {
       Api.get("GetNotCodedExpensesSummaryDetail?action=" + action).then(result => { 
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         }
