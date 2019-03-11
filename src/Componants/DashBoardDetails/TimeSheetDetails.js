@@ -97,7 +97,7 @@ class TimeSheetDetails extends Component {
     Api.get("GetApprovalRequestsGroupByUserId?requestType=timeSheet").then(
       result => {
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       }
@@ -125,7 +125,7 @@ class TimeSheetDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result, 
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {

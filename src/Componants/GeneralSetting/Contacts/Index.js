@@ -14,8 +14,9 @@ import { connect } from 'react-redux'
 import * as AdminstrationActions from '../../../store/actions/Adminstration'
 import { SkyLightStateless } from 'react-skylight';
 import { toast } from "react-toastify";
-import { bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import DropdownMelcous from "../../OptionsPanels/DropdownMelcous";
+import Dataservice from "../../../Dataservice";
 const _ = require('lodash')
 
 let currentLanguage =
@@ -205,17 +206,9 @@ class Index extends Component {
     componentDidMount() {
         let url = 'GetCompanyContacts?companyId=' + this.state.companyID
         this.props.actions.GetCompaniesContact(url);
-        Api.get('GetProjectCompanies?accountOwnerId=2').then(result => {
-            this.setState({ ProjectCompanies: result });
-        });
-        Api.get('GetAccountsDefaultList?listType=contacttitle&pageNumber=0&pageSize=10000').then(result => {
-            let _data = []
-            result.forEach(element => {
-                _data.push({ label: element.title, value: element.id })
-            });
-            this.setState({ titleData: _data })
-
-        });
+        let titleData = Dataservice.GetDataList('GetAccountsDefaultList?listType=contacttitle&pageNumber=0&pageSize=10000', 'title', 'id')
+        this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2')        
+        this.setState({ titleData: titleData })
 
     }
     changeKeyContact = (id) => {

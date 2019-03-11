@@ -183,7 +183,7 @@ class TimeSheetWorkFlow extends Component {
 
     Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + id + "&type=timeSheet" ).then(result => {
       this.setState({
-        rows: result,
+        rows: result != null ? result : [],
         isLoading: false
       });
     });
@@ -207,7 +207,7 @@ class TimeSheetWorkFlow extends Component {
       .then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -272,7 +272,7 @@ class TimeSheetWorkFlow extends Component {
                     listSelectedRows = [];
                     Api.get( "GetExpensesUserByContactIdType?requestFromUserId=" + timeSheetId + "&type=timeSheet").then(result => {
                       this.setState({
-                        rows: result,
+                        rows: result != null ? result : [],
                         isLoading: false,
                         isApprove: false,
                         viewMessage: true

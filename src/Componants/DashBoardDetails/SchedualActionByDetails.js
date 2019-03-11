@@ -161,7 +161,7 @@ class SchedualActionByDetails extends Component {
       Api.get("GetActionsByScheduleSummaryDetails?action=" + action).then(
         result => { 
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         }
@@ -192,7 +192,7 @@ class SchedualActionByDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {

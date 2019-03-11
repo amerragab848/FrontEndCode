@@ -250,7 +250,7 @@ class FollowUpsSummaryDetails extends Component {
       Api.get("GetFollowing").then(result => {
   
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       }); 
@@ -273,7 +273,7 @@ class FollowUpsSummaryDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {

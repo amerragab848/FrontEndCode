@@ -162,10 +162,10 @@ export default class MonitorTasks extends Component {
   }
 
   componentDidMount = () => {
-    Api.get("GetMonitorTaskDetails").then(res => {
+    Api.get("GetMonitorTaskDetails").then(result => {
       this.setState({
         renderGrid: true,
-        rows: res,
+        rows: result != null ? result : [],
         isLoading:false
       });
     });
@@ -181,7 +181,7 @@ export default class MonitorTasks extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {

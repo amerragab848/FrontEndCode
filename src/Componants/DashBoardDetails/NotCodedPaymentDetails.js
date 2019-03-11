@@ -158,10 +158,9 @@ class NotCodedPaymentDetails extends Component {
 
     if (action) {
       Api.get("GetPaymentUserByRange?action=" + action).then(
-        result => {
-  
+        result => { 
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         }
@@ -186,7 +185,7 @@ class NotCodedPaymentDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
