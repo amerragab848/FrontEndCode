@@ -4,10 +4,8 @@ import * as Yup from 'yup';
 import Api from "../../../api";
 import Dropdown from "../../OptionsPanels/DropdownMelcous";
 import { SkyLightStateless } from 'react-skylight';
-import SkyLight from 'react-skylight';
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
-import LoadingSection from "../../publicComponants/LoadingSection";
 import { connect } from 'react-redux'
 import * as AdminstrationActions from '../../../store/actions/Adminstration'
 
@@ -92,6 +90,7 @@ class AddNewContact extends Component {
     }
 
     Save = (values) => {
+        this.setState({isLoading:true})
         let SendingObject = {
             titleId: this.state.values.selectedTitle.value,
             title: this.state.values.selectedTitle.label,
@@ -105,6 +104,7 @@ class AddNewContact extends Component {
             mobile: values.mobile,
             email: values.email,
             companyId: this.props.companyID,
+            id:this.props.contactID
         }
         if (this.state.editMode) {
             this.props.actions.editContact("EditCompanyContact", SendingObject);
@@ -169,7 +169,7 @@ class AddNewContact extends Component {
                     {({ touched, errors, handleBlur, handleChange, values }) => (
                         <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
                             <div className="fullWidthWrapper">
-                                <h2 className="twoLineHeader">{Resources['addContact'][currentLanguage]}</h2>
+                                <h2 className="twoLineHeader">{this.state.editMode?Resources['editContact'][currentLanguage]:Resources['addContact'][currentLanguage]}</h2>
                             </div>
                             <Dropdown title="empTitle" data={this.props.titleData} selectedValue={this.state.values.selectedTitle}
                                 handleChange={(e) => this.handleBlur(e, "title")}
@@ -293,13 +293,24 @@ class AddNewContact extends Component {
                                 ) : null}
                             </div>
                             <div className="fullWidthWrapper">
-                                <button
-                                    className="primaryBtn-1 btn largeBtn"
-                                    type="submit"
+                                        {this.state.isLoading === false ? (
+                                            <button
+                                                className="primaryBtn-1 btn largeBtn"
+                                                type="submit"
+                                            >  {Resources['save'][currentLanguage]}
+                                            </button>
+                                        ) :
+                                            (
+                                                <button className="primaryBtn-1 btn largeBtn disabled" disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                            )}
 
-                                >  {Resources['save'][currentLanguage]}
-                                </button>
-                            </div>
+                                    </div>
                         </Form>
                     )}
                 </Formik>

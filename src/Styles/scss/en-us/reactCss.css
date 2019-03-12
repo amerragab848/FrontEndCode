@@ -1625,10 +1625,9 @@ tfoot tr td p{
 .label__block .inputDev {
   width: 100%;
 }
-.spanValidation {
+/* .spanValidation {
   margin-bottom: 10px;
-
-}
+} */
 /* noTabs */ 
 .noTabs__document .submittalHead {
   justify-content: center;
@@ -2098,12 +2097,6 @@ button.companies_icon {
 .proForm .has-error label.control-label {
   color: #26344c !important;
 }
-.proForm .ui.input.inputDev.has-error .glyphicon {
-  top: 24px;
-}
-.proForm .ui.input.inputDev.has-success .glyphicon {
-  top: 24px;
-}
 .changeCompany__select .skylight-dialog {
   min-height: 250px !important;
   display: flex;
@@ -2258,4 +2251,14 @@ button.companies_icon {
   position: absolute;
   top: 26px;
   right: 10px;
+}
+.dropdown__error {
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+  color: #e74c3c;
+  font-size: 12px;
+}
+.proForm .ui.input.inputDev .glyphicon {
+  top: auto
 }

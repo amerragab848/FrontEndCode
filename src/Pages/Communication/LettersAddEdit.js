@@ -514,7 +514,7 @@ class LettersAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             
                                             onReset={(values) => { }} >
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue }) => (
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue,setFieldTouched }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="proForm first-proform">
@@ -629,43 +629,47 @@ class LettersAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c" + ((errors.fromCompanyId && touched.fromCompanyId) ? " has-error" : (!errors.fromCompanyId && !touched.fromCompanyId) ? (" has-success") : " ")}>
+                                                            <div className="ui input inputDev fillter-item-c">
                                                                 <Dropdown
                                                                     title="fromCompany"
                                                                     data={this.state.companies}
                                                                     isMulti={false}
-                                                                    selectedValue={this.state.selectedFromCompany}
-                                                                    handleBlur={setFieldValue}
+                                                                    selectedValue={this.state.selectedFromCompany} 
                                                                     handleChange={event => {
                                                                         this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
                                                                     }}
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.discipline}
+                                                                    touched={touched.discipline}
                                                                     index="fromCompanyId"
                                                                     name="fromCompanyId"
-                                                                    id="fromCompanyId" /> 
-                                                                {(touched.fromCompanyId && errors.fromCompanyId  ) ? ( <em className="pError">{errors.fromCompanyId}</em>) : null}
-                                                                {/* {JSON.stringify(touched)} */}
+                                                                    id="fromCompanyId" />  
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (this.state.document.fromContactId ? (" has-error") : !errors.fromContactId ? (" has-success") : " ")}>
+                                                        <div className="ui input inputDev fillter-item-c">
                                                                 <Dropdown
                                                                     title="fromContact"
                                                                     isMulti={false}
                                                                     data={this.state.fromContacts}
-                                                                    selectedValue={this.state.selectedFromContact}
-
-                                                                    handleBlur={handleBlur}  
+                                                                    selectedValue={this.state.selectedFromContact} 
                                                                     handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                    
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.fromContactId}
+                                                                    touched={touched.fromContactId}
+
                                                                     index="letter-fromContact" 
                                                                     name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.fromContactId ? (<em className="pError">{errors.fromContactId}</em>) : null}
+                                                                    id="fromCompanyId" /> 
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toCompanyId && touched.toCompanyId ? (" has-error") : !errors.toCompanyId && touched.toCompanyId ? (" has-success") : " ")}>
+                                                        <div className="ui input inputDev fillter-item-c">
 
                                                                 <Dropdown
                                                                     title="toCompany" 
@@ -674,27 +678,35 @@ class LettersAddEdit extends Component {
                                                                     selectedValue={this.state.selectedToCompany}
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                        
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.toCompanyId}
+                                                                    touched={touched.toCompanyId}
+
                                                                     index="letter-toCompany"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.toCompanyId ? (<em className="pError">{errors.toCompanyId}</em>) : null}
+                                                                    name="toCompanyId"
+                                                                    id="toCompanyId" /> 
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toContactId && touched.toContactId ? (" has-error") : !errors.toContactId && touched.toContactId ? (" has-success") : "")}>
+                                                        <div className="ui input inputDev fillter-item-c">
                                                                 <Dropdown
                                                                     title="toContactName"
                                                                     isMulti={false}
                                                                     data={this.state.ToContacts}
                                                                     selectedValue={this.state.selectedToContact}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-                                                                    index="letter-toContactName"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.toContactId ? (<em className="pError">{errors.toContactId}</em>) : null}
+                                                                    
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.toContactId}
+                                                                    touched={touched.toContactId}
 
-                                                                {/* {JSON.stringify(errors)} */}
+                                                                    index="letter-toContactName"
+                                                                    name="toContactName"
+                                                                    id="toContactName" />  
                                                             </div>
                                                         </div>
 

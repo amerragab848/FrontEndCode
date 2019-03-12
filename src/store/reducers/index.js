@@ -4,8 +4,10 @@ import {
 
 import communication from './communication';
 import Adminstration from './Adminstration';
+import ProjectReducer from './ProjectReducer';
 
 export default combineReducers({
 		communication,
-		Adminstration
+		Adminstration ,
+		ProjectReducer,
 });
