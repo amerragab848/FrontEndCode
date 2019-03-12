@@ -88,9 +88,7 @@ class SendTask extends Component {
     render() {
         return (
 
-            <div className="dropWrapper">
-              
-
+            <div className="dropWrapper"> 
                 <InputMelcous fullwidth='true' title='subject'
                     placeholderText='subject'
                     defaultValue={Resources['Task'][currentLanguage] + ':'}
@@ -112,7 +110,7 @@ class SendTask extends Component {
                     startDate={this.state.sendingData.finishDate}
                     handleChange={this.finishDatehandleChange} />
 
-                <div className="dropBtn">
+                <div className="fullWidthWrapper">
                     <button className="primaryBtn-1 btn" onClick={this.clickHandler}>
                         {Resources['save'][currentLanguage]}</button>
                 </div>

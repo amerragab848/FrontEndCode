@@ -126,7 +126,7 @@ class CreateTransmittal extends Component {
                                 </div>
                             </form>
 
-                            <div className="dropBtn">
+                            <div className="fullWidthWrapper">
                                 <button className="primaryBtn-1 btn" onClick={this.clickHandler} >
                                         {Resources['save'][currentLanguage]}</button>
                             </div>

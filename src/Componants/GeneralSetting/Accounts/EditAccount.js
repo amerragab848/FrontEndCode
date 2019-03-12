@@ -67,7 +67,7 @@ class EditAccount extends Component {
             AlternativeDate: moment(),
             Loading: true,
             RenderAlternative: '',
-            ErrorSameInputs:false
+            ErrorSameInputs: false
         }
     }
 
@@ -222,14 +222,14 @@ class EditAccount extends Component {
                             this.setState({
                                 LoadingVaildation: false,
                                 statusClass: "animationBlock",
-                               ErrorSameEmpCode: false, 
-                               ErrorSameInputs:true,
-                               
+                                ErrorSameEmpCode: false,
+                                ErrorSameInputs: true,
+
                                 UserName: ''
                             })
                         }
                         else {
-                            this.setState({ LoadingVaildation: false, UserName: username ,ErrorSameInputs:false,ErrorSameEmpCode: false})
+                            this.setState({ LoadingVaildation: false, UserName: username, ErrorSameInputs: false, ErrorSameEmpCode: false })
                         }
                     }
                 )
@@ -249,13 +249,13 @@ class EditAccount extends Component {
                     if (res === true) {
                         this.setState({
                             LoadingVaildation: false,
-                            ErrorSameInputs:true,
+                            ErrorSameInputs: true,
                             ErrorSameEmpCode: true,
                             EmpCode: ''
                         })
                     }
                     else {
-                        this.setState({ LoadingVaildation: false, EmpCode: empcode , ErrorSameInputs:false,ErrorSameEmpCode: false})
+                        this.setState({ LoadingVaildation: false, EmpCode: empcode, ErrorSameInputs: false, ErrorSameEmpCode: false })
                     }
                 }
             )
@@ -264,7 +264,7 @@ class EditAccount extends Component {
     }
 
     changeUserName = (e) => {
-        this.setState({ UserName: e.target.value , ErrorSameInputs: false, ErrorSameEmpCode: false })
+        this.setState({ UserName: e.target.value, ErrorSameInputs: false, ErrorSameEmpCode: false })
     }
 
     workHoursChange = (e) => {
@@ -272,7 +272,7 @@ class EditAccount extends Component {
     }
 
     changeEmpCode = (e) => {
-        this.setState({ EmpCode: e.target.value ,ErrorSameInputs: false , ErrorSameEmpCode: false })
+        this.setState({ EmpCode: e.target.value, ErrorSameInputs: false, ErrorSameEmpCode: false })
     }
 
     hoursRateChange = (e) => {
@@ -330,7 +330,6 @@ class EditAccount extends Component {
         return (
             <div className="mainContainer">
                 <div className="documents-stepper cutome__inputs noTabs__document">
-
                     <div className="submittalHead">
                         <h2 className="zero">Edit Account</h2>
                         <div className="SubmittalHeadClose">
@@ -352,15 +351,14 @@ class EditAccount extends Component {
                             </svg>
                         </div>
                     </div>
-
                     {this.state.Loading ? <LoadingSection /> : null}
                     <div className="doc-container">
                         <div className="step-content">
                             <div className="subiTabsContent">
                                 <div className="document-fields">
 
-                                <NotifiMsg showNotify={this.state.ErrorSameInputs} IsSuccess={false} Msg={this.state.ErrorSameEmpCode ? Resources['smartDeleteMessage'][currentLanguage].refCodeExist : Resources['userNameAlreadyExisted'][currentLanguage]} />
-                                 
+                                    <NotifiMsg showNotify={this.state.ErrorSameInputs} IsSuccess={false} Msg={this.state.ErrorSameEmpCode ? Resources['smartDeleteMessage'][currentLanguage].refCodeExist : Resources['userNameAlreadyExisted'][currentLanguage]} />
+
 
                                     {this.state.LoadingVaildation ? <LoadingSection /> : null}
                                     <Formik
@@ -382,55 +380,34 @@ class EditAccount extends Component {
                                         }}  >
                                         {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
-
-                                                <div className="linebylineInput valid-input">
-                                                    <label className="control-label">{Resources['UserName'][currentLanguage]} </label>
-                                                    <div className={'ui input inputDev ' + (errors.UserName && touched.UserName ? 'has-error' : null) + ' '}>
-                                                        <input name='UserName' value={this.state.UserName} className="form-control" id="UserName"
-                                                            placeholder={Resources['UserName'][currentLanguage]} autoComplete='off'
-                                                            onBlur={(e) => {
-                                                                this.UserNameChangeHandler(e)
-                                                                handleBlur(e)
-                                                            }}
-                                                            onChange={(e) => {
-                                                                this.changeUserName(e)
-                                                                handleChange(e)
-                                                            }} />
-                                                        {errors.UserName && touched.UserName ? (<em className="pError">{errors.UserName}</em>) : null}
+                                                <div className="proForm first-proform fullProformWrapper">
+                                                    <div className="linebylineInput valid-input">
+                                                        <label className="control-label">{Resources['UserName'][currentLanguage]} </label>
+                                                        <div className={'ui input inputDev ' + (errors.UserName && touched.UserName ? 'has-error' : null) + ' '}>
+                                                            <input name='UserName' value={this.state.UserName} className="form-control" id="UserName"
+                                                                placeholder={Resources['UserName'][currentLanguage]} autoComplete='off'
+                                                                onBlur={(e) => {
+                                                                    this.UserNameChangeHandler(e)
+                                                                    handleBlur(e)
+                                                                }}
+                                                                onChange={(e) => {
+                                                                    this.changeUserName(e)
+                                                                    handleChange(e)
+                                                                }} />
+                                                            {errors.UserName && touched.UserName ? (<em className="pError">{errors.UserName}</em>) : null}
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                <div className="linebylineInput valid-input">
-                                                    <label className="control-label">{Resources['workHours'][currentLanguage]} </label>
-                                                    <div className={'ui input inputDev ' + (errors.WorkingHours && touched.WorkingHours ? 'has-error' : null) + ' '}>
-                                                        <input name='WorkingHours' value={this.state.WorkingHours}
-                                                            className="form-control" id="WorkingHours" placeholder={Resources['workHours'][currentLanguage]} autoComplete='off'
-                                                            onBlur={(e) => {
-                                                                this.workHoursChangeHandler(e)
-                                                                handleBlur(e)
-                                                            }}
-                                                            onChange={(e) => {
-                                                                this.workHoursChange(e)
-                                                                handleChange(e)
-                                                            }} />
-                                                        {errors.WorkingHours && touched.WorkingHours ? (<em className="pError">{errors.WorkingHours}</em>) : null}
+                                                    <div className="linebylineInput">
+                                                        <label data-toggle="tooltip" title={Resources['active'][currentLanguage]} className="control-label"> {Resources['active'][currentLanguage]} </label>
+                                                        <div className="ui checkbox radio radioBoxBlue">
+                                                            <input type="radio" defaultChecked name="active" defaultChecked={this.state.ActiveCheck ? 'checked' : null} value="true" onChange={this.ActiveChange} />
+                                                            <label>{Resources['yes'][currentLanguage]}</label>
+                                                        </div>
+                                                        <div className="ui checkbox radio radioBoxBlue checked">
+                                                            <input type="radio" name="active" value="false" defaultChecked={this.state.ActiveCheck ? null : 'checked'} onChange={this.ActiveChange} />
+                                                            <label> {Resources['no'][currentLanguage]}</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                <div className="linebylineInput valid-input">
-                                                    <DropdownMelcous title='SupervisorCompany'
-                                                        selectedValue={this.state.DefaultSupervisorCompanyData}
-                                                        data={this.state.CompanyData}
-                                                        handleChange={this.SupervisorCompanyhandleChange}
-                                                        placeholder='SupervisorCompany' />
-                                                </div>
-
-                                                <div className="linebylineInput valid-input">
-                                                    <DropdownMelcous title='SupervisorName'
-                                                        data={this.state.SupervisorNameData}
-                                                        handleChange={this.SupervisorNamehandleChange}
-                                                        placeholder='SupervisorName'
-                                                        selectedValue={this.state.DefaultSupervisorName} />
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
@@ -459,6 +436,22 @@ class EditAccount extends Component {
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
+                                                    <DropdownMelcous title='SupervisorCompany'
+                                                        selectedValue={this.state.DefaultSupervisorCompanyData}
+                                                        data={this.state.CompanyData}
+                                                        handleChange={this.SupervisorCompanyhandleChange}
+                                                        placeholder='SupervisorCompany' />
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <DropdownMelcous title='SupervisorName'
+                                                        data={this.state.SupervisorNameData}
+                                                        handleChange={this.SupervisorNamehandleChange}
+                                                        placeholder='SupervisorName'
+                                                        selectedValue={this.state.DefaultSupervisorName} />
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
                                                     <DropdownMelcous title='alternativeAccount'
                                                         data={this.state.AlternativeAccount}
                                                         handleChange={this.AlternativeAccounthandleChange}
@@ -467,7 +460,7 @@ class EditAccount extends Component {
                                                 </div>
 
                                                 <Fragment>
-                                                    {this.state.alternativAccountId === null ? null : <div className="linebylineInput valid-input alternativeDate">
+                                                    {this.state.alternativAccountId === null ? null : <div className="linebylineInput valid-input alternativeDate alternativeDate_replacement">
                                                         <DatePicker title='alternativeDate'
                                                             startDate={this.state.AccountData.alternativDate === null ? this.state.AlternativeDate : moment(this.state.AccountData.alternativDate).format("DD-MM-YYYY")}
                                                             handleChange={this.AlternativeDatehandleChange} />
@@ -477,83 +470,91 @@ class EditAccount extends Component {
                                                         </div>
                                                     </div>
                                                     }
-
                                                 </Fragment>
 
-                                                <div className="linebylineInput valid-input">
-                                                    <label className="control-label">{Resources['hoursRate'][currentLanguage]} </label>
-                                                    <div className={'ui input inputDev ' + (errors.RateHours && touched.RateHours ? 'has-error' : null) + ' '}>
-                                                        <input name='RateHours' value={this.state.HoursRate}
-                                                            className="form-control" id="RateHours" placeholder={Resources['hoursRate'][currentLanguage]} autoComplete='off'
-                                                            onBlur={(e) => {
-                                                                this.hoursRateChangeHandler(e)
-                                                                handleBlur(e)
-                                                            }}
-                                                            onChange={(e) => {
-                                                                this.hoursRateChange(e)
-                                                                handleChange(e)
-                                                            }} />
-                                                        {errors.RateHours && touched.RateHours ? (<em className="pError">{errors.RateHours}</em>) : null}
-                                                    </div>
-                                                </div>
-
-                                                <div className="proForm first-proform fullWidthWrapper fullLinearInput">
-                                                    <div className="linebylineInput">
-                                                        <label data-toggle="tooltip" title={Resources['designTeam'][currentLanguage]} className="control-label"> {Resources['designTeam'][currentLanguage]} </label>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input type="radio" name="designTeam" defaultChecked={this.state.DesignTeamCheck ? 'checked' : null} value="true" onChange={this.DesignTeamChange} />
-                                                            <label>{Resources['yes'][currentLanguage]}</label>
-                                                        </div>
-                                                        <div className="ui checkbox radio radioBoxBlue checked">
-                                                            <input type="radio" defaultChecked={this.state.DesignTeamCheck ? null : 'checked'} name="designTeam" value="false" onChange={this.DesignTeamChange} />
-                                                            <label> {Resources['no'][currentLanguage]}</label>
+                                                <div className="fullWidthWrapper account__checkbox">
+                                                    <div className="proForm fullLinearInput">
+                                                        <div className="linebylineInput">
+                                                            <label data-toggle="tooltip" title={Resources['designTeam'][currentLanguage]} className="control-label"> {Resources['designTeam'][currentLanguage]} </label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input type="radio" name="designTeam" defaultChecked={this.state.DesignTeamCheck ? 'checked' : null} value="true" onChange={this.DesignTeamChange} />
+                                                                <label>{Resources['yes'][currentLanguage]}</label>
+                                                            </div>
+                                                            <div className="ui checkbox radio radioBoxBlue checked">
+                                                                <input type="radio" defaultChecked={this.state.DesignTeamCheck ? null : 'checked'} name="designTeam" value="false" onChange={this.DesignTeamChange} />
+                                                                <label> {Resources['no'][currentLanguage]}</label>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div className="proForm first-proform fullWidthWrapper fullLinearInput">
-                                                    <div className="linebylineInput">
-                                                        <label data-toggle="tooltip" title={Resources['isTaskAdmin'][currentLanguage]} className="control-label"> {Resources['isTaskAdmin'][currentLanguage]} </label>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input type="radio" name="TaskAdmin" defaultChecked={this.state.TaskAdminCheck ? 'checked' : null} value="true" onChange={this.TaskAdminChange} />
-                                                            <label>{Resources['yes'][currentLanguage]}</label>
-                                                        </div>
-                                                        <div className="ui checkbox radio radioBoxBlue checked">
-                                                            <input type="radio" defaultChecked name="TaskAdmin" defaultChecked={this.state.TaskAdminCheck ? null : 'checked'} value="false" onChange={this.TaskAdminChange} />
-                                                            <label> {Resources['no'][currentLanguage]}</label>
+                                                    <div className="proForm fullLinearInput">
+                                                        <div className="linebylineInput">
+                                                            <label data-toggle="tooltip" title={Resources['isTaskAdmin'][currentLanguage]} className="control-label"> {Resources['isTaskAdmin'][currentLanguage]} </label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input type="radio" name="TaskAdmin" defaultChecked={this.state.TaskAdminCheck ? 'checked' : null} value="true" onChange={this.TaskAdminChange} />
+                                                                <label>{Resources['yes'][currentLanguage]}</label>
+                                                            </div>
+                                                            <div className="ui checkbox radio radioBoxBlue checked">
+                                                                <input type="radio" defaultChecked name="TaskAdmin" defaultChecked={this.state.TaskAdminCheck ? null : 'checked'} value="false" onChange={this.TaskAdminChange} />
+                                                                <label> {Resources['no'][currentLanguage]}</label>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div className="proForm first-proform fullWidthWrapper fullLinearInput">
-                                                    <div className="linebylineInput">
-                                                        <label data-toggle="tooltip" title={Resources['active'][currentLanguage]} className="control-label"> {Resources['active'][currentLanguage]} </label>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input type="radio" defaultChecked name="active" defaultChecked={this.state.ActiveCheck ? 'checked' : null} value="true" onChange={this.ActiveChange} />
-                                                            <label>{Resources['yes'][currentLanguage]}</label>
-                                                        </div>
-                                                        <div className="ui checkbox radio radioBoxBlue checked">
-                                                            <input type="radio" name="active" value="false" defaultChecked={this.state.ActiveCheck ? null : 'checked'} onChange={this.ActiveChange} />
-                                                            <label> {Resources['no'][currentLanguage]}</label>
+                                                    <div className="proForm fullLinearInput">
+                                                        <div className="linebylineInput">
+                                                            <label data-toggle="tooltip" title={Resources['usePermissionsOnLogs'][currentLanguage]} className="control-label"> {Resources['usePermissionsOnLogs'][currentLanguage]} </label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input type="radio" name="usePermissionsOnLogs" defaultChecked={this.state.UsePermissionsOnLogCheck ? 'checked' : null} value="true" onChange={this.UserPermissiononLogsChange} />
+                                                                <label>{Resources['yes'][currentLanguage]}</label>
+                                                            </div>
+                                                            <div className="ui checkbox radio radioBoxBlue ">
+                                                                <input type="radio" defaultChecked name="usePermissionsOnLogs" defaultChecked={this.state.UsePermissionsOnLogCheck ? null : 'checked'} value="false" onChange={this.UserPermissiononLogsChange} />
+                                                                <label> {Resources['no'][currentLanguage]}</label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div className="proForm first-proform fullWidthWrapper fullLinearInput">
-                                                    <div className="linebylineInput">
-                                                        <label data-toggle="tooltip" title={Resources['usePermissionsOnLogs'][currentLanguage]} className="control-label"> {Resources['usePermissionsOnLogs'][currentLanguage]} </label>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input type="radio" name="usePermissionsOnLogs" defaultChecked={this.state.UsePermissionsOnLogCheck ? 'checked' : null} value="true" onChange={this.UserPermissiononLogsChange} />
-                                                            <label>{Resources['yes'][currentLanguage]}</label>
+                                                <div className="workingHours__cycle fullWidthWrapper textLeft">
+                                                    <header>
+                                                        <h3 className="zero">Working hours & days</h3>
+                                                    </header>
+                                                    <div className="workingHours__cycle--inputs">
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">{Resources['workHours'][currentLanguage]} </label>
+                                                            <div className={'ui input inputDev ' + (errors.WorkingHours && touched.WorkingHours ? 'has-error' : null) + ' '}>
+                                                                <input name='WorkingHours' value={this.state.WorkingHours}
+                                                                    className="form-control" id="WorkingHours" placeholder={Resources['workHours'][currentLanguage]} autoComplete='off'
+                                                                    onBlur={(e) => {
+                                                                        this.workHoursChangeHandler(e)
+                                                                        handleBlur(e)
+                                                                    }}
+                                                                    onChange={(e) => {
+                                                                        this.workHoursChange(e)
+                                                                        handleChange(e)
+                                                                    }} />
+                                                                {errors.WorkingHours && touched.WorkingHours ? (<em className="pError">{errors.WorkingHours}</em>) : null}
+                                                            </div>
                                                         </div>
-                                                        <div className="ui checkbox radio radioBoxBlue ">
-                                                            <input type="radio" defaultChecked name="usePermissionsOnLogs" defaultChecked={this.state.UsePermissionsOnLogCheck ? null : 'checked'} value="false" onChange={this.UserPermissiononLogsChange} />
-                                                            <label> {Resources['no'][currentLanguage]}</label>
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">{Resources['hoursRate'][currentLanguage]} </label>
+                                                            <div className={'ui input inputDev ' + (errors.RateHours && touched.RateHours ? 'has-error' : null) + ' '}>
+                                                                <input name='RateHours' value={this.state.HoursRate}
+                                                                    className="form-control" id="RateHours" placeholder={Resources['hoursRate'][currentLanguage]} autoComplete='off'
+                                                                    onBlur={(e) => {
+                                                                        this.hoursRateChangeHandler(e)
+                                                                        handleBlur(e)
+                                                                    }}
+                                                                    onChange={(e) => {
+                                                                        this.hoursRateChange(e)
+                                                                        handleChange(e)
+                                                                    }} />
+                                                                {errors.RateHours && touched.RateHours ? (<em className="pError">{errors.RateHours}</em>) : null}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div className="dropBtn">
+                                                <div className="dropBtn dropBtnLeft fullWidthWrapper">
                                                     <button className="primaryBtn-1 btn" type="submit"  >
                                                         {Resources['save'][currentLanguage]}</button>
                                                 </div>

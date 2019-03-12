@@ -739,7 +739,7 @@ class LettersAddEdit extends Component {
                                                             />
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="fullWidthWrapper textLeft">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <RichTextEditor

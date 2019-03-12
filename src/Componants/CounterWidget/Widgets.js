@@ -52,14 +52,14 @@ class Widgets extends Component {
   render() { 
     return (
       <Fragment>
-        <div className="summerisItem">
-          <div className="content">
-            <h4 className="title">
-              {Resources[this.props.title][currentLanguage]}
-            </h4>
+        <div className="summerisItem__number">
+          <div className="content__number">
             <p className="number"  onClick={this.onOpenModal.bind(this)}>
               {this.state.value}
             </p>
+            <h4 className="title">
+              {Resources[this.props.title][currentLanguage]}
+            </h4>
           </div>
         </div>
       </Fragment>
