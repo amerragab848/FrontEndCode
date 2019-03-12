@@ -252,15 +252,21 @@ class GridSetup extends Component {
     console.log('onselectRowEven', selectedRows)
   };
 
+  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    this.setState(state => {
+      const rows = state.rows.slice();
+      for (let i = fromRow; i <= toRow; i++) {
+        rows[i] = { ...rows[i], ...updated };
+      }
+      return { rows };
+    });
+  };
+
   render() {
     const { rows, groupBy } = this.state;
-    const filteredRows = this.getRows(this.state.rows, this.state.filters);
-
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-
-    const drag =
-      Resources["jqxGridLanguage"][currentLanguage].localizationobj
-        .groupsheaderstring;
+    console.log("groupedRows....",groupedRows.length);
+    const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
       groupBy,
@@ -303,11 +309,12 @@ class GridSetup extends Component {
         <ReactDataGrid
           rowKey="id"
           minHeight={this.props.minHeight !== undefined ? this.props.minHeight: 650}
-          isScrolling={true}
+          //isScrolling={true}
           columns={this.state.columns}
           rowGetter={i => groupedRows[i]}
           rowsCount={groupedRows.length}
           enableCellSelect={true}
+          onGridRowsUpdated={this.onGridRowsUpdated}
           onCellSelected={this.onCellSelected}
 
           onColumnResize={(idx, width, event) => {

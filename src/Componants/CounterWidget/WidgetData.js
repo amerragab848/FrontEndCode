@@ -24,15 +24,7 @@ let Widgets = [{
         isModal: 'false',
         route: 'route-to-view',
         permission:3200
-    },
-    // {
-    //     id: 'wt_monthlyPurchaseOrder_4',
-    //     title: 'monthlyPo',
-    //     api: 'GetTotalPo',
-    //     isModal: 'true',
-    //     route: 'route-to-view'
-    // },
-
+    }, 
     {
         id: 'wt_materialRequestCounts_5',
         title: 'materialRequestcount',
