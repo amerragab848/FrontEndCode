@@ -24,8 +24,12 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 
+import SkyLight from 'react-skylight';
 import NotifiMsg from '../../Componants/publicComponants/NotifiMsg'
 import * as communicationActions from '../../store/actions/communication';
+
+import Distribution from '../../Componants/OptionsPanels/DistributionList'
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -85,6 +89,8 @@ class LettersAddEdit extends Component {
         }
 
         this.state = {
+            currentTitle:"sendToWorkFlow",
+            showModal:false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             addComplete: false,
@@ -420,9 +426,9 @@ class LettersAddEdit extends Component {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type='submit' onClick={e => this.saveLetter(e)}>{Resources.save[currentLanguage]}</button>;
+            btn = <button className="primaryBtn-1 btn meduimBtn"  type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type='submit' onClick={e => this.saveAndExit(e)}>{Resources.saveAndExit[currentLanguage]}</button>
+            btn = <button className="primaryBtn-1 btn mediumBtn"  type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
         }
         return btn;
     }
@@ -436,7 +442,24 @@ class LettersAddEdit extends Component {
         )
     }
 
+    handleShowAction = (item) => {
+        console.log(item);
+        if(item.value !="0" ){
+            
+            this.setState({
+                currentComponent: item.value,
+                currentTitle: item.title,
+                showModal:true
+            })
+
+            this.simpleDialog.show()
+        }   
+    }
     render() {
+        let actions=[  
+            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />,label: Resources["distributionList"][currentLanguage] },
+           { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] }
+        ]; 
         return (
             <div className="mainContainer">
                 {
@@ -489,9 +512,18 @@ class LettersAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            
+                                            onSubmit={(values) => {
+                                                if(this.props.changeStatus === true){
+                                                 this.editLetter();
+                                                }else{
+                                                 
+                                                 this.saveLetter();
+                                                } 
+                                             }}
+ 
                                             onReset={(values) => { }} >
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue }) => (
+                                          
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue,setFieldTouched }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="proForm first-proform">
@@ -593,56 +625,55 @@ class LettersAddEdit extends Component {
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
-
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings}
                                                                         name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
 
                                                                 </div>
-                                                                <a data-bind="attr: { href: sharedSettings }" target="_blank"><span data-bind="text: $root.language.openFolder[$root.currentLanguage()]">Open Link</span></a>
+                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
 
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c" + ((errors.fromCompanyId && touched.fromCompanyId) ? " has-error" : (!errors.fromCompanyId && !touched.fromCompanyId) ? (" has-success") : " ")}>
+                                                            <div className="ui input inputDev fillter-item-c">
                                                                 <Dropdown
                                                                     title="fromCompany"
                                                                     data={this.state.companies}
                                                                     isMulti={false}
-                                                                    selectedValue={this.state.selectedFromCompany}
-                                                                    handleBlur={setFieldValue}
+                                                                    selectedValue={this.state.selectedFromCompany} 
                                                                     handleChange={event => {
                                                                         this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                    }}
+                                                                    }} 
                                                                     index="fromCompanyId"
                                                                     name="fromCompanyId"
-                                                                    id="fromCompanyId" /> 
-                                                                {(touched.fromCompanyId && errors.fromCompanyId  ) ? ( <em className="pError">{errors.fromCompanyId}</em>) : null}
-                                                                {/* {JSON.stringify(touched)} */}
+                                                                    id="fromCompanyId" />  
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (this.state.document.fromContactId ? (" has-error") : !errors.fromContactId ? (" has-success") : " ")}>
+                                                        <div className="ui input inputDev fillter-item-c">
                                                                 <Dropdown
                                                                     title="fromContact"
                                                                     isMulti={false}
                                                                     data={this.state.fromContacts}
-                                                                    selectedValue={this.state.selectedFromContact}
-
-                                                                    handleBlur={handleBlur}  
+                                                                    selectedValue={this.state.selectedFromContact} 
                                                                     handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                    
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.fromContactId}
+                                                                    touched={touched.fromContactId}
+
                                                                     index="letter-fromContact" 
                                                                     name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.fromContactId ? (<em className="pError">{errors.fromContactId}</em>) : null}
+                                                                    id="fromCompanyId" /> 
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toCompanyId && touched.toCompanyId ? (" has-error") : !errors.toCompanyId && touched.toCompanyId ? (" has-success") : " ")}>
+                                                        <div className="ui input inputDev fillter-item-c">
 
                                                                 <Dropdown
                                                                     title="toCompany" 
@@ -651,27 +682,35 @@ class LettersAddEdit extends Component {
                                                                     selectedValue={this.state.selectedToCompany}
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                        
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.toCompanyId}
+                                                                    touched={touched.toCompanyId}
+
                                                                     index="letter-toCompany"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.toCompanyId ? (<em className="pError">{errors.toCompanyId}</em>) : null}
+                                                                    name="toCompanyId"
+                                                                    id="toCompanyId" /> 
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toContactId && touched.toContactId ? (" has-error") : !errors.toContactId && touched.toContactId ? (" has-success") : "")}>
+                                                        <div className="ui input inputDev fillter-item-c">
                                                                 <Dropdown
                                                                     title="toContactName"
                                                                     isMulti={false}
                                                                     data={this.state.ToContacts}
                                                                     selectedValue={this.state.selectedToContact}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-                                                                    index="letter-toContactName"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.toContactId ? (<em className="pError">{errors.toContactId}</em>) : null}
+                                                                    
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.toContactId}
+                                                                    touched={touched.toContactId}
 
-                                                                {/* {JSON.stringify(errors)} */}
+                                                                    index="letter-toContactName"
+                                                                    name="toContactName"
+                                                                    id="toContactName" />  
                                                             </div>
                                                         </div>
 
@@ -737,11 +776,11 @@ class LettersAddEdit extends Component {
                                     <div className="approveDocumentBTNS">
                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
-                                            <button className="primaryBtn-1 btn ">APPROVE</button>
+                                            <button className="primaryBtn-1 btn " >APPROVE</button>
                                             : null
                                         }
-                                        <button className="primaryBtn-2 btn middle__btn">TO WORKFLOW</button>
-                                        <button className="primaryBtn-2 btn">TO DIST. LIST</button>
+                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e)=>this.handleShowAction(actions[1])}>TO WORKFLOW</button>
+                                        <button className="primaryBtn-2 btn" onClick={(e)=>this.handleShowAction(actions[0])}>TO DIST. LIST</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -751,9 +790,16 @@ class LettersAddEdit extends Component {
                                 : null
                         }
                     </div>
+
+                </div>
+                <div className="largePopup"  style={{ display: this.state.showModal ? 'block': 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                        {this.state.currentComponent}
+                    </SkyLight>
                 </div>
             </div>
-        );
+           
+       );
     }
 }
 

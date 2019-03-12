@@ -7740,5 +7740,9 @@
   "item": {
     "en": "item",
     "ar": "العنصر"
+  },
+  "editContact": {
+    "en": "Edit Contact",
+    "ar": "تعديل بيانات شخص"
   }
 }

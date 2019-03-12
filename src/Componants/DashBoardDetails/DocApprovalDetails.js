@@ -9,6 +9,7 @@ import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import {  Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
+import CryptoJS from 'crypto-js';
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -41,8 +42,21 @@ let  subjectLink = ({ value, row }) => {
   let doc_view = "";
   let subject = "";
   if (row) {
-    doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+    
+    let obj={
+      docId:row.docId ,
+      projectId:row.projectId,
+      projectName:row.projectName,
+      arrange: row.arrange,
+      docApprovalId:row.accountDocWorkFlowId,
+      isApproveMode: true
+    };
+
+    let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view ="/"+ row.docLink.replace('/','') +"?id="+ encodedPaylod
     subject = row.subject;
+ 
     return <a href={doc_view}> {subject} </a>;
   }
   return null;
