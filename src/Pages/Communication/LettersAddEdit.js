@@ -377,8 +377,8 @@ class LettersAddEdit extends Component {
             })
         }
 
-        // console.log(field+"...",updated_document);
-        // console.log('isSubscrib...',isSubscrib);
+        console.log(field+"...",updated_document);
+        console.log('isSubscrib...',isSubscrib);
 
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
@@ -720,9 +720,9 @@ class LettersAddEdit extends Component {
                                                                     error={errors.toContactId}
                                                                     touched={touched.toContactId}
 
-                                                                    index="letter-toContactName"
-                                                                    name="toContactName"
-                                                                    id="toContactName" />  
+                                                                    index="letter-toContactId"
+                                                                    name="toContactId"
+                                                                    id="toContactId" />  
                                                             </div>
                                                         </div>
 
