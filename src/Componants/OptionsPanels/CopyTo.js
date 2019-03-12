@@ -70,7 +70,7 @@ class CopyTo extends Component {
           placeholder="Projects"
         />
 
-        <div className="dropBtn">
+        <div className="fullWidthWrapper">
           <button
             className="primaryBtn-1 btn"
             onClick={() => this.saveCopyTo()}
