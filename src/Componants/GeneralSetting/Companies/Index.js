@@ -261,7 +261,7 @@ class Index extends Component {
             });
         }
         else
-        toast.warning("you don't have permission");
+            toast.warning("you don't have permission");
 
     }
     viewContact = (rowSelected) => {
@@ -270,7 +270,7 @@ class Index extends Component {
                 pathname: "/Contacts/" + rowSelected,
             });
         }
-        else { 
+        else {
             toast.warning("you don't have permission");
         }
     }
@@ -382,9 +382,10 @@ class Index extends Component {
             toast.warning("you don't have permission");
     }
     clickHandlerDeleteRowsMain = selectedRows => {
+        alert(selectedRows)
         this.setState({
             showDeleteModal: true,
-            selectedRows: selectedRows
+            selectedRowId: selectedRows
         });
     };
     onCloseModal() {
@@ -398,17 +399,25 @@ class Index extends Component {
     };
     ConfirmDeleteComanies = () => {
         this.setState({ showDeleteModal: true })
+
         if (Config.IsAllow(1258)) {
             this.setState({ isLoading: true })
-            Api.post('ProjectCompaniesDelete?id=' + this.state.selectedRows)
+            let newRows = []
+            let selectedRow = {}
+            this.state.rows.forEach(element => {
+                if (element.id == this.state.selectedRowId)
+                    selectedRow = element
+                else
+                    newRows.push(element)
+            })
+            if (selectedRow.deletable == true)
+                toast.warning("you can't remove this company !")
+            else {
+                Api.post('ProjectCompaniesDelete?id=' + this.state.selectedRowId)
                 .then(result => {
-                    console.log("befor=",this.state.rows.length)
-                    let originalRows = this.state.rows.filter(r => r.id !== this.state.selectedRows);
-                    console.log("after=",originalRows.length)
-
                     this.setState({
-                        rows: originalRows,
-                        totalRows: originalRows.length,
+                        rows: newRows,
+                        totalRows: newRows.length,
                         isLoading: false,
                         showDeleteModal: false,
                         IsActiveShow: false
@@ -421,13 +430,12 @@ class Index extends Component {
                         IsActiveShow: false
                     })
                 })
+            }
         }
         else
             toast.warning("you don't have permission");
 
     }
-
-
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
@@ -436,7 +444,6 @@ class Index extends Component {
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     viewContactHandler={this.clickHandler}
                     cellClick={this.cellClick}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     single={true}
 
                 />

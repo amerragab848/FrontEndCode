@@ -513,7 +513,7 @@ class RfiAddEdit extends Component {
                                                                         <label className="control-label">{Resources.requiredDate[currentLanguage]}</label>
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.docDate} format={'DD-MM-YYYY'} showBorder onChange={e => this.handleChangeDate(e, 'docDate')} placeholder={'Select a date'} />
+                                                                                <ModernDatepicker date={this.state.document.requiredDate} format={'DD-MM-YYYY'} showBorder onChange={e => this.handleChangeDate(e, 'requiredDate')} placeholder={'Select a date'} />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -551,20 +551,7 @@ class RfiAddEdit extends Component {
                                                                 {errors.refDoc && touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
-                                                            <div className="shareLinks">
-                                                                <div className="inputDev ui input">
-                                                                    <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings}
-                                                                        name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
-                                                                </div>
-                                                                <a data-bind="attr: { href: sharedSettings }" target="_blank"><span>{Resources["openFolder"][currentLanguage]}</span></a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="linebylineInput valid-input">
+                                                         <div className="linebylineInput valid-input">
                                                             <div className={"ui input inputDev fillter-item-c" + ((errors.fromCompanyId && touched.fromCompanyId) ? " has-error" : (!errors.fromCompanyId && !touched.fromCompanyId) ? (" has-success") : " ")}>
                                                                 <Dropdown title="fromCompany" data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany} handleBlur={setFieldValue}
                                                                     handleChange={event => {

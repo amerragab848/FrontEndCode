@@ -206,9 +206,12 @@ class Index extends Component {
     componentDidMount() {
         let url = 'GetCompanyContacts?companyId=' + this.state.companyID
         this.props.actions.GetCompaniesContact(url);
-        let titleData = Dataservice.GetDataList('GetAccountsDefaultList?listType=contacttitle&pageNumber=0&pageSize=10000', 'title', 'id')
+         Dataservice.GetDataList('GetAccountsDefaultList?listType=contacttitle&pageNumber=0&pageSize=10000', 'title', 'id').then(res=>{
+                 this.setState({ titleData: res })
+         })
+         
         this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2')        
-        this.setState({ titleData: titleData })
+       
 
     }
     changeKeyContact = (id) => {
@@ -228,7 +231,7 @@ class Index extends Component {
         this.props.actions.changeCompany(url, this.state.selectedContact);
     }
     addRecord = () => {
-        if (!Config.IsAllow(10)) {
+        if (Config.IsAllow(10)) {
             this.props.actions.TogglePopUp();
             this.setState({
                 currentComponent: <AddNewContact titleData={this.state.titleData} companyID={this.state.companyID} />,

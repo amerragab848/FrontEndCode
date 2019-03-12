@@ -71,6 +71,8 @@ class CommonLog extends Component {
   }
  
   componentDidMount() {   
+
+
    this.renderComponent(this.state.documentName,this.state.projectId,!this.state.minimizeClick);
                          
   }
@@ -304,8 +306,7 @@ class CommonLog extends Component {
     let  subjectLink = ({ value, row }) => {
       let doc_view = "";
       let subject = "";
-      if (row) {
-        //doc_view ="/"+ documentObj.documentAddEditLink + row.id + "/" + row.projectId + "/" + row.projectName;
+      if (row) { 
         let obj={
           docId:row.id ,
           projectId:row.projectId,
@@ -313,7 +314,7 @@ class CommonLog extends Component {
         };
         let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-        doc_view ="/"+ documentObj.documentAddEditLink.replace('/','') +"?id="+ encodedPaylod//row.id + "&projectId=" + row.projectId + "&projectName=" + encodedPaylod;
+        doc_view ="/"+ documentObj.documentAddEditLink.replace('/','') +"?id="+ encodedPaylod
         subject = row.subject;
         return <a href={doc_view}> {subject} </a>;
       }

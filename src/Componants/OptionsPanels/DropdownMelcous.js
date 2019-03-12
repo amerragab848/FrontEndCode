@@ -5,19 +5,28 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 class DropdownMelcous extends Component {
     constructor(props) {
-        super(props) 
-       
-    }
-   
-    handleChange =(e)=>{
-        this.props.handleChange(e,'sokary')
+        super(props)
+
     }
 
-    handleBlur = (e) => { 
-        this.props.handleBlur(this.props.name, true);
-    }
 
-    render() { 
+    handleChange = value => {
+
+        if (this.props.onChange != undefined) {
+            this.props.onChange(this.props.name, value);
+           
+        }
+        this.props.handleChange(value,this.props.name);
+    };
+
+
+    handleBlur = () => {
+        if (this.props.onBlur != undefined)
+            this.props.onBlur(this.props.name, true);
+
+    };
+
+    render() {
 
         return (
             <div className={"fillter-status fillter-item-c " + this.props.className} key={this.props.index}>
@@ -29,25 +38,30 @@ class DropdownMelcous extends Component {
                     }
                 </div>
                 <div>
-                    <div className="customD_Menu" style={{ outline: "none" }}>
-                        <Select key={this.props.index} ref={this.props.index}
-                             
-                            options={this.props.data}
-                            placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
-                            isSearchable="true"
-                            defaultValue= {this.props.isMulti ? this.props.selectedValue : this.props.value}
-                            value={ this.props.isMulti ? this.props.value : this.props.selectedValue}
-                            isMulti={this.props.isMulti}
-                            onBlur={this.props.onblur}
-                            isClearable={this.props.isClear? true : false }
-        
+                    <div className={"customD_Menu"+this.props.error?"errorClass":''} style={{ outline: "none",position: 'relative' }}>
 
-                            name={this.props.name ? this.props.index: this.props.name} 
-                            id={this.props.id ? this.props.index: this.props.id} 
-                            onChange={this.props.handleChange}
-                            onBlur={this.props.handleBlur}
-                        />
-                          
+                        <div>
+
+                            <Select key={this.props.index} ref={this.props.index}
+
+                                options={this.props.data}
+                                placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
+                                isSearchable="true"
+                                defaultValue={this.props.isMulti ? this.props.selectedValue : this.props.value}
+                                value={this.props.isMulti ? this.props.value : this.props.selectedValue}
+                                isMulti={this.props.isMulti}
+                                isClearable={this.props.isClear ? true : false}
+                                name={this.props.name ? this.props.index : this.props.name}
+                                id={this.props.id ? this.props.index : this.props.id}
+                                onChange={this.handleChange}
+                                onBlur={this.handleBlur}
+                            />
+                            {this.props.error && this.props.touched && (
+                                <em className ="dropdown__error">
+                                    {this.props.error}
+                                </em>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

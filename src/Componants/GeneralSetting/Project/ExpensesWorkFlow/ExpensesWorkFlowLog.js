@@ -117,6 +117,7 @@ class ExpensesWorkFlowLog extends Component {
                     rows: originalRows,
                     showDeleteModal: false,
                     isLoading: false,
+                    MaxArrange: Math.max.apply(Math, originalRows.map(function (o) { return o.arrange + 1 }))
                 })
                 setTimeout(() => {
                     this.setState({
@@ -135,7 +136,13 @@ class ExpensesWorkFlowLog extends Component {
             showNotify: false,
         })
     }
-
+    
+    AddExpensesWorkFlow = () => {
+        this.props.history.push({
+            pathname: "/ExpensesWorkFlowAddEdit",
+            search: "?arrange=" + this.state.MaxArrange
+        });
+    }
 
     render() {
 
@@ -145,7 +152,7 @@ class ExpensesWorkFlowLog extends Component {
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
                     showCheckbox={this.state.showCheckbox}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                // onRowClick={this.cellClick.bind(this)}
+                //  onRowClick={this.cellClick.bind(this)}
                 />
             ) : <LoadingSection />
 
@@ -174,7 +181,7 @@ class ExpensesWorkFlowLog extends Component {
 
                     <div className="filterBTNS">
                         {config.IsAllow(1182) ?
-                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.setState({ ShowPopup: true })}>New</button>
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={this.AddExpensesWorkFlow}>New</button>
                             : null}
                         {btnExport}
                     </div>

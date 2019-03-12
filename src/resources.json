@@ -7744,5 +7744,9 @@
   "workplace": {
     "en": "Workplace",
     "ar": "مكان العمل"
+  },
+  "editContact": {
+    "en": "Edit Contact",
+    "ar": "تعديل بيانات شخص"
   }
 }
