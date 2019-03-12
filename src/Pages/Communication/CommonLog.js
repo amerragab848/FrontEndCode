@@ -127,7 +127,10 @@ class CommonLog extends Component {
     let obj = {
         docId: 0,
         projectId:this.state.projectId, 
-        projectName: 'row.projectName'
+        projectName: 'row.projectName',
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
     };
 
     let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
@@ -307,14 +310,19 @@ class CommonLog extends Component {
       let doc_view = "";
       let subject = "";
       if (row) { 
+        
         let obj={
           docId:row.id ,
           projectId:row.projectId,
-          projectName:row.projectName
+          projectName:row.projectName,
+          arrange: 0,
+          docApprovalId: 0,
+          isApproveMode: false
         };
+
         let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-        doc_view ="/"+ documentObj.documentAddEditLink.replace('/','') +"?id="+ encodedPaylod
+        doc_view ="/"+ documentObj.documentAddEditLink.replace('/','') +"?id=" + encodedPaylod
         subject = row.subject;
         return <a href={doc_view}> {subject} </a>;
       }
@@ -368,8 +376,7 @@ class CommonLog extends Component {
       columns: cNames,
       filtersColumns: filtersColumns
     });  
-    //getCustom
-    
+     
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom: documentObj.documentApi.get);
   }
 
@@ -381,6 +388,10 @@ class CommonLog extends Component {
   GetLogData(url)  {
     Api.get(url).then(result => { 
          
+      let b1=result.data;
+      let b3=result.data;
+      let b2=result.data;
+      result.data=[...b1,...b2,...b3,...result.data];
         this.setState({
           rows: result.data,
           totalRows: result.total,

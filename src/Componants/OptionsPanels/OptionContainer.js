@@ -1,8 +1,6 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
 import DropDown from './DropdownMelcous'
-import Distribution from './DistributionList'
-import SendToWorkflow from './SendWorkFlow'
 import SendTask from "./SendTask";
 import CreateTransmittal from "./CreateTransmittal";
 import SendToInbox from './SendToInbox'
@@ -10,7 +8,7 @@ import SendByEmails from './SendByEmails'
 
 import Resources from '../../resources.json';
 import Config from '../../Services/Config';
-import permissions from '../../permissions.json';
+//import permissions from '../../permissions.json';
  
 import { connect } from 'react-redux';
 import {
@@ -37,9 +35,10 @@ class OptionContainer extends React.Component {
                     { title: "sendByEmail", value: <SendByEmails docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendByEmail"][currentLanguage] },
                     { title: "sendByInbox", value: <SendToInbox docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendByInbox"][currentLanguage] },
                     { title: "sendTask", value: <SendTask docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendTask"][currentLanguage] },
-                    { title: "distributionList", value: <Distribution docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["distributionList"][currentLanguage] },
                     { title: "createTransmittal", value: <CreateTransmittal docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["createTransmittal"][currentLanguage] },
-                    { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] }] 
+                    //{ title: "distributionList", value: <Distribution docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["distributionList"][currentLanguage] },
+                   // { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] }
+                ] 
         }
     }
     
@@ -50,8 +49,7 @@ class OptionContainer extends React.Component {
     };
 
     handleChange = (item) => {
-        if(item.value!="0"){
-            console.log(this.state.showModal);
+        if(item.value!="0"){ 
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -62,8 +60,7 @@ class OptionContainer extends React.Component {
     }
 
     IsAllow = (permission) => {
-        let obj=_.find(this.props.permission, function(o) { return o.name == permission; });
-        console.log(obj);
+        let obj=_.find(this.props.permission, function(o) { return o.name == permission; }); 
         return Config.IsAllow(obj.code);
     }
 

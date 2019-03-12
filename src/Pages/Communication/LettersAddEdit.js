@@ -24,8 +24,12 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 
+import SkyLight from 'react-skylight';
 import NotifiMsg from '../../Componants/publicComponants/NotifiMsg'
 import * as communicationActions from '../../store/actions/communication';
+
+import Distribution from '../../Componants/OptionsPanels/DistributionList'
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -85,6 +89,8 @@ class LettersAddEdit extends Component {
         }
 
         this.state = {
+            currentTitle:"sendToWorkFlow",
+            showModal:false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             addComplete: false,
@@ -436,7 +442,24 @@ class LettersAddEdit extends Component {
         )
     }
 
+    handleShowAction = (item) => {
+        console.log(item);
+        if(item.value !="0" ){
+            
+            this.setState({
+                currentComponent: item.value,
+                currentTitle: item.title,
+                showModal:true
+            })
+
+            this.simpleDialog.show()
+        }   
+    }
     render() {
+        let actions=[  
+            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />,label: Resources["distributionList"][currentLanguage] },
+           { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] }
+        ]; 
         return (
             <div className="mainContainer">
                 {
@@ -600,7 +623,7 @@ class LettersAddEdit extends Component {
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
 
                                                                 </div>
-                                                                <a data-bind="attr: { href: sharedSettings }" target="_blank"><span data-bind="text: $root.language.openFolder[$root.currentLanguage()]">Open Link</span></a>
+                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
 
                                                             </div>
                                                         </div>
@@ -737,11 +760,11 @@ class LettersAddEdit extends Component {
                                     <div className="approveDocumentBTNS">
                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
-                                            <button className="primaryBtn-1 btn ">APPROVE</button>
+                                            <button className="primaryBtn-1 btn " >APPROVE</button>
                                             : null
                                         }
-                                        <button className="primaryBtn-2 btn middle__btn">TO WORKFLOW</button>
-                                        <button className="primaryBtn-2 btn">TO DIST. LIST</button>
+                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e)=>this.handleShowAction(actions[1])}>TO WORKFLOW</button>
+                                        <button className="primaryBtn-2 btn" onClick={(e)=>this.handleShowAction(actions[0])}>TO DIST. LIST</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -751,9 +774,16 @@ class LettersAddEdit extends Component {
                                 : null
                         }
                     </div>
+
+                </div>
+                <div className="largePopup"  style={{ display: this.state.showModal ? 'block': 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                        {this.state.currentComponent}
+                    </SkyLight>
                 </div>
             </div>
-        );
+           
+       );
     }
 }
 
