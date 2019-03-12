@@ -19,14 +19,14 @@ class wfApproval extends Component {
       passwordStatus: false,
       submitLoading: false,
       sendingData: {
-        approvalStatus: true, 
+        approvalStatus: true,
         projectId: this.props.projectId,
         docId: this.props.docId,
         docTypeId: this.props.docTypeId,
         contacts: [],
         comment: "",
         currentArrange: this.props.currentArrange,
-        accountDocId: this.props.docApprovalId 
+        accountDocId: this.props.docApprovalId
       }
     };
   }
@@ -54,7 +54,7 @@ class wfApproval extends Component {
           approveData: tempData
         });
       })
-      .catch(ex => {});
+      .catch(ex => { });
   };
 
   passwordHandleChange = e => {
@@ -93,7 +93,7 @@ class wfApproval extends Component {
 
   render() {
     return (
-      <div>
+      <div className="dropWrapper">
         <Formik
           initialValues={{
             password: ""
@@ -115,99 +115,67 @@ class wfApproval extends Component {
           }}
         >
           {({ errors, touched, handleBlur, handleChange }) => (
-            <Form id="signupForm1" className="proForm" noValidate="novalidate">
-              <div className="approvalDocument">
-                <div className="approvalWrapper">
-                  <div className="approvalTitle">
-                    <h3>Document Approval</h3>
-                  </div>
-                  <div className="inputPassContainer">
-                    <div className="form-group passwordInputs showPasswordArea">
-                      <label className="control-label">Password *</label>
-                      <div className="inputPassContainer">
-                        <div
-                          className={
-                            errors.password && touched.password
-                              ? "ui input inputDev has-error"
-                              : !errors.password && touched.password
-                              ? "ui input inputDev has-success"
-                              : "ui input inputDev"
-                          }
-                        >
-                          <span
-                            className={
-                              this.state.type
-                                ? "inputsideNote togglePW active-pw"
-                                : "inputsideNote togglePW "
-                            }
-                            onClick={this.toggle}
-                          >
-                            <img src={eyeShow} />
-                            <span className="show"> Show</span>
-                            <span className="hide"> Hide</span>
-                          </span>
-                          <input
-                            name="password"
-                            type={this.state.type ? "text" : "password"}
-                            className="form-control"
-                            id="password"
-                            placeholder="password"
-                            autoComplete="off"
-                            onBlur={e => {
-                              this.passwordHandleChange(e);
-                              handleBlur(e);
-                            }}
-                            onChange={handleChange}
-                          />
+            <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
 
-                          {errors.password && touched.password ? (
-                            <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                          ) : !errors.password && touched.password ? (
-                            <span className="glyphicon form-control-feedback glyphicon-ok" />
-                          ) : null}
-                          {errors.password && touched.password ? (
-                            <em className="pError">{errors.password}</em>
-                          ) : null}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="textarea-group">
-                    <label>Comment</label>
-                    <textarea
-                      className="form-control"
-                      onBlur={e => this.commentOnBlurHandler(e)}
-                    />
-                  </div>
-                  <div className="fullWidthWrapper textLeft">
-                    <Dropdown
-                      title="approveTo"
-                      data={this.state.approveData}
-                      handleChange={this.selectHandleChange}
-                      index="approve"
-                      isMulti="true"
-                    />
-                  </div>
-                  {!this.state.submitLoading ? (
-                    <div className="fullWidthWrapper">
-                      <button
-                        className="primaryBtn-1 btn largeBtn"
-                        type="submit"
+              <div className="fillter-status fillter-item-c ">
+                <div className="passwordInputs showPasswordArea">
+                  <label className="control-label">Password *</label>
+                  <div className="inputPassContainer">
+                    <div className={"ui input inputDev" + (errors.password && touched.password ? " has-error" : !errors.password && touched.password ? " has-success" : " ")}>
+                      <span
+                        className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "}
+                        onClick={this.toggle}
                       >
-                        Save
-                      </button>
+                        <img src={eyeShow} />
+                        <span className="show"> Show</span>
+                        <span className="hide"> Hide</span>
+                      </span>
+                      <input name="password" type={this.state.type ? "text" : "password"}
+                        className="form-control" id="password" placeholder="password" autoComplete="off"
+                        onBlur={e => {
+                          this.passwordHandleChange(e);
+                          handleBlur(e);
+                        }}
+                        onChange={handleChange}
+                      />
+
+                      {errors.password && touched.password ? (
+                        <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                      ) : !errors.password && touched.password ? (
+                        <span className="glyphicon form-control-feedback glyphicon-ok" />
+                      ) : null}
+                      {errors.password && touched.password ? (
+                        <em className="pError">{errors.password}</em>
+                      ) : null}
                     </div>
-                  ) : (
-                    <span className="primaryBtn-1 btn largeBtn disabled">
-                      <div className="spinner">
-                        <div className="bounce1" />
-                        <div className="bounce2" />
-                        <div className="bounce3" />
-                      </div>
-                    </span>
-                  )}
+                  </div>
                 </div>
               </div>
+              
+              
+                <Dropdown title="approveTo" data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
+              <div className="textarea-group fullWidthWrapper textLeft">
+                <label>Comment</label>
+                <textarea
+                  className="form-control"
+                  onBlur={e => this.commentOnBlurHandler(e)}
+                />
+              </div>
+
+              {!this.state.submitLoading ? (
+                <div className="fullWidthWrapper">
+                  <button className="primaryBtn-1 btn" type="submit">Save</button>
+                </div>
+              ) : (
+                  <span className="primaryBtn-1 btn largeBtn disabled">
+                    <div className="spinner">
+                      <div className="bounce1" />
+                      <div className="bounce2" />
+                      <div className="bounce3" />
+                    </div>
+                  </span>
+                )}
+
             </Form>
           )}
         </Formik>

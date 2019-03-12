@@ -30,6 +30,7 @@ import * as communicationActions from '../../store/actions/communication';
 
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -144,6 +145,7 @@ class LettersAddEdit extends Component {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow
             });
+            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
     };
@@ -458,7 +460,10 @@ class LettersAddEdit extends Component {
     render() {
         let actions=[  
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />,label: Resources["distributionList"][currentLanguage] },
-           { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] }
+            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} 
+              projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />,label: Resources["documentApproval"][currentLanguage] }
+           
         ]; 
         return (
             <div className="mainContainer">
@@ -776,7 +781,7 @@ class LettersAddEdit extends Component {
                                     <div className="approveDocumentBTNS">
                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
-                                            <button className="primaryBtn-1 btn " >APPROVE</button>
+                                            <button className="primaryBtn-1 btn " onClick={(e)=>this.handleShowAction(actions[2])} >APPROVE</button>
                                             : null
                                         }
                                         <button className="primaryBtn-2 btn middle__btn" onClick={(e)=>this.handleShowAction(actions[1])}>TO WORKFLOW</button>
@@ -792,7 +797,7 @@ class LettersAddEdit extends Component {
                     </div>
 
                 </div>
-                <div className="largePopup"  style={{ display: this.state.showModal ? 'block': 'none' }}>
+                <div className="largePopup largeModal "  style={{ display: this.state.showModal ? 'block': 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
                     </SkyLight>

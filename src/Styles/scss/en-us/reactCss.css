@@ -147,6 +147,9 @@ sayed exp
   min-width: 48%;
   margin-bottom: 10px;
 }
+.dropWrapper .fillter-item-c label {
+  font-family: font-opensb;
+}
 .dropWrapper .filterWrapper {
   width: 100%;
 }
@@ -195,6 +198,10 @@ sayed exp
 .dropWrapper .spanValidation {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 4px;
+}
+.dropWrapper .spanValidation label {
+  font-family: font-opensb;
 }
 .dropWrapper .spanValidation span{
   padding: 1px;
@@ -481,6 +488,7 @@ table edition
 }
 .proForm .ui.input.inputDev .inputsideNote {
   right: 10px;
+  top: -17px
 }
 .approvalTitle {
   height: 80px;
@@ -637,7 +645,7 @@ table edition
         border-radius: 4px;
       }
       .textarea-group {
-        padding: 12px 16px;
+        padding: 12px 0;
         border-radius: 4px;
         margin-bottom: 8px;
       }
@@ -2261,4 +2269,24 @@ button.companies_icon {
 }
 .proForm .ui.input.inputDev .glyphicon {
   top: auto
+}
+.dropWrapper .fullWidthWrapper.textLeft.textarea-group {
+  margin: 0
+}
+.dropWrapper.proForm .form-group {
+  padding: 0 16px;
+  margin: 0;
+}
+.dropWrapper .fullWidthWrapper.textLeft.drop__padding--approve {
+  padding: 0 16px;
+  margin-top: 10px;
+}
+.skylight-dialog >h2 {
+  text-align: center;
+  border-bottom: 1px solid #DADEE6;
+  padding-bottom: 20px;
+  margin: 10px 40px;
+}
+.dropWrapper {
+  padding: 15px 25PX;
 }
