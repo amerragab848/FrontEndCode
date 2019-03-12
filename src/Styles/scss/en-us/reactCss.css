@@ -2262,3 +2262,13 @@ button.companies_icon {
 .proForm .ui.input.inputDev .glyphicon {
   top: auto
 }
+.fullWidth_form {
+  width: 100%;
+} 
+.datepickerContainer.proForm .linebylineInput__name .ui.input.inputDev input, .datepickerContainer.proForm .first-proform .ui.input.inputDev input {
+  width: 360px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.fullRowInput {
+  width: 100%;
+  flex-shrink: 0;
+}
