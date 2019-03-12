@@ -168,14 +168,15 @@ sayed exp
   padding: 4px 0;
 }
 .dropWrapper #lastname1 {
-  background-color: hsl(0,0%,98%);
-  border: 1px solid  hsl(0,0%,80%);
-  min-height: 35px;
-  outline: 0 !important;
-  transition: all 100ms;
-  min-width: 100%;
-  padding-left: 10px;
-  border-radius: 4px
+  height: 40px;
+  border-radius: 4px;
+  width: 360px;
+  border: solid 1px #DADEE6;
+  font-family: font-opens;
+  letter-spacing: -0.2px;
+  color: #3E4352;
+  background-color: #ffffff;
+  font-size: 14px;
 }
 .dropWrapper {
   padding: 25PX;
@@ -354,7 +355,7 @@ table edition
 }
 .filterHidden {
   transition: all 0.4s ease-in-out;
-  max-height: 250px;
+  max-height: 850px;
 }
 .gridfillter-container {
   transition: all 0.4s ease-in-out;
@@ -496,9 +497,10 @@ table edition
 .pError {
   position: absolute;
   left: 0;
-  bottom: -14px;
+  top: 100%;
   color: #e74c3c;
   font-size: 12px;
+  width: 380px;
 }
 .fullWidthWrapper.textLeft {
   text-align: left;
@@ -777,19 +779,23 @@ table edition
     font-size: 12px;
 }
 .SummeriesContainer .SummeriesContainerContent .summerisItem:before {
-bottom: -35px;
-top: -15px;
-z-index: 3;
+  bottom: -35px;
+  top: -15px;
+  z-index: 3;
+  transition: all 0.6s ease-in-out;
 }
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .title {
-height: 50px;
-overflow: hidden;
-display: flex;
-align-items: center;
-text-transform: capitalize
+  height: 50px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
+  font-size : 12px;
+  transition: all 0.5s ease-in-out;
 }
-
-
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number, .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div span {
+  transition: all 0.5s ease-in-out;
+}
 .customeTabs .react-tabs__tab-list {
   border-bottom: 1px solid #E9ECF0 !important;
   padding: 0 !important;
@@ -1110,9 +1116,9 @@ text-transform: capitalize
   min-height: 650px;
 }
 /**/
-.customD_Menu .css-vj8t7z {
+/* .customD_Menu .css-vj8t7z {
   z-index: 12;
-}
+} */
 .customD_Menu .css-15k3avv {
   z-index: 155;
 }
@@ -1173,9 +1179,6 @@ tfoot tr td p{
 .timeSheetInput .fillter-item-c .spanValidation,.timeSheetInput .fullWidthWrapper label {
   margin-bottom: 10px;
   display: block;
-}
-.customD_Menu .css-vj8t7z {
-  z-index: 12;
 }
 .customizeBtn {
   position: fixed;
@@ -1267,6 +1270,7 @@ tfoot tr td p{
   white-space: nowrap;
   max-width: 255px;
 }
+ 
 .customeTabs .react-tabs__tab-panel--selected {
   width: 100%;
 }
@@ -1462,9 +1466,6 @@ tfoot tr td p{
   max-height: 500px;
   overflow-y: auto;
 } 
-.proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
-  margin-right: 40px !important;
-}
 .icon__btn {
   background: transparent;
   border: 1px solid transparent;
@@ -1687,7 +1688,8 @@ tfoot tr td p{
         width: 91%; } }
 
     .noTabs__document .doc-container .step-content .document-fields {
-      padding: 14px 0; }
+      padding: 36px 0 14px 0; 
+    }
       .noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
         display: flex;
         flex-wrap: wrap;
@@ -1737,7 +1739,7 @@ tfoot tr td p{
           line-height: 1.4;
           letter-spacing: -0.2px;
           color: #252833; }
-      .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
+      .noTabs__document .doc-container .step-content .slider-Btns , .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-left: 0; }
 .noTabs__document .approveDocument {
@@ -1831,9 +1833,9 @@ tfoot tr td p{
   width: 100%;
 }
 .document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
-    height: 200px;
+    height: 145px;
     overflow-y: auto;
-    top: -210px;
+    top: -155px;
 } 
 .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
     height: auto;
@@ -1991,6 +1993,9 @@ button.companies_icon {
       padding-right: 80px; 
       padding-top: 50px;
     }
+    .one__tab.one_step .doc-container .step-content .feilds__top .document-fields {
+      padding-top: 0; 
+    }
       @media screen and (max-width: 1300px) {
         .one__tab.one_step .doc-container .step-content .document-fields {
           padding-left: 35px;
@@ -2094,3 +2099,314 @@ button.companies_icon {
   @media screen and (max-width: 1200px) {
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
       margin-right: 0; } } */
+.proForm .has-error label.control-label {
+  color: #26344c !important;
+}
+.proForm .ui.input.inputDev.has-error .glyphicon {
+  top: 24px;
+}
+.proForm .ui.input.inputDev.has-success .glyphicon {
+  top: 24px;
+}
+.changeCompany__select .skylight-dialog {
+  min-height: 250px !important;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between
+}
+.changeCompany__select .skylight-dialog .fillter-status.fillter-item-c {
+  width: 100%;
+}
+
+
+.fullLinearInput .linebylineInput {
+  width: 100%;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox {
+  flex-flow: row;
+  width: 100%;
+}
+.documents-stepper .doc-container .step-content .document-fields #UserName {
+  width: 360px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate{
+  display: flex;
+  flex-flow: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-right: 12px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate.alternativeDate_replacement {
+  justify-content: flex-start;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
+  margin-right: 0 
+}
+.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+  max-width: 100%;
+}
+.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev.NormalInputDate {
+  max-width: inherit;
+}
+
+/* grid show more filter */
+.showMore__btn {
+  text-align: right;
+}
+.showMore__btn button{
+  background: transparent;
+  border: none;    
+  cursor: pointer;
+}
+.showMore__btn button span{
+  background: transparent;
+  border: none;    
+  font-family: font-b;
+  font-size: 12px;
+  line-height: 1.67;
+  letter-spacing: 0.2px;
+  color: #858d9e;
+  text-transform: uppercase;
+}
+.showMore__btn .moreOn .less {
+  display: none;
+}
+.showMore__btn .moreOn.lessOn .less {
+  display: inline-block;
+}
+.showMore__btn .moreOn.lessOn .more {
+  display: none;
+}
+.showMore__btn button img {
+  margin-left: 8px;
+}
+.gridfillter-container {
+  display: block;
+}
+.gridfillter-container .fillter-status-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.gridfillter-container .fillter-status-container.onelineFilter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-height: 68px;
+}
+.filter__showmore {
+  display: flex;
+  align-items: flex-start;
+}
+/* grid show more filter */
+
+.filter__showmore .spanValidation {
+  margin-bottom: 0;
+}
+.Toastify__toast-container {
+  padding: 4px;
+  min-width: 420px !important;
+  width: auto !important;
+  max-width: 722px;
+}
+.Toastify__toast {
+  width: 100%;
+  height: 56px !important;
+  border-radius: 4px !important;
+  padding: 0 32px !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
+}
+.Toastify__toast-body {
+  font-family: font-b;
+  font-size: 16px;
+  -webkit-box-flex: 6;
+  -ms-flex: 6 ;
+  flex: 6 !important;
+  letter-spacing: -0.2px;
+}
+.Toastify__toast--success {
+  background: #07bc0c !important;
+}
+.Toastify__toast--error {
+  background: #E74C3C;
+}
+.Toastify__toast--warning {
+  background: #ffc107 !important;
+  color: #252833 !important;
+}
+.Toastify__toast--info {
+  background-color: #26344c !important;
+}
+.Toastify__toast--default {
+  background-color: #f9fbfc !important;
+  border: solid 1px #dfe5eb !important;
+  color: #252833 !important;
+}
+.Toastify__close-button {
+  position: absolute;
+  top: 26px;
+  right: 10px;
+}
+.settings-container .setting-tabs-contant {
+  padding: 0 40px;
+}
+.settings-container .setting-tabs-contant .linebylineInput {
+  margin-bottom: 30px;
+}
+
+.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z {
+  background: #fff;
+}
+.summerisItem__number {
+  position: relative;
+  padding: 20px 0;
+  margin-bottom: 0;
+}
+.summerisItem__number .content__number {
+  width: 236px;
+  height: 156px;
+  border-radius: 4px;
+  background-color: #f5f5f6;
+  margin: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+}
+.summerisItem__number .content__number .number {
+  font-family: font-b;
+  font-size: 56px;
+  line-height: 1.14;
+  letter-spacing: -1.1px;
+  color: #252833;
+  margin: 0;
+  cursor: pointer;
+}
+.summerisItem__number .content__number .title {
+  font-family: font-xb;
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: 0.2px;
+  color: #858d9e;
+  margin : 0;
+  text-transform: uppercase;
+}
+.customeTabs {
+  background: #fafafa;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem {
+  position: relative;
+  padding: 40px 0;
+  margin-bottom: 35px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem::after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 103px;
+  bottom: 103px;
+  width: 1px;
+  background-color: #E9ECF0;
+  z-index: 2;
+}
+.css-vj8t7z{
+  border: solid 1px #dadee6;
+  border-color: #dadee6 !important
+}
+.css-15k3avv {
+  border-radius: 4px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  border: solid 1px #ccd2db;
+}
+.css-15k3avv:hover {
+  border-radius: 4px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  border: solid 1px #ccd2db;
+}
+.SummeriesContainer .SummeriesContainerContent.numbersContainerContent {
+  background-color: transparent;
+  border: 0;
+} 
+.noTabs__document .doc-container .step-content .document-fields .proForm .account__checkbox {
+  display: flex;
+  flex-wrap: wrap;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .account__checkbox .linebylineInput{
+  display: flex;
+  flex-flow: column;
+  width: auto;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .account__checkbox .linebylineInput label.control-label{
+  margin-bottom: 16px;
+  width: auto;
+}
+.workingHours__cycle header {
+  border-bottom: 1px solid #e1e3e8;
+  margin-bottom: 36px;
+}
+.workingHours__cycle header  h3 {
+  font-family: font-b;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
+  margin: 31px 0 13px;
+}
+.workingHours__cycle .workingHours__cycle--inputs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .workingHours__cycle .workingHours__cycle--inputs .linebylineInput {
+  width: auto;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .workingHours__cycle .workingHours__cycle--inputs .linebylineInput.daysCheckbox {
+  width: 100%;;
+}
+.proForm .workingHours__cycle .workingHours__cycle--inputs .ui.input.inputDev .inputsideNote {
+  right: 0;
+}
+.fullProformWrapper {
+  width: 100%;
+}
+.datepickerContainer.proForm .passWrapperInput .ui.input.inputDev input {
+  width: 360px;
+}
+.customD_Menu .css-d8oujb {
+  display: none;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox  {
+  flex-wrap: wrap;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox > label {
+  width: 100%;
+  margin-bottom: 12px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox .ui.checkbox {
+  margin: 0;
+  margin-bottom: 5px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox .three__daysCheck--flex {
+  display: flex;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox .three__daysCheck--flex .three__daysCheck {
+  display: flex;
+  flex-flow: column;
+  margin-right: 72px;
+}
+.main-header {
+  z-index: 999;
+}
+.dropBtnLeft {
+  justify-content: flex-start;
+}

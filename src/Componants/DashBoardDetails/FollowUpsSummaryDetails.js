@@ -250,7 +250,7 @@ class FollowUpsSummaryDetails extends Component {
       Api.get("GetFollowing").then(result => {
   
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       }); 
@@ -273,7 +273,7 @@ class FollowUpsSummaryDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -290,25 +290,16 @@ class FollowUpsSummaryDetails extends Component {
         });
       });
   };
-
-
-
+ 
   render() {
-    const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+    const dataGrid = this.state.isLoading === false ?(<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>) : <LoadingSection/>;
 
     const btnExport = this.state.isLoading === false ? 
     <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
     : <LoadingSection /> ;
 
     const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
@@ -316,11 +307,7 @@ class FollowUpsSummaryDetails extends Component {
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -366,11 +353,10 @@ class FollowUpsSummaryDetails extends Component {
                   </g>
                 </svg>
               </span>
-
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -379,7 +365,7 @@ class FollowUpsSummaryDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}

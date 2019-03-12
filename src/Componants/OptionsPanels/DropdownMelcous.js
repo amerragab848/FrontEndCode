@@ -6,10 +6,15 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 class DropdownMelcous extends Component {
     constructor(props) {
         super(props) 
+       
     }
    
     handleChange =(e)=>{
         this.props.handleChange(e,'sokary')
+    }
+
+    handleBlur = (e) => { 
+        this.props.handleBlur(this.props.name, true);
     }
 
     render() { 
@@ -26,9 +31,7 @@ class DropdownMelcous extends Component {
                 <div>
                     <div className="customD_Menu" style={{ outline: "none" }}>
                         <Select key={this.props.index} ref={this.props.index}
-                            name="form-field-name"
-                            //value={this.props.selectedValue} 
-                            onChange={this.props.handleChange}
+                             
                             options={this.props.data}
                             placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
                             isSearchable="true"
@@ -36,7 +39,15 @@ class DropdownMelcous extends Component {
                             value={ this.props.isMulti ? this.props.value : this.props.selectedValue}
                             isMulti={this.props.isMulti}
                             onBlur={this.props.onblur}
+                            isClearable={this.props.isClear? true : false }
+        
+
+                            name={this.props.name ? this.props.index: this.props.name} 
+                            id={this.props.id ? this.props.index: this.props.id} 
+                            onChange={this.props.handleChange}
+                            onBlur={this.props.handleBlur}
                         />
+                          
                     </div>
                 </div>
             </div>

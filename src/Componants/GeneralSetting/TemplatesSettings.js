@@ -6,15 +6,15 @@ import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
-import NotifiMsg from '../publicComponants/NotifiMsg'
 import Resources from "../../resources.json";
+import { connect } from 'react-redux'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class TemplatesSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabIndex: 0,
+            tabIndex: this.props.Adminstration.tabIndex,
             showNotify:false
         };
     }
@@ -32,7 +32,6 @@ class TemplatesSettings extends Component {
         return (
             <div className='mainContainer'>    
            
-
                     <Tabs className="settings-container" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
                         <div className="settings-tabs-items">
                             <h3 className="zero">Settings</h3>
@@ -102,6 +101,9 @@ class TemplatesSettings extends Component {
         )
     }
 }
-export default withRouter(TemplatesSettings)
 
-
+const mapStateToProps = (state) => {
+    let sState = state;
+    return sState;
+}
+export default withRouter(connect(mapStateToProps)(TemplatesSettings));

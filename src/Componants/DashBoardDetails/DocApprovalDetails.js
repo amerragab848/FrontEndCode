@@ -361,7 +361,7 @@ class DocApprovalDetails extends Component {
 
       Api.get("GetRejectedRequestsDocApprove").then(result => { 
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       });
@@ -371,7 +371,7 @@ class DocApprovalDetails extends Component {
       });
       Api.get("GetApprovalRequestsDocApprove").then(result => { 
         this.setState({
-          rows: result,
+          rows: result != null ? result : [],
           isLoading: false
         });
       });
@@ -395,7 +395,7 @@ class DocApprovalDetails extends Component {
     Api.get("").then(result => {
         if (result.length > 0) {
           this.setState({
-            rows: result,
+            rows: result != null ? result : [],
             isLoading: false
           });
         } else {
@@ -490,7 +490,7 @@ class DocApprovalDetails extends Component {
               {this.state.viewfilter === false ? (
                 <span className="text active">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
@@ -499,7 +499,7 @@ class DocApprovalDetails extends Component {
               ) : (
                 <span className="text">
                   <span className="show-fillter">
-                    {Resources["howFillter"][currentLanguage]}
+                    {Resources["showFillter"][currentLanguage]}
                   </span>
                   <span className="hide-fillter">
                     {Resources["hideFillter"][currentLanguage]}
