@@ -227,12 +227,13 @@ class ExpensesWorkFlowAddEdit extends Component {
     }
 
     EditContact = () => {
-        this.props.actions.AddExpensesWorkFlow('AddAccountsDefaultList', {
-            abbreviation: "a"
-            ,listType: "approvalstatus"
-            ,title: "sadasd"
-          ,  titleAr: "asdasddas"
-           
+        this.props.actions.AddExpensesWorkFlow('AddExpensesWorkFlow',
+         {
+            projectId: 2,
+            arrange: 5,
+            subject: 'testsayed2a',
+            status: true,
+            creationDate: '2019-03-01T00:00:00+02:00'
         })
     }
 
@@ -298,7 +299,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                             </div>
                         </form>
                         <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn meduimBtn">ADD</button>
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.AddNewContact} >ADD</button>
                         </div>
                     </div>
                 </Fragment>

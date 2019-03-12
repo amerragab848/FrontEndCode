@@ -23,8 +23,9 @@ export default {
 		// 	getingData: false
 		// },
 		expensesWorkFlow: {
-			expensesWorkFlowData:[],
+			expensesWorkFlowData:{},
 			contactData:[],
+			newContactElement:{},
 			multiApproval:[]
 		},
 		adminstration:{

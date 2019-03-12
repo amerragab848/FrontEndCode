@@ -12,6 +12,13 @@ export default function (state = initialState.app.expensesWorkFlow, action) {
                 ...state
             };
 
+        case types.AddContactExpensesWorkFlow:
+            state.contactData = action.data
+            console.log('AddContactExpensesWorkFlow')
+            return {
+                ...state
+            }
+
         default:
             return {
                 ...state

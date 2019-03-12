@@ -3,10 +3,10 @@ import Api from '../../api';
 
 const _ = require('lodash')
 
-export let AddExpensesWorkFlow = (ApiUrl, Data) => {
+export const AddExpensesWorkFlow = (ApiUrl, Data) => {
     return (dispatch, getState) => {
         return (
-            Api.post(ApiUrl,Data).then(
+            Api.post(ApiUrl, Data).then(
                 res => {
                     dispatch({
                         type: types.AddExpensesWorkFlow,
@@ -14,7 +14,7 @@ export let AddExpensesWorkFlow = (ApiUrl, Data) => {
                         data: res
                     })
                 }
-                
+
             ).catch((ex) => {
                 dispatch({
                     types: types.AddExpensesWorkFlow,
@@ -24,3 +24,24 @@ export let AddExpensesWorkFlow = (ApiUrl, Data) => {
         )
     }
 }
+
+export const AddContactExpensesWorkFlow = (ApiUrl, Data) => {
+    return (dispatch, getState) => {
+        return (
+            Api.post(ApiUrl, Data).then(
+                res => {
+                    dispatch({
+                        type: types.AddContactExpensesWorkFlow,
+                        data: res
+                    })
+                }
+            ).catch((ex) => {
+                dispatch({
+                    types: types.AddContactExpensesWorkFlow,
+                    data: {}
+                })
+            })
+        )
+    }
+}
+
