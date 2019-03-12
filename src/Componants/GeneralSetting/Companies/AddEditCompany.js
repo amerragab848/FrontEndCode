@@ -7,9 +7,13 @@ import Dropdown from "../../OptionsPanels/DropdownMelcous";
 import Dropzone from "react-dropzone";
 import Resources from "../../../resources.json";
 import TokenStore from '../../../tokenStore'
-
+import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../publicComponants/LoadingSection";
+import Dataservice from "../../../Dataservice";
+import { connect } from 'react-redux'
+import * as AdminstrationActions from '../../../store/actions/Adminstration'
+import { bindActionCreators } from 'redux';
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -23,26 +27,31 @@ const validationSchema = Yup.object().shape({
     ContactNameEn: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
     ContactNameAr: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
     Mobile: Yup.number().required(Resources['mobileRequired'][currentLanguage]),
-    Telephone: Yup.number()
+    Telephone: Yup.number(),
+    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
+    title:Yup.string().required(Resources['empTitleRequired'][currentLanguage]),
+    companyRole:Yup.string().required(Resources['companyRoleRequired'][currentLanguage])
+})
+const validationSchemaForEdit = Yup.object().shape({
+    titleEnCompany: Yup.string().required(Resources['ComapnyNameRequired'][currentLanguage]),
+    titleArCompany: Yup.string().required(Resources['ComapnyNameRequired'][currentLanguage]),
+    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
+    companyRole:Yup.string().required(Resources['companyRoleRequired'][currentLanguage])
 })
 
-const validationSchema1 = Yup.object().shape({
-
-})
 class AddEditCompany extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sign: {},
-            signPreview: {},
-            signName: '',
-            signIamge: '',
+            image: {},
+            imagePreview: {},
+            imageName: '',
+            imageIamge: '',
             selectedDiscipline: '',
             disciplineData: [],
             selectedCompanyRole: '',
             CompanyRoleData: [],
             selectedTitle: '',
-            TitleValidation: true,
             TitleData: [],
             projectId: 0,
             companyID: this.props.match.params.companyID,
@@ -54,30 +63,30 @@ class AddEditCompany extends Component {
 
         }
     }
-    onDropSign(file) {
+    onDropImage(file) {
         let _formData = new FormData();
         _formData.append("file", file)
         this.setState({
-            sign: file,
-            signPreview: URL.createObjectURL(file[0]),
-            signName: file[0].name,
-            signIamge: _formData
+            image: file,
+            imagePreview: URL.createObjectURL(file[0]),
+            imageName: file[0].name,
+            imageIamge: _formData
         });
 
 
     }
-    RemoveHandlerSign = () => {
+    removeImage = () => {
 
         this.setState({
-            sign: {}, signName: '', signPreview: {}
+            image: {}, imageName: '', imagePreview: {}
         })
 
     }
- 
+
     handleChange = (item, name) => {
         switch (name) {
             case "title":
-                this.setState({ selectedTitle: item, TitleValidation: false })
+                this.setState({ selectedTitle: item })
                 break;
             case "companyRole":
                 this.setState({ selectedCompanyRole: item })
@@ -93,24 +102,21 @@ class AddEditCompany extends Component {
     componentDidMount = () => {
         this.setState({ sectionLoading: true })
 
-        URL.revokeObjectURL(this.state.signPreview)
+        URL.revokeObjectURL(this.state.imagePreview)
         if (this.state.companyID == 0) {
             this.GetData('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'disciplineData')
             this.GetData('GetaccountsDefaultListForList?listType=companyrole', 'title', 'id', 'CompanyRoleData')
             this.GetData('GetaccountsDefaultListForList?listType=contacttitle', 'title', 'id', 'TitleData')
-
             let id = TokenStore.getItem('projectIdForaddCompany')
             this.setState({ projectId: (id ? id : 0) })
-
-
         } else {
-
             this.GetData('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'disciplineData')
             this.GetData('GetaccountsDefaultListForList?listType=companyrole', 'title', 'id', 'CompanyRoleData')
             Api.get('GetProjectCompaniesForEdit?id=' + this.state.companyID).then(res => {
-
                 this.setState({
-                    companyData: res, signPreview: res.logo, sectionLoading: false,
+                    companyData: res,
+                    imagePreview: res.logo,
+                    sectionLoading: false,
                     selectedDiscipline: { label: res.disciplineTitle, value: res.disciplineId },
                     selectedCompanyRole: { label: res.roleTitle, value: res.roleId },
                     titleEnCompany: res.companyNameEn,
@@ -141,25 +147,26 @@ class AddEditCompany extends Component {
             tele: values.Telephone,
             mobile: values.mobile,
             projectId: this.state.projectId,
-            logoFileData: this.state.signIamge
+            logoFileData: this.state.imageIamge
 
         }
-
-        {
-            this.state.companyID == 0 ? Api.post('AddCompanyContact', SendingObject).then(
-                this.setState({ isLoading: false }),
-                this.props.history.push({
-                    pathname: "/TemplatesSettings"
-                })
-            )
-                : Api.post('EditProjectCompanies', SendingObject).then(
-                    this.setState({ isLoading: false }),
-                    this.props.history.push({
-                        pathname: "/TemplatesSettings"
-                    })
-                )
+        if (this.state.companyID == 0) {
+            Api.post('AddCompanyContact', SendingObject).then(() => {
+                this.setState({ isLoading: false })
+                this.props.actions.routeToTabIndex(1)
+                this.props.history.push({ pathname: '/TemplatesSettings' })
+                toast.success("operation complete sucessful")
+            })
         }
-    } 
+        else {
+            Api.post('EditProjectCompanies', SendingObject).then(() => {
+                this.setState({ isLoading: false })
+                this.props.actions.routeToTabIndex(1)
+                this.props.history.push({ pathname: '/TemplatesSettings' })
+                toast.success("operation complete sucessful");
+            })
+        }
+    }
 
     render() {
         return (
@@ -170,12 +177,8 @@ class AddEditCompany extends Component {
                         <Formik
 
                             initialValues={{
-
                                 titleEnCompany: this.state.titleEnCompany,
                                 titleArCompany: this.state.titleArCompany,
-                                disciplineValidation: '',
-                                CompanyRoleValidation: '',
-                                TitleValidation: '',
                                 email: '',
                                 ContactNameEn: '',
                                 ContactNameAr: '',
@@ -184,30 +187,27 @@ class AddEditCompany extends Component {
                                 positionAr: '',
                                 addressEn: '',
                                 addressAr: '',
-                                Telephone: ''
+                                Telephone: '',
+                                discipline:this.state.selectedDiscipline,
+                                title:this.state.selectedTitle,
+                                companyRole:this.state.CompanyRoleData
                             }}
                             enableReinitialize={true}
-                            validationSchema={this.state.companyID > 0 ? validationSchema1 : validationSchema}
+                            validationSchema={this.state.companyID==0?validationSchema:validationSchemaForEdit}
                             onSubmit={(values) => {
-                                if ((this.state.selectedDiscipline != '' && this.state.selectedCompanyRole != '') &&
-                                    (!this.state.TitleValidation || this.state.companyID > 0)) {
-                                    this.setState({ isLoading: true })
+                                this.setState({ isLoading: true })
                                     this.Save(values)
-                                }
                             }}
                         >
-                            {({ touched, errors, handleBlur, handleChange, values }) => (
+                            {({ touched, errors, handleBlur, handleChange, values,setFieldValue, setFieldTouched}) => (
                                 <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
 
                                     <div className="fullWidthWrapper">
                                         <h2 className="twoLineHeader">{this.state.companyID == 0 ? Resources['addComapny'][currentLanguage] : Resources['editCompany'][currentLanguage]}</h2>
                                     </div>
 
-                                    <div className={errors.titleEnCompany && touched.titleEnCompany ? (
-                                        "ui input inputDev fillter-item-c has-error"
-                                    ) : !errors.password && touched.password ? (
-                                        "ui input inputDev fillter-item-c has-success"
-                                    ) : "ui input inputDev fillter-item-c"}
+                                    <div className={"ui input inputDev fillter-item-c " + (errors.titleEnCompany && touched.titleEnCompany ? (
+                                        "has-error") : !errors.titleEnCompany && touched.titleEnCompany ? ("has-success") : "")}
                                     >
                                         <label className="control-label"> {Resources['titleEnCompany'][currentLanguage]} </label>
                                         <input autoComplete="off" type='text' className="form-control" name="titleEnCompany" value={values.titleEnCompany}
@@ -222,11 +222,8 @@ class AddEditCompany extends Component {
                                         ) : null}
                                     </div>
 
-                                    <div className={errors.titleArCompany && touched.titleArCompany ? (
-                                        "ui input inputDev fillter-item-c has-error"
-                                    ) : !errors.password && touched.password ? (
-                                        "ui input inputDev fillter-item-c has-success"
-                                    ) : "ui input inputDev fillter-item-c"}
+                                    <div className={"ui input inputDev fillter-item-c " + (errors.titleArCompany && touched.titleArCompany ? (
+                                        "has-error") : !errors.titleArCompany && touched.titleArCompany ? ("has-success") : "")}
                                     >
                                         <label className="control-label"> {Resources['titleArCompany'][currentLanguage]} </label>
                                         <input autoComplete="off" type='text' className="form-control" name="titleArCompany" value={values.titleArCompany}
@@ -241,59 +238,41 @@ class AddEditCompany extends Component {
                                         ) : null}
                                     </div>
 
-
-                                    <div className={this.state.disciplineValidation && touched.disciplineValidation ? (
-                                        "ui input inputDev fillter-item-c has-error"
-                                    ) : !this.state.disciplineValidation && touched.disciplineValidation ? (
-                                        "ui input inputDev fillter-item-c has-success"
-                                    ) : "ui input inputDev fillter-item-c"}
-                                    >
                                         <Dropdown title="discipline" data={this.state.disciplineData}
-                                            handleChange={(e) => this.handleChange(e, "discipline")} selectedValue={this.state.selectedDiscipline}
-                                            index='discipline' name="disciplineValidation" handleBlur={handleBlur} />
-                                        {this.state.disciplineValidation && touched.disciplineValidation ? (
-                                            <em className="pError">{this.state.disciplineValidation}</em>
-                                        ) : null}
-
-                                        {this.state.disciplineValidation && touched.disciplineValidation ? (
-                                            <em className="pError">{Resources['disciplineRequired'][currentLanguage]}</em>
-                                        ) : null}
-                                    </div>
-
-
-
-                                    <div className={this.state.CompanyRoleValidation && touched.CompanyRoleValidation ? (
-                                        "ui input inputDev fillter-item-c has-error"
-                                    ) : !this.state.CompanyRoleValidation && touched.CompanyRoleValidation ? (
-                                        "ui input inputDev fillter-item-c has-success"
-                                    ) : "ui input inputDev fillter-item-c"}
-                                    >
+                                            name="discipline"
+                                            selectedValue={values.discipline}
+                                            onChange={  setFieldValue   }
+                                            handleChange={(e) =>this.handleChange(e, "discipline")}
+                                            onBlur={setFieldTouched}
+                                            error={errors.discipline}
+                                            touched={touched.discipline}
+                                            value={values.discipline} />
+                              
                                         <Dropdown title="companyRole" data={this.state.CompanyRoleData}
-                                            handleChange={(e) => this.handleChange(e, "companyRole")} selectedValue={this.state.selectedCompanyRole}
-                                            index='CompanyRole' name="CompanyRoleValidation" />
-                                        {this.state.CompanyRoleValidation && touched.CompanyRoleValidation ? (
-                                            <em className="pError">{this.state.CompanyRoleValidation}</em>
-                                        ) : null}
-
-                                        {this.state.CompanyRoleValidation && touched.CompanyRoleValidation ? (
-                                            <em className="pError">{Resources['companyRoleRequired'][currentLanguage]}</em>
-                                        ) : null}
-                                    </div>
+                                                 name="companyRole"
+                                                 selectedValue={values.companyRole}
+                                                 onChange={  setFieldValue   }
+                                                 handleChange={(e) =>this.handleChange(e, "companyRole")}
+                                                 onBlur={setFieldTouched}
+                                                 error={errors.companyRole}
+                                                 touched={touched.companyRole}
+                                                 value={values.companyRole} />
+                                     
 
 
 
                                     <div className='form-control fullWidthWrapper'>
                                         <section className="singleUploadForm">
-                                            {this.state.signName.length > 0 || this.state.companyID != 0 ?
+                                            {this.state.imageName.length > 0 || this.state.companyID != 0 ?
                                                 <aside className='thumbsContainer'>
                                                     <div className="uploadedName ">
-                                                        <p>{this.state.signName}</p>
+                                                        <p>{this.state.imageName}</p>
                                                     </div>
-                                                    {this.state.signName.length > 0 || this.state.companyID != 0 ?
-                                                        <div className="thumbStyle" key={this.state.signName}>
+                                                    {this.state.imageName.length > 0 || this.state.companyID != 0 ?
+                                                        <div className="thumbStyle" key={this.state.imageName}>
                                                             <div className="thumbInnerStyle">
                                                                 <img
-                                                                    src={this.state.signPreview}
+                                                                    src={this.state.imagePreview}
                                                                     className="imgStyle"
                                                                 />
                                                             </div>
@@ -303,22 +282,22 @@ class AddEditCompany extends Component {
                                                 </aside> : null}
                                             <Dropzone
                                                 accept="image/*"
-                                                onDrop={this.onDropSign.bind(this)}
+                                                onDrop={this.onDropImage.bind(this)}
                                             >
                                                 {({ getRootProps, getInputProps }) => (
                                                     <div className="singleDragText" {...getRootProps()}>
                                                         <input {...getInputProps()} />
 
-                                                        {this.state.signName.length > 0 ?
+                                                        {this.state.imageName.length > 0 ?
                                                             null : <p>{Resources['dragFileHere'][currentLanguage]}</p>}
                                                         <button type='button' className="primaryBtn-1 btn smallBtn">{Resources['chooseFile'][currentLanguage]}</button>
                                                     </div>
                                                 )}
                                             </Dropzone>
-                                            {this.state.signName.length > 0 ?
+                                            {this.state.imageName.length > 0 ?
                                                 <div className="removeBtn">
                                                     <button className="primaryBtn-2 btn smallBtn" type='button'
-                                                        onClick={this.RemoveHandlerSign}>{Resources['clear'][currentLanguage]}</button>
+                                                        onClick={this.removeImage}>{Resources['clear'][currentLanguage]}</button>
                                                 </div> : null}
                                         </section>
                                     </div>
@@ -328,29 +307,20 @@ class AddEditCompany extends Component {
                                                 <h2 className="twoLineHeader">{Resources['KeyContact'][currentLanguage]}</h2>
                                             </div>
 
-                                            <div className={this.state.TitleValidation && touched.TitleValidation ? (
-                                                "ui input inputDev fillter-item-c has-error"
-                                            ) : !this.state.TitleValidation && touched.TitleValidation ? (
-                                                "ui input inputDev fillter-item-c has-success"
-                                            ) : "ui input inputDev fillter-item-c"}
-                                            >
+                                           
                                                 <Dropdown title="empTitle" data={this.state.TitleData}
-                                                    handleChange={(e) => this.handleChange(e, "title")}
-                                                    index='Title' name="TitleValidation" />
-                                                {this.state.TitleValidation && touched.TitleValidation ? (
-                                                    <em className="pError">{this.state.TitleValidation}</em>
-                                                ) : null}
+                                                       name="title"
+                                                       selectedValue={values.title}
+                                                       onChange={  setFieldValue   }
+                                                       handleChange={(e) =>this.handleChange(e, "title")}
+                                                       onBlur={setFieldTouched}
+                                                       error={errors.title}
+                                                       touched={touched.title}
+                                                       value={values.title}/>
 
-                                                {this.state.TitleValidation && touched.TitleValidation ? (
-                                                    <em className="pError">{Resources['titleSelection'][currentLanguage]}</em>
-                                                ) : null}
-                                            </div>
 
-                                            <div className={errors.email && touched.email ? (
-                                                "ui input inputDev fillter-item-c has-error"
-                                            ) : !errors.password && touched.password ? (
-                                                "ui input inputDev fillter-item-c has-success"
-                                            ) : "ui input inputDev fillter-item-c"}
+                                            <div className={"ui input inputDev fillter-item-c " + (errors.email && touched.email ? (
+                                                "has-error") : !errors.email && touched.email ? ("has-success") : "")}
                                             >
                                                 <label className="control-label"> {Resources['email'][currentLanguage]} </label>
                                                 <input autoComplete="off" type='text' className="form-control" name="email"
@@ -366,11 +336,8 @@ class AddEditCompany extends Component {
                                             </div>
 
 
-                                            <div className={errors.ContactNameEn && touched.ContactNameEn ? (
-                                                "ui input inputDev fillter-item-c has-error"
-                                            ) : !errors.password && touched.password ? (
-                                                "ui input inputDev fillter-item-c has-success"
-                                            ) : "ui input inputDev fillter-item-c"}
+                                            <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameEn && touched.ContactNameEn ? (
+                                                "has-error") : !errors.ContactNameEn && touched.ContactNameEn ? ("has-success") : "")}
                                             >
                                                 <label className="control-label"> {Resources['ContactNameEn'][currentLanguage]} </label>
                                                 <input autoComplete="off" type='text' className="form-control" name="ContactNameEn"
@@ -385,11 +352,8 @@ class AddEditCompany extends Component {
                                                 ) : null}
                                             </div>
 
-                                            <div className={errors.ContactNameAr && touched.ContactNameAr ? (
-                                                "ui input inputDev fillter-item-c has-error"
-                                            ) : !errors.password && touched.password ? (
-                                                "ui input inputDev fillter-item-c has-success"
-                                            ) : "ui input inputDev fillter-item-c"}
+                                            <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameAr && touched.ContactNameAr ? (
+                                                "has-error") : !errors.ContactNameAr && touched.ContactNameAr ? ("has-success") : "")}
                                             >
                                                 <label className="control-label"> {Resources['ContactNameAr'][currentLanguage]} </label>
                                                 <input autoComplete="off" type='text' className="form-control" name="ContactNameAr"
@@ -436,11 +400,8 @@ class AddEditCompany extends Component {
 
 
 
-                                            <div className={errors.Telephone && touched.Telephone ? (
-                                                "ui input inputDev fillter-item-c has-error"
-                                            ) : !errors.password && touched.password ? (
-                                                "ui input inputDev fillter-item-c has-success"
-                                            ) : "ui input inputDev fillter-item-c"}
+                                            <div className={"ui input inputDev fillter-item-c " + (errors.Telephone && touched.Telephone ? (
+                                                "has-error") : !errors.Telephone && touched.Telephone ? ("has-success") : "")}
                                             >
                                                 <label className="control-label"> {Resources['Telephone'][currentLanguage]} </label>
                                                 <input autoComplete="off" type='text' className="form-control" name="Telephone"
@@ -455,11 +416,9 @@ class AddEditCompany extends Component {
                                                 ) : null}
                                             </div>
 
-                                            <div className={errors.Mobile && touched.Mobile ? (
-                                                "ui input inputDev fillter-item-c has-error"
-                                            ) : !errors.password && touched.password ? (
-                                                "ui input inputDev fillter-item-c has-success"
-                                            ) : "ui input inputDev fillter-item-c"}
+
+                                            <div className={"ui input inputDev fillter-item-c " + (errors.Mobile && touched.Mobile ? (
+                                                "has-error") : !errors.Mobile && touched.Mobile ? ("has-success") : "")}
                                             >
                                                 <label className="control-label"> {Resources['Mobile'][currentLanguage]} </label>
                                                 <input autoComplete="off" type='text' className="form-control" name="Mobile"
@@ -475,6 +434,7 @@ class AddEditCompany extends Component {
                                             </div>
                                         </div>
                                         : null}
+
                                     <div className="fullWidthWrapper">
                                         {this.state.isLoading === false ? (
                                             <button
@@ -506,22 +466,23 @@ class AddEditCompany extends Component {
     }
 
     GetData = (url, label, value, currState) => {
-        let Data = []
-        Api.get(url).then(result => {
-            (result).forEach(item => {
-                var obj = {};
-                obj.label = item[label];
-                obj.value = item[value];
-                Data.push(obj);
-            });
+        Dataservice.GetDataList(url, label, value).then(res => {
             this.setState({
-                [currState]: [...Data],
+                [currState]: [...res],
                 sectionLoading: false
             });
-        }).catch(ex => {
-        });
+        })
     }
-
 }
 
-export default withRouter(AddEditCompany);
+const mapStateToProps = (state) => {
+    let sState = state;
+    return sState;
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(AdminstrationActions, dispatch)
+    };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddEditCompany));

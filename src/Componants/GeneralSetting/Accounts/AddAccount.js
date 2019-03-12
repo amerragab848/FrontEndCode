@@ -123,6 +123,7 @@ class AddAccount extends Component {
     }
 
     CompanyNamehandleChange = (e) => {
+        alert("hello")
         this.setState({ CompanyId: e.value, CompanyValidation: false })
         this.GetData('GetContactsNotUsersByCompanyId?companyId=' + e.value + '', 'contactName', 'id', 'ContactData')
     }
