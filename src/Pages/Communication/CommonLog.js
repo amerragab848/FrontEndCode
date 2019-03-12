@@ -309,7 +309,7 @@ class CommonLog extends Component {
         let obj={
           docId:row.id ,
           projectId:row.projectId,
-          projectName:row.projectName
+          projectName:row.projectName 
         };
         let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)

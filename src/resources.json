@@ -7740,5 +7740,9 @@
   "item": {
     "en": "item",
     "ar": "العنصر"
+  },
+  "workplace": {
+    "en": "Workplace",
+    "ar": "مكان العمل"
   }
 }

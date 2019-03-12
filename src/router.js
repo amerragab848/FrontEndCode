@@ -45,6 +45,7 @@ import GeneralList  from './Componants/GeneralSetting/MenuDefaultData/GeneralLis
 import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog'; 
 import ExpensesWorkFlowAddEdit  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
+import RfiAddEdit from "./Pages/Communication/RfiAddEdit";
 
 let routes = (
 <Switch>
@@ -101,7 +102,8 @@ let routes = (
     <Route path="/GeneralList" component={GeneralList} /> ,
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> ,
     <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />, 
-    <Route path="/DashBoardCounterLog" component={DashBoardCounterLog}/>
+    <Route path="/DashBoardCounterLog" component={DashBoardCounterLog}/>,
+    <Route path="/RfiAddEdit" component={RfiAddEdit} />
 </Switch> 
 ); 
 export default routes;

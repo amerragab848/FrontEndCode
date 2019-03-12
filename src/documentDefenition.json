@@ -3414,7 +3414,7 @@
   "Rfi": {
     "documentTitle": "communicationRFI",
     "docTyp": 23,
-    "documentAddEditLink": "rfiAddEdit/",
+    "documentAddEditLink": "RfiAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 75,
     "documentEditPermission": 76,
