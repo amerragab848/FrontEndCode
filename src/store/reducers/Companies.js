@@ -25,39 +25,39 @@ export default function (state = initialState.app.comapnies, action) {
         case types.Add_Contact:
             state.companyContact.unshift(action.data)
             state.notifyMessage = true
-            state.popUp = false 
-           // state.getingData = ! state.getingData
-            state.popUp = false 
-            state.notifyMessage = true 
+            state.popUp = false
+            // state.getingData = ! state.getingData
+            state.popUp = false
+            state.notifyMessage = true
             return {
                 ...state
             };
 
         case types.togglePopUp:
-            state.popUp = ! state.popUp 
+            state.popUp = !state.popUp
             return {
                 ...state
             };
 
-        
+
         case types.toggleLoading:
-            state.getingData = ! state.getingData ;
+            state.getingData = !state.getingData;
             return {
                 ...state
             };
 
         case types.toggleNotifyMessage:
-            state.notifyMessage = ! state.notifyMessage
+            state.notifyMessage = !state.notifyMessage
             return {
                 ...state
             };
-            
+
         case types.getingData:
-            state.getingData = ! state.getingData
+            state.getingData = !state.getingData
             return {
                 ...state
             };
-             
+
         default:
             return {
                 ...state

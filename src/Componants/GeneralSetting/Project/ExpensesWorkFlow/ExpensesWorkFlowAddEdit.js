@@ -13,16 +13,21 @@ import DropDown from '../../../OptionsPanels/DropdownMelcous'
 import DatePicker from '../../../OptionsPanels/DatePicker'
 import moment from 'moment';
 import { SkyLightStateless } from 'react-skylight';
+import { connect } from "react-redux";
+// import { AddExpensesWorkFlow } from "../../../../store/actions/types";
+import * as ProjectActions from "../../../../store/actions/ProjectActions";
+import { bindActionCreators } from "redux";
 
 const getPublicConfiguartion = config.getPublicConfiguartion();
 const publicConfiguarion = config.getPayload();
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedprojectName')
-
+let MaxArrange = 1
 class ExpensesWorkFlowAddEdit extends Component {
 
     constructor(props) {
         super(props)
+
         const columnsGrid = [
             {
                 key: "id",
@@ -92,6 +97,67 @@ class ExpensesWorkFlowAddEdit extends Component {
         }
     }
 
+    componentWillReceiveProps() {
+        console.log(this.props.ProjectReducer.expensesWorkFlowData)
+
+    }
+    NextStep = () => {
+        if (this.state.CurrStep === 1) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: false,
+                CurrStep: this.state.CurrStep + 1,
+                ThirdStep: false
+            })
+        }
+        else {
+            if (this.state.CurrStep === 2) {
+                this.setState({
+                    FirstStep: false,
+                    SecondStep: false,
+                    ThirdStep: true,
+                    CurrStep: this.state.CurrStep + 1,
+                    ThirdStepComplate: true
+                })
+                window.scrollTo(0, 0)
+            }
+        }
+    }
+
+    PreviousStep = () => {
+        if (this.state.CurrStep === 3) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                ThirdStep: false,
+                CurrStep: this.state.CurrStep - 1,
+                ThirdStepComplate: false,
+                SecondStepComplate: true
+            })
+        }
+        else {
+            if (this.state.CurrStep === 2) {
+                this.setState({
+                    FirstStep: true,
+                    SecondStep: false,
+                    SecondStepComplate: false,
+                    ThirdStep: false,
+                    CurrStep: this.state.CurrStep - 1
+                })
+            }
+        }
+    }
+
+    componentWillMount = () => {
+        const query = new URLSearchParams(this.props.location.search);
+        for (let param of query.entries()) {
+            MaxArrange = param[1];
+        }
+        console.log(MaxArrange)
+    }
+
     componentDidMount = () => {
 
         dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'id').then(
@@ -127,6 +193,7 @@ class ExpensesWorkFlowAddEdit extends Component {
 
             }
         )
+
     }
 
     CompanyDatahandleChange = (e) => {
@@ -139,7 +206,39 @@ class ExpensesWorkFlowAddEdit extends Component {
         )
     }
 
+    SaveFirstStep = () => {
+
+    }
+
+    SaveSecondStep = () => {
+
+    }
+
+    SaveThirdStep = () => {
+
+    }
+
+    AddNewContact = () => {
+
+    }
+
+    DeleteContact = () => {
+
+    }
+
+    EditContact = () => {
+        this.props.actions.AddExpensesWorkFlow('AddExpensesWorkFlow',
+         {
+            projectId: 2,
+            arrange: 5,
+            subject: 'testsayed2a',
+            status: true,
+            creationDate: '2019-03-01T00:00:00+02:00'
+        })
+    }
+
     render() {
+
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
@@ -162,6 +261,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                     </Fragment>
                 )
             })
+
 
         const AddContact = () => {
             return (
@@ -199,7 +299,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                             </div>
                         </form>
                         <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn meduimBtn">ADD</button>
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.AddNewContact} >ADD</button>
                         </div>
                     </div>
                 </Fragment>
@@ -207,8 +307,10 @@ class ExpensesWorkFlowAddEdit extends Component {
         }
 
         return (
+
             <div className="mainContainer" >
                 <div className="documents-stepper noTabs__document one__tab one_step">
+                    {/* Header */}
                     <div className="submittalHead">
                         <h2 className="zero">{CurrProject + ' - ' + Resources['expensesWorkFlow'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
@@ -233,15 +335,19 @@ class ExpensesWorkFlowAddEdit extends Component {
                     </div>
 
                     <div className="doc-container">
+
+                        {/* AddContact */}
                         <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false })}
                             title={Resources['editTitle'][currentLanguage]}
                             onCloseClicked={() => this.setState({ showPopUp: false })} isVisible={this.state.showPopUp}>
                             {AddContact()}
                         </SkyLightStateless>
-                        <div className="step-content">
 
+                        {/* Render Steps */}
+                        <div className="step-content">
                             {this.state.FirstStep ?
-                                <Fragment>
+                                //  First Step 
+                                < Fragment >
                                     <div className="document-fields">
                                         <form className="proForm first-proform">
                                             <div className="linebylineInput valid-input">
@@ -290,15 +396,18 @@ class ExpensesWorkFlowAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle">
                                         <div className="slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.setState({ FirstStep: false, SecondStep: true, SecondStepComplate: true, CurrStep: this.state.CurrStep + 1 })}>NEXT STEP</button>
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.EditContact}>NEXT STEP</button>
                                         </div>
                                     </div>
                                 </Fragment>
                                 :
                                 <Fragment>
                                     {this.state.SecondStep ?
+                                        //Second Step
                                         <div className="subiTabsContent feilds__top">
+
                                             {AddContact()}
+
                                             <header>
                                                 <h2 className="zero">{Resources['contactList'][currentLanguage]}</h2>
                                             </header>
@@ -309,15 +418,15 @@ class ExpensesWorkFlowAddEdit extends Component {
 
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.setState({ FirstStep: false, SecondStep: false, SecondStepComplate: true, ThirdStepComplate: true, CurrStep: this.state.CurrStep + 1 })}>NEXT STEP</button>
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>NEXT STEP</button>
                                                 </div>
                                                 {/* <div className="slider-Btns">
                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.setState({ FirstStep: true, SecondStepComplate: false, ThirdStepComplate: false ,CurrStep:this.state.CurrStep -1 })}>Last STEP</button>
                                                 </div> */}
                                             </div>
                                         </div>
-
                                         :
+                                        //Third Step
                                         <div className='document-fields'>
                                             <table className="ui table">
                                                 <thead>
@@ -340,30 +449,22 @@ class ExpensesWorkFlowAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
                                     }
-
-                                </Fragment>
-                            }
-
+                                </Fragment>}
                         </div>
 
+                        {/* Right Menu */}
                         <div className="docstepper-levels">
+                            {/* Next & Previous */}
                             <div className="step-content-foot">
-                                <span onClick={() =>
-                                    this.state.CurrStep === 3 ? this.setState({ FirstStep: false, SecondStep: true, ThirdStep: false, CurrStep: this.state.CurrStep - 1, ThirdStepComplate: false, SecondStepComplate: true }) : this.state.CurrStep === 2 ? this.setState({ FirstStep: true, SecondStep: false, SecondStepComplate: false, ThirdStep: false, CurrStep: this.state.CurrStep - 1 }) : null}
-                                    className={!this.state.FirstStep ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    <i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
+                                <span onClick={this.PreviousStep} className={!this.state.FirstStep ? "step-content-btn-prev " :
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
 
-                                <span
-                                    onClick={() =>
-                                        this.state.CurrStep === 1 ? this.setState({ FirstStep: false, SecondStep: true, SecondStepComplate: true, ThirdStepComplate: false, CurrStep: this.state.CurrStep + 1, ThirdStep: false }) : this.state.CurrStep === 2 ? this.setState({ FirstStep: false, SecondStep: false, ThirdStep: true, CurrStep: this.state.CurrStep + 1, ThirdStepComplate: true }) : null}
-                                    className={!this.state.ThirdStepComplate ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-
-                                    Next <i className="fa fa-caret-right" aria-hidden="true"></i>
+                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate ? "step-content-btn-prev "
+                                    : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
-
+                            {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
                                     <div data-id="step1" className="step-slider-item  active" >
@@ -402,4 +503,17 @@ class ExpensesWorkFlowAddEdit extends Component {
         )
     }
 }
-export default withRouter(ExpensesWorkFlowAddEdit)
+
+const mapStateToProps = state => {
+    let sState = state;
+    return sState;
+};
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(ProjectActions, dispatch)
+    };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)
+    (ExpensesWorkFlowAddEdit))

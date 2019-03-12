@@ -257,10 +257,6 @@ class AddEditCompany extends Component {
                                                  error={errors.companyRole}
                                                  touched={touched.companyRole}
                                                  value={values.companyRole} />
-                                     
-
-
-
                                     <div className='form-control fullWidthWrapper'>
                                         <section className="singleUploadForm">
                                             {this.state.imageName.length > 0 || this.state.companyID != 0 ?
