@@ -426,9 +426,9 @@ class LettersAddEdit extends Component {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type='submit' onClick={e => this.saveLetter(e)}>{Resources.save[currentLanguage]}</button>;
+            btn = <button className="primaryBtn-1 btn meduimBtn"  type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type='submit' onClick={e => this.saveAndExit(e)}>{Resources.saveAndExit[currentLanguage]}</button>
+            btn = <button className="primaryBtn-1 btn mediumBtn"  type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
         }
         return btn;
     }
@@ -512,8 +512,17 @@ class LettersAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            
+                                            onSubmit={(values) => {
+                                                if(this.props.changeStatus === true){
+                                                 this.editLetter();
+                                                }else{
+                                                 
+                                                 this.saveLetter();
+                                                } 
+                                             }}
+ 
                                             onReset={(values) => { }} >
+                                          
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue,setFieldTouched }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
@@ -616,7 +625,6 @@ class LettersAddEdit extends Component {
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
-
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings}
                                                                         name="sharedSettings"
@@ -637,11 +645,7 @@ class LettersAddEdit extends Component {
                                                                     selectedValue={this.state.selectedFromCompany} 
                                                                     handleChange={event => {
                                                                         this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                    }}
-                                                                    onChange={setFieldValue}            
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.discipline}
-                                                                    touched={touched.discipline}
+                                                                    }} 
                                                                     index="fromCompanyId"
                                                                     name="fromCompanyId"
                                                                     id="fromCompanyId" />  
