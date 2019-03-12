@@ -24,28 +24,30 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 
-import SkyLight from 'react-skylight';
-import NotifiMsg from '../../Componants/publicComponants/NotifiMsg'
+import SkyLight from 'react-skylight'; 
 import * as communicationActions from '../../store/actions/communication';
 
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
+import { toast } from "react-toastify";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    arrange: Yup.number(Resources['onlyNumbers'][currentLanguage])
-        .required(Resources['arrangeRequired'][currentLanguage]),
+    // arrange: Yup.number(Resources['onlyNumbers'][currentLanguage])
+    //     .required(Resources['arrangeRequired'][currentLanguage]),
 
     refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
 
     fromCompanyId: Yup.string() 
         .required(Resources['fromCompanyRequired'][currentLanguage]),
 
-    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
+                    .nullable(true),
 
     toCompanyId: Yup.string() 
         .required(Resources['toCompanyRequired'][currentLanguage]),
@@ -93,12 +95,13 @@ class LettersAddEdit extends Component {
             currentTitle:"sendToWorkFlow",
             showModal:false,
             isViewMode: false,
-            isApproveMode: isApproveMode,
-            addComplete: false,
+            isApproveMode: isApproveMode, 
             isView: false,
             docId: docId,
             docTypeId: 19,
             projectId: projectId,
+            docApprovalId: docApprovalId,
+            arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
             ToContacts: [],
@@ -350,7 +353,7 @@ class LettersAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-
+        if(event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document[field] = event.value;
@@ -374,6 +377,9 @@ class LettersAddEdit extends Component {
             })
         }
 
+        // console.log(field+"...",updated_document);
+        // console.log('isSubscrib...',isSubscrib);
+
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -389,35 +395,35 @@ class LettersAddEdit extends Component {
             isLoading: true
         });
 
-        // dataservice.addObject('EditLetterById', this.state.document).then(result => {
-        //     this.setState({
-        //         isLoading: true,
-        //         addComplete: true
-        //     });
-        //     this.props.history.push({
-        //         pathname: "/Letters/" + this.state.projectId
-        //     });
-        // });
+        dataservice.addObject('EditLetterById', this.state.document).then(result => {
+            this.setState({
+                isLoading: true 
+            });
+            
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            
+            this.props.history.push({
+                pathname: "/Letters/" + this.state.projectId
+            });
+        });
     }
 
     saveLetter(event) {
         let saveDocument = { ...this.state.document };
-
-        console.log('valid');
-
+ 
         saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
-
-        console.log(saveDocument);
+ 
         dataservice.addObject('AddLetters', saveDocument).then(result => {
             this.setState({
                 docId: result
             });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
         }); 
     }
 
     saveAndExit(event) {
-        let letter = { ...this.state.document };
-        console.log(letter);
+       // let letter = { ...this.state.document };
+        
         this.props.history.push({
             pathname: "/Letters",
             search: "?projectId=" + this.state.projectId
@@ -467,11 +473,7 @@ class LettersAddEdit extends Component {
         ]; 
         return (
             <div className="mainContainer">
-                {
-                    this.state.addComplete === true ?
-                        <NotifiMsg showNotify={this.state.addComplete} IsSuccess={true} Msg={Resources['smartSentAccountingMessage'][currentLanguage].successTitle} /> :
-                        null
-                }
+                
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
@@ -591,7 +593,7 @@ class LettersAddEdit extends Component {
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.subject && touched.subject ? (" has-error") : " ")} >
 
-                                                                <input type="text" className="form-control" id="arrange"
+                                                                <input type="text" className="form-control" id="arrange" readOnly
                                                                     value={this.state.document.arrange}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
@@ -600,7 +602,7 @@ class LettersAddEdit extends Component {
                                                                         handleBlur(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
-                                                                {errors.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                                                                {/* {errors.arrange ? (<em className="pError">{errors.arrange}</em>) : null} */}
 
                                                             </div>
                                                         </div>
@@ -651,6 +653,11 @@ class LettersAddEdit extends Component {
                                                                     handleChange={event => {
                                                                         this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
                                                                     }} 
+                                                                    onChange={setFieldValue}            
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.fromCompanyId}
+                                                                    touched={touched.fromCompanyId}
+
                                                                     index="fromCompanyId"
                                                                     name="fromCompanyId"
                                                                     id="fromCompanyId" />  
@@ -670,10 +677,10 @@ class LettersAddEdit extends Component {
                                                                     onBlur={setFieldTouched}
                                                                     error={errors.fromContactId}
                                                                     touched={touched.fromContactId}
-
-                                                                    index="letter-fromContact" 
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" /> 
+                                                                    isClear={true}
+                                                                    index="letter-fromContactId" 
+                                                                    name="fromContactId"
+                                                                    id="fromContactId" /> 
                                                             </div>
                                                         </div>
 
