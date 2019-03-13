@@ -118,14 +118,14 @@ class LettersAddEdit extends Component {
             message: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) { 
+        if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
 
             this.props.history.push({
                 pathname: "/Letters/" + projectId
-            }); 
+            });
         }
-      //  this.onChangeMessage =this.onChangeMessage.bind(this);
+        //  this.onChangeMessage =this.onChangeMessage.bind(this);
     }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
@@ -145,7 +145,7 @@ class LettersAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow//,
-               // message: RichTextEditor.setContentFromString
+                // message: RichTextEditor.setContentFromString
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -305,7 +305,7 @@ class LettersAddEdit extends Component {
 
                 this.setState({
                     document: updated_document
-                }); 
+                });
             }
 
         }
@@ -365,7 +365,7 @@ class LettersAddEdit extends Component {
                     document: updated_document
                 });
             })
-        } 
+        }
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -442,7 +442,7 @@ class LettersAddEdit extends Component {
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
-                showModal: true 
+                showModal: true
             })
 
             this.simpleDialog.show()
@@ -630,52 +630,73 @@ class LettersAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className="ui input inputDev fillter-item-c">
-                                                                <Dropdown
-                                                                    title="fromCompany"
-                                                                    data={this.state.companies}
-                                                                    isMulti={false}
-                                                                    selectedValue={this.state.selectedFromCompany}
-                                                                    handleChange={event => {
-                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                    }}
-                                                                    onChange={setFieldValue}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.fromCompanyId}
-                                                                    touched={touched.fromCompanyId}
 
-                                                                    index="fromCompanyId"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
+                                                        <div className="linebylineInput valid-input mix_dropdown">
+
+                                                            <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
+                                                            <div className="supervisor__company">
+                                                                <div className="super_name">
+                                                                    <Dropdown
+                                                                        //title="fromContact"
+                                                                        isMulti={false}
+                                                                        data={this.state.fromContacts}
+                                                                        selectedValue={this.state.selectedFromContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromContactId}
+                                                                        touched={touched.fromContactId}
+                                                                        isClear={true}
+                                                                        index="letter-fromContactId"
+                                                                        name="fromContactId"
+                                                                        id="fromContactId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                    <Dropdown
+                                                                        //title="fromCompany"
+                                                                        data={this.state.companies}
+                                                                        isMulti={false}
+                                                                        selectedValue={this.state.selectedFromCompany}
+                                                                        handleChange={event => {
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                        }}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromCompanyId}
+                                                                        touched={touched.fromCompanyId}
+
+                                                                        index="fromCompanyId"
+                                                                        name="fromCompanyId"
+                                                                        id="fromCompanyId" />
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <div className="linebylineInput valid-input mix_dropdown">
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className="ui input inputDev fillter-item-c">
+                                                            <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
+                                                            <div className="supervisor__company">
+                                                                <div className="super_name">
                                                                 <Dropdown
-                                                                    title="fromContact"
+                                                                    ///title="toContactName"
                                                                     isMulti={false}
-                                                                    data={this.state.fromContacts}
-                                                                    selectedValue={this.state.selectedFromContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                    data={this.state.ToContacts}
+                                                                    selectedValue={this.state.selectedToContact}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
 
                                                                     onChange={setFieldValue}
                                                                     onBlur={setFieldTouched}
-                                                                    error={errors.fromContactId}
-                                                                    touched={touched.fromContactId}
-                                                                    isClear={true}
-                                                                    index="letter-fromContactId"
-                                                                    name="fromContactId"
-                                                                    id="fromContactId" />
-                                                            </div>
-                                                        </div>
+                                                                    error={errors.toContactId}
+                                                                    touched={touched.toContactId}
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className="ui input inputDev fillter-item-c">
-
-                                                                <Dropdown
-                                                                    title="toCompany"
+                                                                    index="letter-toContactId"
+                                                                    name="toContactId"
+                                                                    id="toContactId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                
+                                                            <Dropdown
+                                                                    //title="toCompany"
                                                                     isMulti={false}
                                                                     data={this.state.companies}
                                                                     selectedValue={this.state.selectedToCompany}
@@ -690,29 +711,10 @@ class LettersAddEdit extends Component {
                                                                     index="letter-toCompany"
                                                                     name="toCompanyId"
                                                                     id="toCompanyId" />
+                                                                </div>
                                                             </div>
                                                         </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className="ui input inputDev fillter-item-c">
-                                                                <Dropdown
-                                                                    title="toContactName"
-                                                                    isMulti={false}
-                                                                    data={this.state.ToContacts}
-                                                                    selectedValue={this.state.selectedToContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
-                                                                    onChange={setFieldValue}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.toContactId}
-                                                                    touched={touched.toContactId}
-
-                                                                    index="letter-toContactId"
-                                                                    name="toContactId"
-                                                                    id="toContactId" />
-                                                            </div>
-                                                        </div>
-
+  
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="discipline"
@@ -733,7 +735,7 @@ class LettersAddEdit extends Component {
                                                             />
                                                         </div>
 
-                                                        <div className="fullWidthWrapper textLeft">
+                                                        <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <RichTextEditor
@@ -751,7 +753,7 @@ class LettersAddEdit extends Component {
                                             )}
                                         </Formik>
                                     </div>
-                                    <div className="doc-pre-cycle">
+                                    <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 ?
                                                 <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
