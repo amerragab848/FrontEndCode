@@ -138,7 +138,7 @@
     "ar": " قيود بدون كود تكلفه"
   },
   "accountingSummary": {
-    "en": "Accounting Summary",
+    "en": "Accounting ",
     "ar": "ملخصات الحسابات"
   },
   "accounting": {
@@ -174,11 +174,11 @@
     "ar": "التعليقات"
   },
   "followUpsSummary": {
-    "en": "Follow Up Summary",
+    "en": "Follow Up ",
     "ar": "ملخص متابعات على الدورة المستندية"
   },
   "followUpsSummaryDetails": {
-    "en": "Follow Ups Summary Details",
+    "en": "Follow Ups  Details",
     "ar": "تفاصيل ملخص متابعات على الدورة المستندية"
   },
   "discussionPanelCommentPlaceholder": {
@@ -1016,7 +1016,7 @@
     "ar": "عدد الايام المسموح بها لاعتماد ساعات العمل"
   },
   "timesheetSummary": {
-    "en": "Time Sheet Summary",
+    "en": "Time Sheet ",
     "ar": "ملخص ساعات العمل"
   },
   "expensesApprovalDays": {
@@ -1133,7 +1133,7 @@
     "ar": "النسبه المئويه للتنبيه الاحمر"
   },
   "quantityAlertSummary": {
-    "en": " Alert Quantity Summary",
+    "en": " Alert Quantity ",
     "ar": "ملخص الكميات"
   },
   "quantityGreenAlertPercent": {
@@ -1213,7 +1213,7 @@
     "ar": "التنبيه الاخضر للفواتير"
   },
   "summaryOfApprovedInvoices": {
-    "en": "Summary Of Approved Invoices",
+    "en": "Approved Invoices",
     "ar": "تقرير  للفواتير التى تم الموافقة"
   },
   "useBoqPermission": {
@@ -2685,7 +2685,7 @@
     "ar": "ارسال للدوره المستنديه لاذن الصرف"
   },
   "sendToWorkFlow": {
-    "en": "Send To Workflow",
+    "en": "Send Workflow",
     "ar": "إرسال إلى الدورةالمستنديه"
   },
   "slectWorkFlow": {
@@ -2781,7 +2781,7 @@
     "ar": "ملخص صندوق الوارد"
   },
   "distributionInboxSummary": {
-    "en": "Distribution Inbox Summary",
+    "en": "Distribution Inbox ",
     "ar": "ملخص صندوق الوارد"
   },
   "addDistributionList": {
@@ -3013,7 +3013,7 @@
     "ar": "برجاء إدخال تاريخ الانتهاء"
   },
   "actionByContactsSummary": {
-    "en": "Action By Contacts Summary",
+    "en": "Action By Contacts ",
     "ar": "ملخص المسئول عن الاتصالات"
   },
   "actionByCompany": {
@@ -4433,7 +4433,7 @@
     "ar": "عقد/ أمر الشراء"
   },
   "contractsPerProject": {
-    "en": "Contracts Summary",
+    "en": "Contracts ",
     "ar": "ملخص العقود "
   },
   "contractsSummaryAllProjectProject": {
@@ -5305,7 +5305,7 @@
     "ar": "ساعات المرفوضة "
   },
   "rejectedItemsSummary": {
-    "en": "Rejected Items Summary",
+    "en": "Rejected Items ",
     "ar": "ملخص الاصناف المرفوضة "
   },
   "peroidExpenses": {
@@ -5321,31 +5321,31 @@
     "ar": "اجمالي الميزانيه"
   },
   "openedSummary": {
-    "en": "Opened Documents Summary",
+    "en": "Opened Documents ",
     "ar": "ملخص الوثائق المفتوحة"
   },
   "notCodedExpensesSummary": {
-    "en": "Not Coded Expenses Summary",
+    "en": "Not Coded Expenses ",
     "ar": "مصروفات غير مكوده"
   },
   "notCodedPaymentSummary": {
-    "en": "Not Coded Payment Summary",
+    "en": "Not Coded Payment ",
     "ar": "مدفوعات غير مكوده"
   },
   "inboxSummary": {
-    "en": "Inbox Summary",
+    "en": "Inbox ",
     "ar": "ملخص التنبيهات"
   },
   "notCodedInvoicesSummary": {
-    "en": "Not Coded Invoices Summary",
+    "en": "Not Coded Invoices ",
     "ar": "ملخص فواتير غير مكوده"
   },
   "distributionSummary": {
-    "en": "Distribution Summary",
+    "en": "Distribution ",
     "ar": "إجمالي الموازنة"
   },
   "assessmentSummary": {
-    "en": "Assessment Summary",
+    "en": "Assessment ",
     "ar": "ملخص الاعتمادات المطلوبه"
   },
   "addWidget": {
@@ -5397,11 +5397,11 @@
     "ar": "نوع  مدة الاجازة"
   },
   "actionBySummary": {
-    "en": "Action By Summary",
+    "en": "Action By ",
     "ar": "ملخص عن الشخص المسئول"
   },
   "alertingQntySummary": {
-    "en": "Quantities Alerting Summary",
+    "en": "Quantities Alerting ",
     "ar": "ملخص تنبيه الكميات"
   },
   "quantitiesAlerting": {
@@ -5409,7 +5409,7 @@
     "ar": "تنبيه الكميات"
   },
   "alertSummary": {
-    "en": "Alert Summary",
+    "en": "Alert ",
     "ar": "ملخص التنبيهات"
   },
   "alertStatus": {
@@ -5417,7 +5417,7 @@
     "ar": "حاله التنبيهات"
   },
   "closedSummary": {
-    "en": "Closed Documents Summary",
+    "en": "Closed Documents ",
     "ar": "ملخص الوثائق المغلقة"
   },
   "normalSummary": {
@@ -5457,7 +5457,7 @@
     "ar": "منذ اسبوعين"
   },
   "loanSummary": {
-    "en": "HR Loans Summary",
+    "en": "HR Loans ",
     "ar": " القروض "
   },
   "Requests": {
@@ -5661,7 +5661,7 @@
     "ar": "رقم المرجع"
   },
   "notCodedPayment": {
-    "en": "Not Coded Payment Summary",
+    "en": "Not Coded Payment ",
     "ar": " ملخص مدفوعات غير مكوده"
   },
   "unitRate": {
@@ -5761,7 +5761,7 @@
     "ar": "حذف"
   },
   "schedualActionBy": {
-    "en": "Schedule Action By Summary",
+    "en": "Schedule Action By ",
     "ar": "  المسئول بمهام الجدول الزمني"
   },
   "dateType": {
@@ -5801,7 +5801,7 @@
     "ar": "تعديل بيانات التنبيه للكميات"
   },
   "ScheduleAlertsSummary": {
-    "en": "Schedule Activity Summary",
+    "en": "Schedule Activity ",
     "ar": "ملخص تنبيهات الانشطة"
   },
   "useSelection": {
@@ -5965,7 +5965,7 @@
     "ar": "ادارة المشاريع"
   },
   "hrVacationSummary": {
-    "en": "HR Vacation / Excuses Summary",
+    "en": "HR Vacation / Excuses ",
     "ar": " اعتماد مدير الموارد البشرية"
   },
   "supervisorVacationSummary": {
@@ -6809,7 +6809,7 @@
     "ar": "إرسال إلى الحسابات"
   },
   "RequestsSummary": {
-    "en": "HR Requests Summary",
+    "en": "HR Requests ",
     "ar": " ملخص الطلبات"
   },
   "supervisorStatus": {
@@ -7353,7 +7353,7 @@
     "ar": "صرف المواد "
   },
   "executiveSummary": {
-    "en": "Executive Summary",
+    "en": "Executive ",
     "ar": "ملخص المشاريع التنفيذية "
   },
   "countContract": {
@@ -7748,5 +7748,13 @@
   "editContact": {
     "en": "Edit Contact",
     "ar": "تعديل بيانات شخص"
+  },
+  "otherActions": {
+    "en": "Other Actions",
+    "ar": "وظائف اخري"
+  },
+  "discplinesRequired": {
+    "en": "Please Select Discplines",
+    "ar": "برجاء اختيار التصميم"
   }
 }

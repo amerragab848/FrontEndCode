@@ -7,11 +7,12 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
 import Api from '../../api';
-import Resources from '../../resources.json'; 
+import Resources from '../../resources.json';
 import { connect } from 'react-redux';
 import {
     bindActionCreators
 } from 'redux';
+import moment from "moment";
 
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
@@ -19,8 +20,8 @@ import Config from '../../Services/Config';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class ViewAttachmments extends Component {
-  
-   constructor(props) {
+
+    constructor(props) {
         super(props)
         this.state = {
             data: [],
@@ -31,70 +32,73 @@ class ViewAttachmments extends Component {
 
     deletehandler = (file) => {
         let urlDelete = 'DeleteAttachFileById?id=' + file.id
-        this.props.actions.deleteFile(urlDelete,file);  
+        this.props.actions.deleteFile(urlDelete, file);
     }
 
     versionHandler = (parentId) => {
-
         let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
         Api.get(urlVersion).then(result => {
-            console.log("success")
+            
         }).catch(ex => {
         });
     }
 
-    componentDidMount () {
-        this.getData() 
+    componentDidMount() {
+        this.getData()
     }
 
-    render() {
-
+    getData() {
+        let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
+        this.props.actions.GetUploadedFiles(url);
+    }
+    render() { 
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
             let extension = item['fileName'].split(".")[1] === 'xlsx' ? xlsx : (item['fileName'].split(".")[1] === 'pdf' ? pdf : doc)
-                        return (
-                            <tr key={Index}>
-                                <td>
-                                    <div className="contentCell tableCell-1">
-                                        <span>
-                                            <img src={extension} alt="pdf" width="100%" height="100%" />
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="contentCell tableCell-2">
-                                        <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item['fileName']}</a>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="contentCell tableCell-3">
-                                        <p className="zero status">{item['uploadDate']}</p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="contentCell tableCell-4">
-                                        <p className="zero">{item['uploadedBy']} </p>
-                                    </div>
-                                </td>
-                                <td className="tdHover">
-                                    <div className="attachmentAction">
-                                        {Config.IsAllow(this.props.deleteAttachments)?
-                                        <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
-                                            <img src={Recycle} alt="del" width="100%" height="100%" />
-                                        </a>:
-                                         null
-                                        }
+            let createdDate= moment(item['createdDate']).format('DD/MM/YYYY');
+            return (
+                <tr key={Index}>
+                    <td>
+                        <div className="contentCell tableCell-1">
+                            <span>
+                                <img src={extension} alt="pdf" width="100%" height="100%" />
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item['fileName']}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-3">
+                            <p className="zero status">{createdDate}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-4">
+                            <p className="zero">{item['uploadedBy']} </p>
+                        </div>
+                    </td>
+                    <td className="tdHover">
+                        <div className="attachmentAction">
+                            {Config.IsAllow(this.props.deleteAttachments) ?
+                                <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
+                                    <img src={Recycle} alt="del" width="100%" height="100%" />
+                                </a> :
+                                null
+                            }
 
-                                        <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
-                                            <img src={Download} alt="dLoad" width="100%" height="100%" />
-                                        </a>
-                                        <a className="attachPend" onClick={() => this.versionHandler(item['parentId'])}>
-                                            <img src={Pending} alt="pend" width="100%" height="100%" />
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        );
-        }): null
+                            <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
+                                <img src={Download} alt="dLoad" width="100%" height="100%" />
+                            </a>
+                            <a className="attachPend" onClick={() => this.versionHandler(item['parentId'])}>
+                                <img src={Pending} alt="pend" width="100%" height="100%" />
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            );
+        }) : null
 
         return (
             <table className="attachmentTable">
@@ -124,9 +128,6 @@ class ViewAttachmments extends Component {
                         <th></th>
                     </tr>
                 </thead>
-
-
-
                 <tbody>
                     {tabel}
                 </tbody>
@@ -134,16 +135,12 @@ class ViewAttachmments extends Component {
         )
     }
 
-    getData() { 
-        let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        this.props.actions.GetUploadedFiles(url);
-    }
-} 
+}
 
 function mapStateToProps(state, ownProps) {
     return {
-      files: state.communication.files,
-      isLoadingFiles: state.communication.isLoadingFiles
+        files: state.communication.files,
+        isLoadingFiles: state.communication.isLoadingFiles
     }
 }
 
@@ -154,6 +151,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ViewAttachmments)

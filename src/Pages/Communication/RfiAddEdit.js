@@ -16,27 +16,30 @@ import { bindActionCreators } from "redux";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
-import NotifiMsg from "../../Componants/publicComponants/NotifiMsg";
 import * as communicationActions from "../../store/actions/communication";
-import Api from "../../api";
+import { toast } from "react-toastify";
 
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require("lodash");
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
-  fromCompanyId: Yup.string().required(Resources["fromCompanyRequired"][currentLanguage]),
-  toCompanyId: Yup.string().required(Resources["toCompanyRequired"][currentLanguage]),
-  fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]),
-  toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]),
-  arrange: Yup.number(Resources["onlyNumbers"][currentLanguage]).required(Resources["arrangeRequired"][currentLanguage]),
-  refDoc: Yup.string().max(450, Resources["maxLength"][currentLanguage]),
-  building: Yup.string().max(450, Resources["maxLength"][currentLanguage]),
-  apartment: Yup.string().max(50, Resources["maxLength"][currentLanguage]),
-  sharedSettings: Yup.string().max(450, Resources["maxLength"][currentLanguage])
-  //requiredDate: Yup.date().default(() => (new Date()).require(Resources['requiredDate'][currentLanguage]),
-  //docDate: Yup.date().default(() => (new Date()).require(Resources['docDate'][currentLanguage]),
+  fromCompanyId: Yup.string().required(Resources["fromCompanyRequired"][currentLanguage]).nullable(true),
+  toCompanyId: Yup.string().required(Resources["toCompanyRequired"][currentLanguage]).nullable(true),
+  fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
+  toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
+  //   arrange: Yup.number(Resources["onlyNumbers"][currentLanguage]).required(
+  //     Resources["arrangeRequired"][currentLanguage]
+  //   ),
+  // refDoc: Yup.string().max(450, Resources["maxLength"][currentLanguage])
+  //Building: Yup.string().max(450, Resources["maxLength"][currentLanguage]),
+  //   apartmentNumber: Yup.string().max(
+  //     50,
+  //     Resources["maxLength"][currentLanguage]
+  //   ),
+  // sharedSettings: Yup.string().max(450, Resources["maxLength"][currentLanguage])
 });
 
 let docId = 0;
@@ -48,17 +51,18 @@ let arrange = 0;
 
 class RfiAddEdit extends Component {
   constructor(props) {
-    
     super(props);
-    
+
     const query = new URLSearchParams(this.props.location.search);
 
     let index = 0;
-    
+
     for (let param of query.entries()) {
       if (index == 0) {
         try {
-          let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+          let obj = JSON.parse(
+            CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8)
+          );
 
           docId = obj.docId;
           projectId = obj.projectId;
@@ -72,7 +76,6 @@ class RfiAddEdit extends Component {
       }
       index++;
     }
- 
 
     this.state = {
       isViewMode: false,
@@ -81,13 +84,13 @@ class RfiAddEdit extends Component {
       isView: false,
       docId: docId,
       docTypeId: 23,
-      document: this.props.document? Object.assign({}, this.props.document) : {},
+      document: {},
       companies: [],
       ToContacts: [],
       fromContacts: [],
       discplines: [],
-      areas : [],
-      locations : [],
+      areas: [],
+      locations: [],
       permission: [
         { name: "sendByEmail", code: 54 },
         { name: "sendByInbox", code: 53 },
@@ -97,37 +100,37 @@ class RfiAddEdit extends Component {
         { name: "sendToWorkFlow", code: 707 },
         { name: "viewAttachments", code: 3317 },
         { name: "deleteAttachments", code: 840 }
-      ], 
-      
-      //field
-      projectId: projectId,
-      fromCompanyId: null,
-      toCompanyId: null,
-      fromContactId: null,
-      toContactId: null,
-      subject: "",
-      requiredDate: moment(), 
+      ],
+      selectedFromCompany: {
+        label: Resources.fromCompanyRequired[currentLanguage],
+        value: "0"
+      },
+      selectedFromContact: {
+        label: Resources.fromContactRequired[currentLanguage],
+        value: "0"
+      },
+      selectedToCompany: {
+        label: Resources.toCompanyRequired[currentLanguage],
+        value: "0"
+      },
+      selectedToContact: {
+        label: Resources.toContactRequired[currentLanguage],
+        value: "0"
+      },
+      selectedArea: {
+        label: Resources.areaRequired[currentLanguage],
+        value: "0"
+      },
+      selectedLocation: {
+        label: Resources.locationRequired[currentLanguage],
+        value: "0"
+      },
+      selectedDiscplines: {
+        label: Resources.discplinesRequired[currentLanguage],
+        value: "0"
+      },
       rfi: RichTextEditor.createEmptyValue(),
-      answer: RichTextEditor.createEmptyValue(),
-      docDate: moment().format('DD/MM/YYYY'),
-      arrange: "1",
-      status: "true",
-      contractId:null,
-      pcoId: null, 
-      refDoc: "",
-      docLocationId: "true",
-      cycleNo: 0,
-      parentId: null,
-      disciplineId: null,
-      area: "",
-      location: "",
-      building: "",
-      apartment: "", 
-      sharedSettings: "", 
-      id: 0 
-      // docCloseDate: moment().format('DD/MM/YYYY'),
-     // answerDate: moment().format('DD/MM/YYYY'),
-     // creationDate: moment().format('DD/MM/YYYY'),
+      answer: RichTextEditor.createEmptyValue()
     };
 
     if (!Config.IsAllow(75) || !Config.IsAllow(76) || !Config.IsAllow(78)) {
@@ -138,7 +141,9 @@ class RfiAddEdit extends Component {
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+    var links = document.querySelectorAll(
+      ".noTabs__document .doc-container .linebylineInput"
+    );
 
     for (var i = 0; i < links.length; i++) {
       if ((i + 1) % 2 == 0) {
@@ -147,6 +152,7 @@ class RfiAddEdit extends Component {
         links[i].classList.add("odd");
       }
     }
+
     this.checkDocumentIsView();
   }
 
@@ -195,25 +201,58 @@ class RfiAddEdit extends Component {
       if (Config.IsAllow(75) || Config.IsAllow(76) || Config.IsAllow(78)) {
       }
     } else {
-      
-        this.fillDropDowns(false);
+      const rfiDocument = {
+        //field
+        projectId: projectId,
+        fromCompanyId: null,
+        toCompanyId: null,
+        fromContactId: null,
+        toContactId: null,
+        subject: "",
+        requiredDate: moment(),
+        rfi: "",
+        answer: "",
+        docDate: moment().format("DD/MM/YYYY"),
+        arrange: "1",
+        status: "true",
+        contractId: null,
+        pcoId: null,
+        refDoc: "",
+        docLocationId: "true",
+        cycleNo: 0,
+        parentId: null,
+        disciplineId: null,
+        area: "",
+        location: "",
+        building: "",
+        apartment: "",
+        sharedSettings: "",
+        id: 0
+      };
+
+      this.setState({ document: rfiDocument });
+      this.fillDropDowns(false);
     }
   }
 
-  fillSubDropDownInEdit(url,param,value,subField,subSelectedValue,subDatasource) {
-
+  fillSubDropDownInEdit(
+    url,
+    param,
+    value,
+    subField,
+    subSelectedValue,
+    subDatasource
+  ) {
     let action = url + "?" + param + "=" + value;
-    
+
     dataservice.GetDataList(action, "contactName", "id").then(result => {
-    
-        if (this.props.changeStatus === true) {
-    
+      if (this.props.changeStatus === true) {
         let toSubField = this.state.document[subField];
-    
+
         let targetFieldSelected = _.find(result, function(i) {
           return i.value == toSubField;
         });
-    
+
         this.setState({
           [subSelectedValue]: targetFieldSelected,
           [subDatasource]: result
@@ -223,39 +262,54 @@ class RfiAddEdit extends Component {
   }
 
   fillDropDowns(isEdit) {
-    
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId , "companyName", "companyId")
-      .then(result => { 
+    dataservice
+      .GetDataList(
+        "GetProjectProjectsCompaniesForList?projectId=" + projectId,
+        "companyName",
+        "companyId"
+      )
+      .then(result => {
         this.setState({
           companies: [...result]
         });
       });
 
-      //discplines
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline","title","id")
-      .then(result => { 
+    //discplines
+    dataservice
+      .GetDataList(
+        "GetaccountsDefaultListForList?listType=discipline",
+        "title",
+        "id"
+      )
+      .then(result => {
         this.setState({
           discplines: [...result]
         });
       });
-      //area
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=area","title","id")
-      .then(result => { 
+    //area
+    dataservice
+      .GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id")
+      .then(result => {
         this.setState({
-            areas : [...result]
+          areas: [...result]
         });
       });
-      //location
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=location","title","id")
-      .then(result => { 
+    //location
+    dataservice
+      .GetDataList(
+        "GetaccountsDefaultListForList?listType=location",
+        "title",
+        "id"
+      )
+      .then(result => {
         this.setState({
-            locations: [...result]
+          locations: [...result]
         });
-      }); 
+      });
   }
- 
-  handleChange(e, field) { 
+
+  handleChange(e, field) {
     let original_document = { ...this.state.document };
 
     let updated_document = {};
@@ -283,8 +337,16 @@ class RfiAddEdit extends Component {
     });
   }
 
-  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource ) 
-  {
+  handleChangeDropDown(
+    event,
+    field,
+    isSubscrib,
+    targetState,
+    url,
+    param,
+    selectedValue,
+    subDatasource
+  ) {
     let original_document = { ...this.state.document };
     let updated_document = {};
     updated_document[field] = event.value;
@@ -305,7 +367,9 @@ class RfiAddEdit extends Component {
         this.state.document.fromCompanyId +
         "&contactId=" +
         event.value;
+
       this.props.actions.GetNextArrange(url);
+
       dataservice.GetNextArrangeMainDocument(url).then(res => {
         updated_document.arrange = res;
         updated_document = Object.assign(original_document, updated_document);
@@ -330,54 +394,33 @@ class RfiAddEdit extends Component {
     this.setState({
       isLoading: true
     });
+
+    dataservice
+      .addObject("EditCommunicationRfi", this.state.document)
+      .then(result => {
+        this.setState({
+          isLoading: true
+        });
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
+        this.props.history.push("/Rfi/" + projectId);
+      });
   }
 
-  saveRfi(event) {
-      
-    const data = {   
-        projectId: projectId,
-        fromCompanyId: this.state.fromCompanyId,
-        toCompanyId: this.state.toCompanyId,
-        fromContactId: this.state.fromContactId,
-        toContactId: this.state.toContactId,
-        subject: this.state.subject,
-        requiredDate: this.state.requiredDate, 
-        rfi: this.state.rfi,
-        answer: this.state.answer,
-        docDate:this.state.docDate,
-        arrange: this.state.arrange,
-        status: this.state.status,
-        creationDate: this.state.creationDate,
-        pcoId: this.state.pcoId,
-        docCloseDate: this.state.docCloseDate,
-        answerDate: this.state.answerDate,
-        refDoc: this.state.refDoc,
-        docLocationId: this.state.docLocationId,
-        cycleNo: this.state.cycleNo,
-        parentId: this.state.parentId,
-        disciplineId: this.state.disciplineId,
-        area: this.state.area,
-        location: this.state.location,
-        building: this.state.building,
-        apartment: this.state.apartment,
-        contractId: this.state.contractId, 
-        sharedSettings: this.state.sharedSettings
-    }
- 
+  saveRfi() {
+    const data = this.state.document;
+
     dataservice.addObject("AddCommunicationRfi", data).then(result => {
       this.setState({
         docId: result != null ? result.id : 0
       });
+      toast.success(Resources["operationSuccess"][currentLanguage]);
     });
   }
 
   saveAndExit(event) {
-    let letter = { ...this.state.document };
-    console.log(letter);
-    this.props.history.push({
-      pathname: "/Letters",
-      search: "?projectId=" + this.state.projectId
-    });
+    this.props.history.push("/Rfi/" + projectId);
   }
 
   showBtnsSaving() {
@@ -385,12 +428,13 @@ class RfiAddEdit extends Component {
 
     if (this.state.docId === 0) {
       btn = (
-        <button className="primaryBtn-1 btn meduimBtn" type="submit" onClick={e => this.saveRfi(e)}>
+        <button className="primaryBtn-1 btn meduimBtn" type="submit">
           {Resources.save[currentLanguage]}
         </button>
       );
     } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-      btn = (<button className="primaryBtn-1 btn mediumBtn" type="submit" onClick={e => this.saveAndExit(e)}>
+      btn = (
+        <button className="primaryBtn-1 btn mediumBtn" type="submit">
           {Resources.saveAndExit[currentLanguage]}
         </button>
       );
@@ -411,55 +455,93 @@ class RfiAddEdit extends Component {
     ) : null;
   }
 
-  dropDownHandler(e,field){
-    if(field === "fromCompanyId"){
-        dataservice.GetDataList("GetContactsByCompanyId?companyId=" +e.value ,"contactName", "id").then(result => {
-            this.setState({
-              fromContacts:result,
-              fromCompanyId : e.value
-            });
+  //fill Drop Down
+  dropDownHandler(
+    e,
+    field,
+    api,
+    columnsData,
+    isSet,
+    label,
+    value,
+    selectedValue
+  ) {
+    let original_document = { ...this.state };
+
+    if (field === "fromContactId") {
+      dataservice
+        .GetNextArrangeMainDocument(
+          "GetNextArrangeMainDoc?projectId=" +
+            projectId +
+            "&docType=" +
+            this.state.docTypeId +
+            "&companyId=" +
+            this.state.document.fromCompanyId +
+            "&contactId=" +
+            e.value
+        )
+        .then(result => {
+          original_document.document["arrange"] = result;
+          original_document.document[field] = e.value;
+          this.setState({
+            document: original_document.document,
+            [selectedValue]: e
+          });
         });
-    }else if(field === "fromContact"){ 
-          dataservice.GetNextArrangeMainDocument("GetNextArrangeMainDoc?projectId=" +projectId +"&docType="+this.state.docTypeId+
-                                  "&companyId="+this.state.fromCompanyId+"&contactId="+e.value).then(result => {
-            this.setState({
-              arrange : result,
-              fromContactId:e.value
-            });
+    } else if (isSet === false) {
+      dataservice.GetDataList(api + e.value, label, value).then(result => {
+        original_document.document[field] = e.value;
+
+        this.setState({
+          document: original_document.document,
+          [columnsData]: result,
+          [selectedValue]: e
         });
-    }else if(field === "toCompany"){ 
-          dataservice.GetDataList("GetContactsByCompanyId?companyId="+ e.value ,"contactName", "id").then(result => {
-            this.setState({
-                ToContacts:result,
-                toCompanyId : e.value  
-            });
-        });
+      });
+    } else {
+      original_document.document[field] = e.value;
+
+      this.setState({
+        document: original_document.document,
+        [selectedValue]: e
+      });
     }
   }
 
+  //text Editor
+  onChangeMessage = (value, field) => {
+    let isEmpty = !value
+      .getEditorState()
+      .getCurrentContent()
+      .hasText();
 
-  onChangeMessage = (value,field) => {
+    if (isEmpty === false) {
+      field === "rfi"
+        ? this.setState({ rfi: value })
+        : this.setState({ answer: value });
 
-    let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-    
-    if (isEmpty === false) { 
+      if (value.toString("markdown").length > 1) {
+        let original_document = { ...this.state.document };
 
-        if (value.toString('markdown').length > 1) {  
+        original_document[field] = value.toString("markdown");
 
-            let original_document = { ...this.state };
-
-            original_document[field]= value.toString('markdown').replace(/\n/g, "");
-            
-            this.setState(original_document);  
-        } 
-    } 
-};
+        this.setState({
+          document: original_document
+        });
+      }
+    }
+  };
 
   render() {
     return (
       <div className="mainContainer">
-        {this.state.addComplete === true ? (<NotifiMsg showNotify={this.state.addComplete} IsSuccess={true} Msg={Resources["smartSentAccountingMessage"][currentLanguage].successTitle} />) : null}
-        <div className={ this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document" } >
+        <div
+          className={
+            this.state.isViewMode === true
+              ? "documents-stepper noTabs__document readOnly_inputs"
+              : "documents-stepper noTabs__document"
+          }
+        >
           <div className="submittalHead">
             <h2 className="zero">
               {Resources.requestInformation[currentLanguage]}
@@ -520,10 +602,10 @@ class RfiAddEdit extends Component {
                 <div className="main__header--div">
                   <h2 className="zero">{Resources.goEdit[currentLanguage]}</h2>
                   <p className="doc-infohead">
-                    <span> {this.state.refDoc}</span> -
-                    <span> {this.state.arrange}</span> -
+                    <span> {this.state.document.refDoc}</span> -
+                    <span> {this.state.document.arrange}</span> -
                     <span>
-                      {moment(this.state.docDate).format("DD/MM/YYYY")}
+                      {moment(this.state.document.docDate).format("DD/MM/YYYY")}
                     </span>
                   </p>
                 </div>
@@ -533,18 +615,75 @@ class RfiAddEdit extends Component {
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                   <div className="document-fields">
-                    <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} onReset={values => {}} >
-                      {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue}) => (
-                        <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit} >
+                    <Formik
+                      initialValues={{ ...this.state.document }}
+                      validationSchema={validationSchema}
+                      onSubmit={values => {
+                        if (
+                          this.props.changeStatus === true &&
+                          this.props.docId > 0
+                        ) {
+                          this.editRfi();
+                        } else if (
+                          this.props.changeStatus === false &&
+                          this.props.docId === 0
+                        ) {
+                          this.saveRfi();
+                        } else {
+                          this.saveAndExit();
+                        }
+                      }}
+                    >
+                      {({
+                        errors,
+                        touched,
+                        handleBlur,
+                        handleChange,
+                        handleSubmit,
+                        setFieldValue,
+                        setFieldTouched
+                      }) => (
+                        <Form
+                          id="rfiForm"
+                          className="customProform"
+                          noValidate="novalidate"
+                          onSubmit={handleSubmit}
+                        >
                           <div className="proForm first-proform">
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.subject[currentLanguage]}
                               </label>
-                              <div className={ "inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")} >
-                                <input name="subject" className="form-control fsadfsadsa" id="subject" placeholder={ Resources.subject[currentLanguage] }
-                                  autoComplete="off" value={this.state.subject} onChange={(event) => this.setState({subject: event.target.value})} />
-                                {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                              <div
+                                className={
+                                  "inputDev ui input" +
+                                  (errors.subject && touched.subject
+                                    ? " has-error"
+                                    : !errors.subject && touched.subject
+                                    ? " has-success"
+                                    : " ")
+                                }
+                              >
+                                <input
+                                  name="subject"
+                                  className="form-control fsadfsadsa"
+                                  id="subject"
+                                  placeholder={
+                                    Resources.subject[currentLanguage]
+                                  }
+                                  autoComplete="off"
+                                  value={this.state.document.subject}
+                                  onBlur={e => {
+                                    handleBlur(e);
+                                    handleChange(e);
+                                  }}
+                                  onChange={e =>
+                                    this.handleChange(e, "subject")
+                                  }
+                                />
+                                {errors.subject && touched.subject ? (
+                                  <em className="pError">{errors.subject}</em>
+                                ) : null}
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
@@ -552,18 +691,33 @@ class RfiAddEdit extends Component {
                                 {Resources.status[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" id="true"
-                                  name="rfi-status" defaultChecked={this.state.status ===  "true" }
-                                  value="true" 
-                                  onChange={(e) => this.setState({ status: e.target.value })} />
+                                <input
+                                  type="radio"
+                                  name="letter-status"
+                                  defaultChecked={
+                                    this.state.document.status === false
+                                      ? null
+                                      : "checked"
+                                  }
+                                  value="true"
+                                  onChange={e => this.handleChange(e, "status")}
+                                />
                                 <label>
                                   {Resources.oppened[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" id="false" name="rfi-status" defaultChecked={this.state.status === "false" }
+                                <input
+                                  type="radio"
+                                  name="letter-status"
+                                  defaultChecked={
+                                    this.state.document.status === false
+                                      ? "checked"
+                                      : null
+                                  }
                                   value="false"
-                                  onChange={(e) => this.setState({ status: e.target.value })} />
+                                  onChange={e => this.handleChange(e, "status")}
+                                />
                                 <label>
                                   {Resources.closed[currentLanguage]}
                                 </label>
@@ -580,9 +734,15 @@ class RfiAddEdit extends Component {
                                     </label>
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
-                                        <ModernDatepicker date={this.state.docDate} format={'DD/MM/YYYY'} showBorder
-                                          onChange={(value) => this.setState({ docDate: value })} 
-                                          placeholder={"Select a date"} />
+                                        <ModernDatepicker
+                                          date={this.state.document.docDate}
+                                          format={"DD-MM-YYYY"}
+                                          showBorder
+                                          onChange={e =>
+                                            this.handleChangeDate(e, "docDate")
+                                          }
+                                          placeholder={"Select a date"}
+                                        />
                                       </div>
                                     </div>
                                   </div>
@@ -598,8 +758,20 @@ class RfiAddEdit extends Component {
                                     </label>
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
-                                        <ModernDatepicker date={ this.state.requiredDate } format={'DD/MM/YYYY'} showBorder placeholder={"Select a date"}
-                                         onChange={(value) => this.setState({ requiredDate: value})}/>
+                                        <ModernDatepicker
+                                          date={
+                                            this.state.document.requiredDate
+                                          }
+                                          format={"DD-MM-YYYY"}
+                                          showBorder
+                                          placeholder={"Select a date"}
+                                          onChange={e =>
+                                            this.handleChangeDate(
+                                              e,
+                                              "requiredDate"
+                                            )
+                                          }
+                                        />
                                       </div>
                                     </div>
                                   </div>
@@ -610,18 +782,48 @@ class RfiAddEdit extends Component {
                               <label className="control-label">
                                 {Resources.arrange[currentLanguage]}
                               </label>
-                              <div className={ "ui input inputDev "}>
-                                <input type="text" className="form-control" id="arrange" value={this.state.arrange} name="arrange" placeholder={ Resources.arrange[currentLanguage]}
-                                     onChange={(e) => this.setState({ arrange: e.target.value })}/>
+                              <div className={"ui input inputDev "}>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  id="arrange"
+                                  value={this.state.document.arrange}
+                                  name="arrange"
+                                  placeholder={
+                                    Resources.arrange[currentLanguage]
+                                  }
+                                  onChange={e =>
+                                    this.handleChangeDate(e, "arrange")
+                                  }
+                                />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.refDoc[currentLanguage]}
                               </label>
-                              <div className={ errors.subject && touched.subject ? "ui input inputDev has-error" : "ui input inputDev"}>
-                                <input type="text" className="form-control" id="refDoc" value={this.state.refDoc} name="refDoc"
-                                  placeholder={ Resources.refDoc[currentLanguage] }  onChange={(e) => this.setState({ refDoc: e.target.value })}/>
+                              <div
+                                className={
+                                  errors.refDoc && touched.refDoc
+                                    ? "ui input inputDev has-error"
+                                    : "ui input inputDev"
+                                }
+                              >
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  id="refDoc"
+                                  value={this.state.document.refDoc}
+                                  name="refDoc"
+                                  placeholder={
+                                    Resources.refDoc[currentLanguage]
+                                  }
+                                  onBlur={e => {
+                                    handleChange(e);
+                                    handleBlur(e);
+                                  }}
+                                  onChange={e => this.handleChange(e, "refDoc")}
+                                />
                                 {errors.refDoc && touched.refDoc ? (
                                   <em className="pError">{errors.refDoc}</em>
                                 ) : null}
@@ -629,115 +831,299 @@ class RfiAddEdit extends Component {
                             </div>
                             <div className="linebylineInput valid-input">
                               <div className="ui input inputDev fillter-item-c">
-                                 <Dropdown title="fromCompany" data={this.state.companies} name="fromCompanyId"
-                                       value ={this.state.fromCompanyId}
-                                       handleChange={value => this.dropDownHandler(value,"fromCompanyId")}/> 
+                                <Dropdown
+                                  title="fromCompany"
+                                  data={this.state.companies}
+                                  isMulti={false}
+                                  selectedValue={this.state.selectedFromCompany}
+                                  handleChange={value =>
+                                    this.dropDownHandler(
+                                      value,
+                                      "fromCompanyId",
+                                      "GetContactsByCompanyId?companyId=",
+                                      "fromContacts",
+                                      false,
+                                      "contactName",
+                                      "id",
+                                      "selectedFromCompany"
+                                    )
+                                  }
+                                  onChange={setFieldValue}
+                                  onBlur={setFieldTouched}
+                                  error={errors.fromCompanyId}
+                                  touched={touched.fromCompanyId}
+                                  name="fromCompanyId"
+                                  index="fromCompanyId"
+                                  id="fromCompanyId"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="linebylineInput valid-input">
+                              <div className="ui input inputDev fillter-item-c">
+                                <Dropdown
+                                  title="fromContact"
+                                  data={this.state.fromContacts}
+                                  selectedValue={this.state.selectedFromContact}
+                                  handleChange={value =>
+                                    this.dropDownHandler(
+                                      value,
+                                      "fromContactId",
+                                      "",
+                                      "",
+                                      false,
+                                      "",
+                                      "",
+                                      "selectedFromContact"
+                                    )
+                                  }
+                                  onChange={setFieldValue}
+                                  onBlur={setFieldTouched}
+                                  error={errors.fromContactId}
+                                  touched={touched.fromContactId}
+                                  name="fromContactId"
+                                  index="fromContactId"
+                                  id="fromContactId"
+                                />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <div className="ui input inputDev fillter-item-c">
-                                 <Dropdown title="fromContact" data={this.state.fromContacts} name="fromContact"
-                                      value ={this.state.fromContactId}
-                                      handleChange={value => this.dropDownHandler(value,"fromContact")}/> 
+                                <Dropdown
+                                  title="toCompany"
+                                  data={this.state.companies}
+                                  selectedValue={this.state.selectedToCompany}
+                                  handleChange={value =>
+                                    this.dropDownHandler(
+                                      value,
+                                      "toCompanyId",
+                                      "GetContactsByCompanyId?companyId=",
+                                      "ToContacts",
+                                      false,
+                                      "contactName",
+                                      "id",
+                                      "selectedToCompany"
+                                    )
+                                  }
+                                  onChange={setFieldValue}
+                                  onBlur={setFieldTouched}
+                                  error={errors.toCompanyId}
+                                  touched={touched.toCompanyId}
+                                  name="toCompanyId"
+                                  index="toCompanyId"
+                                  id="toCompanyId"
+                                />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <div className="ui input inputDev fillter-item-c">
-                                 <Dropdown title="toCompany" data={this.state.companies} name="toCompany"
-                                       value ={this.state.toCompanyId}
-                                       handleChange={value => this.dropDownHandler(value,"toCompany")}/> 
+                                <Dropdown
+                                  title="attention"
+                                  data={this.state.ToContacts}
+                                  selectedValue={this.state.selectedToContact}
+                                  handleChange={value =>
+                                    this.dropDownHandler(
+                                      value,
+                                      "toContactId",
+                                      "",
+                                      "",
+                                      true,
+                                      "",
+                                      "",
+                                      "selectedToContact"
+                                    )
+                                  }
+                                  name="toContactId"
+                                  index="toContactId"
+                                  id="toContactId"
+                                />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <div className="ui input inputDev fillter-item-c">
-                                 <Dropdown title="attention" data={this.state.ToContacts} name="attention"
-                                       value ={this.state.toContactId}
-                                       handleChange={(event) => this.setState({toContactId: event.value})}/> 
+                                <Dropdown
+                                  title="area"
+                                  data={this.state.areas}
+                                  selectedValue={this.state.selectedArea}
+                                  handleChange={value =>
+                                    this.dropDownHandler(
+                                      value,
+                                      "area",
+                                      "",
+                                      "",
+                                      true,
+                                      "",
+                                      "",
+                                      "selectedArea"
+                                    )
+                                  }
+                                  name="areas"
+                                  index="rfi-areas"
+                                  id="areas"
+                                />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <div className="ui input inputDev fillter-item-c">
-                                 <Dropdown title="area" data={this.state.areas} name="areas"
-                                       value ={this.state.fromContactId}
-                                       handleChange={(event) => this.setState({area: event.value})}/> 
+                                <Dropdown
+                                  title="location"
+                                  data={this.state.locations}
+                                  selectedValue={this.state.selectedLocation}
+                                  handleChange={value =>
+                                    this.dropDownHandler(
+                                      value,
+                                      "location",
+                                      "",
+                                      "",
+                                      true,
+                                      "",
+                                      "",
+                                      "selectedLocation"
+                                    )
+                                  }
+                                  name="location"
+                                  index="location"
+                                  id="location"
+                                />
                               </div>
                             </div>
-                            <div className="linebylineInput valid-input">
-                              <div className="ui input inputDev fillter-item-c">
-                                 <Dropdown title="location" data={this.state.locations} name="locations"
-                                       value ={this.state.location}
-                                       handleChange={(event) => this.setState({location: event.value})}/> 
-                              </div>
-                            </div>
-                          
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.Building[currentLanguage]}
                               </label>
-                              <div className={ "inputDev ui input" + (errors.Building && touched.Building ? " has-error" : !errors.Building && touched.Building ? " has-success": " ")}>
-                                <input name="Building" className="form-control fsadfsadsa" id="Building" placeholder={Resources.Building[currentLanguage]}
+                              <div
+                                className={
+                                  "inputDev ui input" +
+                                  (errors.Building && touched.Building
+                                    ? " has-error"
+                                    : !errors.Building && touched.Building
+                                    ? " has-success"
+                                    : " ")
+                                }
+                              >
+                                <input
+                                  name="Building"
+                                  className="form-control fsadfsadsa"
+                                  id="Building"
+                                  placeholder={
+                                    Resources.Building[currentLanguage]
+                                  }
                                   autoComplete="off"
-                                  value={this.state.building} 
-                                  onChange={(e) => this.setState({ building: e.target.value })} />
+                                  value={this.state.document.building}
+                                  onChange={e =>
+                                    this.handleChange(e, "building")
+                                  }
+                                />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.apartmentNumber[currentLanguage]}
                               </label>
-                              <div className={ "inputDev ui input" + (errors.apartment && touched.apartment ? " has-error" : !errors.apartment && touched.apartment ? " has-success" : " ")}>
-                                <input name="apartmentNumber" className="form-control fsadfsadsa" id="apartmentNumber" placeholder={ Resources.apartmentNumber[currentLanguage]}
+                              <div
+                                className={
+                                  "inputDev ui input" +
+                                  (errors.apartment && touched.apartment
+                                    ? " has-error"
+                                    : !errors.apartment && touched.apartment
+                                    ? " has-success"
+                                    : " ")
+                                }
+                              >
+                                <input
+                                  name="apartmentNumber"
+                                  className="form-control fsadfsadsa"
+                                  id="apartmentNumber"
+                                  placeholder={
+                                    Resources.apartmentNumber[currentLanguage]
+                                  }
                                   autoComplete="off"
-                                  value={this.state.apartment}
-                                  onChange={(e) => this.setState({ apartment: e.target.value })} />
+                                  value={this.state.document.apartment}
+                                  onChange={e =>
+                                    this.handleChange(e, "apartment")
+                                  }
+                                />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <div className="ui input inputDev fillter-item-c">
-                                 <Dropdown title="discipline" data={this.state.discplines} name="discplines"
-                                       value ={this.state.disciplineId}
-                                       handleChange={(event) => this.setState({disciplineId: event.value})}/> 
-                              </div>
-                            </div> 
-                             <div className="linebylineInput valid-input">
-                              <label className="control-label">
-                                {Resources.message[currentLanguage]}
-                              </label>
-                              <div className="inputDev ui input">
-                                <RichTextEditor
-                                  value={this.state.rfi}
-                                  onChange={value => this.onChangeMessage(value,"rfi")}/>
-                              </div>
-                            </div>
-                            <div className="linebylineInput valid-input">
-                              <label className="control-label">
-                                {Resources.message[currentLanguage]}
-                              </label>
-                              <div className="inputDev ui input">
-                                <RichTextEditor
-                                  value={this.state.answer}
-                                  onChange={value => this.onChangeMessage(value,"answer")}
+                                <Dropdown
+                                  title="discipline"
+                                  data={this.state.discplines}
+                                  selectedValue={this.state.selectedDiscplines}
+                                  handleChange={value =>
+                                    this.dropDownHandler(
+                                      value,
+                                      "disciplineId",
+                                      "",
+                                      "",
+                                      true,
+                                      "",
+                                      "",
+                                      "selectedDiscplines"
+                                    )
+                                  }
+                                  name="discplines"
+                                  index="rfi-discplines"
+                                  id="discplines"
                                 />
                               </div>
                             </div>
-
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.sharedSettings[currentLanguage]}
                               </label>
                               <div className="shareLinks">
                                 <div className="inputDev ui input">
-                                  <input type="text" className="form-control" id="sharedSettings"
-                                    value={this.state.sharedSettings}
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    id="sharedSettings"
+                                    value={this.state.document.sharedSettings}
                                     name="sharedSettings"
-                                    onChange={(event) => this.setState({sharedSettings: event.target.value})}
-                                    placeholder={ Resources.sharedSettings[currentLanguage]}/>
+                                    onChange={e =>
+                                      this.handleChange(e, "sharedSettings")
+                                    }
+                                    placeholder={
+                                      Resources.sharedSettings[currentLanguage]
+                                    }
+                                  />
                                 </div>
-                                <a  href={this.state.sharedSettings}  target="_blank">
+                                <a
+                                  href={this.state.document.sharedSettings}
+                                  target="_blank"
+                                >
                                   <span>
                                     {Resources["openFolder"][currentLanguage]}
                                   </span>
                                 </a>
+                              </div>
+                            </div>
+
+                            <div className="linebylineInput valid-input">
+                              <label className="control-label">
+                                {Resources.message[currentLanguage]}
+                              </label>
+                              <div className="inputDev ui input">
+                                <RichTextEditor
+                                  value={this.state.rfi}
+                                  onChange={value =>
+                                    this.onChangeMessage(value, "rfi")
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div className="linebylineInput valid-input">
+                              <label className="control-label">
+                                {Resources.replyMessage[currentLanguage]}
+                              </label>
+                              <div className="inputDev ui input">
+                                <RichTextEditor
+                                  value={this.state.answer}
+                                  onChange={value =>
+                                    this.onChangeMessage(value, "answer")
+                                  }
+                                />
                               </div>
                             </div>
                           </div>
@@ -780,7 +1166,7 @@ class RfiAddEdit extends Component {
                         ? "primaryBtn-1 btn middle__btn disNone"
                         : "primaryBtn-1 btn middle__btn"
                     }
-                    onClick={e => this.editLetter(e)}
+                    onClick={e => this.editRfi(e)}
                   >
                     {Resources.save[currentLanguage]}
                   </button>

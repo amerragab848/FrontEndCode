@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import Api from "../../api";
-import Dropdown from "./DropdownMelcous";
-import Resources from "../../resources.json";
-import  Approval from '../../Styles/images/approval.png'
-import  Reject from '../../Styles/images/declined.png'
+import Api from "../../api"; 
+import Resources from "../../resources.json"; 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
  
