@@ -7741,6 +7741,10 @@
     "en": "item",
     "ar": "العنصر"
   },
+  "workplace": {
+    "en": "Workplace",
+    "ar": "مكان العمل"
+  },
   "editContact": {
     "en": "Edit Contact",
     "ar": "تعديل بيانات شخص"
@@ -7748,5 +7752,9 @@
   "otherActions": {
     "en": "Other Actions",
     "ar": "وظائف اخري"
+  },
+  "discplinesRequired": {
+    "en": "Please Select Discplines",
+    "ar": "برجاء اختيار التصميم"
   }
 }
