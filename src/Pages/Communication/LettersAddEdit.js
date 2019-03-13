@@ -125,7 +125,7 @@ class LettersAddEdit extends Component {
                 pathname: "/Letters/" + projectId
             }); 
         }
-        this.onChangeMessage =this.onChangeMessage.bind(this);
+      //  this.onChangeMessage =this.onChangeMessage.bind(this);
     }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
@@ -144,8 +144,8 @@ class LettersAddEdit extends Component {
         if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow,
-                message: RichTextEditor.setContentFromString
+                hasWorkflow: nextProps.hasWorkflow//,
+               // message: RichTextEditor.setContentFromString
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -205,7 +205,7 @@ class LettersAddEdit extends Component {
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
-                message: RichTextEditor.createEmptyValue()
+                message: ''
             };
 
             this.setState({ document: letter });
@@ -289,7 +289,7 @@ class LettersAddEdit extends Component {
         });
     }
 
-    onChangeMessage = (value,filed) => {
+    onChangeMessage = (value) => {
         let isEmpty = !value.getEditorState().getCurrentContent().hasText();
         if (isEmpty === false) {
 
@@ -300,7 +300,7 @@ class LettersAddEdit extends Component {
 
                 let updated_document = {};
 
-                updated_document[filed] = value.toString('markdown');
+                updated_document.message = value.toString('markdown');
 
                 updated_document = Object.assign(original_document, updated_document);
 
@@ -366,11 +366,7 @@ class LettersAddEdit extends Component {
                     document: updated_document
                 });
             })
-        }
-
-        console.log(field + "...", updated_document);
-        console.log('isSubscrib...', isSubscrib);
-
+        } 
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -743,7 +739,7 @@ class LettersAddEdit extends Component {
                                                             <div className="inputDev ui input">
                                                                 <RichTextEditor
                                                                     value={this.state.message}
-                                                                    onChange={e => this.onChangeMessage(e,'message')}
+                                                                    onChange={this.onChangeMessage.bind(this)}
                                                                 />
                                                             </div>
                                                         </div>
