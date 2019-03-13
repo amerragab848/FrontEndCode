@@ -2685,7 +2685,7 @@
     "ar": "ارسال للدوره المستنديه لاذن الصرف"
   },
   "sendToWorkFlow": {
-    "en": "Send To Workflow",
+    "en": "Send Workflow",
     "ar": "إرسال إلى الدورةالمستنديه"
   },
   "slectWorkFlow": {
@@ -7744,5 +7744,9 @@
   "editContact": {
     "en": "Edit Contact",
     "ar": "تعديل بيانات شخص"
+  },
+  "otherActions": {
+    "en": "Other Actions",
+    "ar": "وظائف اخري"
   }
 }

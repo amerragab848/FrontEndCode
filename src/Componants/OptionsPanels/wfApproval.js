@@ -4,8 +4,10 @@ import Api from "../../api";
 import eyeShow from "../../Styles/images/eyepw.svg";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import { toast } from "react-toastify";
+import dataservice from "../../Dataservice";
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class wfApproval extends Component {
   constructor(props) {
@@ -16,10 +18,9 @@ class wfApproval extends Component {
       type: false,
       approveData: [],
       password: "",
-      passwordStatus: false,
       submitLoading: false,
-      sendingData: {
-        approvalStatus: true,
+      updateWorkFlow: {
+        approvalStatus: this.props.approvalStatus,
         projectId: this.props.projectId,
         docId: this.props.docId,
         docTypeId: this.props.docTypeId,
@@ -34,62 +35,51 @@ class wfApproval extends Component {
     const currentType = this.state.type;
     this.setState({ type: !currentType });
   };
+
   componentDidMount = () => {
-    let url =
-      "GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" +
-      this.state.docApprovalId +
-      "&approvalStatus=" +
-      this.state.sendingData.approvalStatus;
-    let tempData = [];
-    Api.get(url)
-      .then(result => {
-        result.forEach(element => {
-          tempData.push({
-            label: element["contactName"],
-            value: element["contactId"]
-          });
-        });
-        this.setState({
-          data: result,
-          approveData: tempData
-        });
-      })
-      .catch(ex => { });
+    this.fillContacts(this.props.docApprovalId, this.props.approvalStatus);
   };
 
-  passwordHandleChange = e => {
-    Api.getPassword("GetPassWordEncrypt", e.target.value)
-      .then(result => {
-        this.setState({
-          passwordStatus: result
-        });
-      })
-      .catch(ex => {
-        throw ex;
+  fillContacts(docApprovalId, approvalStatus) {
+    dataservice.GetDataList("GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" + docApprovalId + "&approvalStatus=" + approvalStatus, 'contactName', 'contactId').then(result => {
+      this.setState({
+        approveData: result
       });
+    }).catch(ex => { 
+      toast.error(ex); 
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    alert(nextProps.approvalStatus);
+    if (nextProps.approvalStatus != this.props.approvalStatus) {
+
+      let original_updateWorkFlow = { ...this.state.updateWorkFlow };
+      let updateWorkFlow_new = {};
+      updateWorkFlow_new.approvalStatus = nextProps.approvalStatus;
+      updateWorkFlow_new = Object.assign(original_updateWorkFlow, updateWorkFlow_new); 
+      this.setState({
+        updateWorkFlow: updateWorkFlow_new
+      });
+      this.fillContacts(this.props.docApprovalId, nextProps.approvalStatus);
+    }
   };
+
   commentOnBlurHandler = e => {
     this.setState({
-      sendingData: { ...this.state.sendingData, comment: e.target.value }
+      updateWorkFlow: { ...this.state.updateWorkFlow, comment: e.target.value }
     });
   };
+
   selectHandleChange = e => {
     let contactId = [];
     e.forEach(element => {
       contactId.push(element.value);
     });
     this.setState({
-      sendingData: { ...this.state.sendingData, contacts: contactId }
+      updateWorkFlow: { ...this.state.updateWorkFlow, contacts: contactId }
     });
   };
-
-  validatePassword(value) {
-    let error;
-    if (!value) {
-      error = "Required";
-    }
-    return error;
-  }
 
   render() {
     return (
@@ -106,14 +96,22 @@ class wfApproval extends Component {
             return errors;
           }}
           onSubmit={values => {
-            if (this.state.passwordStatus === true) {
-              this.setState({ submitLoading: true });
-              Api.post("SendWorkFlowApproval", this.state.sendingData).then(
-                this.setState({ submitLoading: true })
-              );
-            } else alert("invalid Password");
-          }}
-        >
+            Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
+              if (result === true) {
+                this.setState({ submitLoading: true });
+                Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
+                  this.setState({ submitLoading: true });
+                  toast.success(Resources["successAlert"][currentLanguage]);
+
+                });
+
+              } else {
+                toast.error(Resources["invalidPassword"][currentLanguage]);
+              }
+            }).catch(ex => {
+              toast.error(ex);
+            });
+          }}>
           {({ errors, touched, handleBlur, handleChange }) => (
             <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
 
@@ -122,10 +120,7 @@ class wfApproval extends Component {
                   <label className="control-label">Password *</label>
                   <div className="inputPassContainer">
                     <div className={"ui input inputDev" + (errors.password && touched.password ? " has-error" : !errors.password && touched.password ? " has-success" : " ")}>
-                      <span
-                        className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "}
-                        onClick={this.toggle}
-                      >
+                      <span className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
                         <img src={eyeShow} />
                         <span className="show"> Show</span>
                         <span className="hide"> Hide</span>
@@ -133,11 +128,9 @@ class wfApproval extends Component {
                       <input name="password" type={this.state.type ? "text" : "password"}
                         className="form-control" id="password" placeholder="password" autoComplete="off"
                         onBlur={e => {
-                          this.passwordHandleChange(e);
                           handleBlur(e);
                         }}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
 
                       {errors.password && touched.password ? (
                         <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
@@ -151,9 +144,9 @@ class wfApproval extends Component {
                   </div>
                 </div>
               </div>
-              
-              
-                <Dropdown title="approveTo" data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
+
+
+              <Dropdown title="approveTo" data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
               <div className="textarea-group fullWidthWrapper textLeft">
                 <label>Comment</label>
                 <textarea
