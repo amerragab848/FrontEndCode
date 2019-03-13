@@ -281,7 +281,7 @@ class AddAccount extends Component {
                         </div>
                     </div>
                     <div className="doc-container">
-                        <div className="step-content">
+                        <div className="step-content noBtn__footer">
                             <div className="subiTabsContent">
                                 <div className="document-fields">
 
@@ -391,23 +391,23 @@ class AddAccount extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
-                                                    <div className={this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? ("has-error") :
-                                                        !this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? "" : ""} >
-                                                        <DropdownMelcous title='SupervisorCompany' data={this.state.CompanyData}
-                                                            handleChange={this.SupervisorCompanyhandleChange} placeholder='SupervisorCompany' name="SupervisorCompany" />
-                                                        {this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? (
-                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
-                                                    </div>
-                                                </div>
-
-                                                <div className="linebylineInput valid-input">
-                                                    <div className={this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? ("has-error") :
-                                                        !this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? "" : ""} >
-                                                        <DropdownMelcous title='SupervisorName' data={this.state.SupervisorNameData}
-                                                            handleChange={this.SupervisorNamehandleChange} placeholder='SupervisorName' name="SupervisorName" />
-                                                        {this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? (
-                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+                                                <div className="linebylineInput valid-input mix_dropdown">
+                                                    {/* <label class="control-label"> Employee Code </label> */}
+                                                    <div className="supervisor__company">
+                                                        <div className={this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? ("super_name has-error") :
+                                                            !this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? "super_name" : "super_name"} >
+                                                            <DropdownMelcous title='SupervisorName' data={this.state.SupervisorNameData}
+                                                                handleChange={this.SupervisorNamehandleChange} placeholder='SupervisorName' name="SupervisorName" />
+                                                            {this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? (
+                                                                <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+                                                        </div>
+                                                        <div className={this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? ("has-error super_company") :
+                                                            !this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? "super_company" : "super_company"} >
+                                                            <DropdownMelcous title='SupervisorCompany' data={this.state.CompanyData}
+                                                                handleChange={this.SupervisorCompanyhandleChange} placeholder='SupervisorCompany' name="SupervisorCompany" />
+                                                            {this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? (
+                                                                <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+                                                        </div>
                                                     </div>
                                                 </div>
 

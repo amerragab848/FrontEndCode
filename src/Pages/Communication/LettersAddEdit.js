@@ -734,7 +734,7 @@ class LettersAddEdit extends Component {
                                                             />
                                                         </div>
 
-                                                        <div className="fullWidthWrapper textLeft">
+                                                        <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <RichTextEditor
@@ -752,7 +752,7 @@ class LettersAddEdit extends Component {
                                             )}
                                         </Formik> 
                                     </div>
-                                    <div className="doc-pre-cycle">
+                                    <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 ?
                                                 <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
