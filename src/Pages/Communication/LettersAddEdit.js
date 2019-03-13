@@ -119,6 +119,8 @@ class LettersAddEdit extends Component {
         }
 
         if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) { 
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+
             this.props.history.push({
                 pathname: "/Letters/" + projectId
             }); 
@@ -142,7 +144,8 @@ class LettersAddEdit extends Component {
         if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow
+                hasWorkflow: nextProps.hasWorkflow,
+                message: RichTextEditor.setContentFromString
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
