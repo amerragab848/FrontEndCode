@@ -150,7 +150,7 @@ class SendToInbox extends Component {
 
                             </div>
                             { ! this.state.submitLoading ?
-                            <div className="dropBtn">
+                            <div className="fullWidthWrapper">
                                 <button className="primaryBtn-1 btn" type="submit">{Resources['send'][currentLanguage]}</button>
                             </div>
                               :   (

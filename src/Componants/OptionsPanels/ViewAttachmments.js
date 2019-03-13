@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import {
     bindActionCreators
 } from 'redux';
+import moment from "moment";
 
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
@@ -37,7 +38,7 @@ class ViewAttachmments extends Component {
     versionHandler = (parentId) => {
         let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
         Api.get(urlVersion).then(result => {
-            console.log("success")
+            
         }).catch(ex => {
         });
     }
@@ -46,10 +47,14 @@ class ViewAttachmments extends Component {
         this.getData()
     }
 
-    render() {
-
+    getData() {
+        let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
+        this.props.actions.GetUploadedFiles(url);
+    }
+    render() { 
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
             let extension = item['fileName'].split(".")[1] === 'xlsx' ? xlsx : (item['fileName'].split(".")[1] === 'pdf' ? pdf : doc)
+            let createdDate= moment(item['createdDate']).format('DD/MM/YYYY');
             return (
                 <tr key={Index}>
                     <td>
@@ -66,7 +71,7 @@ class ViewAttachmments extends Component {
                     </td>
                     <td>
                         <div className="contentCell tableCell-3">
-                            <p className="zero status">{item['uploadDate']}</p>
+                            <p className="zero status">{createdDate}</p>
                         </div>
                     </td>
                     <td>
@@ -130,10 +135,6 @@ class ViewAttachmments extends Component {
         )
     }
 
-    getData() {
-        let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        this.props.actions.GetUploadedFiles(url);
-    }
 }
 
 function mapStateToProps(state, ownProps) {

@@ -147,6 +147,9 @@ sayed exp
   min-width: 48%;
   margin-bottom: 10px;
 }
+.dropWrapper .fillter-item-c label {
+  font-family: font-opensb;
+}
 .dropWrapper .filterWrapper {
   width: 100%;
 }
@@ -196,6 +199,10 @@ sayed exp
 .dropWrapper .spanValidation {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 4px;
+}
+.dropWrapper .spanValidation label {
+  font-family: font-opensb;
 }
 .dropWrapper .spanValidation span{
   padding: 1px;
@@ -383,6 +390,8 @@ table edition
   animation-delay: -0.16s;
 }
 
+
+
 @-webkit-keyframes sk-bouncedelay {
   0%, 80%, 100% { -webkit-transform: scale(0) }
   40% { -webkit-transform: scale(1.0) }
@@ -481,6 +490,7 @@ table edition
 }
 .proForm .ui.input.inputDev .inputsideNote {
   right: 10px;
+  top: -17px
 }
 .approvalTitle {
   height: 80px;
@@ -649,7 +659,7 @@ table edition
         border-radius: 4px;
       }
       .textarea-group {
-        padding: 12px 16px;
+        padding: 12px 0;
         border-radius: 4px;
         margin-bottom: 8px;
       }
@@ -1481,7 +1491,8 @@ tfoot tr td p{
   font-weight: bold;
 }
 .skylight-dialog{
-  max-height: 500px;
+  max-height: 600px;
+  min-height: 280px !important;
   overflow-y: auto;
 } 
 .icon__btn {
@@ -1508,8 +1519,8 @@ tfoot tr td p{
   display: flex;
 }
 .dashboard__name {
-  padding-top: 75px;
-  padding-bottom: 93px;
+  padding-top: 67px;
+  padding-bottom: 61px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1556,7 +1567,7 @@ tfoot tr td p{
 }
 .card-status .MultiPeinding {
   display: flex;
-  margin: 0 2px; 
+  margin: 0; 
 }
 .workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
   color: #fff
@@ -2527,4 +2538,45 @@ button.companies_icon {
   .noTabs__document .approveDocument .approveDocumentBTNS .border {
     margin: 0 10px;
   }
+}
+.fullWidth_form {
+  width: 100%;
+} 
+.datepickerContainer.proForm .linebylineInput__name .ui.input.inputDev input, .datepickerContainer.proForm .first-proform .ui.input.inputDev input {
+  width: 360px;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.fullRowInput {
+  width: 100%;
+  flex-shrink: 0;
+}
+.dropWrapper .fullWidthWrapper.textLeft.textarea-group {
+  margin: 0
+}
+.dropWrapper.proForm .form-group {
+  padding: 0 16px;
+  margin: 0;
+}
+.dropWrapper .fullWidthWrapper.textLeft.drop__padding--approve {
+  padding: 0 16px;
+  margin-top: 10px;
+}
+.skylight-dialog >h2 {
+  text-align: center;
+  border-bottom: 1px solid #DADEE6;
+  padding-bottom: 20px;
+  margin: 10px 40px;
+}
+.dropWrapper {
+  padding: 15px 25PX;
+}
+.attachmentTable tbody tr .contentCell.tableCell-3 {
+  min-width: 150px;
+  max-width: 200px;
+}
+.attachmentTable tbody tr .contentCell.tableCell-4 {
+  min-width: 185px;
+  max-width: 250px;
+}
+.attachmentTable tbody tr .contentCell.tableCell-2 {
+  padding: 0;
 }

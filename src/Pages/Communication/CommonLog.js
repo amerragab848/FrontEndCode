@@ -44,6 +44,7 @@ class CommonLog extends Component {
     super(props); 
 
     this.state = {
+      projectName: localStorage.getItem('lastSelectedprojectName'),
       isLoading: true,
       pageTitle: "",
       viewfilter: false,
@@ -126,8 +127,8 @@ class CommonLog extends Component {
     
     let obj = {
         docId: 0,
-        projectId:this.state.projectId, 
-        projectName: 'row.projectName',
+        projectId: this.state.projectId, 
+        projectName: this.state.projectName,
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false
