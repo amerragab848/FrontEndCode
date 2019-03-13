@@ -43,7 +43,8 @@ const ValidtionSchemaForEdit = Yup.object().shape({
         .required(Resources['isRequiredField'][currentLanguage]),
     CompanyForEdit: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage])
-        .nullable(true),
+        .nullable(true)
+        ,
     ContactNameForEdit: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage])
         .nullable(false),
@@ -165,7 +166,7 @@ class ExpensesWorkFlowAddEdit extends Component {
     NextStep = () => {
 
         if (this.state.CurrStep === 1) {
-            window.scrollTo(0,0)
+            window.scrollTo(0, 0)
             this.setState({
                 FirstStep: false,
                 SecondStep: true,
@@ -177,7 +178,7 @@ class ExpensesWorkFlowAddEdit extends Component {
         }
         else {
             if (this.state.CurrStep === 2) {
-                window.scrollTo(0,0)
+                window.scrollTo(0, 0)
                 this.setState({
                     FirstStep: false,
                     SecondStep: false,
@@ -236,7 +237,7 @@ class ExpensesWorkFlowAddEdit extends Component {
     PreviousStep = () => {
         if (idEdit !== 0) {
             if (this.state.CurrStep === 3) {
-                window.scrollTo(0,0)
+                window.scrollTo(0, 0)
                 this.setState({
                     FirstStep: false,
                     SecondStep: true,
@@ -248,7 +249,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             }
             else {
                 if (this.state.CurrStep === 2) {
-                    window.scrollTo(0,0)
+                    window.scrollTo(0, 0)
                     this.setState({
                         FirstStep: true,
                         SecondStep: false,

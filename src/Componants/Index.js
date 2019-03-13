@@ -119,9 +119,7 @@ class Index extends Component {
     return chartWidgets;
   }
 
-  renderThreeCard(index) {
-  
-    //let Widgets_Order = this.getFromLS("Widgets_Order") || {};
+  renderThreeCard(index) { 
 
     try { 
       let Widgets_Order =  CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
@@ -187,7 +185,7 @@ class Index extends Component {
                   <h2 className="SummeriesTitle">
                     {language[widget.widgetCategory][currentLanguage]}
                   </h2>
-                  <div className="SummeriesContainerContent">
+                  <div className={"SummeriesContainerContent " +(widget.key =="0-1"? " numbersContainerContent":" ")}>
                     {widget.widgets.length > 0
                       ? widget.widgets.map(panel => {
                           if (panel.type === "threeWidget") {
@@ -226,7 +224,7 @@ class Index extends Component {
                 <h2 className="SummeriesTitle">
                   {language[widget.widgetCategory][currentLanguage]}
                 </h2>
-                <div className="SummeriesContainerContent">
+                <div className={"SummeriesContainerContent " +(widget.key =="0-1"? " numbersContainerContent":" ")}>
                   {widget.widgets.length > 0
                     ? widget.widgets.map(panel => {
                         if (panel.type === "threeWidget") {

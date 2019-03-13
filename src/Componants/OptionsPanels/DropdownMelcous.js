@@ -3,6 +3,28 @@ import Select from 'react-select';
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
+
+const ProjectStyles = {
+    
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled
+                ? '#fff'
+                : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+            color: '#3e4352',
+            fontSize: '14px',
+            cursor: isDisabled ? 'not-allowed' : 'pointer',
+            textTransform: 'capitalize',
+            fontFamily: 'font-opens',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+        };
+    },
+};
+
+
 class DropdownMelcous extends Component {
     constructor(props) {
         super(props)
@@ -14,9 +36,9 @@ class DropdownMelcous extends Component {
 
         if (this.props.onChange != undefined) {
             this.props.onChange(this.props.name, value);
-           
+
         }
-        this.props.handleChange(value,this.props.name);
+        this.props.handleChange(value, this.props.name);
     };
 
 
@@ -38,7 +60,7 @@ class DropdownMelcous extends Component {
                     }
                 </div>
                 <div>
-                    <div className={"customD_Menu "+(this.props.error?"errorClass":'')} style={{ outline: "none",position: 'relative' }}>
+                    <div className={"customD_Menu " + (this.props.error ? "errorClass" : '')} style={{ outline: "none", position: 'relative' }}>
 
                         <div>
 
@@ -55,9 +77,10 @@ class DropdownMelcous extends Component {
                                 id={this.props.id ? this.props.index : this.props.id}
                                 onChange={this.handleChange}
                                 onBlur={this.handleBlur}
+                                styles={ProjectStyles}
                             />
                             {this.props.error && this.props.touched && (
-                                <em className ="dropdown__error">
+                                <em className="dropdown__error">
                                     {this.props.error}
                                 </em>
                             )}

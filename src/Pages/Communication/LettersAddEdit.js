@@ -18,34 +18,39 @@ import RichTextEditor from 'react-rte';
 import { connect } from 'react-redux';
 import {
     bindActionCreators
-} from 'redux'; 
+} from 'redux';
 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 
-import NotifiMsg from '../../Componants/publicComponants/NotifiMsg'
+import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
+
+import Distribution from '../../Componants/OptionsPanels/DistributionList'
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+
+import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    arrange: Yup.number(Resources['onlyNumbers'][currentLanguage])
-        .required(Resources['arrangeRequired'][currentLanguage]),
 
     refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
 
-    fromCompanyId: Yup.string() 
+    fromCompanyId: Yup.string()
         .required(Resources['fromCompanyRequired'][currentLanguage]),
 
-    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
+        .nullable(true),
 
-    toCompanyId: Yup.string() 
+    toCompanyId: Yup.string()
         .required(Resources['toCompanyRequired'][currentLanguage]),
 
-    toContactId: Yup.string() 
+    toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
 
 })
@@ -62,7 +67,6 @@ class LettersAddEdit extends Component {
     constructor(props) {
 
         super(props);
-        // console.log(this.props.location.search);
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
@@ -85,13 +89,16 @@ class LettersAddEdit extends Component {
         }
 
         this.state = {
+            currentTitle: "sendToWorkFlow",
+            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
-            addComplete: false,
             isView: false,
             docId: docId,
             docTypeId: 19,
             projectId: projectId,
+            docApprovalId: docApprovalId,
+            arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
             ToContacts: [],
@@ -112,12 +119,13 @@ class LettersAddEdit extends Component {
         }
 
         if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
-            //alert('Dont have Permissions');
-            // this.props.history.push({
-            //     pathname: "/Letters/"+projectId 
-            // });
-            this.props.history.goBack();
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+
+            this.props.history.push({
+                pathname: "/Letters/" + projectId
+            });
         }
+        //  this.onChangeMessage =this.onChangeMessage.bind(this);
     }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
@@ -136,8 +144,10 @@ class LettersAddEdit extends Component {
         if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow
+                hasWorkflow: nextProps.hasWorkflow//,
+                // message: RichTextEditor.setContentFromString
             });
+            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
     };
@@ -195,7 +205,7 @@ class LettersAddEdit extends Component {
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
-                message: RichTextEditor.createEmptyValue()
+                message: ''
             };
 
             this.setState({ document: letter });
@@ -297,14 +307,6 @@ class LettersAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-                // console.log(updated_document);
-                // console.log(value.toString('markdown'));
-                // if (this.props.onChange) {
-                //     // Send the changes up to the parent component as an HTML string.
-                //     // This is here to demonstrate using `.toString()` but in a real app it
-                //     // would be better to avoid generating a string on each change.
-                //     this.props.onChange(value.toString('html'));
-                // }
             }
 
         }
@@ -342,7 +344,7 @@ class LettersAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-
+        if (event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document[field] = event.value;
@@ -365,11 +367,10 @@ class LettersAddEdit extends Component {
                 });
             })
         }
-
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
-                this.setState({ 
+                this.setState({
                     [targetState]: result
                 });
             });
@@ -381,38 +382,37 @@ class LettersAddEdit extends Component {
             isLoading: true
         });
 
-        // dataservice.addObject('EditLetterById', this.state.document).then(result => {
-        //     this.setState({
-        //         isLoading: true,
-        //         addComplete: true
-        //     });
-        //     this.props.history.push({
-        //         pathname: "/Letters/" + this.state.projectId
-        //     });
-        // });
+        dataservice.addObject('EditLetterById', this.state.document).then(result => {
+            this.setState({
+                isLoading: true
+            });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+            this.props.history.push({
+                pathname: "/Letters/" + this.state.projectId
+            });
+        });
     }
 
     saveLetter(event) {
         let saveDocument = { ...this.state.document };
 
-        console.log('valid');
-
         saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
 
-        console.log(saveDocument);
         dataservice.addObject('AddLetters', saveDocument).then(result => {
             this.setState({
                 docId: result
             });
-        }); 
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        });
     }
 
     saveAndExit(event) {
-        let letter = { ...this.state.document };
-        console.log(letter);
+        // let letter = { ...this.state.document };
+
         this.props.history.push({
-            pathname: "/Letters",
-            search: "?projectId=" + this.state.projectId
+            pathname: "/Letters/" + this.state.projectId
         });
     }
 
@@ -420,9 +420,9 @@ class LettersAddEdit extends Component {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type='submit' onClick={e => this.saveLetter(e)}>{Resources.save[currentLanguage]}</button>;
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type='submit' onClick={e => this.saveAndExit(e)}>{Resources.saveAndExit[currentLanguage]}</button>
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
         }
         return btn;
     }
@@ -436,14 +436,35 @@ class LettersAddEdit extends Component {
         )
     }
 
+    handleShowAction = (item) => {
+        console.log(item);
+        if (item.value != "0") {
+
+            this.setState({
+                currentComponent: item.value,
+                currentTitle: item.title,
+                showModal: true
+            })
+
+            this.simpleDialog.show()
+        }
+    }
     render() {
+        let actions = [
+            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
+            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
+            {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }, {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }
+
+        ];
         return (
             <div className="mainContainer">
-                {
-                    this.state.addComplete === true ?
-                        <NotifiMsg showNotify={this.state.addComplete} IsSuccess={true} Msg={Resources['smartSentAccountingMessage'][currentLanguage].successTitle} /> :
-                        null
-                }
+
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
@@ -489,9 +510,17 @@ class LettersAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            
-                                            onReset={(values) => { }} >
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue }) => (
+                                            onSubmit={(values) => {
+                                                if (this.props.changeStatus === true && this.props.docId > 0) {
+                                                    this.editLetter();
+                                                } else if (this.props.changeStatus === false && this.props.docId === 0) {
+                                                    this.saveLetter();
+                                                } else {
+                                                    this.saveAndExit();
+                                                }
+                                            }}  >
+
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="proForm first-proform">
@@ -554,7 +583,7 @@ class LettersAddEdit extends Component {
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.subject && touched.subject ? (" has-error") : " ")} >
 
-                                                                <input type="text" className="form-control" id="arrange"
+                                                                <input type="text" className="form-control" id="arrange" readOnly
                                                                     value={this.state.document.arrange}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
@@ -563,16 +592,14 @@ class LettersAddEdit extends Component {
                                                                         handleBlur(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
-                                                                {errors.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                                                                {/* {errors.arrange ? (<em className="pError">{errors.arrange}</em>) : null} */}
 
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={errors.subject && touched.subject ?
-                                                                ("ui input inputDev has-error") : "ui input inputDev"} >
-
+                                                            <div className={"ui input inputDev" + (errors.subject && touched.subject ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"
                                                                     value={this.state.document.refDoc}
                                                                     name="refDoc"
@@ -593,88 +620,102 @@ class LettersAddEdit extends Component {
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
-
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings}
                                                                         name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
 
                                                                 </div>
-                                                                <a data-bind="attr: { href: sharedSettings }" target="_blank"><span data-bind="text: $root.language.openFolder[$root.currentLanguage()]">Open Link</span></a>
+                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
 
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c" + ((errors.fromCompanyId && touched.fromCompanyId) ? " has-error" : (!errors.fromCompanyId && !touched.fromCompanyId) ? (" has-success") : " ")}>
+
+                                                        <div className="linebylineInput valid-input mix_dropdown">
+
+                                                            <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
+                                                            <div className="supervisor__company">
+                                                                <div className="super_name">
+                                                                    <Dropdown
+                                                                        //title="fromContact"
+                                                                        isMulti={false}
+                                                                        data={this.state.fromContacts}
+                                                                        selectedValue={this.state.selectedFromContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromContactId}
+                                                                        touched={touched.fromContactId}
+                                                                        isClear={true}
+                                                                        index="letter-fromContactId"
+                                                                        name="fromContactId"
+                                                                        id="fromContactId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                    <Dropdown
+                                                                        //title="fromCompany"
+                                                                        data={this.state.companies}
+                                                                        isMulti={false}
+                                                                        selectedValue={this.state.selectedFromCompany}
+                                                                        handleChange={event => {
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                        }}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromCompanyId}
+                                                                        touched={touched.fromCompanyId}
+
+                                                                        index="fromCompanyId"
+                                                                        name="fromCompanyId"
+                                                                        id="fromCompanyId" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="linebylineInput valid-input mix_dropdown">
+
+                                                            <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
+                                                            <div className="supervisor__company">
+                                                                <div className="super_name">
                                                                 <Dropdown
-                                                                    title="fromCompany"
-                                                                    data={this.state.companies}
+                                                                    ///title="toContactName"
                                                                     isMulti={false}
-                                                                    selectedValue={this.state.selectedFromCompany}
-                                                                    handleBlur={setFieldValue}
-                                                                    handleChange={event => {
-                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                    }}
-                                                                    index="fromCompanyId"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" /> 
-                                                                {(touched.fromCompanyId && errors.fromCompanyId  ) ? ( <em className="pError">{errors.fromCompanyId}</em>) : null}
-                                                                {/* {JSON.stringify(touched)} */}
-                                                            </div>
-                                                        </div>
+                                                                    data={this.state.ToContacts}
+                                                                    selectedValue={this.state.selectedToContact}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (this.state.document.fromContactId ? (" has-error") : !errors.fromContactId ? (" has-success") : " ")}>
-                                                                <Dropdown
-                                                                    title="fromContact"
-                                                                    isMulti={false}
-                                                                    data={this.state.fromContacts}
-                                                                    selectedValue={this.state.selectedFromContact}
+                                                                    onChange={setFieldValue}
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.toContactId}
+                                                                    touched={touched.toContactId}
 
-                                                                    handleBlur={handleBlur}  
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-                                                                    index="letter-fromContact" 
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.fromContactId ? (<em className="pError">{errors.fromContactId}</em>) : null}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toCompanyId && touched.toCompanyId ? (" has-error") : !errors.toCompanyId && touched.toCompanyId ? (" has-success") : " ")}>
-
-                                                                <Dropdown
-                                                                    title="toCompany" 
+                                                                    index="letter-toContactId"
+                                                                    name="toContactId"
+                                                                    id="toContactId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                
+                                                            <Dropdown
+                                                                    //title="toCompany"
                                                                     isMulti={false}
                                                                     data={this.state.companies}
                                                                     selectedValue={this.state.selectedToCompany}
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+
+                                                                    onChange={setFieldValue}
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.toCompanyId}
+                                                                    touched={touched.toCompanyId}
+
                                                                     index="letter-toCompany"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.toCompanyId ? (<em className="pError">{errors.toCompanyId}</em>) : null}
+                                                                    name="toCompanyId"
+                                                                    id="toCompanyId" />
+                                                                </div>
                                                             </div>
                                                         </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className={"ui input inputDev fillter-item-c " + (errors.toContactId && touched.toContactId ? (" has-error") : !errors.toContactId && touched.toContactId ? (" has-success") : "")}>
-                                                                <Dropdown
-                                                                    title="toContactName"
-                                                                    isMulti={false}
-                                                                    data={this.state.ToContacts}
-                                                                    selectedValue={this.state.selectedToContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-                                                                    index="letter-toContactName"
-                                                                    name="fromCompanyId"
-                                                                    id="fromCompanyId" />
-                                                                {touched.toContactId ? (<em className="pError">{errors.toContactId}</em>) : null}
-
-                                                                {/* {JSON.stringify(errors)} */}
-                                                            </div>
-                                                        </div>
-
+  
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="discipline"
@@ -695,7 +736,7 @@ class LettersAddEdit extends Component {
                                                             />
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <RichTextEditor
@@ -711,9 +752,9 @@ class LettersAddEdit extends Component {
                                                     </div>
                                                 </Form>
                                             )}
-                                        </Formik> 
+                                        </Formik>
                                     </div>
-                                    <div className="doc-pre-cycle">
+                                    <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 ?
                                                 <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -733,15 +774,21 @@ class LettersAddEdit extends Component {
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
-                                    <h2 className="zero">ACTIONS</h2>
+                                    {/* <h2 className="zero">ACTIONS</h2> */}
                                     <div className="approveDocumentBTNS">
                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
+
                                         {this.state.isApproveMode === true ?
-                                            <button className="primaryBtn-1 btn ">APPROVE</button>
+                                            <div >
+                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+
+
+                                            </div>
                                             : null
                                         }
-                                        <button className="primaryBtn-2 btn middle__btn">TO WORKFLOW</button>
-                                        <button className="primaryBtn-2 btn">TO DIST. LIST</button>
+                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -751,8 +798,15 @@ class LettersAddEdit extends Component {
                                 : null
                         }
                     </div>
+
+                </div>
+                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                        {this.state.currentComponent}
+                    </SkyLight>
                 </div>
             </div>
+
         );
     }
 }

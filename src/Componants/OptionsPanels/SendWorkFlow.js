@@ -41,7 +41,7 @@ class SendWorkFlow extends Component {
         this.setState({
             selectedWorkFlow: item,
             workFlowData: { ...this.state.workFlowData, workFlowId: item.value }
-        }); 
+        });
 
          let url = "GetProjectWorkFlowContactsFirstLevelForList?workFlow=" + item.value;
         
@@ -75,7 +75,7 @@ class SendWorkFlow extends Component {
                 <Dropdown title="contact" data={this.state.WorkFlowContactData} name="ddlApproveTo"  selectedValue={this.state.selectedApproveId} 
                 index='ddlApproveTo' className={this.state.toCompanyClass} message={this.state.toCompanyErrorMess} />
   
-                <div className="dropBtn">
+                <div className="fullWidthWrapper">
                     <button className="workFlowDataBtn-1 primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
                 </div>
             </div>
