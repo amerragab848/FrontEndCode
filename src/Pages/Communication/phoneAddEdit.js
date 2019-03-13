@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
-// import Api from '../../../api';
+import Api from '../../api'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import moment from 'moment'
 import Resources from '../../resources.json';
@@ -11,7 +11,19 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import DataService from '../../Dataservice'
 import CryptoJS from 'crypto-js';
-
+import { toast } from "react-toastify";
+import Distribution from '../../Componants/OptionsPanels/DistributionList'
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
+import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import Config from "../../Services/Config.js";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import SkyLight from 'react-skylight';
+import * as communicationActions from '../../store/actions/communication';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -27,7 +39,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
-
+let actions = []
 class AddAccount extends Component {
     constructor(props) {
         super(props)
@@ -37,15 +49,12 @@ class AddAccount extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
-
-
                 }
                 catch{
                     this.props.history.goBack();
@@ -53,7 +62,18 @@ class AddAccount extends Component {
             }
             index++;
         }
+
         this.state = {
+            currentTitle: "sendToWorkFlow",
+            showModal: false,
+            isViewMode: false,
+            isApproveMode: isApproveMode,
+            isView: false,
+            docId: docId,
+            docTypeId: 29,
+            projectId: projectId,
+            docApprovalId: docApprovalId,
+            arrange: arrange,
             CompanyData: [],
             fromContactNameData: [],
             toContactNameData: [],
@@ -63,10 +83,17 @@ class AddAccount extends Component {
             arrange: 0,
             reference: '',
             fromCompany: '',
+            fromContactName: '',
             toCompany: '',
             enteredBy: '',
             descriptionCall: '',
-            numberCall: ''
+            numberCall: '',
+            saveBtnTxt: 'save',
+            copmonentMode: 'add',
+        }
+        if (!Config.IsAllow(89) || !Config.IsAllow(90) || !Config.IsAllow(91)) {
+            toast.warning(Resources['missingPermissions'][currentLanguage])
+            this.props.history.push({ pathname: "/Phone/" + projectId });
         }
     }
     handleChange = (key, value) => {
@@ -85,10 +112,7 @@ class AddAccount extends Component {
                 break;
             default:
                 this.setState({ [key]: value })
-
-
         }
-
     }
     componentDidMount() {
         console.log(this.state.params)
@@ -101,12 +125,50 @@ class AddAccount extends Component {
 
     }
     save = (values) => {
-        this.setState({ isLoading: true })
-        console.log('values', values)
-        console.log("state", this.state)
+        if (this.state.saveBtnTxt == 'save') {
+            this.setState({ isLoading: true })
+            let phone = {
+                projectId: projectId,
+                subject: values.subject,
+                fromCompanyId: this.state.fromCompany.value,
+                fromContactId: this.state.fromContactName.value,
+                toCompanyId: values.toCompany.value,
+                toContactId: values.toContactName.value,
+                arrange: this.state.arrange,
+                refDoc: this.state.reference,
+                details: this.state.descriptionCall,
+                docDate: this.state.docDate,
+                status: this.state.radioBtn,
+                callTime: values.callTime,
+                toPhone: this.state.numberCall,
+                enteredBy: this.state.enteredBy
+            }
+            Api.post("AddPhone", phone).then((res) => {
+                alert(res.id);
+                toast.success(Resources['operationSuccess'][currentLanguage])
+                this.setState({
+                    isLoading: false,
+                    saveBtnTxt: 'saveAndExit',
+                    copmonentMode: 'edit',
+                    docId: res.id
+                })
+            }).catch(() => {
+                toast.success(Resources['operationCanceled'][currentLanguage])
+            })
+        }
+
+
+    }
+    viewAttachments() {
+        return (
+            this.state.docId > 0 ? (
+                Config.IsAllow(3317) === true ?
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={840} />
+                    : null)
+                : null
+        )
     }
     render() {
-
         return (
             <div className="mainContainer">
                 <div className="documents-stepper cutome__inputs noTabs__document">
@@ -134,27 +196,19 @@ class AddAccount extends Component {
                     <div className="doc-container">
                         <div className="step-content">
                             <div className="subiTabsContent">
-
                                 <div className="document-fields">
-
                                     {this.state.isLoading ? <LoadingSection /> : null}
-
                                     <Formik
-
                                         initialValues={{
                                             subject: '',
                                             toContactName: '',
                                             toCompany: '',
                                             callTime: ''
                                         }}
-
                                         validationSchema={validationSchema}
-
                                         onSubmit={(values) => {
                                             this.save(values)
-
                                         }} >
-
                                         {({ errors, touched, handleBlur, handleChange, handleSubmit, values, setFieldTouched, setFieldValue }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
@@ -196,7 +250,6 @@ class AddAccount extends Component {
                                                         startDate={this.state.docDate}
                                                         handleChange={e => this.handleChange('docDate', e)} />
                                                 </div>
-
                                                 <div className="linebylineInput valid-input">
                                                     <label className="control-label">{Resources['arrange'][currentLanguage]} </label>
                                                     <div className={'ui input inputDev '}>
@@ -204,8 +257,6 @@ class AddAccount extends Component {
                                                             onChange={e => this.handleChange('arrange', e.target.value)} />
                                                     </div>
                                                 </div>
-
-
                                                 <div className="linebylineInput valid-input fullRowInput">
                                                     <label className="control-label">{Resources['reference'][currentLanguage]} </label>
                                                     <div className={'ui input inputDev '}>
@@ -213,23 +264,18 @@ class AddAccount extends Component {
                                                             onChange={e => this.handleChange('reference', e.target.value)} />
                                                     </div>
                                                 </div>
-
                                                 <div className="linebylineInput valid-input">
                                                     <DropdownMelcous title='fromCompany'
                                                         data={this.state.CompanyData}
                                                         handleChange={e => this.handleChange('fromCompany', e)}
                                                         placeholder='fromCompany' />
                                                 </div>
-
                                                 <div className="linebylineInput valid-input">
                                                     <DropdownMelcous title='ContactName'
                                                         data={this.state.fromContactNameData}
                                                         handleChange={e => this.handleChange('fromContactName', e)}
                                                         placeholder='ContactName' />
                                                 </div>
-
-
-
                                                 <div className="linebylineInput valid-input">
                                                     <DropdownMelcous title='toCompany'
                                                         name='toCompany'
@@ -256,7 +302,6 @@ class AddAccount extends Component {
                                                         touched={touched.toContactName}
                                                         value={values.toContactName} />
                                                 </div>
-
                                                 <div className="linebylineInput valid-input linebylineInput__name">
                                                     <label className="control-label">{Resources['enteredBy'][currentLanguage]} </label>
                                                     <div className={'ui input inputDev '}>
@@ -302,7 +347,7 @@ class AddAccount extends Component {
                                                         <button
                                                             className="primaryBtn-1 btn largeBtn"
                                                             type="submit"
-                                                        >  {Resources['save'][currentLanguage]}
+                                                        >  {Resources[this.state.saveBtnTxt][currentLanguage]}
                                                         </button>
                                                     ) :
                                                         (
@@ -319,11 +364,49 @@ class AddAccount extends Component {
                                             </Form>
                                         )}
                                     </Formik>
+                                </div>
+                                <div className="doc-pre-cycle">
+                                    <div>
+                                        {this.state.docId > 0 ?
+                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            : null
+                                        }
+                                        {this.viewAttachments()}
 
+                                        {this.props.changeStatus === true ?
+                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            : null
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {
+                        this.props.changeStatus === true ?
+                            <div className="approveDocument">
+                                <h2 className="zero">ACTIONS</h2>
+                                <div className="approveDocumentBTNS">
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
+                                    {this.state.isApproveMode === true ?
+                                        <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >APPROVE</button>
+                                        : null
+                                    }
+                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>TO WORKFLOW</button>
+                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>TO DIST. LIST</button>
+                                    <span className="border"></span>
+                                    <div className="document__action--menu">
+                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                    </div>
+                                </div>
+                            </div>
+                            : null
+                    }
+                </div>
+                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                        {this.state.currentComponent}
+                    </SkyLight>
                 </div>
             </div>
 
@@ -331,4 +414,24 @@ class AddAccount extends Component {
     }
 
 }
-export default withRouter(AddAccount)
+function mapStateToProps(state, ownProps) {
+    return {
+        document: state.communication.document,
+        isLoading: state.communication.isLoading,
+        changeStatus: state.communication.changeStatus,
+        file: state.communication.file,
+        files: state.communication.files,
+        hasWorkflow: state.communication.hasWorkflow
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(AddAccount))
