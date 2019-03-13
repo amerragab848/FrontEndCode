@@ -30,7 +30,7 @@ class OptionContainer extends React.Component {
             currentTitle: 'LogControls',
             selectedPanels: [],
             showModal: false,
-            defualtValue:{label: Resources["LogControls"][currentLanguage],value: '0'},
+            defualtValue:{label: Resources["otherActions"][currentLanguage],value: '0'},
             data: [ 
                     { title: "sendByEmail", value: <SendByEmails docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendByEmail"][currentLanguage] },
                     { title: "sendByInbox", value: <SendToInbox docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendByInbox"][currentLanguage] },

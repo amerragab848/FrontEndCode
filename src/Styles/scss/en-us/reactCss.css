@@ -1547,7 +1547,7 @@ tfoot tr td p{
 }
 .card-status .MultiPeinding {
   display: flex;
-  margin: 0 2px; 
+  margin: 0; 
 }
 .workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
   color: #fff
@@ -2451,4 +2451,15 @@ button.companies_icon {
 }
 .dropWrapper {
   padding: 15px 25PX;
+}
+.attachmentTable tbody tr .contentCell.tableCell-3 {
+  min-width: 150px;
+  max-width: 200px;
+}
+.attachmentTable tbody tr .contentCell.tableCell-4 {
+  min-width: 185px;
+  max-width: 250px;
+}
+.attachmentTable tbody tr .contentCell.tableCell-2 {
+  padding: 0;
 }
