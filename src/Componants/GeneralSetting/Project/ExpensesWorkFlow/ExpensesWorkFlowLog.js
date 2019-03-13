@@ -143,6 +143,12 @@ class ExpensesWorkFlowLog extends Component {
             search: "?arrange=" + this.state.MaxArrange
         });
     }
+    onRowClick=(obj)=>{
+        this.props.history.push({
+            pathname: "/ExpensesWorkFlowAddEdit",
+            search: "?id=" + obj.id
+        });
+    }
 
     render() {
 
@@ -152,7 +158,7 @@ class ExpensesWorkFlowLog extends Component {
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
                     showCheckbox={this.state.showCheckbox}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                //  onRowClick={this.cellClick.bind(this)}
+                     onRowClick={this.onRowClick.bind(this)}
                 />
             ) : <LoadingSection />
 

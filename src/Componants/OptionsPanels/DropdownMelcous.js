@@ -38,7 +38,7 @@ class DropdownMelcous extends Component {
                     }
                 </div>
                 <div>
-                    <div className={"customD_Menu"+this.props.error?"errorClass":''} style={{ outline: "none",position: 'relative' }}>
+                    <div className={"customD_Menu "+(this.props.error?"errorClass":'')} style={{ outline: "none",position: 'relative' }}>
 
                         <div>
 
