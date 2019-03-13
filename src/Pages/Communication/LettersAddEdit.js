@@ -220,8 +220,7 @@ class LettersAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
-            let selectedCompany = {};
-            let selectedToCompany = {};
+       
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {

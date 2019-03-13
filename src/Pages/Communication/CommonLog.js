@@ -106,14 +106,13 @@ class CommonLog extends Component {
   }
   
   shouldComponentUpdate(nextProps, nextState) {
-    // alert(nextProps.isCustom);
-    // alert(this.state.isCustom);
+ 
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
   }
   
   componentWillUpdate () {
-   //alert('isCustom')
+  
   }
 
   hideFilter(value) {
