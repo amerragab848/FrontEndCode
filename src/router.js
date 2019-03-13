@@ -76,7 +76,7 @@ let routes = (
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />,
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />,
 
-    <Route component={OldAppNavigation} />,
+    {/* <Route component={OldAppNavigation} />, */}
    
     <Route path="/Contacts/:companyID" component={Contacts} /> ,
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> ,
