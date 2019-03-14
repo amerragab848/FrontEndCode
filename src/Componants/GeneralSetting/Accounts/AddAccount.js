@@ -77,7 +77,7 @@ class AddAccount extends Component {
             this.GetData('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id', 'GroupNameData');
             this.DesignTeamChange = this.DesignTeamChange.bind(this);
         }
-        else { 
+        else {
             this.props.history.goBack()
         }
     }
@@ -121,7 +121,7 @@ class AddAccount extends Component {
         })
     }
 
-    CompanyNamehandleChange = (e) => { 
+    CompanyNamehandleChange = (e) => {
         this.setState({ CompanyId: e.value, CompanyValidation: false })
         this.GetData('GetContactsNotUsersByCompanyId?companyId=' + e.value + '', 'contactName', 'id', 'ContactData')
     }

@@ -490,7 +490,7 @@ table edition
 }
 .proForm .ui.input.inputDev .inputsideNote {
   right: 10px;
-  top: -17px
+  /* top: -17px */
 }
 .approvalTitle {
   height: 80px;
@@ -2192,13 +2192,14 @@ button.companies_icon {
 }
 
 /* grid show more filter */
-.showMore__btn {
-  text-align: right;
-}
 .showMore__btn button{
   background: transparent;
   border: none;    
   cursor: pointer;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
 }
 .showMore__btn button span{
   background: transparent;
@@ -2579,4 +2580,23 @@ button.companies_icon {
 }
 .attachmentTable tbody tr .contentCell.tableCell-2 {
   padding: 0;
+}
+
+.card-status .card-box .signature-h .avatarName p {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 175px;
+  text-overflow: ellipsis;
+}
+/* @media (min-width:1440px) {
+  .noTabs__document .doc-container .step-content {
+    width: 72%;
+  }
+} */
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline {
+  background-color: #5fd45f;
+  color: #fff;
+}
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline span {
+  color: #fff;
 }
