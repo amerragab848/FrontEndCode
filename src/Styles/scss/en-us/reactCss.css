@@ -2057,10 +2057,13 @@ button.companies_icon {
         .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput {
           width: 77%; } }
       .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-        width: 300px; }
+        width: 360px; 
+      }
         @media screen and (max-width: 1200px) {
           .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-            width: 360px; } }
+            width: 360px; 
+          }
+         }
     .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
       padding-left: 110px;
       padding-right: 80px; }
@@ -2483,6 +2486,24 @@ button.companies_icon {
 .proForm .ui.input.inputDev .glyphicon {
   top: auto
 }
+.skyLight__form .skylight-dialog .document-fields .proForm.datepickerContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 16px
+}
+.skyLight__form .skylight-dialog .document-fields .proForm.datepickerContainer .linebylineInput {
+  width: 45%;
+  flex-flow: column;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.skyLight__form .skylight-dialog .document-fields .proForm.datepickerContainer .linebylineInput .inputDev.ui.input {
+  width: 100%;
+}
+.skyLight__form .skylight-dialog .document-fields .slider-Btns {
+  text-align: center;
+}
 .proForm .has-error .control-label {
   letter-spacing: -0.2px;
   color: #26344c;
@@ -2490,6 +2511,7 @@ button.companies_icon {
   display: block;
   font-size: 14px;
 }
+
 .proForm .control-label {
   margin-bottom: 4px;
 }

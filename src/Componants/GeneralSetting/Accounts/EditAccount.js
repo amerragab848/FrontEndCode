@@ -353,7 +353,7 @@ class EditAccount extends Component {
                     </div>
                     {this.state.Loading ? <LoadingSection /> : null}
                     <div className="doc-container">
-                        <div className="step-content">
+                        <div className="step-content noBtn__footer">
                             <div className="subiTabsContent">
                                 <div className="document-fields">
 
@@ -435,20 +435,25 @@ class EditAccount extends Component {
                                                         selectedValue={this.state.GroupNameId} />
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
-                                                    <DropdownMelcous title='SupervisorCompany'
-                                                        selectedValue={this.state.DefaultSupervisorCompanyData}
-                                                        data={this.state.CompanyData}
-                                                        handleChange={this.SupervisorCompanyhandleChange}
-                                                        placeholder='SupervisorCompany' />
-                                                </div>
-
-                                                <div className="linebylineInput valid-input">
-                                                    <DropdownMelcous title='SupervisorName'
-                                                        data={this.state.SupervisorNameData}
-                                                        handleChange={this.SupervisorNamehandleChange}
-                                                        placeholder='SupervisorName'
-                                                        selectedValue={this.state.DefaultSupervisorName} />
+                                                <div className="linebylineInput valid-input mix_dropdown">
+                                                
+                                                    <label className="control-label">Supervisor</label>
+                                                    <div className="supervisor__company">
+                                                        <div className="super_name">
+                                                            <DropdownMelcous 
+                                                                data={this.state.SupervisorNameData}
+                                                                handleChange={this.SupervisorNamehandleChange}
+                                                                placeholder='SupervisorName'
+                                                                selectedValue={this.state.DefaultSupervisorName} />
+                                                        </div>
+                                                        <div className="super_company">
+                                                            <DropdownMelcous 
+                                                                selectedValue={this.state.DefaultSupervisorCompanyData}
+                                                                data={this.state.CompanyData}
+                                                                handleChange={this.SupervisorCompanyhandleChange}
+                                                                placeholder='SupervisorCompany' />
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">

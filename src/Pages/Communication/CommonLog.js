@@ -4,19 +4,17 @@ import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from "../../api";
 import moment from "moment";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
-import Export from "../../Componants/OptionsPanels/Export"; 
+import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import documentDefenition from "../../documentDefenition.json";
-import Resources from "../../resources.json"; 
+import Resources from "../../resources.json";
 
 import { withRouter } from "react-router-dom";
 
 import MinimizeV from '../../Styles/images/table1.png'
 import MinimizeH from '../../Styles/images/table2.png'
-// import MinimizeVBlue from '../../Styles/images/table1Blue.png'
-// import MinimizeHBlue from '../../Styles/images/table2Blue.png'
 
 import MinimizeVBlue from '../../Styles/images/table1.png'
 import MinimizeHBlue from '../../Styles/images/table2.png'
@@ -37,11 +35,11 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-class CommonLog extends Component { 
-  _isMounted = false; 
+class CommonLog extends Component {
+  _isMounted = false;
 
   constructor(props) {
-    super(props); 
+    super(props);
 
     this.state = {
       projectName: localStorage.getItem('lastSelectedprojectName'),
@@ -49,14 +47,14 @@ class CommonLog extends Component {
       pageTitle: "",
       viewfilter: false,
       projectId: props.match.params.projectId,
-      documentName:props.match.params.document, 
+      documentName: props.match.params.document,
       filtersColumns: [],
-      docType: "" ,
+      docType: "",
       rows: [],
       totalRows: 0,
       columns: [],
       pageSize: 50,
-      pageNumber: 0, 
+      pageNumber: 0,
       apiFilter: "",
       api: "",
       apiDelete: "",
@@ -70,61 +68,61 @@ class CommonLog extends Component {
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
   }
- 
-  componentDidMount() {   
+
+  componentDidMount() {
 
 
-   this.renderComponent(this.state.documentName,this.state.projectId,!this.state.minimizeClick);
-                         
+    this.renderComponent(this.state.documentName, this.state.projectId, !this.state.minimizeClick);
+
   }
- 
+
   componentWillUnmount() {
-     console.log('componentWillUnmount in Letter Componants 0000');
-     this._isMounted = false; 
-     this.setState({ 
+    console.log('componentWillUnmount in Letter Componants 0000');
+    this._isMounted = false;
+    this.setState({
       isLoading: true,
-      isCustom:true
-     });
+      isCustom: true
+    });
   }
-    
-  componentWillReceiveProps(nextProps,prevState){
 
-     if(nextProps.match !== this.props.match ) { 
+  componentWillReceiveProps(nextProps, prevState) {
 
-        this._isMounted = false;  
+    if (nextProps.match !== this.props.match) {
 
-        this.setState({ 
-            isLoading: true,
-            isCustom:true,
-            documentName: nextProps.match.params.document,
-            projectId:nextProps.match.params.projectId
-        });    
-  
-        this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true);
-        console.log(nextProps.match.params.document);
+      this._isMounted = false;
+
+      this.setState({
+        isLoading: true,
+        isCustom: true,
+        documentName: nextProps.match.params.document,
+        projectId: nextProps.match.params.projectId
+      });
+
+      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true);
+      console.log(nextProps.match.params.document);
       //this.renderComponent(this.state.documentName,this.state.projectId,nextState.isCustom);
     }
   }
-  
+
   shouldComponentUpdate(nextProps, nextState) {
-    // alert(nextProps.isCustom);
-    // alert(this.state.isCustom);
+ 
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
   }
   
   componentWillUpdate () {
-   //alert('isCustom')
+  
   }
 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
     return this.state.viewfilter;
   }
- 
-  addRecord() { 
-    let addView =this.state.routeAddEdit.split("/")[0];
-    
+
+  addRecord() {
+
+    let addView = this.state.routeAddEdit;//.split("/")[0];
+
     let obj = {
         docId: 0,
         projectId: this.state.projectId, 
@@ -136,79 +134,101 @@ class CommonLog extends Component {
 
     let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    
+
     this.props.history.push({
       pathname:"/" + addView,
       search: "?id=" + encodedPaylod
     });
+
+    // this.props.history.push({
+    //   pathname: `/${this.state.documentName}/add`,
+    //   state: {
+    //     data: {
+    //       'src': `${window.location.origin}/old_app/#${addView}0/${this.state.projectId}/undefined/undefined/undefined/${this.state.projectName}`
+    //     }
+    //   }
+    // });
+  }
+  editHandler(row) {
+
+    let editView = this.state.routeAddEdit;
+
+    this.props.history.push({
+      pathname: `${this.state.documentName}/edit`,
+      state: {
+        data: {
+          'src': `${window.location.origin}/old_app/#${editView}${row.id}/${row.projectId}/undefined/undefined/undefined/${row.projectName}`
+        }
+      }
+    });
   }
 
-  GetPrevoiusData() { 
+  GetPrevoiusData() {
     let pageNumber = this.state.pageNumber - 1;
-    if(pageNumber >= 0 ) { 
+    if (pageNumber >= 0) {
+      this.setState({
+        isLoading: true,
+        pageNumber: pageNumber
+      });
+
+      let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber +
+        "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
+
+      Api.get(url).then(result => {
+        let oldRows = [];// this.state.rows;
+        const newRows = [...oldRows, ...result];
+
         this.setState({
-          isLoading: true,
-          pageNumber: pageNumber
+          rows: newRows,
+          totalRows: newRows.length,
+          isLoading: false
         });
-
-        let url =(this.state.query == "" ? this.state.api : this.state.apiFilter) +"?projectId=" +this.state.projectId +"&pageNumber=" + pageNumber +
-          "&pageSize=" + this.state.pageSize +(this.state.query == "" ? "" : "&query=" + this.state.query);
-
-        Api.get(url).then(result => {
-          let oldRows =[];// this.state.rows;
-          const newRows = [...oldRows, ...result]; 
-
-          this.setState({
-            rows: newRows,
-            totalRows: newRows.length,
-            isLoading: false
-          });
-        }) .catch(ex => {
-            let oldRows = this.state.rows;
-            this.setState({
-              rows: oldRows,
-              isLoading: false
-            });
-          });
+      }).catch(ex => {
+        let oldRows = this.state.rows;
+        this.setState({
+          rows: oldRows,
+          isLoading: false
+        });
+      });
     }
   }
- 
+
   GetNextData() {
     let pageNumber = this.state.pageNumber + 1;
-    let maxRows=this.state.totalRows;
+    let maxRows = this.state.totalRows;
 
-    if( ((this.state.pageSize*this.state.pageNumber)) <= maxRows ) {
+    if (((this.state.pageSize * this.state.pageNumber)) <= maxRows) {
+      this.setState({
+        isLoading: true,
+        pageNumber: pageNumber
+      });
+
+      let url =
+        (this.state.query == "" ? this.state.api : this.state.apiFilter) +
+        "?projectId=" +
+        this.state.projectId +
+        "&pageNumber=" +
+        pageNumber +
+        "&pageSize=" +
+        this.state.pageSize +
+        (this.state.query == "" ? "" : "&query=" + this.state.query);
+
+      Api.get(url).then(result => {
+        let oldRows = [];// this.state.rows;
+        const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+
         this.setState({
-          isLoading: true,
-          pageNumber: pageNumber
+          rows: newRows,
+          totalRows: newRows.length,
+          isLoading: false
         });
-
-        let url =
-          (this.state.query == "" ? this.state.api : this.state.apiFilter) +
-          "?projectId=" +
-          this.state.projectId +
-          "&pageNumber=" +
-          pageNumber +
-          "&pageSize=" +
-          this.state.pageSize +
-          (this.state.query == "" ? "" : "&query=" + this.state.query);
-
-        Api.get(url).then(result => {
-          let oldRows =[];// this.state.rows;
-          const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
-
-          this.setState({
-            rows: newRows,
-            totalRows: newRows.length,
-            isLoading: false
-          });
-        }) .catch(ex => {
-            let oldRows = this.state.rows;
-            this.setState({
-              rows: oldRows,
-              isLoading: false
-            });
-          }); 
+      }).catch(ex => {
+        let oldRows = this.state.rows;
+        this.setState({
+          rows: oldRows,
+          isLoading: false
+        });
+      });
     }
   }
 
@@ -222,14 +242,14 @@ class CommonLog extends Component {
 
     Api.get(
       apiFilter +
-        "?projectId=" +
-        this.state.projectId +
-        "&pageNumber=" +
-        this.state.pageNumber +
-        "&pageSize=" +
-        this.state.pageSize +
-        "&query=" +
-        stringifiedQuery
+      "?projectId=" +
+      this.state.projectId +
+      "&pageNumber=" +
+      this.state.pageNumber +
+      "&pageSize=" +
+      this.state.pageSize +
+      "&query=" +
+      stringifiedQuery
     )
       .then(result => {
         if (result.length > 0) {
@@ -256,7 +276,7 @@ class CommonLog extends Component {
   onCloseModal = () => {
     this.setState({ showDeleteModal: false });
   };
- 
+
   clickHandlerCancelMain = () => {
     this.setState({ showDeleteModal: false });
   };
@@ -286,12 +306,12 @@ class CommonLog extends Component {
           isLoading: false,
           showDeleteModal: false
         });
-      
+
       });
   };
 
   clickHandlerDeleteRowsMain = selectedRows => {
-    console.log("001"); 
+    console.log("001");
     this.setState({
       showDeleteModal: true,
       selectedRows: selectedRows
@@ -299,150 +319,153 @@ class CommonLog extends Component {
     console.log("000001");
   };
 
-  renderComponent(documentName,projectId, isCustom){
-    console.log('renderComponent',isCustom);
+  renderComponent(documentName, projectId, isCustom) {
+    console.log('renderComponent', isCustom);
     var projectId = projectId;
 
     var documents = documentName;
- 
+
     var documentObj = documentDefenition[documentName];
 
-    let  subjectLink = ({ value, row }) => {
+    let subjectLink = ({ value, row }) => {
       let doc_view = "";
       let subject = "";
-      if (row) { 
-        
-        let obj={
-          docId:row.id ,
-          projectId:row.projectId,
-          projectName:row.projectName,
+      if (row) {
+
+        let obj = {
+          docId: row.id,
+          projectId: row.projectId,
+          projectName: row.projectName,
           arrange: 0,
           docApprovalId: 0,
           isApproveMode: false
         };
 
-        let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-        doc_view ="/"+ documentObj.documentAddEditLink.replace('/','') +"?id=" + encodedPaylod
+        doc_view = "/" + documentObj.documentAddEditLink.replace('/', '') + "?id=" + encodedPaylod
         subject = row.subject;
-        return <a href={doc_view}> {subject} </a>;
+
+        return <a  href={doc_view}> {subject} </a>;
+
+        // return <a onClick={() => this.editHandler(row)} href="javascript:void(0);"> {subject} </a>;
       }
       return null;
     };
-    
+
     var cNames = [];
 
     var filtersColumns = [];
- 
+
     documentObj.documentColumns.map((item, index) => {
-      
-        var obj = {
-          key: item.field,
-          frozen: index < 2 ? true : false,
-          name: Resources[item.friendlyName][currentLanguage],
-          width: item.minWidth,
-          draggable: true,
-          sortable: true,
-          resizable: true,
-          filterable: false,
-          sortDescendingFirst: true,
-          formatter:
-            item.field === "subject"
-              ? subjectLink
-              : item.dataType === "date"
+
+      var obj = {
+        key: item.field,
+        frozen: index < 2 ? true : false,
+        name: Resources[item.friendlyName][currentLanguage],
+        width: item.minWidth,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: false,
+        sortDescendingFirst: true,
+        formatter:
+          item.field === "subject"
+            ? subjectLink
+            : item.dataType === "date"
               ? dateFormate
               : ""
-        }; 
-        if (isCustom !== true) {
-            cNames.push(obj); 
+      };
+      if (isCustom !== true) {
+        cNames.push(obj);
+      }
+      else {
+        if (item.isCustom === true) {
+          cNames.push(obj);
         }
-        else{
-          if (item.isCustom===true) {
-            cNames.push(obj); 
-          }
-          
-        }
-      
-    });  
 
-    filtersColumns =documentObj.filters;
+      }
 
-    this.setState( {   
-      pageTitle:Resources[documentObj.documentTitle][currentLanguage], 
-      docType:documents,
-      routeAddEdit:documentObj.documentAddEditLink,
-      apiFilter:documentObj.filterApi,
-      api:documentObj.documentApi.get,
-      apiDelete:documentObj.documentApi.delete  ,
+    });
+
+    filtersColumns = documentObj.filters;
+
+    this.setState({
+      pageTitle: Resources[documentObj.documentTitle][currentLanguage],
+      docType: documents,
+      routeAddEdit: documentObj.documentAddEditLink,
+      apiFilter: documentObj.filterApi,
+      api: documentObj.documentApi.get,
+      apiDelete: documentObj.documentApi.delete,
       columns: cNames,
       filtersColumns: filtersColumns
-    });  
-     
-    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom: documentObj.documentApi.get);
+    });
+
+    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get);
   }
 
-  GetRecordOfLog(api) { 
+  GetRecordOfLog(api) {
     let url = api + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
     this.GetLogData(url);
   }
 
-  GetLogData(url)  {
-    Api.get(url).then(result => { 
-         
-      let b1=result.data;
-      let b3=result.data;
-      let b2=result.data;
-      result.data=[...b1,...b2,...b3,...result.data];
-        this.setState({
-          rows: result.data,
-          totalRows: result.total,
-          isLoading: false  
-        });
+  GetLogData(url) {
+    Api.get(url).then(result => {
 
-        this._isMounted = true;   
-        
-      })
-      .catch(ex => { 
-         this.setState({isLoading: false}) ;
+      let b1 = result.data;
+      let b3 = result.data;
+      let b2 = result.data;
+      result.data = [...b1, ...b2, ...b3, ...result.data];
+      this.setState({
+        rows: result.data,
+        totalRows: result.total,
+        isLoading: false
+      });
+
+      this._isMounted = true;
+
+    })
+      .catch(ex => {
+        this.setState({ isLoading: false });
       });
   };
 
   handleMinimize = () => {
-    const currentClass = this.state.minimizeClick; 
+    const currentClass = this.state.minimizeClick;
     const isCustom = this.state.isCustom;
-      
-      this.setState({
-        minimizeClick: !currentClass,
-        isCustom :!isCustom,
-        isLoading: true
-      }); 
-      this.renderComponent(this.state.documentName,this.state.projectId,!this.state.isCustom);
+
+    this.setState({
+      minimizeClick: !currentClass,
+      isCustom: !isCustom,
+      isLoading: true
+    });
+    this.renderComponent(this.state.documentName, this.state.projectId, !this.state.isCustom);
   }
 
   render() {
-    
+
     const showCheckbox = true;
 
     const dataGrid = this.state.isLoading === false ? (
-        <GridSetup
-          rows={this.state.rows}
-          clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-          showCheckbox={showCheckbox}
-          pageSize={this.state.pageSize}
-          columns={this.state.columns}
-        />      ) : <LoadingSection />;
+      <GridSetup
+        rows={this.state.rows}
+        clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+        showCheckbox={showCheckbox}
+        pageSize={this.state.pageSize}
+        columns={this.state.columns}
+      />) : <LoadingSection />;
 
-    const btnExport= this.state.isLoading === false ? 
-            <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-            : null ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : null;
 
-    const ComponantFilter= this.state.isLoading === false ?   
-                <Filter
-                  filtersColumns={this.state.filtersColumns}
-                  apiFilter={this.state.apiFilter}
-                  filterMethod={this.filterMethodMain}
-                  key={this.state.docType}
-                />: null;
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain}
+        key={this.state.docType}
+      /> : null;
 
     return (
       <div className="mainContainer">
@@ -501,35 +524,35 @@ class CommonLog extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === false 
-               ? (
-                <span className="text active">
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
-                </span>
-              ) : (
-                <span className="text">
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
-                </span>
-              )}
+              {this.state.viewfilter === false
+                ? (
+                  <span className="text active">
+                    <span className="show-fillter">Show Fillter</span>
+                    <span className="hide-fillter">Hide Fillter</span>
+                  </span>
+                ) : (
+                  <span className="text">
+                    <span className="show-fillter">Show Fillter</span>
+                    <span className="hide-fillter">Hide Fillter</span>
+                  </span>
+                )}
             </div>
           </div>
-          <div className="filterBTNS"> 
+          <div className="filterBTNS">
             {btnExport}
             <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
-              <span>{  (this.state.pageSize*this.state.pageNumber)+1}</span> - <span>{(this.state.pageSize*this.state.pageNumber)+this.state.pageSize}</span> of 
+              <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
               <span> {this.state.totalRows}</span>
             </div>
-            
-            <button className={this.state.pageNumber==0? "rowunActive" : "" }   onClick={() => this.GetPrevoiusData()}>
+
+            <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
               <i className="angle left icon" />
             </button>
 
-            <button className={this.state.totalRows !==(this.state.pageSize*this.state.pageNumber)+this.state.pageSize ? "rowunActive" : "" } onClick={() => this.GetNextData()}>
+            <button className={this.state.totalRows !== (this.state.pageSize * this.state.pageNumber) + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
               <i className="angle right icon" />
             </button>
           </div>
@@ -542,15 +565,15 @@ class CommonLog extends Component {
           }}
         >
           <div className="gridfillter-container">
-          {ComponantFilter}
+            {ComponantFilter}
           </div>
         </div>
 
         <div>
-           <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
-            <div className="minimizeSpan"> 
+          <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+            <div className="minimizeSpan">
               <div className="H-tableSize" onClick={this.handleMinimize}>
-              { this.state.minimizeClick ? <img src={MinimizeVBlue} alt="" /> :  <img src={MinimizeV} alt="" /> }
+                {this.state.minimizeClick ? <img src={MinimizeVBlue} alt="" /> : <img src={MinimizeV} alt="" />}
               </div>
               <div className="V-tableSize">
                 <img src={MinimizeH} alt="" />
@@ -562,7 +585,7 @@ class CommonLog extends Component {
           </div>
         </div>
         <div>
-        { this.state.showDeleteModal == true ? (
+          {this.state.showDeleteModal == true ? (
             <ConfirmationModal
               closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal}
@@ -570,7 +593,7 @@ class CommonLog extends Component {
               clickHandlerContinue={this.clickHandlerContinueMain}
             />
           ) : null
-        }
+          }
         </div>
       </div>
     );
