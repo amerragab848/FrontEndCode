@@ -46,6 +46,7 @@ import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWo
 import ExpensesWorkFlowAddEdit  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
 import phoneAddEdit from './Pages/Communication/phoneAddEdit';
+import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 
 let routes = (
 <Switch>
@@ -104,6 +105,7 @@ let routes = (
     <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />, 
     <Route path="/DashBoardCounterLog" component={DashBoardCounterLog}/>
     <Route path="/phoneAddEdit" component={phoneAddEdit}/>
+    <Route path="/reportsAddEdit" component={reportsAddEdit}/>
 </Switch> 
 ); 
 export default routes;
