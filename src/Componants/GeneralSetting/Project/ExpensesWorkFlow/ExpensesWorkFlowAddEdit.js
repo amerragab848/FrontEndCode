@@ -44,7 +44,7 @@ const ValidtionSchemaForEdit = Yup.object().shape({
     CompanyForEdit: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage])
         .nullable(true)
-        ,
+    ,
     ContactNameForEdit: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage])
         .nullable(false),
@@ -65,6 +65,10 @@ class ExpensesWorkFlowAddEdit extends Component {
 
     constructor(props) {
         super(props)
+        if (!config.IsAllow(3664)) {
+            toast.warn(Resources['missingPermissions'][currentLanguage])
+            this.props.history.goBack()
+        }
 
         const columnsGrid = [
             {
@@ -116,7 +120,7 @@ class ExpensesWorkFlowAddEdit extends Component {
         ]
 
         this.state = {
-            showCheckbox: true,
+            showCheckbox: false,
             columns: columnsGrid.filter(column => column.visible !== false),
             ProjectList: [],
             CompanyData: [],
@@ -150,6 +154,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             selectedRows: [],
             showDeleteModal: false
         }
+
     }
 
     DocumentDatehandleChange = (date) => {
@@ -269,7 +274,6 @@ class ExpensesWorkFlowAddEdit extends Component {
             if (param[0] === 'arrange') {
                 MaxArrange = param[1];
                 idEdit = 0
-
             }
             else {
                 idEdit = param[1];
@@ -278,19 +282,34 @@ class ExpensesWorkFlowAddEdit extends Component {
                     IsEditMode: true
                 })
             }
-
         }
-    }
-
-    componentDidMount = () => {
-
-        dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'id').then(
+        dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
             res => {
                 this.setState({
                     ProjectList: res,
                 })
+                let DataDrop = res;
+                if (idEdit !== 0) {
+                    Api.get('GetExpensesWorkFlowForEdit?id=' + idEdit + '').then(
+                        res => {
+                            let selectDrop = _.find(DataDrop, function (i) { return i.value == res.projectId });
+                            this.setState({
+                                ExpensesWorkFlowDataForEdit: res,
+                                selectedProject: selectDrop,
+                            })
+                        }
+                    )
+                }
             }
         )
+        if (config.IsAllow(3742)) {
+            this.setState({
+                showCheckbox: true
+            })
+        }
+    }
+
+    componentDidMount = () => {
 
         dataservice.GetDataList('GetProjectCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id').then(
             res => {
@@ -310,26 +329,14 @@ class ExpensesWorkFlowAddEdit extends Component {
                         rows: res,
                         isLoading: false
                     })
-                }
-            )
-
-            Api.get('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + idEdit + '').then(
-                res => {
-                    this.setState({
-                        MultiApprovalData: res,
-                        NewMultiApprovalData: res
-                    })
-                }
-            )
-
-            Api.get('GetExpensesWorkFlowForEdit?id=' + idEdit + '').then(
-                res => {
-                    let DataDrop = this.state.ProjectList
-                    let selectDrop = _.find(DataDrop, function (i) { return i.value == res.projectId });
-                    this.setState({
-                        ExpensesWorkFlowDataForEdit: res,
-                        selectedProject: selectDrop,
-                    })
+                    Api.get('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + idEdit + '').then(
+                        res => {
+                            this.setState({
+                                MultiApprovalData: res,
+                                NewMultiApprovalData: res,
+                            })
+                        }
+                    )
                 }
             )
         }
@@ -337,101 +344,110 @@ class ExpensesWorkFlowAddEdit extends Component {
     }
 
     AddContact = (values, actions) => {
-        this.setState({
-            isLoading: true
-        })
-        let contactData = this.state.rows
-        let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactName.value
-            && s.arrange === parseInt(values.ArrangeContact))
 
-        if (!ValidLeaveAndContactId.length) {
-            Api.post('AddExpensesWorkFlowItem',
-                {
-                    id: 1,
-                    arrange: values.ArrangeContact,
-                    companyId: values.Company.value,
-                    contactId: values.ContactName.value,
-                    Description: values.Description,
-                    workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id,
-                    multiApproval: false,
-                }
-            ).then(
-                res => {
-                    values.ArrangeContact = Math.max.apply(Math, res.map(function (o) { return o.arrange + 1 }))
-                    this.setState({
-                        rows: res,
-                        isLoading: false,
-                    })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-                }
-            )
+        if (!config.IsAllow(3740)) {
+            toast.warn(Resources['missingPermissions'][currentLanguage])
         }
         else {
+            this.setState({
+                isLoading: true
+            })
+            let contactData = this.state.rows
+            let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactName.value
+                && s.arrange === parseInt(values.ArrangeContact))
 
-            setTimeout(() => {
-                this.setState({
-                    isLoading: false,
-                })
-            }, 300);
-            toast.error('This Contact Already Exist in Same Level ....')
-        }
-        values.Company = ''
-        values.ContactName = ''
-        values.Description = ''
-        Api.get('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.ExpensesWorkFlowDataForEdit.id + '').then(
-            res => {
-                this.setState({
-                    MultiApprovalData: res,
-                    NewMultiApprovalData: res
-                })
+            if (!ValidLeaveAndContactId.length) {
+                Api.post('AddExpensesWorkFlowItem',
+                    {
+                        id: 1,
+                        arrange: values.ArrangeContact,
+                        companyId: values.Company.value,
+                        contactId: values.ContactName.value,
+                        Description: values.Description,
+                        workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id,
+                        multiApproval: false,
+                    }
+                ).then(
+                    res => {
+                        values.ArrangeContact = Math.max.apply(Math, res.map(function (o) { return o.arrange + 1 }))
+                        this.setState({
+                            rows: res,
+                            isLoading: false,
+                        })
+                        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    }
+                )
             }
-        )
+            else {
 
-    }
-
-    EditContact = (values, actions) => {
-        console.log(values)
-        this.setState({
-            isLoading: true
-        })
-        let contactData = this.state.rows
-        let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactNameForEdit.value
-            && s.arrange === parseInt(values.ArrangeContactForEdit))
-
-        if (!ValidLeaveAndContactId.length) {
-            Api.post('EditExpensesWorkFlowItems',
-                {
-                    id: 1,
-                    arrange: values.ArrangeContactForEdit,
-                    companyId: values.CompanyForEdit.value,
-                    contactId: values.ContactNameForEdit.value,
-                    Description: values.DescriptionForEdit,
-                    workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id,
-                    multiApproval: false,
-                }
-            ).then(
-                res => {
+                setTimeout(() => {
                     this.setState({
-                        rows: res,
                         isLoading: false,
-                        showPopUp: false,
                     })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-                }
-            )
-        }
-        else {
+                }, 300);
+                toast.error('This Contact Already Exist in Same Level ....')
+            }
             values.Company = ''
             values.ContactName = ''
             values.Description = ''
-            values.ArrangeContact = ''
-            setTimeout(() => {
-                this.setState({
-                    isLoading: false,
-                    showPopUp: false,
-                })
-            }, 300);
-            toast.error('This Contact Already Exist in Same Level ....')
+            Api.get('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.ExpensesWorkFlowDataForEdit.id + '').then(
+                res => {
+                    this.setState({
+                        MultiApprovalData: res,
+                        NewMultiApprovalData: res
+                    })
+                }
+            )
+        }
+    }
+
+    EditContact = (values, actions) => {
+        if (!config.IsAllow(3741)) {
+            toast.warn(Resources['missingPermissions'][currentLanguage])
+        }
+        else {
+            this.setState({
+                isLoading: true
+            })
+            let contactData = this.state.rows
+            let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactNameForEdit.value
+                && s.arrange === parseInt(values.ArrangeContactForEdit))
+
+            if (!ValidLeaveAndContactId.length) {
+                Api.post('EditExpensesWorkFlowItems',
+                    {
+                        id: 1,
+                        arrange: values.ArrangeContactForEdit,
+                        companyId: values.CompanyForEdit.value,
+                        contactId: values.ContactNameForEdit.value,
+                        Description: values.DescriptionForEdit,
+                        workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id,
+                        multiApproval: false,
+                    }
+                ).then(
+                    res => {
+                        this.setState({
+                            rows: res,
+                            isLoading: false,
+                            showPopUp: false,
+                        })
+                        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    }
+                )
+            }
+            else {
+                values.Company = ''
+                values.ContactName = ''
+                values.Description = ''
+                values.ArrangeContact = ''
+                setTimeout(() => {
+                    this.setState({
+                        isLoading: false,
+                        showPopUp: false,
+                    })
+                }, 300);
+                toast.error('This Contact Already Exist in Same Level ....')
+            }
         }
     }
 
@@ -530,29 +546,34 @@ class ExpensesWorkFlowAddEdit extends Component {
     }
 
     ShowPopUp = (obj) => {
-        Api.get('GetExpensesWorkFlowItemsById?id=' + obj.id + '').then(
-            res => {
+        if (!config.IsAllow(3741)) {
+            toast.warn(Resources['missingPermissions'][currentLanguage])
+        }
+        else {
+            Api.get('GetExpensesWorkFlowItemsById?id=' + obj.id + '').then(
+                res => {
 
-                this.setState({ showPopUp: true, IsEditExpensesWorkFlowItem: true })
-                let Companies = this.state.CompanyData
+                    this.setState({ showPopUp: true, IsEditExpensesWorkFlowItem: true })
+                    let Companies = this.state.CompanyData
 
-                let SelectedCompany = _.find(Companies, function (i) { return i.value == res.companyId });
+                    let SelectedCompany = _.find(Companies, function (i) { return i.value == res.companyId });
 
-                dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + res.companyId + '', 'contactName', 'id').then(
-                    res => {
-                        this.setState({
-                            ContactData: res,
-                        })
-                    }
-                )
+                    dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + res.companyId + '', 'contactName', 'id').then(
+                        res => {
+                            this.setState({
+                                ContactData: res,
+                            })
+                        }
+                    )
 
-                this.setState({
-                    ExpensesWorkFlowItem: res,
-                    SelectedCompanyForEdit: SelectedCompany,
-                    SelectedContactForEdit: { 'value': res.contactId, 'label': res.contactName },
-                })
-            }
-        )
+                    this.setState({
+                        ExpensesWorkFlowItem: res,
+                        SelectedCompanyForEdit: SelectedCompany,
+                        SelectedContactForEdit: { 'value': res.contactId, 'label': res.contactName },
+                    })
+                }
+            )
+        }
 
     }
 
@@ -836,7 +857,7 @@ class ExpensesWorkFlowAddEdit extends Component {
 
                                                     </div>
                                                     <div className="slider-Btns">
-                                                        <button className="primaryBtn-1 btn meduimBtn" type='submit' >ADD</button>
+                                                        <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['addTitle'][currentLanguage]}</button>
                                                     </div>
                                                 </div>
                                             </Form>
@@ -1036,7 +1057,6 @@ class ExpensesWorkFlowAddEdit extends Component {
                                         </div>
                                         <div className="steps-info">
                                             <h6>Expenses WorkFlow</h6>
-
                                         </div>
                                     </div>
 
