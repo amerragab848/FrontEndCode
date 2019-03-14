@@ -16,11 +16,11 @@ import TimeSheetDetails from "./Componants/DashBoardDetails/TimeSheetDetails";
 import DocApprovalDetails from "./Componants/DashBoardDetails/DocApprovalDetails";
 import PendingExpensesDetails from "./Componants/DashBoardDetails/PendingExpensesDetails";
 import CommonLog from "./Pages/Communication/CommonLog";
-import Router from "./URLRoutes";
+ 
 import PrivacySetting from '../src/Componants/User/PrivacySetting';
 import ProfileSetting  from "../src/Componants/User/index";
 import TimeSheetWorkFlow  from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
-// import ExpensesWorkFlow  from "../src/Componants/DashBoardDetails/ExpensesWorkFlow";
+
 import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
 import Companies from './Componants/GeneralSetting/Companies/Index';
 import AddEditCompany from './Componants/GeneralSetting/Companies/AddEditCompany';
@@ -45,7 +45,9 @@ import GeneralList  from './Componants/GeneralSetting/MenuDefaultData/GeneralLis
 import ExpensesWorkFlowLog  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog'; 
 import ExpensesWorkFlowAddEdit  from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
+import RfiAddEdit from "./Pages/Communication/RfiAddEdit";
 import phoneAddEdit from './Pages/Communication/phoneAddEdit';
+import OldAppNavigation from './OldAppNavigation';
 
 let routes = (
 <Switch>
@@ -69,11 +71,14 @@ let routes = (
     <Route path="/Companies/" component={Companies} /> ,
     <Route path="/Contacts/:companyID" component={Contacts} />,
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} />,
-    <Route path="/:document/:projectId" component={CommonLog} />, 
+    {/* <Route path="/logs/:document/:projectId" component={CommonLog} />,  */}
+    <Route path="/:document/:projectId" component={CommonLog} />,
     <Route path="/ProfileSetting" component={ProfileSetting} />,
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />,
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />,
-    {/* <Route path="/AddNewCompany" component={AddNewCompany} />    */}
+
+    {/* <Route component={OldAppNavigation} />, */}
+   
     <Route path="/Contacts/:companyID" component={Contacts} /> ,
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> ,
     <Route path="/:document/:projectId" component={CommonLog} />,
@@ -102,6 +107,8 @@ let routes = (
     <Route path="/GeneralList" component={GeneralList} /> ,
     <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} /> ,
     <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />, 
+    <Route path="/DashBoardCounterLog" component={DashBoardCounterLog}/>,
+    <Route path="/RfiAddEdit" component={RfiAddEdit} />
     <Route path="/DashBoardCounterLog" component={DashBoardCounterLog}/>
     <Route path="/phoneAddEdit" component={phoneAddEdit}/>
 </Switch> 
