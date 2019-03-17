@@ -350,7 +350,7 @@ table edition
   border-color: hsl(0,0%,80%) !important;
   outline: 0;
   box-shadow:none !important
-} 
+}
 .mainContainer .customD_Menu div:hover{
   border-color: hsl(0,0%,80%) !important;
   box-shadow: none;
@@ -490,7 +490,7 @@ table edition
 }
 .proForm .ui.input.inputDev .inputsideNote {
   right: 10px;
-  top: -17px
+  /* top: -17px */
 }
 .approvalTitle {
   height: 80px;
@@ -509,12 +509,12 @@ table edition
   top: 100%;
   color: #e74c3c;
   font-size: 12px;
-  width: 380px;
+  max-width: 360px;
   margin-top: -2px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-} 
+}
 /* error text new */
 /* .pError {
   display: block;
@@ -746,8 +746,8 @@ table edition
 }
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   margin-right: 0 !important;
-} 
- 
+}
+
 /* .gridfillter-container .fillter-status-container .fillter-item-c {
     margin-bottom: 0px !important;
 }  */
@@ -1021,7 +1021,7 @@ table edition
   width: auto;
   min-width: 300px;
   height: 50px;
-  z-index: 99999999; 
+  z-index: 99999999;
 }
 .rodal .notifiActionsContainer {
   top: 30px;
@@ -1096,7 +1096,7 @@ table edition
 
 .numcursor{
   cursor: pointer;
-} 
+}
 .panel {
     margin-bottom: 25px;
 }
@@ -1136,7 +1136,7 @@ table edition
 }
 .highcharts-container {
     margin: auto;
-  } 
+  }
 .sayedWrapper {
   position: relative;
 }
@@ -1199,7 +1199,7 @@ tfoot tr td p{
 }
 .noPadding {
   padding-left:0;
-  padding-right: 0; 
+  padding-right: 0;
 }
 .timeSheetInput .fillter-item-c {
   margin-bottom: 20px;
@@ -1286,7 +1286,7 @@ tfoot tr td p{
   width: auto;
   min-width: 349px;
 }
-.dashboard__Project .dash__content .project__content .project__select .project__title 
+.dashboard__Project .dash__content .project__content .project__select .project__title
 {
   flex: 1 0;
   text-align: left;
@@ -1298,7 +1298,7 @@ tfoot tr td p{
   white-space: nowrap;
   max-width: 255px;
 }
- 
+
 .customeTabs .react-tabs__tab-panel--selected {
   width: 100%;
 }
@@ -1421,7 +1421,7 @@ tfoot tr td p{
 .taskAdminTable thead {
   text-align: left;
 }
- 
+
 .taskAdminTable thead tr th{
   border-right: 1px solid #DADEE6;
   border-bottom: 1px solid #DADEE6;
@@ -1440,7 +1440,7 @@ tfoot tr td p{
   padding: 10px;
 }
 .taskAdminTable tbody tr td:first-of-type {
-  border-left: 1px solid #DADEE6; 
+  border-left: 1px solid #DADEE6;
 }
 .taskAdminTable tbody tr td:last-of-type {
   border-right: none #DADEE6;
@@ -1494,7 +1494,7 @@ tfoot tr td p{
   max-height: 600px;
   min-height: 280px !important;
   overflow-y: auto;
-} 
+}
 .icon__btn {
   background: transparent;
   border: 1px solid transparent;
@@ -1567,14 +1567,14 @@ tfoot tr td p{
 }
 .card-status .MultiPeinding {
   display: flex;
-  margin: 0; 
+  margin: 0;
 }
 .workFlowStep .StepNumber.approvalstep .StepNum p.StepN {
   color: #fff
 }
 .attachmentTable tbody tr .contentCell.tableCell-4 {
   max-width: 185px
-} 
+}
 .daysCheckbox .ui.checkbox {
   margin: 0 10px;
 }
@@ -1583,7 +1583,7 @@ tfoot tr td p{
 }
 .daysCheckbox .ui.checkbox:last-of-type {
   margin-right: 0;
-} 
+}
 .settings-tabs-items .react-tabs__tab-list {
   border-bottom: 1px solid #e6e6e6 !important;
   padding: 0 !important;
@@ -1652,7 +1652,7 @@ tfoot tr td p{
 .dropdownMulti .fillter-status.fillter-item-c {
   display: flex;
 }
-.dropdownMulti .fillter-status.fillter-item-c .spanValidation { 
+.dropdownMulti .fillter-status.fillter-item-c .spanValidation {
   width: 130px;
   flex-shrink: 0;
   display: flex;
@@ -1662,7 +1662,7 @@ tfoot tr td p{
 }
 .dropdownMulti .fillter-status.fillter-item-c >div:last-of-type {
   width: 100%;
-} 
+}
 .label__block label {
   display: block;
 }
@@ -1672,7 +1672,7 @@ tfoot tr td p{
 /* .spanValidation {
   margin-bottom: 10px;
 } */
-/* noTabs */ 
+/* noTabs */
 .noTabs__document .submittalHead {
   justify-content: center;
   padding-left: 0;
@@ -1696,7 +1696,7 @@ tfoot tr td p{
       justify-content: space-between;
       width: 835px;
       margin: 0 auto;
-      height: 72px; 
+      height: 72px;
     }
 @media screen and (max-width: 1250px) {
   .noTabs__document .doc-container .step-content, .noTabs__document .doc-container .main__header .main__header--div {
@@ -1728,7 +1728,7 @@ tfoot tr td p{
     margin: 0 auto;
     padding-bottom: 70px; }
     .noTabs__document .doc-container .step-content .document-fields {
-      padding: 36px 0 14px 0; 
+      padding: 36px 0 14px 0;
     }
       .noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
         display: flex;
@@ -1764,7 +1764,7 @@ tfoot tr td p{
           margin-bottom: 4px; }
         @media screen and (max-width: 1250px) {
           .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.even {
-            margin-right: 0; } 
+            margin-right: 0; }
           }
     .noTabs__document .doc-container .step-content .doc-pre-cycle {
       padding: 0; }
@@ -1856,7 +1856,7 @@ tfoot tr td p{
         width: 192px;
       }
 /* new css notabs */
-/* noTabs */ 
+/* noTabs */
 
 .document__action--menu .customD_Menu .css-vj8t7z {
   background: #E9ECF0;
@@ -1880,12 +1880,12 @@ tfoot tr td p{
     height: 145px;
     overflow-y: auto;
     top: -155px;
-} 
+}
 .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
     height: auto;
     overflow-y: auto;
     top: 100%;
-} 
+}
 .shareLinks {
   width: 100%;
   display: flex;
@@ -2025,20 +2025,21 @@ button.companies_icon {
       width: 250px;
       position: relative;
   }
-    .one__tab.one_step .doc-container .step-content .main__header {
-      padding-left: 110px;
-      padding-right: 80px; }
+.one__tab.one_step .doc-container .step-content .main__header {
+  padding-left: 110px;
+  padding-right: 80px; 
+}
+    .noTabs__document.one_step .doc-container .main__header .main__header--div {
+      width: 100%
+    }
       @media screen and (max-width: 1300px) {
         .one__tab.one_step .doc-container .step-content .main__header {
           padding-left: 35px;
           padding-right: 20px; } }
     .one__tab.one_step .doc-container .step-content .document-fields {
       padding-left: 110px;
-      padding-right: 80px; 
+      padding-right: 80px;
       padding-top: 50px;
-    }
-    .one__tab.one_step .doc-container .step-content .feilds__top .document-fields {
-      padding-top: 0; 
     }
       @media screen and (max-width: 1300px) {
         .one__tab.one_step .doc-container .step-content .document-fields {
@@ -2057,11 +2058,11 @@ button.companies_icon {
         .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput {
           width: 77%; } }
       .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-        width: 360px; 
+        width: 360px;
       }
         @media screen and (max-width: 1200px) {
           .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-            width: 360px; 
+            width: 360px;
           }
          }
     .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
@@ -2070,7 +2071,9 @@ button.companies_icon {
       @media screen and (max-width: 1300px) {
         .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
           padding-left: 35px;
-          padding-right: 20px; } }
+          padding-right: 20px; 
+        } 
+      }
 
 
 /* sayed step page */
@@ -2086,7 +2089,7 @@ button.companies_icon {
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
   padding-top: 0;
 }
-/* 
+/*
 .readOnly_inputs .doc-container .step-content .document-fields .proForm.datepickerContainer {
   display: flex;
   flex-wrap: wrap;
@@ -2133,7 +2136,7 @@ button.companies_icon {
     -ms-pointer-events: none;
     pointer-events: none;
     cursor: not-allowed;
-    /*padding: 0;*/ 
+    /*padding: 0;*/
   }
 
     .readOnly_inputs .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
@@ -2142,7 +2145,7 @@ button.companies_icon {
       -ms-pointer-events: none;
       pointer-events: none;
     }
-/*     
+/*
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input:hover {
       border-color: transparent; }
     .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input:focus {
@@ -2185,7 +2188,7 @@ button.companies_icon {
   justify-content: space-between;
 }
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate .customDatepicker.fillter-status.fillter-item-c {
-  margin-right: 0 
+  margin-right: 0
 }
 .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
   max-width: 100%;
@@ -2195,17 +2198,18 @@ button.companies_icon {
 }
 
 /* grid show more filter */
-.showMore__btn {
-  text-align: right;
-}
 .showMore__btn button{
   background: transparent;
-  border: none;    
+  border: none;
   cursor: pointer;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
 }
 .showMore__btn button span{
   background: transparent;
-  border: none;    
+  border: none;
   font-family: font-b;
   font-size: 12px;
   line-height: 1.67;
@@ -2402,7 +2406,7 @@ button.companies_icon {
 .SummeriesContainer .SummeriesContainerContent.numbersContainerContent {
   background-color: transparent;
   border: 0;
-} 
+}
 .noTabs__document .doc-container .step-content .document-fields .proForm .account__checkbox {
   display: flex;
   flex-wrap: wrap;
@@ -2434,7 +2438,7 @@ button.companies_icon {
 }
 .noTabs__document .doc-container .step-content .document-fields .proForm .workingHours__cycle .workingHours__cycle--inputs .linebylineInput {
   width: auto;
-  margin-right : 24px; 
+  margin-right : 24px;
 }
 .noTabs__document .doc-container .step-content .document-fields .proForm .workingHours__cycle .workingHours__cycle--inputs .linebylineInput.daysCheckbox {
   width: 100%;;
@@ -2533,8 +2537,53 @@ button.companies_icon {
 .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu {
   width: 271px;
 }
+.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy{
+  font-family: font-opens;
+  font-size: 14px;
+  line-height: 1.71;
+  letter-spacing: -0.2px;
+  color: #3e4352;
+}
+.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before{
+  content: '';
+  position: absolute;
+  left: -20px;
+  background-image: url(../../images/dropdownPerson.png);
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  top: 2px;
+}
+.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68, .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
+  left: 27px;
+  overflow: visible;
+}
+.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  background-image: url(../../images/companyDropdown.png);
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  top: 2px;
+}
+.fillter-status.fillter-item-c .customD_Menu .css-1492t68:empty::before, .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy:empty::before {
+  display: none;
+}
 .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu {
   width: 184px;
+}
+.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
+  font-family: font-b;
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.2px;
+  color: #252833;
+}
+.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68 ,.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy{
+  left: 27px;
+  overflow: visible;
 }
 .supervisor__company .super_name .customD_Menu .css-vj8t7z{
   border-top-right-radius: 0;
@@ -2551,9 +2600,9 @@ button.companies_icon {
   border-bottom-left-radius: 0;
 }
 .mix_dropdown {
-  width: 100% !important; 
+  width: 100% !important;
 }
-.css-2o5izw , .css-10nd86i{
+.css-2o5izw , .css-10nd86i {
   border-color: transparent !important;
 }
 @media (max-width: 1200px) {
@@ -2563,7 +2612,7 @@ button.companies_icon {
 }
 .fullWidth_form {
   width: 100%;
-} 
+}
 .datepickerContainer.proForm .linebylineInput__name .ui.input.inputDev input, .datepickerContainer.proForm .first-proform .ui.input.inputDev input {
   width: 360px;
 }
@@ -2602,7 +2651,30 @@ button.companies_icon {
 .attachmentTable tbody tr .contentCell.tableCell-2 {
   padding: 0;
 }
-
+.card-status .card-box .signature-h .avatarName p {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 175px;
+  text-overflow: ellipsis;
+}
+/* @media (min-width:1440px) {
+  .noTabs__document .doc-container .step-content {
+    width: 72%;
+  }
+} */
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline {
+  background-color: #5fd45f;
+  color: #fff;
+}
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline span {
+  color: #fff;
+}
+.customD_Menu .css-vj8t7z {
+  min-height: 40px;
+}
+.supervisor__company .super_name .customD_Menu.errorClass .css-vj8t7z:hover {
+  border: solid 2px #e74c3c !important;
+}
 
 .main-header.dashboard__header {
   padding-left: 76px;
