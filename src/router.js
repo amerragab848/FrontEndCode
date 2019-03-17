@@ -85,7 +85,7 @@ let routes = (
    
     <Route path="/Contacts/:companyID" component={Contacts} /> ,
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> ,
-    <Route path="/:document/:projectId" component={CommonLog} />,
+    {/* <Route path="/:document/:projectId" component={CommonLog} />, */}
     <Route path="/ProfileSetting" component={ProfileSetting} />,
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />, 
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />,
