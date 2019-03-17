@@ -1,4 +1,4 @@
-import React, { Component } from "react";  
+import React, { Component } from "react";
 import InputMelcous from "../OptionsPanels/InputMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
@@ -28,11 +28,12 @@ class FilterComponent extends Component {
   }
 
   componentDidMount() {
-
-    document.getElementById('showMore_input').addEventListener("click", function () {
-      document.querySelector('.moreOn').classList.toggle('lessOn');
-      document.querySelector('.fillter-status-container').classList.toggle('onelineFilter');
-    });
+    if (this.props.filtersColumns.length > 6) {
+      document.getElementById('showMore_input').addEventListener("click", function () {
+        document.querySelector('.moreOn').classList.toggle('lessOn');
+        document.querySelector('.fillter-status-container').classList.toggle('onelineFilter');
+      });
+    }
   }
   componentWillMount() {
 
@@ -140,14 +141,17 @@ class FilterComponent extends Component {
   renderFilterColumns() {
     let columns = (
       <div>
-        <div className="showMore__btn">
-          <button id="showMore_input" className="moreOn">
-            <span className="more">SHOW MORE</span>
-            <span className="less">SHOW Less</span>
-            <img className="more" src={plus} alt="plus" />
-            <img className="less" src={Minimize} alt="minimize" />
-          </button>
-        </div>
+        {this.props.filtersColumns.length > 6 ?
+          <div className="showMore__btn">
+            <button id="showMore_input" className="moreOn">
+              <span className="more">SHOW MORE</span>
+              <span className="less">SHOW Less</span>
+              <img className="more" src={plus} alt="plus" />
+              <img className="less" src={Minimize} alt="minimize" />
+            </button>
+          </div>
+          : null
+        }
 
         <div className="filter__showmore">
 

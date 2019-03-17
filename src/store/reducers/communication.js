@@ -98,6 +98,14 @@ export default function (state = initialState.app.communication, action) {
                 projectId: action.projectId,
                 projectName: action.projectName
             };
+        case types.RouteToTemplate:
+
+            console.log('RouteToTemplate', action);
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject 
+            };
         case types.RouteToMainDashboard:
 
             console.log('RouteToMainDashboard', action);
