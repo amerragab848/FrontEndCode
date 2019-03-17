@@ -98,18 +98,18 @@ class CommonLog extends Component {
         projectId: nextProps.match.params.projectId
       });
 
-      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true); 
+      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true);
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
- 
+
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
   }
-  
-  componentWillUpdate () {
-  
+
+  componentWillUpdate() {
+
   }
 
   hideFilter(value) {
@@ -122,19 +122,19 @@ class CommonLog extends Component {
     let addView = this.state.routeAddEdit;//.split("/")[0];
 
     let obj = {
-        docId: 0,
-        projectId: this.state.projectId, 
-        projectName: this.state.projectName,
-        arrange: 0,
-        docApprovalId: 0,
-        isApproveMode: false
+      docId: 0,
+      projectId: this.state.projectId,
+      projectName: this.state.projectName,
+      arrange: 0,
+      docApprovalId: 0,
+      isApproveMode: false
     };
 
-    let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
 
     this.props.history.push({
-      pathname:"/" + addView,
+      pathname: "/" + addView,
       search: "?id=" + encodedPaylod
     });
 
@@ -153,20 +153,20 @@ class CommonLog extends Component {
 
     let obj = {
       docId: row.id,
-      projectId: row.projectId, 
+      projectId: row.projectId,
       projectName: this.state.projectName,
       arrange: 0,
       docApprovalId: 0,
       isApproveMode: false
-  };
+    };
 
-  let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-  let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
 
-  this.props.history.push({
-    pathname:"/" + editView,
-    search: "?id=" + encodedPaylod
-  });
+    this.props.history.push({
+      pathname: "/" + editView,
+      search: "?id=" + encodedPaylod
+    });
 
     // this.props.history.push({
     //   pathname: `/v4/Document/${this.state.documentName}/Action/Edit`,
@@ -218,19 +218,11 @@ class CommonLog extends Component {
         pageNumber: pageNumber
       });
 
-      let url =
-        (this.state.query == "" ? this.state.api : this.state.apiFilter) +
-        "?projectId=" +
-        this.state.projectId +
-        "&pageNumber=" +
-        pageNumber +
-        "&pageSize=" +
-        this.state.pageSize +
-        (this.state.query == "" ? "" : "&query=" + this.state.query);
-
+      let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" +
+        this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
       Api.get(url).then(result => {
         let oldRows = [];// this.state.rows;
-        const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+        const newRows = [...oldRows, ...result.data]; // arr3 ==> [1,2,3,3,4,5]
 
         this.setState({
           rows: newRows,
@@ -255,37 +247,25 @@ class CommonLog extends Component {
       query: stringifiedQuery
     });
 
-    Api.get(
-      apiFilter +
-      "?projectId=" +
-      this.state.projectId +
-      "&pageNumber=" +
-      this.state.pageNumber +
-      "&pageSize=" +
-      this.state.pageSize +
-      "&query=" +
-      stringifiedQuery
-    )
-      .then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result,
-            totalRows: result.length,
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
-      .catch(ex => {
-        alert(ex);
+    Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
+      if (result.length > 0) {
         this.setState({
-          rows: [],
+          rows: [...result.data],
+          totalRows: result.total,
           isLoading: false
         });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    }).catch(ex => {
+
+      this.setState({
+        rows: [],
+        isLoading: false
       });
+    });
   };
 
   onCloseModal = () => {
@@ -343,7 +323,7 @@ class CommonLog extends Component {
     var documentObj = documentDefenition[documentName];
 
     let subjectLink = ({ value, row }) => {
-      let doc_view = "";
+
       let subject = "";
       if (row) {
 
@@ -358,12 +338,12 @@ class CommonLog extends Component {
 
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-        doc_view = "/" + documentObj.documentAddEditLink.replace('/', '') + "?id=" + encodedPaylod
-        subject = row.subject;
+        let doc_view = "/" + documentObj.documentAddEditLink.replace('/', '') + "?id=" + encodedPaylod
+        subject = row.subject; 
+        
+        return <a  href={doc_view}> {subject} </a>;
 
-        // return <a  href={doc_view}> {subject} </a>;
-
-        return <a onClick={() => this.editHandler(row)} href="javascript:void(0);"> {subject} </a>;
+        //return <a onClick={() => this.editHandler(row)} href="javascript:void(0);"> {subject} </a>;
       }
       return null;
     };

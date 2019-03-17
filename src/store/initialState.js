@@ -15,13 +15,7 @@ export default {
 			arrange: 0,
 			showModal: false,
 
-		},
-		// comapnies: {
-		// 	popUp: false,
-		// 	notifyMessage: false,
-		// 	companyContact: [],
-		// 	getingData: false
-		// },
+		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
 			contactData:[],
@@ -35,6 +29,12 @@ export default {
 			getingData: false,
 			companyList:[],
 			tabIndex:0
+		},
+		dashboardComponant:{
+			showLeftMenu: false,
+			projectId: 0,
+			projectName:"",
+			showSelectProject:true
 		}
 	}
 }
