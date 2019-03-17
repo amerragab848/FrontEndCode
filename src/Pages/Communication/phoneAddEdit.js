@@ -5,7 +5,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import moment from 'moment'
 import Resources from '../../resources.json';
 import _ from "lodash";
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
@@ -29,8 +29,8 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     callTime: Yup.number().required(Resources['callTime'][currentLanguage]).min(0),
-    fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
-    fromCompany: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage])
+    // fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+    // fromCompany: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage])
 });
 
 let docId = 0;
@@ -82,7 +82,7 @@ class phoneAddEdit extends Component {
             selectedFromContact: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             isLoading: true,
-            permission: [{ name: 'sendByEmail', code: 95 }, { name: 'sendByInbox', code: 94 },
+            permission: [{ name: 'sendByEmail', code: 0  }, { name: 'sendByInbox', code: 94 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 965 },
             { name: 'createTransmittal', code: 3051 }, { name: 'sendToWorkFlow', code: 715 },
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
@@ -350,21 +350,23 @@ class phoneAddEdit extends Component {
                                     <Formik
                                         validationSchema={validationSchema}
                                         onSubmit={(values) => {
-                                            if (this.props.changeStatus === true && this.props.docId > 0) {
-                                                this.editPhone();
-                                            } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                this.save();
-                                            } else {
-                                                this.saveAndExit();
-                                            }
+                                            alert("")
+                                            // if (this.props.changeStatus === true && this.props.docId > 0) {
+                                            //     this.editPhone();
+                                            // } else if (this.props.changeStatus === false && this.state.docId === 0) {
+                                            //     this.save();
+                                            // } else {
+                                            //     this.saveAndExit();
+                                            // }
                                         }} >
-                                        {({ errors, touched, handleBlur, handleChange, handleSubmit, values, setFieldTouched, setFieldValue }) => (
+                          
+                                        {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">{Resources['subject'][currentLanguage]} </label>
-                                                        <div className={"inputDev ui input "} >
-                                                            <input name='subject' defaultValue={this.state.phone.subject}
+                                                        <div className={"inputDev ui input " +(errors.subject && touched.subject ? 'has-error' : ' ')}>
+                                                            <Field name='subject' defaultValue={this.state.phone.subject}
                                                                 className="form-control"
                                                                 id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
                                                                 onBlur={handleBlur}
@@ -372,7 +374,7 @@ class phoneAddEdit extends Component {
                                                                     handleChange(e)
                                                                     this.handleChange('subject', e.target.value)
                                                                 }} />
-
+                                                          
                                                         </div>
                                                     </div>
 
@@ -450,11 +452,11 @@ class phoneAddEdit extends Component {
                                                 </div>
 
                                                 <div className="linebylineInput valid-input mix_dropdown">
-                                                <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
+                                                    <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <DropdownMelcous 
-                                                            //title='ContactName'
+                                                            <DropdownMelcous
+                                                                //title='ContactName'
                                                                 name='toContact'
                                                                 selectedValue={this.state.ToContact}
                                                                 data={this.state.toContactNameData}
@@ -463,8 +465,8 @@ class phoneAddEdit extends Component {
                                                                 selectedValue={this.state.selectedToContact} />
                                                         </div>
                                                         <div className="super_company">
-                                                            <DropdownMelcous 
-                                                            //title='toCompany'
+                                                            <DropdownMelcous
+                                                                //title='toCompany'
                                                                 name='toCompany'
                                                                 data={this.state.CompanyData}
                                                                 handleChange={(e) => this.handleChange("toCompany", e)}
@@ -486,14 +488,14 @@ class phoneAddEdit extends Component {
                                                 </div>
                                                 <div className={"linebylineInput valid-input "}  >
                                                     <label className="control-label">{Resources['callTime'][currentLanguage]} </label>
-                                                    <div className={'inputDev ui input'} >
-                                                        <input name='callTime'
-                                                            className="form-control" id="callTime" placeholder={Resources['callTime'][currentLanguage]} autoComplete='off'
+                                                    <div className={'inputDev ui input '+(errors.callTime && touched.callTime ? 'has-error' : ' ')} >
+                                                        <Field name='callTime' className="form-control" id="callTime" placeholder={Resources['callTime'][currentLanguage]} autoComplete='off'
                                                             defaultValue={this.state.phone.callTime} onBlur={handleBlur}
                                                             onChange={e => {
                                                                 handleChange(e)
                                                                 this.handleChange('callTime', e.target.value)
                                                             }} />
+                                                   
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input">
