@@ -109,6 +109,12 @@ class reportsAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+            this.checkDocumentIsView();
+        }
+    }
     componentWillReceiveProps(nextProps, prevProps) {
         console.log('props', nextProps)
         if (nextProps.document && nextProps.document.id) {
