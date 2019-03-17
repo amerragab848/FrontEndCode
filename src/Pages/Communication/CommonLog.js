@@ -98,9 +98,7 @@ class CommonLog extends Component {
         projectId: nextProps.match.params.projectId
       });
 
-      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true);
-      console.log(nextProps.match.params.document);
-      //this.renderComponent(this.state.documentName,this.state.projectId,nextState.isCustom);
+      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true); 
     }
   }
 
@@ -141,7 +139,7 @@ class CommonLog extends Component {
     });
 
     // this.props.history.push({
-    //   pathname: `/${this.state.documentName}/add`,
+    //   pathname: `/v4/Document/${this.state.documentName}/Action/Add`,
     //   state: {
     //     data: {
     //       'src': `${window.location.origin}/old_app/#${addView}0/${this.state.projectId}/undefined/undefined/undefined/${this.state.projectName}`
@@ -153,14 +151,31 @@ class CommonLog extends Component {
 
     let editView = this.state.routeAddEdit;
 
-    this.props.history.push({
-      pathname: `${this.state.documentName}/edit`,
-      state: {
-        data: {
-          'src': `${window.location.origin}/old_app/#${editView}${row.id}/${row.projectId}/undefined/undefined/undefined/${row.projectName}`
-        }
-      }
-    });
+    let obj = {
+      docId: row.id,
+      projectId: row.projectId, 
+      projectName: this.state.projectName,
+      arrange: 0,
+      docApprovalId: 0,
+      isApproveMode: false
+  };
+
+  let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+  let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+
+  this.props.history.push({
+    pathname:"/" + editView,
+    search: "?id=" + encodedPaylod
+  });
+
+    // this.props.history.push({
+    //   pathname: `/v4/Document/${this.state.documentName}/Action/Edit`,
+    //   state: {
+    //     data: {
+    //       'src': `${window.location.origin}/old_app/#${editView}${row.id}/${row.projectId}/undefined/undefined/undefined/${row.projectName}`
+    //     }
+    //   }
+    // });
   }
 
   GetPrevoiusData() {
@@ -346,9 +361,9 @@ class CommonLog extends Component {
         doc_view = "/" + documentObj.documentAddEditLink.replace('/', '') + "?id=" + encodedPaylod
         subject = row.subject;
 
-        return <a  href={doc_view}> {subject} </a>;
+        // return <a  href={doc_view}> {subject} </a>;
 
-        // return <a onClick={() => this.editHandler(row)} href="javascript:void(0);"> {subject} </a>;
+        return <a onClick={() => this.editHandler(row)} href="javascript:void(0);"> {subject} </a>;
       }
       return null;
     };
