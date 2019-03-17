@@ -29,8 +29,10 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     callTime: Yup.number().required(Resources['callTime'][currentLanguage]).min(0),
-    // fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
-    // fromCompany: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage])
+    fromContact: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
+
+
 });
 
 let docId = 0;
@@ -79,10 +81,10 @@ class phoneAddEdit extends Component {
             toContactNameData: [],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
-            selectedFromContact: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedToContact: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+            selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+            selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             isLoading: true,
-            permission: [{ name: 'sendByEmail', code: 0  }, { name: 'sendByInbox', code: 94 },
+            permission: [{ name: 'sendByEmail', code: 0 }, { name: 'sendByInbox', code: 94 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 965 },
             { name: 'createTransmittal', code: 3051 }, { name: 'sendToWorkFlow', code: 715 },
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
@@ -359,14 +361,14 @@ class phoneAddEdit extends Component {
                                             //     this.saveAndExit();
                                             // }
                                         }} >
-                          
+
                                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">{Resources['subject'][currentLanguage]} </label>
-                                                        <div className={"inputDev ui input " +(errors.subject && touched.subject ? 'has-error' : ' ')}>
-                                                            <Field name='subject' defaultValue={this.state.phone.subject}
+                                                        <div className={"inputDev ui input " + (errors.subject ? 'has-error' : !errors.subject && touched.subject ? (" has-success") : " ")}>
+                                                            <input name='subject' defaultValue={this.state.phone.subject}
                                                                 className="form-control"
                                                                 id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
                                                                 onBlur={handleBlur}
@@ -374,10 +376,10 @@ class phoneAddEdit extends Component {
                                                                     handleChange(e)
                                                                     this.handleChange('subject', e.target.value)
                                                                 }} />
-                                                          
+                                                            {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+
                                                         </div>
                                                     </div>
-
                                                     <div className="linebylineInput">
                                                         <label data-toggle="tooltip" title={Resources['status'][currentLanguage]} className="control-label"> {Resources['status'][currentLanguage]} </label>
                                                         <div className="ui checkbox radio radioBoxBlue">
@@ -423,28 +425,26 @@ class phoneAddEdit extends Component {
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
                                                             <DropdownMelcous
-                                                                //title='ContactName'
+                                                                name="fromContact"
+                                                                //       title='ContactName'
                                                                 data={this.state.fromContactNameData}
                                                                 handleChange={e => this.handleChange('fromContact', e)}
                                                                 placeholder='ContactName'
                                                                 selectedValue={this.state.selectedFromContact}
-                                                            // onChange={setFieldValue}
-                                                            // onBlur={setFieldTouched}
-                                                            // error={errors.fromContact}
-                                                            // touched={touched.fromContact}
+                                                                onChange={setFieldValue}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.fromContact}
+                                                                touched={touched.fromContact}
                                                             />
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
-                                                                //title='fromCompany'
+                                                                name="fromCompany"
                                                                 data={this.state.CompanyData}
                                                                 handleChange={e => this.handleChange('fromCompany', e)}
                                                                 placeholder='fromCompany'
                                                                 selectedValue={this.state.selectedFromCompany}
-                                                            // onChange={setFieldValue}
-                                                            // onBlur={setFieldTouched}
-                                                            // error={errors.fromCompany}
-                                                            // touched={touched.fromCompany}
+
                                                             />
 
                                                         </div>
@@ -462,7 +462,11 @@ class phoneAddEdit extends Component {
                                                                 data={this.state.toContactNameData}
                                                                 handleChange={(e) => this.handleChange("toContact", e)}
                                                                 placeholder='ContactName'
-                                                                selectedValue={this.state.selectedToContact} />
+                                                                selectedValue={this.state.selectedToContact} 
+                                                                onChange={setFieldValue}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.toContact}
+                                                                touched={touched.toContact} />
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
@@ -488,14 +492,14 @@ class phoneAddEdit extends Component {
                                                 </div>
                                                 <div className={"linebylineInput valid-input "}  >
                                                     <label className="control-label">{Resources['callTime'][currentLanguage]} </label>
-                                                    <div className={'inputDev ui input '+(errors.callTime && touched.callTime ? 'has-error' : ' ')} >
+                                                    <div className={'inputDev ui input ' + (errors.callTime ? 'has-error' : !errors.callTime && touched.callTime ? (" has-success") : " ")} >
                                                         <Field name='callTime' className="form-control" id="callTime" placeholder={Resources['callTime'][currentLanguage]} autoComplete='off'
                                                             defaultValue={this.state.phone.callTime} onBlur={handleBlur}
                                                             onChange={e => {
                                                                 handleChange(e)
                                                                 this.handleChange('callTime', e.target.value)
                                                             }} />
-                                                   
+
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input">

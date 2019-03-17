@@ -1,36 +1,40 @@
-import React, { Component } from 'react';
-
-import FullDashBoard from '../Componants/Index';
+import React, { Component } from "react";
 
 import { connect } from 'react-redux';
 import {
   bindActionCreators
 } from 'redux';
 
-import * as dashboardComponantActions from '../store/actions/communication';
+import * as dashboardComponantActions from './store/actions/communication';
 
-class DashBoard extends Component {
-  
+class DashboardProject extends Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
   componentWillMount = () => {
     
     var e = { label: this.props.projectName, value: this.props.projectId };
 
-    this.props.actions.RouteToMainDashboard(e);
+    this.props.actions.RouteToDashboardProject(e); 
   };
 
   render() {
+
     return (
-      <div className="mainContainer main__fulldash">
-        <FullDashBoard />
-      </div>
+      <span>Project Dashboard</span>
     );
   }
-
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     showLeftMenu: state.communication.showLeftMenu,
-    showSelectProject: state.communication.showSelectProject
+    showSelectProject: state.communication.showSelectProject,
+    projectId: state.communication.projectId,
+    projectName: state.communication.projectName
   }
 }
 
@@ -43,4 +47,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DashBoard);
+)( DashboardProject);
