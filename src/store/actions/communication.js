@@ -171,6 +171,15 @@ export function GetWorkFlowCycles(urlAction) {
     }
 }
 
+export function RouteToTemplate() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.RouteToTemplate,
+            showLeftMenu: false,
+            showSelectProject: false 
+        });
+    }
+}
 export function RouteToDashboardProject(event) {
     return (dispatch, getState) => {
         dispatch({

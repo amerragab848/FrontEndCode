@@ -1858,11 +1858,12 @@ tfoot tr td p{
 /* new css notabs */
 /* noTabs */
 
-.document__action--menu .customD_Menu .css-vj8t7z {
+.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
   background: #E9ECF0;
   border: 1px solid #E9ECF0;
   height: 40px;
   min-width: 184px;
+  box-shadow: none;
 }
 .document__action--menu .customD_Menu .css-1hwfws3 {
   min-width: 135px;
@@ -2590,7 +2591,7 @@ button.companies_icon {
   border-bottom-right-radius: 0;
   border-right: 0;
 }
-.supervisor__company .super_name .customD_Menu .css-vj8t7z .css-1ep9fjw , .css-10nd86i .css-2o5izw .css-1wy0on6 {
+.supervisor__company .super_name .customD_Menu .css-vj8t7z .css-1ep9fjw ,.supervisor__company .super_name .customD_Menu .css-10nd86i .css-2o5izw .css-1wy0on6 {
   display: none;
 }
 .supervisor__company .super_company .customD_Menu .css-vj8t7z{
@@ -2780,4 +2781,23 @@ button.companies_icon {
 .main__fulldash {
   padding-left: 0;
   padding-right: 0
+}
+.ReactTable {
+  overflow-x: scroll;
+}
+.ReactTable .-pagination .-previous, .ReactTable .-pagination .-next {
+  -webkit-flex: 0.5 1 !important;
+  flex: 0.5 1 !important;
+  flex-shrink: 0;
+}
+.pagination-bottom {
+  position: sticky;
+    left: 0;
+}
+@media (max-width : 1200px) {
+  .ReactTable .-pagination .-previous, .ReactTable .-pagination .-next {
+    -webkit-flex: 0.3 1 !important;
+    flex: 0.3 1 !important;
+    flex-shrink: 0;
+  }
 }

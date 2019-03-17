@@ -41,6 +41,6 @@ export const DeleteContactExpensesWorkFlow = 'DeleteContactExpensesWorkFlow';
 export const RouteToDashboardProject = 'RouteToDashboardProject';
 export const AboveSelectProject = 'AboveSelectProject';
 export const LeftMenuClick = 'LeftMenuClick'; 
-export const RouteToMainDashboard = 'RouteToMainDashboard'; 
-
+export const RouteToMainDashboard = 'RouteToMainDashboard';  
+export const RouteToTemplate = 'RouteToTemplate'; 
 
