@@ -644,11 +644,11 @@
     "ar": "برجاء ادخال قيمة اكبر من الصفر"
   },
   "numbersGreaterThanOrEqualHalf": {
-    "en": "Please insert value greater than or equal 0.5",
+    "en": "Insert value > or = 0.5",
     "ar": "برجاء ادخال قيمة اكبر او تساوي 0.5"
   },
   "onlyNumbers": {
-    "en": "Only numbers shall be entered in this field ",
+    "en": "Only numbers in this field ",
     "ar": "هذا الحقل لا يدعم مدخلات غير الارقام"
   },
   "price": {
@@ -7741,6 +7741,10 @@
     "en": "item",
     "ar": "العنصر"
   },
+  "workplace": {
+    "en": "Workplace",
+    "ar": "مكان العمل"
+  },
   "editContact": {
     "en": "Edit Contact",
     "ar": "تعديل بيانات شخص"
@@ -7748,5 +7752,9 @@
   "otherActions": {
     "en": "Other Actions",
     "ar": "وظائف اخري"
+  },
+  "discplinesRequired": {
+    "en": "Please Select Discplines",
+    "ar": "برجاء اختيار التصميم"
   }
 }

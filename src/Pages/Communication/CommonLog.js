@@ -98,21 +98,18 @@ class CommonLog extends Component {
         projectId: nextProps.match.params.projectId
       });
 
-      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true);
-      console.log(nextProps.match.params.document);
-      //this.renderComponent(this.state.documentName,this.state.projectId,nextState.isCustom);
+      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true); 
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // alert(nextProps.isCustom);
-    // alert(this.state.isCustom);
+ 
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
   }
-
-  componentWillUpdate() {
-    //alert('isCustom')
+  
+  componentWillUpdate () {
+  
   }
 
   hideFilter(value) {
