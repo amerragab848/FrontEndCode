@@ -5,7 +5,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 
 const ProjectStyles = {
-    
+
     option: (styles, { isDisabled, isFocused, isSelected }) => {
         return {
             ...styles,
@@ -60,7 +60,7 @@ class DropdownMelcous extends Component {
                     }
                 </div>
                 <div>
-                    <div className={"customD_Menu " + (this.props.error ? "errorClass" : '')} style={{ outline: "none", position: 'relative' }}>
+                    <div className={"customD_Menu " + (this.props.error && this.props.touched ? " errorClass" : '')} style={{ outline: "none", position: 'relative' }}>
                         <div>
                             <Select key={this.props.index} ref={this.props.index}
                                 options={this.props.data}
@@ -74,13 +74,8 @@ class DropdownMelcous extends Component {
                                 id={this.props.id ? this.props.index : this.props.id}
                                 onChange={this.handleChange}
                                 onBlur={this.handleBlur}
-                                styles={ProjectStyles}
-                            />
-                            {this.props.error && this.props.touched && (
-                                <em className="dropdown__error">
-                                    {this.props.error}
-                                </em>
-                            )}
+                                styles={ProjectStyles} />
+                            {this.props.touched && (<em className="dropdown__error">{this.props.error }</em>)}
                         </div>
                     </div>
                 </div>

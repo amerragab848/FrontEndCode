@@ -14,7 +14,10 @@ export default {
 			file: {},
 			arrange: 0,
 			showModal: false,
-
+			showLeftMenu: false,
+			projectId: 0,
+			projectName:"",
+			showSelectProject:true
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
@@ -29,12 +32,6 @@ export default {
 			getingData: false,
 			companyList:[],
 			tabIndex:0
-		},
-		dashboardComponant:{
-			showLeftMenu: false,
-			projectId: 0,
-			projectName:"",
-			showSelectProject:true
-		}
+		} 
 	}
 }

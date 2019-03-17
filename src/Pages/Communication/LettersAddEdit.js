@@ -41,14 +41,14 @@ const validationSchema = Yup.object().shape({
 
     refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
 
-    fromCompanyId: Yup.string()
-        .required(Resources['fromCompanyRequired'][currentLanguage]),
+    // fromCompanyId: Yup.string()
+    //     .required(Resources['fromCompanyRequired'][currentLanguage]),
 
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
-    toCompanyId: Yup.string()
-        .required(Resources['toCompanyRequired'][currentLanguage]),
+    // toCompanyId: Yup.string()
+    //     .required(Resources['toCompanyRequired'][currentLanguage]),
 
     toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
@@ -207,9 +207,10 @@ class LettersAddEdit extends Component {
                 sharedSettings: '',
                 message: ''
             };
-
             this.setState({ document: letter });
             this.fillDropDowns(false);
+            this.props.actions.documentForAdding();
+
         }
     };
 
@@ -536,7 +537,8 @@ class LettersAddEdit extends Component {
                                                                         handleChange(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'subject')} />
-                                                                {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+
                                                             </div>
                                                         </div>
 
@@ -578,7 +580,7 @@ class LettersAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev " + (errors.subject && touched.subject ? (" has-error") : " ")} >
+                                                            <div className="ui input inputDev"  >
 
                                                                 <input type="text" className="form-control" id="arrange" readOnly
                                                                     value={this.state.document.arrange}
@@ -594,7 +596,7 @@ class LettersAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev" + (errors.subject && touched.subject ? (" has-error") : "ui input inputDev")} >
+                                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"
                                                                     value={this.state.document.refDoc}
                                                                     name="refDoc"
@@ -604,8 +606,7 @@ class LettersAddEdit extends Component {
                                                                         handleBlur(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'refDoc')} />
-
-                                                                {errors.refDoc && touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
+                                                                {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
 
                                                             </div>
                                                         </div>
@@ -764,7 +765,7 @@ class LettersAddEdit extends Component {
                         </div>
                         {
                             this.props.changeStatus === true ?
-                                <div className="approveDocument"> 
+                                <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
 

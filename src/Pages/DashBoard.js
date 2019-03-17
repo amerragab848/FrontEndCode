@@ -7,7 +7,7 @@ import {
   bindActionCreators
 } from 'redux';
 
-import * as dashboardComponantActions from '../store/actions/dashboardComponant';
+import * as dashboardComponantActions from '../store/actions/communication';
 
 class DashBoard extends Component {
   
@@ -29,8 +29,8 @@ class DashBoard extends Component {
 }
 function mapStateToProps(state, ownProps) {
   return {
-    showLeftMenu: state.dashboardComponant.showLeftMenu,
-    showSelectProject: state.dashboardComponant.showSelectProject
+    showLeftMenu: state.communication.showLeftMenu,
+    showSelectProject: state.communication.showSelectProject
   }
 }
 

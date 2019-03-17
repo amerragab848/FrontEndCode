@@ -11,7 +11,7 @@ import {
   bindActionCreators
 } from 'redux';
 
-import * as dashboardComponantActions from '../../store/actions/dashboardComponant';
+import * as dashboardComponantActions from '../../store/actions/communication';
 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -1145,9 +1145,9 @@ class LeftMenu extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    showLeftMenu: state.dashboardComponant.showLeftMenu,
-     projectId: state.dashboardComponant.projectId,
-    projectName: state.dashboardComponant.projectName
+    showLeftMenu: state.communication.showLeftMenu,
+     projectId: state.communication.projectId,
+    projectName: state.communication.projectName
   }
 }
 
