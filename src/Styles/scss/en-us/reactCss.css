@@ -2675,3 +2675,109 @@ button.companies_icon {
 .supervisor__company .super_name .customD_Menu.errorClass .css-vj8t7z:hover {
   border: solid 2px #e74c3c !important;
 }
+
+.main-header.dashboard__header {
+  padding-left: 76px;
+}
+.dashboard__header .nav-right {
+  position: relative;
+}
+.dashboard__header .nav-right .procoor__logo {
+  position: absolute;
+  left: 18%;
+  top: 12px;
+}
+.dashboard__selectMenu .css-10nd86i {
+  max-width: 204px;
+}
+.dashboard__selectMenu .css-10nd86i .css-vj8t7z {
+  background-color: #4382f9;
+  border-color: #4382f9;
+  min-height: 40px;
+  border-radius: 4px;
+}
+.dashboard__selectMenu .css-10nd86i .css-1492t68 {
+  font-family: font-b;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.54;
+  letter-spacing: 0.4px;
+  color: #ffffff;
+  width: 100%;
+  text-transform: uppercase;
+}
+.dashboard__selectMenu .css-10nd86i .css-xp4uvy {
+  font-family: font-b;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.54;
+  letter-spacing: 0.4px;
+  color: #ffffff;
+  width: 100%;
+  text-transform: uppercase;
+}
+.dashboard__selectMenu .css-10nd86i .css-19bqh2r {
+  display: inline-block;
+  fill: white;
+  line-height: 1;
+  stroke: white;
+  stroke-width: 0px;
+}
+.dashboard__selectMenu .css-10nd86i .css-d8oujb {
+  background-color: white;
+  opacity: 0.1;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+.dashboard__selectMenu .css-10nd86i .css-2o5izw {
+  background-color: #4382f9;
+  border-color: transparent;
+  border-width: 0;
+  border-radius: 4px;
+}
+.dashboard__selectMenu .css-10nd86i .css-2o5izw:hover {
+  background-color: #4382f9;
+  border-color: transparent;
+}
+.dashboard__selectMenu .css-10nd86i .css-1g6gooi input {
+  color: #fff !important;
+  font-size: 13px !important;
+}
+.dashboard__selectMenu .css-10nd86i .css-xp4uvy {
+  color: #fff !important;
+  font-size: 13px !important;
+}
+.dashboard__selectMenu .css-10nd86i .css-15k3avv {
+  margin-top: 0;
+  font-size: 13px !important;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  border: solid 1px #CCD2DB;
+  margin: 0;
+  border-top: 2px;
+  border-radius: 4px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  max-width: 202px;
+}
+
+.dashboard__selectMenu .css-10nd86i .css-1ep9fjw {
+  position: relative;
+}
+.dashboard__selectMenu .css-10nd86i .css-1ep9fjw:last-child::after, .dashboard__selectMenu .css-10nd86i .css-1uq0kb5:last-child::after {
+  content: '';
+  background-image: url(../../images/white-normal.png);
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+.dashboard__selectMenu .css-10nd86i .css-1ep9fjw- svg , .dashboard__selectMenu .css-10nd86i .css-1uq0kb5 svg {
+  opacity: 0.6;
+}
+.dashboard__selectMenu .css-10nd86i .css-1ep9fjw:last-child svg , .dashboard__selectMenu .css-10nd86i .css-1uq0kb5:last-child svg {
+  display: none;
+}
+.main__fulldash {
+  padding-left: 0;
+  padding-right: 0
+}

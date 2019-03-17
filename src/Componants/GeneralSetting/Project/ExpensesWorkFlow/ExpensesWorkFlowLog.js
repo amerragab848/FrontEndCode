@@ -8,12 +8,18 @@ import Export from "../../../../Componants/OptionsPanels/Export";
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import Api from '../../../../api';
+import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedprojectName')
 const _ = require('lodash')
 class ExpensesWorkFlowLog extends Component {
     constructor(props) {
         super(props)
+
+        if (!config.IsAllow(3664)) {
+            toast.warn(Resources['missingPermissions'][currentLanguage])
+            this.props.history.goBack()
+        }
 
         const columnsGrid = [
             {
@@ -64,7 +70,7 @@ class ExpensesWorkFlowLog extends Component {
         ]
 
         this.state = {
-            showCheckbox: true,
+            showCheckbox: false,
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
             rows: [],
@@ -85,6 +91,11 @@ class ExpensesWorkFlowLog extends Component {
                 })
             }
         )
+        if (config.IsAllow(3663)) {
+            this.setState({
+                showCheckbox: true
+            })
+        }
     }
 
     onCloseModal = () => {
@@ -136,18 +147,24 @@ class ExpensesWorkFlowLog extends Component {
             showNotify: false,
         })
     }
-    
+
     AddExpensesWorkFlow = () => {
         this.props.history.push({
             pathname: "/ExpensesWorkFlowAddEdit",
             search: "?arrange=" + this.state.MaxArrange
         });
     }
-    onRowClick=(obj)=>{
-        this.props.history.push({
-            pathname: "/ExpensesWorkFlowAddEdit",
-            search: "?id=" + obj.id
-        });
+
+    onRowClick = (obj) => {
+        if (!config.IsAllow(3662)) {
+            toast.warn(Resources['missingPermissions'][currentLanguage])
+        }
+        else {
+            this.props.history.push({
+                pathname: "/ExpensesWorkFlowAddEdit",
+                search: "?id=" + obj.id
+            });
+        }
     }
 
     render() {
@@ -158,7 +175,7 @@ class ExpensesWorkFlowLog extends Component {
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
                     showCheckbox={this.state.showCheckbox}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                     onRowClick={this.onRowClick.bind(this)}
+                    onRowClick={this.onRowClick.bind(this)}
                 />
             ) : <LoadingSection />
 
@@ -186,7 +203,7 @@ class ExpensesWorkFlowLog extends Component {
 
 
                     <div className="filterBTNS">
-                        {config.IsAllow(1182) ?
+                        {config.IsAllow(3661) ?
                             <button className="primaryBtn-1 btn mediumBtn" onClick={this.AddExpensesWorkFlow}>New</button>
                             : null}
                         {btnExport}
