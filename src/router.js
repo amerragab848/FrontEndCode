@@ -70,13 +70,12 @@ let routes = (
     <Route path="/Companies/" component={Companies} /> ,
     <Route path="/Contacts/:companyID" component={Contacts} />,
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} />,
+    <Route path="/v4/Document/:document/Action/:action" component={OldAppNavigation} />,
     {/* <Route path="/logs/:document/:projectId" component={CommonLog} />,  */}
     <Route path="/:document/:projectId" component={CommonLog} />,
     <Route path="/ProfileSetting" component={ProfileSetting} />,
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />,
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />,
-
-    {/* <Route component={OldAppNavigation} />, */}
    
     <Route path="/Contacts/:companyID" component={Contacts} /> ,
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> ,
