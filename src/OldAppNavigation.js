@@ -9,7 +9,8 @@ class OldAppNavigation extends Component {
         }
 
         this.state = {
-            data: this.props.location.state ? this.props.location.state.data : JSON.parse(localStorage.getItem('old-app'))
+            data: this.props.location.state ? this.props.location.state.data : JSON.parse(localStorage.getItem('old-app')),
+            height: '100%'
         };
     }
 
@@ -22,24 +23,32 @@ class OldAppNavigation extends Component {
     }
 
     RecieveMsg(e) {
-        switch (e.message) {
-            // case 'back':
-            //     this.props.history.goBack();
-            //     break;
+        if(e && e.data) {
+            try{
+                let message = JSON.parse(e.data);
 
-            default:
-                this.props.history.goBack();
-
-                break;
+                switch (message.type) {
+                    case 'back':
+                        this.props.history.goBack();
+                        break;
+                    case 'scrollHeight':
+                        this.setState({
+                            height: message.value + 'px'
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            } catch (err) {
+                console.log(err);
+            }
         }
-
-
     }
 
     render() {
         return (
             <div className="mainContainer">
-                <iframe style={{"position":"relative","border":"0","minHeight":"100vh","width":"100%"}} {...this.state.data} id="old-app" ref={(iframe) => this.iframe = iframe}>
+                <iframe style={{"position":"relative","border":"0","minHeight":"100vh","width":"100%", height: this.state.height}} {...this.state.data} id="old-app" ref={(iframe) => this.iframe = iframe}>
                 </iframe>
             </div>
         );
