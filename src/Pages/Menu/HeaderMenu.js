@@ -43,6 +43,7 @@ class HeaderMenu extends Component {
     };
     config.contactName = this.props.contactName;
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
   }
 
   componentWillMount = () => {
@@ -91,6 +92,11 @@ class HeaderMenu extends Component {
       pathname: "/DashboardProject"
     });
   }
+  handleChangeTemplate(e) {
+    //alert('RouteToTemplate');
+     this.props.actions.RouteToTemplate();
+    
+  }
   render() {
     return (
       <div>
@@ -119,7 +125,7 @@ class HeaderMenu extends Component {
                   </a>
                 </li>
                 <li>
-                  <NavLink to='/TemplatesSettings' >
+                  <NavLink to='/TemplatesSettings' onClick={this.handleChangeTemplate} >
                     <img alt="" title="" src={Setting} />
 
 

@@ -3,7 +3,7 @@ import GridSetup from "./GridSetup";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from "../../api";
 import moment from "moment";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
+//import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 
@@ -20,17 +20,8 @@ import MinimizeVBlue from '../../Styles/images/table1.png'
 import MinimizeHBlue from '../../Styles/images/table2.png'
 
 import CryptoJS from 'crypto-js';
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
-
-
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+ 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -248,17 +239,16 @@ class CommonLog extends Component {
     });
 
     Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
-      if (result.length > 0) {
-        this.setState({
-          rows: [...result.data],
-          totalRows: result.total,
-          isLoading: false
-        });
-      } else {
-        this.setState({
-          isLoading: false
-        });
-      }
+
+      this.setState({
+        rows: [...result.data],
+        totalRows: result.total,
+        isLoading: false
+      });
+
+      this.setState({
+        isLoading: false
+      });
     }).catch(ex => {
 
       this.setState({
@@ -339,9 +329,9 @@ class CommonLog extends Component {
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
         let doc_view = "/" + documentObj.documentAddEditLink.replace('/', '') + "?id=" + encodedPaylod
-        subject = row.subject; 
-        
-        return <a  href={doc_view}> {subject} </a>;
+        subject = row.subject;
+
+        return <a href={doc_view}> {subject} </a>;
 
         //return <a onClick={() => this.editHandler(row)} href="javascript:void(0);"> {subject} </a>;
       }
