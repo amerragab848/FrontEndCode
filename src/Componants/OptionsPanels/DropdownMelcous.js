@@ -36,7 +36,6 @@ class DropdownMelcous extends Component {
 
         if (this.props.onChange != undefined) {
             this.props.onChange(this.props.name, value);
-
         }
         this.props.handleChange(value, this.props.name);
     };

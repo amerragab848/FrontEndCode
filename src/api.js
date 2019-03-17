@@ -236,8 +236,7 @@ export default class Api {
                 return json;
             }
             else if (resp.status === 400) {
-
-                return resp.status;
+                return resp;
             }
             else if (resp.status === 401) {
 
