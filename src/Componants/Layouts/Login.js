@@ -42,8 +42,10 @@ class Login extends Component {
         let url = '/token'
         let param = 'grant_type=password&username=' + input.userName + '&password=' + input.password + '&companyId=' + companyId
         Api.Login(loginServer, url, param).then(Response => {
-            if (Response.status === 400)
+            if (Response.status === 400){
                 toast.error('invalid username or password')
+                this.setState({isLoading:false})
+            }
             else {
                 let token = Response.access_token
                 tokenStore.setItem('userToken', 'Bearer ' + token)
