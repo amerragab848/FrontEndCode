@@ -49,10 +49,14 @@ import RfiAddEdit from "./Pages/Communication/RfiAddEdit";
 import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
+import DashboardProject from './DashboardProject';
 
 let routes = (
 <Switch>
     <Route exact path="/" component={DashBoard} />, 
+    
+    <Route path="/DashboardProject" component={DashboardProject}/>,
+    
     <Route path="/LettersAddEdit" component={LettersAddEdit} />,
     <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />,
     <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />,
@@ -81,7 +85,7 @@ let routes = (
    
     <Route path="/Contacts/:companyID" component={Contacts} /> ,
     <Route path="/AddEditCompany/:companyID" component={AddEditCompany} /> ,
-    <Route path="/:document/:projectId" component={CommonLog} />,
+    {/* <Route path="/:document/:projectId" component={CommonLog} />, */}
     <Route path="/ProfileSetting" component={ProfileSetting} />,
     <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />, 
     <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />,

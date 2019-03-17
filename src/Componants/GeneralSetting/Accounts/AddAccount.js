@@ -77,7 +77,7 @@ class AddAccount extends Component {
             this.GetData('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id', 'GroupNameData');
             this.DesignTeamChange = this.DesignTeamChange.bind(this);
         }
-        else { 
+        else {
             this.props.history.goBack()
         }
     }
@@ -121,7 +121,7 @@ class AddAccount extends Component {
         })
     }
 
-    CompanyNamehandleChange = (e) => { 
+    CompanyNamehandleChange = (e) => {
         this.setState({ CompanyId: e.value, CompanyValidation: false })
         this.GetData('GetContactsNotUsersByCompanyId?companyId=' + e.value + '', 'contactName', 'id', 'ContactData')
     }
@@ -369,6 +369,18 @@ class AddAccount extends Component {
                                                         </div>
                                                     </Fragment>
                                                 </div>
+
+                                                
+                                                <div className="linebylineInput valid-input">
+                                                    <div className={this.state.ContactValidation && touched.ContactValidation ? ("has-error") :
+                                                        !this.state.ContactValidation && touched.ContactValidation ? "" : ""} >
+                                                        <DropdownMelcous title='ContactName' data={this.state.ContactData}
+                                                            handleChange={this.ContactNamehandleChange} placeholder='ContactName' name="ContactName" />
+                                                        {this.state.ContactValidation && touched.ContactValidation ? (
+                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+                                                    </div>
+                                                </div>
+
                                                 <div className="linebylineInput valid-input">
                                                     <div className={this.state.CompanyValidation && touched.CompanyValidation ? ("has-error") :
                                                         !this.state.CompanyValidation && touched.CompanyValidation ? "" : ""} >
@@ -379,15 +391,6 @@ class AddAccount extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
-                                                    <div className={this.state.ContactValidation && touched.ContactValidation ? ("has-error") :
-                                                        !this.state.ContactValidation && touched.ContactValidation ? "" : ""} >
-                                                        <DropdownMelcous title='ContactName' data={this.state.ContactData}
-                                                            handleChange={this.ContactNamehandleChange} placeholder='ContactName' name="ContactName" />
-                                                        {this.state.ContactValidation && touched.ContactValidation ? (
-                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
-                                                    </div>
-                                                </div>
 
                                                 <div className="linebylineInput valid-input mix_dropdown">
                                                     {/* <label class="control-label"> Employee Code </label> */}

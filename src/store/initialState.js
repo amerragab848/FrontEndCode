@@ -14,14 +14,11 @@ export default {
 			file: {},
 			arrange: 0,
 			showModal: false,
-
-		},
-		// comapnies: {
-		// 	popUp: false,
-		// 	notifyMessage: false,
-		// 	companyContact: [],
-		// 	getingData: false
-		// },
+			showLeftMenu: false,
+			projectId: 0,
+			projectName:"",
+			showSelectProject:true
+		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
 			contactData:[],
@@ -35,6 +32,6 @@ export default {
 			getingData: false,
 			companyList:[],
 			tabIndex:0
-		}
+		} 
 	}
 }

@@ -128,6 +128,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
+            
             SecondStepComplate: false,
             ThirdStepComplate: false,
             rows: [],
@@ -1051,7 +1052,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className="step-slider-item  active" >
+                                    <div data-id="step1" className={'step-slider-item ' + ( this.state.SecondStepComplate? "active" : 'current__step' )} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -1060,7 +1061,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={this.state.SecondStepComplate ? "step-slider-item  active" : "step-slider-item"} >
+                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : ""   )} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
@@ -1068,7 +1069,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                             <h6 >Contacts</h6>
                                         </div>
                                     </div>
-                                    <div data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  active" : "step-slider-item"}>
+                                    <div data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>

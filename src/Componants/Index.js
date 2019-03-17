@@ -10,7 +10,7 @@ import DashBoardWidgets from "./WidgetsDashBorad";
 import DashBoard from "./DashBoard";
 import _ from "lodash";
 import language from "../resources.json";
-import Api from "../api"; 
+import Api from "../api";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -40,12 +40,12 @@ class Index extends Component {
     if (global.localStorage) {
       try {
         ls = JSON.parse(global.localStorage.getItem(key)) || "";
-      } catch (e) {}
+      } catch (e) { }
     }
     return ls;
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
   renderCounter() {
     let component = this.state.counterData.map(widget =>
@@ -119,51 +119,51 @@ class Index extends Component {
     return chartWidgets;
   }
 
-  renderThreeCard(index) { 
+  renderThreeCard(index) {
 
-    try { 
-      let Widgets_Order =  CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
- 
-      Widgets_Order = Widgets_Order!= "" ? JSON.parse(Widgets_Order) : {};
-  
+    try {
+      let Widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+
+      Widgets_Order = Widgets_Order != "" ? JSON.parse(Widgets_Order) : {};
+
       let obj = Object.keys(Widgets_Order);
-  
+
       if (obj.length > 0) {
-        
+
         let setWidget = "";
-  
-        setWidget  = Widgets_Order[index];
-       
-        setWidget = _.orderBy(setWidget, ['order'],['asc']);
-  
+
+        setWidget = Widgets_Order[index];
+
+        setWidget = _.orderBy(setWidget, ['order'], ['asc']);
+
         let ThreeCard = "";
-  
+
         if (setWidget) {
           ThreeCard = (
             <div className="SummeriesContainer ">
               {setWidget.map((widget, index) => {
                 return (<Fragment key={index}> {widget.checked === true ? (
-                      <Fragment>
-                        <h2 className="SummeriesTitle">
-                          {language[widget.widgetCategory][currentLanguage]}
-                        </h2>
-                        <div className="SummeriesContainerContent">
-                          {widget.widgets.length > 0 ? widget.widgets.map(panel => {
-                              if(panel.checked === true){ 
-                                if (panel.type === "threeWidget") {
-                                  return (<ApprovedWidget key={panel.key} {...panel}  title={ language[panel.title][currentLanguage]} />);
-                                }else if(panel.type === "twoWidget"){
-                                  return (<WidgetsWithText  key={panel.key} title={panel.title} {...panel} />);
-                                } else {
-                                  return (<Widgets key={panel.key} title={panel.title} {...panel} />);
-                                }
-                               }
-                              })
-                            : null}
-                        </div>
-                      </Fragment>
-                    ) : null}
+                  <Fragment>
+                    <h2 className="SummeriesTitle">
+                      {language[widget.widgetCategory][currentLanguage]}
+                    </h2>
+                    <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
+                      {widget.widgets.length > 0 ? widget.widgets.map(panel => {
+                        if (panel.checked === true) {
+                          if (panel.type === "threeWidget") {
+                            return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
+                          } else if (panel.type === "twoWidget") {
+                            return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
+                          } else {
+                            return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                          }
+                        }
+                      })
+                        : null}
+                    </div>
                   </Fragment>
+                ) : null}
+                </Fragment>
                 );
               })}
             </div>
@@ -173,10 +173,10 @@ class Index extends Component {
           return ThreeCard;
         }
       } else {
-        var refrence = DashBoardWidgets.filter(function(i) {
+        var refrence = DashBoardWidgets.filter(function (i) {
           return i.refrence === index;
         });
-  
+
         let ThreeCard = (
           <div className="SummeriesContainer ">
             {refrence.map((widget, index) => {
@@ -185,34 +185,34 @@ class Index extends Component {
                   <h2 className="SummeriesTitle">
                     {language[widget.widgetCategory][currentLanguage]}
                   </h2>
-                  <div className={"SummeriesContainerContent " +(widget.key =="0-1"? " numbersContainerContent":" ")}>
+                  <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
                     {widget.widgets.length > 0
                       ? widget.widgets.map(panel => {
-                          if (panel.type === "threeWidget") {
-                            return (<ApprovedWidget key={panel.key} {...panel}  title={language[panel.title][currentLanguage]}/>);
-                          }
-                          else if(panel.type === "twoWidget"){
-                              return (<WidgetsWithText  key={panel.key} title={panel.title} {...panel}/>);
-                            }
-                           else {
-                            return (<Widgets key={panel.key} title={panel.title} {...panel}/>);
-                          }
-                        }) : null}
+                        if (panel.type === "threeWidget") {
+                          return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
+                        }
+                        else if (panel.type === "twoWidget") {
+                          return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
+                        }
+                        else {
+                          return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                        }
+                      }) : null}
                   </div>
                 </Fragment>
               );
             })}
           </div>
         );
-   
+
         return ThreeCard;
       }
     }
-    catch(err) {
- 
+    catch (err) {
+
       localStorage.removeItem("Widgets_Order");
-      
-      var refrence = DashBoardWidgets.filter(function(i) {
+
+      var refrence = DashBoardWidgets.filter(function (i) {
         return i.refrence === index;
       });
 
@@ -224,28 +224,28 @@ class Index extends Component {
                 <h2 className="SummeriesTitle">
                   {language[widget.widgetCategory][currentLanguage]}
                 </h2>
-                <div className={"SummeriesContainerContent " +(widget.key =="0-1"? " numbersContainerContent":" ")}>
+                <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
                   {widget.widgets.length > 0
                     ? widget.widgets.map(panel => {
-                        if (panel.type === "threeWidget") {
-                          return (<ApprovedWidget key={panel.key} {...panel}  title={language[panel.title][currentLanguage]}/>);
-                        }
-                        else if(panel.type === "twoWidget"){
-                            return (<WidgetsWithText  key={panel.key} title={panel.title} {...panel}/>);
-                          }
-                         else {
-                          return (<Widgets key={panel.key} title={panel.title} {...panel}/>);
-                        }
-                      }) : null}
+                      if (panel.type === "threeWidget") {
+                        return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
+                      }
+                      else if (panel.type === "twoWidget") {
+                        return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
+                      }
+                      else {
+                        return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                      }
+                    }) : null}
                 </div>
               </Fragment>
             );
           })}
         </div>
       );
- 
+
       return ThreeCard;
-    } 
+    }
   }
 
   viewDashBoardHandler() {
@@ -261,12 +261,12 @@ class Index extends Component {
   }
 
   onClickTabItem(tabIndex) {
-    
+
     this.renderThreeCard(tabIndex);
- 
+
     this.setState({
-      tabIndex :tabIndex
-    }); 
+      tabIndex: tabIndex
+    });
   }
 
   render() {
@@ -298,11 +298,11 @@ class Index extends Component {
               Customize
             </button>
           </div>
-          <TabPanel>{this.state.tabIndex === 0 ?  this.renderThreeCard(0) : null}</TabPanel>
-          <TabPanel> {this.state.tabIndex === 1 ? this.renderThreeCard(1): null}</TabPanel>
+          <TabPanel>{this.state.tabIndex === 0 ? this.renderThreeCard(0) : null}</TabPanel>
+          <TabPanel> {this.state.tabIndex === 1 ? this.renderThreeCard(1) : null}</TabPanel>
           <TabPanel className="App"><div className="row">{this.state.tabIndex === 2 ? this.renderCharts() : null}}</div></TabPanel>
         </Tabs>
-        {this.state.viewDashBoard ?(<DashBoard opened={this.state.viewDashBoard} closed={this.closeModal.bind(this)} />):null}
+        {this.state.viewDashBoard ? (<DashBoard opened={this.state.viewDashBoard} closed={this.closeModal.bind(this)} />) : null}
       </div>
     );
   }
