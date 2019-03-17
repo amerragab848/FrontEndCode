@@ -773,7 +773,7 @@ class LettersAddEdit extends Component {
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
-                                    {/* <h2 className="zero">ACTIONS</h2> */}
+                                    <h2 className="zero">ACTIONS</h2>
                                     <div className="approveDocumentBTNS">
                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
 

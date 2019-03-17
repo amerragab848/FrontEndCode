@@ -369,6 +369,18 @@ class AddAccount extends Component {
                                                         </div>
                                                     </Fragment>
                                                 </div>
+
+                                                
+                                                <div className="linebylineInput valid-input">
+                                                    <div className={this.state.ContactValidation && touched.ContactValidation ? ("has-error") :
+                                                        !this.state.ContactValidation && touched.ContactValidation ? "" : ""} >
+                                                        <DropdownMelcous title='ContactName' data={this.state.ContactData}
+                                                            handleChange={this.ContactNamehandleChange} placeholder='ContactName' name="ContactName" />
+                                                        {this.state.ContactValidation && touched.ContactValidation ? (
+                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+                                                    </div>
+                                                </div>
+
                                                 <div className="linebylineInput valid-input">
                                                     <div className={this.state.CompanyValidation && touched.CompanyValidation ? ("has-error") :
                                                         !this.state.CompanyValidation && touched.CompanyValidation ? "" : ""} >
@@ -379,15 +391,6 @@ class AddAccount extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
-                                                    <div className={this.state.ContactValidation && touched.ContactValidation ? ("has-error") :
-                                                        !this.state.ContactValidation && touched.ContactValidation ? "" : ""} >
-                                                        <DropdownMelcous title='ContactName' data={this.state.ContactData}
-                                                            handleChange={this.ContactNamehandleChange} placeholder='ContactName' name="ContactName" />
-                                                        {this.state.ContactValidation && touched.ContactValidation ? (
-                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
-                                                    </div>
-                                                </div>
 
                                                 <div className="linebylineInput valid-input mix_dropdown">
                                                     {/* <label class="control-label"> Employee Code </label> */}
