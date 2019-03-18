@@ -42,7 +42,7 @@ let arrange = 0;
 
 const _ = require('lodash');
 
-class TransmittalAddEdit extends Component {
+class InternalMemoAddEdit extends Component {
 
     constructor(props) {
 
@@ -78,19 +78,14 @@ class TransmittalAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 28,
+            docTypeId: 30,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
             ToContacts: [],
-            fromContacts: [],
-            discplines: [],
-            areas: [],
-            locations: [], 
-            priority: [], 
-            transmittalSubmittedFor: [], 
+            fromContacts: [], 
             sendingMethods: [], 
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
@@ -99,20 +94,15 @@ class TransmittalAddEdit extends Component {
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-            selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedArea: { label: Resources.area[currentLanguage], value: "0" },
-            selectedLocation: { label: Resources.location[currentLanguage], value: "0" },  
-            selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },  
-            selectedSubmittedFor: { label: Resources.submittedForSelect[currentLanguage], value: "0" },  
-            selectedSendingMethod: { label: Resources.sendingMethodRequired[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
+            selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" }, 
+            message: RichTextEditor.createEmptyValue(),
+            answer: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
+        if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
 
-            this.props.history.push("/Transmittal/" + this.state.projectId);
+            this.props.history.push("/InternalMemo/" + this.state.projectId);
         }  
     }
 
@@ -138,7 +128,8 @@ class TransmittalAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                message:RichTextEditor.createValueFromString(nextProps.document.description, 'html')
+                message:RichTextEditor.createValueFromString(nextProps.document.message, 'html'),
+                answer:RichTextEditor.createValueFromString(nextProps.document.answer, 'html')
             });
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -154,12 +145,12 @@ class TransmittalAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(85))) {
+            if (!(Config.IsAllow(99))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(85)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
-                    if (this.props.document.status == true && Config.IsAllow(85)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(99)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(99)) {
+                    if (this.props.document.status == true && Config.IsAllow(99)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -176,13 +167,13 @@ class TransmittalAddEdit extends Component {
 
     componentWillMount() {
       if (this.state.docId > 0) {
-        let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
+        let url = "GetCommunicationInternalMemoForEdit?id=" + this.state.docId;
         this.props.actions.documentForEdit(url);
   
-        if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
+        if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
         }
       } else {
-        const transmittalDocument = {
+        const internalMemoDocument = {
           //field
           id: 0,
           projectId: projectId,
@@ -195,20 +186,12 @@ class TransmittalAddEdit extends Component {
           requiredDate: moment().format(),
           docDate: moment().format(),
           status: "true",
-          refDoc: "",
-          discipline: null,
-          area: "",
-          location: "",
-          building: "",
-          apartment: "",
-          priorityId: "", 
-          submittedForId: "",
-          description:"",
-          sendingMethodId:"", 
-          sharedSettings: ""  
+          refDoc: "", 
+          message:"",
+          answer:""
         };
   
-        this.setState({ document: transmittalDocument });
+        this.setState({ document: internalMemoDocument });
         this.fillDropDowns(false);
       }
     }
@@ -257,128 +240,16 @@ class TransmittalAddEdit extends Component {
           this.setState({
             companies: [...result]
           });
-        });
-  
-      //discplines
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline","title","id").then(result => {
-        if (isEdit) {
-          
-          let disciplineId = this.props.document.Discipline;
-
-          if (disciplineId) {
-
-            let disciplineName =result.find(i => i.value === disciplineId);
- 
-              this.setState({
-                selectedDiscpline: { label: disciplineName.label, value: disciplineId }
-              });
-          } 
-       }
-          this.setState({
-            discplines: [...result]
-          });
-        });
-      //area
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
-        if (isEdit) {
-          
-          let areaId = this.props.document.area;
-
-          if (areaId) {
-
-            let areaIdName =result.find(i => i.value === parseInt(areaId));
- 
-              this.setState({
-                selectedArea: { label: areaIdName.label, value: areaId}
-              });
-          } 
-       }
-          this.setState({
-            areas: [...result]
-          });
-        });
-      //location
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=location","title","id").then(result => {
-        if (isEdit) {
-          
-          let locationId = this.props.document.location;
-
-          if (locationId) {
-
-            let locationName =result.find(i => i.value === parseInt(locationId));
- 
-              this.setState({
-                selectedLocation: { label: locationName.label, value: locationId}
-              });
-          } 
-       }
-          this.setState({
-            locations: [...result]
-          });
-        });
-      //priorty
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority","title","id").then(result => {
-        if (isEdit) {
-          
-          let priorityId = this.props.document.priorityId;
-
-          if (priorityId) {
-
-            let priorityName =result.find(i => i.value === parseInt(priorityId));
- 
-              this.setState({
-                selectedPriorityId: { label: priorityName.label, value: priorityId}
-              });
-          } 
-       }
-          this.setState({
-            priority: [...result]
-          });
-        });
-        //submittedFor
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=transmittalsubmittedfor","title","id").then(result => {
-        if (isEdit) {
-          
-          let submittedForId = this.props.document.submittedForId;
-
-          if (submittedForId) {
- 
-              this.setState({
-                selectedSubmittedFor: { label: this.props.document.submittedForName, value: submittedForId}
-              });
-          } 
-       }
-          this.setState({
-            transmittalSubmittedFor: [...result]
-          });
-        });
-
-        //sendingMethod
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=sendingmethods","title","id").then(result => {
-        if (isEdit) {
-          
-          let sendingmethod = this.props.document.sendingMethodId;
-
-          if (sendingmethod) { 
- 
-              this.setState({
-                selectedSendingMethod: { label: this.props.document.sendingMethodName, value: sendingmethod}
-              });
-          } 
-       }
-          this.setState({
-            sendingMethods: [...result]
-          });
-        });
+        }); 
     }
 
-    onChangeMessage = (value) => {
+    onChangeMessage = (value,field) => {
         
         let isEmpty = !value.getEditorState().getCurrentContent().hasText();
 
         if (isEmpty === false) {
 
-            this.setState({ message: value });
+            field === "message" ? this.setState({ message: value }) : this.setState({ answer: value });
 
             if (value.toString('markdown').length > 1) {
 
@@ -386,7 +257,7 @@ class TransmittalAddEdit extends Component {
 
                 let updated_document = {};
 
-                updated_document.description = value.toString('markdown');
+                updated_document[field] = value.toString('markdown');
 
                 updated_document = Object.assign(original_document, updated_document);
 
@@ -461,7 +332,7 @@ class TransmittalAddEdit extends Component {
         }
     }
 
-    editTransmittal(event) {
+    editInternalMemo(event) {
         this.setState({
             isLoading: true
         });
@@ -471,24 +342,24 @@ class TransmittalAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('EditCommunicationTransmittal',saveDocument ).then(result => {
+        dataservice.addObject('EditCommunicationInternalMemo', saveDocument ).then(result => {
             this.setState({
                 isLoading: true
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
-            this.props.history.push("/Transmittal/" + this.state.projectId);
+            this.props.history.push("/InternalMemo/" + this.state.projectId);
         });
     }
 
-    saveTransmittal(event) {
-        let saveDocument = { ...this.state.document };
+    saveInternalMemo(event) {
+        let saveDocument = this.state.document;
 
         saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
+        dataservice.addObject('AddCommunicationInternalMemo', saveDocument).then(result => {
             this.setState({
                 docId: result.id
             });
@@ -497,7 +368,7 @@ class TransmittalAddEdit extends Component {
     }
 
     saveAndExit(event) {  
-        this.props.history.push("/Transmittal/" + this.state.projectId);
+        this.props.history.push("/InternalMemo/" + this.state.projectId);
     }
 
     showBtnsSaving() {
@@ -543,7 +414,7 @@ class TransmittalAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.transmittal[currentLanguage]}
+                        <h2 className="zero">{Resources.communicationInternalMemo[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
                         </h2>
                         <div className="SubmittalHeadClose">
@@ -585,9 +456,9 @@ class TransmittalAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
-                                                    this.editTransmittal();
+                                                    this.editInternalMemo();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                    this.saveTransmittal();
+                                                    this.saveInternalMemo();
                                                 } else {
                                                     this.saveAndExit();
                                                 }
@@ -733,76 +604,17 @@ class TransmittalAddEdit extends Component {
                                                                        id="toCompanyId" />
                                                                 </div>
                                                             </div>
-                                                        </div> 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="discipline" data={this.state.discplines} 
-                                                                      selectedValue={this.state.selectedDiscpline}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'discipline', false, '', '', '', 'selectedDiscpline')}/>
                                                         </div>  
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="priority" data={this.state.priority} 
-                                                                      selectedValue={this.state.selectedPriorityId}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedPriorityId')}/>
-                                                        </div>  
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="submittedFor" data={this.state.transmittalSubmittedFor} 
-                                                                      selectedValue={this.state.selectedSubmittedFor}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'submittedForId', false, '', '', '', 'selectedSubmittedFor')}/>
-                                                        </div>  
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="sendingMethod" data={this.state.sendingMethods} 
-                                                                      selectedValue={this.state.selectedSendingMethod}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'sendingMethodId', false, '', '', '', 'selectedSendingMethod')}/>
-                                                        </div>  
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="area" data={this.state.areas} 
-                                                                      selectedValue={this.state.selectedArea}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')}/>
-                                                        </div> 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="location" data={this.state.locations} 
-                                                                      selectedValue={this.state.selectedLocation}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocation')}/>
-                                                        </div> 
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.Building[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input" + (errors.Building && touched.Building ? (" has-error") : !errors.Building && touched.Building ? (" has-success") : " ")} >
-                                                                <input name='Building' className="form-control fsadfsadsa" id="Building"
-                                                                    placeholder={Resources.Building[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.building}
-                                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'building')} />
-                                                                {errors.Building && touched.Building ? (<em className="pError">{errors.Building}</em>) : null}
-                                                            </div>
-                                                        </div>
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.apartmentNumber[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input" + (errors.apartmentNumber && touched.apartmentNumber ? (" has-error") : !errors.apartmentNumber && touched.apartmentNumber ? (" has-success") : " ")} >
-                                                                <input name='subject' className="form-control fsadfsadsa" id="subject"
-                                                                    placeholder={Resources.apartmentNumber[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.apartment}
-                                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'apartment')} />
-                                                                {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
-                                                            </div>
-                                                        </div>
-                                                      
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
-                                                            <div className="shareLinks">
-                                                                <div className="inputDev ui input">
-                                                                    <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings} name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
-                                                                </div>
-                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
-                                                            </div>
-                                                        </div>  
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event)} />
+                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event,"message")} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">{Resources.answer[currentLanguage]}</label>
+                                                            <div className="inputDev ui input">
+                                                                <RichTextEditor value={this.state.answer} onChange={event => this.onChangeMessage(event,"answer")} />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -827,7 +639,7 @@ class TransmittalAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument"> 
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editTransmittal(e)}>{Resources.save[currentLanguage]}</button>
+                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editInternalMemo(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
@@ -875,4 +687,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(TransmittalAddEdit))
+)(withRouter(InternalMemoAddEdit))
