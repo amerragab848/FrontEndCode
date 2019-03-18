@@ -35,3 +35,12 @@ export const AddContactExpensesWorkFlow = 'AddContactExpensesWorkFlow';
 export const UpdateContactExpensesWorkFlow = 'UpdateContactExpensesWorkFlow';
 export const DeleteContactExpensesWorkFlow = 'DeleteContactExpensesWorkFlow';
 
+
+
+//dashboardComponant 
+export const RouteToDashboardProject = 'RouteToDashboardProject';
+export const AboveSelectProject = 'AboveSelectProject';
+export const LeftMenuClick = 'LeftMenuClick'; 
+export const RouteToMainDashboard = 'RouteToMainDashboard';  
+export const RouteToTemplate = 'RouteToTemplate'; 
+

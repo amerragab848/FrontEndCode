@@ -50,14 +50,15 @@ import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 //import OldAppNavigation from './OldAppNavigation';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 import ProjectSetup from './Pages/ProjectSetup/ProjectSetup'
-
+import reportsAddEdit from './Pages/Communication/reportsAddEdit';
+import OldAppNavigation from './OldAppNavigation';
+import DashboardProject from './DashboardProject';
+import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = "/" + item.route + "/:projectId";
-    return <Route path={path} component={ProjectSetup}/>
-
-}
-);
+    return <Route path={path} component={ProjectSetup}/>})
+    
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
@@ -112,6 +113,8 @@ let originalRoutes = [
     , <Route path="/RfiAddEdit" component={RfiAddEdit} />
     , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
     , <Route path="/phoneAddEdit" component={phoneAddEdit} />
+    ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
+    ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

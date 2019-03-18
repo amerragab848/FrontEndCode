@@ -17,6 +17,7 @@ class TemplatesSettings extends Component {
             tabIndex: this.props.Adminstration.tabIndex,
             showNotify:false
         };
+        //
     }
     NoPermission=()=>{
         this.setState({
@@ -30,7 +31,7 @@ class TemplatesSettings extends Component {
     }
     render() {
         return (
-            <div className='mainContainer'>    
+            <div className='mainContainer main__fulldash'>    
            
                     <Tabs className="settings-container" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
                         <div className="settings-tabs-items">

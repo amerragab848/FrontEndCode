@@ -855,7 +855,7 @@ var routes = [
     title: "workFlow",
     nav: true,
     settings: {
-      General: true,
+      // // General: true,
       permission: 604,
       caption: "procoor-icon-workflow",
       order: 1
@@ -867,7 +867,7 @@ var routes = [
     title: "projectTaskGroups",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 778,
       caption: "procoor-icon-task-groups"
     }
@@ -889,7 +889,7 @@ var routes = [
     title: "distributionList",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 629,
       caption: "procoor-icon-distribution-list",
       order: 2
@@ -901,7 +901,7 @@ var routes = [
     title: "headerAndFooter",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 484,
       caption: "procoor-icon-project-page-setup",
       order: 5
@@ -946,7 +946,7 @@ var routes = [
     title: "docAlerts",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 108,
       caption: "procoor-icon-alerts",
       order: 6
@@ -958,7 +958,7 @@ var routes = [
     title: "bicAlerts",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 109,
       caption: "procoor-icon-BIC",
       order: 7
@@ -2760,7 +2760,8 @@ var routes = [
     moduleId: "projects/boqStructure",
     title: "boqStructure",
     nav: true,
-    settings: { General: true, permission: 3670, order: 6 }
+    settings: { // General: true,
+       permission: 3670, order: 6 }
   },
   {
     route: "inventoryRpt",
@@ -2880,7 +2881,7 @@ var routes = [
     title: "area",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 3784,
       caption: "procoor-icon-BIC",
       order: 8
@@ -2892,7 +2893,7 @@ var routes = [
     title: "location",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 3788,
       caption: "procoor-icon-BIC",
       order: 9
@@ -2904,7 +2905,7 @@ var routes = [
     title: "Buildings",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 4012,
       caption: "procoor-icon-BIC",
       order: 10
@@ -2916,7 +2917,7 @@ var routes = [
     title: "unit",
     nav: true,
     settings: {
-      General: true,
+      // General: true,
       permission: 4016,
       caption: "procoor-icon-BIC",
       order: 11

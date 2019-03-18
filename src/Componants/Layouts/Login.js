@@ -8,6 +8,7 @@ import platform from 'platform'
 import eyeShow from "../../Styles/images/eyepw.svg"
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { toast } from "react-toastify";
 
 import config from "../../Services/Config";
 import Resources from '../../resources.json';
@@ -41,8 +42,10 @@ class Login extends Component {
         let url = '/token'
         let param = 'grant_type=password&username=' + input.userName + '&password=' + input.password + '&companyId=' + companyId
         Api.Login(loginServer, url, param).then(Response => {
-            if (Response === 400)
-                alert("invalid_clientEmail")
+            if (Response.status === 400){
+                toast.error('invalid username or password')
+                this.setState({isLoading:false})
+            }
             else {
                 let token = Response.access_token
                 tokenStore.setItem('userToken', 'Bearer ' + token)
@@ -117,7 +120,7 @@ class Login extends Component {
                     window.location.reload();
                 })
             }
-            this.setState({ isLoading: false })
+         
         })
     }
 
@@ -189,9 +192,7 @@ class Login extends Component {
                                                 onBlur={handleBlur} onChange={handleChange} />
                                             {errors.userName && touched.userName ? (
                                                 <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                            ) : !errors.userName && touched.userName ? (
-                                                <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                            ) : null}
+                                            )  : null}
                                             {errors.userName && touched.userName ? (
                                                 <em className="pError">{errors.userName}</em>
                                             ) : null}
@@ -218,8 +219,6 @@ class Login extends Component {
                                                         onBlur={handleBlur} onChange={handleChange} placeholder={Resources['password'][currentLanguage]} />
                                                     {errors.password && touched.password ? (
                                                         <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                    ) : !errors.password && touched.password ? (
-                                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
                                                     ) : null}
                                                     {errors.password && touched.password ? (
                                                         <em className="pError">{errors.password}</em>
