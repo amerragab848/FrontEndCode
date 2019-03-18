@@ -9,8 +9,7 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-
-import ModernDatepicker from 'react-modern-datepicker';
+ 
 import { withRouter } from "react-router-dom";
 
 import RichTextEditor from 'react-rte';
@@ -19,14 +18,14 @@ import { connect } from 'react-redux';
 import {
     bindActionCreators
 } from 'redux';
+import * as communicationActions from '../../store/actions/communication';
+
 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 
 import SkyLight from 'react-skylight';
-import * as communicationActions from '../../store/actions/communication';
-
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
@@ -115,12 +114,10 @@ class LettersAddEdit extends Component {
 
         if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-
             this.props.history.push({
                 pathname: "/Letters/" + projectId
             });
-        }
-        //  this.onChangeMessage =this.onChangeMessage.bind(this);
+        } 
     }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
@@ -551,26 +548,7 @@ class LettersAddEdit extends Component {
                                                     </div>
 
                                                     <div className="proForm datepickerContainer">
-
-                                                        {/* <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                <div className="customDatepicker fillter-status fillter-item-c ">
-                                                                    <div className="proForm datepickerContainer">
-                                                                        <label className="control-label">{Resources.docDate[currentLanguage]}</label>
-                                                                        <div className="linebylineInput" >
-                                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker
-                                                                                    startDate={this.state.document.docDate}
-                                                                                    showBorder
-                                                                                    onChange={e => this.handleChangeDate(e, 'docDate')}
-                                                                                    placeholder={'Select a date'} />
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div> */}
+ 
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate'
                                                                 startDate={this.state.document.docDate}
