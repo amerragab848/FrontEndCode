@@ -378,7 +378,12 @@ class phoneAddEdit extends Component {
                                 <div className="document-fields">
                                     {this.state.isLoading ? <LoadingSection /> : null}
                                     <Formik
-                                        initialValues={{...this.state.phone}}
+                                        initialValues={{
+                                            subject:this.state.phone.subject,
+                                            fromContact:this.state.selectedFromContact.value>0?this.state.selectedFromContact:'',
+                                            toContact:this.state.selectedToContact.value>0?this.state.selectedToContact:'',
+                                            callTime:this.state.phone.callTime
+                                        }}
                                         validationSchema={validationSchema}
                                         onSubmit={(values) => {
                                             if (this.props.changeStatus === true && this.props.docId > 0) {

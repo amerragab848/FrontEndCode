@@ -428,7 +428,12 @@ class reportsAddEdit extends Component {
                                     <div className="document-fields">
                                         {this.state.isLoading ? <LoadingSection /> : null}
                                         <Formik
-                                            initialValues={{ ...this.state.document }}
+                                            initialValues={{
+                                                subject: this.state.document.subject,
+                                                fromContact: this.state.selectedFromContact.value > 0 ? this.state.selectedFromContact : '',
+                                                toContact: this.state.selectedToContact.value > 0 ? this.state.selectedToContact : '',
+                                                refDoc: this.state.document.refDoc
+                                            }}
 
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
