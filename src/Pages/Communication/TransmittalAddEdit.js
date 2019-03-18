@@ -27,11 +27,11 @@ import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450,Resources['maxLength'][currentLanguage]),
     refDoc: Yup.string().max(450,Resources['maxLength'][currentLanguage]),  
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true), 
     toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
-})
+});
 
 let docId = 0;
 let projectId = 0;
@@ -42,7 +42,7 @@ let arrange = 0;
 
 const _ = require('lodash');
 
-class RfiAddEdit extends Component {
+class TransmittalAddEdit extends Component {
 
     constructor(props) {
 
@@ -78,7 +78,7 @@ class RfiAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 19,
+            docTypeId: 28,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -89,6 +89,9 @@ class RfiAddEdit extends Component {
             discplines: [],
             areas: [],
             locations: [], 
+            priority: [], 
+            transmittalSubmittedFor: [], 
+            sendingMethods: [], 
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
@@ -99,18 +102,18 @@ class RfiAddEdit extends Component {
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
-            selectedLocation: { label: Resources.location[currentLanguage], value: "0" }, 
-            message: RichTextEditor.createEmptyValue(), 
-            replyMessage: RichTextEditor.createEmptyValue()
+            selectedLocation: { label: Resources.location[currentLanguage], value: "0" },  
+            selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },  
+            selectedSubmittedFor: { label: Resources.submittedForSelect[currentLanguage], value: "0" },  
+            selectedSendingMethod: { label: Resources.sendingMethodRequired[currentLanguage], value: "0" },
+            message: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(75) || !Config.IsAllow(76) || !Config.IsAllow(78)) {
+        if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
 
-            this.props.history.push("/Rfi/" + this.state.projectId);
-        } 
-
-        this.onChangeMessage = this.onChangeMessage.bind(this);
+            this.props.history.push("/Transmittal/" + this.state.projectId);
+        }  
     }
 
     componentDidMount() {
@@ -146,12 +149,12 @@ class RfiAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(49))) {
+            if (!(Config.IsAllow(85))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status == true && Config.IsAllow(49)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(85)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
+                    if (this.props.document.status == true && Config.IsAllow(85)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -168,42 +171,39 @@ class RfiAddEdit extends Component {
 
     componentWillMount() {
       if (this.state.docId > 0) {
-        let url = "GetCommunicationRfiForEdit?id=" + this.state.docId;
+        let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
         this.props.actions.documentForEdit(url);
   
-        if (Config.IsAllow(75) || Config.IsAllow(76) || Config.IsAllow(78)) {
+        if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
         }
       } else {
-        const rfiDocument = {
+        const transmittalDocument = {
           //field
+          id: 0,
           projectId: projectId,
+          arrange: "1",
           fromCompanyId: null,
           toCompanyId: null,
           fromContactId: null,
           toContactId: null,
           subject: "",
           requiredDate: moment().format(),
-          rfi: "",
-          answer: "",
           docDate: moment().format(),
-          arrange: "1",
           status: "true",
-          contractId: null,
-          pcoId: null,
           refDoc: "",
-          docLocationId: "true",
-          cycleNo: 0,
-          parentId: null,
-          disciplineId: null,
+          discipline: null,
           area: "",
           location: "",
           building: "",
           apartment: "",
-          sharedSettings: "",
-          id: 0
+          priorityId: "", 
+          submittedForId: "",
+          description:"",
+          sendingMethodId:"", 
+          sharedSettings: ""  
         };
   
-        this.setState({ document: rfiDocument });
+        this.setState({ document: transmittalDocument });
         this.fillDropDowns(false);
       }
     }
@@ -226,8 +226,11 @@ class RfiAddEdit extends Component {
     fillDropDowns(isEdit) {
       //from Companies
       dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId,"companyName","companyId").then(result => {
+     
         if (isEdit) {
-          let companyId = this.props.document.fromCompanyId;
+          
+            let companyId = this.props.document.fromCompanyId;
+
           if (companyId) {
               this.setState({
                   selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
@@ -255,7 +258,7 @@ class RfiAddEdit extends Component {
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline","title","id").then(result => {
         if (isEdit) {
           
-          let disciplineId = this.props.document.disciplineId;
+          let disciplineId = this.props.document.Discipline;
 
           if (disciplineId) {
 
@@ -308,13 +311,69 @@ class RfiAddEdit extends Component {
             locations: [...result]
           });
         });
+      //priorty
+      dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority","title","id").then(result => {
+        if (isEdit) {
+          
+          let priorityId = this.props.document.priorityId;
+
+          if (priorityId) {
+
+            let priorityName =result.find(i => i.value === parseInt(priorityId));
+ 
+              this.setState({
+                selectedPriorityId: { label: priorityName.label, value: priorityId}
+              });
+          } 
+       }
+          this.setState({
+            priority: [...result]
+          });
+        });
+        //submittedFor
+      dataservice.GetDataList("GetaccountsDefaultListForList?listType=transmittalsubmittedfor","title","id").then(result => {
+        if (isEdit) {
+          
+          let submittedForId = this.props.document.submittedForId;
+
+          if (submittedForId) {
+ 
+              this.setState({
+                selectedSubmittedFor: { label: this.props.document.submittedForName, value: submittedForId}
+              });
+          } 
+       }
+          this.setState({
+            transmittalSubmittedFor: [...result]
+          });
+        });
+
+        //sendingMethod
+      dataservice.GetDataList("GetaccountsDefaultListForList?listType=sendingmethods","title","id").then(result => {
+        if (isEdit) {
+          
+          let sendingmethod = this.props.document.sendingMethodId;
+
+          if (sendingmethod) { 
+ 
+              this.setState({
+                selectedSendingMethod: { label: this.props.document.sendingMethodName, value: sendingmethod}
+              });
+          } 
+       }
+          this.setState({
+            sendingMethods: [...result]
+          });
+        });
     }
 
-    onChangeMessage = (value,field) => {
+    onChangeMessage = (value) => {
+        
         let isEmpty = !value.getEditorState().getCurrentContent().hasText();
+
         if (isEmpty === false) {
 
-          field === "rfi" ? this.setState({ message: value }) : this.setState({ replyMessage: value });
+            this.setState({ message: value });
 
             if (value.toString('markdown').length > 1) {
 
@@ -322,17 +381,15 @@ class RfiAddEdit extends Component {
 
                 let updated_document = {};
 
-                updated_document[field] = value.toString('markdown');
+                updated_document.description = value.toString('markdown');
 
                 updated_document = Object.assign(original_document, updated_document);
 
                 this.setState({
                     document: updated_document
                 });
-            }
-
-        }
-
+            } 
+        } 
     };
 
     handleChange(e, field) {
@@ -399,29 +456,29 @@ class RfiAddEdit extends Component {
         }
     }
 
-    editRfi(event) {
+    editTransmittal(event) {
         this.setState({
             isLoading: true
         });
 
-        dataservice.addObject('EditCommunicationRfi', this.state.document).then(result => {
+        dataservice.addObject('EditCommunicationTransmittal', this.state.document).then(result => {
             this.setState({
                 isLoading: true
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
-            this.props.history.push("/Rfi/" + this.state.projectId);
+            this.props.history.push("/Transmittal/" + this.state.projectId);
         });
     }
 
-    saveRfi(event) {
+    saveTransmittal(event) {
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
         saveDocument.requiredDate = moment(saveDocument.requiredDate).format('DD/MM/YYYY');
 
-        dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
+        dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
             this.setState({
                 docId: result.id
             });
@@ -430,10 +487,11 @@ class RfiAddEdit extends Component {
     }
 
     saveAndExit(event) {  
-        this.props.history.push("/Rfi/" + this.state.projectId);
+        this.props.history.push("/Transmittal/" + this.state.projectId);
     }
 
     showBtnsSaving() {
+
         let btn = null;
 
         if (this.state.docId === 0) {
@@ -446,7 +504,7 @@ class RfiAddEdit extends Component {
    
     viewAttachments() {
         return (
-            this.state.docId > 0 ? (Config.IsAllow(3317) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
+            this.state.docId > 0 ? (Config.IsAllow(3327) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
         )
     }
 
@@ -475,7 +533,7 @@ class RfiAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.communicationRFI[currentLanguage]}
+                        <h2 className="zero">{Resources.transmittal[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
                         </h2>
                         <div className="SubmittalHeadClose">
@@ -517,9 +575,9 @@ class RfiAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
-                                                    this.editRfi();
+                                                    this.editTransmittal();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                    this.saveRfi();
+                                                    this.saveTransmittal();
                                                 } else {
                                                     this.saveAndExit();
                                                 }
@@ -552,6 +610,7 @@ class RfiAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="proForm datepickerContainer"> 
+                                                       
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -569,6 +628,7 @@ class RfiAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                      
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -586,6 +646,7 @@ class RfiAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div> 
+                                                
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
@@ -664,6 +725,26 @@ class RfiAddEdit extends Component {
                                                             </div>
                                                         </div> 
                                                         <div className="linebylineInput valid-input">
+                                                            <Dropdown title="discipline" data={this.state.discplines} 
+                                                                      selectedValue={this.state.selectedDiscpline}
+                                                                      handleChange={event => this.handleChangeDropDown(event, 'discipline', false, '', '', '', 'selectedDiscpline')}/>
+                                                        </div>  
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown title="priority" data={this.state.priority} 
+                                                                      selectedValue={this.state.selectedPriorityId}
+                                                                      handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedPriorityId')}/>
+                                                        </div>  
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown title="submittedFor" data={this.state.transmittalSubmittedFor} 
+                                                                      selectedValue={this.state.selectedSubmittedFor}
+                                                                      handleChange={event => this.handleChangeDropDown(event, 'submittedForId', false, '', '', '', 'selectedSubmittedFor')}/>
+                                                        </div>  
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown title="sendingMethod" data={this.state.sendingMethods} 
+                                                                      selectedValue={this.state.selectedSendingMethod}
+                                                                      handleChange={event => this.handleChangeDropDown(event, 'sendingMethodId', false, '', '', '', 'selectedSendingMethod')}/>
+                                                        </div>  
+                                                        <div className="linebylineInput valid-input">
                                                             <Dropdown title="area" data={this.state.areas} 
                                                                       selectedValue={this.state.selectedArea}
                                                                       handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')}/>
@@ -695,12 +776,7 @@ class RfiAddEdit extends Component {
                                                                 {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="discipline" data={this.state.discplines} 
-                                                                      selectedValue={this.state.selectedDiscpline}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}/>
-                                                        </div>  
-                                                        
+                                                      
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
@@ -712,17 +788,11 @@ class RfiAddEdit extends Component {
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
                                                             </div>
-                                                        </div> 
+                                                        </div>  
                                                         <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.message[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event,"rfi")} />
-                                                            </div>
-                                                        </div>
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
-                                                            <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.replyMessage} onChange={event => this.onChangeMessage(event,"answer")} />
+                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event)} />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -747,7 +817,7 @@ class RfiAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument"> 
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editRfi(e)}>{Resources.save[currentLanguage]}</button>
+                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editTransmittal(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
@@ -795,4 +865,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(RfiAddEdit))
+)(withRouter(TransmittalAddEdit))

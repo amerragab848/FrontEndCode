@@ -31,6 +31,7 @@ import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
+import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -41,14 +42,8 @@ const validationSchema = Yup.object().shape({
 
     refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
 
-    // fromCompanyId: Yup.string()
-    //     .required(Resources['fromCompanyRequired'][currentLanguage]),
-
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
-
-    // toCompanyId: Yup.string()
-    //     .required(Resources['toCompanyRequired'][currentLanguage]),
 
     toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
@@ -200,7 +195,7 @@ class LettersAddEdit extends Component {
                 toCompanyId: '',
                 toContactId: '',
                 replayId: '',
-                docDate: '',
+                docDate: moment(),
                 status: 'false',
                 disciplineId: '',
                 refDoc: '',
@@ -210,7 +205,6 @@ class LettersAddEdit extends Component {
             this.setState({ document: letter });
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
-
         }
     };
 
@@ -329,7 +323,7 @@ class LettersAddEdit extends Component {
     }
 
     handleChangeDate(e, field) {
-
+        console.log(field,e);
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -398,7 +392,7 @@ class LettersAddEdit extends Component {
     saveLetter(event) {
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
         dataservice.addObject('AddLetters', saveDocument).then(result => {
             this.setState({
@@ -558,7 +552,7 @@ class LettersAddEdit extends Component {
 
                                                     <div className="proForm datepickerContainer">
 
-                                                        <div className="linebylineInput valid-input">
+                                                        {/* <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
                                                                     <div className="proForm datepickerContainer">
@@ -566,16 +560,21 @@ class LettersAddEdit extends Component {
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                                 <ModernDatepicker
-                                                                                    date={this.state.document.docDate}
-                                                                                    format={'DD-MM-YYYY'}
+                                                                                    startDate={this.state.document.docDate}
                                                                                     showBorder
                                                                                     onChange={e => this.handleChangeDate(e, 'docDate')}
                                                                                     placeholder={'Select a date'} />
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div> */}
+                                                        <div className="linebylineInput valid-input alternativeDate">
+                                                            <DatePicker title='docDate'
+                                                                startDate={this.state.document.docDate}
+                                                                handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
