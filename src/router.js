@@ -115,6 +115,7 @@ let originalRoutes = [
     , <Route path="/phoneAddEdit" component={phoneAddEdit} />
     ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
     ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
+    ,<Route path="/DashboardProject" component={DashboardProject} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
