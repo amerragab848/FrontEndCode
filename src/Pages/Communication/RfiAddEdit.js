@@ -78,7 +78,7 @@ class RfiAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 19,
+            docTypeId: 23,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -128,10 +128,18 @@ class RfiAddEdit extends Component {
 
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id) {
+          
+          nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
+          nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+          
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow
+                hasWorkflow: nextProps.hasWorkflow,
+                message:RichTextEditor.createValueFromString(nextProps.document.rfi, 'html'),
+                replyMessage:RichTextEditor.createValueFromString(nextProps.document.answer, 'html'),
             });
+
+            console.log(this.props.onChange);
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -182,10 +190,10 @@ class RfiAddEdit extends Component {
           fromContactId: null,
           toContactId: null,
           subject: "",
-          requiredDate: moment().format(),
+          requiredDate: moment(),
           rfi: "",
           answer: "",
-          docDate: moment().format(),
+          docDate: moment(),
           arrange: "1",
           status: "true",
           contractId: null,
@@ -404,7 +412,12 @@ class RfiAddEdit extends Component {
             isLoading: true
         });
 
-        dataservice.addObject('EditCommunicationRfi', this.state.document).then(result => {
+        let saveDocument = this.state.document;
+
+        saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+        dataservice.addObject('EditCommunicationRfi', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -418,8 +431,8 @@ class RfiAddEdit extends Component {
     saveRfi(event) {
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate).format('DD/MM/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
             this.setState({
@@ -560,7 +573,8 @@ class RfiAddEdit extends Component {
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                                 <ModernDatepicker date={this.state.document.docDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                                  format={'DD/MM/YYYY'} 
+                                                                                                  showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'docDate')}
                                                                                                   placeholder={'Select a date'} />
                                                                             </div>
@@ -577,7 +591,7 @@ class RfiAddEdit extends Component {
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                                 <ModernDatepicker date={this.state.document.requiredDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                                  format={'DD/MM/YYYY'} showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'requiredDate')}
                                                                                                   placeholder={'Select a date'}/>
                                                                             </div>

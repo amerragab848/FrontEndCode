@@ -131,9 +131,14 @@ class TransmittalAddEdit extends Component {
 
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id) {
+            
+            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
+            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow
+                hasWorkflow: nextProps.hasWorkflow,
+                message:RichTextEditor.createValueFromString(nextProps.document.description, 'html')
             });
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -475,8 +480,8 @@ class TransmittalAddEdit extends Component {
     saveTransmittal(event) {
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate).format('DD/MM/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate).format('MM/DD/YYYY');
 
         dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
             this.setState({

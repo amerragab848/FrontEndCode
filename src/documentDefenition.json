@@ -3832,7 +3832,7 @@
   "Transmittal": {
     "documentTitle": "communicationTrasmittalLog",
     "docTyp": 28,
-    "documentAddEditLink": "transmittalAddEdit/",
+    "documentAddEditLink": "TransmittalAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 84,
     "documentEditPermission": 85,
