@@ -139,6 +139,17 @@ export default function (state = initialState.app.communication, action) {
                 projectName: action.projectName
             };
 
+        case types.FillGridLeftMenu:
+
+            console.log('FillGridLeftMenu', action,state,action);
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject,
+                projectId: localStorage.getItem('lastSelectedProject'),
+                projectName:localStorage.getItem('lastSelectedprojectName') 
+            };
+
         default:
             return {
                 ...state

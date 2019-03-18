@@ -15,6 +15,7 @@ import CryptoJS from 'crypto-js';
 import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
+import { element } from "prop-types";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const _ = require('lodash')
 const dateFormate = ({ value }) => {
@@ -207,9 +208,7 @@ class Accounts extends Component {
             showResetPasswordModal: false,
             showCheckbox: false
         }
-        this.GetCellActions = this.GetCellActions.bind(this);
-
-        console.log('accounts');
+        this.GetCellActions = this.GetCellActions.bind(this); 
     }
 
     DeleteAccount = (rowId) => {
@@ -382,10 +381,7 @@ class Accounts extends Component {
             isLoading: true,
             query: stringifiedQuery
         });
-        if (stringifiedQuery.includes("userName") || stringifiedQuery.includes("contactName") || stringifiedQuery.includes("empCode") ||
-            stringifiedQuery.includes("supervisorName") || stringifiedQuery.includes("companyName") || stringifiedQuery.includes("userType") ||
-            stringifiedQuery.includes("groupName") || stringifiedQuery.includes("active")
-        ) {
+        if (stringifiedQuery !== '{"isCustom":true}' ) {
             this.setState({ isLoading: true, search: true })
             let _query = stringifiedQuery.split(',"isCustom"')
             let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
@@ -398,19 +394,20 @@ class Accounts extends Component {
                 });
             })
         }
-        else {
+        else{
             this.setState({ isLoading: true })
-            let pageNumber = this.state.pageNumber + 1
-            Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-                this.setState({
-                    rows: result,
-                    isLoading: false,
-                    pageNumber: pageNumber,
-                    totalRows: result.length,
-                    search: false
-                });
-            });
+                 let pageNumber = this.state.pageNumber + 1
+                 Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                     this.setState({
+                         rows: result,
+                         isLoading: false,
+                         pageNumber: pageNumber,
+                         totalRows: result.length,
+                         search: false
+                     });
+                 });
         }
+      
     };
 
     AccountsEdit(obj) {
@@ -548,9 +545,9 @@ class Accounts extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+                <GridSetup rows={this.state.rows} 
+                    columns={this.state.columns}
+                    showCheckbox={this.state.showCheckbox} 
                     IsActiv={this.IsActive}
                     cellClick={this.cellClick}
                     clickHandlerDeleteRows={this.DeleteAccount}

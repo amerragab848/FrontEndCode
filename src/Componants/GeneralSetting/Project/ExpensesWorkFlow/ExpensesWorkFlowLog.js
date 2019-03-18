@@ -130,21 +130,15 @@ class ExpensesWorkFlowLog extends Component {
                     isLoading: false,
                     MaxArrange: Math.max.apply(Math, originalRows.map(function (o) { return o.arrange + 1 }))
                 })
-                setTimeout(() => {
-                    this.setState({
-                        showNotify: true,
-                    })
-                }, 500);
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
         ).catch(ex => {
             this.setState({
                 isLoading: true,
-                showNotify: false,
             })
         });
         this.setState({
             isLoading: true,
-            showNotify: false,
         })
     }
 
@@ -168,8 +162,6 @@ class ExpensesWorkFlowLog extends Component {
     }
 
     render() {
-
-        console.log(this.state.MaxArrange)
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}

@@ -5,6 +5,8 @@ import "../../Styles/scss/en-us/layout.css";
 import Logo from "../../Styles/images/logo.svg";
 import Router from "../../URLRoutes";
 import Resources from "../../resources.json";
+import General from '../ProjectSetup/ProjectSetupRoutes';
+import Config from "../../Services/Config";
 
 import { connect } from 'react-redux';
 import {
@@ -41,13 +43,21 @@ class LeftMenu extends Component {
     let costControlMenu = [];
     let reportsMenu = [];
 
+     General.map(route => {
+       if (route.settings) {
+         if (route.settings.General === true) {
+          if(Config.IsAllow(route.settings.permission)){
+           generalMenu.push(route);
+           }
+          }
+         }
+       }
+     );
+
     //initialize of link
     Router.map(route => {
       if (route.settings) {
-        if (route.settings.General === true) {
-          generalMenu.push(route);
-        }
-        else if (route.settings.Communication === true) {
+        if (route.settings.Communication === true) {
           communication.push(route);
         }
         else if (route.settings.Procurement === true) {

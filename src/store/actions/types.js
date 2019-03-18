@@ -43,4 +43,5 @@ export const AboveSelectProject = 'AboveSelectProject';
 export const LeftMenuClick = 'LeftMenuClick'; 
 export const RouteToMainDashboard = 'RouteToMainDashboard';  
 export const RouteToTemplate = 'RouteToTemplate'; 
+export const FillGridLeftMenu = 'FillGridLeftMenu'; 
 

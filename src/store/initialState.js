@@ -14,8 +14,7 @@ export default {
 			file: {},
 			arrange: 0,
 			showModal: false,
-			showLeftMenu: false,
-			projectId: 0,
+			showLeftMenu: false, 
 			projectName:"",
 			showSelectProject:true
 		}, 
