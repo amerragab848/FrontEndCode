@@ -208,9 +208,7 @@ class Accounts extends Component {
             showResetPasswordModal: false,
             showCheckbox: false
         }
-        this.GetCellActions = this.GetCellActions.bind(this);
-
-        console.log('accounts');
+        this.GetCellActions = this.GetCellActions.bind(this); 
     }
 
     DeleteAccount = (rowId) => {
@@ -547,9 +545,9 @@ class Accounts extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+                <GridSetup rows={this.state.rows} 
+                    columns={this.state.columns}
+                    showCheckbox={this.state.showCheckbox} 
                     IsActiv={this.IsActive}
                     cellClick={this.cellClick}
                     clickHandlerDeleteRows={this.DeleteAccount}

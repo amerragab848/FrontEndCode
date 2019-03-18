@@ -224,6 +224,17 @@ export function LeftMenuClick(event) {
         });
     }
 }
+
+export function FillGridLeftMenu() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.FillGridLeftMenu,
+            showLeftMenu: true,
+            showSelectProject: false 
+        });
+    }
+}
+
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
     let cycles = [];

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link, withRouter, NavLink } from "react-router-dom";
 
 import "../../Styles/css/rodal.css";
@@ -94,8 +94,8 @@ class HeaderMenu extends Component {
   }
   handleChangeTemplate(e) {
     //alert('RouteToTemplate');
-     this.props.actions.RouteToTemplate();
-    
+    this.props.actions.RouteToTemplate();
+
   }
   render() {
     return (
@@ -117,6 +117,17 @@ class HeaderMenu extends Component {
                     : null
                   }
                 </div>
+                {this.props.showLeftMenu === true ?
+                  <Fragment>
+                    <li className="titleproject1">
+                      <a href="">Technical office ·</a>
+                    </li>
+                    <li className="titleproject2">
+                      {this.props.projectName}
+                 </li>
+                  </Fragment>
+                  : null
+                }
               </ul>
               <ul className="nav-right">
                 <li>

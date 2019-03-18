@@ -3,7 +3,6 @@ import GridSetup from "./GridSetup";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from "../../api";
 import moment from "moment";
-//import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 
@@ -17,11 +16,19 @@ import MinimizeV from '../../Styles/images/table1.png'
 import MinimizeH from '../../Styles/images/table2.png'
 
 import MinimizeVBlue from '../../Styles/images/table1.png'
-import MinimizeHBlue from '../../Styles/images/table2.png'
 
 import CryptoJS from 'crypto-js';
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
- 
+
+import { connect } from 'react-redux';
+import {
+  bindActionCreators
+} from 'redux';
+import * as communicationActions from '../../store/actions/communication';
+import { toast } from "react-toastify";
+
+import Config from "../../Services/Config.js";
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -37,7 +44,7 @@ class CommonLog extends Component {
       isLoading: true,
       pageTitle: "",
       viewfilter: false,
-      projectId: props.match.params.projectId,
+      projectId: this.props.projectId,
       documentName: props.match.params.document,
       filtersColumns: [],
       docType: "",
@@ -53,7 +60,8 @@ class CommonLog extends Component {
       isCustom: true,
       showDeleteModal: false,
       selectedRows: [],
-      minimizeClick: false
+      minimizeClick: false,
+      documentObj: {}
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
@@ -61,10 +69,9 @@ class CommonLog extends Component {
   }
 
   componentDidMount() {
-
-
-    this.renderComponent(this.state.documentName, this.state.projectId, !this.state.minimizeClick);
-
+    this.props.actions.FillGridLeftMenu();
+    // alert(this.props.projectId);
+    this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
   }
 
   componentWillUnmount() {
@@ -76,7 +83,7 @@ class CommonLog extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps, prevState) {
+  componentWillReceiveProps(nextProps) {
 
     if (nextProps.match !== this.props.match) {
 
@@ -86,10 +93,23 @@ class CommonLog extends Component {
         isLoading: true,
         isCustom: true,
         documentName: nextProps.match.params.document,
-        projectId: nextProps.match.params.projectId
+        projectId: nextProps.projectId
       });
 
-      this.renderComponent(nextProps.match.params.document, nextProps.match.params.projectId, true);
+      this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
+    }
+
+    if (nextProps.projectId !== this.props.projectId) {
+      if (!this.state.documentObj.documentApi) {
+        this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
+      } else {
+        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get,nextProps.projectId);
+      }
+
+      this.setState({
+        isLoading: true,
+        projectId: nextProps.projectId
+      });
     }
   }
 
@@ -109,34 +129,36 @@ class CommonLog extends Component {
   }
 
   addRecord() {
+    if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
 
-    let addView = this.state.routeAddEdit;//.split("/")[0];
+      let addView = this.state.routeAddEdit;//.split("/")[0];
 
-    let obj = {
-      docId: 0,
-      projectId: this.state.projectId,
-      projectName: this.state.projectName,
-      arrange: 0,
-      docApprovalId: 0,
-      isApproveMode: false
-    };
+      let obj = {
+        docId: 0,
+        projectId: this.state.projectId,
+        projectName: this.state.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
+      };
 
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
 
-    this.props.history.push({
-      pathname: "/" + addView,
-      search: "?id=" + encodedPaylod
-    });
+      this.props.history.push({
+        pathname: "/" + addView,
+        search: "?id=" + encodedPaylod
+      });
 
-    // this.props.history.push({
-    //   pathname: `/v4/Document/${this.state.documentName}/Action/Add`,
-    //   state: {
-    //     data: {
-    //       'src': `${window.location.origin}/old_app/#${addView}0/${this.state.projectId}/undefined/undefined/undefined/${this.state.projectName}`
-    //     }
-    //   }
-    // });
+      // this.props.history.push({
+      //   pathname: `/v4/Document/${this.state.documentName}/Action/Add`,
+      //   state: {
+      //     data: {
+      //       'src': `${window.location.origin}/old_app/#${addView}0/${this.state.projectId}/undefined/undefined/undefined/${this.state.projectName}`
+      //     }
+      //   }
+      // });
+    }
   }
   editHandler(row) {
 
@@ -296,22 +318,24 @@ class CommonLog extends Component {
   };
 
   clickHandlerDeleteRowsMain = selectedRows => {
-    console.log("001");
-    this.setState({
-      showDeleteModal: true,
-      selectedRows: selectedRows
-    });
-    console.log("000001");
+    if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
+
+      console.log("clickHandlerDeleteRowsMain...");
+      this.setState({
+        showDeleteModal: true,
+        selectedRows: selectedRows
+      });
+    } else {
+      toast.WARNING(Resources["missingPermissions"][currentLanguage]);
+
+    }
   };
 
   renderComponent(documentName, projectId, isCustom) {
-    console.log('renderComponent', isCustom);
+    
     var projectId = projectId;
-
     var documents = documentName;
-
     var documentObj = documentDefenition[documentName];
-
     let subjectLink = ({ value, row }) => {
 
       let subject = "";
@@ -383,14 +407,16 @@ class CommonLog extends Component {
       api: documentObj.documentApi.get,
       apiDelete: documentObj.documentApi.delete,
       columns: cNames,
-      filtersColumns: filtersColumns
+      filtersColumns: filtersColumns,
+      documentObj: documentObj,
+      projectId:projectId
     });
 
-    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get);
+    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get,projectId);
   }
 
-  GetRecordOfLog(api) {
-    let url = api + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+  GetRecordOfLog(api,projectId) {
+    let url = api + "?projectId=" + projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
     this.GetLogData(url);
   }
 
@@ -427,6 +453,31 @@ class CommonLog extends Component {
     this.renderComponent(this.state.documentName, this.state.projectId, !this.state.isCustom);
   }
 
+  cellClick = (rowId, colID) => {
+    if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+
+      if (colID != 0 && colID != 1) {
+        let addView = this.state.routeAddEdit;
+        let obj = {
+          docId: this.state.rows[rowId].id,
+          projectId: this.state.projectId,
+          projectName: this.state.projectName,
+          arrange: 0,
+          docApprovalId: 0,
+          isApproveMode: false
+        };
+
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+
+        this.props.history.push({
+          pathname: "/" + addView,
+          search: "?id=" + encodedPaylod
+        });
+      }
+    }
+  }
+
   render() {
 
     const showCheckbox = true;
@@ -437,6 +488,8 @@ class CommonLog extends Component {
         clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
         showCheckbox={showCheckbox}
         pageSize={this.state.pageSize}
+
+        cellClick={this.cellClick}
         columns={this.state.columns}
       />) : <LoadingSection />;
 
@@ -532,11 +585,9 @@ class CommonLog extends Component {
               <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
               <span> {this.state.totalRows}</span>
             </div>
-
             <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
               <i className="angle left icon" />
             </button>
-
             <button className={this.state.totalRows !== (this.state.pageSize * this.state.pageNumber) + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
               <i className="angle right icon" />
             </button>
@@ -572,6 +623,8 @@ class CommonLog extends Component {
         <div>
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal
+              title={Resources["smartDeleteMessage"][currentLanguage].content}
+              buttonName="delete"
               closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal}
               clickHandlerCancel={this.clickHandlerCancelMain}
@@ -585,4 +638,22 @@ class CommonLog extends Component {
   }
 }
 
-export default withRouter(CommonLog);
+function mapStateToProps(state, ownProps) {
+  return {
+    projectId: state.communication.projectId,
+    showLeftMenu: state.communication.showLeftMenu,
+    showSelectProject: state.communication.showSelectProject,
+    projectName: state.communication.projectName
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(CommonLog));
