@@ -54,10 +54,12 @@ import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
+// import ProjectEPSLog from './Pages/ProjectSetup/ProjectSetup';
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
-    let path = "/" + item.route + "/:projectId";
-    return <Route path={path} component={ProjectSetup}/>})
+    let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
+    let compoenet = item.moduleId ==="ProjectSetup" ? ProjectSetup : CommonLog;
+    return <Route path={path} component={ compoenet }/>})
     
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />

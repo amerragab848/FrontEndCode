@@ -2,7 +2,7 @@
 let routes = [
     {
         route: 'Area',
-        moduleId: "ProjectEPSLog",
+        moduleId: "ProjectSetup",
         title: "area",
         nav: true,
         settings: {
@@ -14,7 +14,7 @@ let routes = [
     },
     {
         route: "Location",
-        moduleId: "ProjectEPSLog",
+        moduleId: "ProjectSetup",
         title: "location",
         nav: true,
         settings: {
@@ -26,7 +26,7 @@ let routes = [
     },
     {
         route: "Building",
-        moduleId: "ProjectEPSLog",
+        moduleId: "ProjectSetup",
         title: "Buildings",
         nav: true,
         settings: {
@@ -38,7 +38,7 @@ let routes = [
     },
     {
         route: "Unit",
-        moduleId: "ProjectEPSLog",
+        moduleId: "ProjectSetup",
         title: "unit",
         nav: true,
         settings: {
@@ -47,6 +47,17 @@ let routes = [
             caption: "procoor-icon-BIC",
             order: 11
         }
-    }
+    },
+    {
+        route: "TaskGroups",
+        moduleId: "CommonLog",
+        title: "projectTaskGroups",
+        nav: true,
+        settings: {
+            General: true,
+            permission: 778,
+            caption: "procoor-icon-task-groups"
+        }
+    },
 ]
 export default routes
