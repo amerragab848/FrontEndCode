@@ -2602,3 +2602,6 @@ button.companies_icon {
 .attachmentTable tbody tr .contentCell.tableCell-2 {
   padding: 0;
 }
+.skylight-dialog .datepickerContainer.proForm .ui.input.inputDev input {
+  width: 360px
+}
