@@ -57,6 +57,8 @@ import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
 
 
+import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
+
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = "/" + item.route + "/:projectId";
     return <Route path={path} component={ProjectSetup}/>})
@@ -64,6 +66,7 @@ let setupRoutes = ProjectSetupRoutes.map((item) => {
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
+    , <Route path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
     , <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
     , <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
     , <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />
