@@ -34,7 +34,6 @@ const dateFormate = ({ value }) => {
 };
 
 class CommonLog extends Component {
-  _isMounted = false;
 
   constructor(props) {
     super(props);
@@ -70,13 +69,11 @@ class CommonLog extends Component {
 
   componentDidMount() {
     this.props.actions.FillGridLeftMenu();
-    // alert(this.props.projectId);
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount in Letter Componants 0000');
-    this._isMounted = false;
+
     this.setState({
       isLoading: true,
       isCustom: true
@@ -86,8 +83,6 @@ class CommonLog extends Component {
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.match !== this.props.match) {
-
-      this._isMounted = false;
 
       this.setState({
         isLoading: true,
@@ -103,7 +98,7 @@ class CommonLog extends Component {
       if (!this.state.documentObj.documentApi) {
         this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
       } else {
-        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get,nextProps.projectId);
+        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, nextProps.projectId);
       }
 
       this.setState({
@@ -332,7 +327,7 @@ class CommonLog extends Component {
   };
 
   renderComponent(documentName, projectId, isCustom) {
-    
+
     var projectId = projectId;
     var documents = documentName;
     var documentObj = documentDefenition[documentName];
@@ -409,36 +404,32 @@ class CommonLog extends Component {
       columns: cNames,
       filtersColumns: filtersColumns,
       documentObj: documentObj,
-      projectId:projectId
+      projectId: projectId
     });
 
-    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get,projectId);
+    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
   }
 
-  GetRecordOfLog(api,projectId) {
-    let url = api + "?projectId=" + projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
-    this.GetLogData(url);
+  GetRecordOfLog(api, projectId) {
+    if (projectId !== 0) {
+      let url = api + ((this.state.documentObj.docTyp == 30 || this.state.documentObj.docTyp == 33) ? + "projectId=" + projectId : + "?projectId=" + projectId) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+      this.GetLogData(url);
+    } else {
+      this.setState({ isLoading: false });
+    }
   }
 
   GetLogData(url) {
     Api.get(url).then(result => {
-
-      let b1 = result.data;
-      let b3 = result.data;
-      let b2 = result.data;
-      result.data = [...b1, ...b2, ...b3, ...result.data];
       this.setState({
         rows: result.data,
         totalRows: result.total,
         isLoading: false
       });
 
-      this._isMounted = true;
-
-    })
-      .catch(ex => {
-        this.setState({ isLoading: false });
-      });
+    }).catch(ex => {
+      this.setState({ isLoading: false });
+    });
   };
 
   handleMinimize = () => {
@@ -615,7 +606,7 @@ class CommonLog extends Component {
                 <img src={MinimizeH} alt="" />
               </div>
             </div>
-            <div className="grid-container">
+            <div className={"grid-container " + (this.state.rows.length === 0 ? "griddata__load" : " ")}>
               {dataGrid}
             </div>
           </div>
