@@ -27,11 +27,11 @@ import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450,Resources['maxLength'][currentLanguage]),
     refDoc: Yup.string().max(450,Resources['maxLength'][currentLanguage]),  
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true), 
     toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
-})
+});
 
 let docId = 0;
 let projectId = 0;
@@ -42,7 +42,7 @@ let arrange = 0;
 
 const _ = require('lodash');
 
-class RfiAddEdit extends Component {
+class InternalMemoAddEdit extends Component {
 
     constructor(props) {
 
@@ -78,17 +78,15 @@ class RfiAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 23,
+            docTypeId: 30,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
             ToContacts: [],
-            fromContacts: [],
-            discplines: [],
-            areas: [],
-            locations: [], 
+            fromContacts: [], 
+            sendingMethods: [], 
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
@@ -96,21 +94,16 @@ class RfiAddEdit extends Component {
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-            selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedArea: { label: Resources.area[currentLanguage], value: "0" },
-            selectedLocation: { label: Resources.location[currentLanguage], value: "0" }, 
-            message: RichTextEditor.createEmptyValue(), 
-            replyMessage: RichTextEditor.createEmptyValue()
+            selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" }, 
+            message: RichTextEditor.createEmptyValue(),
+            answer: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(75) || !Config.IsAllow(76) || !Config.IsAllow(78)) {
+        if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
 
-            this.props.history.push("/Rfi/" + this.state.projectId);
-        } 
-
-        this.onChangeMessage = this.onChangeMessage.bind(this);
+            this.props.history.push("/InternalMemo/" + this.state.projectId);
+        }  
     }
 
     componentDidMount() {
@@ -128,18 +121,16 @@ class RfiAddEdit extends Component {
 
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id) {
-          
-          nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
-          nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
-          
+            
+            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
+            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                message:RichTextEditor.createValueFromString(nextProps.document.rfi, 'html'),
-                replyMessage:RichTextEditor.createValueFromString(nextProps.document.answer, 'html'),
+                message:RichTextEditor.createValueFromString(nextProps.document.message, 'html'),
+                answer:RichTextEditor.createValueFromString(nextProps.document.answer, 'html')
             });
-
-            console.log(this.props.onChange);
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -154,12 +145,12 @@ class RfiAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(49))) {
+            if (!(Config.IsAllow(99))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status == true && Config.IsAllow(49)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(99)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(99)) {
+                    if (this.props.document.status == true && Config.IsAllow(99)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -176,42 +167,31 @@ class RfiAddEdit extends Component {
 
     componentWillMount() {
       if (this.state.docId > 0) {
-        let url = "GetCommunicationRfiForEdit?id=" + this.state.docId;
+        let url = "GetCommunicationInternalMemoForEdit?id=" + this.state.docId;
         this.props.actions.documentForEdit(url);
   
-        if (Config.IsAllow(75) || Config.IsAllow(76) || Config.IsAllow(78)) {
+        if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
         }
       } else {
-        const rfiDocument = {
+        const internalMemoDocument = {
           //field
+          id: 0,
           projectId: projectId,
+          arrange: "1",
           fromCompanyId: null,
           toCompanyId: null,
           fromContactId: null,
           toContactId: null,
           subject: "",
           requiredDate: moment(),
-          rfi: "",
-          answer: "",
           docDate: moment(),
-          arrange: "1",
           status: "true",
-          contractId: null,
-          pcoId: null,
-          refDoc: "",
-          docLocationId: "true",
-          cycleNo: 0,
-          parentId: null,
-          disciplineId: null,
-          area: "",
-          location: "",
-          building: "",
-          apartment: "",
-          sharedSettings: "",
-          id: 0
+          refDoc: "", 
+          message:"",
+          answer:""
         };
   
-        this.setState({ document: rfiDocument });
+        this.setState({ document: internalMemoDocument });
         this.fillDropDowns(false);
       }
     }
@@ -234,8 +214,11 @@ class RfiAddEdit extends Component {
     fillDropDowns(isEdit) {
       //from Companies
       dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId,"companyName","companyId").then(result => {
+     
         if (isEdit) {
-          let companyId = this.props.document.fromCompanyId;
+          
+            let companyId = this.props.document.fromCompanyId;
+
           if (companyId) {
               this.setState({
                   selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
@@ -257,72 +240,16 @@ class RfiAddEdit extends Component {
           this.setState({
             companies: [...result]
           });
-        });
-  
-      //discplines
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline","title","id").then(result => {
-        if (isEdit) {
-          
-          let disciplineId = this.props.document.disciplineId;
-
-          if (disciplineId) {
-
-            let disciplineName =result.find(i => i.value === disciplineId);
- 
-              this.setState({
-                selectedDiscpline: { label: disciplineName.label, value: disciplineId }
-              });
-          } 
-       }
-          this.setState({
-            discplines: [...result]
-          });
-        });
-      //area
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
-        if (isEdit) {
-          
-          let areaId = this.props.document.area;
-
-          if (areaId) {
-
-            let areaIdName =result.find(i => i.value === parseInt(areaId));
- 
-              this.setState({
-                selectedArea: { label: areaIdName.label, value: areaId}
-              });
-          } 
-       }
-          this.setState({
-            areas: [...result]
-          });
-        });
-      //location
-      dataservice.GetDataList("GetaccountsDefaultListForList?listType=location","title","id").then(result => {
-        if (isEdit) {
-          
-          let locationId = this.props.document.location;
-
-          if (locationId) {
-
-            let locationName =result.find(i => i.value === parseInt(locationId));
- 
-              this.setState({
-                selectedLocation: { label: locationName.label, value: locationId}
-              });
-          } 
-       }
-          this.setState({
-            locations: [...result]
-          });
-        });
+        }); 
     }
 
     onChangeMessage = (value,field) => {
+        
         let isEmpty = !value.getEditorState().getCurrentContent().hasText();
+
         if (isEmpty === false) {
 
-          field === "rfi" ? this.setState({ message: value }) : this.setState({ replyMessage: value });
+            field === "message" ? this.setState({ message: value }) : this.setState({ answer: value });
 
             if (value.toString('markdown').length > 1) {
 
@@ -337,10 +264,8 @@ class RfiAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-            }
-
-        }
-
+            } 
+        } 
     };
 
     handleChange(e, field) {
@@ -407,7 +332,7 @@ class RfiAddEdit extends Component {
         }
     }
 
-    editRfi(event) {
+    editInternalMemo(event) {
         this.setState({
             isLoading: true
         });
@@ -417,24 +342,24 @@ class RfiAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('EditCommunicationRfi', saveDocument).then(result => {
+        dataservice.addObject('EditCommunicationInternalMemo', saveDocument ).then(result => {
             this.setState({
                 isLoading: true
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
-            this.props.history.push("/Rfi/" + this.state.projectId);
+            this.props.history.push("/InternalMemo/" + this.state.projectId);
         });
     }
 
-    saveRfi(event) {
-        let saveDocument = { ...this.state.document };
+    saveInternalMemo(event) {
+        let saveDocument = this.state.document;
 
         saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
+        dataservice.addObject('AddCommunicationInternalMemo', saveDocument).then(result => {
             this.setState({
                 docId: result.id
             });
@@ -443,10 +368,11 @@ class RfiAddEdit extends Component {
     }
 
     saveAndExit(event) {  
-        this.props.history.push("/Rfi/" + this.state.projectId);
+        this.props.history.push("/InternalMemo/" + this.state.projectId);
     }
 
     showBtnsSaving() {
+
         let btn = null;
 
         if (this.state.docId === 0) {
@@ -459,7 +385,7 @@ class RfiAddEdit extends Component {
    
     viewAttachments() {
         return (
-            this.state.docId > 0 ? (Config.IsAllow(3317) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
+            this.state.docId > 0 ? (Config.IsAllow(3327) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
         )
     }
 
@@ -488,7 +414,7 @@ class RfiAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.communicationRFI[currentLanguage]}
+                        <h2 className="zero">{Resources.communicationInternalMemo[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
                         </h2>
                         <div className="SubmittalHeadClose">
@@ -530,9 +456,9 @@ class RfiAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
-                                                    this.editRfi();
+                                                    this.editInternalMemo();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                    this.saveRfi();
+                                                    this.saveInternalMemo();
                                                 } else {
                                                     this.saveAndExit();
                                                 }
@@ -565,6 +491,7 @@ class RfiAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="proForm datepickerContainer"> 
+                                                       
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -573,8 +500,7 @@ class RfiAddEdit extends Component {
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                                 <ModernDatepicker date={this.state.document.docDate}
-                                                                                                  format={'DD/MM/YYYY'} 
-                                                                                                  showBorder
+                                                                                                  format={'DD/MM/YYYY'} showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'docDate')}
                                                                                                   placeholder={'Select a date'} />
                                                                             </div>
@@ -583,6 +509,7 @@ class RfiAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                      
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -600,6 +527,7 @@ class RfiAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div> 
+                                                
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
@@ -676,67 +604,17 @@ class RfiAddEdit extends Component {
                                                                        id="toCompanyId" />
                                                                 </div>
                                                             </div>
-                                                        </div> 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="area" data={this.state.areas} 
-                                                                      selectedValue={this.state.selectedArea}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')}/>
-                                                        </div> 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="location" data={this.state.locations} 
-                                                                      selectedValue={this.state.selectedLocation}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocation')}/>
-                                                        </div> 
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.Building[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input" + (errors.Building && touched.Building ? (" has-error") : !errors.Building && touched.Building ? (" has-success") : " ")} >
-                                                                <input name='Building' className="form-control fsadfsadsa" id="Building"
-                                                                    placeholder={Resources.Building[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.building}
-                                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'building')} />
-                                                                {errors.Building && touched.Building ? (<em className="pError">{errors.Building}</em>) : null}
-                                                            </div>
-                                                        </div>
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.apartmentNumber[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input" + (errors.apartmentNumber && touched.apartmentNumber ? (" has-error") : !errors.apartmentNumber && touched.apartmentNumber ? (" has-success") : " ")} >
-                                                                <input name='subject' className="form-control fsadfsadsa" id="subject"
-                                                                    placeholder={Resources.apartmentNumber[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.apartment}
-                                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'apartment')} />
-                                                                {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
-                                                            </div>
-                                                        </div>
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown title="discipline" data={this.state.discplines} 
-                                                                      selectedValue={this.state.selectedDiscpline}
-                                                                      handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}/>
                                                         </div>  
-                                                        
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
-                                                            <div className="shareLinks">
-                                                                <div className="inputDev ui input">
-                                                                    <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings} name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
-                                                                </div>
-                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
-                                                            </div>
-                                                        </div> 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event,"rfi")} />
+                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event,"message")} />
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.answer[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.replyMessage} onChange={event => this.onChangeMessage(event,"answer")} />
+                                                                <RichTextEditor value={this.state.answer} onChange={event => this.onChangeMessage(event,"answer")} />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -761,7 +639,7 @@ class RfiAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument"> 
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editRfi(e)}>{Resources.save[currentLanguage]}</button>
+                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editInternalMemo(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
@@ -809,4 +687,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(RfiAddEdit))
+)(withRouter(InternalMemoAddEdit))

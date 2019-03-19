@@ -309,8 +309,7 @@ class GridSetup extends Component {
         <ReactDataGrid
           rowKey="id"
           minHeight={this.props.minHeight !== undefined ? this.props.minHeight: 650}
-          //isScrolling={true}
-          columns={this.state.columns}
+           columns={this.state.columns}
           rowGetter={i => groupedRows[i]}
           rowsCount={groupedRows.length}
           enableCellSelect={true}

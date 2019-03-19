@@ -1122,7 +1122,7 @@
   "InternalMemo": {
     "documentTitle": "communicationInternalMemo",
     "docTyp": 30,
-    "documentAddEditLink": "internalMemoAddEdit/",
+    "documentAddEditLink": "InternalMemoAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 98,
     "documentEditPermission": 99,
@@ -3792,7 +3792,7 @@
   "Transmittal": {
     "documentTitle": "communicationTrasmittalLog",
     "docTyp": 28,
-    "documentAddEditLink": "transmittalAddEdit/",
+    "documentAddEditLink": "TransmittalAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 84,
     "documentEditPermission": 85,
