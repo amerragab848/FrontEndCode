@@ -18,7 +18,7 @@ import { SkyLightStateless } from 'react-skylight';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedProject')
-const _ = require('lodash')
+const _ = require('lodash') 
 let PathName = '';
 let ProjectEps = ''
 const ValidtionSchema = Yup.object().shape({

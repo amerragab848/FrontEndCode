@@ -462,8 +462,8 @@ class inspectionRequestAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.lettertitle[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
+                        <h2 className="zero">{Resources.inspectionRequest[currentLanguage]}
+                            <span>{projectName.replace(/_/gi, ' ')} · Quality Control</span>
                         </h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">

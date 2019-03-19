@@ -54,14 +54,16 @@ import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
+import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
 
 
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
-    let path = "/" + item.route + "/:projectId";
-    return <Route path={path} component={ProjectSetup}/>})
+    let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
+    let compoenet = item.moduleId ==="ProjectSetup" ? ProjectSetup : CommonLog;
+    return <Route path={path} component={ compoenet }/>})
     
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
@@ -121,6 +123,7 @@ let originalRoutes = [
     ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
     ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     ,<Route path="/DashboardProject" component={DashboardProject} />
+    , <Route path="/TaskGroupsAddEdit" component={TaskGroupsAddEdit} />
     ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

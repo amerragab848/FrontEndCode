@@ -192,8 +192,8 @@ class TransmittalAddEdit extends Component {
           fromContactId: null,
           toContactId: null,
           subject: "",
-          requiredDate: moment().format(),
-          docDate: moment().format(),
+          requiredDate: moment(),
+          docDate: moment(),
           status: "true",
           refDoc: "",
           discipline: null,
@@ -628,8 +628,9 @@ class TransmittalAddEdit extends Component {
                                                                         <label className="control-label">{Resources.docDate[currentLanguage]}</label>
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.docDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                 <ModernDatepicker date={this.state.document.docDate}
+                                                                                                  format={'DD/MM/YYYY'} 
+                                                                                                  showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'docDate')}
                                                                                                   placeholder={'Select a date'} />
                                                                             </div>
@@ -646,8 +647,8 @@ class TransmittalAddEdit extends Component {
                                                                         <label className="control-label">{Resources.requiredDate[currentLanguage]}</label>
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.requiredDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                 <ModernDatepicker date={this.state.document.requiredDate}
+                                                                                                  format={'DD/MM/YYYY'} showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'requiredDate')}
                                                                                                   placeholder={'Select a date'}/>
                                                                             </div>

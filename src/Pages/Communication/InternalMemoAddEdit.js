@@ -183,8 +183,8 @@ class InternalMemoAddEdit extends Component {
           fromContactId: null,
           toContactId: null,
           subject: "",
-          requiredDate: moment().format(),
-          docDate: moment().format(),
+          requiredDate: moment(),
+          docDate: moment(),
           status: "true",
           refDoc: "", 
           message:"",
@@ -500,7 +500,7 @@ class InternalMemoAddEdit extends Component {
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                                 <ModernDatepicker date={this.state.document.docDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                                  format={'DD/MM/YYYY'} showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'docDate')}
                                                                                                   placeholder={'Select a date'} />
                                                                             </div>
@@ -518,7 +518,7 @@ class InternalMemoAddEdit extends Component {
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                                 <ModernDatepicker date={this.state.document.requiredDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                                  format={'DD/MM/YYYY'} showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'requiredDate')}
                                                                                                   placeholder={'Select a date'}/>
                                                                             </div>

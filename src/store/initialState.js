@@ -31,6 +31,10 @@ export default {
 			getingData: false,
 			companyList:[],
 			tabIndex:0
-		} 
+		},
+		// taskGroups:{
+		// 	IsEditModel:false,
+		// 	TaskGroupsData:[],
+		// } 
 	}
 }
