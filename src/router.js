@@ -54,6 +54,8 @@ import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
+import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
+
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = "/" + item.route + "/:projectId";
@@ -116,6 +118,7 @@ let originalRoutes = [
     ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
     ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     ,<Route path="/DashboardProject" component={DashboardProject} />
+    ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
