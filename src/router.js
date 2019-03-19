@@ -54,7 +54,7 @@ import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
-// import ProjectEPSLog from './Pages/ProjectSetup/ProjectSetup';
+import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -118,6 +118,7 @@ let originalRoutes = [
     ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
     ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     ,<Route path="/DashboardProject" component={DashboardProject} />
+    , <Route path="/TaskGroupsAddEdit" component={TaskGroupsAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
