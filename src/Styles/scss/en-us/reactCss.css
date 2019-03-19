@@ -2839,3 +2839,7 @@ button.companies_icon {
 .noTabs__document .doc-container .skylight-dialog .main__header {
   display: none;
 }
+
+.removeTr div .pdfImage img {
+  height: 20px;
+}
