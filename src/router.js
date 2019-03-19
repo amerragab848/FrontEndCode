@@ -55,6 +55,7 @@ import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
+import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks";
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -115,10 +116,11 @@ let originalRoutes = [
     , <Route path="/RfiAddEdit" component={RfiAddEdit} />
     , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
     , <Route path="/phoneAddEdit" component={phoneAddEdit} />
-    ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
-    ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
-    ,<Route path="/DashboardProject" component={DashboardProject} />
-    ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
+    , <Route path="/reportsAddEdit" component={reportsAddEdit}/>
+    , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
+    , <Route path="/DashboardProject" component={DashboardProject} />
+    , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
+    , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
@@ -126,7 +128,7 @@ let routes = (
     <Switch >
         {originalRoutes.map((item) =>  
             item
-        )}
+        )} 
         <Route path="/:document/:projectId" component={CommonLog} />
     </Switch>
 ); 

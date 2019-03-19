@@ -1098,7 +1098,7 @@ var routes = [
     settings: { Time: false }
   },
   {
-    route: "projectTask",
+    route: "ProjectTasks",
     moduleId: "projects/projectTask",
     title: "projectTask",
     nav: true,
