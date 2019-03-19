@@ -28,7 +28,7 @@ import { toast } from "react-toastify";
 
 import Config from "../../Services/Config.js";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+let documentObj = {};
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -330,7 +330,7 @@ class CommonLog extends Component {
 
     var projectId = projectId;
     var documents = documentName;
-    var documentObj = documentDefenition[documentName];
+    documentObj = documentDefenition[documentName];
     let subjectLink = ({ value, row }) => {
 
       let subject = "";
@@ -412,7 +412,7 @@ class CommonLog extends Component {
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
-      let url = api + ((this.state.documentObj.docTyp == 30 || this.state.documentObj.docTyp == 33) ? + "projectId=" + projectId : + "?projectId=" + projectId) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+      let url = api + ((documentObj.docTyp == 30 || documentObj.docTyp == 33) ? + "projectId=" + projectId : + "?projectId=" + projectId) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
       this.GetLogData(url);
     } else {
       this.setState({ isLoading: false });
