@@ -1135,7 +1135,7 @@
   "InternalMemo": {
     "documentTitle": "communicationInternalMemo",
     "docTyp": 30,
-    "documentAddEditLink": "internalMemoAddEdit/",
+    "documentAddEditLink": "InternalMemoAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 98,
     "documentEditPermission": 99,
