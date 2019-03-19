@@ -58,6 +58,8 @@ import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
 
 
+import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
+
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
     let compoenet = item.moduleId ==="ProjectSetup" ? ProjectSetup : CommonLog;
@@ -66,6 +68,7 @@ let setupRoutes = ProjectSetupRoutes.map((item) => {
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
+    , <Route path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
     , <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
     , <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
     , <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />
