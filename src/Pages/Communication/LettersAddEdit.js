@@ -417,6 +417,7 @@ class LettersAddEdit extends Component {
         }
         return btn;
     }
+    
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -440,6 +441,7 @@ class LettersAddEdit extends Component {
             this.simpleDialog.show()
         }
     }
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -786,7 +788,8 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        projectId: state.communication.projectId
     }
 }
 

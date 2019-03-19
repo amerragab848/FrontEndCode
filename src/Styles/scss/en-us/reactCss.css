@@ -2802,3 +2802,40 @@ button.companies_icon {
     flex-shrink: 0;
   }
 }
+
+.react-grid-Container .gridSystemSelected {
+  left: 58px;
+  width: calc(100% - 58px);
+  min-width: auto;
+}
+.css-1g6gooi {
+  max-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.griddata__load .react-grid-Cell .react-grid-Cell__value span div {
+  background: #dadee6;
+  color: #dadee6;
+  max-height: 6px;
+  overflow: hidden;
+}
+.griddata__load .react-grid-Cell.react-grid-Cell--frozen .react-grid-Cell__value span div {
+  background: #dadee6;
+  color: #dadee6;
+  max-height: 12px;
+  overflow: hidden;
+}
+.griddata__load .react-grid-Cell .react-grid-Cell__value span div.react-grid-checkbox-container.checkbox-align {
+  max-height: inherit;
+  overflow: visible;
+}
+.griddata__load .react-grid-HeaderCell .react-grid-HeaderCell-sortable {
+  background: #858d9e;
+  color: #858d9e;
+  max-height: 6px;
+  overflow: hidden;
+}
+.noTabs__document .doc-container .skylight-dialog .main__header {
+  display: none;
+}
