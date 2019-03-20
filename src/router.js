@@ -124,7 +124,7 @@ let originalRoutes = [
     ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
     ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     ,<Route path="/DashboardProject" component={DashboardProject} />
-    , <Route path="/TaskGroupsAddEdit" component={TaskGroupsAddEdit} />
+    , <Route path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
     ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

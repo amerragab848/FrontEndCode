@@ -83,6 +83,7 @@ class TaskGroupsAddEdit extends Component {
                 index++;
             }
         }
+
         const columnsGrid = [
             {
                 key: "id",
@@ -122,7 +123,6 @@ class TaskGroupsAddEdit extends Component {
             }
         ]
 
-
         this.state = {
             currentTitle: "sendToWorkFlow",
             IsEditMode: false,
@@ -133,7 +133,7 @@ class TaskGroupsAddEdit extends Component {
             docTypeId: 99,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            DocumentDate: moment().format('DD:MM:YYYY'),
+            DocumentDate: moment().format("DD:MM:YYYY"),
             Status: 'true',
             CompanyData: [],
             ContactData: [],
@@ -155,14 +155,14 @@ class TaskGroupsAddEdit extends Component {
             index: 0,
             DeleteFromLog: false,
             DocTaskGroupsData: {},
-            permission: [{ name: 'sendByEmail', code: 0 }, { name: 'sendByInbox', code: 94 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 965 },
-            { name: 'createTransmittal', code: 3051 }, { name: 'sendToWorkFlow', code: 715 }]
+            permission: [{ name: 'sendByEmail', code: 780 }, { name: 'sendByInbox', code: 779 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 951 },
+            { name: 'createTransmittal', code: 3037 }, { name: 'sendToWorkFlow', code: 783 }]
         }
     }
 
     FillCompanyDrop = () => {
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + CurrProjectId + '', 'companyName', 'companyId').then(
+        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId').then(
             res => {
                 this.setState({
                     CompanyData: res,
@@ -172,8 +172,9 @@ class TaskGroupsAddEdit extends Component {
     }
 
     FillContactsList = () => {
-        Api.get('GetProjectTaskGroupItemsByTaskId?taskId=' + idEdit + '').then(
+        Api.get('GetProjectTaskGroupItemsByTaskId?taskId=' + docId + '').then(
             res => {
+                console.log(res)
                 this.setState({
                     rows: res,
                     isLoading: false
@@ -185,7 +186,7 @@ class TaskGroupsAddEdit extends Component {
     componentWillMount = () => {
         this.FillCompanyDrop();
         this.FillContactsList()
-        if (Config.IsAllow(3742)) {
+        if (Config.IsAllow(776)) {
             this.setState({
                 showCheckbox: true
             })
@@ -213,6 +214,7 @@ class TaskGroupsAddEdit extends Component {
             }
         }
     }
+ 
 
     PreviousStep = () => {
         if (idEdit !== 0) {
@@ -256,17 +258,18 @@ class TaskGroupsAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document && props.document.id > 0) {
-            console.log(this.props.document)
+            let date = moment(props.document.docDate).format("DD:MM:YYYY")
             this.setState({
                 IsEditMode: true,
                 DocTaskGroupsData: { ...props.document },
+                DocumentDate:date,
                 isLoading: false
             });
-
             this.checkDocumentIsView();
         }
 
     }
+
 
     DeleteContact = (rowId, index) => {
         if (index === undefined) {
@@ -337,7 +340,7 @@ class TaskGroupsAddEdit extends Component {
             arrange: values.ArrangeContact,
             companyId: values.Company.value,
             contactId: values.ContactName.value,
-            taskGroupsId: 2,
+            taskGroupsId: docId,
             Action: undefined,
             multiApproval: undefined
         }).then(
@@ -405,12 +408,12 @@ class TaskGroupsAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(90))) {
+            if (!(Config.IsAllow(775))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(90)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(90)) {
-                    if (this.props.document.status == true && Config.IsAllow(90)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(775)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(775)) {
+                    if (this.props.document.status == true && Config.IsAllow(775)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -426,8 +429,8 @@ class TaskGroupsAddEdit extends Component {
     }
 
     componentDidMount = () => {
-        if (this.state.docId > 0) {
-            this.props.actions.documentForEdit('GetProjectTaskGroupsForEdit?taskId=' + this.state.docId)
+        if (docId > 0) {
+            this.props.actions.documentForEdit('GetProjectTaskGroupsForEdit?taskId=' + docId)
             this.checkDocumentIsView();
         }
         else {
@@ -449,10 +452,10 @@ class TaskGroupsAddEdit extends Component {
         return btn;
     }
 
-    saveAndExit(event) {
+    saveAndExit=()=> {
         this.props.history.push({
-            pathname: "/TaskGroups/" + this.state.projectId
-        });
+            pathname: '/TaskGroups/'+projectId+'',
+        })
     }
 
     handleShowAction = (item) => {
@@ -513,12 +516,12 @@ class TaskGroupsAddEdit extends Component {
 
                     <Formik
                         initialValues={{
-                            ArrangeContact: Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })),
+                            ArrangeContact: this.state.rows.length === 0 ? 1 : Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })) ,
                             Company: '',
                             ContactName: '',
                         }}
 
-                        /// enableReinitialize={true}
+                         enableReinitialize={true}
 
                         validationSchema={ValidtionSchemaForContact}
 
@@ -624,8 +627,8 @@ class TaskGroupsAddEdit extends Component {
                                 <Fragment>
                                     <Formik
                                         initialValues={{
-                                            ArrangeTaskGroups: this.state.IsEditMode ? this.state.DocTaskGroupsData.arrange : MaxArrange,
-                                            Subject: this.state.IsEditMode ? this.state.DocTaskGroupsData.subject : '',
+                                            ArrangeTaskGroups: this.state.IsEditMode ? ' ' : MaxArrange,
+                                            Subject: this.state.IsEditMode ? ' ' : '',
                                         }}
                                         enableReinitialize={true}
                                         validationSchema={ValidtionSchemaForTaskGroups}
@@ -635,7 +638,7 @@ class TaskGroupsAddEdit extends Component {
                                         }}
                                     >
 
-                                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
                                             <Form onSubmit={handleSubmit}>
 
                                                 <div className="document-fields">
@@ -679,9 +682,8 @@ class TaskGroupsAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input">
                                                                 <DatePicker title='docDate' handleChange={this.DocumentDatehandleChange}
-                                                                    startDate={this.state.IsEditMode ? this.state.DocTaskGroupsData.docDate === null ?
-                                                                        this.state.DocumentDate : moment(this.state.DocTaskGroupsData.docDate).format('DD:MM:YYYY')
-                                                                        : this.state.DocumentDate} />
+                                                                  startDate={this.state.DocumentDate}
+                                                                />
                                                             </div>
                                                         </div>
                                                         <div className={'ui input inputDev linebylineInput  ' + (errors.ArrangeTaskGroups && touched.ArrangeTaskGroups ? 'has-error' : null) + ' '}>
@@ -737,11 +739,6 @@ class TaskGroupsAddEdit extends Component {
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div className="doc-pre-cycle">
-                                                <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.SaveMultiApproval} >{Resources['next'][currentLanguage]}</button>
-                                                </div>
-                                            </div>
                                         </Fragment>
                                         : null
                                     }
@@ -762,7 +759,7 @@ class TaskGroupsAddEdit extends Component {
 
                                     <div className="doc-pre-cycle">
                                         <div className="slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveAndExit}>{Resources['next'][currentLanguage]}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -775,10 +772,10 @@ class TaskGroupsAddEdit extends Component {
                         <div className="docstepper-levels">
                             {/* Next & Previous */}
                             <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode  ? "step-content-btn-prev " :
+                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
                                     "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
 
-                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && this.state.IsEditMode  ? "step-content-btn-prev "
+                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && this.state.IsEditMode ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
