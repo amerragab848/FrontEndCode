@@ -29,4 +29,12 @@ export default class Dataservice {
 			return result;
         }).catch(ex =>  Data);
     };
+    
+    static GetDataGrid = (url) => {
+        
+        return   Api.get(url).then(result => {
+                
+               return result;
+           }).catch(ex =>  []);
+       };
 }

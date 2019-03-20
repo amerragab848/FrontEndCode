@@ -9,7 +9,7 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
- 
+
 import { withRouter } from "react-router-dom";
 
 import RichTextEditor from 'react-rte';
@@ -117,7 +117,7 @@ class LettersAddEdit extends Component {
             this.props.history.push({
                 pathname: "/Letters/" + projectId
             });
-        } 
+        }
     }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
@@ -136,8 +136,8 @@ class LettersAddEdit extends Component {
         if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow//,
-                // message: RichTextEditor.setContentFromString
+                hasWorkflow: nextProps.hasWorkflow,
+                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -178,9 +178,6 @@ class LettersAddEdit extends Component {
             let url = "GetLettersById?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
 
-            if (Config.IsAllow(48) || Config.IsAllow(49) || Config.IsAllow(51)) {
-
-            }
         } else {
             let letter = {
                 subject: '',
@@ -320,7 +317,7 @@ class LettersAddEdit extends Component {
     }
 
     handleChangeDate(e, field) {
-        console.log(field,e);
+        console.log(field, e);
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -417,7 +414,7 @@ class LettersAddEdit extends Component {
         }
         return btn;
     }
-    
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -504,9 +501,9 @@ class LettersAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
-                                                if (this.props.changeStatus === true && this.props.docId > 0) {
+                                                if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
-                                                } else if (this.props.changeStatus === false && this.props.docId === 0) {
+                                                } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                     this.saveLetter();
                                                 } else {
                                                     this.saveAndExit();
@@ -550,7 +547,7 @@ class LettersAddEdit extends Component {
                                                     </div>
 
                                                     <div className="proForm datepickerContainer">
- 
+
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate'
                                                                 startDate={this.state.document.docDate}

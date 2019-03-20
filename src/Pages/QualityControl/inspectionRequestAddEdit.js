@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -9,7 +9,8 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
- 
+import ReactTable from "react-table";
+
 import { withRouter } from "react-router-dom";
 
 import RichTextEditor from 'react-rte';
@@ -45,9 +46,60 @@ const validationSchema = Yup.object().shape({
         .nullable(true),
 
     toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage])
+        .required(Resources['toContactRequired'][currentLanguage]),
 
+    bicContactId: Yup.string()
+        .required(Resources['actionByContactRequired'][currentLanguage]),
+
+    disciplineId: Yup.string()
+        .required(Resources['disciplineRequired'][currentLanguage])
 })
+
+const documentCycleValidationSchema = Yup.object().shape({
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]),
+})
+
+let columns = [
+    {
+        Header: 'arrange',
+        accessor: 'arrange',
+        width: '30px'
+    }, {
+        Header: Resources['subject'][currentLanguage],
+        accessor: 'subject',
+        width: '150px',
+    }, {
+        Header: Resources['statusName'][currentLanguage],
+        accessor: 'statusName',
+        width: '40px',
+    }, {
+        Header: Resources['CompanyName'][currentLanguage],
+        accessor: 'flowCompanyName',
+        width: '80px',
+    }, {
+        Header: Resources['ContactName'][currentLanguage],
+        accessor: 'flowContactName',
+        width: '80px',
+    }, {
+        Header: Resources['docDate'][currentLanguage],
+        accessor: 'docDate',
+        format: 'date',
+        width: '80px',
+    }, {
+        Header: Resources['approvalStatus'][currentLanguage],
+        accessor: 'approvalStatusName',
+        width: '60px',
+    }, {
+        Header: Resources['progressPercent'][currentLanguage],
+        accessor: 'progressPercent',
+        width: '60px',
+    }, {
+        Header: Resources['comment'][currentLanguage],
+        accessor: 'cycleComment',
+        width: '80px',
+    }
+]
 
 let docId = 0;
 let projectId = 0;
@@ -83,6 +135,12 @@ class inspectionRequestAddEdit extends Component {
         }
 
         this.state = {
+            FirstStep: true,
+            SecondStep: false,
+            ThirdStep: false,
+
+            SecondStepComplate: false,
+            ThirdStepComplate: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -94,9 +152,11 @@ class inspectionRequestAddEdit extends Component {
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
+            documentCycle: {},
             companies: [],
             ToContacts: [],
             fromContacts: [],
+            approvalstatusList: [],
             discplines: [],
             letters: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
@@ -108,9 +168,19 @@ class inspectionRequestAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
-        } 
+            selectedActionByContactId: { label: Resources.actionByContact[currentLanguage], value: "0" },
+            selectedActionByCompanyId: { label: Resources.actionByCompany[currentLanguage], value: "0" },
+            selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
+            selectedApprovalStatusId: { label: Resources.approvalStatus[currentLanguage], value: "0" },
+            bicContacts: [],
+            contractsPos: [],
+            reasonForIssues: [],
+            areas: [],
+            buildings: [],
+            answer: RichTextEditor.createEmptyValue(),
+            rfi: RichTextEditor.createEmptyValue(),
+            CurrentStep: 1
+        }
 
         if (!Config.IsAllow(366) || !Config.IsAllow(367) || !Config.IsAllow(369)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -118,7 +188,12 @@ class inspectionRequestAddEdit extends Component {
                 pathname: "/inspectionRequest/" + projectId
             });
         } 
+        this.onChangeMessage = this.onChangeMessage.bind(this);
+
+        this.newCycle = this.newCycle.bind(this);
+        this.editCycle = this.editCycle.bind(this);
     }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -132,12 +207,18 @@ class inspectionRequestAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillReceiveProps(nextProps, prevProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
+            let serverInspectionRequest = { ...nextProps.document };
+            serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
+            serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY');
+            serverInspectionRequest.resultDate = moment(serverInspectionRequest.resultDate).format('DD/MM/YYYY');
+
             this.setState({
-                document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow//,
-                // message: RichTextEditor.setContentFromString
+                document: { ...serverInspectionRequest },
+                hasWorkflow: nextProps.hasWorkflow,
+                answer: RichTextEditor.createValueFromString(nextProps.document.answer, 'html'),
+                rfi: RichTextEditor.createValueFromString(nextProps.document.rfi, 'html')
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -156,7 +237,7 @@ class inspectionRequestAddEdit extends Component {
             if (!(Config.IsAllow(367))) {
                 this.setState({ isViewMode: true });
             }
-            
+
             if (this.state.isApproveMode != true && Config.IsAllow(367)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
                     if (this.props.document.status == true && Config.IsAllow(367)) {
@@ -176,14 +257,24 @@ class inspectionRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetLettersById?id=" + this.state.docId
+            let url = "GetInspectionRequestForEdit?id=" + this.state.docId
+
             this.props.actions.documentForEdit(url);
 
-            if (Config.IsAllow(48) || Config.IsAllow(49) || Config.IsAllow(51)) {
+            dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
+                this.setState({
+                    IRCycles: [...result]
+                });
+            });
 
-            }
+            dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {
+                this.setState({
+                    documentCycle: { ...result }
+                });
+            });
+
         } else {
-            let letter = {
+            let inspectionRequest = {
                 subject: '',
                 id: 0,
                 projectId: this.state.projectId,
@@ -198,13 +289,45 @@ class inspectionRequestAddEdit extends Component {
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
-                message: ''
+                answer: '',
+                rfi: '',
+                orderId: null,
+                orderType: null,
+                bicCompanyId: '',
+                bicContactId: '',
+                fileNumberId: '',
+                areaId: '',
+                buildingNoId: '',
+                apartmentNoId: '',
+                specsSectionId: '',
+                contractId: '',
+                requiredDate: moment(),
+                resultDate: moment(),
+                reasonForIssueId: ''
+
             };
-            this.setState({ document: letter });
+
+            this.setState({ document: inspectionRequest });
             this.fillDropDowns(false);
+            this.GetNExtArrange();
             this.props.actions.documentForAdding();
         }
     };
+
+    GetNExtArrange() {
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+        this.props.actions.GetNextArrange(url);
+        dataservice.GetNextArrangeMainDocument(url).then(res => {
+            updated_document.arrange = res;
+            updated_document = Object.assign(original_document, updated_document);
+
+            this.setState({
+                document: updated_document
+            });
+        })
+    }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
@@ -212,7 +335,6 @@ class inspectionRequestAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -222,6 +344,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
+
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
 
             if (isEdit) {
@@ -240,6 +363,15 @@ class inspectionRequestAddEdit extends Component {
                     });
 
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+                }
+
+                let bicCompanyId = this.props.document.bicCompanyId;
+                if (bicCompanyId) {
+                    this.setState({
+                        selectedActionByCompanyId: { label: this.props.document.bicCompanyName, value: bicCompanyId }
+                    });
+
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedActionByContactId', 'bicContacts');
                 }
             }
             this.setState({
@@ -264,35 +396,110 @@ class inspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetLettersByProjectId?projectId=" + this.state.projectId + "&pageNumber=0&pageSize=100", 'subject', 'id').then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
             if (isEdit) {
-                let replyId = this.props.document.replyId;
-                let replyLetter = {};
-                if (replyId) {
-                    replyLetter = _.find(result, function (i) { return i.value == replyId; });
+                let approvalStatusId = this.state.documentCycle.approvalStatusId;
+                let approvalStatus = {};
+                if (approvalStatusId) {
+                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+
                     this.setState({
-                        [replyLetter]: replyLetter
+                        selectedApprovalStatusId: approvalStatus
                     });
                 }
             }
             this.setState({
-                letters: [...result]
+                approvalstatusList: [...result]
             });
         });
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", 'title', 'id').then(result => {
+            if (isEdit) {
+                let areaId = this.props.document.areaId;
+                let area = {};
+                if (areaId) {
+                    area = _.find(result, function (i) { return i.value == areaId; });
+
+                    this.setState({
+                        selecetedArea: area
+                    });
+                }
+            }
+            this.setState({
+                areas: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id').then(result => {
+            if (isEdit) {
+                let buildingno = this.props.document.buildingNoId;
+                let building = {};
+                if (buildingno) {
+                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    this.setState({
+                        selectedbuildingno: building
+                    });
+                }
+            }
+            this.setState({
+                buildings: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id').then(result => {
+            if (isEdit) {
+                let reasonForIssueId = this.props.document.reasonForIssueId;
+                let reasonForIssue = {};
+                if (reasonForIssueId) {
+                    reasonForIssue = _.find(result, function (i) { return i.value == reasonForIssueId; });
+                    this.setState({
+                        selectedReasonForIssue: reasonForIssue
+                    });
+                }
+            }
+            this.setState({
+                reasonForIssues: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=apartmentNumber", 'title', 'id').then(result => {
+            if (isEdit) {
+                let apartmentNoId = this.props.document.apartmentNoId;
+                let apartmentNo = {};
+                if (apartmentNoId) {
+                    apartmentNo = _.find(result, function (i) { return i.value == apartmentNoId; });
+                    this.setState({
+                        selectedApartmentNoId: apartmentNo
+                    });
+                }
+            }
+            this.setState({
+                apartmentNumbers: [...result]
+            });
+        });
+
+        if (isEdit === false) {
+            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+                this.setState({
+                    contractsPos: [...result]
+                });
+            });
+        }
+
     }
 
-    onChangeMessage = (value) => {
+    onChangeMessage = (value, field) => {
         let isEmpty = !value.getEditorState().getCurrentContent().hasText();
         if (isEmpty === false) {
 
-            this.setState({ message: value });
+            this.setState({ [field]: value });
             if (value.toString('markdown').length > 1) {
 
                 let original_document = { ...this.state.document };
 
                 let updated_document = {};
 
-                updated_document.message = value.toString('markdown');
+                updated_document[field] = value.toString('markdown');
 
                 updated_document = Object.assign(original_document, updated_document);
 
@@ -306,7 +513,7 @@ class inspectionRequestAddEdit extends Component {
     };
 
     handleChange(e, field) {
-        console.log(field, e);
+
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -321,7 +528,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     handleChangeDate(e, field) {
-        console.log(field,e);
+
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -347,18 +554,6 @@ class inspectionRequestAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            this.props.actions.GetNextArrange(url);
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            })
-        }
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -369,56 +564,69 @@ class inspectionRequestAddEdit extends Component {
         }
     }
 
-    editLetter(event) {
+    editInspectionRequest(event) {
         this.setState({
             isLoading: true
         });
 
-        dataservice.addObject('EditLetterById', this.state.document).then(result => {
+        let saveDocument = this.state.document;
+        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.resultDate = moment(saveDocument.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+        dataservice.addObject('EditInspectionRequestOnly', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-
-            this.props.history.push({
-                pathname: "/inspectionRequest/" + this.state.projectId
-            });
+            //this.NextStep();
         });
     }
 
-    saveLetter(event) {
+    saveInspectionRequest(event) {
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.resultDate = moment(saveDocument.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddLetters', saveDocument).then(result => {
-            this.setState({
-                docId: result
-            });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
-    }
+        saveDocument.projectId = this.state.projectId;
 
-    saveAndExit(event) {
-        // let letter = { ...this.state.document };
+        dataservice.addObject('AddInspectionRequestOnly', saveDocument).then(result => {
+            if (result.id) {
+                let cycle = {
+                    requestForInspectionId: result.id,
+                    subject: this.state.document.subject,
+                    docDate: this.state.document.docDate,
+                    progressPercent: 0,
+                    status: 'false',
+                    approvalStatusId: null,
+                    cycleComment: '',
+                    arrange: 0
+                };
+                this.setState({
+                    docId: result.id,
+                    documentCycle: cycle
+                });
 
-        this.props.history.push({
-            pathname: "/inspectionRequest/" + this.state.projectId
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
+        }).catch(res => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
 
     showBtnsSaving() {
         let btn = null;
-
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+        } else if (this.state.docId > 0) {
+            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit'>{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
-    
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -430,7 +638,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     handleShowAction = (item) => {
-        console.log(item);
+
         if (item.value != "0") {
 
             this.setState({
@@ -441,6 +649,287 @@ class inspectionRequestAddEdit extends Component {
 
             this.simpleDialog.show()
         }
+    }
+
+    NextStep = () => {
+
+        if (this.state.CurrentStep === 1) {
+            if (this.props.changeStatus == true) {
+                this.editInspectionRequest();
+            }
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: false,
+                CurrentStep: this.state.CurrentStep + 1,
+                ThirdStep: false
+            })
+        }
+        else if (this.state.CurrentStep === 2) {
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: true,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: true
+            })
+        } else {
+            this.props.history.push({
+                pathname: "/inspectionRequest/" + projectId
+            });
+        }
+
+    }
+
+    NextTopStep = () => {
+
+        if (this.state.CurrentStep === 1) {
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: false,
+                CurrentStep: this.state.CurrentStep + 1,
+                ThirdStep: false
+            })
+        }
+        else if (this.state.CurrentStep === 2) {
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: true,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: true
+            })
+        } else {
+            this.props.history.push({
+                pathname: "/inspectionRequest/" + projectId
+            });
+        }
+
+    }
+
+    PreviousStep = () => {
+        if (this.state.docId !== 0) {
+            if (this.state.CurrentStep === 3) {
+                window.scrollTo(0, 0)
+                this.setState({
+                    FirstStep: false,
+                    SecondStep: true,
+                    ThirdStep: false,
+                    CurrentStep: (this.state.CurrentStep - 1),
+                    ThirdStepComplate: false,
+                    SecondStepComplate: true
+                })
+            }
+            else {
+                if (this.state.CurrentStep === 2) {
+                    window.scrollTo(0, 0)
+                    this.setState({
+                        FirstStep: true,
+                        SecondStep: false,
+                        SecondStepComplate: false,
+                        ThirdStep: false,
+                        CurrentStep: (this.state.CurrentStep - 1)
+                    })
+                }
+            }
+        }
+    }
+
+    saveInspectionRequestCycle(event) {
+
+
+        let saveDocument = { ...this.state.documentCycle };
+
+        saveDocument.projectId = this.state.projectId;
+        saveDocument.disciplineId = this.state.document.disciplineId;
+        saveDocument.flowCompanyId = this.state.document.bicCompanyId;
+        saveDocument.flowContactId = this.state.document.bicContactId;
+
+        let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
+
+        dataservice.addObject(api, saveDocument).then(result => {
+            if (result) {
+                let cycle = {
+                    subject: this.state.document.subject,
+                    docDate: this.state.document.docDate,
+                    progressPercent: 0,
+                    cycleStatus: false,
+                    requestForInspectionId: this.state.docId,
+                    approvalStatusId: null,
+                    cycleComment: '',
+                    arrange: 0
+                };
+
+                this.setState({
+                    documentCycle: cycle
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
+        }).catch(res => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+    }
+
+    handleChangeCycle(e, field) {
+
+        let original_document = { ...this.state.documentCycle };
+
+        let updated_document = {};
+
+        updated_document[field] = e.target.value;
+
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            documentCycle: updated_document
+        });
+    }
+
+    handleChangeCycleDropDown(event, field, selectedValue) {
+        if (event == null) return;
+        let original_document = { ...this.state.documentCycle };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            documentCycle: updated_document,
+            [selectedValue]: event
+        });
+
+    }
+
+    newCycle(e) {
+
+        let cycleObj = { ...this.state.documentCycle };
+        cycleObj.typeAddOrEdit = "";
+        this.setState({
+            documentCycle: { ...cycleObj }
+        });
+    }
+
+    editCycle(e) {
+
+        let cycleObj = { ...this.state.documentCycle };
+        cycleObj.typeAddOrEdit = "editLastCycle";
+        this.setState({
+            documentCycle: { ...cycleObj }
+        });
+    }
+
+    AddNewCycle() {
+        return (
+            <Fragment>
+                <Formik
+                    initialValues={{ ...this.state.documentCycle }}
+                    enableReinitialize={true}
+                    validationSchema={documentCycleValidationSchema}
+                    onSubmit={(values) => {
+                        this.saveInspectionRequestCycle()
+                    }}>
+
+                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                        <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                            <header className="main__header">
+                                <div className="main__header--div">
+                                    <h2 className="zero">{Resources['newCycle'][currentLanguage]}</h2>
+                                </div>
+                            </header>
+
+                            <div className='document-fields'>
+
+                                <div className="proForm first-proform">
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.subject[currentLanguage]}</label>
+                                        <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                            <input name='subject' className="form-control fsadfsadsa" id="subject"
+                                                placeholder={Resources.subject[currentLanguage]}
+                                                autoComplete='off'
+                                                value={this.state.documentCycle.subject}
+                                                onBlur={(e) => {
+                                                    handleBlur(e)
+                                                    handleChange(e)
+                                                }}
+                                                onChange={(e) => this.handleChangeCycle(e, 'subject')} />
+                                            {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+
+                                        </div>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                        <div className="ui checkbox radio radioBoxBlue">
+                                            <input type="radio" name="letter-status" defaultChecked={this.state.documentCycle.status === false ? null : 'checked'} value="true" onChange={e => this.handleChangeCycle(e, 'cycleStatus')} />
+                                            <label>{Resources.oppened[currentLanguage]}</label>
+                                        </div>
+                                        <div className="ui checkbox radio radioBoxBlue">
+                                            <input type="radio" name="letter-status" defaultChecked={this.state.documentCycle.status === false ? 'checked' : null} value="false" onChange={e => this.handleChangeCycle(e, 'cycleStatus')} />
+                                            <label>{Resources.closed[currentLanguage]}</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className="proForm datepickerContainer">
+                                    <div className="linebylineInput valid-input">
+                                        <div className="inputDev ui input">
+                                            <Dropdown title="approvalStatus"
+                                                data={this.state.approvalstatusList}
+                                                name="approvalStatusId"
+                                                selectedValue={this.state.selectedApprovalStatusId}
+                                                onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeCycleDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
+                                                onBlur={setFieldTouched}
+                                                error={errors.approvalStatusId}
+                                                touched={touched.approvalStatusId}
+                                                isClear={false} />
+                                        </div>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources['comment'][currentLanguage]}</label>
+                                        <div className='ui input inputDev '>
+                                            <input autoComplete="off"
+                                                value={this.state.documentCycle.cycleComment}
+                                                className="form-control" name="comment"
+                                                onBlur={(e) => { handleBlur(e) }}
+                                                onChange={(e) => { this.handleChangeCycle(e, 'cycleComment') }}
+                                                placeholder={Resources['comment'][currentLanguage]} />
+                                        </div>
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources['progressPercent'][currentLanguage]}</label>
+                                        <div className='ui input inputDev '>
+                                            <input autoComplete="off"
+                                                value={this.state.documentCycle.progressPercent}
+                                                className="form-control" name="progressPercent"
+                                                onBlur={(e) => { handleBlur(e) }}
+                                                onChange={(e) => { this.handleChangeCycle(e, 'progressPercent') }}
+                                                placeholder={Resources['progressPercent'][currentLanguage]} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="slider-Btns">
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.editCycle}>{Resources['save'][currentLanguage]}</button>
+                                    <span className="border"></span>
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.newCycle}>{Resources['add'][currentLanguage]}</button>
+                                </div>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </Fragment>
+        )
     }
 
     render() {
@@ -459,8 +948,7 @@ class inspectionRequestAddEdit extends Component {
         return (
             <div className="mainContainer">
 
-                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
+                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <div className="submittalHead">
                         <h2 className="zero">{Resources.inspectionRequest[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · Quality Control</span>
@@ -485,259 +973,447 @@ class inspectionRequestAddEdit extends Component {
                         </div>
                     </div>
                     <div className="doc-container">
-                        {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
-                        }
+
                         <div className="step-content">
-                            <div id="step1" className="step-content-body">
-                                <div className="subiTabsContent">
-                                    <div className="document-fields">
-                                        <Formik
-                                            initialValues={{ ...this.state.document }}
-                                            validationSchema={validationSchema}
-                                            onSubmit={(values) => {
-                                                if (this.props.changeStatus === true && this.props.docId > 0) {
-                                                    this.editLetter();
-                                                } else if (this.props.changeStatus === false && this.props.docId === 0) {
-                                                    this.saveLetter();
-                                                } else {
-                                                    this.saveAndExit();
-                                                }
-                                            }}  >
+                            {this.state.FirstStep ?
+                                <Fragment>
+                                    <div id="step1" className="step-content-body">
+                                        <div className="subiTabsContent">
+                                            <div className="document-fields">
+                                                <Formik
+                                                    initialValues={{ ...this.state.document }}
+                                                    enableReinitialize={true}
+                                                    validationSchema={validationSchema}
+                                                    onSubmit={(values) => {
+                                                        if (this.props.changeStatus === false && this.state.docId === 0) {
+                                                            this.saveInspectionRequest();
+                                                        } else {
+                                                            this.NextStep();
+                                                        }
+                                                    }}  >
 
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                    {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                                        <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
-                                                    <div className="proForm first-proform">
+                                                            <div className="proForm first-proform">
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.subject[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                                <input name='subject' className="form-control fsadfsadsa" id="subject"
-                                                                    placeholder={Resources.subject[currentLanguage]}
-                                                                    autoComplete='off'
-                                                                    value={this.state.document.subject}
-                                                                    onBlur={(e) => {
-                                                                        handleBlur(e)
-                                                                        handleChange(e)
-                                                                    }}
-                                                                    onChange={(e) => this.handleChange(e, 'subject')} />
-                                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.subject[currentLanguage]}</label>
+                                                                    <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                                        <input name='subject' className="form-control fsadfsadsa" id="subject"
+                                                                            placeholder={Resources.subject[currentLanguage]}
+                                                                            autoComplete='off'
+                                                                            value={this.state.document.subject}
+                                                                            onBlur={(e) => {
+                                                                                handleBlur(e)
+                                                                                handleChange(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'subject')} />
+                                                                        {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
 
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.status[currentLanguage]}</label>
-                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
-                                                                <label>{Resources.oppened[currentLanguage]}</label>
-                                                            </div>
-                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
-                                                                <label>{Resources.closed[currentLanguage]}</label>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div className="proForm datepickerContainer">
- 
-                                                        <div className="linebylineInput valid-input alternativeDate">
-                                                            <DatePicker title='docDate'
-                                                                startDate={this.state.document.docDate}
-                                                                handleChange={e => this.handleChangeDate(e, 'docDate')} />
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-                                                            <div className="ui input inputDev"  >
-
-                                                                <input type="text" className="form-control" id="arrange" readOnly
-                                                                    value={this.state.document.arrange}
-                                                                    name="arrange"
-                                                                    placeholder={Resources.arrange[currentLanguage]}
-                                                                    onBlur={(e) => {
-                                                                        handleChange(e)
-                                                                        handleBlur(e)
-                                                                    }}
-                                                                    onChange={(e) => this.handleChange(e, 'arrange')} />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
-                                                                <input type="text" className="form-control" id="refDoc"
-                                                                    value={this.state.document.refDoc}
-                                                                    name="refDoc"
-                                                                    placeholder={Resources.refDoc[currentLanguage]}
-                                                                    onBlur={(e) => {
-                                                                        handleChange(e)
-                                                                        handleBlur(e)
-                                                                    }}
-                                                                    onChange={(e) => this.handleChange(e, 'refDoc')} />
-                                                                {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
-                                                            <div className="shareLinks">
-                                                                <div className="inputDev ui input">
-                                                                    <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings}
-                                                                        name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
-
+                                                                    </div>
                                                                 </div>
-                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                                        <label>{Resources.oppened[currentLanguage]}</label>
+                                                                    </div>
+                                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                                        <label>{Resources.closed[currentLanguage]}</label>
+                                                                    </div>
+                                                                </div>
 
                                                             </div>
-                                                        </div>
 
+                                                            <div className="proForm datepickerContainer">
 
-                                                        <div className="linebylineInput valid-input mix_dropdown">
+                                                                <div className="linebylineInput valid-input alternativeDate">
+                                                                    <DatePicker title='docDate'
+                                                                        format={'DD/MM/YYYY'}
+                                                                        onChange={e => setFieldValue('docDate', e)}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.docDate}
+                                                                        touched={touched.docDate}
+                                                                        name="docDate"
+                                                                        startDate={this.state.document.docDate}
+                                                                        handleChange={e => this.handleChangeDate(e, 'docDate')} />
+                                                                </div>
 
-                                                            <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
-                                                            <div className="supervisor__company">
-                                                                <div className="super_name">
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.arrange[currentLanguage]}</label>
+                                                                    <div className="ui input inputDev"  >
+
+                                                                        <input type="text" className="form-control" id="arrange" readOnly
+                                                                            value={this.state.document.arrange}
+                                                                            name="arrange"
+                                                                            placeholder={Resources.arrange[currentLanguage]}
+                                                                            onBlur={(e) => {
+                                                                                handleChange(e)
+                                                                                handleBlur(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'arrange')} />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" id="refDoc"
+                                                                            value={this.state.document.refDoc}
+                                                                            name="refDoc"
+                                                                            placeholder={Resources.refDoc[currentLanguage]}
+                                                                            onBlur={(e) => {
+                                                                                handleChange(e)
+                                                                                handleBlur(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'refDoc')} />
+                                                                        {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input alternativeDate">
+                                                                    <DatePicker title='requiredDateLog'
+                                                                        format={'DD/MM/YYYY'}
+                                                                        onChange={e => setFieldValue('requiredDate', e)}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.requiredDate}
+                                                                        touched={touched.requiredDate}
+                                                                        name="requiredDate"
+                                                                        startDate={this.state.document.requiredDate}
+                                                                        handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input alternativeDate">
+                                                                    <DatePicker title='resultDate'
+                                                                        date={'DD/MM/YYYY'}
+
+                                                                        onChange={e => setFieldValue('resultDate', e)}
+
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.resultDate}
+                                                                        touched={touched.resultDate}
+                                                                        name="resultDate"
+                                                                        startDate={this.state.document.resultDate}
+                                                                        handleChange={e => this.handleChangeDate(e, 'resultDate')} />
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input mix_dropdown">
+
+                                                                    <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
+                                                                    <div className="supervisor__company">
+                                                                        <div className="super_name">
+                                                                            <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.fromContacts}
+                                                                                selectedValue={this.state.selectedFromContact}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.fromContactId}
+                                                                                touched={touched.fromContactId}
+                                                                                isClear={true}
+                                                                                index="letter-fromContactId"
+                                                                                name="fromContactId"
+                                                                                id="fromContactId" />
+                                                                        </div>
+                                                                        <div className="super_company">
+                                                                            <Dropdown
+                                                                                data={this.state.companies}
+                                                                                isMulti={false}
+                                                                                selectedValue={this.state.selectedFromCompany}
+                                                                                handleChange={event => {
+                                                                                    this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                                }}
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.fromCompanyId}
+                                                                                touched={touched.fromCompanyId}
+
+                                                                                index="fromCompanyId"
+                                                                                name="fromCompanyId"
+                                                                                id="fromCompanyId" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput valid-input mix_dropdown">
+
+                                                                    <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
+                                                                    <div className="supervisor__company">
+                                                                        <div className="super_name">
+                                                                            <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.ToContacts}
+                                                                                selectedValue={this.state.selectedToContact}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.toContactId}
+                                                                                touched={touched.toContactId}
+
+                                                                                index="letter-toContactId"
+                                                                                name="toContactId"
+                                                                                id="toContactId" />
+                                                                        </div>
+                                                                        <div className="super_company">
+
+                                                                            <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.companies}
+                                                                                selectedValue={this.state.selectedToCompany}
+                                                                                handleChange={event =>
+                                                                                    this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.toCompanyId}
+                                                                                touched={touched.toCompanyId}
+
+                                                                                index="letter-toCompany"
+                                                                                name="toCompanyId"
+                                                                                id="toCompanyId" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput valid-input mix_dropdown">
+
+                                                                    <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
+                                                                    <div className="supervisor__company">
+                                                                        <div className="super_name">
+                                                                            <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.bicContacts}
+                                                                                selectedValue={this.state.selectedActionByContactId}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
+
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.bicContactId}
+                                                                                touched={touched.bicContactId}
+                                                                                name="bicContactId" />
+                                                                        </div>
+                                                                        <div className="super_company">
+
+                                                                            <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.companies}
+                                                                                selectedValue={this.state.selectedActionByCompanyId}
+                                                                                handleChange={event =>
+                                                                                    this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
+
+                                                                                name="bicCompanyId" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
                                                                     <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.fromContacts}
-                                                                        selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                        title="contractPo"
+                                                                        data={this.state.contractsPos}
+                                                                        selectedValue={this.state.selectedContract}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                        index="contractId" />
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
+                                                                        title="discipline"
+                                                                        data={this.state.discplines}
+                                                                        selectedValue={this.state.selectedDiscpline}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
 
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
-                                                                        error={errors.fromContactId}
-                                                                        touched={touched.fromContactId}
-                                                                        isClear={true}
-                                                                        index="letter-fromContactId"
-                                                                        name="fromContactId"
-                                                                        id="fromContactId" />
+                                                                        error={errors.disciplineId}
+                                                                        touched={touched.disciplineId}
+                                                                        name="disciplineId" />
                                                                 </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown
-                                                                        data={this.state.companies}
-                                                                        isMulti={false}
-                                                                        selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={event => {
-                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                        }}
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.fromCompanyId}
-                                                                        touched={touched.fromCompanyId}
 
-                                                                        index="fromCompanyId"
-                                                                        name="fromCompanyId"
-                                                                        id="fromCompanyId" />
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
+                                                                        title="reasonForIssue"
+                                                                        data={this.state.reasonForIssues}
+                                                                        selectedValue={this.state.selectedReasonForIssue}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId', false, '', '', '', 'selectedReasonForIssue')}
+                                                                        index="reasonForIssue" />
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
+                                                                        title="areaName"
+                                                                        data={this.state.areas}
+                                                                        selectedValue={this.state.selecetedArea}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'areaId', false, '', '', '', 'selecetedArea')}
+                                                                        index="areaId" />
+                                                                </div>
+
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
+                                                                        title="Buildings"
+                                                                        data={this.state.buildings}
+                                                                        selectedValue={this.state.selectedbuildingno}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'buildingNoId', false, '', '', '', 'selectedbuildingno')}
+                                                                        index="buildingNoId" />
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
+                                                                        title="apartmentNumber"
+                                                                        data={this.state.apartmentNumbers}
+                                                                        selectedValue={this.state.selectedApartmentNoId}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'apartmentNoId', false, '', '', '', 'selectedApartmentNoId')}
+                                                                        index="apartmentNoId" />
+                                                                </div>
+
+                                                                <div className="letterFullWidth">
+                                                                    <label className="control-label">{Resources.message[currentLanguage]}</label>
+                                                                    <div className="inputDev ui input">
+                                                                        <RichTextEditor
+                                                                            value={this.state.answer}
+                                                                            onChange={event => this.onChangeMessage(event, 'answer')}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="letterFullWidth">
+                                                                    <label className="control-label">{Resources.message[currentLanguage]}</label>
+                                                                    <div className="inputDev ui input">
+                                                                        <RichTextEditor
+                                                                            value={this.state.rfi}
+                                                                            onChange={event => this.onChangeMessage.bind(event, 'rfi')}
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div className="linebylineInput valid-input mix_dropdown">
-
-                                                            <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
-                                                            <div className="supervisor__company">
-                                                                <div className="super_name">
-                                                                    <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.ToContacts}
-                                                                        selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.toContactId}
-                                                                        touched={touched.toContactId}
-
-                                                                        index="letter-toContactId"
-                                                                        name="toContactId"
-                                                                        id="toContactId" />
-                                                                </div>
-                                                                <div className="super_company">
-
-                                                                    <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.companies}
-                                                                        selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event =>
-                                                                            this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.toCompanyId}
-                                                                        touched={touched.toCompanyId}
-
-                                                                        index="letter-toCompany"
-                                                                        name="toCompanyId"
-                                                                        id="toCompanyId" />
-                                                                </div>
+                                                            <div className="slider-Btns">
+                                                                {this.showBtnsSaving()}
                                                             </div>
-                                                        </div>
+                                                        </Form>
+                                                    )}
+                                                </Formik>
+                                            </div>
+                                            <div className="doc-pre-cycle letterFullWidth">
+                                                <div>
+                                                    {this.state.docId > 0 ?
+                                                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                        : null
+                                                    }
+                                                    {this.viewAttachments()}
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown
-                                                                title="discipline"
-                                                                data={this.state.discplines}
-                                                                selectedValue={this.state.selectedDiscpline}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
-                                                                index="letter-discipline"
-                                                            />
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown
-                                                                title="replyletter"
-                                                                data={this.state.letters}
-                                                                selectedValue={this.state.selectedReplyLetter}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'replyId', false, '', '', '', 'selectedReplyLetter')}
-                                                                index="letter-replyId"
-                                                            />
-                                                        </div>
-
-                                                        <div className="letterFullWidth">
-                                                            <label className="control-label">{Resources.message[currentLanguage]}</label>
-                                                            <div className="inputDev ui input">
-                                                                <RichTextEditor
-                                                                    value={this.state.message}
-                                                                    onChange={this.onChangeMessage.bind(this)}
-                                                                />
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}
-                                                    </div>
-                                                </Form>
-                                            )}
-                                        </Formik>
+                                                    {this.props.changeStatus === true ?
+                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                        : null
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="doc-pre-cycle letterFullWidth">
-                                        <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
-                                            {this.viewAttachments()}
+                                </Fragment>
+                                :
+                                <Fragment>
+                                    {this.state.SecondStep ?
+                                        <div className="subiTabsContent feilds__top">
 
-                                            {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            {this.AddNewCycle()}
+
+                                            <div className="doc-pre-cycle">
+                                                <header>
+                                                    <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
+                                                </header>
+                                                <ReactTable
+                                                    ref={(r) => {
+                                                        this.selectTable = r;
+                                                    }}
+                                                    data={this.state.IRCycles}
+                                                    columns={columns}
+                                                    defaultPageSize={10}
+                                                    minRows={2}
+                                                    noDataText={Resources['noData'][currentLanguage]}
+                                                />
+                                            </div>
+
+                                            <div className="doc-pre-cycle">
+                                                <div className="slider-Btns">
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        :
+                                        //Third Step
+                                        <Fragment>
+                                            <div className='document-fields'>
+                                                <table className="ui table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Subject</th>
+
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        {/* {renderMultiApprovalTable} */}
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div className="doc-pre-cycle">
+                                                <div className="slider-Btns">
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                </div>
+
+                                            </div>
+                                        </Fragment>
+                                    }
+                                </Fragment>}
+
+                        </div>
+                        <div className="docstepper-levels">
+                            {/* Next & Previous */}
+                            <div className="step-content-foot">
+                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
+
+                                <span onClick={this.NextTopStep} className={!this.state.ThirdStepComplate && this.state.docId !== 0 ? "step-content-btn-prev "
+                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            {/* Steps Active  */}
+                            <div className="workflow-sliderSteps">
+                                <div className="step-slider">
+                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                        <div className="steps-timeline">
+                                            <span>1</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6>{Resources.inspectionRequest[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+
+                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>2</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6 >{Resources.newCycle[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+                                    <div data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                        <div className="steps-timeline">
+                                            <span>3</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -747,7 +1423,6 @@ class inspectionRequestAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
 
                                         {this.state.isApproveMode === true ?
                                             <div >
@@ -769,7 +1444,6 @@ class inspectionRequestAddEdit extends Component {
                                 : null
                         }
                     </div>
-
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
@@ -782,7 +1456,7 @@ class inspectionRequestAddEdit extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
