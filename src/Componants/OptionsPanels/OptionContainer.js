@@ -59,10 +59,10 @@ class OptionContainer extends React.Component {
         }   
     }
 
-    IsAllow = (permission) => {
-        let obj=_.find(this.props.permission, function(o) { return o.name == permission; }); 
-        return Config.IsAllow(obj.code);
-    }
+     IsAllow = (permission) => {
+         let obj=_.find(this.props.permission, function(o) { return o.name == permission; }); 
+         return Config.IsAllow(obj.code);
+     }
 
     componentDidMount = () => {  
         let allowPanel = _.filter(this.state.data, (item) => {

@@ -56,7 +56,7 @@ import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
-
+import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
 
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
 
@@ -68,6 +68,7 @@ let setupRoutes = ProjectSetupRoutes.map((item) => {
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
+    , <Route path="/ActionByAlerts" component={ActionByAlerts} />
     , <Route path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
     , <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
     , <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
@@ -123,7 +124,7 @@ let originalRoutes = [
     ,<Route path="/reportsAddEdit" component={reportsAddEdit}/>
     ,<Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     ,<Route path="/DashboardProject" component={DashboardProject} />
-    , <Route path="/TaskGroupsAddEdit" component={TaskGroupsAddEdit} />
+    , <Route path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
     ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
