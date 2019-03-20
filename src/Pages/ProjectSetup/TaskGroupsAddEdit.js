@@ -19,6 +19,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CryptoJS from 'crypto-js';
 import moment from 'moment';
+import Distribution from '../../Componants/OptionsPanels/DistributionList'
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Recycle from '../../Styles/images/attacheRecycle.png'
 
@@ -54,10 +58,31 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 let actions = []
+
 class TaskGroupsAddEdit extends Component {
     constructor(props) {
         super(props)
+        console.log('Render222')
+        const query = new URLSearchParams(this.props.location.search);
+        let index = 0;
+        for (let param of query.entries()) {
+            if (index == 0) {
+                try {
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+                    docId = obj.docId;
+                    projectId = obj.projectId;
+                    projectName = obj.projectName;
+                    isApproveMode = obj.isApproveMode;
+                    docApprovalId = obj.docApprovalId;
+                    arrange = obj.arrange;
+                }
+                catch{
+                    this.props.history.goBack();
+                }
 
+                index++;
+            }
+        }
         const columnsGrid = [
             {
                 key: "id",
@@ -96,28 +121,11 @@ class TaskGroupsAddEdit extends Component {
                 sortDescendingFirst: true
             }
         ]
-        
-        const query = new URLSearchParams(this.props.location.search);
-        let index = 0;
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                }
-                catch{
-                    this.props.history.goBack();
-                }
-            
-            index++;
-            }
-        }
+
+
         this.state = {
+            currentTitle: "sendToWorkFlow",
+            IsEditMode: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             isView: false,
@@ -146,7 +154,10 @@ class TaskGroupsAddEdit extends Component {
             rowId: 0,
             index: 0,
             DeleteFromLog: false,
-            DocTaskGroupsData: {}
+            DocTaskGroupsData: {},
+            permission: [{ name: 'sendByEmail', code: 0 }, { name: 'sendByInbox', code: 94 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 965 },
+            { name: 'createTransmittal', code: 3051 }, { name: 'sendToWorkFlow', code: 715 }]
         }
     }
 
@@ -180,67 +191,6 @@ class TaskGroupsAddEdit extends Component {
             })
         }
     }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(90))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(90)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(90)) {
-                    if (this.props.document.status == true && Config.IsAllow(90)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentDidMount = () => {
-        if (this.state.docId > 0) {
-            this.props.actions.documentForEdit('GetProjectTaskGroupsForEdit?taskId=' + this.state.docId)
-
-            this.checkDocumentIsView();
-        }
-        else{
-
-        }
-    }
-
-    showBtnsSaving() {
-        let btn = null;
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
-        }
-        return btn;
-    }
-
-    saveAndExit(event) {
-        this.props.history.push({
-            pathname: "/TaskGroups/" + this.state.projectId
-        });
-    }
-
-    handleShowAction = (item) => {
-        if (item.value != "0") {
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-        }
-    }
-
 
     NextStep = () => {
         if (this.state.CurrStep === 1) {
@@ -302,6 +252,20 @@ class TaskGroupsAddEdit extends Component {
         this.setState({
             DocumentDate: date
         })
+    }
+
+    componentWillReceiveProps(props, state) {
+        if (props.document && props.document.id > 0) {
+            console.log(this.props.document)
+            this.setState({
+                IsEditMode: true,
+                DocTaskGroupsData: { ...props.document },
+                isLoading: false
+            });
+
+            this.checkDocumentIsView();
+        }
+
     }
 
     DeleteContact = (rowId, index) => {
@@ -395,24 +359,126 @@ class TaskGroupsAddEdit extends Component {
     }
 
     AddEditTaskGroups = (values, actions) => {
-        Api.post('AddTaskGroup', {
-            id: undefined,
-            projectId: this.state.ProjectId,
-            arrange: values.ArrangeTaskGroups,
-            subject: values.Subject,
-            docDate: this.state.DocumentDate,
-            status: this.state.Status,
-            docCloseDate: moment().format(),
-        }).then(
-            res => {
-                this.setState({
-                    DocTaskGroupsData: res
+
+        if (this.state.IsEditMode) {
+            Api.post('EditProjectTaskGroups', {
+                account: this.state.DocTaskGroupsData.account,
+                arrange: values.ArrangeTaskGroups,
+                deleteDate: this.state.DocTaskGroupsData.deleteDate,
+                deletedBy: this.state.DocTaskGroupsData.deletedBy,
+                docCloseDate: this.state.DocTaskGroupsData.docCloseDate,
+                docDate: this.state.DocumentDate,
+                id: docId,
+                isDeleted: this.state.DocTaskGroupsData.isDeleted,
+                projectId: projectId,
+                project_projects: this.state.DocTaskGroupsData.project_projects,
+                project_task_groups_items: [],
+                status: this.state.Status,
+                subject: values.Subject,
+            }).then(
+                res => {
+                    this.setState({
+                        DocTaskGroupsData: res
+                    })
                 })
-            
+        }
+        else {
+            Api.post('AddTaskGroup', {
+                id: undefined,
+                projectId: this.state.projectId,
+                arrange: values.ArrangeTaskGroups,
+                subject: values.Subject,
+                docDate: this.state.DocumentDate,
+                status: this.state.Status,
+                docCloseDate: moment().format(),
+            }).then(
+                res => {
+                    this.setState({
+                        DocTaskGroupsData: res
+                    })
+                })
+        }
+        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        this.NextStep()
+
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(90))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(90)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(90)) {
+                    if (this.props.document.status == true && Config.IsAllow(90)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
+    }
+
+    componentDidMount = () => {
+        if (this.state.docId > 0) {
+            this.props.actions.documentForEdit('GetProjectTaskGroupsForEdit?taskId=' + this.state.docId)
+            this.checkDocumentIsView();
+        }
+        else {
+            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=99&companyId=undefined&contactId=undefined').then(
+                res => {
+                    MaxArrange = res
+                }
+            )
+        }
+    }
+
+    showBtnsSaving() {
+        let btn = null;
+        if (this.state.docId === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+        }
+        return btn;
+    }
+
+    saveAndExit(event) {
+        this.props.history.push({
+            pathname: "/TaskGroups/" + this.state.projectId
+        });
+    }
+
+    handleShowAction = (item) => {
+        if (item.value != "0") {
+            this.setState({
+                currentComponent: item.value,
+                currentTitle: item.title,
+                showModal: true
             })
+            this.simpleDialog.show()
+        }
     }
 
     render() {
+
+        let actions = [
+            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
+            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
+            {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }, {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }];
+
         let Data = this.state.rows
         let RenderContactsTable = Data.map((item, index) => {
             return (
@@ -447,12 +513,12 @@ class TaskGroupsAddEdit extends Component {
 
                     <Formik
                         initialValues={{
-                            ArrangeContact: idEdit !== 0 ? Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })) : 1,
+                            ArrangeContact: Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })),
                             Company: '',
                             ContactName: '',
                         }}
 
-                        enableReinitialize={true}
+                        /// enableReinitialize={true}
 
                         validationSchema={ValidtionSchemaForContact}
 
@@ -558,8 +624,8 @@ class TaskGroupsAddEdit extends Component {
                                 <Fragment>
                                     <Formik
                                         initialValues={{
-                                            ArrangeTaskGroups: this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.arrange : MaxArrange,
-                                            Subject: this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.subject : '',
+                                            ArrangeTaskGroups: this.state.IsEditMode ? this.state.DocTaskGroupsData.arrange : MaxArrange,
+                                            Subject: this.state.IsEditMode ? this.state.DocTaskGroupsData.subject : '',
                                         }}
                                         enableReinitialize={true}
                                         validationSchema={ValidtionSchemaForTaskGroups}
@@ -579,12 +645,12 @@ class TaskGroupsAddEdit extends Component {
                                                             <label className="control-label">{Resources['subject'][currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <input autoComplete="off" className="form-control" name="Subject"
-                                                                    value={this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.subject : values.Subject}
+                                                                    value={this.state.IsEditMode ? this.state.DocTaskGroupsData.subject : values.Subject}
                                                                     onBlur={(e) => { handleBlur(e) }}
                                                                     onChange={(e) => {
                                                                         handleChange(e)
                                                                         if (this.state.IsEditMode) {
-                                                                            this.setState({ ExpensesWorkFlowDataForEdit: { ...this.state.ExpensesWorkFlowDataForEdit, subject: e.target.value } })
+                                                                            this.setState({ DocTaskGroupsData: { ...this.state.DocTaskGroupsData, subject: e.target.value } })
                                                                         }
                                                                     }}
                                                                     placeholder={Resources['subject'][currentLanguage]} />
@@ -595,14 +661,14 @@ class TaskGroupsAddEdit extends Component {
                                                             <label className="control-label"> {Resources['status'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
                                                                 <input type="radio" defaultChecked
-                                                                    // ={this.state.ExpensesWorkFlowDataForEdit.status ? 'checked' : null} 
+                                                                    ={this.state.DocTaskGroupsData.status ? 'checked' : null}
                                                                     name="Status" value="true" onChange={(e) => this.setState({ Status: e.target.value })} />
                                                                 <label>{Resources['oppened'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue ">
                                                                 <input type="radio" name="Status" value="false"
                                                                     defaultChecked
-                                                                    //  ={this.state.docment.status ? null : 'checked'}
+                                                                    ={this.state.DocTaskGroupsData.status ? null : 'checked'}
                                                                     onChange={(e) => this.setState({ Status: e.target.value })} />
                                                                 <label> {Resources['closed'][currentLanguage]}</label>
                                                             </div>
@@ -613,8 +679,8 @@ class TaskGroupsAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input">
                                                                 <DatePicker title='docDate' handleChange={this.DocumentDatehandleChange}
-                                                                    startDate={this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.creationDate === null ?
-                                                                        this.state.DocumentDate : this.state.ExpensesWorkFlowDataForEdit.creationDate
+                                                                    startDate={this.state.IsEditMode ? this.state.DocTaskGroupsData.docDate === null ?
+                                                                        this.state.DocumentDate : moment(this.state.DocTaskGroupsData.docDate).format('DD:MM:YYYY')
                                                                         : this.state.DocumentDate} />
                                                             </div>
                                                         </div>
@@ -622,12 +688,12 @@ class TaskGroupsAddEdit extends Component {
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <input autoComplete="off" className="form-control" name="ArrangeTaskGroups"
-                                                                    value={this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.arrange : values.ArrangeTaskGroups}
+                                                                    value={this.state.IsEditMode ? this.state.DocTaskGroupsData.arrange : values.ArrangeTaskGroups}
                                                                     onBlur={(e) => { handleBlur(e) }}
                                                                     onChange={(e) => {
                                                                         handleChange(e)
                                                                         if (this.state.IsEditMode) {
-                                                                            this.setState({ ExpensesWorkFlowDataForEdit: { ...this.state.ExpensesWorkFlowDataForEdit, arrange: e.target.value } })
+                                                                            this.setState({ DocTaskGroupsData: { ...this.state.DocTaskGroupsData, arrange: e.target.value } })
                                                                         }
                                                                     }}
                                                                     placeholder={Resources['numberAbb'][currentLanguage]} />
@@ -647,7 +713,7 @@ class TaskGroupsAddEdit extends Component {
                                         )}
                                     </Formik>
                                     {/* Table List Of Contacts */}
-                                    {idEdit !== 0 ?
+                                    {this.state.IsEditMode ?
                                         <Fragment>
                                             <div className='document-fields'>
                                                 <header>
@@ -709,10 +775,10 @@ class TaskGroupsAddEdit extends Component {
                         <div className="docstepper-levels">
                             {/* Next & Previous */}
                             <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && idEdit !== 0 ? "step-content-btn-prev " :
+                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode  ? "step-content-btn-prev " :
                                     "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
 
-                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && idEdit !== 0 ? "step-content-btn-prev "
+                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && this.state.IsEditMode  ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
@@ -750,7 +816,7 @@ class TaskGroupsAddEdit extends Component {
                             buttonName='delete' clickHandlerContinue={this.ConfirmationDelete}
                         />
                     ) : null}
-                                     {
+                    {
                         this.props.changeStatus === true ?
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
@@ -772,18 +838,19 @@ class TaskGroupsAddEdit extends Component {
                             </div>
                             : null
                     }
-             
-                {/* <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
-                </div> */}
-            </div>
+
+                    <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                            {this.state.currentComponent}
+                        </SkyLight>
+                    </div>
                 </div>
-     
+            </div>
+
         )
     }
 }
+
 function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,
