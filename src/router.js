@@ -51,6 +51,7 @@ import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
+import meetingMinutesAddEdit from "../src/Pages/Communication/MeetingMinutesAddEdit";
 
 let routes = (
 <Switch>
@@ -116,6 +117,7 @@ let routes = (
     <Route path="/phoneAddEdit" component={phoneAddEdit}/>
     <Route path="/reportsAddEdit" component={reportsAddEdit}/>
     <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
+    <Route path="/meetingMinutesAddEdit" component={meetingMinutesAddEdit} />
 </Switch> 
 ); 
 export default routes;
