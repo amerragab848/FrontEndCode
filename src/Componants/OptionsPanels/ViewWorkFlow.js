@@ -6,10 +6,10 @@
 
 import React, { Component, Fragment } from 'react'
 import Api from '../../api';
-import Moment from 'moment'; 
+import Moment from 'moment';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
-  
+
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -23,86 +23,87 @@ class ViewWorkFlow extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { 
+        this.state = {
             workFlowCycles: [],
-            visualCycle:[],
-            projectId: this.props.projectId != null ? this.props.projectId :0,
-            docId: this.props.docId !=null ? this.props.docId :0,
-            docType: this.props.docType !=null ?this.props.docType :0
+            visualCycle: [],
+            projectId: this.props.projectId != null ? this.props.projectId : 0,
+            docId: this.props.docId != null ? this.props.docId : 0,
+            docType: this.props.docType != null ? this.props.docType : 0
         }
     }
 
-    componentWillMount() { 
-        let url='GetCycleWorkflowByDocIdDocType?docId='+this.state.docId+'&docType='+this.state.docType+'&projectId='+this.state.projectId;
-        this.props.actions.GetWorkFlowCycles(url); 
-       
-    } 
+    componentWillMount() {
+        let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.state.docId + '&docType=' + this.state.docType + '&projectId=' + this.state.projectId;
+        if (this.props.workFlowCycles.length === 0) { 
+            this.props.actions.GetWorkFlowCycles(url);
+        }
+    }
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.workFlowCycles != prevProps.workFlowCycles) { 
-            this.setState({ workFlowCycles: nextProps.workFlowCycles }); 
-            this.renderCycles(nextProps.workFlowCycles); 
+        if (nextProps.workFlowCycles != prevProps.workFlowCycles) {
+            this.setState({ workFlowCycles: nextProps.workFlowCycles });
+            this.renderCycles(nextProps.workFlowCycles);
         }
     };
 
     renderLevels(items) {
- 
-        let grouped=_.groupBy(items, 'arrange');
-         
-        let groupedLevels=[];
 
-       _.filter(grouped , function (i) {
+        let grouped = _.groupBy(items, 'arrange');
+
+        let groupedLevels = [];
+
+        _.filter(grouped, function (i) {
             let obj = {};
-            obj.level=i[0].arrange;
-            obj.statusVal=i[0].statusVal;
-            obj.count=i.length;
+            obj.level = i[0].arrange;
+            obj.statusVal = i[0].statusVal;
+            obj.count = i.length;
             groupedLevels.push(obj);
-        }); 
- 
-        let mapLevels = groupedLevels.map((i,index) => {
-         return (
-            <div className="StepperNum1 StepperNum workFlowStep" key={index}>
-                        <div>
-                            <div className={i.statusVal == null ? 'StepNumber pendingStep':  ( i.statusVal === true ? "StepNumber approvalstep" : "StepNumber declineStep" ) }>
-                                <span className="Step-Line afterLine"></span>
-                                <div className="StepNum">
-                                    <p className="StepN zero">{i.level}</p> 
-                                </div>
-                                <span className="Step-Line"></span>
-                            </div> 
-                            <div className="MultiPeinding"> 
-                            { items.map((level,idx) =>  level.arrange === i.level ?
-                                    <div key={idx} className= {level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
-                                        <div className={ level.statusVal == null ? "signature-h signaturePendingd" : "signature-h" }>
-                                            <figure className="avatarProfile smallAvatarSize">
-                                                <img alt="" title="" src={Avatar} />
-                                            </figure>
-                                            <div className="avatarName">
-                                                <h6>{level.contactName}</h6>
-                                                <p>{level.companyName}</p>
-                                            </div>
-                                        </div>
-                                        { level.statusVal != null? <div className="card-signature"> 
-                                            <img src={level.signature !=null ? level.signature: Signature } alt="..." />
-                                        </div> : null } 
-                                        <div className="box-statue">
-                                            <h5>{level.status}</h5>
-                                            <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
-                                        </div>
-                                    </div>    
-                                : null      
-                            )}
-                            </div>  
-                        </div>
-            </div>
-            )
-         })
+        });
 
-       return mapLevels;
+        let mapLevels = groupedLevels.map((i, index) => {
+            return (
+                <div className="StepperNum1 StepperNum workFlowStep" key={index}>
+                    <div>
+                        <div className={i.statusVal == null ? 'StepNumber pendingStep' : (i.statusVal === true ? "StepNumber approvalstep" : "StepNumber declineStep")}>
+                            <span className="Step-Line afterLine"></span>
+                            <div className="StepNum">
+                                <p className="StepN zero">{i.level}</p>
+                            </div>
+                            <span className="Step-Line"></span>
+                        </div>
+                        <div className="MultiPeinding">
+                            {items.map((level, idx) => level.arrange === i.level ?
+                                <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
+                                    <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
+                                        <figure className="avatarProfile smallAvatarSize">
+                                            <img alt="" title="" src={Avatar} />
+                                        </figure>
+                                        <div className="avatarName">
+                                            <h6>{level.contactName}</h6>
+                                            <p>{level.companyName}</p>
+                                        </div>
+                                    </div>
+                                    {level.statusVal != null ? <div className="card-signature">
+                                        <img src={level.signature != null ? level.signature : Signature} alt="..." />
+                                    </div> : null}
+                                    <div className="box-statue">
+                                        <h5>{level.status}</h5>
+                                        <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+                                    </div>
+                                </div>
+                                : null
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )
+        })
+
+        return mapLevels;
     }
- 
-    renderCycles(workFlowCycles) { 
+
+    renderCycles(workFlowCycles) {
         let cycles = workFlowCycles.map(cycle => {
-            return ( 
+            return (
                 <div className="workflowWrapper" key={Math.random()}>
                     <div className="workflow-header">
                         <h4>{cycle.subject + " -Currently at Level:" + cycle.currentLevel + " -Sent in:" + Moment(cycle.creationDate).format('DD-MM-YYYY')}</h4>
@@ -114,9 +115,9 @@ class ViewWorkFlow extends Component {
             )
         })
         this.setState({
-            visualCycle:cycles
+            visualCycle: cycles
         });
-        console.log('renderCycles',cycles)
+        console.log('renderCycles', cycles)
         return cycles
     }
 
@@ -132,7 +133,7 @@ class ViewWorkFlow extends Component {
 function mapStateToProps(state) {
     return {
         workFlowCycles: state.communication.workFlowCycles,
-        hasWorkflow:  state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow
     }
 }
 
@@ -144,5 +145,5 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(ViewWorkFlow);
+)(ViewWorkFlow);
 

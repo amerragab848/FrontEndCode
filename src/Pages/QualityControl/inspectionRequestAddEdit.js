@@ -56,7 +56,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const documentCycleValidationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    subjectCycle: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]),
 })
 
@@ -187,7 +187,7 @@ class inspectionRequestAddEdit extends Component {
             this.props.history.push({
                 pathname: "/inspectionRequest/" + projectId
             });
-        } 
+        }
         this.onChangeMessage = this.onChangeMessage.bind(this);
 
         this.newCycle = this.newCycle.bind(this);
@@ -234,7 +234,7 @@ class inspectionRequestAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(367))) {
+            if (!Config.IsAllow(367)) {
                 this.setState({ isViewMode: true });
             }
 
@@ -253,13 +253,12 @@ class inspectionRequestAddEdit extends Component {
         else {
             this.setState({ isViewMode: false });
         }
+        console.log('checkDocumentIsView...', this.props, this.state);
     }
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetInspectionRequestForEdit?id=" + this.state.docId
-
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId);
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
                 this.setState({
@@ -507,9 +506,7 @@ class inspectionRequestAddEdit extends Component {
                     document: updated_document
                 });
             }
-
         }
-
     };
 
     handleChange(e, field) {
@@ -852,8 +849,9 @@ class inspectionRequestAddEdit extends Component {
 
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
-                                        <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                            <input name='subject' className="form-control fsadfsadsa" id="subject"
+                                        <div className={"inputDev ui input" + (errors.subjectCycle && touched.subjectCycle ? (" has-error") : !errors.subjectCycle && touched.subjectCycle ? (" has-success") : " ")} >
+                                            <input name='subject' className="form-control fsadfsadsa"
+                                                name="subjectCycle"
                                                 placeholder={Resources.subject[currentLanguage]}
                                                 autoComplete='off'
                                                 value={this.state.documentCycle.subject}
@@ -862,7 +860,7 @@ class inspectionRequestAddEdit extends Component {
                                                     handleChange(e)
                                                 }}
                                                 onChange={(e) => this.handleChangeCycle(e, 'subject')} />
-                                            {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                            {touched.subjectCycle ? (<em className="pError">{errors.subjectCycle}</em>) : null}
 
                                         </div>
                                     </div>
@@ -982,7 +980,7 @@ class inspectionRequestAddEdit extends Component {
                                             <div className="document-fields">
                                                 <Formik
                                                     initialValues={{ ...this.state.document }}
-                                                    enableReinitialize={true}
+                                                    //enableReinitialize={true}
                                                     validationSchema={validationSchema}
                                                     onSubmit={(values) => {
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -1090,9 +1088,7 @@ class inspectionRequestAddEdit extends Component {
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='resultDate'
                                                                         date={'DD/MM/YYYY'}
-
                                                                         onChange={e => setFieldValue('resultDate', e)}
-
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.resultDate}
                                                                         touched={touched.resultDate}
@@ -1111,15 +1107,12 @@ class inspectionRequestAddEdit extends Component {
                                                                                 data={this.state.fromContacts}
                                                                                 selectedValue={this.state.selectedFromContact}
                                                                                 handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.fromContactId}
                                                                                 touched={touched.fromContactId}
-                                                                                isClear={true}
-                                                                                index="letter-fromContactId"
-                                                                                name="fromContactId"
-                                                                                id="fromContactId" />
+                                                                                isClear={false}
+                                                                                name="fromContactId" />
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
@@ -1150,33 +1143,24 @@ class inspectionRequestAddEdit extends Component {
                                                                                 data={this.state.ToContacts}
                                                                                 selectedValue={this.state.selectedToContact}
                                                                                 handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.toContactId}
                                                                                 touched={touched.toContactId}
-
-                                                                                index="letter-toContactId"
-                                                                                name="toContactId"
-                                                                                id="toContactId" />
+                                                                                name="toContactId" />
                                                                         </div>
                                                                         <div className="super_company">
-
                                                                             <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
                                                                                 selectedValue={this.state.selectedToCompany}
                                                                                 handleChange={event =>
                                                                                     this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.toCompanyId}
                                                                                 touched={touched.toCompanyId}
-
-                                                                                index="letter-toCompany"
-                                                                                name="toCompanyId"
-                                                                                id="toCompanyId" />
+                                                                                name="toCompanyId" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1190,7 +1174,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 data={this.state.bicContacts}
                                                                                 selectedValue={this.state.selectedActionByContactId}
                                                                                 handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
-
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.bicContactId}
@@ -1205,7 +1188,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 selectedValue={this.state.selectedActionByCompanyId}
                                                                                 handleChange={event =>
                                                                                     this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
-
                                                                                 name="bicCompanyId" />
                                                                         </div>
                                                                     </div>

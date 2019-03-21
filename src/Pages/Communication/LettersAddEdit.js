@@ -500,6 +500,7 @@ class LettersAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
+                                            enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
@@ -596,7 +597,6 @@ class LettersAddEdit extends Component {
                                                                         value={this.state.document.sharedSettings}
                                                                         name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
-
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
 
@@ -619,7 +619,7 @@ class LettersAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
-                                                                        isClear={true}
+                                                                        isClear={false}
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId" />

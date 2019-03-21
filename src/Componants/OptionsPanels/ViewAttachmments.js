@@ -38,7 +38,7 @@ class ViewAttachmments extends Component {
     versionHandler = (parentId) => {
         let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
         Api.get(urlVersion).then(result => {
-            
+
         }).catch(ex => {
         });
     }
@@ -49,12 +49,14 @@ class ViewAttachmments extends Component {
 
     getData() {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        this.props.actions.GetUploadedFiles(url);
+        if (this.props.files.length === 0) {
+            this.props.actions.GetUploadedFiles(url);
+        }
     }
-    render() { 
+    render() {
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
             let extension = item['fileName'].split(".")[1] === 'xlsx' ? xlsx : (item['fileName'].split(".")[1] === 'pdf' ? pdf : doc)
-            let createdDate= moment(item['createdDate']).format('DD/MM/YYYY');
+            let createdDate = moment(item['createdDate']).format('DD/MM/YYYY');
             return (
                 <tr key={Index}>
                     <td>

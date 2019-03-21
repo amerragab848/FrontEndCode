@@ -593,7 +593,7 @@ class TaskGroupsAddEdit extends Component {
             )
         }
         return (
-            <div className="mainContainer main__fulldash" >
+            <div className="mainContainer" >
                 <div className="documents-stepper noTabs__document one__tab one_step">
                     {/* Header */}
                     <div className="submittalHead">
