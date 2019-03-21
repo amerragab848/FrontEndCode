@@ -15,7 +15,8 @@ import CryptoJS from 'crypto-js';
 import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
-import { element } from "prop-types";
+import { toast } from "react-toastify";
+import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const _ = require('lodash')
 const dateFormate = ({ value }) => {
@@ -208,15 +209,31 @@ class Accounts extends Component {
             showResetPasswordModal: false,
             showCheckbox: false
         }
-        this.GetCellActions = this.GetCellActions.bind(this); 
+        this.GetCellActions = this.GetCellActions.bind(this);
     }
 
     DeleteAccount = (rowId) => {
-        rwIdse = rowId;
-        this.setState({
-            showDeleteModal: true,
-            rowSelectedId: rowId,
-        })
+        let rows = this.state.rows
+        let Id = rowId[0]
+        let IsCanDeleted = rows.filter(s => s.id === Id)
+        if (IsCanDeleted[0].deletable === 1) {
+            rwIdse = rowId;
+            this.setState({
+                showDeleteModal: true,
+                rowSelectedId: rowId,
+            })
+        }
+        else {
+            toast.error(Resources['smartDeleteMessage'][currentLanguage].cannotDelete)
+            setTimeout(() => {
+                this.setState({
+                    isLoading: false
+                })
+            }, 100);
+            this.setState({
+                isLoading: true
+            })
+        }
     }
 
     onCloseModal() {
@@ -381,7 +398,7 @@ class Accounts extends Component {
             isLoading: true,
             query: stringifiedQuery
         });
-        if (stringifiedQuery !== '{"isCustom":true}' ) {
+        if (stringifiedQuery !== '{"isCustom":true}') {
             this.setState({ isLoading: true, search: true })
             let _query = stringifiedQuery.split(',"isCustom"')
             let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
@@ -394,20 +411,20 @@ class Accounts extends Component {
                 });
             })
         }
-        else{
+        else {
             this.setState({ isLoading: true })
-                 let pageNumber = this.state.pageNumber + 1
-                 Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-                     this.setState({
-                         rows: result,
-                         isLoading: false,
-                         pageNumber: pageNumber,
-                         totalRows: result.length,
-                         search: false
-                     });
-                 });
+            let pageNumber = this.state.pageNumber + 1
+            Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                this.setState({
+                    rows: result,
+                    isLoading: false,
+                    pageNumber: pageNumber,
+                    totalRows: result.length,
+                    search: false
+                });
+            });
         }
-      
+
     };
 
     AccountsEdit(obj) {
@@ -545,9 +562,9 @@ class Accounts extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} 
+                <GridSetup rows={this.state.rows}
                     columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox} 
+                    showCheckbox={this.state.showCheckbox}
                     IsActiv={this.IsActive}
                     cellClick={this.cellClick}
                     clickHandlerDeleteRows={this.DeleteAccount}

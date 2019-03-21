@@ -16,13 +16,15 @@ export default {
 			showModal: false,
 			showLeftMenu: false, 
 			projectName:"",
-			showSelectProject:true
+			showSelectProject:true,
+			viewModel:false
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
 			contactData:[],
 			newContactElement:{},
-			multiApproval:[]
+			multiApproval:[],
+			
 		},
 		adminstration:{
 			popUp:false,

@@ -15,12 +15,10 @@ import ScheduleAlertsSummaryDetails from "./Componants/DashBoardDetails/Schedule
 import TimeSheetDetails from "./Componants/DashBoardDetails/TimeSheetDetails";
 import DocApprovalDetails from "./Componants/DashBoardDetails/DocApprovalDetails";
 import PendingExpensesDetails from "./Componants/DashBoardDetails/PendingExpensesDetails";
-import CommonLog from "./Pages/Communication/CommonLog";
-
+import CommonLog from "./Pages/Communication/CommonLog"; 
 import PrivacySetting from '../src/Componants/User/PrivacySetting';
 import ProfileSetting from "../src/Componants/User/index";
-import TimeSheetWorkFlow from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
-
+import TimeSheetWorkFlow from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow"; 
 import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
 import Companies from './Componants/GeneralSetting/Companies/Index';
 import AddEditCompany from './Componants/GeneralSetting/Companies/AddEditCompany';
@@ -46,25 +44,28 @@ import ExpensesWorkFlowLog from './Componants/GeneralSetting/Project/ExpensesWor
 import ExpensesWorkFlowAddEdit from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
 import RfiAddEdit from "./Pages/Communication/RfiAddEdit";
-import phoneAddEdit from './Pages/Communication/phoneAddEdit';
-//import OldAppNavigation from './OldAppNavigation';
+import phoneAddEdit from './Pages/Communication/phoneAddEdit'; 
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 import ProjectSetup from './Pages/ProjectSetup/ProjectSetup'
 import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
+import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
-import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks";
-
+import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks"; 
+import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
+import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
-    let path = "/" + item.route + "/:projectId";
-    return <Route path={path} component={ProjectSetup}/>})
+    let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
+    let compoenet = item.moduleId ==="ProjectSetup" ? ProjectSetup : CommonLog;
+    return <Route path={path} component={ compoenet }/>})
     
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
+    , <Route path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
     , <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
     , <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
     , <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />
@@ -119,8 +120,10 @@ let originalRoutes = [
     , <Route path="/reportsAddEdit" component={reportsAddEdit}/>
     , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     , <Route path="/DashboardProject" component={DashboardProject} />
+    , <Route path="/TaskGroupsAddEdit" component={TaskGroupsAddEdit} />
     , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
     , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
+    , <Route path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

@@ -234,7 +234,16 @@ export function FillGridLeftMenu() {
         });
     }
 }
-
+export const ViewDocumentAttachment = (Data) => {
+    return (dispatch, getState) => {
+        return (
+            dispatch({
+                type: types.ViewDocumentAttach ,
+                data:Data
+            })
+        )
+    }
+}
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
     let cycles = [];

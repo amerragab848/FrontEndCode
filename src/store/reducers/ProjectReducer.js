@@ -18,7 +18,7 @@ export default function (state = initialState.app.expensesWorkFlow, action) {
             return {
                 ...state
             }
-
+    
         default:
             return {
                 ...state

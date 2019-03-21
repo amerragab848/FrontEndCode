@@ -21,6 +21,7 @@ export const toggleLoading = 'toggleLoading';
 export const getingData = 'getingData';
 export const makeKeyContact = 'makeKeyContact';
 export const routeToTabIndex = 'routeToTabIndex';
+export const ViewDocumentAttach = 'ViewDocumentAttach';
 
 // ProjectActionsTypes
 
