@@ -56,7 +56,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
-class LettersAddEdit extends Component {
+class inspectionRequestAddEdit extends Component {
 
     constructor(props) {
 
@@ -89,7 +89,7 @@ class LettersAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 19,
+            docTypeId: 25,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -110,12 +110,12 @@ class LettersAddEdit extends Component {
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
             selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue()
-        }
+        } 
 
-        if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
+        if (!Config.IsAllow(366) || !Config.IsAllow(367) || !Config.IsAllow(369)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: "/Letters/" + projectId
+                pathname: "/inspectionRequest/" + projectId
             });
         } 
     }
@@ -153,12 +153,13 @@ class LettersAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(49))) {
+            if (!(Config.IsAllow(367))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status == true && Config.IsAllow(49)) {
+            
+            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
+                    if (this.props.document.status == true && Config.IsAllow(367)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -381,7 +382,7 @@ class LettersAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.props.history.push({
-                pathname: "/Letters/" + this.state.projectId
+                pathname: "/inspectionRequest/" + this.state.projectId
             });
         });
     }
@@ -403,7 +404,7 @@ class LettersAddEdit extends Component {
         // let letter = { ...this.state.document };
 
         this.props.history.push({
-            pathname: "/Letters/" + this.state.projectId
+            pathname: "/inspectionRequest/" + this.state.projectId
         });
     }
 
@@ -461,8 +462,8 @@ class LettersAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.lettertitle[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
+                        <h2 className="zero">{Resources.inspectionRequest[currentLanguage]}
+                            <span>{projectName.replace(/_/gi, ' ')} · Quality Control</span>
                         </h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -802,4 +803,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(LettersAddEdit))
+)(withRouter(inspectionRequestAddEdit))

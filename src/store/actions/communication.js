@@ -224,6 +224,50 @@ export function LeftMenuClick(event) {
         });
     }
 }
+
+export function FillGridLeftMenu() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.FillGridLeftMenu,
+            showLeftMenu: true,
+            showSelectProject: false 
+        });
+    }
+}
+
+export function GetAttendeesTable(urlAction) {
+    return (dispatch, getState) => {
+        return Api.get(urlAction).then(resp => {
+
+            dispatch({
+                type: types.Get_Attendees_Table,
+                data: resp
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                type: types.Get_Attendees_Table,
+                data: []
+            });
+        });
+    }
+}
+export function GetTopicsTable(urlAction) {
+    return (dispatch, getState) => {
+        return Api.get(urlAction).then(resp => {
+            dispatch({
+                type: types.Get_Topics_Table,
+                data: resp
+            });
+        }).catch((ex) => {
+            dispatch({
+                type: types.Get_Topics_Table,
+                data: []
+            });
+        });
+    }
+}
+
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
     let cycles = [];

@@ -14,10 +14,11 @@ export default {
 			file: {},
 			arrange: 0,
 			showModal: false,
-			showLeftMenu: false,
-			projectId: 0,
+			showLeftMenu: false, 
 			projectName:"",
-			showSelectProject:true
+			showSelectProject:true,
+			attendees:[],
+			topics:[]
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
@@ -32,6 +33,10 @@ export default {
 			getingData: false,
 			companyList:[],
 			tabIndex:0
-		} 
+		},
+		// taskGroups:{
+		// 	IsEditModel:false,
+		// 	TaskGroupsData:[],
+		// } 
 	}
 }

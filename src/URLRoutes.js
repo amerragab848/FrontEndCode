@@ -2876,8 +2876,8 @@ var routes = [
     settings: { technicalOffice: true, permission: 3764, order: 5 }
   },
   {
-    route: "area",
-    moduleId: "projectEps/area",
+    route: 'Area',
+    moduleId: "ProjectEPSLog",
     title: "area",
     nav: true,
     settings: {
@@ -2888,8 +2888,8 @@ var routes = [
     }
   },
   {
-    route: "location",
-    moduleId: "projectEps/location",
+    route: "Location",
+    moduleId: "ProjectEPSLog",
     title: "location",
     nav: true,
     settings: {
@@ -2900,8 +2900,8 @@ var routes = [
     }
   },
   {
-    route: "building",
-    moduleId: "projectEps/building",
+    route: "Building",
+    moduleId: "ProjectEPSLog",
     title: "Buildings",
     nav: true,
     settings: {
@@ -2912,8 +2912,8 @@ var routes = [
     }
   },
   {
-    route: "unit",
-    moduleId: "projectEps/unit",
+    route: "Unit",
+    moduleId: "ProjectEPSLog",
     title: "unit",
     nav: true,
     settings: {

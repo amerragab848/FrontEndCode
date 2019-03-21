@@ -131,9 +131,14 @@ class TransmittalAddEdit extends Component {
 
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id) {
+            
+            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
+            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow
+                hasWorkflow: nextProps.hasWorkflow,
+                message:RichTextEditor.createValueFromString(nextProps.document.description, 'html')
             });
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -187,8 +192,8 @@ class TransmittalAddEdit extends Component {
           fromContactId: null,
           toContactId: null,
           subject: "",
-          requiredDate: moment().format(),
-          docDate: moment().format(),
+          requiredDate: moment(),
+          docDate: moment(),
           status: "true",
           refDoc: "",
           discipline: null,
@@ -461,7 +466,12 @@ class TransmittalAddEdit extends Component {
             isLoading: true
         });
 
-        dataservice.addObject('EditCommunicationTransmittal', this.state.document).then(result => {
+        let saveDocument = this.state.document;
+
+        saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+        dataservice.addObject('EditCommunicationTransmittal',saveDocument ).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -475,8 +485,8 @@ class TransmittalAddEdit extends Component {
     saveTransmittal(event) {
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('DD/MM/YYYY');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate).format('DD/MM/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
             this.setState({
@@ -618,8 +628,9 @@ class TransmittalAddEdit extends Component {
                                                                         <label className="control-label">{Resources.docDate[currentLanguage]}</label>
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.docDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                 <ModernDatepicker date={this.state.document.docDate}
+                                                                                                  format={'DD/MM/YYYY'} 
+                                                                                                  showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'docDate')}
                                                                                                   placeholder={'Select a date'} />
                                                                             </div>
@@ -636,8 +647,8 @@ class TransmittalAddEdit extends Component {
                                                                         <label className="control-label">{Resources.requiredDate[currentLanguage]}</label>
                                                                         <div className="linebylineInput" >
                                                                             <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.requiredDate}
-                                                                                                  format={'DD-MM-YYYY'} showBorder
+                                                                                 <ModernDatepicker date={this.state.document.requiredDate}
+                                                                                                  format={'DD/MM/YYYY'} showBorder
                                                                                                   onChange={e => this.handleChangeDate(e, 'requiredDate')}
                                                                                                   placeholder={'Select a date'}/>
                                                                             </div>

@@ -253,7 +253,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
@@ -296,13 +295,13 @@
         "field": "disciplineName",
         "type": "string",
         "isCustom": false
-      }, 
+      },
       {
         "name": "refDoc",
         "field": "refDoc",
         "type": "string",
         "isCustom": true
-      } 
+      }
     ]
   },
   "customeCorrespondenceReceived": {
@@ -500,7 +499,6 @@
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -775,7 +773,6 @@
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -784,21 +781,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -817,7 +811,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "sendDate",
@@ -1061,13 +1054,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -1077,28 +1068,24 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "disciplineTitle",
@@ -1135,7 +1122,7 @@
   "InternalMemo": {
     "documentTitle": "communicationInternalMemo",
     "docTyp": 30,
-    "documentAddEditLink": "internalMemoAddEdit/",
+    "documentAddEditLink": "InternalMemoAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 98,
     "documentEditPermission": 99,
@@ -1360,13 +1347,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -1376,21 +1361,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -1409,7 +1391,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "refDoc",
@@ -1700,7 +1681,6 @@
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -1710,14 +1690,12 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
@@ -2056,7 +2034,6 @@
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -2374,14 +2351,12 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -2390,21 +2365,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -2695,14 +2667,12 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -2711,21 +2681,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -3326,13 +3293,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -3710,7 +3675,6 @@
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -3720,21 +3684,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -3765,7 +3726,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "answerDate",
@@ -3832,7 +3792,7 @@
   "Transmittal": {
     "documentTitle": "communicationTrasmittalLog",
     "docTyp": 28,
-    "documentAddEditLink": "transmittalAddEdit/",
+    "documentAddEditLink": "TransmittalAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 84,
     "documentEditPermission": 85,
@@ -4488,13 +4448,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -4504,7 +4462,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -4517,21 +4474,18 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "calledByCompany",
@@ -4871,13 +4825,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -4887,21 +4839,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -4914,7 +4863,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "calledByCompany",
@@ -5182,13 +5130,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -5198,7 +5144,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "CompanyName",
@@ -5217,7 +5162,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "disciplineName",
@@ -5503,13 +5447,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -5519,7 +5461,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -5532,7 +5473,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "dateApproved",
@@ -5874,7 +5814,6 @@
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -6226,13 +6165,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -6254,7 +6191,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "contractTo",
@@ -6747,7 +6683,6 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "projectCode",
@@ -6759,7 +6694,6 @@
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -6769,7 +6703,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docDate",
@@ -7151,13 +7084,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -7167,7 +7098,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "CompanyName",
@@ -8734,7 +8664,7 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-      }, 
+      },
       {
         "name": "originalContractSum",
         "field": "originalContractSum",
@@ -8746,7 +8676,7 @@
         "field": "totalEarned",
         "type": "number",
         "isCustom": false
-      }, 
+      },
       {
         "name": "paymentDue",
         "field": "currentPaymentDueExcuted",
@@ -9177,7 +9107,6 @@
         "type": "string",
         "isCustom": false
       },
-
       {
         "name": "openedBy",
         "field": "oppenedBy",
@@ -9414,14 +9343,12 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -9430,21 +9357,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "CompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -9475,7 +9399,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -9757,7 +9680,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "CompanyName",
@@ -10078,7 +10000,6 @@
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -10100,7 +10021,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "CompanyName",
@@ -10143,7 +10063,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -10278,7 +10197,6 @@
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -10288,14 +10206,12 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -10455,13 +10371,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -10471,7 +10385,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "CompanyName",
@@ -10484,7 +10397,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -10882,21 +10794,18 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "subject",
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "projectType",
@@ -12358,7 +12267,6 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
@@ -12548,7 +12456,6 @@
         "isCustom": false,
         "exportDataType": "d"
       },
-
       {
         "field": "building",
         "friendlyName": "Building",
@@ -12763,21 +12670,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -12796,7 +12700,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -13084,7 +12987,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "CompanyName",
@@ -13103,7 +13005,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "openedBy",
@@ -13730,14 +13631,12 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -13746,21 +13645,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -14483,7 +14379,6 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
@@ -14853,14 +14748,12 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -14869,14 +14762,12 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "finalTotal",
@@ -14907,7 +14798,7 @@
         "field": "collectedStatus",
         "type": "string",
         "isCustom": false
-      } ,
+      },
       {
         "name": "docClosedate",
         "field": "docCloseDate",
@@ -15244,13 +15135,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -15260,7 +15149,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "projectName",
@@ -15937,13 +15825,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -15953,7 +15839,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "projectName",
@@ -15966,14 +15851,12 @@
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -16004,7 +15887,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "requiredDate",
@@ -16344,7 +16226,6 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "projectName",
@@ -16461,7 +16342,7 @@
         "isCustom": false
       }
     ]
-  }, 
+  },
   "materialInventory": {
     "documentTitle": "materialInventory",
     "docTyp": 50,
@@ -16478,7 +16359,6 @@
       "delete": "LogsMaterialInventoryMultipleDelete"
     },
     "documentColumns": [
-
       {
         "field": "id",
         "friendlyName": "transfer",
@@ -17088,7 +16968,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "openedBy",
@@ -17667,13 +17546,11 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "isCustom": true,
-
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
@@ -17683,14 +17560,12 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "orderFrom",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "actionByContact",
@@ -17715,7 +17590,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -18294,14 +18168,12 @@
         "field": "arrange",
         "type": "number",
         "isCustom": true
-
       },
       {
         "name": "status",
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -18310,21 +18182,18 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "fromCompanyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromContact",
         "field": "fromContactName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "toCompany",
@@ -18349,7 +18218,6 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-
       },
       {
         "name": "docClosedate",
@@ -19005,7 +18873,6 @@
         "field": "status",
         "type": "toggle",
         "isCustom": true,
-
         "trueLabel": "oppened",
         "falseLabel": "closed"
       },
@@ -19014,14 +18881,12 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "fromCompany",
         "field": "companyName",
         "type": "string",
         "isCustom": true
-
       },
       {
         "name": "delay",
@@ -19577,6 +19442,191 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
+      },
+      {
+        "name": "openedBy",
+        "field": "oppenedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "closedBy",
+        "field": "closedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEdit",
+        "field": "lastEditBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEditDate",
+        "field": "lastEditDate",
+        "type": "date",
+        "isCustom": false
+      }
+    ]
+  },
+  "TaskGroups": {
+    "documentTitle": "projectTaskGroups",
+    "docTyp": 99,
+    "documentAddEditLink": "TaskGroupsAddEdit/",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 774,
+    "documentEditPermission": 775,
+    "documentDeletePermission": 776,
+    "documentViewPermission":778 ,
+    "documentPermission":777 ,
+    "documentApi": {
+      "get": "GetProjectTaskGroups",
+      "getCustom": "GetProjectTaskGroups",
+      "delete": "projectTaskGroupsObservableMultipleDele"
+    },
+    "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "statusName",
+        "friendlyName": "status",
+        "minWidth": 155,
+        "width": "8%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#weeklyReportsAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "oppenedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "closedBy",
+        "friendlyName": "closedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditBy",
+        "friendlyName": "lastEdit",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditDate",
+        "friendlyName": "lastEditDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      }
+    ],
+    "filterApi": "getProjectTaskGroupsFilter",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "isCustom": true
+      },
+      {
+        "name": "status",
+        "field": "status",
+        "isCustom": true,
+        "type": "toggle",
+        "trueLabel": "oppened",
+        "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "docClosedate",
+        "field": "docCloseDate",
+        "type": "date",
+        "isCustom": false
       },
       {
         "name": "openedBy",

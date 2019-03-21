@@ -174,6 +174,7 @@ sayed exp
   height: 40px;
   border-radius: 4px;
   width: 360px;
+  width: 100%;
   border: solid 1px #DADEE6;
   font-family: font-opens;
   letter-spacing: -0.2px;
@@ -1983,7 +1984,7 @@ button.companies_icon {
       .one__tab .doc-container .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-left: 0; }
-  .one__tab .approveDocument {
+  /* .one__tab .approveDocument {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -2000,7 +2001,7 @@ button.companies_icon {
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
-    align-items: center; }
+    align-items: center; } */
     .one__tab .approveDocument h2 {
       flex: 0.5;
       line-height: 1.17;
@@ -2800,4 +2801,54 @@ button.companies_icon {
     flex: 0.3 1 !important;
     flex-shrink: 0;
   }
+}
+
+.react-grid-Container .gridSystemSelected {
+  left: 58px;
+  width: calc(100% - 58px);
+  min-width: auto;
+}
+.css-1g6gooi {
+  max-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.griddata__load .react-grid-Cell .react-grid-Cell__value span div {
+  background: #dadee6;
+  color: #dadee6;
+  max-height: 6px;
+  overflow: hidden;
+}
+.griddata__load .react-grid-Cell.react-grid-Cell--frozen .react-grid-Cell__value span div {
+  background: #dadee6;
+  color: #dadee6;
+  max-height: 12px;
+  overflow: hidden;
+}
+.griddata__load .react-grid-Cell .react-grid-Cell__value span div.react-grid-checkbox-container.checkbox-align {
+  max-height: inherit;
+  overflow: visible;
+}
+.griddata__load .react-grid-HeaderCell .react-grid-HeaderCell-sortable {
+  background: #858d9e;
+  color: #858d9e;
+  max-height: 6px;
+  overflow: hidden;
+}
+.noTabs__document .doc-container .skylight-dialog .main__header {
+  display: none;
+}
+
+.removeTr div .pdfImage img {
+  height: 20px;
+}
+.slider-Btns.fullWidthWrapper.textLeft {
+  margin: 0
+}
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
+  max-width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

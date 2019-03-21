@@ -1845,7 +1845,8 @@
       "notAssignedTothisProject": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
       "userNameExist": "<i class='fa fa-clock-o'></i> <i>User Name Already Exist ...</i>",
       "yes": "Yes",
-      "no": "No"
+      "no": "No" ,
+      "cannotDelete":"Cannot Delete This User ..."
     },
     "ar": {
       "title": "!احذر عملية خطيرة",
@@ -1859,7 +1860,8 @@
       "notAssignedTothisProject": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
       "userNameExist": "<i class='fa fa-clock-o'></i> <i>...إسم المستخدم موجود قبل ذلك</i>",
       "yes": "نعم",
-      "no": "لا"
+      "no": "لا",
+      "cannotDelete":"لا يمكن مسح هذا العنصر .."
     }
   },
   "smartSentAccountingMessage": {
@@ -7756,5 +7758,5 @@
   "discplinesRequired": {
     "en": "Please Select Discplines",
     "ar": "برجاء اختيار التصميم"
-  }
+  } 
 }
