@@ -18,13 +18,15 @@ export default {
 			projectName:"",
 			showSelectProject:true,
 			attendees:[],
-			topics:[]
+			topics:[],
+			viewModel:false
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
 			contactData:[],
 			newContactElement:{},
-			multiApproval:[]
+			multiApproval:[],
+			
 		},
 		adminstration:{
 			popUp:false,
@@ -33,10 +35,6 @@ export default {
 			getingData: false,
 			companyList:[],
 			tabIndex:0
-		},
-		// taskGroups:{
-		// 	IsEditModel:false,
-		// 	TaskGroupsData:[],
-		// } 
+		} 
 	}
 }

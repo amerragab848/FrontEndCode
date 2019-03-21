@@ -183,7 +183,7 @@ sayed exp
   font-size: 14px;
 }
 .dropWrapper {
-  padding: 25PX;
+  /* padding: 25PX; */
   display: flex;
   justify-content: space-between;
   width: auto;
@@ -1492,7 +1492,7 @@ tfoot tr td p{
   font-weight: bold;
 }
 .skylight-dialog{
-  max-height: 600px;
+  max-height: 500px;
   min-height: 280px !important;
   overflow-y: auto;
 }
@@ -2536,17 +2536,17 @@ button.companies_icon {
 .supervisor__company {
   display: flex;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu {
-  width: 271px;
+.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu {
+  width: 271px !important;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy{
+.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy{
   font-family: font-opens;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.2px;
   color: #3e4352;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before{
+ .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before{
   content: '';
   position: absolute;
   left: -20px;
@@ -2556,11 +2556,11 @@ button.companies_icon {
   background-repeat: no-repeat;
   top: 2px;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68, .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
+.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68, .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
   left: 27px;
   overflow: visible;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
+.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
   content: '';
   position: absolute;
   left: -20px;
@@ -2573,17 +2573,17 @@ button.companies_icon {
 .fillter-status.fillter-item-c .customD_Menu .css-1492t68:empty::before, .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy:empty::before {
   display: none;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu {
-  width: 184px;
+.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu {
+  width: 184px !important;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
+.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
   font-family: font-b;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
   color: #252833;
 }
-.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68 ,.noTabs__document .doc-container .step-content .linebylineInput .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy{
+.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68 , .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy{
   left: 27px;
   overflow: visible;
 }
@@ -2601,8 +2601,14 @@ button.companies_icon {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+.supervisor__company .super_name .spanValidation, .supervisor__company .super_company .spanValidation {
+  display: none;
+}
 .mix_dropdown {
   width: 100% !important;
+}
+.proForm .mix_dropdown label {
+  font-family: font-opensb;
 }
 .css-2o5izw , .css-10nd86i {
   border-color: transparent !important;
@@ -2640,7 +2646,7 @@ button.companies_icon {
   margin: 10px 40px;
 }
 .dropWrapper {
-  padding: 15px 25PX;
+  padding: 15px 10px;
 }
 .attachmentTable tbody tr .contentCell.tableCell-3 {
   min-width: 150px;
@@ -2656,7 +2662,7 @@ button.companies_icon {
 .card-status .card-box .signature-h .avatarName p {
   white-space: nowrap;
   overflow: hidden;
-  max-width: 175px;
+  max-width: 135px;
   text-overflow: ellipsis;
 }
 /* @media (min-width:1440px) {
@@ -2840,6 +2846,30 @@ button.companies_icon {
   display: none;
 }
 
+.slider-Btns button:nth-child(2) {
+  margin: 0 10px;
+}
+.modalTable {
+  width: 100%;
+}
+.modalTable table {
+  border-left: 0 !important;
+  border-right: 0 !important;
+  width: 100% !important;
+}
+.modalTable table tr td {
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.modalTable table tr td:first-child {
+  min-width: 200px;
+  max-width: 250px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .removeTr div .pdfImage img {
   height: 20px;
 }
