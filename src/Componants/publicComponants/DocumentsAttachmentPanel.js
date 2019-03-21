@@ -44,7 +44,7 @@ const columns = [
       filterable: true
   } 
 ]
-
+   
 
 class DocumentsAttachmentPanel extends Component {
   constructor(props) {
