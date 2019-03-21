@@ -439,15 +439,16 @@ class MeetingMinutesAddEdit extends Component {
             Api.get('GetNextArrangeMainDoc?projectId=' + this.state.projectId + '&docType=' + this.state.docTypeId + '&companyId=' + this.state.selectedFromCompany.value + '&contactId=' + this.state.selectedFromContact.value).then(res => {
                 this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false, validStep: true })
             })
-            let original_document = { ...this.state.document };
-            let updated_document = {};
-            updated_document[value] = selected.value;
-            updated_document = Object.assign(original_document, updated_document);
-            this.setState({
-                document: updated_document,
-                [targetSelected]: selected
-            });
+           
         }
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document[value] = selected.value;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            document: updated_document,
+            [targetSelected]: selected
+        });
 
     }
 
