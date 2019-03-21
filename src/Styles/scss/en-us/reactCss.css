@@ -2870,3 +2870,6 @@ button.companies_icon {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.removeTr div .pdfImage img {
+  height: 20px;
+}

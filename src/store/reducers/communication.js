@@ -58,7 +58,7 @@ export default function (state = initialState.app.communication, action) {
         case types.Get_Files:
             return {
                 ...state,
-                files: [...state.files, ...action.files],
+                files: [...action.files],
                 isLoadingFiles: true
             };
 

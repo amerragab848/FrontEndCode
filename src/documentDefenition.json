@@ -19472,7 +19472,7 @@
   "TaskGroups": {
     "documentTitle": "projectTaskGroups",
     "docTyp": 99,
-    "documentAddEditLink": "TaskGroupsAddEdit/",
+    "documentAddEditLink": "TaskgroupAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 774,
     "documentEditPermission": 775,

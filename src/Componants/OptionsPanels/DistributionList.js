@@ -64,6 +64,7 @@ class DistributionList extends Component {
             }))
         }
     }
+    
     onAdd = () => {
         if (this.state.selectedCompany != null && this.state.selectedConstact != null) {
             const data = [...this.state.sendingData.itemContacts];
@@ -99,6 +100,7 @@ class DistributionList extends Component {
         this.setState({ selectedCompany: item, CompanyValidation: false, selectedConstact: '' });
 
     }
+
     Contact_handleChange = (item) => {
         this.setState({ selectedConstact: item, ContactValidation: false });
     }
@@ -120,9 +122,11 @@ class DistributionList extends Component {
             this.setState(state);
         }, 400);
     }
+    
     Priority_handelChange = (item) => {
         this.setState({ sendingData: { ...this.state.sendingData, Priority: item.value }, PriorityValidation: false })
     }
+    
     componentDidMount = () => {
         let url = "getProjectDistributionList?projectId=" + this.props.projectId;
         let url2 = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
@@ -133,9 +137,8 @@ class DistributionList extends Component {
         this.GetData("GetaccountsDefaultListForList?listType=distribution_action", 'title', 'action', 'ActionData');
 
 
-    }
-
-
+    } 
+    
     DatehandleChange = (date) => {
         this.setState({ sendingData: { ...this.state.sendingData, RequiredDate: date } });
     }
@@ -211,6 +214,7 @@ class DistributionList extends Component {
             </div >
         );
     }
+
     render() {
         return (
             <div className="dropWrapper"> 
