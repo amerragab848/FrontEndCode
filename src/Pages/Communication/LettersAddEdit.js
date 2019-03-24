@@ -132,7 +132,7 @@ class LettersAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillReceiveProps(nextProps, prevProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
@@ -158,7 +158,7 @@ class LettersAddEdit extends Component {
             }
             if (this.state.isApproveMode != true && Config.IsAllow(49)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status == true && Config.IsAllow(49)) {
+                    if (this.props.document.status !== false && Config.IsAllow(49)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -459,7 +459,7 @@ class LettersAddEdit extends Component {
 
                     <div className="submittalHead">
                         <h2 className="zero">{Resources.lettertitle[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
+                            <span>{projectName.replace(/_/gi, ' ')} · {Resources['communication'][currentLanguage]}</span>
                         </h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">

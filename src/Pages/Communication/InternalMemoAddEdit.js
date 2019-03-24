@@ -105,7 +105,6 @@ class InternalMemoAddEdit extends Component {
 
         if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-
             this.props.history.push("/InternalMemo/" + this.state.projectId);
         }  
     }
@@ -120,7 +119,7 @@ class InternalMemoAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
-        this.checkDocumentIsView();
+        //this.checkDocumentIsView();
     };
 
     componentWillReceiveProps(nextProps, prevProps) {
@@ -154,7 +153,7 @@ class InternalMemoAddEdit extends Component {
             }
             if (this.state.isApproveMode != true && Config.IsAllow(99)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(99)) {
-                    if (this.props.document.status == true && Config.IsAllow(99)) {
+                    if (this.props.document.status !=false && Config.IsAllow(99)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -173,15 +172,13 @@ class InternalMemoAddEdit extends Component {
       if (this.state.docId > 0) {
         let url = "GetCommunicationInternalMemoForEdit?id=" + this.state.docId;
         this.props.actions.documentForEdit(url);
-  
-        if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
-        }
+   
       } else {
         const internalMemoDocument = {
           //field
           id: 0,
           projectId: projectId,
-          arrange: "1",
+          arrange: 0,
           fromCompanyId: null,
           toCompanyId: null,
           fromContactId: null,
@@ -197,6 +194,7 @@ class InternalMemoAddEdit extends Component {
   
         this.setState({ document: internalMemoDocument });
         this.fillDropDowns(false);
+        this.props.actions.documentForAdding();
       }
     }
 
