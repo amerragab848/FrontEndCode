@@ -60,11 +60,14 @@ import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAd
 import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialInspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
 import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
+import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
+
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
-    let compoenet = item.moduleId ==="ProjectSetup" ? ProjectSetup : CommonLog;
-    return <Route path={path} component={ compoenet }/>})
+    let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
+    return <Route path={path} component={compoenet}/>})
+    
     
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
@@ -133,6 +136,8 @@ let originalRoutes = [
     , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
     , <Route path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
     , <Route path="/projectDistributionListAddEdit" component={projectDistributionListAddEdit} />
+    , <Route path="/NCRAddEdit" component={NCRAddEdit} />
+    
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

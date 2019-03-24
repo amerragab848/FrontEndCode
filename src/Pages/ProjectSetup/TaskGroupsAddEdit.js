@@ -30,13 +30,13 @@ let CurrProjectId = localStorage.getItem('lastSelectedProject')
 let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
 const _ = require('lodash')
 let MaxArrange = 1
-let idEdit = 2
+
 
 const ValidtionSchemaForTaskGroups = Yup.object().shape({
     ArrangeTaskGroups: Yup.string()
-    .required(Resources['isRequiredField'][currentLanguage]),
-Subject: Yup.string()
-    .required(Resources['subjectRequired'][currentLanguage]),
+        .required(Resources['isRequiredField'][currentLanguage]),
+    Subject: Yup.string()
+        .required(Resources['subjectRequired'][currentLanguage]),
 })
 
 const ValidtionSchemaForContact = Yup.object().shape({
@@ -215,7 +215,7 @@ class TaskGroupsAddEdit extends Component {
 
 
     PreviousStep = () => {
-        if (idEdit !== 0) {
+        if (this.state.IsEditMode) {
             if (this.state.CurrStep === 2) {
                 window.scrollTo(0, 0)
                 this.setState({
@@ -309,16 +309,17 @@ class TaskGroupsAddEdit extends Component {
                     isLoading: false,
                     DeleteFromLog: false
                 })
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
-
         ).catch(ex => {
             this.setState({
                 showDeleteModal: false,
                 isLoading: false,
                 DeleteFromLog: false
             });
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         });
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+
     }
 
     onCloseModal = () => {
@@ -350,60 +351,65 @@ class TaskGroupsAddEdit extends Component {
                     rows: NewRows,
                     isLoading: false
                 })
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
-        )
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        ).catch(ex => {
+            this.setState({
+                isLoading: false
+            });
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        });
         values.Company = ''
         values.ContactName = ''
         values.ArrangeContact = Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 }))
-
-
     }
 
     AddEditTaskGroups = (values, actions) => {
+
         let Date = moment(this.state.DocumentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
         if (this.state.IsEditMode) {
-            Api.post('EditProjectTaskGroups', {
-                account: this.state.DocTaskGroupsData.account,
-                arrange: values.ArrangeTaskGroups,
-                deleteDate: this.state.DocTaskGroupsData.deleteDate,
-                deletedBy: this.state.DocTaskGroupsData.deletedBy,
-                docCloseDate: this.state.DocTaskGroupsData.docCloseDate,
-                docDate: Date,
-                id: docId,
-                isDeleted: this.state.DocTaskGroupsData.isDeleted,
-                projectId: projectId,
-                project_projects: this.state.DocTaskGroupsData.project_projects,
-                project_task_groups_items: [],
-                status: this.state.Status,
-                subject: values.Subject,
-            }).then(
+
+            let saveDocument = {
+                account: this.state.DocTaskGroupsData.account, arrange: values.ArrangeTaskGroups,
+                deleteDate: this.state.DocTaskGroupsData.deleteDate, docDate: Date, id: docId,
+                deletedBy: this.state.DocTaskGroupsData.deletedBy, status: this.state.Status,
+                docCloseDate: this.state.DocTaskGroupsData.docCloseDate, projectId: projectId,
+                isDeleted: this.state.DocTaskGroupsData.isDeleted, subject: values.Subject,
+                project_projects: this.state.DocTaskGroupsData.project_projects, project_task_groups_items: [],
+            }
+
+            dataservice.addObject('EditProjectTaskGroups', saveDocument).then(
                 res => {
                     this.setState({
                         DocTaskGroupsData: res
                     })
-                })
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
         }
         else {
 
-            Api.post('AddTaskGroup', {
-                id: undefined,
-                projectId: this.state.projectId,
-                arrange: values.ArrangeTaskGroups,
-                subject: values.Subject,
-                docDate: Date,
-                status: this.state.Status,
-                docCloseDate: moment().format(),
-            }).then(
+            let saveDocument = {
+                id: undefined, projectId: this.state.projectId,
+                arrange: values.ArrangeTaskGroups, subject: values.Subject,
+                docDate: Date, status: this.state.Status, docCloseDate: moment().format(),
+            }
 
+            dataservice.addObject('AddTaskGroup', saveDocument).then(
                 res => {
                     docId = res.id
                     this.setState({
                         DocTaskGroupsData: res
                     })
-                })
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
+
         }
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+
         this.NextStep()
 
     }
@@ -443,16 +449,6 @@ class TaskGroupsAddEdit extends Component {
                 }
             )
         }
-    }
-
-    showBtnsSaving() {
-        let btn = null;
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
-        }
-        return btn;
     }
 
     saveAndExit = () => {
@@ -748,6 +744,14 @@ class TaskGroupsAddEdit extends Component {
                                         </Fragment>
                                         : null
                                     }
+                                    <div className="doc-pre-cycle letterFullWidth">
+                                        <div>
+                                            {this.props.changeStatus === true ?
+                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                : null
+                                            }
+                                        </div>
+                                    </div>
                                 </Fragment>
                                 :
 
@@ -808,7 +812,9 @@ class TaskGroupsAddEdit extends Component {
 
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
@@ -819,11 +825,13 @@ class TaskGroupsAddEdit extends Component {
                             buttonName='delete' clickHandlerContinue={this.ConfirmationDelete}
                         />
                     ) : null}
+
+
                     {
                         this.props.changeStatus === true && this.state.IsEditMode ?
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
-                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editPhone(e)}>{Resources.save[currentLanguage]}</button>
+                                    {/* <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editPhone(e)}>{Resources.save[currentLanguage]}</button> */}
                                     {this.state.isApproveMode === true ?
                                         <div >
                                             <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>

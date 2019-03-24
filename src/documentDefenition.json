@@ -19477,8 +19477,8 @@
     "documentAddPermission": 774,
     "documentEditPermission": 775,
     "documentDeletePermission": 776,
-    "documentViewPermission":778 ,
-    "documentPermission":777 ,
+    "documentViewPermission": 778,
+    "documentPermission": 777,
     "documentApi": {
       "get": "GetProjectTaskGroups",
       "getCustom": "GetProjectTaskGroups",
@@ -19662,8 +19662,8 @@
     "documentAddPermission": 625,
     "documentEditPermission": 626,
     "documentDeletePermission": 627,
-    "documentViewPermission":628 ,
-    "documentPermission":629 ,
+    "documentViewPermission": 628,
+    "documentPermission": 629,
     "documentApi": {
       "get": "ProjectDistributionListGet",
       "getCustom": "ProjectDistributionListGet",

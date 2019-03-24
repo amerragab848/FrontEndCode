@@ -30,7 +30,6 @@ let CurrProjectId = localStorage.getItem('lastSelectedProject')
 let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
 const _ = require('lodash')
 let MaxArrange = 1
-let idEdit = 2
 
 const ValidtionSchemaForDis_List = Yup.object().shape({
     ArrangeTaskGroups: Yup.string()
@@ -227,7 +226,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     PreviousStep = () => {
-        if (idEdit !== 0) {
+        if (this.state.IsEditMode ) {
             if (this.state.CurrStep === 2) {
                 window.scrollTo(0, 0)
                 this.setState({
