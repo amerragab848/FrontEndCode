@@ -19,9 +19,9 @@ import moment from "moment";
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication'; 
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import DocumentsAttachmentPanel from "../../Componants/publicComponants/DocumentsAttachmentPanel"; 
 import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -75,6 +75,7 @@ class TransmittalAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
+            viewModel: false,
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
@@ -92,10 +93,14 @@ class TransmittalAddEdit extends Component {
             priority: [], 
             transmittalSubmittedFor: [], 
             sendingMethods: [], 
-            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            permission: [{ name: 'sendByEmail', code: 1022 }, 
+                         { name: 'sendByInbox', code: 1021 },
+                         { name: 'sendTask', code: 1 }, 
+                         { name: 'distributionList', code: 1026 },
+                         { name: 'createTransmittal', code: 3027 },
+                         { name: 'sendToWorkFlow', code: 1025 },
+                         { name: 'viewAttachments', code: 3327 },
+                         { name: 'deleteAttachments', code: 824 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -530,6 +535,16 @@ class TransmittalAddEdit extends Component {
             this.simpleDialog.show()
         }
     }
+
+    viewDocumentAttachment(){
+        this.setState({
+            viewModel:true,
+            showModal:true
+        });
+
+        this.simpleDialog.show();
+    }
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -800,15 +815,17 @@ class TransmittalAddEdit extends Component {
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
                                                             </div>
                                                         </div>  
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event)} />
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
+                                                        <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={this.viewDocumentAttachment.bind(this)}>ADD </button>
                                                     </div>
                                                 </Form>
                                             )}
@@ -851,6 +868,13 @@ class TransmittalAddEdit extends Component {
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>
+                {this.state.viewModel === true ? (
+                    <div className="largePopup largeModal" style={{ display: this.state.viewModel ? 'block' : 'none' }}>
+                        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources["addDocAttachment"][currentLanguage]}>
+                            <DocumentsAttachmentPanel projectId={projectId} docType={this.state.docTypeId}/>
+                        </SkyLight>
+                    </div>):null
+                }
             </div>
         );
     }
@@ -863,7 +887,8 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        viewModel:state.communication.viewModel
     }
 }
 

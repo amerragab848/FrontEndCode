@@ -24,7 +24,7 @@ export default class Config {
 	static IsAllow(code) {
 	     
 	    let isCompany =  this.getPayload().uty =='company'? true:false;
-	      console.log(isCompany);
+	    
 	    if (isCompany === false) {
 	        let isAllowed = userPermissions.indexOf(code);
 	        if (isAllowed > -1) {

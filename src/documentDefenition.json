@@ -4183,8 +4183,8 @@
     "documentViewPermission": 110,
     "documentPermission": 111,
     "documentApi": {
-      "get": "GetCommunicationMeetingMinutes",
-      "getCustom": "GetCommunicationMeetingMinutesInternalCustom",
+      "get": "GetCommunicationMeetingMinutes?locationId=0&",
+      "getCustom": "GetCommunicationMeetingMinutesInternalCustom?locationId=0&",
       "delete": "CommunicationMeetingMinutesMultipleDelete"
     },
     "documentColumns": [

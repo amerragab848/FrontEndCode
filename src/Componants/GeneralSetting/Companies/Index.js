@@ -382,7 +382,6 @@ class Index extends Component {
             toast.warning("you don't have permission");
     }
     clickHandlerDeleteRowsMain = selectedRows => {
-        alert(selectedRows)
         this.setState({
             showDeleteModal: true,
             selectedRowId: selectedRows

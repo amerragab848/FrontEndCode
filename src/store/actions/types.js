@@ -5,6 +5,8 @@ export const File_Upload = 'File_Upload';
 export const Send_WorkFlow = 'Send_WorkFlow';
 export const Cycles_WorkFlow = 'Cycles_WorkFlow';
 export const Get_Files = 'Get_Files';
+export const Get_Attendees_Table = 'Get_Attendees_Table';
+export const Get_Topics_Table = 'Get_Topics_Table';
 
 export const Update_Field = 'Update_Field';
 export const Delete_File = 'Delete_File';
@@ -21,6 +23,7 @@ export const toggleLoading = 'toggleLoading';
 export const getingData = 'getingData';
 export const makeKeyContact = 'makeKeyContact';
 export const routeToTabIndex = 'routeToTabIndex';
+export const ViewDocumentAttach = 'ViewDocumentAttach';
 
 // ProjectActionsTypes
 

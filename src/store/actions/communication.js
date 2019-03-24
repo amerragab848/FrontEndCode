@@ -235,6 +235,49 @@ export function FillGridLeftMenu() {
     }
 }
 
+export function GetAttendeesTable(urlAction) {
+    return (dispatch, getState) => {
+        return Api.get(urlAction).then(resp => {
+
+            dispatch({
+                type: types.Get_Attendees_Table,
+                data: resp
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                type: types.Get_Attendees_Table,
+                data: []
+            });
+        });
+    }
+}
+export function GetTopicsTable(urlAction) {
+    return (dispatch, getState) => {
+        return Api.get(urlAction).then(resp => {
+            dispatch({
+                type: types.Get_Topics_Table,
+                data: resp
+            });
+        }).catch((ex) => {
+            dispatch({
+                type: types.Get_Topics_Table,
+                data: []
+            });
+        });
+    }
+}
+
+export const ViewDocumentAttachment = (Data) => {
+    return (dispatch, getState) => {
+        return (
+            dispatch({
+                type: types.ViewDocumentAttach ,
+                data:Data
+            })
+        )
+    }
+}
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
     let cycles = [];

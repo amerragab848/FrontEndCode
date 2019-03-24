@@ -16,13 +16,17 @@ export default {
 			showModal: false,
 			showLeftMenu: false, 
 			projectName:"",
-			showSelectProject:true
+			showSelectProject:true,
+			attendees:[],
+			topics:[],
+			viewModel:false
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
 			contactData:[],
 			newContactElement:{},
-			multiApproval:[]
+			multiApproval:[],
+			
 		},
 		adminstration:{
 			popUp:false,
@@ -31,10 +35,6 @@ export default {
 			getingData: false,
 			companyList:[],
 			tabIndex:0
-		},
-		// taskGroups:{
-		// 	IsEditModel:false,
-		// 	TaskGroupsData:[],
-		// } 
+		} 
 	}
 }
