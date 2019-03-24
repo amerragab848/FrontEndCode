@@ -56,10 +56,9 @@ import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
 import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks"; 
 import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
-
-
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
+import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -131,6 +130,7 @@ let originalRoutes = [
     , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
     , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
     , <Route path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
+    , <Route path="/projectDistributionListAddEdit" component={projectDistributionListAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
