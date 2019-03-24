@@ -132,7 +132,7 @@ class LettersAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillReceiveProps(nextProps, prevProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
@@ -158,7 +158,7 @@ class LettersAddEdit extends Component {
             }
             if (this.state.isApproveMode != true && Config.IsAllow(49)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status == true && Config.IsAllow(49)) {
+                    if (this.props.document.status !== false && Config.IsAllow(49)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
