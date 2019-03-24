@@ -1984,7 +1984,7 @@ button.companies_icon {
       .one__tab .doc-container .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-left: 0; }
-  .one__tab .approveDocument {
+  /* .one__tab .approveDocument {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -2001,7 +2001,7 @@ button.companies_icon {
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
-    align-items: center; }
+    align-items: center; } */
     .one__tab .approveDocument h2 {
       flex: 0.5;
       line-height: 1.17;

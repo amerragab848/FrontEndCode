@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup";
-import Export from "../../Componants/OptionsPanels/Export";
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -62,7 +61,6 @@ let actions = []
 class TaskGroupsAddEdit extends Component {
     constructor(props) {
         super(props)
-        console.log('Render222')
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
@@ -133,7 +131,7 @@ class TaskGroupsAddEdit extends Component {
             docTypeId: 99,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            DocumentDate: moment().format("DD:MM:YYYY"),
+            DocumentDate: moment().format("DD-MM-YYYY"),
             Status: 'true',
             CompanyData: [],
             ContactData: [],
@@ -214,7 +212,7 @@ class TaskGroupsAddEdit extends Component {
             }
         }
     }
- 
+
 
     PreviousStep = () => {
         if (idEdit !== 0) {
@@ -258,11 +256,11 @@ class TaskGroupsAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document && props.document.id > 0) {
-            let date = moment(props.document.docDate).format("DD:MM:YYYY")
+            let date = moment(props.document.docDate).format("DD-MM-YYYY")
             this.setState({
                 IsEditMode: true,
                 DocTaskGroupsData: { ...props.document },
-                DocumentDate:date,
+                DocumentDate: date,
                 isLoading: false
             });
             this.checkDocumentIsView();
@@ -332,6 +330,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     AddContact = (values, actions) => {
+        console.log(docId)
         this.setState({
             isLoading: true
         })
@@ -362,7 +361,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     AddEditTaskGroups = (values, actions) => {
-
+        let Date = moment(this.state.DocumentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         if (this.state.IsEditMode) {
             Api.post('EditProjectTaskGroups', {
                 account: this.state.DocTaskGroupsData.account,
@@ -370,7 +369,7 @@ class TaskGroupsAddEdit extends Component {
                 deleteDate: this.state.DocTaskGroupsData.deleteDate,
                 deletedBy: this.state.DocTaskGroupsData.deletedBy,
                 docCloseDate: this.state.DocTaskGroupsData.docCloseDate,
-                docDate: this.state.DocumentDate,
+                docDate: Date,
                 id: docId,
                 isDeleted: this.state.DocTaskGroupsData.isDeleted,
                 projectId: projectId,
@@ -386,16 +385,19 @@ class TaskGroupsAddEdit extends Component {
                 })
         }
         else {
+
             Api.post('AddTaskGroup', {
                 id: undefined,
                 projectId: this.state.projectId,
                 arrange: values.ArrangeTaskGroups,
                 subject: values.Subject,
-                docDate: this.state.DocumentDate,
+                docDate: Date,
                 status: this.state.Status,
                 docCloseDate: moment().format(),
             }).then(
+
                 res => {
+                    docId = res.id
                     this.setState({
                         DocTaskGroupsData: res
                     })
@@ -437,6 +439,7 @@ class TaskGroupsAddEdit extends Component {
             Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=99&companyId=undefined&contactId=undefined').then(
                 res => {
                     MaxArrange = res
+                    this.setState({ DocumentDate: moment().format("DD:MM:YYYY") })
                 }
             )
         }
@@ -452,9 +455,9 @@ class TaskGroupsAddEdit extends Component {
         return btn;
     }
 
-    saveAndExit=()=> {
+    saveAndExit = () => {
         this.props.history.push({
-            pathname: '/TaskGroups/'+projectId+'',
+            pathname: '/TaskGroups/' + projectId + '',
         })
     }
 
@@ -516,12 +519,12 @@ class TaskGroupsAddEdit extends Component {
 
                     <Formik
                         initialValues={{
-                            ArrangeContact: this.state.rows.length === 0 ? 1 : Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })) ,
+                            ArrangeContact: this.state.rows.length === 0 ? 1 : Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })),
                             Company: '',
                             ContactName: '',
                         }}
 
-                         enableReinitialize={true}
+                        enableReinitialize={true}
 
                         validationSchema={ValidtionSchemaForContact}
 
@@ -593,11 +596,14 @@ class TaskGroupsAddEdit extends Component {
             )
         }
         return (
-            <div className="mainContainer main__fulldash" >
+            <div className="mainContainer" >
                 <div className="documents-stepper noTabs__document one__tab one_step">
                     {/* Header */}
                     <div className="submittalHead">
-                        <h2 className="zero">{CurrProjectName + ' - ' + Resources['projectTaskGroups'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['projectTaskGroups'][currentLanguage]}
+                            <span>{projectName.replace(/_/gi, ' ')} · {Resources['generalCoordination'][currentLanguage]}</span>
+                        </h2>
+                        {/* <h2 className="zero">{CurrProjectName + ' - ' + Resources['projectTaskGroups'][currentLanguage]}</h2> */}
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -627,8 +633,9 @@ class TaskGroupsAddEdit extends Component {
                                 <Fragment>
                                     <Formik
                                         initialValues={{
-                                            ArrangeTaskGroups: this.state.IsEditMode ? ' ' : MaxArrange,
-                                            Subject: this.state.IsEditMode ? ' ' : '',
+                                            ArrangeTaskGroups: this.state.IsEditMode ? this.state.DocTaskGroupsData.arrange : MaxArrange,
+                                            Subject: this.state.IsEditMode ? this.state.DocTaskGroupsData.subject : '',
+
                                         }}
                                         enableReinitialize={true}
                                         validationSchema={ValidtionSchemaForTaskGroups}
@@ -663,15 +670,14 @@ class TaskGroupsAddEdit extends Component {
                                                         <div className="linebylineInput">
                                                             <label className="control-label"> {Resources['status'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
-                                                                <input type="radio" defaultChecked
-                                                                    ={this.state.DocTaskGroupsData.status ? 'checked' : null}
+                                                                <input type="radio" defaultChecked={this.state.IsEditMode ? this.state.DocTaskGroupsData.status ? 'checked' : null : 'checked'}
                                                                     name="Status" value="true" onChange={(e) => this.setState({ Status: e.target.value })} />
                                                                 <label>{Resources['oppened'][currentLanguage]}</label>
                                                             </div>
+
                                                             <div className="ui checkbox radio radioBoxBlue ">
-                                                                <input type="radio" name="Status" value="false"
-                                                                    defaultChecked
-                                                                    ={this.state.DocTaskGroupsData.status ? null : 'checked'}
+                                                                <input type="radio" defaultChecked={this.state.IsEditMode ? this.state.DocTaskGroupsData.status ? null : 'checked' : null}
+                                                                    name="Status" value="false"
                                                                     onChange={(e) => this.setState({ Status: e.target.value })} />
                                                                 <label> {Resources['closed'][currentLanguage]}</label>
                                                             </div>
@@ -682,7 +688,7 @@ class TaskGroupsAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input">
                                                                 <DatePicker title='docDate' handleChange={this.DocumentDatehandleChange}
-                                                                  startDate={this.state.DocumentDate}
+                                                                    startDate={this.state.DocumentDate} Customformat={true}
                                                                 />
                                                             </div>
                                                         </div>
