@@ -58,6 +58,7 @@ import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks";
 import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
 
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
+import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialInspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -70,6 +71,7 @@ let originalRoutes = [
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
     , <Route path="/ActionByAlerts" component={ActionByAlerts} />
     , <Route path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
+    , <Route path="/materialInspectionRequestAddEdit" component={materialInspectionRequestAddEdit} />
     , <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
     , <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
     , <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />
