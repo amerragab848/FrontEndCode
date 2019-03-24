@@ -216,7 +216,7 @@ class MeetingMinutesAddEdit extends Component {
                 noteTakerContactId: '',
                 noteTakerCompanyId: '',
                 docDate: moment(),
-                handouts: '',
+                handOuts: '',
                 subject: '',
                 refDoc: '',
                 docCloseDate: '',
@@ -290,7 +290,7 @@ class MeetingMinutesAddEdit extends Component {
     editMeeting = () => {
         this.setState({
             isLoading: true,
-            firstComplete:true
+            firstComplete: true
         });
         Api.post('EditCommunicationMeetingMinutes', this.state.document).then(result => {
             this.setState({
@@ -333,35 +333,47 @@ class MeetingMinutesAddEdit extends Component {
     }
 
     addAttendences = (values) => {
+
         this.setState({ isLoading: true })
+
         let attendence = {
             meetingId: this.state.meetingId,
             contactId: this.state.selectedAttendencesContact.value,
-            companyId: this.state.selectedAttendencesContact.value,
+            companyId: this.state.selectedAttendencesCompany.value,
             companyName: this.state.selectedAttendencesCompany.label,
-            contactName: this.state.selectedAttendencesCompany.label,
+            contactName: this.state.selectedAttendencesContact.label,
         }
+
         Api.post('AddCommunicationMeetingMinutesAttendees', attendence).then((res) => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            let data = [...this.state.attendees];
-            data.push(< tr >
-                <td><span onClick={e => this.deleteRowTable(res.id, e)}><img src={Recycle} alt="DEL" style={{ maxWidth: '20px' }} /></span></td>
-                <td className='disNone'>{res.id}</td>
-                <td className='disNone'>{this.state.selectedAttendencesCompany.value}</td>
-                <td>{this.state.selectedAttendencesCompany.label}</td>
-                <td>{this.state.selectedAttendencesContact.label}</td>
-                <td className='disNone'>{this.state.selectedAttendencesContact.value}</td>
-            </ tr>);
-            this.setState({
-                isLoading: false,
-                attendees: data,
-                selectedAttendencesCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                selectedAttendencesContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" }
-            });
-        })
+            if (res) {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                let data = [...this.state.attendees];
+                data.push(< tr >
+                    <td><span onClick={e => this.deleteRowTable(res.id, e)}><img src={Recycle} alt="DEL" style={{ maxWidth: '20px' }} /></span></td>
+                    <td className='disNone'>{res.id}</td>
+                    <td className='disNone'>{this.state.selectedAttendencesCompany.value}</td>
+                    <td>{this.state.selectedAttendencesCompany.label}</td>
+                    <td>{this.state.selectedAttendencesContact.label}</td>
+                    <td className='disNone'>{this.state.selectedAttendencesContact.value}</td>
+                </ tr>);
+                this.setState({
+                    isLoading: false,
+                    attendees: data,
+                    selectedAttendencesCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+                    selectedAttendencesContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" }
+                });
+            } else {
+                this.setState({ isLoading: false })
+            }
+        }).catch(res => {
+            toast.error(Resources["operationCanceled"][currentLanguage]); 
+            this.setState({ isLoading: false })
+
+        });
     }
     addTopics = (values) => {
         this.setState({ isLoading: true })
+
         let topic = {
             meetingId: this.state.docId,
             requiredDate: moment(this.state.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
@@ -374,7 +386,9 @@ class MeetingMinutesAddEdit extends Component {
             comment: '',
             decisions: values.decision
         }
+
         Api.post('AddCommunicationMeetingMinutesTopics', topic).then((res) => {
+
             toast.success(Resources["operationSuccess"][currentLanguage]);
             let data = [...this.state.topics];
             data.push(< tr >
@@ -391,7 +405,11 @@ class MeetingMinutesAddEdit extends Component {
                 selectedTopicContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
                 isLoading: false
             });
-        })
+        }).catch(res => {
+            toast.error(Resources["operationCanceled"][currentLanguage]); 
+            this.setState({ isLoading: false })
+
+        });
     }
     //#endregion
 
@@ -439,7 +457,7 @@ class MeetingMinutesAddEdit extends Component {
             Api.get('GetNextArrangeMainDoc?projectId=' + this.state.projectId + '&docType=' + this.state.docTypeId + '&companyId=' + this.state.selectedFromCompany.value + '&contactId=' + this.state.selectedFromContact.value).then(res => {
                 this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false, validStep: true })
             })
-           
+
         }
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -454,12 +472,14 @@ class MeetingMinutesAddEdit extends Component {
 
     handleChangeDropDowns = (item, lbl, val, selected, listData, selected_subScripe) => {
         this.setState({ isLoading: true })
+
         DataService.GetDataList('GetContactsByCompanyId?companyId=' + item.value, 'contactName', 'id').then(res => {
             this.setState({
                 [listData]: res, isLoading: false, [selected]: item,
                 [selected_subScripe]: this.state[selected_subScripe]
             })
         })
+
         this.updateSelectedValue(item, lbl, val)
     }
 
@@ -596,7 +616,7 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['handouts'][currentLanguage]} </label>
                                 <div className={'ui input inputDev '}>
                                     <input name='handouts' className="form-control" id="handouts" placeholder={Resources['handouts'][currentLanguage]} autoComplete='off'
-                                        defaultValue={this.state.document.handouts} onChange={e => this.handleChange('handouts', e.target.value)} />
+                                        defaultValue={this.state.document.handouts} onChange={e => this.handleChange('handOuts', e.target.value)} />
                                 </div>
                             </div>
                             <div className="linebylineInput valid-input ">

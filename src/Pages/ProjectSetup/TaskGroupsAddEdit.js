@@ -213,7 +213,6 @@ class TaskGroupsAddEdit extends Component {
         }
     }
 
-
     PreviousStep = () => {
         if (this.state.IsEditMode) {
             if (this.state.CurrStep === 2) {
@@ -267,7 +266,6 @@ class TaskGroupsAddEdit extends Component {
         }
 
     }
-
 
     DeleteContact = (rowId, index) => {
         if (index === undefined) {
@@ -421,7 +419,7 @@ class TaskGroupsAddEdit extends Component {
             }
             if (this.state.isApproveMode != true && Config.IsAllow(775)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(775)) {
-                    if (this.props.document.status == true && Config.IsAllow(775)) {
+                    if (this.props.document.status !=false && Config.IsAllow(775)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
