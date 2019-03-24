@@ -57,6 +57,7 @@ import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit"
 import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks"; 
 import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
 
+
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
 
@@ -124,7 +125,7 @@ let originalRoutes = [
     , <Route path="/reportsAddEdit" component={reportsAddEdit}/>
     , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     , <Route path="/DashboardProject" component={DashboardProject} />
-    , <Route path="/TaskGroupsAddEdit" component={TaskGroupsAddEdit} />
+    , <Route path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
     ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
     ,<Route path="/meetingMinutesAddEdit" component={meetingMinutesAddEdit} />
     , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
