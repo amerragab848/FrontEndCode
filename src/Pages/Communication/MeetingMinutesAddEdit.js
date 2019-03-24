@@ -216,7 +216,7 @@ class MeetingMinutesAddEdit extends Component {
                 noteTakerContactId: '',
                 noteTakerCompanyId: '',
                 docDate: moment(),
-                handouts: '',
+                handOuts: '',
                 subject: '',
                 refDoc: '',
                 docCloseDate: '',
@@ -616,7 +616,7 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['handouts'][currentLanguage]} </label>
                                 <div className={'ui input inputDev '}>
                                     <input name='handouts' className="form-control" id="handouts" placeholder={Resources['handouts'][currentLanguage]} autoComplete='off'
-                                        defaultValue={this.state.document.handouts} onChange={e => this.handleChange('handouts', e.target.value)} />
+                                        defaultValue={this.state.document.handouts} onChange={e => this.handleChange('handOuts', e.target.value)} />
                                 </div>
                             </div>
                             <div className="linebylineInput valid-input ">

@@ -213,7 +213,6 @@ class TaskGroupsAddEdit extends Component {
         }
     }
 
-
     PreviousStep = () => {
         if (idEdit !== 0) {
             if (this.state.CurrStep === 2) {
@@ -268,7 +267,6 @@ class TaskGroupsAddEdit extends Component {
 
     }
 
-
     DeleteContact = (rowId, index) => {
         if (index === undefined) {
             this.setState({
@@ -309,6 +307,8 @@ class TaskGroupsAddEdit extends Component {
                     isLoading: false,
                     DeleteFromLog: false
                 })
+
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
 
         ).catch(ex => {
@@ -317,8 +317,11 @@ class TaskGroupsAddEdit extends Component {
                 isLoading: false,
                 DeleteFromLog: false
             });
+
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+
         });
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+
     }
 
     onCloseModal = () => {
@@ -415,7 +418,7 @@ class TaskGroupsAddEdit extends Component {
             }
             if (this.state.isApproveMode != true && Config.IsAllow(775)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(775)) {
-                    if (this.props.document.status == true && Config.IsAllow(775)) {
+                    if (this.props.document.status !=false && Config.IsAllow(775)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
