@@ -179,11 +179,12 @@ export default function (state = initialState.app.communication, action) {
                 table1.push({
                     description: element.itemDescription,
                     calledByCompanyId: element.byWhomCompanyId,
-                    calledByCompany: '',
+                    calledByCompany: element.byWhomCompanyName,
                     calledByContactId: element.byWhomContactId,
-                    calledByContact: '',
+                    calledByContact: element.byWhomContactName,
                     decisions: element.decisions,
                     action: element.action,
+                    comment:element.comment,
                     Id: element.id,
 
                 })
