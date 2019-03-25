@@ -38,14 +38,15 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-
-    refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
-
+ 
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
     toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage]),
+
+    approvalStatusId: Yup.string()
+        .required(Resources['approvalStatusSelection'][currentLanguage]),
 
     total: Yup.string()
         .required(Resources['total'][currentLanguage])
@@ -60,7 +61,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
-class clientSelectionAddEdit extends Component {
+class clientModificationAddEdit extends Component {
 
     constructor(props) {
 
@@ -93,7 +94,7 @@ class clientSelectionAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 107,
+            docTypeId: 106,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -180,7 +181,7 @@ class clientSelectionAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetLogsClientSelectionForEdit?id=" + this.state.docId
+            let url = "GetContractsClientModificationsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
 
         } else {
@@ -217,26 +218,11 @@ class clientSelectionAddEdit extends Component {
             };
 
             this.setState({ document: clientSelection });
-            this.fillDropDowns(false);
-            this.GetNExtArrange();
+            this.fillDropDowns(false); 
             this.props.actions.documentForAdding();
         }
     };
-
-    GetNExtArrange() {
-        let original_document = { ...this.state.document };
-        let updated_document = {};
-        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        this.props.actions.GetNextArrange(url);
-        dataservice.GetNextArrangeMainDocument(url).then(res => {
-            updated_document.arrange = res;
-            updated_document = Object.assign(original_document, updated_document);
-
-            this.setState({
-                document: updated_document
-            });
-        })
-    }
+ 
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
@@ -297,7 +283,7 @@ class clientSelectionAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", 'title', 'title').then(result => {
-            
+
             this.setState({
                 areas: [...result]
             });
@@ -305,12 +291,9 @@ class clientSelectionAddEdit extends Component {
             if (isEdit) {
                 let areaId = this.props.document.area;
                 let area = {};
-                if (areaId) { 
+                if (areaId) {
                     area = _.find(result, function (i) { return i.value == areaId; });
-
-                    // area.lable = areaId;
-                    // area.value = areaId;
-
+ 
                     this.setState({
                         selecetedArea: area
                     });
@@ -319,8 +302,6 @@ class clientSelectionAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", 'title', 'title').then(result => {
-            
-
             if (isEdit) {
                 let location = this.props.document.location;
                 let locationObj = {};
@@ -338,13 +319,13 @@ class clientSelectionAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=buildingno", 'title', 'title').then(result => {
-            
+
             if (isEdit) {
                 let buildingno = this.props.document.building;
                 let building = {};
                 if (buildingno) {
                     building = _.find(result, function (i) { return i.value == buildingno; });
- 
+
 
                     this.setState({
                         selectedbuildingno: building
@@ -357,7 +338,7 @@ class clientSelectionAddEdit extends Component {
 
         });
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=clinetselectionstype", 'title', 'id').then(result => {
-            
+
             this.setState({
                 clientSelections: [...result]
             });
@@ -448,6 +429,19 @@ class clientSelectionAddEdit extends Component {
             [selectedValue]: event
         });
 
+        if (field == "fromContactId") {
+            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
+            this.props.actions.GetNextArrange(url);
+            dataservice.GetNextArrangeMainDocument(url).then(res => {
+                updated_document.arrange = res;
+                updated_document = Object.assign(original_document, updated_document);
+
+                this.setState({
+                    document: updated_document
+                });
+            })
+        }
+
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -463,7 +457,7 @@ class clientSelectionAddEdit extends Component {
             isLoading: true
         });
 
-        dataservice.addObject('EditLogsClientSelections', this.state.document).then(result => {
+        dataservice.addObject('EditContractsClientModifications', this.state.document).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -482,7 +476,7 @@ class clientSelectionAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.projectId = this.state.projectId;
 
-        dataservice.addObject('AddLogsClientSelections', saveDocument).then(result => {
+        dataservice.addObject('AddContractsClientModifications', saveDocument).then(result => {
             this.setState({
                 docId: result.id
             });
@@ -551,7 +545,7 @@ class clientSelectionAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.clientSelectionLog[currentLanguage]}
+                        <h2 className="zero">{Resources.clientModificationLog[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · {Resources['technicalOffice'][currentLanguage]}</span>
                         </h2>
                         <div className="SubmittalHeadClose">
@@ -703,7 +697,7 @@ class clientSelectionAddEdit extends Component {
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
                                                                         isClear={false}
-                                                                        index="IR-fromContactId"
+                                                                        index="clientSelection-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId" />
                                                                 </div>
@@ -743,7 +737,7 @@ class clientSelectionAddEdit extends Component {
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
                                                                         isClear={false}
-                                                                        index="IR-toContactId"
+                                                                        index="clientSelection-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId"
                                                                     />
@@ -778,8 +772,16 @@ class clientSelectionAddEdit extends Component {
                                                                 isMulti={false}
                                                                 data={this.state.approvalstatusList}
                                                                 selectedValue={this.state.selectedApprovalStatusId}
-                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
-                                                                index="clientSelection-approvalStatusId" />
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId",false, '', '', '', 'selectedApprovalStatusId')}
+
+                                                                onChange={setFieldValue}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.approvalStatusId}
+                                                                touched={touched.approvalStatusId}
+                                                                isClear={false}
+                                                                index="clientSelection-approvalStatusId"
+                                                                name="approvalStatusId"
+                                                                id="approvalStatusId" />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
@@ -847,85 +849,6 @@ class clientSelectionAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div className="proForm first-proform ">
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.clientName[currentLanguage]}</label>
-                                                            <div className="inputDev ui input"  >
-                                                                <input type="text" className="form-control" id="clientName"
-                                                                    value={this.state.document.clientName}
-                                                                    name="clientName"
-                                                                    placeholder={Resources.clientName[currentLanguage]}
-                                                                    onChange={(e) => this.handleChange(e, 'clientName')} />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.modifications[currentLanguage]}</label>
-                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="clientSelection-status" defaultChecked={this.state.document.isModification === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isModification')} />
-                                                                <label>{Resources.oppened[currentLanguage]}</label>
-                                                            </div>
-                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="clientSelection-status" defaultChecked={this.state.document.isModification === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'isModification')} />
-                                                                <label>{Resources.closed[currentLanguage]}</label>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div className="proForm datepickerContainer">
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.unitType[currentLanguage]}</label>
-                                                            <div className="ui input inputDev"  >
-                                                                <input type="text" className="form-control" id="unitType"
-                                                                    value={this.state.document.unitType}
-                                                                    name="unitType"
-                                                                    placeholder={Resources.unitType[currentLanguage]}
-                                                                    onChange={(e) => this.handleChange(e, 'unitType')} />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.letterNo[currentLanguage]}</label>
-                                                            <div className="ui input inputDev"  >
-                                                                <input type="text" className="form-control" id="LetterNo"
-                                                                    value={this.state.document.LetterNo}
-                                                                    name="LetterNo"
-                                                                    placeholder={Resources.letterNo[currentLanguage]}
-                                                                    onChange={(e) => this.handleChange(e, 'LetterNo')} />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input alternativeDate">
-                                                            <DatePicker title='letterDate'
-                                                                format={'DD/MM/YYYY'}
-                                                                onChange={e => setFieldValue('letterDate', e)}
-                                                                startDate={this.state.document.letterDate}
-                                                                handleChange={e => this.handleChangeDate(e, 'letterDate')} />
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input alternativeDate">
-                                                            <DatePicker title='drawingDate'
-                                                                format={'DD/MM/YYYY'}
-                                                                onChange={e => setFieldValue('drawingDate', e)}
-                                                                startDate={this.state.document.drawingDate}
-                                                                handleChange={e => this.handleChangeDate(e, 'drawingDate')} />
-                                                        </div>
-
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown
-                                                                title="clientSelectionType"
-                                                                data={this.state.clientSelections}
-                                                                selectedValue={this.state.selectedClientSelection}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'clientSelectionType', false, '', '', '', 'selectedClientSelection')}
-                                                                index="clientSelection" />
-                                                        </div>
-
-                                                    </div>
-
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
                                                     </div>
@@ -1010,4 +933,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(clientSelectionAddEdit))
+)(withRouter(clientModificationAddEdit))
