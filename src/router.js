@@ -63,7 +63,7 @@ import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialIns
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
 import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
 import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
-import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEdit";
+import clientSelectionAddEdit from "./Pages/TechnicalOffice/ClientSelectionAddEdit";
 import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
 
 

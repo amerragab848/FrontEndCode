@@ -3792,7 +3792,7 @@
   "Transmittal": {
     "documentTitle": "communicationTrasmittalLog",
     "docTyp": 28,
-    "documentAddEditLink": "TransmittalAddEdit/",
+    "documentAddEditLink": "TransmittalAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 84,
     "documentEditPermission": 85,

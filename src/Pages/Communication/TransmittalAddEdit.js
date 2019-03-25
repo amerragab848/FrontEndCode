@@ -22,8 +22,9 @@ import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import DocumentsAttachmentPanel from "../../Componants/publicComponants/DocumentsAttachmentPanel"; 
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
-
+  
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -111,7 +112,7 @@ class TransmittalAddEdit extends Component {
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },  
             selectedSubmittedFor: { label: Resources.submittedForSelect[currentLanguage], value: "0" },  
             selectedSendingMethod: { label: Resources.sendingMethodRequired[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
+            message: RichTextEditor.createEmptyValue() 
         }
 
         if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
@@ -131,6 +132,7 @@ class TransmittalAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
+ 
         this.checkDocumentIsView();
     };
 
@@ -145,7 +147,7 @@ class TransmittalAddEdit extends Component {
             
             nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
             nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
-
+ 
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -154,7 +156,7 @@ class TransmittalAddEdit extends Component {
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-        }
+        } 
     };
 
     componentDidUpdate(prevProps) { 
@@ -186,12 +188,11 @@ class TransmittalAddEdit extends Component {
     }
 
     componentWillMount() {
-      if (this.state.docId > 0) {
+      if (this.state.docId > 0) { 
+
         let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
-        this.props.actions.documentForEdit(url);
-  
-        if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
-        }
+
+        this.props.actions.documentForEdit(url); 
       } else {
         const transmittalDocument = {
           //field
@@ -219,9 +220,14 @@ class TransmittalAddEdit extends Component {
           sharedSettings: ""  
         };
   
-        this.setState({ document: transmittalDocument });
+        this.setState({ 
+            document: transmittalDocument 
+         });
+
         this.fillDropDowns(false);
       }
+
+      this.props.actions.documentForAdding();
     }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -500,9 +506,11 @@ class TransmittalAddEdit extends Component {
         saveDocument.requiredDate = moment(saveDocument.requiredDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
+        
             this.setState({
-                docId: result.id
+                docId: result.id 
             });
+
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     }
@@ -535,22 +543,14 @@ class TransmittalAddEdit extends Component {
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
-                showModal: true
+                showModal: true,
+                viewModel:false
             })
 
             this.simpleDialog.show()
         }
     }
-
-    viewDocumentAttachment(){
-        this.setState({
-            viewModel:true,
-            showModal:true
-        });
-
-        this.simpleDialog.show();
-    }
-
+ 
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -641,7 +641,6 @@ class TransmittalAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="proForm datepickerContainer"> 
-                                                       
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -660,7 +659,6 @@ class TransmittalAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                      
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -677,8 +675,7 @@ class TransmittalAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div> 
-                                                
+                                                        </div>    
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
@@ -808,7 +805,6 @@ class TransmittalAddEdit extends Component {
                                                                 {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
                                                             </div>
                                                         </div>
-                                                      
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
@@ -828,17 +824,19 @@ class TransmittalAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                     <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}
-                                                        <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={this.viewDocumentAttachment.bind(this)}>ADD </button>
+                                                        {this.showBtnsSaving()}   
                                                     </div>
                                                 </Form>
                                             )}
                                         </Formik>
+                                    </div> 
+
+                                    <div className="doc-pre-cycle tableBTnabs">
+                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId}  docId={this.state.docId} /> : null}
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
-                                        <div>
+                                        <div> 
                                             {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null }
@@ -873,14 +871,7 @@ class TransmittalAddEdit extends Component {
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
                     </SkyLight>
-                </div>
-                {this.state.viewModel === true ? (
-                    <div className="largePopup largeModal" style={{ display: this.state.viewModel ? 'block' : 'none' }}>
-                        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources["addDocAttachment"][currentLanguage]}>
-                            <DocumentsAttachmentPanel projectId={projectId} docType={this.state.docTypeId}/>
-                        </SkyLight>
-                    </div>):null
-                }
+                </div> 
             </div>
         );
     }
@@ -904,7 +895,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(TransmittalAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TransmittalAddEdit))
