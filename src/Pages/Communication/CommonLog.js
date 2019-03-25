@@ -412,7 +412,7 @@ class CommonLog extends Component {
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
-      let url = api + ((documentObj.docTyp == 30 || documentObj.docTyp == 33) ? ("projectId=" + projectId) :  ("?projectId=" + projectId)) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+      let url = api + (( documentObj.docTyp == 33) ? ("projectId=" + projectId) :  ("?projectId=" + projectId)) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
       this.GetLogData(url);
     } else {
       this.setState({ isLoading: false });

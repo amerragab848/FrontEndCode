@@ -1877,7 +1877,7 @@ button.companies_icon {
       .one__tab .doc-container .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-left: 0; }
-  .one__tab .approveDocument {
+  /* .one__tab .approveDocument {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -1894,7 +1894,7 @@ button.companies_icon {
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
-    align-items: center; }
+    align-items: center; } */
     .one__tab .approveDocument h2 {
       flex: 0.5;
       line-height: 1.17;
@@ -2766,6 +2766,7 @@ button.companies_icon {
 .removeTr div .pdfImage img {
   height: 20px;
 }
+<<<<<<< HEAD
 .precycle-grid .ReactTable .rt-thead .rt-resizable-header {
   font-family: font-b;
   font-size: 14px;
@@ -2821,3 +2822,20 @@ button.companies_icon {
   top: -54px;
   left: 145px;
 } */
+=======
+.slider-Btns.fullWidthWrapper.textLeft {
+  margin: 0
+}
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
+  max-width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.firstBigInput input {
+  width: 360px !important;
+}
+.ui.disabled.input, .ui.input:not(.disabled) input[disabled] {
+  opacity: 1 !important;
+}
+>>>>>>> 912ffcbd412251063e96998e6b4a7f4061487d4f

@@ -4183,8 +4183,8 @@
     "documentViewPermission": 110,
     "documentPermission": 111,
     "documentApi": {
-      "get": "GetCommunicationMeetingMinutes",
-      "getCustom": "GetCommunicationMeetingMinutesInternalCustom",
+      "get": "GetCommunicationMeetingMinutes?locationId=0&",
+      "getCustom": "GetCommunicationMeetingMinutesInternalCustom?locationId=0&",
       "delete": "CommunicationMeetingMinutesMultipleDelete"
     },
     "documentColumns": [
@@ -4560,8 +4560,8 @@
     "documentViewPermission": 110,
     "documentPermission": 111,
     "documentApi": {
-      "get": "GetCommunicationMeetingMinutes",
-      "getCustom": "GetCommunicationMeetingMinutesExternalCustom",
+      "get": "GetCommunicationMeetingMinutes?locationId=0&",
+      "getCustom": "GetCommunicationMeetingMinutesExternalCustom?locationId=0&",
       "delete": "CommunicationMeetingMinutesMultipleDelete"
     },
     "documentColumns": [
@@ -19477,12 +19477,12 @@
     "documentAddPermission": 774,
     "documentEditPermission": 775,
     "documentDeletePermission": 776,
-    "documentViewPermission":778 ,
-    "documentPermission":777 ,
+    "documentViewPermission": 778,
+    "documentPermission": 777,
     "documentApi": {
       "get": "GetProjectTaskGroups",
       "getCustom": "GetProjectTaskGroups",
-      "delete": "projectTaskGroupsObservableMultipleDele"
+      "delete": "projectTaskGroupsObservableMultipleDelete"
     },
     "documentColumns": [
       {
@@ -19609,6 +19609,171 @@
         "type": "toggle",
         "trueLabel": "oppened",
         "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "docClosedate",
+        "field": "docCloseDate",
+        "type": "date",
+        "isCustom": false
+      },
+      {
+        "name": "openedBy",
+        "field": "oppenedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "closedBy",
+        "field": "closedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEdit",
+        "field": "lastEditBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEditDate",
+        "field": "lastEditDate",
+        "type": "date",
+        "isCustom": false
+      }
+    ]
+  },
+  "DistributionList": {
+    "documentTitle": "distributionList",
+    "docTyp": 89,
+    "documentAddEditLink": "projectDistributionListAddEdit/",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 625,
+    "documentEditPermission": 626,
+    "documentDeletePermission": 627,
+    "documentViewPermission": 628,
+    "documentPermission": 629,
+    "documentApi": {
+      "get": "ProjectDistributionListGet",
+      "getCustom": "ProjectDistributionListGet",
+      "delete": "DeleteMultipleProjectDistributionList"
+    },
+    "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#weeklyReportsAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 120,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
+        "minWidth": 120,
+        "width": "20%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "openedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 150,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "closedBy",
+        "friendlyName": "closedBy",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditBy",
+        "friendlyName": "lastEdit",
+        "minWidth": 150,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditDate",
+        "friendlyName": "lastEditDate",
+        "minWidth": 100,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      }
+    ],
+    "filterApi": "ProjectDistributionListFilter",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "isCustom": true
       },
       {
         "name": "subject",

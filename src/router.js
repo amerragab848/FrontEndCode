@@ -51,24 +51,34 @@ import reportsAddEdit from './Pages/Communication/reportsAddEdit';
 import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
+import meetingMinutesAddEdit from "../src/Pages/Communication/MeetingMinutesAddEdit";
 import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
 import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks"; 
 import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
+import meetingAgendaAddEdit  from '../src/Pages/Communication/meetingAgendaAddEdit';
 
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
+import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialInspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
+import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
+import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
+import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEdit";
+import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
+
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
-    let compoenet = item.moduleId ==="ProjectSetup" ? ProjectSetup : CommonLog;
-    return <Route path={path} component={ compoenet }/>})
+    let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
+    return <Route path={path} component={compoenet}/>})
+    
     
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
     , <Route path="/ActionByAlerts" component={ActionByAlerts} />
     , <Route path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
+    , <Route path="/materialInspectionRequestAddEdit" component={materialInspectionRequestAddEdit} />
     , <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
     , <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
     , <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />
@@ -123,10 +133,18 @@ let originalRoutes = [
     , <Route path="/reportsAddEdit" component={reportsAddEdit}/>
     , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     , <Route path="/DashboardProject" component={DashboardProject} />
-    , <Route path="/TaskGroupsAddEdit" component={TaskGroupsAddEdit} />
+    , <Route path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
+    ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
+    ,<Route path="/meetingMinutesAddEdit" component={meetingMinutesAddEdit} />
     , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
     , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
     , <Route path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
+    , <Route path="/meetingAgendaAddEdit" component={meetingAgendaAddEdit} />
+    , <Route path="/projectDistributionListAddEdit" component={projectDistributionListAddEdit} />
+    , <Route path="/NCRAddEdit" component={NCRAddEdit} />
+    , <Route path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
+    , <Route path="/clientModificationAddEdit" component={clientModificationAddEdit} />
+    
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

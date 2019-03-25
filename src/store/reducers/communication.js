@@ -109,7 +109,7 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
-                showSelectProject: action.showSelectProject 
+                showSelectProject: action.showSelectProject
             };
         case types.RouteToMainDashboard:
 
@@ -146,13 +146,53 @@ export default function (state = initialState.app.communication, action) {
 
         case types.FillGridLeftMenu:
 
-            console.log('FillGridLeftMenu', action,state,action);
+            console.log('FillGridLeftMenu', action, state, action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
                 projectId: localStorage.getItem('lastSelectedProject'),
-                projectName:localStorage.getItem('lastSelectedprojectName') 
+                projectName: localStorage.getItem('lastSelectedprojectName')
+            };
+
+        case types.Get_Attendees_Table:
+            let table = []
+            action.data.forEach(element => {
+                table.push({
+                    companyId: element.companyId,
+                    Id: element.id,
+                    companyName: element.companyName,
+                    contactId: element.contactId,
+                    contactName: element.contactName
+
+                })
+            });
+            state.attendees = table
+            return {
+                ...state,
+
+            };
+
+        case types.Get_Topics_Table:
+            let table1 = []
+            action.data.forEach(element => {
+                table1.push({
+                    description: element.itemDescription,
+                    calledByCompanyId: element.byWhomCompanyId,
+                    calledByCompany: element.byWhomCompanyName,
+                    calledByContactId: element.byWhomContactId,
+                    calledByContact: element.byWhomContactName,
+                    decisions: element.decisions,
+                    action: element.action,
+                    comment:element.comment,
+                    Id: element.id,
+
+                })
+            });
+            state.topics = table1
+            return {
+                ...state,
+
             };
 
         default:

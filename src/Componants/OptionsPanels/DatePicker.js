@@ -23,7 +23,7 @@ class DatePicker extends Component {
                             <div className="inputDev ui input input-group date NormalInputDate">
                                 <ModernDatepicker
                                     date={this.props.startDate}
-                                    format={'DD-MM-YYYY'}
+                                    format={this.props.Customformat ? 'DD/MM/YYYY' :'DD-MM-YYYY'}
                                     showBorder
                                     onChange={this.props.handleChange}
                                     placeholder={'Select a date'}

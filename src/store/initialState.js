@@ -17,6 +17,8 @@ export default {
 			showLeftMenu: false, 
 			projectName:"",
 			showSelectProject:true,
+			attendees:[],
+			topics:[],
 			viewModel:false
 		}, 
 		expensesWorkFlow: {

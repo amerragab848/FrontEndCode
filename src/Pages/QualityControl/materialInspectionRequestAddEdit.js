@@ -110,7 +110,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
-class inspectionRequestAddEdit extends Component {
+class materialInspectionRequestAddEdit extends Component {
 
     constructor(props) {
 
@@ -149,7 +149,7 @@ class inspectionRequestAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 25,
+            docTypeId: 103,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -238,7 +238,7 @@ class inspectionRequestAddEdit extends Component {
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(367)) {
-                alert('not have edit...');
+                //alert('not have edit...');
                 this.setState({ isViewMode: true });
             }
 
@@ -254,7 +254,7 @@ class inspectionRequestAddEdit extends Component {
                     }
                 } else {
 
-                    alert('not have edit and hasWorkflow = ' + this.props.hasWorkflow);
+                    //alert('not have edit and hasWorkflow = ' + this.props.hasWorkflow);
                     this.setState({ isViewMode: true });
                 }
             }
@@ -267,15 +267,15 @@ class inspectionRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId);
+            this.props.actions.documentForEdit("GetMaterialInspectionRequestForEdit?id=" + this.state.docId);
 
-            dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
+            dataservice.GetDataGrid("GetMaterialInspectionRequestCycles?materialInspectionId=" + this.state.docId).then(result => {
                 this.setState({
                     IRCycles: [...result]
                 });
             });
 
-            dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {
+            dataservice.GetDataGrid("GetMaterialRequestLastCycle?id=" + this.state.docId).then(result => {
                 this.setState({
                     documentCycle: { ...result }
                 });
@@ -580,7 +580,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('EditInspectionRequestOnly', saveDocument).then(result => {
+        dataservice.addObject('EditMaterialRequestOnly', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -599,7 +599,7 @@ class inspectionRequestAddEdit extends Component {
 
         saveDocument.projectId = this.state.projectId;
 
-        dataservice.addObject('AddInspectionRequestOnly', saveDocument).then(result => {
+        dataservice.addObject('AddMaterialRequestOnly', saveDocument).then(result => {
             if (result.id) {
                 let cycle = {
                     requestForInspectionId: result.id,
@@ -760,7 +760,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
 
-        let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
+        let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditMaterialRequestCycle' : 'AddMaterialRequestCycleOnly';
 
         dataservice.addObject(api, saveDocument).then(result => {
             if (result) {
@@ -961,7 +961,7 @@ class inspectionRequestAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.inspectionRequest[currentLanguage]}
+                        <h2 className="zero">{Resources.materialInspectionRequest[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · {Resources.qualityControl[currentLanguage]}</span>
                         </h2>
                         <div className="SubmittalHeadClose">
@@ -1407,7 +1407,7 @@ class inspectionRequestAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.inspectionRequest[currentLanguage]}</h6>
+                                            <h6>{Resources.materialInspectionRequest[currentLanguage]}</h6>
                                         </div>
                                     </div>
 
@@ -1487,4 +1487,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(inspectionRequestAddEdit))
+)(withRouter(materialInspectionRequestAddEdit))

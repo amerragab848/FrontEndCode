@@ -2687,7 +2687,7 @@
     "ar": "ارسال للدوره المستنديه لاذن الصرف"
   },
   "sendToWorkFlow": {
-    "en": "Send Workflow",
+    "en": "To Workflow",
     "ar": "إرسال إلى الدورةالمستنديه"
   },
   "slectWorkFlow": {
@@ -2767,7 +2767,7 @@
     "ar": "اضافة قائمة التحقق"
   },
   "distributionList": {
-    "en": "Distribution List",
+    "en": "To Dist. List",
     "ar": "قائمه التوزيع"
   },
   "distributionListRequired": {
@@ -4795,8 +4795,8 @@
     "ar": "اضافة تعديلات العميل"
   },
   "qualityControl": {
-    "en": "Quality Check List",
-    "ar": "سجل مراقبة الجودة"
+    "en": "Quality Control",
+    "ar": " مراقبة الجودة"
   },
   "checkIn": {
     "en": "Check In",
@@ -4923,7 +4923,7 @@
     "ar": "إسم العميل"
   },
   "clientSelectionType": {
-    "en": "Clinet Selections Type",
+    "en": "Client Selections Type",
     "ar": "انواع اختيارات العميل"
   },
   "previousDelivery": {
