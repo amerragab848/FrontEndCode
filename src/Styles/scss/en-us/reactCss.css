@@ -2882,3 +2882,9 @@ button.companies_icon {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.firstBigInput input {
+  width: 360px !important;
+}
+.ui.disabled.input, .ui.input:not(.disabled) input[disabled] {
+  opacity: 1 !important;
+}

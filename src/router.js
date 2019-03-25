@@ -56,16 +56,21 @@ import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
 import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks"; 
 import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
-
+import meetingAgendaAddEdit  from '../src/Pages/Communication/meetingAgendaAddEdit';
 
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
 import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialInspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
+import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
+import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
+import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEdit";
+
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
-    let compoenet = item.moduleId ==="ProjectSetup" ? ProjectSetup : CommonLog;
-    return <Route path={path} component={ compoenet }/>})
+    let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
+    return <Route path={path} component={compoenet}/>})
+    
     
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
@@ -133,6 +138,11 @@ let originalRoutes = [
     , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
     , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
     , <Route path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
+    , <Route path="/meetingAgendaAddEdit" component={meetingAgendaAddEdit} />
+    , <Route path="/projectDistributionListAddEdit" component={projectDistributionListAddEdit} />
+    , <Route path="/NCRAddEdit" component={NCRAddEdit} />
+    , <Route path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
+    
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

@@ -994,7 +994,7 @@ class inspectionRequestAddEdit extends Component {
                                                 <Formik
                                                     initialValues={{ ...this.state.document }}
                                                     validationSchema={validationSchema}
-                                                    enableReinitialize={true}
+                                                    enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveInspectionRequest();
