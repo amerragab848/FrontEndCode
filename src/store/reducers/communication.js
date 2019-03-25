@@ -186,6 +186,7 @@ export default function (state = initialState.app.communication, action) {
                     action: element.action,
                     comment:element.comment,
                     Id: element.id,
+                    requiredDate:element.requiredDate
 
                 })
             });

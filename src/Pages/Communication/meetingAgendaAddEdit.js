@@ -44,7 +44,7 @@ const attendeesValidationSchema = Yup.object().shape({
     attendeesContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
 });
 const topicsValidationSchema = Yup.object().shape({
-    description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
+    itemDescription: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
     actionByContact: Yup.string().required(Resources['actionByContactRequired'][currentLanguage])
 
 });
@@ -77,7 +77,7 @@ class meetingAgendaAddEdit extends Component {
             index++;
         }
 
-        this.columnsGrid = [
+        this.topicColumns = [
             {
                 key: "no",
                 name: Resources["no"][currentLanguage],
@@ -87,7 +87,7 @@ class meetingAgendaAddEdit extends Component {
             {
                 key: "description",
                 name: Resources["itemDescription"][currentLanguage],
-                width: 120,
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -126,23 +126,56 @@ class meetingAgendaAddEdit extends Component {
             }
         ];
 
+        this.atteneesColumns = [
+            {
+                key: "companyName",
+                name: Resources["company"][currentLanguage],
+                width: 150,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "contactName",
+                name: Resources["contact"][currentLanguage],
+                width: 150,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }
+        ];
+
         this.state = {
             showForm: false,
             step_1_Validation: meetingAgendaValidation,
             docTypeId: 35,
+            topic: {
+                topics: [],
+                itemDescription: '',
+                decision: '',
+                comment: '',
+                requiredDate: moment(),
+                id: 0
+            },
             actionByContacts: [],
-            selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+            selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: 0 },
+            selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: 0 },
+            selectedRow: '',
+            attendees: [],
+            attendeesId: 0,
+            attendencesContacts: [],
+            currentComponent_2: 'attendeesContact',
             pageSize: 50,
-            agendaId: 87,
+            agendaId: 0,
             btnTxt: 'save',
             CurrStep: 1,
             firstComplete: false,
             secondComplete: false,
             thirdComplete: false,
-            IsEditMode: false,
-            attendenceId: 0,
-            validStep: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -152,9 +185,8 @@ class meetingAgendaAddEdit extends Component {
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
-            meetingId: 0,
             showPopUp: false,
-
+            btnText: 'add',
             meetingAgenda: [],
             selectedMeetingAgenda: { label: Resources.meetingMinutesSelect[currentLanguage], value: "0" },
 
@@ -163,37 +195,27 @@ class meetingAgendaAddEdit extends Component {
             calledContacts: [],
             facilitatorContacts: [],
             noteTakerContacts: [],
-            topics: [],
-            topicsContacts: [],
-            topicContacts: [],
             selectedTopicContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
             selectedTopicCompany: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
 
-            attendees: [],
-            attendencesContacts: [],
-            selectedAttendencesContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-            selectedAttendencesCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
 
-            selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+
             selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
             selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
             selectedFacilitatorCompany: { label: Resources.facilitatorCompanyRequired[currentLanguage], value: "0" },
             selectedFacilitatorContact: { label: Resources.facilitatorContactReuired[currentLanguage], value: "0" },
             selectedNoteTakerCompany: { label: Resources.noteTakerCompanyReuired[currentLanguage], value: "0" },
             selectedNoteTakerContact: { label: Resources.noteTakerContactRequired[currentLanguage], value: "0" },
-            requiredDate: moment(),
 
             isLoading: true,
-            permission: [{ name: 'sendByEmail', code: 113 }, { name: 'sendByInbox', code: 112 },
+            permission: [{ name: 'sendByEmail', code: 458 }, { name: 'sendByInbox', code: 457 },
             { name: 'sendTask', code: 0 }, { name: 'distributionList', code: 967 },
-            { name: 'createTransmittal', code: 3053 }, { name: 'sendToWorkFlow', code: 717 },
-            { name: 'viewAttachments', code: 3325 }, { name: 'deleteAttachments', code: 838364 }],
+            { name: 'createTransmittal', code: 3055 }, { name: 'sendToWorkFlow', code: 719 },
+            { name: 'viewAttachments', code: 3324 }, { name: 'deleteAttachments', code: 838 }],
 
             document: {},
-            attendence: {},
         }
-        if (!Config.IsAllow(504) || !Config.IsAllow(505) || !Config.IsAllow(507)) {
+        if (!Config.IsAllow(452) || !Config.IsAllow(453) || !Config.IsAllow(455)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
@@ -201,12 +223,12 @@ class meetingAgendaAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(507))) {
+            if (!(Config.IsAllow(453))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(507)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(507)) {
-                    if (this.props.document.status != false && Config.IsAllow(507)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(453)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(453)) {
+                    if (this.props.document.status != false && Config.IsAllow(453)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -225,14 +247,6 @@ class meetingAgendaAddEdit extends Component {
     fillDropDowns(isEdit) {
         DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId, 'companyName', 'companyId').then(res => {
             if (isEdit) {
-                let companyId = this.state.document.fromCompanyId;
-                if (companyId) {
-                    this.setState({
-                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-                    });
-
-                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'fromContactName', 'selectedFromContact', 'fromContacts');
-                }
                 let calledByCompanyId = this.state.document.calledByCompanyId;
                 if (calledByCompanyId) {
                     this.setState({
@@ -263,13 +277,11 @@ class meetingAgendaAddEdit extends Component {
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })
-            this.props.actions.documentForEdit('GetCommunicationMeetingMinutesForEdit?id=' + this.state.docId).then(() => {
-                this.setState({ meetingId: this.state.docId, isLoading: false })
-                this.getTabelData()
+            this.props.actions.documentForEdit('GetCommunicationMeetingAgendaForEdit?id=' + this.state.docId).then(() => {
+                this.setState({ agendaId: this.state.docId, isLoading: false,showForm:true })
                 this.checkDocumentIsView();
+                this.getTabelData()
             })
-
-
         } else {
             Dataservice.GetDataList('GetCommunicationMeetingMinutesForAgenda?projectId=' + this.state.projectId, 'subject', 'id').then(res => {
                 this.setState({ meetingAgenda: res })
@@ -277,9 +289,8 @@ class meetingAgendaAddEdit extends Component {
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
             Api.get('GetNextArrangeMainDoc?projectId=' + this.state.projectId + '&docType=' + this.state.docTypeId + '&companyId=' + cmi + '&contactId=' + cni).then(res => {
-                this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false, validStep: true })
+                this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false })
             })
-
             this.fillDropDowns(false);
             let document = {
                 arrange: '',
@@ -287,7 +298,7 @@ class meetingAgendaAddEdit extends Component {
                 subject: '',
                 docDate: moment(),
                 meetingMinutesId: '',
-                status: '',
+                status: true,
                 calledByCompanyId: '',
                 calledByContactId: '',
                 facilitatorCompanyId: '',
@@ -310,28 +321,29 @@ class meetingAgendaAddEdit extends Component {
 
     getTabelData() {
         let attendeesTable = []
-        this.props.actions.GetAttendeesTable('GetCommunicationMeetingMinutesAttendees?meetingId=' + this.state.docId).then(res => {
+        this.setState({ isLoading: true })
+        this.props.actions.GetAttendeesTable('GetCommunicationMeetingAgendaAttendees?agendaId=' + this.state.agendaId).then(res => {
             this.props.attendees.forEach((element, index) => {
-                attendeesTable.push(
-                    < tr id={'att_' + index}>
-                        <td><span onClick={e => this.deleteRowTable(element.Id, e)}><img src={Recycle} alt="DEL" style={{ maxWidth: '20px' }} /></span></td>
-                        <td className="disNone">{element.Id}</td>
-                        <td className="disNone">{element.companyId}</td>
-                        <td>{element.companyName}</td>
-                        <td>{element.contactName}</td>
-                        <td className="disNone">{element.contactId}</td>
-                    </ tr>
-                )
+                console.log(element)
+                attendeesTable.push({
+                    id: element.Id, companyId: element.companyId, contactId: element.contactId, companyName: element.companyName, contactName: element.contactName
+                })
             })
             this.setState({ attendees: attendeesTable })
+            setTimeout(() => { this.setState({ isLoading: false }) }, 500)
         })
+
         let topicstable = []
-        this.setState({ isLoading: true })  
-        this.props.actions.GetTopicsTable('GetCommunicationMeetingAgendaTopics?agendaId='+this.state.agendaId).then(res => {
+        this.setState({ isLoading: true })
+        this.props.actions.GetTopicsTable('GetCommunicationMeetingAgendaTopics?agendaId=' + this.state.agendaId).then(res => {
             this.props.topics.forEach((element, index) => {
-                topicstable.push({ id: element.Id, no: index + 1, description: element.description, decision: element.decisions, action: element.action, comment: element.comment })
+                topicstable.push({
+                    id: element.Id, no: index + 1, description: element.description, decision: element.decisions, action: element.action, comment: element.comment
+                    , byWhomCompanyId: element.calledByCompanyId, byWhomContactId: element.calledByContactId, requiredDate: element.requiredDate
+                })
             })
-                this.setState({ topics: topicstable,isLoading: false})
+            this.setState({ topics: topicstable })
+            setTimeout(() => { this.setState({ isLoading: false }) }, 500)
         })
     }
 
@@ -344,27 +356,14 @@ class meetingAgendaAddEdit extends Component {
     componentWillReceiveProps(props, state) {
         if (props.document && props.document.id > 0) {
             this.setState({
-                document: { ...props.document }
+                document: { ...props.document },
+                step_1_Validation: validationSchema
             });
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
     }
-    //#region  editting
-    editMeeting = () => {
-        this.setState({
-            isLoading: true,
-            firstComplete: true
-        });
-        Api.post('EditCommunicationMeetingMinutes', this.state.document).then(result => {
-            this.setState({
-                isLoading: false,
-                CurrStep: this.state.CurrStep + 1
-            });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
-    }
-    //#endregion
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -378,15 +377,13 @@ class meetingAgendaAddEdit extends Component {
     addMeetingAgenda = () => {
         this.setState({ isLoading: true })
         let documentObj = { ...this.state.document };
-        documentObj.docDate = moment(documentObj.docDate).format('MM/DD/YYYY');
+        documentObj.docDate = moment(documentObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         documentObj.docLocationId = 0
         DataService.addObject('AddMeetingAgendaWithMeetingMinutes', documentObj).then(result => {
             this.setState({
                 agendaId: result.id,
                 docId: result.id,
                 isLoading: false,
-                selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
                 selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
                 selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
                 calledContacts: [],
@@ -395,75 +392,94 @@ class meetingAgendaAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
         })
     }
-
-    addAttendences = (values) => {
-        this.setState({ isLoading: true })
-        let attendence = {
-            meetingId: this.state.meetingId,
-            contactId: this.state.selectedAttendencesContact.value,
-            companyId: this.state.selectedAttendencesContact.value,
-            companyName: this.state.selectedAttendencesCompany.label,
-            contactName: this.state.selectedAttendencesCompany.label,
-        }
-        Api.post('AddCommunicationMeetingMinutesAttendees', attendence).then((res) => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            let data = [...this.state.attendees];
-            data.push(< tr >
-                <td><span onClick={e => this.deleteRowTable(res.id, e)}><img src={Recycle} alt="DEL" style={{ maxWidth: '20px' }} /></span></td>
-                <td className='disNone'>{res.id}</td>
-                <td className='disNone'>{this.state.selectedAttendencesCompany.value}</td>
-                <td>{this.state.selectedAttendencesCompany.label}</td>
-                <td>{this.state.selectedAttendencesContact.label}</td>
-                <td className='disNone'>{this.state.selectedAttendencesContact.value}</td>
-            </ tr>);
+    editMeeting = () => {
+        this.setState({
+            isLoading: true,
+            firstComplete: true
+        });
+        Api.post('EditCommunicationMeetingMinutes', this.state.document).then(result => {
             this.setState({
                 isLoading: false,
-                attendees: data,
-                selectedAttendencesCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                selectedAttendencesContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" }
+                CurrStep: this.state.CurrStep + 1
+            });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        });
+    }
+    addEditTopics = (edit) => {
+        this.setState({ isLoading: true })
+        let topic = {
+            requiredDate: moment(this.state.topic.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            itemDescription: this.state.topic.itemDescription,
+            agendaId: this.state.agendaId,
+            decisions: this.state.topic.decision,
+            action: this.state.topic.action,
+            byWhomCompanyId: this.state.selectedActionByCompany.value,
+            byWhomContactId: this.state.selectedActionByContact.value,
+            comment: this.state.topic.comment,
+            id: this.state.topic.id
+        }
+        let url = edit ? 'EditCommunicationMeetingAgendaTopics' : 'AddCommunicationMeetingAgendaTopics'
+        Api.post(url, topic).then((res) => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            if (edit) {
+                let id = this.state.topic.id
+                let topics = _.filter(this.state.topics, function (x) {
+                    return x.id != id;
+                });
+                this.setState({ showPopUp: false, topics: topics })
+            }
+            let data=[]
+            if (this.state.topics.length > 0)
+                 data = [...this.state.topics];
+            data.push({
+                id: res.Id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
+                comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
+            })
+            this.setState({
+                topics: data,
+                topic: { itemDescription: '', action: '', comment: '', decision: '', requiredDate: moment() },
+                selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+                selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+                isLoading: false,
+                showPopUp: false,
+                btnText: 'add'
             });
         })
     }
-    addTopics = (values) => {
+    addEditAttendees = () => {
         this.setState({ isLoading: true })
-        let topic = {
-            meetingId: this.state.docId,
-            requiredDate: moment(this.state.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            itemDescription: values.description,
-            action: values.action,
-            arrange: values.arrange,
-            status: values.status == true ? 1 : 0,
-            byWhomContactId: this.state.selectedTopicContact.value,
-            byWhomCompanyId: this.state.selectedTopicCompany.value,
-            comment: '',
-            decisions: values.decision
+        let attendees = {
+            companyId: this.state.selectedActionByCompany.value,
+            contactId: this.state.selectedActionByContact.value,
+            id: this.state.attendeesId,
+            agendaId: this.state.agendaId
         }
-        Api.post('AddCommunicationMeetingMinutesTopics', topic).then((res) => {
+        let url = this.state.showPopUp ? 'EditCommunicationMeetingAgendaAttendees' : 'AddCommunicationMeetingAgendaAttendees'
+        Api.post(url, attendees).then((res) => {
+            let id = this.state.attendeesId
+            if (this.state.showPopUp) {
+                let attendess = _.filter(this.state.attendees, function (x) { return x.id != id; });
+                this.setState({ showPopUp: false, attendees: attendess })
+            }
+            let data = [...this.state.attendees];
+            data.push({
+                id: id, companyId: this.state.selectedActionByCompany.value, contactId: this.state.selectedActionByContact.values,
+                companyName: this.state.selectedActionByCompany.label, contactName: this.state.selectedActionByContact.label
+            })
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            let data = [...this.state.topics];
-            data.push(< tr >
-                <td>{values.description}</td>
-                <td>{this.state.selectedTopicCompany.label}</td>
-                <td>{this.state.selectedTopicContact.label}</td>
-                <td>{values.decision}</td>
-                <td>{values.action}</td>
-            </tr >
-            );
             this.setState({
-                topics: data,
-                selectedTopicCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
-                selectedTopicContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-                isLoading: false
+                attendees: data,
+                attendencesContacts: [],
+                selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+                selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+                isLoading: false,
+                showPopUp: false,
+                btnText: 'add'
+
             });
         })
     }
     //#endregion
-
-    deleteRowTable = (id, e) => {
-        e.preventDefault();
-        this.setState({ attendenceId: id, showDeleteModal: true })
-    }
-
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
@@ -472,17 +488,28 @@ class meetingAgendaAddEdit extends Component {
         this.setState({ showDeleteModal: false });
     }
 
-    ConfirmDeleteAttendence = () => {
+    ConfirmDelete = () => {
+        console.log('row', this.state.selectedRow)
         this.setState({ isLoading: true })
-        Api.post('CommunicationMeetingMinutesAttendeesDelete?id=' + this.state.attendenceId).then((res) => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            let data = this.state.attendees.filter(item => item.props.children[1].props.children !== this.state.attendenceId);
-            this.setState({ attendees: data, showDeleteModal: false, isLoading: false });
-        })
+        if (this.state.CurrStep == 2) {
+            Api.post('CommunicationMeetingAgendaAttendeesDelete?id=' + this.state.selectedRow[0]).then((res) => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                let data = this.state.attendees.filter(item => item.id != this.state.selectedRow[0]);
+                this.setState({ attendees: data, showDeleteModal: false, isLoading: false });
+            })
+        }
+        if (this.state.CurrStep == 3) {
+            Api.post('CommunicationMeetingAgendaTopicsDelete?id=' + this.state.selectedRow[0]).then((res) => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                let data = this.state.topics.filter(item => item.id != this.state.selectedRow[0]);
+                this.setState({ topics: data, showDeleteModal: false, isLoading: false });
+            })
+        }
+
     }
 
-    //#region General Methods
     fillSubDropDownInEdit(url, param, value, subFieldId, subFieldName, subSelectedValue, subDatasource) {
+        this.setState({ isLoading: true })
         let action = url + "?" + param + "=" + value
         DataService.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
@@ -491,14 +518,15 @@ class meetingAgendaAddEdit extends Component {
                 let targetFieldSelected = { label: _SubFieldName, value: _SubFieldId };
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
-                    [subDatasource]: result
+                    [subDatasource]: result,
+                    isLoading: false
                 });
             }
         });
     }
 
     updateSelectedValue = (selected, label, value, targetSelected) => {
-
+        this.setState({ isLoading: true })
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document[value] = selected.value;
@@ -506,7 +534,8 @@ class meetingAgendaAddEdit extends Component {
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             document: updated_document,
-            [targetSelected]: selected
+            [targetSelected]: selected,
+            isLoading: false
         });
 
     }
@@ -530,8 +559,6 @@ class meetingAgendaAddEdit extends Component {
         switch (this.state.CurrStep) {
             case 1:
                 this.setState({
-                    selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                    selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
                     fromContacts: [],
                     selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
                     selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
@@ -541,10 +568,16 @@ class meetingAgendaAddEdit extends Component {
                 })
                 break;
             case 2:
-                this.setState({ CurrStep: this.state.CurrStep + 1, secondComplete: true })
+                this.setState({
+                    CurrStep: this.state.CurrStep + 1, secondComplete: true,
+                    actionByContacts: [],
+                    selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: 0 },
+                    selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: 0 },
+                    isLoading: false
+                })
                 break;
             case 3:
-                this.props.history.push({ pathname: '/InternalMeetingMinutes/' + this.state.projectId })
+                this.props.history.push({ pathname: '/CommunicationMeetingAgenda/' + this.state.projectId })
                 break;
         }
     }
@@ -560,7 +593,6 @@ class meetingAgendaAddEdit extends Component {
         }
     }
 
-    //#endregion
     handleShowAction = (item) => {
         if (item.value != "0") {
 
@@ -573,28 +605,75 @@ class meetingAgendaAddEdit extends Component {
             this.simpleDialog.show()
         }
     }
-    cellClick = (rowID, colID) => {
-        let id = this.state.topics[rowID]['id']
-     
-         if (!Config.IsAllow(1257)) {
+
+    onRowClick = (value, index, column) => {
+        console.log('selected', value)
+        let id = value['id']
+        if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
-        else if (colID != 0) {
-            this.setState({ showPopUp: true })
+        else if (column.key != 0) {
+            this.setState({ showPopUp: true, btnText: 'save' })
+            if (this.state.CurrStep == 3) {
+                let actionByCompany = _.find(this.state.Companies, function (company) { return company.value == value.byWhomCompanyId })
+                this.setState({ isLoading: true })
+                DataService.GetDataList('GetContactsByCompanyId?companyId=' + value.byWhomCompanyId, 'contactName', 'id').then(res => {
+                    let actionByContact = _.find(res, function (x) { return x.value == value.byWhomContactId })
+                    this.setState({
+                        topic: { itemDescription: value.description, action: value.action, decision: value.decision, comment: value.comment, id: value.id, requiredDate: moment(value.requiredDate) },
+                        selectedActionByCompany: actionByCompany, selectedActionByContact: actionByContact, actionByContacts: res, isLoading: false
+                    })
+                })
+            }
+            else if (this.state.CurrStep == 2) {
+                let actionByCompany = { label: value.companyName, value: value.companyId }
+                this.setState({ isLoading: true })
+                DataService.GetDataList('GetContactsByCompanyId?companyId=' + value.companyId, 'contactName', 'id').then(res => {
+                    let actionByContact = { label: value.contactName, value: value.companyId }
+                    this.setState({
+                        attendeesId: value.id,
+                        selectedActionByCompany: actionByCompany, selectedActionByContact: actionByContact, attendencesContacts: res, isLoading: false
+                    })
+                })
+            }
             this.simpleDialog1.show()
         }
     }
-    _executeBeforeModalClose(){
-        this.setState({ showPopUp: false })
-      }
+    clickHandlerDeleteRowsMain = selectedRows => {
+        this.setState({
+            showDeleteModal: true,
+            selectedRow: selectedRows
+        });
+    };
+    _executeBeforeModalClose = () => {
+        this.setState({
+            showPopUp: false, btnText: 'add', topic: { requiredDate: moment() },
+            selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+            selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" }
+        })
+    }
     render() {
-        const dataGrid = this.state.isLoading === false ? (
+        const dataGridTopic = this.state.isLoading === false ? (
             <GridSetup rows={this.state.topics}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
-                cellClick={this.cellClick}
-                columns={this.columnsGrid}
+                onRowClick={this.onRowClick}
+                columns={this.topicColumns}
+                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                 single={true}
+                key='topic'
+            />) : <LoadingSection />;
+
+        const dataGridAttendees = this.state.isLoading === false ? (
+            <GridSetup
+                rows={this.state.attendees}
+                showCheckbox={true}
+                pageSize={this.state.pageSize}
+                onRowClick={this.onRowClick}
+                columns={this.atteneesColumns}
+                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+                single={true}
+                key='attendess'
             />) : <LoadingSection />;
 
 
@@ -602,12 +681,17 @@ class meetingAgendaAddEdit extends Component {
             {this.state.isLoading ? <LoadingSection /> : null}
             <Formik
                 initialValues={{
-                    description: '',
-                    actionByContact: ''
-                }}
+                    itemDescription: this.state.topic.itemDescription,
+                    actionByContact: this.state.selectedActionByContact.value > 0 ? this.state.selectedActionByContact : ''
+                }
+                }
+                enableReinitialize={true}
                 validationSchema={topicsValidationSchema}
                 onSubmit={(values) => {
-                    this.addTopics(values)
+                    if (this.state.showPopUp)
+                        this.addEditTopics(true)
+                    else
+                        this.addEditTopics(false)
                 }} >
                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue, values }) => (
                     <Form id=" MinutesOfMeeting" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -617,8 +701,8 @@ class meetingAgendaAddEdit extends Component {
                                 <input name='itemDescription'
                                     className="form-control"
                                     id="itemDescription" placeholder={Resources['itemDescription'][currentLanguage]} autoComplete='off'
-                                    onBlur={handleBlur} defaultValue={values.itemDescription}
-                                    onChange={handleChange} />
+                                    onBlur={handleBlur} value={this.state.topic.itemDescription}
+                                    onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, itemDescription: e.target.value } }) }} />
                                 {errors.itemDescription ? (<em className="pError">{errors.itemDescription}</em>) : null}
                             </div>
                         </div>
@@ -626,17 +710,18 @@ class meetingAgendaAddEdit extends Component {
                             <DatePicker
                                 name='requiredDate'
                                 title='requiredDate'
-                                startDate={this.state.requiredDate}
+                                startDate={this.state.topic.requiredDate}
                                 handleChange={(e) => {
                                     handleChange(e)
-                                    this.setState({ requiredDate: e })
+                                    this.setState({ topic: { ...this.state.topic, requiredDate: e } })
                                 }} />
                         </div>
                         <div className="linebylineInput valid-input">
                             <label className="control-label">{Resources['action'][currentLanguage]} </label>
                             <div className={'ui input inputDev '}>
                                 <input name='action' className="form-control" id="action" placeholder={Resources['action'][currentLanguage]} autoComplete='off'
-                                    onChange={handleChange} />
+                                    value={this.state.topic.action}
+                                    onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, action: e.target.value } }) }} />
                             </div>
                         </div>
                         <div className="linebylineInput valid-input mix_dropdown">
@@ -670,25 +755,80 @@ class meetingAgendaAddEdit extends Component {
                         <div className="linebylineInput valid-input linebylineInput__name">
                             <label className="control-label">{Resources['decision'][currentLanguage]} </label>
                             <div className={'ui input inputDev '}>
-                                <input name='decision' onChange={handleChange} className="form-control" id="decision" placeholder={Resources['decision'][currentLanguage]} autoComplete='off'
+                                <input name='decision' onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, decision: e.target.value } }) }} className="form-control" id="decision"
+                                    placeholder={Resources['decision'][currentLanguage]} autoComplete='off' value={this.state.topic.decision}
                                 />
                             </div>
                         </div>
                         <div className="linebylineInput valid-input ">
-                            <label className="control-label">{Resources['action'][currentLanguage]} </label>
+                            <label className="control-label">{Resources['comment'][currentLanguage]} </label>
                             <div className={'ui input inputDev '}>
-                                <input name='action' className="form-control" id="action" placeholder={Resources['action'][currentLanguage]} autoComplete='off' onChange={handleChange}
+                                <input name='comment' className="form-control" id='comment' placeholder={Resources['comment'][currentLanguage]} autoComplete='off'
+                                    onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, comment: e.target.value } }) }} value={this.state.topic.comment}
                                 />
                             </div>
                         </div>
                         <div className="slider-Btns fullWidthWrapper textLeft">
-                            <button className={"primaryBtn-1 btn"} type="submit"  >{Resources['add'][currentLanguage]}</button>
+                            <button className={"primaryBtn-1 btn"} type="submit"  >{Resources[this.state.btnText][currentLanguage]}</button>
                         </div>
                     </Form>
                 )}
             </Formik>
         </div>
+        const attendeesContent = <React.Fragment>
+            <div className="document-fields">
+                {this.state.isLoading ? <LoadingSection /> : null}
+                <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                        attendeesContact: this.state.selectedActionByContact.value > 0 ? this.state.selectedActionByContact.value : ''
+                    }}
+                    validationSchema={attendeesValidationSchema}
+                    onSubmit={(values) => {
+                        this.addEditAttendees()
+                    }}
+                >
+                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
 
+                            <div className="linebylineInput valid-input mix_dropdown">
+                                <label className="control-label">{Resources['actionByCompany'][currentLanguage]}</label>
+                                <div className="supervisor__company">
+                                    <div className="super_name">
+                                        <DropdownMelcous
+                                            name="attendeesContact"
+                                            data={this.state.attendencesContacts}
+                                            handleChange={e => this.setState({ selectedActionByContact: e })}
+                                            placeholder='ContactName'
+                                            selectedValue={this.state.selectedActionByContact}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.attendeesContact}
+                                            touched={touched.attendeesContact}
+                                            id="attendeesContact"
+                                        />
+                                    </div>
+                                    <div className="super_company">
+                                        <DropdownMelcous
+                                            name="actionBycompany"
+                                            data={this.state.Companies}
+                                            handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedActionByCompany', 'attendencesContacts', 'selectedActionByContact', 'toContactRequired')}
+                                            placeholder='actionByCompany'
+                                            selectedValue={this.state.selectedActionByCompany}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="slider-Btns">
+                                <button className={"primaryBtn-1 btn meduimBtn  "} type='submit'>
+                                    {Resources[this.state.btnText][currentLanguage]}</button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+
+        </React.Fragment >
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -725,37 +865,37 @@ class meetingAgendaAddEdit extends Component {
                     }} >
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form id="MinutesOfMeeting" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
-
-                            <div className="linebylineInput valid-input">
-                                <label className="control-label">{Resources['meetingMinutes'][currentLanguage]}</label>
-                                <DropdownMelcous
-                                    name="meetingAgenda"
-                                    data={this.state.meetingAgenda}
-                                    handleChange={e => {
-                                        this.setState({
-                                            showForm: true, step_1_Validation: validationSchema, selectedMeetingAgenda: e,
-                                            document: { ...this.state.document, meetingMinutesId: e.value }
-                                        })
-                                    }}
-                                    placeholder='meetingAgenda'
-                                    selectedValue={this.state.selectedMeetingAgenda}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.meetingAgenda}
-                                    touched={touched.meetingAgenda}
-                                    index="meetingAgenda"
-                                    id="meetingAgenda" />
-                            </div>
+                            {this.state.docId == 0 ?
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources['meetingMinutes'][currentLanguage]}</label>
+                                    <DropdownMelcous
+                                        name="meetingAgenda"
+                                        data={this.state.meetingAgenda}
+                                        handleChange={e => {
+                                            this.setState({
+                                                showForm: true, step_1_Validation: validationSchema, selectedMeetingAgenda: e,
+                                                document: { ...this.state.document, meetingMinutesId: e.value }
+                                            })
+                                        }}
+                                        placeholder='meetingAgenda'
+                                        selectedValue={this.state.selectedMeetingAgenda}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.meetingAgenda}
+                                        touched={touched.meetingAgenda}
+                                        index="meetingAgenda"
+                                        id="meetingAgenda" />
+                                </div> : null}
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title='docDate'
                                     startDate={this.state.document.docDate}
                                     handleChange={e => this.handleChange('docDate', e)} />
                             </div>
-                            {this.state.showForm ? null :
+                            {!this.state.showForm ?
                                 <div className="slider-Btns fullWidthWrapper textLeft">
                                     <button className="primaryBtn-1 btn"
                                     >{Resources['add'][currentLanguage]}</button>
-                                </div>
+                                </div> : null
                             }
                             {this.state.showForm ?
                                 <React.Fragment>
@@ -807,7 +947,6 @@ class meetingAgendaAddEdit extends Component {
                                                 defaultValue={this.state.document.refDoc} onChange={e => this.handleChange('refDoc', e.target.value)} />
                                         </div>
                                     </div>
-
                                     <div className="linebylineInput valid-input mix_dropdown">
                                         <label className="control-label">{Resources['calledByCompany'][currentLanguage]}</label>
                                         <div className="supervisor__company">
@@ -884,8 +1023,8 @@ class meetingAgendaAddEdit extends Component {
                                         </div>
                                     </div>
                                     <div className="slider-Btns">
-                                        <button className={"primaryBtn-1 btn meduimBtn  "} type='submit'>
-                                            {Resources[this.state.btnTxt][currentLanguage]}</button>
+                                        <button className="primaryBtn-1 btn meduimBtn" type='submit'>
+                                            {this.state.docId > 0 ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>
                                     </div>
                                 </React.Fragment>
 
@@ -935,120 +1074,24 @@ class meetingAgendaAddEdit extends Component {
             }
         </React.Fragment>
         let Step_2 = <React.Fragment>
-
-            <div className="document-fields">
-                {this.state.isLoading ? <LoadingSection /> : null}
-                <Formik
-                    initialValues={{
-                        attendeesContact: ''
-                    }}
-                    validationSchema={attendeesValidationSchema}
-                    onSubmit={(values) => {
-                        this.addAttendences(values)
-                    }}
-                >
-                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
-                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
-
-                            <div className="linebylineInput valid-input firstBigInput">
-                                <label className="control-label">{Resources['subject'][currentLanguage]} </label>
-                                <div className={"inputDev ui input " + (errors.subject && touched.subject ? 'has-error' : !errors.subject && touched.subject ? (" has-success") : " ")}>
-                                    <input name='subject' defaultValue={this.state.document.subject}
-                                        className="form-control"
-                                        id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
-                                        onBlur={handleBlur}
-                                        onChange={e => {
-                                            handleChange(e)
-                                            this.handleChange('subject', e.target.value)
-                                        }} />
-                                    {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-                                </div>
-                            </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='docDate'
-                                    startDate={this.state.document.docDate}
-                                    handleChange={e => this.handleChange('docDate', e)} />
-                            </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='action'
-                                    startDate={this.state.document.action}
-                                    handleChange={e => this.handleChange('action', e)} />
-                            </div>
-
-                            <div className="linebylineInput valid-input mix_dropdown">
-                                <label className="control-label">{Resources['actionByCompany'][currentLanguage]}</label>
-                                <div className="supervisor__company">
-                                    <div className="super_name">
-                                        <DropdownMelcous
-                                            name="attendeesContact"
-                                            data={this.state.actionByContacts}
-                                            handleChange={e => this.setState({ selectedActionByContact: e })}
-                                            placeholder='ContactName'
-                                            selectedValue={this.state.selectedActionByContact}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.actionBy}
-                                            touched={touched.actionBy}
-                                            id="actionBy"
-                                        />
-                                    </div>
-                                    <div className="super_company">
-                                        <DropdownMelcous
-                                            name="actionByompany"
-                                            data={this.state.Companies}
-                                            handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedActionByCompany', 'actionByContacts', 'selectedActionByContact', 'toContactRequired')}
-                                            placeholder='actionByCompany'
-                                            selectedValue={this.state.selectedActionByCompany}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='decision'
-                                    startDate={this.state.document.docDate}
-                                    handleChange={e => this.handleChange('docDate', e)} />
-                            </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='comment'
-                                    startDate={this.state.document.action}
-                                    handleChange={e => this.handleChange('action', e)} />
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
-            <div className="doc-pre-cycle">
-                <header><h3 className="zero">{Resources['contactList'][currentLanguage]}</h3></header>
+            {attendeesContent}
+            <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
-
-                </div>
-                <div className="slider-Btns">
-                    <button className={"primaryBtn-1 btn meduimBtn  "} onClick={this.NextStep} type='button'>
-                        {Resources.next[currentLanguage]}</button>
+                    {dataGridAttendees}
+                    <div class="slider-Btns">
+                        <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
+                    </div>
                 </div>
             </div>
-        </React.Fragment >
+        </React.Fragment>
         let Step_3 = <React.Fragment>
             {topicContent}
-            <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
-                <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref} 
-                title={Resources[this.state.currentTitle][currentLanguage]}
-                beforeClose={this._executeBeforeModalClose}>
-                    {topicContent}
-                </SkyLight>
-            </div>
-
-            <div className="doc-pre-cycle">
-
-                <header>
-                    <h3 className="zero">{Resources['contactList'][currentLanguage]}</h3>
-                </header>
+            <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
-                    {dataGrid}
-                </div>
-                <div className="slider-Btns">
-                    <button className={"primaryBtn-1 btn meduimBtn  "} onClick={this.NextStep} type='button'>
-                        {Resources.next[currentLanguage]}</button>
+                    {dataGridTopic}
+                    <div class="slider-Btns">
+                        <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
+                    </div>
                 </div>
             </div>
         </React.Fragment>
@@ -1082,8 +1125,15 @@ class meetingAgendaAddEdit extends Component {
                         <div className="doc-container">
                             <div className="step-content">
                                 <Fragment>
-                                    {/* {this.state.CurrStep == 1 ? Step_1 : (this.state.CurrStep == 2 ? Step_2 : Step_3)} */}
-                                    {Step_3}
+                                    {this.state.CurrStep == 1 ? Step_1 : (this.state.CurrStep == 2 ? Step_2 : Step_3)}
+                                    <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
+                                        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref}
+                                            title={Resources.editTitle[currentLanguage] + ' - ' + Resources.meetingAgendaLog[currentLanguage]}
+                                            beforeClose={this._executeBeforeModalClose}>
+                                            {this.state.CurrStep == 2 ? attendeesContent : topicContent}
+                                        </SkyLight>
+                                    </div>
+
                                 </Fragment>
                             </div>
                             <div>
@@ -1091,7 +1141,7 @@ class meetingAgendaAddEdit extends Component {
                                     <div className="step-content-foot">
                                         <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
                                             "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                        <span onClick={this.NextStep} className={this.state.CurrStep < 3 && this.state.meetingId > 0 ? "step-content-btn-prev "
+                                        <span onClick={this.NextStep} className={this.state.CurrStep < 3 && this.state.docId > 0 ? "step-content-btn-prev "
                                             : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                         </span>
                                     </div>
@@ -1133,7 +1183,7 @@ class meetingAgendaAddEdit extends Component {
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}
-                            buttonName='delete' clickHandlerContinue={this.ConfirmDeleteAttendence}
+                            buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                         />
                     ) : null}
                     <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
