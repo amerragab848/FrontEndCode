@@ -104,10 +104,10 @@ class clientModificationAddEdit extends Component {
             fromContacts: [],
             locations: [],
             clientSelections: [],
-            permission: [{ name: 'sendByEmail', code: 3153 }, { name: 'sendByInbox', code: 3152 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 3159 },
-            { name: 'createTransmittal', code: 3160 }, { name: 'sendToWorkFlow', code: 3156 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            permission: [{ name: 'sendByEmail', code: 3139 }, { name: 'sendByInbox', code: 3138 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 3145 },
+            { name: 'createTransmittal', code: 3146 }, { name: 'sendToWorkFlow', code: 3142 },
+            { name: 'viewAttachments', code: 3321 }, { name: 'deleteAttachments', code: 3144 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -118,7 +118,7 @@ class clientModificationAddEdit extends Component {
             answer: RichTextEditor.createEmptyValue(),
         }
 
-        if (!Config.IsAllow(3147) || !Config.IsAllow(3148) || !Config.IsAllow(3150)) {
+        if (!Config.IsAllow(3133) || !Config.IsAllow(3134) || !Config.IsAllow(3136)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/clientSelection/" + projectId
@@ -159,12 +159,12 @@ class clientModificationAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(3148))) {
+            if (!(Config.IsAllow(3134))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(3148)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(3148)) {
-                    if (this.props.document.status !== false && Config.IsAllow(3148)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(3134)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(3134)) {
+                    if (this.props.document.status !== false && Config.IsAllow(3134)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
