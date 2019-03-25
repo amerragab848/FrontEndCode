@@ -2766,7 +2766,6 @@ button.companies_icon {
 .removeTr div .pdfImage img {
   height: 20px;
 }
-<<<<<<< HEAD
 .precycle-grid .ReactTable .rt-thead .rt-resizable-header {
   font-family: font-b;
   font-size: 14px;
@@ -2822,7 +2821,6 @@ button.companies_icon {
   top: -54px;
   left: 145px;
 } */
-=======
 .slider-Btns.fullWidthWrapper.textLeft {
   margin: 0
 }
@@ -2838,4 +2836,3 @@ button.companies_icon {
 .ui.disabled.input, .ui.input:not(.disabled) input[disabled] {
   opacity: 1 !important;
 }
->>>>>>> 912ffcbd412251063e96998e6b4a7f4061487d4f
