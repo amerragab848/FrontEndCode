@@ -196,6 +196,12 @@ class materialInspectionRequestAddEdit extends Component {
         this.editCycle = this.editCycle.bind(this);
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {

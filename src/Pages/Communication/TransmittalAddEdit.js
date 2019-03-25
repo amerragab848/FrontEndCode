@@ -134,6 +134,12 @@ class TransmittalAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id) {
             

@@ -169,6 +169,12 @@ class TaskGroupsAddEdit extends Component {
         )
     }
      
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     MaxArrangeContacts=()=>{
     
         Api.get('GetNextArrangeItems?docId='+docId+'&docType=89').then(

@@ -181,6 +181,12 @@ class phoneAddEdit extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     fillDropDowns(isEdit) {
         DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId, 'companyName', 'companyId').then(res => {
             this.setState({ CompanyData: [...res], isLoading: false })
