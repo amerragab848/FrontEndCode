@@ -65,6 +65,7 @@ import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionLi
 import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
 import clientSelectionAddEdit from "./Pages/TechnicalOffice/ClientSelectionAddEdit";
 import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
+import siteInstructions from "./Pages/TechnicalOffice/siteInstructions";
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -144,6 +145,7 @@ let originalRoutes = [
     , <Route path="/NCRAddEdit" component={NCRAddEdit} />
     , <Route path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
     , <Route path="/clientModificationAddEdit" component={clientModificationAddEdit} />
+    , <Route path="/siteInstructions" component={siteInstructions} />
     
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
