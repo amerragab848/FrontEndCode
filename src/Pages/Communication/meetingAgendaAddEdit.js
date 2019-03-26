@@ -189,7 +189,6 @@ class meetingAgendaAddEdit extends Component {
             btnText: 'add',
             meetingAgenda: [],
             selectedMeetingAgenda: { label: Resources.meetingMinutesSelect[currentLanguage], value: "0" },
-
             Companies: [],
             fromContacts: [],
             calledContacts: [],
@@ -197,22 +196,17 @@ class meetingAgendaAddEdit extends Component {
             noteTakerContacts: [],
             selectedTopicContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
             selectedTopicCompany: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-
-
-
             selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
             selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
             selectedFacilitatorCompany: { label: Resources.facilitatorCompanyRequired[currentLanguage], value: "0" },
             selectedFacilitatorContact: { label: Resources.facilitatorContactReuired[currentLanguage], value: "0" },
             selectedNoteTakerCompany: { label: Resources.noteTakerCompanyReuired[currentLanguage], value: "0" },
             selectedNoteTakerContact: { label: Resources.noteTakerContactRequired[currentLanguage], value: "0" },
-
             isLoading: true,
             permission: [{ name: 'sendByEmail', code: 458 }, { name: 'sendByInbox', code: 457 },
             { name: 'sendTask', code: 0 }, { name: 'distributionList', code: 967 },
             { name: 'createTransmittal', code: 3055 }, { name: 'sendToWorkFlow', code: 719 },
             { name: 'viewAttachments', code: 3324 }, { name: 'deleteAttachments', code: 838 }],
-
             document: {},
         }
         if (!Config.IsAllow(452) || !Config.IsAllow(453) || !Config.IsAllow(455)) {
@@ -278,7 +272,7 @@ class meetingAgendaAddEdit extends Component {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })
             this.props.actions.documentForEdit('GetCommunicationMeetingAgendaForEdit?id=' + this.state.docId).then(() => {
-                this.setState({ agendaId: this.state.docId, isLoading: false,showForm:true })
+                this.setState({ agendaId: this.state.docId, isLoading: false, showForm: true })
                 this.checkDocumentIsView();
                 this.getTabelData()
             })
@@ -373,7 +367,6 @@ class meetingAgendaAddEdit extends Component {
                 : null
         )
     }
-    //#region    adding
     addMeetingAgenda = () => {
         this.setState({ isLoading: true })
         let documentObj = { ...this.state.document };
@@ -423,20 +416,22 @@ class meetingAgendaAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (edit) {
                 let id = this.state.topic.id
-                let topics = _.filter(this.state.topics, function (x) {
-                    return x.id != id;
-                });
-                this.setState({ showPopUp: false, topics: topics })
+                let topics = _.filter(this.state.topics, function (x) { return x.id != id; });
+                topics.push({
+                    id: res.id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
+                    comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
+                })
+                this.setState({showPopUp: false, topics: topics})
             }
-            let data=[]
-            if (this.state.topics.length > 0)
-                 data = [...this.state.topics];
-            data.push({
-                id: res.Id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
-                comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
-            })
+            else {
+                let data = [...this.state.topics];
+                data.push({
+                    id: res.id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
+                    comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
+                })
+                this.setState({ topics: data })
+            }
             this.setState({
-                topics: data,
                 topic: { itemDescription: '', action: '', comment: '', decision: '', requiredDate: moment() },
                 selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
                 selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
@@ -459,16 +454,26 @@ class meetingAgendaAddEdit extends Component {
             let id = this.state.attendeesId
             if (this.state.showPopUp) {
                 let attendess = _.filter(this.state.attendees, function (x) { return x.id != id; });
-                this.setState({ showPopUp: false, attendees: attendess })
+                this.setState({ showPopUp: false, attendees: attendess }, function () {
+                    let data = [...this.state.attendees];
+                    data.push({
+                        id: id, companyId: this.state.selectedActionByCompany.value, contactId: this.state.selectedActionByContact.values,
+                        companyName: this.state.selectedActionByCompany.label, contactName: this.state.selectedActionByContact.label
+                    })
+                    this.setState({ attendees: data })
+                })
             }
-            let data = [...this.state.attendees];
-            data.push({
-                id: id, companyId: this.state.selectedActionByCompany.value, contactId: this.state.selectedActionByContact.values,
-                companyName: this.state.selectedActionByCompany.label, contactName: this.state.selectedActionByContact.label
-            })
+            else {
+                let data = [...this.state.attendees];
+                data.push({
+                    id: id, companyId: this.state.selectedActionByCompany.value, contactId: this.state.selectedActionByContact.values,
+                    companyName: this.state.selectedActionByCompany.label, contactName: this.state.selectedActionByContact.label
+                })
+                this.setState({ attendees: data })
+
+            }
             toast.success(Resources["operationSuccess"][currentLanguage]);
             this.setState({
-                attendees: data,
                 attendencesContacts: [],
                 selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
                 selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
@@ -479,7 +484,6 @@ class meetingAgendaAddEdit extends Component {
             });
         })
     }
-    //#endregion
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
@@ -489,13 +493,14 @@ class meetingAgendaAddEdit extends Component {
     }
 
     ConfirmDelete = () => {
-        console.log('row', this.state.selectedRow)
         this.setState({ isLoading: true })
         if (this.state.CurrStep == 2) {
-            Api.post('CommunicationMeetingAgendaAttendeesDelete?id=' + this.state.selectedRow[0]).then((res) => {
+            Api.get('CommunicationMeetingAgendaAttendeesDelete?id=' + this.state.selectedRow[0]).then((res) => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let data = this.state.attendees.filter(item => item.id != this.state.selectedRow[0]);
                 this.setState({ attendees: data, showDeleteModal: false, isLoading: false });
+            }).catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
             })
         }
         if (this.state.CurrStep == 3) {
