@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import Api from "../../api"; 
-import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
 import CryptoJS from 'crypto-js';
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../../Componants/OptionsPanels/Export"; 
+import Export from "../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
@@ -22,33 +20,33 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter } = Filters;
 
 const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-  };
+  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
 
-  let subjectLink = ({ value, row }) => {
+let subjectLink = ({ value, row }) => {
 
-    let subject = "";
-    if (row) {
+  let subject = "";
+  if (row) {
 
-      let obj = {
-        docId: row.id,
-        projectId: row.projectId,
-        projectName: row.projectName,
-        arrange: 0,
-        docApprovalId: 0,
-        isApproveMode: false
-      };
+    let obj = {
+      docId: row.id,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: 0,
+      docApprovalId: 0,
+      isApproveMode: false
+    };
 
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-      let doc_view = "/ProjectTaskAddEdit" + "?id=" + encodedPaylod
-      subject = row.subject;
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    let doc_view = "/ProjectTaskAddEdit" + "?id=" + encodedPaylod
+    subject = row.subject;
 
-      return <a href={doc_view}> {subject} </a>; 
-      
-    }
-    return null;
-  };
+    return <a href={doc_view}> {subject} </a>;
+
+  }
+  return null;
+};
 
 class ProjectTasks extends Component {
 
@@ -71,7 +69,7 @@ class ProjectTasks extends Component {
       {
         //key: "status",
         key: "BtnActions",
-        width:150
+        width: 150
       },
       {
         key: "actualProgress",
@@ -105,7 +103,7 @@ class ProjectTasks extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:subjectLink
+        formatter: subjectLink
       },
       {
         key: "suspendedText",
@@ -161,7 +159,7 @@ class ProjectTasks extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "originalEstimatedTime",
@@ -228,7 +226,7 @@ class ProjectTasks extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "finishDate",
@@ -240,7 +238,7 @@ class ProjectTasks extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "docDelay",
@@ -296,7 +294,7 @@ class ProjectTasks extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "lastSendTime",
@@ -319,7 +317,7 @@ class ProjectTasks extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "lastApproveTime",
@@ -342,7 +340,7 @@ class ProjectTasks extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
 
@@ -396,7 +394,7 @@ class ProjectTasks extends Component {
         name: "docClosedate",
         type: "date",
         isCustom: false
-      }, 
+      },
       {
         field: "originalEstimatedTime",
         name: "originalEstimatedTime",
@@ -462,56 +460,62 @@ class ProjectTasks extends Component {
         name: "lastEditDate",
         type: "date",
         isCustom: false
-      } 
+      }
     ];
 
     this.state = {
       projectName: localStorage.getItem('lastSelectedprojectName'),
-      pageTitle:Resources["projectTaskGroups"][currentLanguage],
+      pageTitle: Resources["projectTaskGroups"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
       isCustom: true,
-      apiFilter:"",
-      api:"",
-      viewModal:false ,
-      projectId : props.match.params.projectId,
+      apiFilter: "",
+      api: "",
+      viewModal: false,
+      projectId: props.match.params.projectId,
       totalRows: 0,
       pageSize: 50,
       pageNumber: 0,
-      query:"",
-      showCheckbox:true,
+      query: "",
+      showCheckbox: true,
       showDeleteModal: false,
       selectedRows: [],
       minimizeClick: false,
     };
   }
 
+  componentWillUnmount() {
+    this.setState({
+      docId: 0
+    });
+  }
+
   componentWillMount() {
 
-    let url = this.state.isCustom === true? "GetTasksByProjectIdCustom?projectId="+this.state.projectId+"&pageNumber="+this.state.pageNumber +"&pageSize="+this.state.pageSize:
-                                            "GetTasksByProjectId?projectId="+this.state.projectId+"&pageNumber="+this.state.pageNumber +"&pageSize="+this.state.pageSize
-                                            
+    let url = this.state.isCustom === true ? "GetTasksByProjectIdCustom?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize :
+      "GetTasksByProjectId?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
+
     Api.get(url).then(
       result => {
         this.setState({
           rows: result != null ? result.data : [],
           isLoading: false,
-          api:"GetTasksByProjectIdCustom",
-          totalRows:result.total
+          api: "GetTasksByProjectIdCustom",
+          totalRows: result.total
         });
       }
     );
   }
-  
+
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
     return this.state.viewfilter;
   }
- 
+
 
   GetPrevoiusData() {
 
@@ -524,7 +528,7 @@ class ProjectTasks extends Component {
       });
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber +
-                "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
+        "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
       Api.get(url).then(result => {
         let oldRows = [];
@@ -544,7 +548,7 @@ class ProjectTasks extends Component {
       });
     }
   }
- 
+
   GetNextData() {
 
     let pageNumber = this.state.pageNumber + 1;
@@ -558,11 +562,11 @@ class ProjectTasks extends Component {
       });
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" +
-                 this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
+        this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
       Api.get(url).then(result => {
-        let oldRows = []; 
-        const newRows = [...oldRows, ...result.data]; 
+        let oldRows = [];
+        const newRows = [...oldRows, ...result.data];
 
         this.setState({
           rows: newRows,
@@ -594,54 +598,54 @@ class ProjectTasks extends Component {
   filterMethodMain = (event, query, apiFilter) => {
     var stringifiedQuery = JSON.stringify(query);
 
-    stringifiedQuery = stringifiedQuery.replace(/#/g,'%23');
+    stringifiedQuery = stringifiedQuery.replace(/#/g, '%23');
 
     this.setState({
       isLoading: true,
       query: stringifiedQuery
     });
 
-    Api.get("ProjectTackFilter?projectId="+this.state.projectId+"&pageNumber=" + this.state.pageNumber +"&pageSize="+this.state.pageSize +"&query="+stringifiedQuery).then(result => {
-        if (result.length > 0) {
-        
-      this.setState({
-        rows: [...result.data],
-        totalRows: result.total,
-        isLoading: false,
-        apiFilter:"ProjectTackFilter"
-      });
-        } else {
-          this.setState({
-            isLoading: false,
-            apiFilter:"ProjectTackFilter"
-          });
-        }
-      })
-      .catch(ex => { 
+    Api.get("ProjectTackFilter?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
+      if (result.length > 0) {
+
+        this.setState({
+          rows: [...result.data],
+          totalRows: result.total,
+          isLoading: false,
+          apiFilter: "ProjectTackFilter"
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          apiFilter: "ProjectTackFilter"
+        });
+      }
+    })
+      .catch(ex => {
         this.setState({
           rows: [],
           isLoading: false
         });
       });
   };
-   
 
-//   cellClick = (rowID, colID) => {
-//     let id = this.state.rows[rowID]['id']
-//     if (colID == 1)
-//         this.viewContact(id)
-//     else if (!Config.IsAllow(1257)) {
-//         toast.warning("you don't have permission");
-//     }
-//     else if (colID != 0 && ) {
-//         this.props.history.push({
-//             pathname: "/AddEditCompany/" + id,
-//         });
-//     }
-// }
+
+  //   cellClick = (rowID, colID) => {
+  //     let id = this.state.rows[rowID]['id']
+  //     if (colID == 1)
+  //         this.viewContact(id)
+  //     else if (!Config.IsAllow(1257)) {
+  //         toast.warning("you don't have permission");
+  //     }
+  //     else if (colID != 0 && ) {
+  //         this.props.history.push({
+  //             pathname: "/AddEditCompany/" + id,
+  //         });
+  //     }
+  // }
 
   addRecord() {
-    if (Config.IsAllow(357)) { 
+    if (Config.IsAllow(357)) {
 
       let obj = {
         docId: 0,
@@ -658,97 +662,97 @@ class ProjectTasks extends Component {
       this.props.history.push({
         pathname: "/ProjectTaskAddEdit",
         search: "?id=" + encodedPaylod
-      }); 
+      });
     }
   }
 
   GetCellActions(column, row) {
     if (column.key === 'BtnActions') {
-        return [{
-            icon: "fa fa-pencil",
-            actions: [
-                {
-                    text: Resources['isTaskAdmin'][currentLanguage],
-                    callback: (e) => {
-                        if (Config.IsAllow(1001102)) {
-                            this.props.history.push({
-                                pathname: '/TaskAdmin',
-                                search: "?id=" + row.id
-                            })
-                        }
-                    }
-                },
-                {
-                    text: 'EPS',
-                    callback: () => {
-                        if (Config.IsAllow(1001103)) {
-                            this.props.history.push({
-                                pathname: '/AccountsEPSPermissions',
-                                search: "?id=" + row.id
-                            })
-                        }
-                    }
-                },
-                {
-                    text: Resources['Projects'][currentLanguage],
-                    callback: () => {
-                        if (Config.IsAllow(1001104)) {
-                            this.props.history.push({
-                                pathname: '/UserProjects',
-                                search: "?id=" + row.id
-                            })
-                        }
-                    }
-                },
-                {
-                    text: Resources['Companies'][currentLanguage],
-                    callback: () => {
-                        if (Config.IsAllow(1001105)) {
-                            this.props.history.push({
-                                pathname: '/AccountsCompaniesPermissions',
-                                search: "?id=" + row.id
-                            })
-                        }
-                    }
-                },
-                {
-                    text: "Reset Password",
-                    callback: () => {
-                        if (Config.IsAllow(1001106)) {
-                            let text = "";
-                            let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                            for (var i = 0; i < 7; i++) {
-                                text += possible.charAt(Math.floor(Math.random() * possible.length));
-                            }
-                            let _newPassEncode = CryptoJS.enc.Utf8.parse(JSON.stringify(text))
-                            let newPassEncode = CryptoJS.enc.Base64.stringify(_newPassEncode)
-
-                            this.setState({
-                                NewPassword: newPassEncode,
-                                showResetPasswordModal: true,
-                                rowSelectedId: row.id,
-                            })
-                        }
-                    }
+      return [{
+        icon: "fa fa-pencil",
+        actions: [
+          {
+            text: Resources['isTaskAdmin'][currentLanguage],
+            callback: (e) => {
+              if (Config.IsAllow(1001102)) {
+                this.props.history.push({
+                  pathname: '/TaskAdmin',
+                  search: "?id=" + row.id
+                })
+              }
+            }
+          },
+          {
+            text: 'EPS',
+            callback: () => {
+              if (Config.IsAllow(1001103)) {
+                this.props.history.push({
+                  pathname: '/AccountsEPSPermissions',
+                  search: "?id=" + row.id
+                })
+              }
+            }
+          },
+          {
+            text: Resources['Projects'][currentLanguage],
+            callback: () => {
+              if (Config.IsAllow(1001104)) {
+                this.props.history.push({
+                  pathname: '/UserProjects',
+                  search: "?id=" + row.id
+                })
+              }
+            }
+          },
+          {
+            text: Resources['Companies'][currentLanguage],
+            callback: () => {
+              if (Config.IsAllow(1001105)) {
+                this.props.history.push({
+                  pathname: '/AccountsCompaniesPermissions',
+                  search: "?id=" + row.id
+                })
+              }
+            }
+          },
+          {
+            text: "Reset Password",
+            callback: () => {
+              if (Config.IsAllow(1001106)) {
+                let text = "";
+                let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                for (var i = 0; i < 7; i++) {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
                 }
-            ]
-        }];
+                let _newPassEncode = CryptoJS.enc.Utf8.parse(JSON.stringify(text))
+                let newPassEncode = CryptoJS.enc.Base64.stringify(_newPassEncode)
+
+                this.setState({
+                  NewPassword: newPassEncode,
+                  showResetPasswordModal: true,
+                  rowSelectedId: row.id,
+                })
+              }
+            }
+          }
+        ]
+      }];
     }
-}
+  }
 
   clickHandlerDeleteRowsMain = selectedRows => {
     if (Config.IsAllow(359)) {
- 
+
       this.setState({
         showDeleteModal: true,
         selectedRows: selectedRows
       });
     } else {
-      toast.WARNING(Resources["missingPermissions"][currentLanguage]); 
+      toast.WARNING(Resources["missingPermissions"][currentLanguage]);
     }
   };
 
- onCloseModal = () => {
+  onCloseModal = () => {
     this.setState({ showDeleteModal: false });
   };
 
@@ -775,40 +779,40 @@ class ProjectTasks extends Component {
           showDeleteModal: false
         });
 
-        toast.success(Resources["operationSuccess"][currentLanguage]); 
-        
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
       }).catch(ex => {
         this.setState({
           isLoading: false,
           showDeleteModal: false
-        }); 
+        });
 
-        toast.WARNING(Resources["operationSuccess"][currentLanguage]); 
+        toast.WARNING(Resources["operationSuccess"][currentLanguage]);
       });
   };
 
   render() {
     const dataGrid =
-      this.state.isLoading === false ? ( 
-       <GridSetup rows={this.state.rows}
-                    columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    IsActiv={this.IsActive}
-                    cellClick={this.cellClick}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    getCellActions={this.GetCellActions}
-                    UnSelectIsActiv={this.UnSelectIsActiv}
-                    pageSize={this.state.pageSize}
-                />
-      ) : <LoadingSection/>;
+      this.state.isLoading === false ? (
+        <GridSetup rows={this.state.rows}
+          columns={this.state.columns}
+          showCheckbox={this.state.showCheckbox}
+          IsActiv={this.IsActive}
+          cellClick={this.cellClick}
+          clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+          getCellActions={this.GetCellActions}
+          UnSelectIsActiv={this.UnSelectIsActiv}
+          pageSize={this.state.pageSize}
+        />
+      ) : <LoadingSection />;
 
-      const btnExport = this.state.isLoading === false ? 
-                        <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-                        : null ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : null;
 
-      const ComponantFilter= this.state.isLoading === false ?   
-                            <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain}  /> : null;
-  
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> : null;
+
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
@@ -871,21 +875,21 @@ class ProjectTasks extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
-           {btnExport}
-           <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
-          </div> 
+            {btnExport}
+            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
+          </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
               <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
@@ -898,13 +902,13 @@ class ProjectTasks extends Component {
               <i className="angle right icon" />
             </button>
           </div>
-      
+
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
-            {ComponantFilter} 
+            {ComponantFilter}
           </div>
-        </div> 
+        </div>
         <div>
           <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
             <div className="minimizeSpan">
@@ -937,5 +941,5 @@ class ProjectTasks extends Component {
     );
   }
 }
-  
+
 export default ProjectTasks;

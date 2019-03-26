@@ -104,6 +104,13 @@ class reportsAddEdit extends Component {
             });
         }
     }
+    
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     componentDidMount() {
 
         this.checkDocumentIsView();

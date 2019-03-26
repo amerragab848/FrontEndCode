@@ -496,6 +496,12 @@ class inspectionRequestAddEdit extends Component {
 
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     onChangeMessage = (value, field) => {
         let isEmpty = !value.getEditorState().getCurrentContent().hasText();
         if (isEmpty === false) {

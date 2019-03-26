@@ -6,11 +6,7 @@ import initialState from '../initialState';
 export default function (state = initialState.app.communication, action) {
 
     switch (action.type) {
-        case types.ViewDocumentAttach:
-        state.viewModel = action.data 
-        return {
-            ...state
-        }
+        
         case types.Document_for_Edit:
             return {
                 ...state,

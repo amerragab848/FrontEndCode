@@ -125,6 +125,12 @@ class clientModificationAddEdit extends Component {
             });
         }
     }
+    
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
 
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
