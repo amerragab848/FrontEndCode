@@ -60,7 +60,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
-class siteInstructions extends Component {
+class siteInstructionsAddEdit extends Component {
 
     constructor(props) {
 
@@ -1010,4 +1010,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(siteInstructions))
+)(withRouter(siteInstructionsAddEdit))
