@@ -63,6 +63,9 @@ import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialIns
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
 import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
 import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
+import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEdit";
+import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
+import siteInstructionsAddEdit from "./Pages/TechnicalOffice/siteInstructionsAddEdit";
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -140,6 +143,9 @@ let originalRoutes = [
     , <Route path="/meetingAgendaAddEdit" component={meetingAgendaAddEdit} />
     , <Route path="/projectDistributionListAddEdit" component={projectDistributionListAddEdit} />
     , <Route path="/NCRAddEdit" component={NCRAddEdit} />
+    , <Route path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
+    , <Route path="/clientModificationAddEdit" component={clientModificationAddEdit} />
+    , <Route path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
     
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

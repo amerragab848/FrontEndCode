@@ -362,6 +362,12 @@ class RfiAddEdit extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     handleChangeDate(e, field) {
 
         let original_document = { ...this.state.document };

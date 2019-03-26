@@ -196,6 +196,12 @@ class materialInspectionRequestAddEdit extends Component {
         this.editCycle = this.editCycle.bind(this);
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -994,7 +1000,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                 <Formik
                                                     initialValues={{ ...this.state.document }}
                                                     validationSchema={validationSchema}
-                                                    enableReinitialize={true}
+                                                    enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveInspectionRequest();

@@ -181,6 +181,12 @@ class TaskGroupsAddEdit extends Component {
         )
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     componentWillMount = () => {
         this.FillCompanyDrop();
         this.FillContactsList()
