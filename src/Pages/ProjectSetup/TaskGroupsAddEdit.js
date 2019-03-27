@@ -504,6 +504,7 @@ class TaskGroupsAddEdit extends Component {
                     : <LoadingSection />
             )
         })
+     
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
@@ -835,7 +836,6 @@ class TaskGroupsAddEdit extends Component {
                         this.props.changeStatus === true && this.state.IsEditMode ?
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
-                                    {/* <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editPhone(e)}>{Resources.save[currentLanguage]}</button> */}
                                     {this.state.isApproveMode === true ?
                                         <div >
                                             <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>

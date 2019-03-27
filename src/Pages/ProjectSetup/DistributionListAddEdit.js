@@ -58,7 +58,7 @@ let arrange = 0;
 let actions = []
 
 class TaskGroupsAddEdit extends Component {
-    
+
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -150,7 +150,7 @@ class TaskGroupsAddEdit extends Component {
             ContactsTable: [],
             rowId: [],
             index: 0,
-            MaxArrangeContact:1,
+            MaxArrangeContact: 1,
             DeleteFromLog: false,
             Dis_ListData: {},
             permission: [{ name: 'sendByEmail', code: 631 }, { name: 'sendByInbox', code: 630 },
@@ -180,7 +180,7 @@ class TaskGroupsAddEdit extends Component {
         Api.get('GetNextArrangeItems?docId='+docId+'&docType=89').then(
             res=>{
                 this.setState({
-                    MaxArrangeContact:res
+                    MaxArrangeContact: res
                 })
             }
         )
@@ -232,7 +232,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     PreviousStep = () => {
-        if (this.state.IsEditMode ) {
+        if (this.state.IsEditMode) {
             if (this.state.CurrStep === 2) {
                 window.scrollTo(0, 0)
                 this.setState({
@@ -319,6 +319,7 @@ class TaskGroupsAddEdit extends Component {
                     isLoading: false,
                     DeleteFromLog: false
                 })
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
 
         ).catch(ex => {
@@ -326,9 +327,10 @@ class TaskGroupsAddEdit extends Component {
                 showDeleteModal: false,
                 isLoading: false,
                 DeleteFromLog: false
-            });
-        });
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            })
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        })
+
     }
 
     onCloseModal = () => {
@@ -358,9 +360,12 @@ class TaskGroupsAddEdit extends Component {
                     isLoading: false
                 })
                 this.MaxArrangeContacts()
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
-        )
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        ).catch(ex => {
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        });
+
         values.Company = ''
         values.ContactName = ''
         values.ArrangeContact = this.state.MaxArrangeContact
@@ -369,43 +374,46 @@ class TaskGroupsAddEdit extends Component {
     }
 
     AddEditDis_List = (values, actions) => {
-        let Date = moment(this.state.DocumentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        if (this.state.IsEditMode) {
-            Api.post('EditProjectDistributionList', {
 
-                arrange: values.ArrangeTaskGroups,
-                docDate: Date,
-                id: docId,
-                projectId: projectId,
-                status: this.state.Status,
-                subject: values.Subject,
-            }).then(
+        let Date = moment(this.state.DocumentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+
+        if (this.state.IsEditMode) {
+
+            let saveDoc = {
+                arrange: values.ArrangeTaskGroups, docDate: Date,
+                id: docId, projectId: projectId,
+                status: this.state.Status, subject: values.Subject,
+            }
+            dataservice.addObject('EditProjectDistributionList', saveDoc).then(
                 res => {
                     this.setState({
                         Dis_ListData: res
                     })
-                })
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    this.NextStep()
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
         }
+
         else {
-
-            Api.post('AddProjectDistributionList', {
-                id: undefined,
-                projectId: this.state.projectId,
-                arrange: values.ArrangeTaskGroups,
-                subject: values.Subject,
-                docDate: Date,
-                status: this.state.Status,
-            }).then(
-
+            let saveDoc = {
+                id: undefined, projectId: this.state.projectId,
+                arrange: values.ArrangeTaskGroups, docDate: Date,
+                subject: values.Subject, status: this.state.Status,
+            }
+            dataservice.addObject('AddProjectDistributionList', saveDoc).then(
                 res => {
                     docId = res.id
                     this.setState({
                         Dis_ListData: res
                     })
-                })
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    this.NextStep()
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
         }
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-        this.NextStep()
 
     }
 
@@ -741,9 +749,17 @@ class TaskGroupsAddEdit extends Component {
                                         </Fragment>
                                         : null
                                     }
+
+                                    <div className="doc-pre-cycle letterFullWidth">
+                                        <div>
+                                            {this.props.changeStatus === true ?
+                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                : null
+                                            }
+                                        </div>
+                                    </div>
                                 </Fragment>
                                 :
-
                                 /* SecoundStep */
                                 < div className="subiTabsContent feilds__top">
 

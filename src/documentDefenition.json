@@ -15467,7 +15467,7 @@
         "exportDataType": "d"
       }
     ],
-    "filterApi": "SiteInstructionFilterAll",
+    "filterApi": "SiteInstructionFilter",
     "filters": [
       {
         "name": "numberAbb",
