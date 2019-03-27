@@ -21,7 +21,8 @@ export default {
 			topics:[],
 			viewModel:false,
 			moduleName:"",
-			items:[]
+			items:[],
+			attachDocuments:[]
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},

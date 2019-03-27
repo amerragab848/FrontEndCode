@@ -33,6 +33,7 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -325,7 +326,7 @@ class materialInspectionRequestAddEdit extends Component {
                 this.GetNExtArrange();
             });
             this.fillDropDowns(false);
-             this.props.actions.documentForAdding();
+            this.props.actions.documentForAdding();
         }
     };
 
@@ -1367,22 +1368,13 @@ class materialInspectionRequestAddEdit extends Component {
                                         :
                                         //Third Step
                                         <Fragment>
-                                            <div className='document-fields'>
-                                                <table className="ui table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Subject</th>
+                                            {/* <div className='document-fields'> 
+                                            </div> */}
 
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
 
-                                                        {/* {renderMultiApprovalTable} */}
+                                            <div className="document-fields tableBTnabs">
 
-                                                    </tbody>
-                                                </table>
+                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                             </div>
 
                                             <div className="doc-pre-cycle">

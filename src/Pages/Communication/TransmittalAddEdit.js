@@ -21,8 +21,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
-import DocumentsAttachmentPanel from "../../Componants/publicComponants/DocumentsAttachmentPanel"; 
-import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
   
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
