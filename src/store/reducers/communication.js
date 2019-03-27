@@ -137,7 +137,8 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
                 projectId: action.projectId,
-                projectName: action.projectName
+                projectName: action.projectName,
+                moduleName: action.moduleName
             };
 
         case types.FillGridLeftMenu:

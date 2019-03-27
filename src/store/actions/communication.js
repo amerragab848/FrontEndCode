@@ -81,14 +81,10 @@ export function uploadFile(BlobUpload, formData, header) {
     }
 }
 
-export function updateField(field, value, document) {
-
-    //console.log('in Actions updateField '); 
+export function updateField(field, value, document) { 
     let oldDoc = { ...document };
     oldDoc[field] = value;
-
-    //console.log(oldDoc);
-
+ 
     return (dispatch, getState) => {
         dispatch({
             type: types.Update_Field,
@@ -133,12 +129,7 @@ export function GetNextArrange(urlAction) {
 
 export function SnedToWorkFlow(url, formData, urlCycle) {
     return (dispatch, getState) => {
-        return Api.post(url, formData).then(resp => {
-
-            // dispatch({
-            //         type: types.Send_WorkFlow,
-            //         hasWorkflow: true
-            // });
+        return Api.post(url, formData).then(resp => { 
             this.GetWorkFlowCycles(urlCycle);
         }).catch((ex) => {
             dispatch({
@@ -213,14 +204,15 @@ export function AboveSelectProject(event) {
         });
     }
 }
-export function LeftMenuClick(event) {
+export function LeftMenuClick(event,moduleName) {
     return (dispatch, getState) => {
         dispatch({
             type: types.LeftMenuClick,
             showLeftMenu: true,
             showSelectProject: false,
             projectId: event.value,
-            projectName: event.label
+            projectName: event.label,
+            moduleName: moduleName
         });
     }
 }

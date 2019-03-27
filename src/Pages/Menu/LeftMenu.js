@@ -90,6 +90,7 @@ class LeftMenu extends Component {
     });
 
     this.state = {
+      moduleName: "General",
       hover: false,
       projectId: currentProjectId,
       ListEps: [],
@@ -232,46 +233,46 @@ class LeftMenu extends Component {
     this.setState({ accordion: !this.state.accordion });
   };
 
-  ModuleHandler = () => { 
+  ModuleHandler = () => {
     if (this.state.projectId > 0) {
- 
+
       if (this.state.ActivePanal === 1) {
         accordion = false;
         this.setState(state => {
-          return { 
+          return {
             viewEps: false,
-            viewModules: true, 
+            viewModules: true,
             ActivePanal: 2
           };
         });
- 
+
         viewEps = false;
-        viewModules = true; 
+        viewModules = true;
         ActivePanal = 2;
       } else {
         this.setState(state => {
           return {
             viewEps: true,
-            viewModules: false, 
+            viewModules: false,
             ActivePanal: 1
           };
         });
         viewEps = true;
-        viewModules = false; 
+        viewModules = false;
         ActivePanal = 1;
       }
     } else {
       accordion = false;
       this.setState(state => {
-        return { 
+        return {
           viewEps: false,
-          viewModules: true, 
+          viewModules: true,
           ActivePanal: 2
         };
       });
 
       viewEps = true;
-      viewModules = false; 
+      viewModules = false;
       ActivePanal = 2;
     }
 
@@ -282,12 +283,17 @@ class LeftMenu extends Component {
     });
   };
 
-  OpenSubMenu = (id) => {
+  OpenSubMenu = (id, moduleName) => {
     if (this.state.rowIndex != id) {
-      this.setState({ rowIndex: id });
+      this.setState({ rowIndex: id, moduleName: moduleName });
     } else {
-      this.setState({ rowIndex: 0 });
+      this.setState({ rowIndex: 0, moduleName: moduleName });
     }
+
+    var e = { label: this.state.titleProject, value: this.state.projectId };
+
+    this.props.actions.LeftMenuClick(e, moduleName);
+
   };
 
   componentWillMount = () => {
@@ -299,6 +305,7 @@ class LeftMenu extends Component {
   };
 
   selectProjectHandler = (projectId, titleProject) => {
+
     this.setState(state => {
       return {
         viewEps: false,
@@ -321,12 +328,12 @@ class LeftMenu extends Component {
     });
 
     var e = { label: titleProject, value: projectId };
-
-    this.props.actions.LeftMenuClick(e);
-
+    let moduleName = this.state.moduleName;
+     
+    this.props.actions.LeftMenuClick(e, moduleName);
     localStorage.setItem("lastSelectedProject", projectId);
-
     localStorage.setItem("lastSelectedprojectName", titleProject);
+
   };
 
   EpsComponent() {
@@ -423,7 +430,7 @@ class LeftMenu extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.projectId != this.state.projectId) {
-      this.setState({ projectId: nextProps.projectId });
+      this.setState({ projectId: nextProps.projectId, titleProject: nextProps.projectName, moduleName: nextProps.moduleName });
       viewModules = true;
       viewEps = false;
     }
@@ -455,7 +462,7 @@ class LeftMenu extends Component {
                       <ul className="zero">{this.ComponentName()}</ul>
                     </div>
 
-                    <div className={(viewEps ) ? "MainProjectsMenu active " : "MainProjectsMenu hidden"} >
+                    <div className={(viewEps) ? "MainProjectsMenu active " : "MainProjectsMenu hidden"} >
                       <div className="backToModules" onClick={this.ModuleHandler}>
                         {this.state.projectId ? (
                           <a >
@@ -469,7 +476,7 @@ class LeftMenu extends Component {
                       <div>{this.EpsComponent()}</div>
                     </div>
 
-                    <div className={(viewModules ) ? "modulesMenuIcons active "   : "modulesMenuIcons  hidden "  }>
+                    <div className={(viewModules) ? "modulesMenuIcons active " : "modulesMenuIcons  hidden "}>
                       <div className="backtoProjects" onClick={this.ModuleHandler}>
                         <div className="backtoProjectsOne" >
                           <span>
@@ -522,7 +529,7 @@ class LeftMenu extends Component {
                           </a>
                         </li>
                         <li className={this.state.rowIndex === 1 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 1 ? "title active" : "title"} onClick={() => this.OpenSubMenu(1)} >
+                          <a className={this.state.rowIndex === 1 ? "title active" : "title"} onClick={() => this.OpenSubMenu(1, Resources["generalCoordination"][currentLanguage])} >
                             <span className="ULimg">
                               <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -545,8 +552,8 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 1 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.generalMenu.map((r, index) => {
                               return (
-                                <li key={index} >
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 1) ? "active" : " "} onClick={() => this.activeLi(index, this.state.generalMenu.length)} >
+                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -556,7 +563,7 @@ class LeftMenu extends Component {
                         </li>
 
                         <li className={this.state.rowIndex === 2 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 2 ? "title active" : "title"} onClick={() => this.OpenSubMenu(2)}>
+                          <a className={this.state.rowIndex === 2 ? "title active" : "title"} onClick={() => this.OpenSubMenu(2, Resources["communication"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -603,7 +610,7 @@ class LeftMenu extends Component {
 
                             {this.state.communication.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.communication.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 2) ? "active" : " "} onClick={() => this.activeLi(index, this.state.communication.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -613,7 +620,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 3 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 3 ? "title active" : "title"} onClick={() => this.OpenSubMenu(3)}>
+                          <a className={this.state.rowIndex === 3 ? "title active" : "title"} onClick={() => this.OpenSubMenu(3, Resources["procurement"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -657,7 +664,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 3 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.procurementMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.procurementMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 3) ? "active" : " "} onClick={() => this.activeLi(index, this.state.procurementMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -667,7 +674,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 4 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 4 ? "title active" : "title"} onClick={() => this.OpenSubMenu(4)}>
+                          <a className={this.state.rowIndex === 4 ? "title active" : "title"} onClick={() => this.OpenSubMenu(4, Resources["technicalOffice"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="24px"
@@ -731,7 +738,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 4 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.siteMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.siteMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 4) ? "active" : " "} onClick={() => this.activeLi(index, this.state.siteMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -741,7 +748,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 5 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 5 ? "title active" : "title"} onClick={() => this.OpenSubMenu(5)}>
+                          <a className={this.state.rowIndex === 5 ? "title active" : "title"} onClick={() => this.OpenSubMenu(5, Resources["contractCoordination"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -785,7 +792,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 5 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.contractMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.contractMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 5) ? "active" : " "} onClick={() => this.activeLi(index, this.state.contractMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -795,7 +802,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 6 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 6 ? "title active" : "title"} onClick={() => this.OpenSubMenu(6)}>
+                          <a className={this.state.rowIndex === 6 ? "title active" : "title"} onClick={() => this.OpenSubMenu(6, Resources["timeCordination"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -839,7 +846,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 6 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.timeMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.timeMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 6) ? "active" : " "} onClick={() => this.activeLi(index, this.state.timeMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -849,7 +856,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 7 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 7 ? "title active" : "title"} onClick={() => this.OpenSubMenu(7)}>
+                          <a className={this.state.rowIndex === 7 ? "title active" : "title"} onClick={() => this.OpenSubMenu(7, Resources["costControl"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -893,7 +900,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 7 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.costControlMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.costControlMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 7) ? "active" : " "} onClick={() => this.activeLi(index, this.state.costControlMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -904,7 +911,7 @@ class LeftMenu extends Component {
                         </li>
 
                         <li className={this.state.rowIndex === 8 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 8 ? "title active" : "title"} onClick={() => this.OpenSubMenu(8)}>
+                          <a className={this.state.rowIndex === 8 ? "title active" : "title"} onClick={() => this.OpenSubMenu(8, Resources["projectEstimation"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -950,7 +957,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 8 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.estimationMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.estimationMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 8) ? "active" : " "} onClick={() => this.activeLi(index, this.state.estimationMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -960,7 +967,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 9 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 9 ? "title active" : "title"} onClick={() => this.OpenSubMenu(9)}>
+                          <a className={this.state.rowIndex === 9 ? "title active" : "title"} onClick={() => this.OpenSubMenu(9, Resources["qualityControlList"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -1004,7 +1011,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 9 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.qualityControlMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.qualityControlMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 9) ? "active" : " "} onClick={() => this.activeLi(index, this.state.qualityControlMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -1014,7 +1021,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 10 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 10 ? "title active" : "title"} onClick={() => this.OpenSubMenu(10)}>
+                          <a className={this.state.rowIndex === 10 ? "title active" : "title"} onClick={() => this.OpenSubMenu(10, Resources["designCoordination"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="22px"
@@ -1078,7 +1085,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 10 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.designMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.designMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 10) ? "active" : " "} onClick={() => this.activeLi(index, this.state.designMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -1088,7 +1095,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
                         <li className={this.state.rowIndex === 11 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 11 ? "title active" : "title"} onClick={() => this.OpenSubMenu(11)}>
+                          <a className={this.state.rowIndex === 11 ? "title active" : "title"} onClick={() => this.OpenSubMenu(11, Resources["reportsCenter"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
                                 width="36px"
@@ -1132,7 +1139,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 11 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.reportsMenu.map((r, index) => {
                               return (
-                                <li key={index} className={this.state[index] === true ? "active" : " "} onClick={() => this.activeLi(index, this.state.reportsMenu.length)}>
+                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 11) ? "active" : " "} onClick={() => this.activeLi(index, this.state.reportsMenu.length)}>
                                   <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>

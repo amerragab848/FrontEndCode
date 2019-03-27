@@ -122,7 +122,7 @@ class HeaderMenu extends Component {
                 {this.props.showLeftMenu === true ?
                   <Fragment>
                     <li className="titleproject1">
-                      <a href="">Technical office ·</a>
+                      <a href="">{this.props.moduleName} ·</a>
                     </li>
                     <li className="titleproject2">
                       {this.props.projectName}
@@ -239,7 +239,8 @@ function mapStateToProps(state, ownProps) {
     showLeftMenu: state.communication.showLeftMenu,
     showSelectProject: state.communication.showSelectProject,
     projectId: state.communication.projectId,
-    projectName: state.communication.projectName
+    projectName: state.communication.projectName,
+    moduleName: state.communication.moduleName
   }
 }
 

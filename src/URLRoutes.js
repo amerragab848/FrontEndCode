@@ -717,22 +717,21 @@ var routes = [
       order: 8
     }
   },
+  // {
+  //   route: "corrRecievedSent",
+  //   moduleId: "communication/corrRecievedSent",
+  //   title: "correspondence",
+  //   nav: true,
+  //   hash: "#corrRecievedSent",
+  //   settings: {
+  //     Communication: true,
+  //     permission: 42,
+  //     caption: "procoor-icon-email-records",
+  //     order: 13
+  //   }
+  // },
   {
-    route: "corrRecievedSent",
-    moduleId: "communication/corrRecievedSent",
-    title: "correspondence",
-    nav: true,
-    hash: "#corrRecievedSent",
-    settings: {
-      Communication: true,
-      permission: 42,
-      caption: "procoor-icon-email-records",
-      order: 13
-    }
-  },
-  {
-    route:
-      "correspondenceSentAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+    route: "correspondenceSentAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "communication/correspondenceSentAddEdit",
     title: "Correspondence Sent",
     nav: false,
@@ -1498,19 +1497,19 @@ var routes = [
     nav: false,
     settings: { Site: false }
   },
-  {
-    route: "dailyReports",
-    moduleId: "commonLogs",
-    title: "dailyReports",
-    nav: true,
-    hash: "#dailyReports",
-    settings: {
-      Site: true,
-      permission: 269,
-      caption: "procoor-icon-daily-report",
-      order: 10
-    }
-  },
+  // {
+  //   route: "dailyReports",
+  //   moduleId: "commonLogs",
+  //   title: "dailyReports",
+  //   nav: true,
+  //   hash: "#dailyReports",
+  //   settings: {
+  //     Site: true,
+  //     permission: 269,
+  //     caption: "procoor-icon-daily-report",
+  //     order: 10
+  //   }
+  // },
   {
     route: "materialInspectionRequest",
     moduleId: "commonLogs",
@@ -1920,19 +1919,19 @@ var routes = [
     nav: false,
     settings: { Contracts: false }
   },
-  {
-    route: "qualityControl",
-    moduleId: "commonLogs",
-    title: "qualityControl",
-    nav: true,
-    hash: "#qualityControl",
-    settings: {
-      QualityControl: true,
-      permission: 287,
-      caption: "procoor-icon-quality-control",
-      order: 8
-    }
-  },
+  // {
+  //   route: "qualityControl",
+  //   moduleId: "commonLogs",
+  //   title: "qualityControl",
+  //   nav: true,
+  //   hash: "#qualityControl",
+  //   settings: {
+  //     QualityControl: true,
+  //     permission: 287,
+  //     caption: "procoor-icon-quality-control",
+  //     order: 8
+  //   }
+  // },
   {
     route:
       "qualityControlAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -1941,19 +1940,19 @@ var routes = [
     nav: false,
     settings: { Site: false }
   },
-  {
-    route: "weeklyReports",
-    moduleId: "commonLogs",
-    title: "weeklyReport",
-    nav: true,
-    hash: "#weeklyReports",
-    settings: {
-      Site: true,
-      permission: 788,
-      caption: "procoor-icon-weekly-report",
-      order: 11
-    }
-  },
+  // {
+  //   route: "weeklyReports",
+  //   moduleId: "commonLogs",
+  //   title: "weeklyReport",
+  //   nav: true,
+  //   hash: "#weeklyReports",
+  //   settings: {
+  //     Site: true,
+  //     permission: 788,
+  //     caption: "procoor-icon-weekly-report",
+  //     order: 11
+  //   }
+  // },
   {
     route:
       "weeklyReportsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -2761,7 +2760,8 @@ var routes = [
     title: "boqStructure",
     nav: true,
     settings: { // General: true,
-       permission: 3670, order: 6 }
+      permission: 3670, order: 6
+    }
   },
   {
     route: "inventoryRpt",
