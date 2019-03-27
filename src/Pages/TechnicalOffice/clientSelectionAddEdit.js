@@ -222,9 +222,11 @@ class clientSelectionAddEdit extends Component {
                 clientSelectionType: ''
             };
 
-            this.setState({ document: clientSelection });
+            this.setState({ document: clientSelection },function(){
+                this.GetNExtArrange(); 
+            });
+
             this.fillDropDowns(false);
-            this.GetNExtArrange();
             this.props.actions.documentForAdding();
         }
     };
@@ -784,7 +786,7 @@ class clientSelectionAddEdit extends Component {
                                                                 isMulti={false}
                                                                 data={this.state.approvalstatusList}
                                                                 selectedValue={this.state.selectedApprovalStatusId}
-                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
                                                                 index="clientSelection-approvalStatusId" />
                                                         </div>
 
@@ -898,10 +900,10 @@ class clientSelectionAddEdit extends Component {
                                                             <label className="control-label">{Resources.letterNo[currentLanguage]}</label>
                                                             <div className="ui input inputDev"  >
                                                                 <input type="text" className="form-control" id="LetterNo"
-                                                                    value={this.state.document.LetterNo}
+                                                                    value={this.state.document.letterNo}
                                                                     name="LetterNo"
                                                                     placeholder={Resources.letterNo[currentLanguage]}
-                                                                    onChange={(e) => this.handleChange(e, 'LetterNo')} />
+                                                                    onChange={(e) => this.handleChange(e, 'letterNo')} />
                                                             </div>
                                                         </div>
 

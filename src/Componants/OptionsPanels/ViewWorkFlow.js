@@ -34,7 +34,8 @@ class ViewWorkFlow extends Component {
 
     componentWillMount() {
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.state.docId + '&docType=' + this.state.docType + '&projectId=' + this.state.projectId;
-        if (this.props.workFlowCycles.length === 0) { 
+        
+        if (this.props.workFlowCycles.length === 0 && this.props.changeStatus === true) { 
             this.props.actions.GetWorkFlowCycles(url);
         }
     }

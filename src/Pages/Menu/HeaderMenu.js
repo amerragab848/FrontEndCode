@@ -2,8 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Link, withRouter, NavLink } from "react-router-dom";
 
 import "../../Styles/css/rodal.css";
-import "react-table/react-table.css";
-import "../../Styles/scss/en-us/layout.css";
+import "react-table/react-table.css"; 
 import Notif from "../../Styles/images/notif-icon.png";
 import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
@@ -44,6 +43,7 @@ class HeaderMenu extends Component {
     config.contactName = this.props.contactName;
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
+    this.handleChangeSelectProject = this.handleChangeSelectProject.bind(this);
   }
 
   componentWillMount = () => {
@@ -86,17 +86,19 @@ class HeaderMenu extends Component {
     this.setState({ logOut: false });
   };
 
-  handleChange(e) {
-    // this.props.actions.RouteToDashboardProject(e);
+  handleChangeSelectProject(e) {  
+    
+    this.props.actions.RouteToDashboardProject(e);
+
     this.props.history.push({
       pathname: "/DashboardProject"
     });
   }
-  handleChangeTemplate(e) {
-    //alert('RouteToTemplate');
+  
+  handleChangeTemplate(e) { 
     this.props.actions.RouteToTemplate();
-
   }
+
   render() {
     return (
       <div>
@@ -113,14 +115,14 @@ class HeaderMenu extends Component {
                       defaultValue={this.state.value}
                       value={this.state.selectedValue}
                       isMulti={false}
-                      onChange={this.handleChange} />
+                      onChange={this.handleChangeSelectProject} />
                     : null
                   }
                 </div>
                 {this.props.showLeftMenu === true ?
                   <Fragment>
                     <li className="titleproject1">
-                      <a href="">Technical office ·</a>
+                      <a href="">{this.props.moduleName} ·</a>
                     </li>
                     <li className="titleproject2">
                       {this.props.projectName}
@@ -141,14 +143,7 @@ class HeaderMenu extends Component {
 
 
                   </NavLink>
-                  {/* <a
-                    href="/TemplatesSettings"
-                    data-modal="modal2"
-                    className="notfiUI settingIcon"
-                  >
-                    <img alt="" title="" src={Setting} />
-                  </a> */}
-
+               
                 </li>
                 <li className="notifi-icon">
                   <a>
@@ -244,7 +239,8 @@ function mapStateToProps(state, ownProps) {
     showLeftMenu: state.communication.showLeftMenu,
     showSelectProject: state.communication.showSelectProject,
     projectId: state.communication.projectId,
-    projectName: state.communication.projectName
+    projectName: state.communication.projectName,
+    moduleName: state.communication.moduleName
   }
 }
 

@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CryptoJS from 'crypto-js';
-import LoadingSection from "../Componants/publicComponants/LoadingSection";
+import CryptoJS from 'crypto-js'; 
 import "react-tabs/style/react-tabs.css";
-import { WidgetData, Widgets, WidgetsWithText } from "./CounterWidget";
+import {  Widgets, WidgetsWithText } from "./CounterWidget";
 import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
 import DashBoardWidgets from "./WidgetsDashBorad";
@@ -121,32 +120,35 @@ class Index extends Component {
 
   renderThreeCard(index) {
 
-    try {
+    let renderWidgets = "";
+
+    try { 
       let Widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
-
+ 
       Widgets_Order = Widgets_Order != "" ? JSON.parse(Widgets_Order) : {};
+ 
+      let selectedCategoriesLocalStoarge = Object.keys(Widgets_Order);
 
-      let obj = Object.keys(Widgets_Order);
+      if (selectedCategoriesLocalStoarge.length > 0) {
 
-      if (obj.length > 0) {
+        console.log('Widgets_Order...selectedWidgetinLocalStoarge...');
+        let bulkWidgets = "";
 
-        let setWidget = "";
+        bulkWidgets = Widgets_Order[index];
 
-        setWidget = Widgets_Order[index];
+        bulkWidgets = _.orderBy(bulkWidgets, ['order'], ['asc']);
 
-        setWidget = _.orderBy(setWidget, ['order'], ['asc']);
-
-        let ThreeCard = "";
-
-        if (setWidget) {
-          ThreeCard = (
+        if (bulkWidgets.length > 0) {
+          renderWidgets = (
             <div className="SummeriesContainer ">
-              {setWidget.map((widget, index) => {
+              {bulkWidgets.map((widget, index) => {
                 return (<Fragment key={index}> {widget.checked === true ? (
                   <Fragment>
-                    <h2 className="SummeriesTitle">
-                      {language[widget.widgetCategory][currentLanguage]}
-                    </h2>
+                    {widget.key == "0-1" ? null :
+                      <h2 className="SummeriesTitle">
+                        {language[widget.widgetCategory][currentLanguage]}
+                      </h2>
+                    }
                     <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
                       {widget.widgets.length > 0 ? widget.widgets.map(panel => {
                         if (panel.checked === true) {
@@ -168,23 +170,22 @@ class Index extends Component {
               })}
             </div>
           );
-          return ThreeCard;
-        } else {
-          return ThreeCard;
         }
-      } else {
+      } else { 
         var refrence = DashBoardWidgets.filter(function (i) {
           return i.refrence === index;
         });
 
-        let ThreeCard = (
+        renderWidgets = (
           <div className="SummeriesContainer ">
             {refrence.map((widget, index) => {
               return (
                 <Fragment key={index}>
-                  <h2 className="SummeriesTitle">
-                    {language[widget.widgetCategory][currentLanguage]}
-                  </h2>
+                  {widget.key == "0-1" ? null :
+                    <h2 className="SummeriesTitle">
+                      {language[widget.widgetCategory][currentLanguage]}
+                    </h2>
+                  }
                   <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
                     {widget.widgets.length > 0
                       ? widget.widgets.map(panel => {
@@ -204,19 +205,17 @@ class Index extends Component {
             })}
           </div>
         );
-
-        return ThreeCard;
       }
     }
     catch (err) {
-
+ 
       localStorage.removeItem("Widgets_Order");
 
       var refrence = DashBoardWidgets.filter(function (i) {
         return i.refrence === index;
       });
 
-      let ThreeCard = (
+      renderWidgets = (
         <div className="SummeriesContainer ">
           {refrence.map((widget, index) => {
             return (
@@ -244,8 +243,8 @@ class Index extends Component {
         </div>
       );
 
-      return ThreeCard;
     }
+    return renderWidgets;
   }
 
   viewDashBoardHandler() {

@@ -315,9 +315,10 @@ class inspectionRequestAddEdit extends Component {
 
             };
 
-            this.setState({ document: inspectionRequest });
+            this.setState({ document: inspectionRequest }, function () {
+                this.GetNExtArrange();
+            });
             this.fillDropDowns(false);
-            this.GetNExtArrange();
             this.props.actions.documentForAdding();
         }
     };
