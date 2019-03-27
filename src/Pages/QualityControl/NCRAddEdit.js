@@ -9,7 +9,6 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ReactTable from "react-table";
 import Api from '../../api';
 import { withRouter } from "react-router-dom";
 
@@ -26,7 +25,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 
-import SkyLight from 'react-skylight';
+import SkyLight, { SkyLightStateless } from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
@@ -60,6 +59,19 @@ const validationSchema = Yup.object().shape({
     disciplineId: Yup.string()
         .required(Resources['disciplineRequired'][currentLanguage])
 })
+
+const validationSchemaForAddCycle = Yup.object().shape({
+
+    Subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+
+    ApprovalStatusCycle: Yup.string()
+        .required(Resources['approvalStatusName'][currentLanguage]),
+
+    Progress: Yup.number()
+        .required(Resources['isRequiredField'][currentLanguage])
+        .typeError(Resources['onlyNumbers'][currentLanguage]),
+})
+
 
 
 class NCRAddEdit extends Component {
@@ -138,8 +150,12 @@ class NCRAddEdit extends Component {
             fileNumberList: [],
             apartmentNumbersList: [],
             GetMaxArrange: 1,
-            IsEditMode: false
-
+            IsEditMode: false,
+            NCRCycle: [],
+            NCRCycleDocDate: moment(),
+            showPopUp: false,
+            Status: true,
+            SelectedApprovalStatusCycle: ''
         }
 
     }
@@ -189,6 +205,15 @@ class NCRAddEdit extends Component {
             this.setState({
                 IsEditMode: true
             })
+
+            Api.get('GetCommunicationNCRCyclessByParentId?projectId=' + docId + '').then(
+                res => {
+                    this.setState({
+                        NCRCycle: res
+                    })
+                }
+            )
+
         } else {
             ///Is Add Mode
             let NCRDoc = {
@@ -438,15 +463,17 @@ class NCRAddEdit extends Component {
             dataservice.addObject('EditCommunicationNCRs', this.state.document).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
-                }
-            )
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
         }
         else {
             dataservice.addObject('AddCommunicationNCRs', this.state.document).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
-                }
-            )
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
         }
     }
 
@@ -474,8 +501,203 @@ class NCRAddEdit extends Component {
         }
     }
 
+    handleChangeDrops = (SelectedItem, Name) => {
+        switch (Name) {
+            case 'SelectedApprovalStatusCycle':
+                this.setState({ SelectedApprovalStatusCycle: SelectedItem })
+                break;
+            case 'NCRCycleDocDate':
+                this.setState({ NCRCycleDocDate: SelectedItem })
+                break;
+            default:
+                break;
+        }
+    }
+
+    SaveNewCycle = (values) => {
+        this.setState({ isLoading: true })
+        let Date = moment(this.state.NCRCycleDocDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let SaveObj = {
+            id: undefined, NCRId: docId, arrange: values.ArrangeNCRCycle,
+            progressPercent: values.Progress, subject: values.Subject, flowCompanyId: undefined,
+            flowContactId: undefined, approvalStatusId: values.ApprovalStatusCycle.value,
+            status: this.state.Status, docDate: Date, cycleComment: values.Comment
+        }
+        dataservice.addObject('AddCommunicationNCRCycless', SaveObj).then(
+            res => {
+                this.setState({
+                    NCRCycle: res,
+                    showPopUp: false,
+                    isLoading: true
+                })
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(ex => {
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            });
+    }
 
     render() {
+
+        let AddNewCycle = () => {
+            return (
+                <Formik
+                    initialValues={{
+                        Subject: '',
+                        ArrangeNCRCycle: this.state.NCRCycle.length ? Math.max.apply(Math, this.state.NCRCycle.map(function (o) { return o.arrange + 1 })) : 1,
+                        ApprovalStatusCycle: '',
+                        Progress: '',
+                        Comment: '',
+                    }}
+
+                    enableReinitialize={true}
+
+                    validationSchema={validationSchemaForAddCycle}
+
+                    onSubmit={(values, actions) => {
+                        console.log(values)
+                        this.SaveNewCycle(values, actions)
+                    }}>
+
+                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                        <Form onSubmit={handleSubmit}>
+
+
+                            <div className="documents-stepper noTabs__document">
+                                <div className="doc-container">
+                                    <div className="step-content">
+                                        <div className='document-fields'>
+                                            <div className="proForm datepickerContainer">
+                                                <div className="proForm first-proform fullWidthWrapper textLeft">
+
+
+
+                                                    <div className={'ui input inputDev linebylineInput ' + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
+                                                        <label className="control-label">{Resources['subject'][currentLanguage]}</label>
+                                                        <div className="inputDev ui input">
+                                                            <input autoComplete="off" className="form-control" name="Subject"
+                                                                value={values.Subject}
+                                                                onBlur={(e) => { handleBlur(e) }}
+                                                                onChange={(e) => {
+                                                                    handleChange(e)
+                                                                    if (this.state.IsEditMode) {
+                                                                        this.setState({ ExpensesWorkFlowDataForEdit: { ...this.state.ExpensesWorkFlowDataForEdit, subject: e.target.value } })
+                                                                    }
+                                                                }}
+                                                                placeholder={Resources['subject'][currentLanguage]} />
+                                                            {errors.Subject && touched.Subject ? (<em className="pError">{errors.Subject}</em>) : null}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="linebylineInput valid-input">
+                                                        <label className="control-label"> {Resources['status'][currentLanguage]} </label>
+                                                        <div className="ui checkbox radio radioBoxBlue checked">
+                                                            <input type="radio"
+                                                                defaultChecked={this.state.Status ? 'checked' : null}
+                                                                name="Status" value="true" onChange={(e) => this.setState({ Status: e.target.value })} />
+                                                            <label>{Resources['oppened'][currentLanguage]}</label>
+                                                        </div>
+                                                        <div className="ui checkbox radio radioBoxBlue ">
+                                                            <input type="radio" name="Status" value="false"
+                                                                defaultChecked={this.state.Status ? null : 'checked'}
+                                                                onChange={(e) => this.setState({ Status: e.target.value })} />
+                                                            <label> {Resources['closed'][currentLanguage]}</label>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <div className="inputDev ui input">
+                                                        <DatePicker title='docDate'
+                                                            handleChange={(e) => this.handleChangeDrops(e, "NCRCycleDocDate")}
+                                                            startDate={this.state.NCRCycleDocDate}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
+                                                    <div className="inputDev ui input">
+                                                        <input autoComplete="off" className="form-control"
+                                                            onChange={(e) => {
+                                                                handleChange(e)
+                                                            }} value={values.ArrangeNCRCycle} name="ArrangeNCRCycle" placeholder={Resources['numberAbb'][currentLanguage]} />
+                                                    </div>
+                                                </div>
+
+                                                <div className={'ui input inputDev ' + (errors.Progress && touched.Progress ? 'has-error' : null) + ' '}>
+                                                    <label className="control-label">{Resources['progressPercent'][currentLanguage]}</label>
+                                                    <div className="inputDev ui input">
+                                                        <input autoComplete="off" className="form-control" name="Progress"
+                                                            value={values.Progress}
+                                                            onBlur={(e) => { handleBlur(e) }}
+                                                            onChange={(e) => { handleChange(e) }}
+                                                            placeholder={Resources['progressPercent'][currentLanguage]} />
+                                                        {errors.Progress && touched.Progress ? (<em className="pError">{errors.Progress}</em>) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <div className="inputDev ui input">
+                                                        <Dropdown title="approvalStatusName" data={this.state.approvalstatusList} name="ApprovalStatusCycle"
+                                                            selectedValue={values.ApprovalStatusCycle}
+                                                            onChange={setFieldValue}
+                                                            handleChange={(e) => this.handleChangeDrops(e, "SelectedApprovalStatusCycle")}
+
+                                                            onBlur={setFieldTouched}
+                                                            error={errors.ApprovalStatusCycle}
+                                                            touched={touched.ApprovalStatusCycle}
+                                                            value={values.ApprovalStatusCycle} />
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">{Resources['comment'][currentLanguage]}</label>
+                                                    <div className="inputDev ui input">
+                                                        <input autoComplete="off" className="form-control"
+                                                            onChange={(e) => {
+                                                                handleChange(e)
+                                                            }} value={values.Comment} name="Comment" placeholder={Resources['comment'][currentLanguage]} />
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+                                            </div>
+
+                                            <div className="slider-Btns">
+                                                <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['addTitle'][currentLanguage]}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            )
+        }
+
+        let RenderNCRCycleTable = this.state.NCRCycle.map((item) => {
+            let DateFormat = moment(item.docDate).format('DD-MM-YYYY')
+            return (
+                <tr key={item.id}>
+                    <td>{item.arrange}</td>
+                    <td>{item.subject}</td>
+                    <td>{item.statusName}</td>
+                    <td>{item.flowCompanyName}</td>
+                    <td>{item.flowContactName}</td>
+                    <td>{DateFormat}</td>
+                    <td>{item.approvalStatusName}</td>
+                    <td>{item.progressPercent}</td>
+                </tr>
+            )
+        })
 
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -807,7 +1029,40 @@ class NCRAddEdit extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>{
+
+
+                            {this.state.IsEditMode ?
+                                <Fragment>
+                                    <div className='document-fields'>
+                                        <table className="ui table">
+                                            <thead>
+                                                <tr>
+                                                    <th>{Resources.RfiNo[currentLanguage]}</th>
+                                                    <th>{Resources.subject[currentLanguage]}</th>
+                                                    <th>{Resources.status[currentLanguage]}</th>
+                                                    <th>{Resources.CompanyName[currentLanguage]}</th>
+                                                    <th>{Resources.ContactName[currentLanguage]}</th>
+                                                    <th>{Resources.docDate[currentLanguage]}</th>
+                                                    <th>{Resources.approvalStatus[currentLanguage]}</th>
+                                                    <th>{Resources.progressPercent[currentLanguage]}</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {RenderNCRCycleTable}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="doc-pre-cycle">
+                                        <div className="slider-Btns">
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.setState({ showPopUp: true })} >{Resources.addNewCycle[currentLanguage]}</button>
+                                        </div>
+                                    </div>
+                                </Fragment>
+                                : null}
+                        </div>
+
+                        {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
@@ -838,6 +1093,13 @@ class NCRAddEdit extends Component {
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
                     </SkyLight>
+                </div>
+                <div className="skyLight__form">
+                    <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false })}
+                        title={Resources.addNewCycle[currentLanguage]}
+                        onCloseClicked={() => this.setState({ showPopUp: false })} isVisible={this.state.showPopUp}>
+                        {AddNewCycle()}
+                    </SkyLightStateless>
                 </div>
             </div>
         )

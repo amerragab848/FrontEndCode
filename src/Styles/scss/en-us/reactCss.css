@@ -2836,3 +2836,9 @@ button.companies_icon {
 .ui.disabled.input, .ui.input:not(.disabled) input[disabled] {
   opacity: 1 !important;
 }
+.skylight-dialog .noTabs__document .doc-container .step-content {
+  width: auto;
+}
+.skylight-dialog .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+  width: 100%;
+}
