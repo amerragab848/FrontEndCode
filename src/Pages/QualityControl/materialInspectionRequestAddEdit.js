@@ -288,7 +288,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
 
         } else {
-            let inspectionRequest = {
+            let materialInspectionRequest = {
                 subject: '',
                 id: 0,
                 projectId: this.state.projectId,
@@ -321,10 +321,11 @@ class materialInspectionRequestAddEdit extends Component {
 
             };
 
-            this.setState({ document: inspectionRequest });
+            this.setState({ document: materialInspectionRequest }, function () {
+                this.GetNExtArrange();
+            });
             this.fillDropDowns(false);
-            this.GetNExtArrange();
-            this.props.actions.documentForAdding();
+             this.props.actions.documentForAdding();
         }
     };
 

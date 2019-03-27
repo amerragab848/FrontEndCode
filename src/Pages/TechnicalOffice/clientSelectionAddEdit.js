@@ -222,9 +222,11 @@ class clientSelectionAddEdit extends Component {
                 clientSelectionType: ''
             };
 
-            this.setState({ document: clientSelection });
+            this.setState({ document: clientSelection },function(){
+                this.GetNExtArrange(); 
+            });
+
             this.fillDropDowns(false);
-            this.GetNExtArrange();
             this.props.actions.documentForAdding();
         }
     };
@@ -784,7 +786,7 @@ class clientSelectionAddEdit extends Component {
                                                                 isMulti={false}
                                                                 data={this.state.approvalstatusList}
                                                                 selectedValue={this.state.selectedApprovalStatusId}
-                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
                                                                 index="clientSelection-approvalStatusId" />
                                                         </div>
 
