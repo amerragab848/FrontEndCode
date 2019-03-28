@@ -306,7 +306,7 @@
     "ar": "اعدادات البريد الالكتروني"
   },
   "approvalStatusSelection": {
-    "en": "-- Please Select Approval Status --",
+    "en": "Please Select Approval Status",
     "ar": "برجاء اختيار حاله الاعتماد"
   },
   "dir": {
@@ -624,7 +624,7 @@
     "ar": "من فضلك ادخل اسم الشريحة بالعربية"
   },
   "companyRoleRequired": {
-    "en": "Please select Company role",
+    "en": "select Company role",
     "ar": "من فضلك اختر مجال الشركة"
   },
   "rateValueRequired": {
@@ -1345,11 +1345,11 @@
     "ar": "مرسل من"
   },
   "fromContactRequired": {
-    "en": "Please select from Contact Name",
+    "en": "Please select from Contact",
     "ar": "برجاء اختيار مرسل من"
   },
   "toContactRequired": {
-    "en": "Please select to Contact Name",
+    "en": "Please select to Contact",
     "ar": "برجاء إختيار الشخص المرسل إليه"
   },
   "RFIView": {
@@ -1405,7 +1405,7 @@
     "ar": "  من شركة"
   },
   "fromCompanyRequired": {
-    "en": "Please select from Company",
+    "en": "select Company",
     "ar": "برجاء اختيار من شركة"
   },
   "Postit": {
@@ -3027,7 +3027,7 @@
     "ar": "برجاء إدخال الشركة المسئولة"
   },
   "companyRequired": {
-    "en": "Please Select Company",
+    "en": "Select Company",
     "ar": "برجاء إدخال الشركة "
   },
   "actionByContact": {
@@ -7758,5 +7758,9 @@
   "discplinesRequired": {
     "en": "Please Select Discplines",
     "ar": "برجاء اختيار التصميم"
+  } ,
+  "arrayEmpty": {
+    "en": "Please Select At Least One Record!...",
+    "ar": "برجاء اختيار عنصر عالاقل"
   } 
 }

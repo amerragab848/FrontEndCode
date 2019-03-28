@@ -24,6 +24,7 @@ export const getingData = 'getingData';
 export const makeKeyContact = 'makeKeyContact';
 export const routeToTabIndex = 'routeToTabIndex';
 export const ViewDocumentAttach = 'ViewDocumentAttach';
+export const ViewDocsAttachment = 'ViewDocsAttachment';
 
 // ProjectActionsTypes
 

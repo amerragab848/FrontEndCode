@@ -49,7 +49,7 @@ class ViewAttachmments extends Component {
 
     getData() {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        if (this.props.files.length === 0) {
+        if (this.props.files.length === 0 && this.props.changeStatus === true) {
             this.props.actions.GetUploadedFiles(url);
         }
     }

@@ -19,7 +19,10 @@ export default {
 			showSelectProject:true,
 			attendees:[],
 			topics:[],
-			viewModel:false
+			viewModel:false,
+			moduleName:"",
+			items:[],
+			attachDocuments:[]
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},
