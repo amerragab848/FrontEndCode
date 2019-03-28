@@ -2801,7 +2801,7 @@ button.companies_icon {
   overflow: auto;
   
 }
-.ui.modal.largeModal,  {
+.ui.modal.largeModal {
   max-width: 600px;
   max-height: 500px;
   overflow: auto;
@@ -2841,4 +2841,7 @@ button.companies_icon {
 }
 .skylight-dialog .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width: 100%;
+}
+.dropWrapper .fillter-status .ui.checkbox.radioBoxBlue:first-of-type {
+  margin-right: 15PX;
 }

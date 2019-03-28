@@ -65,7 +65,7 @@ const validationSchemaForAddCycle = Yup.object().shape({
     Subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
     ApprovalStatusCycle: Yup.string()
-        .required(Resources['approvalStatusName'][currentLanguage]),
+        .required(Resources['approvalStatusSelection'][currentLanguage]),
 
     Progress: Yup.number()
         .required(Resources['isRequiredField'][currentLanguage])
@@ -216,47 +216,47 @@ class NCRAddEdit extends Component {
 
         } else {
             ///Is Add Mode
-            let NCRDoc = {
-                id: undefined,
-                projectId: projectId,
-                arrange: 1,
-                docDate: moment(),
-                status: true,
-                requiredDate: moment(),
-                resultDate: moment(),
-                fromCompanyId: '',
-                toCompanyId: '',
-                fromContactId: '',
-                toContactId: '',
-                reviewResultId: '',
-                bicCompanyId: '',
-                bicContactId: '',
-                inspectionRequestId: '',
-                fileNumberId: '',
-                disciplineId: '',
-                revisions: '',
-                areaId: '',
-                reasonForIssueId: '',
-                buildingNumberId: '',
-                apartmentNumberId: '',
-                specsSectionId: '',
-                orderId: '',
-                orderType: '',
-                contractId: '',
-                subject: '',
-                progressPercent: '',
-                approvalStatusId: '',
-                rfi: '',
-                refDoc: '',
-                answer: '',
-            }
+           
 
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
-            Api.get('GetNextArrangeMainDoc?projectId=86&docType=101&companyId=' + cmi + '&contactId=' + cni + '').then(
+            Api.get('GetNextArrangeMainDoc?projectId='+projectId+'&docType=101&companyId=' + cmi + '&contactId=' + cni + '').then(
                 res => {
+                    let NCRDoc = {
+                        id: undefined,
+                        projectId: projectId,
+                        arrange: res,
+                        docDate: moment(),
+                        status: true,
+                        requiredDate: moment(),
+                        resultDate: moment(),
+                        fromCompanyId: '',
+                        toCompanyId: '',
+                        fromContactId: '',
+                        toContactId: '',
+                        reviewResultId: '',
+                        bicCompanyId: '',
+                        bicContactId: '',
+                        inspectionRequestId: '',
+                        fileNumberId: '',
+                        disciplineId: '',
+                        revisions: '',
+                        areaId: '',
+                        reasonForIssueId: '',
+                        buildingNumberId: '',
+                        apartmentNumberId: '',
+                        specsSectionId: '',
+                        orderId: '',
+                        orderType: '',
+                        contractId: '',
+                        subject: '',
+                        progressPercent: '',
+                        approvalStatusId: '',
+                        rfi: '',
+                        refDoc: '',
+                        answer: '',
+                    }
                     this.setState({
-                        GetMaxArrange: res,
                         document: NCRDoc
                     })
                 }
@@ -269,7 +269,6 @@ class NCRAddEdit extends Component {
     }
 
     FillDropDowns = () => {
-
         let DropDownsData = [
             { Api: 'GetAccountsDefaultList?listType=approvalstatus&pageNumber=0&pageSize=10000', DropDataName: 'approvalstatusList', Label: 'title', Value: 'id', Name: 'approvalStatusId', selectedValue: 'selectedApprovalStatusId' },
             { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
@@ -284,13 +283,11 @@ class NCRAddEdit extends Component {
             { Api: 'GetProjectProjectsCompaniesForList?projectId=' + projectId + '', DropDataName: 'companies', Label: 'companyName', Value: 'companyId', Name: 'toCompanyId', selectedValue: 'selectedFromCompany' },
             { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
         ]
-
         let CompaniesDropDownsData = [
             { Name: 'fromCompanyId', SelectedValueCompany: 'selectedFromCompany', ContactName: 'fromContactId', DropDataContactName: 'fromContacts', SelectedValueContact: 'selectedFromContact' },
             { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: 'toContactId', DropDataContactName: 'toContacts', SelectedValueContact: 'selectedToContact' },
             { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'bicContacts', SelectedValueContact: 'selectedActionByContactId' },
         ]
-
         DropDownsData.map(element => {
             return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
                 result => {
@@ -333,8 +330,6 @@ class NCRAddEdit extends Component {
                 }
             )
         })
-
-
     }
 
     onChangeMessage = (value) => {
