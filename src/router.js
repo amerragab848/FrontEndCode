@@ -67,6 +67,7 @@ import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEd
 import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
 import siteInstructionsAddEdit from "./Pages/TechnicalOffice/siteInstructionsAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
+import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
 
 
@@ -149,6 +150,7 @@ let originalRoutes = [
     , <Route path="/clientModificationAddEdit" component={clientModificationAddEdit} />
     , <Route path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
     , <Route path="/boqAddEdit" component={boqAddEdit} />
+    , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
     
