@@ -11,9 +11,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import Api from '../../api';
 import { withRouter } from "react-router-dom";
-
-import RichTextEditor from 'react-rte';
-
+ 
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -273,13 +271,6 @@ class punchListAddEdit extends Component {
                 IsEditMode: true,
                 hasWorkflow: nextProps.hasWorkflow,
             }); 
-        }
-    }
-
-    componentWillMount() {
-        if (docId > 0) {
-            let url = "GetLogsPunchListsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
             Api.get('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId ).then(
                 res => {
                     this.setState({
@@ -288,6 +279,14 @@ class punchListAddEdit extends Component {
                     })
                 }
             )
+        }
+    }
+
+    componentWillMount() {
+        if (docId > 0) {
+            let url = "GetLogsPunchListsForEdit?id=" + this.state.docId
+            this.props.actions.documentForEdit(url);
+           
             this.GetMaxArrageItem()
 
         } else {
@@ -600,7 +599,7 @@ class punchListAddEdit extends Component {
     }
 
     GetMaxArrageItem = () => {
-        Api.get('GetNextArrangeItems?docId=' + this.state.docId + '&docType=61').then(
+        Api.get('GetNextArrangeItems?docId=' + this.state.docId + '&docType='+this.state.docTypeId).then(
             res => {
                 this.setState({
                     MaxArrangeItem: res
