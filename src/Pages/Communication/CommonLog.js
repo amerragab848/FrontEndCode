@@ -137,6 +137,10 @@ class CommonLog extends Component {
         isApproveMode: false
       };
 
+      if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+        obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+      }
+
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
 
@@ -167,6 +171,10 @@ class CommonLog extends Component {
       docApprovalId: 0,
       isApproveMode: false
     };
+
+    if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+      obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+    }
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
@@ -463,6 +471,10 @@ class CommonLog extends Component {
             docApprovalId: 0,
             isApproveMode: false
           };
+          
+          if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+            obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+          }
 
           let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
           let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)

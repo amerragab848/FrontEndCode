@@ -7,6 +7,12 @@ export default function (state = initialState.app.communication, action) {
 
     switch (action.type) {
         
+        case types.ViewDocsAttachment:
+            state.attachDocuments = action.attachDocuments
+            return {
+                ...state
+            }
+
         case types.Document_for_Edit:
             return {
                 ...state,
@@ -91,7 +97,6 @@ export default function (state = initialState.app.communication, action) {
             };
         case types.RouteToDashboardProject:
 
-            console.log('RouteToDashboardProject', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -101,7 +106,6 @@ export default function (state = initialState.app.communication, action) {
             };
         case types.RouteToTemplate:
 
-            console.log('RouteToTemplate', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -109,7 +113,6 @@ export default function (state = initialState.app.communication, action) {
             };
         case types.RouteToMainDashboard:
 
-            console.log('RouteToMainDashboard', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -120,7 +123,6 @@ export default function (state = initialState.app.communication, action) {
 
         case types.AboveSelectProject:
 
-            console.log('AboveSelectProject', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -131,7 +133,6 @@ export default function (state = initialState.app.communication, action) {
 
         case types.LeftMenuClick:
 
-            console.log('LeftMenuClick', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -143,7 +144,6 @@ export default function (state = initialState.app.communication, action) {
 
         case types.FillGridLeftMenu:
 
-            console.log('FillGridLeftMenu', action, state, action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -181,9 +181,9 @@ export default function (state = initialState.app.communication, action) {
                     calledByContact: element.byWhomContactName,
                     decisions: element.decisions,
                     action: element.action,
-                    comment:element.comment,
+                    comment: element.comment,
                     Id: element.id,
-                    requiredDate:element.requiredDate
+                    requiredDate: element.requiredDate
 
                 })
             });

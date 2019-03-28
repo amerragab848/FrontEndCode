@@ -33,6 +33,7 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -1367,22 +1368,9 @@ class inspectionRequestAddEdit extends Component {
                                         :
                                         //Third Step
                                         <Fragment>
-                                            <div className='document-fields'>
-                                                <table className="ui table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Subject</th>
-
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                        {/* {renderMultiApprovalTable} */}
-
-                                                    </tbody>
-                                                </table>
+                                          
+                                          <div className="document-fields tableBTnabs">
+                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                             </div>
 
                                             <div className="doc-pre-cycle">

@@ -619,7 +619,7 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
-                        <li className={this.state.rowIndex === 3 ? "ActiveSubLi" : ""}>
+                        {/* <li className={this.state.rowIndex === 3 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 3 ? "title active" : "title"} onClick={() => this.OpenSubMenu(3, Resources["procurement"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
@@ -672,7 +672,7 @@ class LeftMenu extends Component {
                               );
                             })}
                           </ul>
-                        </li>
+                        </li> */}
                         <li className={this.state.rowIndex === 4 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 4 ? "title active" : "title"} onClick={() => this.OpenSubMenu(4, Resources["technicalOffice"][currentLanguage])}>
                             <span className="ULimg">

@@ -259,13 +259,13 @@ export function GetTopicsTable(urlAction) {
         });
     }
 }
-
-export const ViewDocumentAttachment = (Data) => {
+ 
+export const ViewDocsAttachment = (docs) => {
     return (dispatch, getState) => {
         return (
             dispatch({
-                type: types.ViewDocumentAttach ,
-                data:Data
+                type: types.ViewDocsAttachment ,
+                attachDocuments: docs
             })
         )
     }

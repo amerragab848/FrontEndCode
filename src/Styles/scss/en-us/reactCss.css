@@ -2845,3 +2845,11 @@ button.companies_icon {
 .dropWrapper .fillter-status .ui.checkbox.radioBoxBlue:first-of-type {
   margin-right: 15PX;
 }
+.noTabs__document .doc-container .step-content .document-fields .proForm .account__checkbox.linebylineInput {
+  flex-flow: row;
+  margin-bottom: 0;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.proform__twoInput .linebylineInput:last-of-type {
+  flex-flow: column;
+  margin-bottom: 16px;
+}
