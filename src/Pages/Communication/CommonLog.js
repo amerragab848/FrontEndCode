@@ -137,6 +137,10 @@ class CommonLog extends Component {
         isApproveMode: false
       };
 
+      if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+        obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+      }
+
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
 
@@ -167,6 +171,10 @@ class CommonLog extends Component {
       docApprovalId: 0,
       isApproveMode: false
     };
+
+    if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+      obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+    }
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
@@ -412,7 +420,7 @@ class CommonLog extends Component {
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
-      let url = api + (( documentObj.docTyp == 33) ? ("projectId=" + projectId) :  ("?projectId=" + projectId)) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+      let url = api + ((documentObj.docTyp == 33) ? ("projectId=" + projectId) : ("?projectId=" + projectId)) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
       this.GetLogData(url);
     } else {
       this.setState({ isLoading: false });
@@ -445,27 +453,39 @@ class CommonLog extends Component {
   }
 
   cellClick = (rowId, colID) => {
+
     if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
 
       if (colID != 0 && colID != 1) {
+
+        let rowData = this.state.rows[rowId];
+
         let addView = this.state.routeAddEdit;
-        let obj = {
-          docId: this.state.rows[rowId].id,
-          projectId: this.state.projectId,
-          projectName: this.state.projectName,
-          arrange: 0,
-          docApprovalId: 0,
-          isApproveMode: false
-        };
 
-        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+        if (this.state.columns[colID - 1].key !== "subject") {
+          let obj = {
+            docId: rowData.id,
+            projectId: this.state.projectId,
+            projectName: this.state.projectName,
+            arrange: 0,
+            docApprovalId: 0,
+            isApproveMode: false
+          };
+          
+          if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+            obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+          }
 
-        this.props.history.push({
-          pathname: "/" + addView,
-          search: "?id=" + encodedPaylod
-        });
+          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+
+          this.props.history.push({
+            pathname: "/" + addView,
+            search: "?id=" + encodedPaylod
+          });
+        }
       }
+
     }
   }
 

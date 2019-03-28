@@ -6,11 +6,13 @@ import initialState from '../initialState';
 export default function (state = initialState.app.communication, action) {
 
     switch (action.type) {
-        case types.ViewDocumentAttach:
-        state.viewModel = action.data 
-        return {
-            ...state
-        }
+        
+        case types.ViewDocsAttachment:
+            state.attachDocuments = action.attachDocuments
+            return {
+                ...state
+            }
+
         case types.Document_for_Edit:
             return {
                 ...state,
@@ -95,7 +97,6 @@ export default function (state = initialState.app.communication, action) {
             };
         case types.RouteToDashboardProject:
 
-            console.log('RouteToDashboardProject', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -105,7 +106,6 @@ export default function (state = initialState.app.communication, action) {
             };
         case types.RouteToTemplate:
 
-            console.log('RouteToTemplate', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -113,7 +113,6 @@ export default function (state = initialState.app.communication, action) {
             };
         case types.RouteToMainDashboard:
 
-            console.log('RouteToMainDashboard', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -124,7 +123,6 @@ export default function (state = initialState.app.communication, action) {
 
         case types.AboveSelectProject:
 
-            console.log('AboveSelectProject', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -135,18 +133,17 @@ export default function (state = initialState.app.communication, action) {
 
         case types.LeftMenuClick:
 
-            console.log('LeftMenuClick', action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
                 projectId: action.projectId,
-                projectName: action.projectName
+                projectName: action.projectName,
+                moduleName: action.moduleName
             };
 
         case types.FillGridLeftMenu:
 
-            console.log('FillGridLeftMenu', action, state, action);
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -167,10 +164,10 @@ export default function (state = initialState.app.communication, action) {
 
                 })
             });
+            
             state.attendees = table
             return {
-                ...state,
-
+                ...state 
             };
 
         case types.Get_Topics_Table:
@@ -184,15 +181,15 @@ export default function (state = initialState.app.communication, action) {
                     calledByContact: element.byWhomContactName,
                     decisions: element.decisions,
                     action: element.action,
-                    comment:element.comment,
+                    comment: element.comment,
                     Id: element.id,
+                    requiredDate: element.requiredDate
 
                 })
             });
             state.topics = table1
             return {
-                ...state,
-
+                ...state
             };
 
             case types.GetDocumentCycle:
@@ -205,7 +202,6 @@ export default function (state = initialState.app.communication, action) {
         default:
             return {
                 ...state
-            };
-
+            }; 
     }
 }

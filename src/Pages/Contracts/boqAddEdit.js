@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
+import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import Api from '../../api'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import moment from 'moment'
@@ -28,17 +28,16 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import Dataservice from '../../Dataservice';
-import GridSetup from "./GridSetup";
+import GridSetup from "../Communication/GridSetup";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const meetingAgendaValidation = Yup.object().shape({
     meetingAgenda: Yup.string().required(Resources['subjectRequired'][currentLanguage])
 });
-const validationSchema = Yup.object().shape({
+const poqSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    calledByContact: Yup.string().required(Resources['calledByContactRequired'][currentLanguage]),
-    facilitatorContact: Yup.string().required(Resources['facilitatorContactReuired'][currentLanguage]),
-    noteTakerContact: Yup.string().required(Resources['noteTakerContactRequired'][currentLanguage]),
+    fromCompany: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
+    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
 });
 const attendeesValidationSchema = Yup.object().shape({
     attendeesContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
@@ -54,7 +53,7 @@ let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
-class meetingAgendaAddEdit extends Component {
+class bogAddEdit extends Component {
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -351,7 +350,7 @@ class meetingAgendaAddEdit extends Component {
         if (props.document && props.document.id > 0) {
             this.setState({
                 document: { ...props.document },
-                step_1_Validation: validationSchema
+                step_1_Validation: poqSchema
             });
             this.fillDropDowns(true);
             this.checkDocumentIsView();
@@ -421,7 +420,7 @@ class meetingAgendaAddEdit extends Component {
                     id: res.id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
                     comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
                 })
-                this.setState({showPopUp: false, topics: topics})
+                this.setState({ showPopUp: false, topics: topics })
             }
             else {
                 let data = [...this.state.topics];
@@ -657,6 +656,16 @@ class meetingAgendaAddEdit extends Component {
             selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" }
         })
     }
+    showBtnsSaving() {
+        let btn = null;
+
+        if (this.state.docId === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+        }
+        return btn;
+    }
     render() {
         const dataGridTopic = this.state.isLoading === false ? (
             <GridSetup rows={this.state.topics}
@@ -733,7 +742,7 @@ class meetingAgendaAddEdit extends Component {
                             <label className="control-label">{Resources['actionByCompany'][currentLanguage]}</label>
                             <div className="supervisor__company">
                                 <div className="super_name">
-                                    <DropdownMelcous
+                                    <Dropdown
                                         name="actionByContact"
                                         data={this.state.actionByContacts}
                                         handleChange={e => this.setState({ selectedActionByContact: e })}
@@ -747,7 +756,7 @@ class meetingAgendaAddEdit extends Component {
                                     />
                                 </div>
                                 <div className="super_company">
-                                    <DropdownMelcous
+                                    <Dropdown
                                         name="actionByompany"
                                         data={this.state.Companies}
                                         handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedActionByCompany', 'actionByContacts', 'selectedActionByContact', 'toContactRequired')}
@@ -800,7 +809,7 @@ class meetingAgendaAddEdit extends Component {
                                 <label className="control-label">{Resources['actionByCompany'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                        <DropdownMelcous
+                                        <Dropdown
                                             name="attendeesContact"
                                             data={this.state.attendencesContacts}
                                             handleChange={e => this.setState({ selectedActionByContact: e })}
@@ -814,7 +823,7 @@ class meetingAgendaAddEdit extends Component {
                                         />
                                     </div>
                                     <div className="super_company">
-                                        <DropdownMelcous
+                                        <Dropdown
                                             name="actionBycompany"
                                             data={this.state.Companies}
                                             handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedActionByCompany', 'attendencesContacts', 'selectedActionByContact', 'toContactRequired')}
@@ -847,236 +856,174 @@ class meetingAgendaAddEdit extends Component {
 
         ];
         let Step_1 = <React.Fragment>
-            <div className="document-fields">
-                {this.state.isLoading ? <LoadingSection /> : null}
-                <Formik
-                    validationSchema={this.state.step_1_Validation}
-                    initialValues={{
-                        meetingAgenda: '',
-                        subject: this.state.document.subject,
-                        calledByContact: this.state.document.calledByContactName,
-                        facilitatorContact: this.state.document.facilitatorContactName,
-                        noteTakerContact: this.state.document.noteTakerContactName
-                    }}
-                    enableReinitialize={true}
-                    onSubmit={(values) => {
-                        if (this.props.changeStatus === true && this.state.docId > 0) {
-                            this.editMeeting();
-                        } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                            this.addMeetingAgenda()
-                        } else {
-                            this.NextStep()
-                        }
-                    }} >
-                    {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form id="MinutesOfMeeting" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
-                            {this.state.docId == 0 ?
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">{Resources['meetingMinutes'][currentLanguage]}</label>
-                                    <DropdownMelcous
-                                        name="meetingAgenda"
-                                        data={this.state.meetingAgenda}
-                                        handleChange={e => {
-                                            this.setState({
-                                                showForm: true, step_1_Validation: validationSchema, selectedMeetingAgenda: e,
-                                                document: { ...this.state.document, meetingMinutesId: e.value }
-                                            })
-                                        }}
-                                        placeholder='meetingAgenda'
-                                        selectedValue={this.state.selectedMeetingAgenda}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.meetingAgenda}
-                                        touched={touched.meetingAgenda}
-                                        index="meetingAgenda"
-                                        id="meetingAgenda" />
-                                </div> : null}
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='docDate'
-                                    startDate={this.state.document.docDate}
-                                    handleChange={e => this.handleChange('docDate', e)} />
-                            </div>
-                            {!this.state.showForm ?
-                                <div className="slider-Btns fullWidthWrapper textLeft">
-                                    <button className="primaryBtn-1 btn"
-                                    >{Resources['add'][currentLanguage]}</button>
-                                </div> : null
-                            }
-                            {this.state.showForm ?
-                                <React.Fragment>
-                                    <div className="proForm first-proform fullWidth_form">
+
+            <div id="step1" className="step-content-body">
+                <div className="subiTabsContent">
+                    <div className="document-fields">
+                        <Formik
+                            initialValues={{ ...this.state.document }}
+                            validationSchema={poqSchema}
+                            enableReinitialize={this.props.changeStatus}
+                            onSubmit={(values) => {
+                                if (this.props.changeStatus === true && this.state.docId > 0) {
+                                    this.editSiteInstruction();
+                                } else if (this.props.changeStatus === false && this.state.docId === 0) {
+                                    this.saveSiteInstruction();
+                                } else {
+                                    this.saveAndExit();
+                                }
+                            }}  >
+
+                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+
+                                    <div className="proForm first-proform">
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['subject'][currentLanguage]} </label>
-                                            <div className={"inputDev ui input " + (errors.subject && touched.subject ? 'has-error' : !errors.subject && touched.subject ? (" has-success") : " ")}>
-                                                <input name='subject' defaultValue={this.state.document.subject}
+                                            <div className={"inputDev ui input " + (errors.subject ? 'has-error' : !errors.subject && touched.subject ? (" has-success") : " ")}>
+                                                <input name='subject'
                                                     className="form-control"
                                                     id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
-                                                    onBlur={handleBlur}
-                                                    onChange={e => {
-                                                        handleChange(e)
-                                                        this.handleChange('subject', e.target.value)
-                                                    }} />
-                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                    onBlur={handleBlur} value={this.state.topic.subject}
+                                                    onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, subject: e.target.value } }) }} />
+                                                {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                             </div>
                                         </div>
-                                        <div className="linebylineInput">
-                                            <label data-toggle="tooltip" title={Resources['status'][currentLanguage]} className="control-label"> {Resources['status'][currentLanguage]} </label>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources.status[currentLanguage]}</label>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" defaultChecked name="status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange('status', "true")} />
-                                                <label>{Resources['oppened'][currentLanguage]}</label>
+                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                <label>{Resources.oppened[currentLanguage]}</label>
                                             </div>
-                                            <div className="ui checkbox radio radioBoxBlue checked">
-                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange('status', "false")} />
-                                                <label> {Resources['closed'][currentLanguage]}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['arrange'][currentLanguage]} </label>
-                                        <div className={'ui input inputDev '}>
-                                            <input name='arrange' className="form-control" id="arrange" placeholder={Resources['arrange'][currentLanguage]} autoComplete='off'
-                                                readOnly defaultValue={this.state.document.arrange} onChange={e => this.handleChange('arrange', e.target.value)} />
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input linebylineInput__name">
-                                        <label className="control-label">{Resources['handouts'][currentLanguage]} </label>
-                                        <div className={'ui input inputDev '}>
-                                            <input name='handouts' className="form-control" id="handouts" placeholder={Resources['handouts'][currentLanguage]} autoComplete='off'
-                                                defaultValue={this.state.document.handouts} onChange={e => this.handleChange('handouts', e.target.value)} />
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input ">
-                                        <label className="control-label">{Resources['reference'][currentLanguage]} </label>
-                                        <div className={'ui input inputDev '}>
-                                            <input name='refDoc' className="form-control" id="refDoc" placeholder={Resources['reference'][currentLanguage]} autoComplete='off'
-                                                defaultValue={this.state.document.refDoc} onChange={e => this.handleChange('refDoc', e.target.value)} />
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input mix_dropdown">
-                                        <label className="control-label">{Resources['calledByCompany'][currentLanguage]}</label>
-                                        <div className="supervisor__company">
-                                            <div className="super_name">
-                                                <DropdownMelcous
-                                                    name='calledByContact'
-                                                    data={this.state.calledContacts}
-                                                    handleChange={e => this.updateSelectedValue(e, 'calledByContactName', 'calledByContactId', 'selectedCalledByContact')}
-                                                    placeholder='calledByContact'
-                                                    selectedValue={this.state.selectedCalledByContact}
-                                                    onChange={setFieldValue}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.calledByContact}
-                                                    touched={touched.calledByContact} />
-                                            </div>
-                                            <div className="super_company">
-                                                <DropdownMelcous
-                                                    name='calledCompany'
-                                                    data={this.state.Companies}
-                                                    handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedCalledByCompany', 'calledContacts', 'selectedCalledByContact', 'calledByContactRequired')}
-                                                    placeholder='calledByCompany'
-                                                    selectedValue={this.state.selectedCalledByCompany} />
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                <label>{Resources.closed[currentLanguage]}</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="linebylineInput valid-input mix_dropdown">
-                                        <label className="control-label">{Resources['facilitatorContact'][currentLanguage]}</label>
-                                        <div className="supervisor__company">
-                                            <div className="super_name">
-                                                <DropdownMelcous
-                                                    name='facilitatorContact'
-                                                    data={this.state.facilitatorContacts}
-                                                    handleChange={e => this.updateSelectedValue(e, 'facilitatorContactName', 'facilitatorContactId', 'selectedFacilitatorContact')}
-                                                    placeholder='facilitatorContact'
-                                                    selectedValue={this.state.selectedFacilitatorContact}
-                                                    onChange={setFieldValue}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.facilitatorContact}
-                                                    touched={touched.facilitatorContact} />
-                                            </div>
-                                            <div className="super_company">
-                                                <DropdownMelcous
-                                                    name='facilitatorCompany'
-                                                    data={this.state.Companies}
-                                                    handleChange={(e) => this.handleChangeDropDowns(e, 'facilitatorCompanyName', 'facilitatorCompanyId', 'selectedFacilitatorCompany', 'facilitatorContacts', 'selectedFacilitatorContact', 'facilitatorContactReuired')}
-                                                    placeholder='facilitatorCompany'
-                                                    selectedValue={this.state.selectedFacilitatorCompany} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input mix_dropdown">
-                                        <label className="control-label">{Resources['noteTakerCompany'][currentLanguage]}</label>
-                                        <div className="supervisor__company">
-                                            <div className="super_name">
-                                                <DropdownMelcous
-                                                    name='noteTakerContact'
-                                                    data={this.state.noteTakerContacts}
-                                                    handleChange={e => this.updateSelectedValue(e, 'noteTakerContactName', 'noteTakerContactId', 'selectedNoteTakerContact')}
-                                                    placeholder='noteTakerContact'
-                                                    selectedValue={this.state.selectedNoteTakerContact}
-                                                    onChange={setFieldValue}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.noteTakerContact}
-                                                    touched={touched.noteTakerContact} />
-                                            </div>
-                                            <div className="super_company">
-                                                <DropdownMelcous
-                                                    name='noteTakerCompany'
-                                                    data={this.state.Companies}
-                                                    handleChange={(e) => this.handleChangeDropDowns(e, 'noteTakerCompanyName', 'noteTakerCompanyId', 'selectedNoteTakerCompany', 'noteTakerContacts', 'selectedNoteTakerContact', 'noteTakerContactRequired')}
-                                                    placeholder='noteTakerCompany'
-                                                    selectedValue={this.state.selectedNoteTakerCompany} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="slider-Btns">
-                                        <button className="primaryBtn-1 btn meduimBtn" type='submit'>
-                                            {this.state.docId > 0 ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>
-                                    </div>
-                                </React.Fragment>
 
-                                : null}
+                                    <div className="proForm datepickerContainer">
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources.arrange[currentLanguage]}</label>
+                                            <div className="ui input inputDev"  >
+                                                <input type="text" className="form-control" id="arrange" readOnly
+                                                    value={this.state.document.arrange}
+                                                    name="arrange"
+                                                    placeholder={Resources.arrange[currentLanguage]}
+                                                    onChange={(e) => this.handleChange(e, 'arrange')} />
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <DatePicker title='docDate'
+                                                //                                    onChange={e => setFieldValue('docDate', e)}
+                                                format={'DD/MM/YYYY'}
+                                                name="docDate"
+                                                startDate={this.state.document.docDate}
+                                                handleChange={e => this.handleChangeDate(e, 'docDate')} />
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown
+                                                title="fromCompany"
+                                                data={this.state.Companies}
+                                                selectedValue={this.state.selectedfromCompany}
+                                                handleChange={event => {
+                                                    this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract');
+                                                }}
+                                                index="fromCompany" />
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown
+                                                title="discipline"
+                                                data={this.state.Disciplines}
+                                                selectedValue={this.state.selectedDiscipline}
+                                                handleChange={event => {
+                                                    this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract');
+                                                }}
+                                                index="discipline" />
+                                        </div>
+
+                                        <div className="fullWidthWrapper account__checkbox">
+                                            <div className="proForm fullLinearInput">
+                                                <div className="linebylineInput">
+                                                    <label className="control-label">{Resources.showInSiteRequest[currentLanguage]}</label>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="InSiteRequest" defaultChecked={this.state.document.inSiteRequest === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'inSiteRequest')} />
+                                                        <label>{Resources.yes[currentLanguage]}</label>
+                                                    </div>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="InSiteRequest" defaultChecked={this.state.document.inSiteRequest === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'inSiteRequest')} />
+                                                        <label>{Resources.no[currentLanguage]}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="proForm fullLinearInput">
+                                                <div className="linebylineInput">
+                                                    <label className="control-label">{Resources.showOptemization[currentLanguage]}</label>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="Optemization" defaultChecked={this.state.document.optemization === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'optemization')} />
+                                                        <label>{Resources.yes[currentLanguage]}</label>
+                                                    </div>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="Optemization" defaultChecked={this.state.document.optemization === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'optemization')} />
+                                                        <label>{Resources.no[currentLanguage]}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
-                        </Form>
-                    )}
-                </Formik>
-            </div>
 
-            <div className="doc-pre-cycle">
-                <div>
-                    {this.state.docId > 0 ?
-                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                        : null
-                    }
-                    {this.viewAttachments()}
 
-                    {this.props.changeStatus === true ?
-                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                        : null
+
+
+
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
+                    <div className="doc-pre-cycle letterFullWidth">
+                        <div>
+                            {this.state.docId > 0 ?
+                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                : null
+                            }
+                            {this.viewAttachments()}
+
+                            {this.props.changeStatus === true ?
+                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                : null
+                            }
+                        </div>
+                    </div>>
+                    {
+                        this.props.changeStatus === true ?
+                            <div className="approveDocument">
+                                <div className="approveDocumentBTNS">
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
+                                    {this.state.isApproveMode === true ?
+                                        <div >
+                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                        </div>
+                                        : null
+                                    }
+                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                    <span className="border"></span>
+                                    <div className="document__action--menu">
+                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                    </div>
+                                </div>
+                            </div>
+                            : null
                     }
                 </div>
             </div>
-            {
-                this.props.changeStatus === true ?
-                    <div className="approveDocument">
-                        <div className="approveDocumentBTNS">
-                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
-                            {this.state.isApproveMode === true ?
-                                <div >
-                                    <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                </div>
-                                : null
-                            }
-                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                            <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                            <span className="border"></span>
-                            <div className="document__action--menu">
-                                <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                            </div>
-                        </div>
-                    </div>
-                    : null
-            }
+
         </React.Fragment>
         let Step_2 = <React.Fragment>
             {attendeesContent}
@@ -1130,7 +1077,8 @@ class meetingAgendaAddEdit extends Component {
                         <div className="doc-container">
                             <div className="step-content">
                                 <Fragment>
-                                    {this.state.CurrStep == 1 ? Step_1 : (this.state.CurrStep == 2 ? Step_2 : Step_3)}
+                                    {/* {this.state.CurrStep == 1 ? Step_1 : (this.state.CurrStep == 2 ? Step_2 : Step_3)} */}
+                                    {Step_1}
                                     <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
                                         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref}
                                             title={Resources.editTitle[currentLanguage] + ' - ' + Resources.meetingAgendaLog[currentLanguage]}
@@ -1180,6 +1128,7 @@ class meetingAgendaAddEdit extends Component {
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     {this.state.showDeleteModal == true ? (
@@ -1196,6 +1145,7 @@ class meetingAgendaAddEdit extends Component {
                             {this.state.currentComponent}
                         </SkyLight>
                     </div>
+
                 </div>
             </React.Fragment>
         )
@@ -1223,4 +1173,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(meetingAgendaAddEdit))
+)(withRouter(bogAddEdit))

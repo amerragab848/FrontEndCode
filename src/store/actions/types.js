@@ -25,6 +25,7 @@ export const makeKeyContact = 'makeKeyContact';
 export const routeToTabIndex = 'routeToTabIndex';
 export const ViewDocumentAttach = 'ViewDocumentAttach';
 export const GetDocumentCycle = 'GetDocumentCycle';
+export const ViewDocsAttachment = 'ViewDocsAttachment';
 
 // ProjectActionsTypes
 

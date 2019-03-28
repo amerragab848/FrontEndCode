@@ -62,9 +62,14 @@ import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialIns
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
 import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
 import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
-import clientSelectionAddEdit from "./Pages/TechnicalOffice/ClientSelectionAddEdit";
+import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEdit";
 import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
 import SubmittalAddEdit from "./Pages/TechnicalOffice/SubmittalAddEdit";
+import siteInstructionsAddEdit from "./Pages/TechnicalOffice/siteInstructionsAddEdit";
+import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
+import boqAddEdit from "./Pages/Contracts/boqAddEdit";
+import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
+import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -145,6 +150,13 @@ let originalRoutes = [
     , <Route path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
     , <Route path="/clientModificationAddEdit" component={clientModificationAddEdit} />
     , <Route path="/SubmittalAddEdit" component={SubmittalAddEdit} />
+    , <Route path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
+    , <Route path="/punchListAddEdit" component={punchListAddEdit} />
+    , <Route path="/boqAddEdit" component={boqAddEdit} />
+    , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
+    , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
+    , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
+    
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

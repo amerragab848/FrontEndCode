@@ -20,7 +20,10 @@ export default {
 			attendees:[],
 			topics:[],
 			viewModel:false,
-			documentCycle:{}
+			documentCycle:{},
+			moduleName:"",
+			items:[],
+			attachDocuments:[]
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},

@@ -33,6 +33,7 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -196,6 +197,12 @@ class materialInspectionRequestAddEdit extends Component {
         this.editCycle = this.editCycle.bind(this);
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -282,7 +289,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
 
         } else {
-            let inspectionRequest = {
+            let materialInspectionRequest = {
                 subject: '',
                 id: 0,
                 projectId: this.state.projectId,
@@ -315,9 +322,10 @@ class materialInspectionRequestAddEdit extends Component {
 
             };
 
-            this.setState({ document: inspectionRequest });
+            this.setState({ document: materialInspectionRequest }, function () {
+                this.GetNExtArrange();
+            });
             this.fillDropDowns(false);
-            this.GetNExtArrange();
             this.props.actions.documentForAdding();
         }
     };
@@ -1360,22 +1368,13 @@ class materialInspectionRequestAddEdit extends Component {
                                         :
                                         //Third Step
                                         <Fragment>
-                                            <div className='document-fields'>
-                                                <table className="ui table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Subject</th>
+                                            {/* <div className='document-fields'> 
+                                            </div> */}
 
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
 
-                                                        {/* {renderMultiApprovalTable} */}
+                                            <div className="document-fields tableBTnabs">
 
-                                                    </tbody>
-                                                </table>
+                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                             </div>
 
                                             <div className="doc-pre-cycle">

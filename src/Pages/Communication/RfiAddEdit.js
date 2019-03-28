@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";   
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication'; 
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
@@ -360,6 +360,12 @@ class RfiAddEdit extends Component {
 
         this.setState({
             document: updated_document
+        });
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
         });
     }
 
