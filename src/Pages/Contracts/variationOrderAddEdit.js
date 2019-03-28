@@ -30,8 +30,7 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import { toast } from "react-toastify";
-import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+import { toast } from "react-toastify"; 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -665,36 +664,26 @@ class variationOrderAddEdit extends Component {
                         <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
                             <header className="main__header">
                                 <div className="main__header--div">
-                                    <h2 className="zero">{Resources['newCycle'][currentLanguage]}</h2>
+                                    <h2 className="zero">{Resources['addItems'][currentLanguage]}</h2>
                                 </div>
                             </header>
 
                             <div className='document-fields'>
 
                                 <div className="letterFullWidth proForm  first-proform proform__twoInput">
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">{Resources['description'][currentLanguage]} </label>
-                                    <div className={"inputDev ui input " + (errors.description ? 'has-error' : !errors.description && touched.description ? (" has-success") : " ")}>
-                                        <input name='description'
-                                            className="form-control"
-                                            id="description" placeholder={Resources['description'][currentLanguage]} autoComplete='off'
-                                            onBlur={handleBlur} value={this.props.document.description}
-                                            onChange={e => { handleChange(e); this.setState({ document: { ...this.state.document, description: e.target.value } }) }} />
-                                        {errors.description ? (<em className="pError">{errors.description}</em>) : null}
-                                    </div>
-                                </div>
-                                </div>
-                                <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-                                        <div className="ui input inputDev"  >
-                                            <input type="text" className="form-control" id="arrange" readOnly
-                                                value={this.state.document.arrange}
-                                                name="arrange"
-                                                placeholder={Resources.arrange[currentLanguage]}
-                                                onChange={(e) => this.handleChange(e, 'arrange')} />
+                                        <label className="control-label">{Resources['description'][currentLanguage]} </label>
+                                        <div className={"inputDev ui input " + (errors.description ? 'has-error' : !errors.description && touched.description ? (" has-success") : " ")}>
+                                            <input name='description'
+                                                className="form-control"
+                                                id="description" placeholder={Resources['description'][currentLanguage]} autoComplete='off'
+                                                onBlur={handleBlur} value={this.props.document.description}
+                                                onChange={e => { handleChange(e); this.setState({ document: { ...this.state.document, description: e.target.value } }) }} />
+                                            {errors.description ? (<em className="pError">{errors.description}</em>) : null}
                                         </div>
                                     </div>
+                                </div>
+                                <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.quantity[currentLanguage]}</label>
                                         <div className="ui input inputDev"  >
@@ -703,6 +692,39 @@ class variationOrderAddEdit extends Component {
                                                 name="quantity"
                                                 placeholder={Resources.quantity[currentLanguage]}
                                                 onChange={(e) => this.handleChange(e, 'quantity')} />
+                                        </div>
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
+                                        <div className="ui input inputDev"  >
+                                            <input type="text" className="form-control" id="unitPrice" readOnly
+                                                value={this.state.voItemunitPrice}
+                                                name="unitPrice"
+                                                placeholder={Resources.unitPrice[currentLanguage]}
+                                                onChange={(e) => this.handleChange(e, 'unitPrice')} />
+                                        </div>
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources['itemCode'][currentLanguage]} </label>
+                                        <div className={"inputDev ui input " + (errors.itemCode ? 'has-error' : !errors.itemCode && touched.itemCode ? (" has-success") : " ")}>
+                                            <input name='itemCode'
+                                                className="form-control"
+                                                id="itemCode" placeholder={Resources['itemCode'][currentLanguage]} autoComplete='off'
+                                                onBlur={handleBlur} value={this.state.voItemitemCode}
+                                                onChange={e => { handleChange(e); this.setState({ items: { ...this.state.items, itemCode: e.target.value } }) }} />
+                                            {errors.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
+                                        </div>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources['resourceCode'][currentLanguage]} </label>
+                                        <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
+                                            <input name='resourceCode'
+                                                className="form-control"
+                                                id="resourceCode" placeholder={Resources['resourceCode'][currentLanguage]} autoComplete='off'
+                                                onBlur={handleBlur} value={this.state.voItemresourceCode}
+                                                onChange={e => { handleChange(e); this.setState({ items: { ...this.state.voItem, resourceCode: e.target.value } }) }} />
+                                            {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
@@ -722,26 +744,14 @@ class variationOrderAddEdit extends Component {
                                             index="unit" />
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
-                                        <div className="ui input inputDev"  >
-                                            <input type="text" className="form-control" id="unitPrice" readOnly
-                                                value={this.state.voItemunitPrice}
-                                                name="unitPrice"
-                                                placeholder={Resources.unitPrice[currentLanguage]}
-                                                onChange={(e) => this.handleChange(e, 'unitPrice')} />
-                                        </div>
-                                    </div>
-                                    <div className="letterFullWidth">
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">{Resources['itemCode'][currentLanguage]} </label>
-                                            <div className={"inputDev ui input " + (errors.itemCode ? 'has-error' : !errors.itemCode && touched.itemCode ? (" has-success") : " ")}>
-                                                <input name='itemCode'
-                                                    className="form-control"
-                                                    id="itemCode" placeholder={Resources['itemCode'][currentLanguage]} autoComplete='off'
-                                                    onBlur={handleBlur} value={this.state.voItemitemCode}
-                                                    onChange={e => { handleChange(e); this.setState({ items: { ...this.state.items, itemCode: e.target.value } }) }} />
-                                                {errors.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
-                                            </div>
+                                        <label className="control-label">{Resources['days'][currentLanguage]} </label>
+                                        <div className={"inputDev ui input " + (errors.days ? 'has-error' : !errors.days && touched.days ? (" has-success") : " ")}>
+                                            <input name='days'
+                                                className="form-control"
+                                                id="days" placeholder={Resources['days'][currentLanguage]} autoComplete='off'
+                                                onBlur={handleBlur} value={this.state.voItem.days}
+                                                onChange={e => { handleChange(e); this.setState({ items: { ...this.state.voItem, days: e.target.value } }) }} />
+                                            {errors.days ? (<em className="pError">{errors.days}</em>) : null}
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
@@ -783,54 +793,6 @@ class variationOrderAddEdit extends Component {
                                                 name="boqSubType"
                                                 index="boqSubType" />
                                         </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['resourceCode'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
-                                            <input name='resourceCode'
-                                                className="form-control"
-                                                id="resourceCode" placeholder={Resources['resourceCode'][currentLanguage]} autoComplete='off'
-                                                onBlur={handleBlur} value={this.state.voItemresourceCode}
-                                                onChange={e => { handleChange(e); this.setState({ items: { ...this.state.items, resourceCode: e.target.value } }) }} />
-                                            {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="itemType"
-                                            data={this.state.itemTypes}
-                                            selectedValue={this.state.selectedItemType}
-                                            handleChange={event => {
-                                                this.setState({ selectedItemType: event })
-                                            }}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.itemType}
-                                            touched={touched.itemType}
-                                            name="itemType"
-                                            index="itemType" />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['days'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.days ? 'has-error' : !errors.days && touched.days ? (" has-success") : " ")}>
-                                            <input name='days'
-                                                className="form-control"
-                                                id="days" placeholder={Resources['days'][currentLanguage]} autoComplete='off'
-                                                onBlur={handleBlur} value={this.state.voItemdays}
-                                                onChange={e => { handleChange(e); this.setState({ items: { ...this.state.items, days: e.target.value } }) }} />
-                                            {errors.days ? (<em className="pError">{errors.days}</em>) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="equipmentType"
-                                            data={this.state.equipmentTypes}
-                                            selectedValue={this.state.selectedEquipmentType}
-                                            handleChange={event => {
-                                                this.setState({ selectedEquipmentType: event })
-                                            }}
-                                            name="equipmentType"
-                                            index="equipmentType" />
                                     </div>
                                     {/* 
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
@@ -1094,8 +1056,7 @@ class variationOrderAddEdit extends Component {
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'timeExtensionRequired')} />
                                                                         {touched.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}
-                                                                        <em className="pError">{JSON.stringify(errors)}</em>
-
+ 
                                                                     </div>
                                                                 </div>
 
@@ -1133,7 +1094,7 @@ class variationOrderAddEdit extends Component {
 
                                         <div className="doc-pre-cycle">
                                             <header>
-                                                <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
+                                                <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
                                             </header>
                                             <ReactTable
                                                 ref={(r) => {
@@ -1154,8 +1115,7 @@ class variationOrderAddEdit extends Component {
 
                                         </div>
                                     </div>
-
-                                    }
+ 
                                 </Fragment>}
 
                         </div>
