@@ -260,14 +260,7 @@ class punchListAddEdit extends Component {
             selectedActionByContactItem: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
             //Edit Items States
-            EditItems: [],
-            // OpenedDateItem: moment(),
-            // RequiredDateItem: moment(),
-            // SelectedAreaItem: { label: Resources.selectArea[currentLanguage], value: "0" },
-            // selectedActionByCompanyIdItem: { label: Resources.actionByCompany[currentLanguage], value: "0" },
-            // selectedActionByContactItem: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            // selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
-
+            EditItems: []
         }
     }
 
@@ -279,9 +272,7 @@ class punchListAddEdit extends Component {
                 document: SnagListDoc,
                 IsEditMode: true,
                 hasWorkflow: nextProps.hasWorkflow,
-            });
-
-            //this.checkDocumentIsView();
+            }); 
         }
     }
 
@@ -289,7 +280,7 @@ class punchListAddEdit extends Component {
         if (docId > 0) {
             let url = "GetLogsPunchListsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
-            Api.get('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId + '').then(
+            Api.get('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId ).then(
                 res => {
                     this.setState({
                         IsEditMode: true,
@@ -302,7 +293,7 @@ class punchListAddEdit extends Component {
         } else {
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
-            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=61&companyId=' + cmi + '&contactId=' + cni + '').then(
+            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=61&companyId=' + cmi + '&contactId=' + cni).then(
                 res => {
                     let SnagListDoc = {
                         projectId: projectId, fromCompanyId: '', toCompanyId: '', subject: '', status: true,
@@ -314,6 +305,7 @@ class punchListAddEdit extends Component {
                     })
                 }
             )
+            this.props.actions.documentForAdding();
         }
     }
 
@@ -418,7 +410,7 @@ class punchListAddEdit extends Component {
 
     componentWillUnmount = () => {
         this.setState({
-            document: {}
+            docId: 0
         })
     }
 
@@ -914,7 +906,7 @@ class punchListAddEdit extends Component {
                             </Formik>
                         </div>
 
-                        {/* <div className="doc-pre-cycle letterFullWidth">
+                        <div className="doc-pre-cycle letterFullWidth">
                             <div>
                                 {this.state.docId > 0 ?
                                     <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -927,7 +919,7 @@ class punchListAddEdit extends Component {
                                     : null
                                 }
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             )
@@ -1318,21 +1310,7 @@ class punchListAddEdit extends Component {
                             buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                         />
                     ) : null}
-
-                    <div className="doc-pre-cycle letterFullWidth">
-                        <div>
-                            {this.props.changeStatus === true && this.state.IsEditMode ?
-                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                : null
-                            }
-                            {this.viewAttachments()}
-
-                            {this.props.changeStatus === true && docId !== 0 ?
-                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                : null
-                            }
-                        </div>
-                    </div>
+ 
                     {
                         this.props.changeStatus === true ?
                             <div className="approveDocument">
