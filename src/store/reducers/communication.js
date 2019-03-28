@@ -164,10 +164,10 @@ export default function (state = initialState.app.communication, action) {
 
                 })
             });
+            
             state.attendees = table
             return {
-                ...state,
-
+                ...state 
             };
 
         case types.Get_Topics_Table:
@@ -189,14 +189,19 @@ export default function (state = initialState.app.communication, action) {
             });
             state.topics = table1
             return {
-                ...state,
+                ...state
+            };
 
+            case types.GetDocumentCycle:
+       
+            state.documentCycle = action.data
+            return {
+                ...state 
             };
 
         default:
             return {
                 ...state
-            };
-
+            }; 
     }
 }
