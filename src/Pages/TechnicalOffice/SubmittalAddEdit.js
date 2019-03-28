@@ -228,10 +228,13 @@ class SubmittalAddEdit extends Component {
       let urlCycle = "GetLogSubmittalCyclesForEdit?id=" + this.state.docId;
 
       this.props.actions.documentForEdit(url).then(() => {
+
         this.props.actions.GetDocumentCycle(urlCycle).then(result => {
+
+          if(this.props.document != null){ 
           this.props.document.docDate = moment(this.props.document.docDate).format("DD/MM/YYYY");
           this.props.document.forwardToDate = moment(this.props.document.forwardToDate).format("DD/MM/YYYY");
-
+        }
           if (this.props.documentCycle != null) {
             this.props.documentCycle.docDate = moment(this.props.documentCycle.docDate).format("DD/MM/YYYY");
             this.props.documentCycle.approvedDate = moment(this.props.documentCycle.approvedDate).format("DD/MM/YYYY");
