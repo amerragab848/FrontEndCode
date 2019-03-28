@@ -21,6 +21,24 @@ export function documentForEdit(urlAction) {
     }
 }
 
+export function GetDocumentCycle(urlAction) {
+    return (dispatch, getState) => {
+        return Api.get(urlAction).then(resp => {
+
+            dispatch({
+                type: types.GetDocumentCycle,
+                data: resp
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                type: types.GetDocumentCycle,
+                data: []
+            });
+        });
+    }
+}
+
 export function documentForAdding(doc) {
     return (dispatch, getState) => {
         dispatch({

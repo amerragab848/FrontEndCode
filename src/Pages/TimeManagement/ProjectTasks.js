@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'; 
+import { withRouter } from "react-router-dom"; 
+import * as communicationActions from '../../store/actions/communication'; 
 import Api from "../../api"; 
 import "../../Styles/css/semantic.min.css";
 import "../../Styles/scss/en-us/layout.css";
@@ -504,6 +508,8 @@ class ProjectTasks extends Component {
         });
       }
     );
+
+    this.props.actions.documentForAdding();
   }
   
   hideFilter(value) {
@@ -937,5 +943,27 @@ class ProjectTasks extends Component {
     );
   }
 }
+
+
+
+function mapStateToProps(state, ownProps) {
+  return {
+      document: state.communication.document,
+      isLoading: state.communication.isLoading,
+      changeStatus: state.communication.changeStatus,
+      file: state.communication.file,
+      files: state.communication.files,
+      hasWorkflow: state.communication.hasWorkflow
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+      actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
   
-export default ProjectTasks;
+export default  connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ProjectTasks));

@@ -195,6 +195,13 @@ export default function (state = initialState.app.communication, action) {
 
             };
 
+            case types.GetDocumentCycle:
+       
+            state.documentCycle = action.data
+            return {
+                ...state 
+            };
+
         default:
             return {
                 ...state

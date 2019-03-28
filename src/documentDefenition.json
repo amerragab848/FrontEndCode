@@ -1122,7 +1122,7 @@
   "InternalMemo": {
     "documentTitle": "communicationInternalMemo",
     "docTyp": 30,
-    "documentAddEditLink": "InternalMemoAddEdit/",
+    "documentAddEditLink": "InternalMemoAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 98,
     "documentEditPermission": 99,
@@ -3379,7 +3379,7 @@
   "Rfi": {
     "documentTitle": "communicationRFI",
     "docTyp": 23,
-    "documentAddEditLink": "RfiAddEdit/",
+    "documentAddEditLink": "RfiAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 75,
     "documentEditPermission": 76,
@@ -18254,7 +18254,7 @@
   "submittal": {
     "documentTitle": "Submittal",
     "docTyp": 42,
-    "documentAddEditLink": "submittalAddEdit/",
+    "documentAddEditLink": "SubmittalAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 220,
     "documentEditPermission": 221,

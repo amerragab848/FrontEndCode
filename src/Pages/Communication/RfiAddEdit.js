@@ -218,6 +218,7 @@ class RfiAddEdit extends Component {
         this.setState({ document: rfiDocument });
         this.fillDropDowns(false);
       }
+      this.props.actions.documentForAdding();
     }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -527,6 +528,7 @@ class RfiAddEdit extends Component {
                                 </header> : null
                         }
                         <div className="step-content">
+
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
@@ -760,6 +762,7 @@ class RfiAddEdit extends Component {
                                     </div>
                                 </div>
                             </div>
+                      
                         </div>
                         {
                             this.props.changeStatus === true ?

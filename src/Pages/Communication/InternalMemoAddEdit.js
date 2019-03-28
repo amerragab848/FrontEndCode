@@ -196,6 +196,7 @@ class InternalMemoAddEdit extends Component {
         this.fillDropDowns(false);
         this.props.actions.documentForAdding();
       }
+      this.props.actions.documentForAdding();
     }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
