@@ -227,10 +227,10 @@ class punchListAddEdit extends Component {
             fromContacts: [],
             approvalstatusList: [],
             discplines: [],
-            permission: [{ name: 'sendByEmail', code: 923 }, { name: 'sendByInbox', code: 922 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 970 },
-            { name: 'createTransmittal', code: 3056 }, { name: 'sendToWorkFlow', code: 926 },
-            { name: 'viewAttachments', code: 3308 }, { name: 'deleteAttachments', code: 927 }],
+            permission: [{ name: 'sendByEmail', code: 280 }, { name: 'sendByInbox', code: 279 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 992 },
+            { name: 'createTransmittal', code: 3078 }, { name: 'sendToWorkFlow', code: 738 },
+            { name: 'viewAttachments', code: 3311 }, { name: 'deleteAttachments', code: 888 }],
 
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
 
@@ -261,6 +261,7 @@ class punchListAddEdit extends Component {
             selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
             //Edit Items States
             EditItems: [],
+            StatusItemForEdit: 'true'
             // OpenedDateItem: moment(),
             // RequiredDateItem: moment(),
             // SelectedAreaItem: { label: Resources.selectArea[currentLanguage], value: "0" },
@@ -285,6 +286,19 @@ class punchListAddEdit extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+            this.checkDocumentIsView();
+        }
+    }
+
     componentWillMount() {
         if (docId > 0) {
             let url = "GetLogsPunchListsForEdit?id=" + this.state.docId
@@ -295,9 +309,11 @@ class punchListAddEdit extends Component {
                         IsEditMode: true,
                         rows: res
                     })
+                    this.FillDropDowns()
                 }
             )
             this.GetMaxArrageItem()
+
 
         } else {
             let cmi = Config.getPayload().cmi
@@ -314,6 +330,7 @@ class punchListAddEdit extends Component {
                     })
                 }
             )
+            this.FillDropDowns()
         }
     }
 
@@ -371,10 +388,10 @@ class punchListAddEdit extends Component {
             return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
                 result => {
                     this.setState({
-                        [element.DropDataName]: result
+                        [element.DropDataName]: result,
                     })
 
-                    if (docId > 0) {
+                    if (this.state.IsEditMode) {
                         if (element.DropDataName === 'companies') {
                             CompaniesDropDownsData.map(company => {
                                 let elementID = this.state.document[company.Name];
@@ -410,15 +427,8 @@ class punchListAddEdit extends Component {
     }
 
     componentDidMount = () => {
-        this.FillDropDowns()
         this.setState({
             isLoading: false
-        })
-    }
-
-    componentWillUnmount = () => {
-        this.setState({
-            document: {}
         })
     }
 
@@ -536,11 +546,11 @@ class punchListAddEdit extends Component {
 
     onCloseModal = () => {
         this.setState({ showDeleteModal: false });
-    };
+    }
 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
-    };
+    }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
         this.setState({
@@ -623,18 +633,11 @@ class punchListAddEdit extends Component {
         let RequiredDateItem = moment(this.state.RequiredDateItem, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let DocCloseDate = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let AddItemObj = {
-            id: undefined,
-            punchListId: this.state.docId,
-            arrange: values.arrangeItem,
-            bicCompanyId: values.ActionByCompanyIdItem.value,
-            bicContactId: values.ActionByContactItem.value,
-            status: this.state.StatusItem,
-            openedDate: OpenedDateItem,
-            requiredDate: RequiredDateItem,
-            docCloseDate: DocCloseDate,
-            description: values.description,
-            locationId: values.location.value,
-            areaId: values.AreaIdItem.value,
+            id: undefined, punchListId: this.state.docId,
+            arrange: values.arrangeItem, bicCompanyId: values.ActionByCompanyIdItem.value,
+            bicContactId: values.ActionByContactItem.value, status: this.state.StatusItem,
+            openedDate: OpenedDateItem, requiredDate: RequiredDateItem, docCloseDate: DocCloseDate,
+            description: values.description, locationId: values.location.value, areaId: values.AreaIdItem.value,
         }
 
         Api.post('AddLogsPunchListDetails', AddItemObj).then(
@@ -668,16 +671,11 @@ class punchListAddEdit extends Component {
         let RequiredDateItem = moment(this.state.RequiredDateItem, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let DocCloseDate = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let AddItemObj = {
-            id: this.state.EditItems.id,
-            punchListId: this.state.docId,
-            arrange: values.arrangeItem,
-            status: this.state.StatusItem,
-            openedDate: OpenedDateItem,
-            requiredDate: RequiredDateItem,
-            docCloseDate: DocCloseDate,
-            description: values.description,
-            locationId: this.state.selectedLocationItem.value,
-            areaId: this.state.SelectedAreaItem.value,
+            id: this.state.EditItems.id, punchListId: this.state.docId,
+            arrange: values.arrangeItem, status: this.state.StatusItemForEdit,
+            openedDate: OpenedDateItem, requiredDate: RequiredDateItem,
+            docCloseDate: DocCloseDate, areaId: this.state.SelectedAreaItem.value,
+            locationId: this.state.selectedLocationItem.value, description: values.description,
             bicCompanyId: this.state.selectedActionByCompanyIdItem.value,
             bicContactId: this.state.selectedActionByContactItem.value,
         }
@@ -693,6 +691,7 @@ class punchListAddEdit extends Component {
                     isLoading: false,
                     showPopUp: false
                 })
+                this.ClosePopup()
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -700,43 +699,37 @@ class punchListAddEdit extends Component {
     }
 
     ShowPopUp = (obj) => {
-        if (!Config.IsAllow(3741)) {
-            toast.warn(Resources['missingPermissions'][currentLanguage])
-        }
-        else {
-            Api.get('GetLogsPunchListDetailsForEdit?id=' + obj.id + '').then(
-                res => {
-                    this.setState({ showPopUp: true, StatusItem: res.status, })
-                    let SelectedCompany = _.find(this.state.companies, function (i) { return i.value == res.bicCompanyId });
-                    let SelectedAreaItem = _.find(this.state.areas, function (i) { return i.value == res.areaId });
-                    let selectedLocationItem = _.find(this.state.locations, function (i) { return i.value == res.locationId });
+        Api.get('GetLogsPunchListDetailsForEdit?id=' + obj.id + '').then(
+            res => {
+                this.setState({ showPopUp: true, StatusItemForEdit: res.status })
+                let SelectedCompany = _.find(this.state.companies, function (i) { return i.value == res.bicCompanyId });
+                let SelectedAreaItem = _.find(this.state.areas, function (i) { return i.value == res.areaId });
+                let selectedLocationItem = _.find(this.state.locations, function (i) { return i.value == res.locationId });
 
-                    dataservice.GetDataList('GetContactsByCompanyId?companyId=' + res.bicCompanyId + '', 'contactName', 'id').then(
-                        result => {
-                            let selectedActionByContactItem = _.find(result, function (i) { return i.value == res.bicContactId });
-                            this.setState({
-                                ToContactsItem: result,
-                                EditItems: res,
-                                OpenedDateItem: moment(res.openedDate).format('DD/MM/YYYY'),
-                                RequiredDateItem: moment(res.requiredDate).format('DD/MM/YYYY'),
-                                SelectedAreaItem: SelectedAreaItem,
-                                selectedActionByCompanyIdItem: SelectedCompany,
-                                selectedActionByContactItem: selectedActionByContactItem,
-                                selectedLocationItem: selectedLocationItem,
-                            })
-                        }
-                    )
-                }
-            )
-        }
-
+                dataservice.GetDataList('GetContactsByCompanyId?companyId=' + res.bicCompanyId + '', 'contactName', 'id').then(
+                    result => {
+                        let selectedActionByContactItem = _.find(result, function (i) { return i.value == res.bicContactId });
+                        this.setState({
+                            ToContactsItem: result,
+                            EditItems: res,
+                            OpenedDateItem: moment(res.openedDate).format('DD/MM/YYYY'),
+                            RequiredDateItem: moment(res.requiredDate).format('DD/MM/YYYY'),
+                            SelectedAreaItem: SelectedAreaItem,
+                            selectedActionByCompanyIdItem: SelectedCompany,
+                            selectedActionByContactItem: selectedActionByContactItem,
+                            selectedLocationItem: selectedLocationItem,
+                        })
+                    }
+                )
+            }
+        )
     }
 
     viewAttachments() {
         return (
             this.state.IsEditMode ? (
-                Config.IsAllow(3308) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                Config.IsAllow(3311) === true ?
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={888} />
                     : null)
                 : null
         )
@@ -756,6 +749,18 @@ class punchListAddEdit extends Component {
         }
     }
 
+    ClosePopup = () => {
+        this.setState({
+            showPopUp: false,
+            StatusItemForEdit: 'true',
+            SelectedAreaItem: { label: Resources.selectArea[currentLanguage], value: "0" },
+            selectedActionByCompanyIdItem: { label: Resources.actionByCompany[currentLanguage], value: "0" },
+            selectedActionByContactItem: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+            selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
+            RequiredDateItem: moment(),
+            OpenedDateItem: moment(),
+        })
+    }
 
     render() {
 
@@ -914,7 +919,7 @@ class punchListAddEdit extends Component {
                             </Formik>
                         </div>
 
-                        {/* <div className="doc-pre-cycle letterFullWidth">
+                        <div className="doc-pre-cycle letterFullWidth">
                             <div>
                                 {this.state.docId > 0 ?
                                     <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -927,7 +932,7 @@ class punchListAddEdit extends Component {
                                     : null
                                 }
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             )
@@ -943,7 +948,7 @@ class punchListAddEdit extends Component {
                         arrangeItem: this.state.MaxArrangeItem,
                         location: '',
                         ActionByCompanyIdItem: '',
-                        AreaIdItem: ''
+                        AreaIdItem: '',
                     }}
 
                     enableReinitialize={true}
@@ -1099,7 +1104,7 @@ class punchListAddEdit extends Component {
                         arrangeItem: this.state.EditItems.arrange,
                         location: ' ',
                         ActionByCompanyIdItem: ' ',
-                        AreaIdItem: ' '
+                        AreaIdItem: ' ',
                     }}
 
                     enableReinitialize={true}
@@ -1131,15 +1136,15 @@ class punchListAddEdit extends Component {
                                 <div className="fillter-status fillter-item-c">
                                     <label className="control-label"> {Resources['status'][currentLanguage]} </label>
                                     <div className="ui checkbox radio radioBoxBlue checked">
-                                        <input type="radio"
-                                            defaultChecked={this.state.StatusItem ? 'checked' : null}
-                                            name="StatusItem" value="true" onChange={(e) => this.setState({ StatusItem: e.target.value })} />
+                                        <input type="radio" name="StatusItemForEdit" id='StatusItemForEdit'
+                                            checked={this.state.StatusItemForEdit} value='true'
+                                            onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
                                         <label>{Resources['oppened'][currentLanguage]}</label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue ">
-                                        <input type="radio" name="StatusItem" value="false"
-                                            defaultChecked={this.state.StatusItem ? null : 'checked'}
-                                            onChange={(e) => this.setState({ StatusItem: e.target.value })} />
+                                        <input type="radio" name="StatusItemForEdit"
+                                            checked={!this.state.StatusItemForEdit} value='false'
+                                            onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
                                         <label> {Resources['closed'][currentLanguage]}</label>
                                     </div>
 
@@ -1240,9 +1245,9 @@ class punchListAddEdit extends Component {
                     <div className="doc-container">
 
                         <div className="skyLight__form">
-                            <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false })}
+                            <SkyLightStateless onOverlayClicked={() => this.ClosePopup()}
                                 title={Resources['editTitle'][currentLanguage]}
-                                onCloseClicked={() => this.setState({ showPopUp: false })} isVisible={this.state.showPopUp}>
+                                onCloseClicked={() => this.ClosePopup()} isVisible={this.state.showPopUp}>
                                 {RenderEditItem()}
                             </SkyLightStateless>
                         </div>
@@ -1320,48 +1325,36 @@ class punchListAddEdit extends Component {
                     ) : null}
 
                     <div className="doc-pre-cycle letterFullWidth">
-                        <div>
-                            {this.props.changeStatus === true && this.state.IsEditMode ?
-                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                : null
-                            }
-                            {this.viewAttachments()}
+                        {
+                            this.props.changeStatus === true ?
+                                <div className="approveDocument">
+                                    <div className="approveDocumentBTNS">
+                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
 
-                            {this.props.changeStatus === true && docId !== 0 ?
-                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                : null
-                            }
-                        </div>
-                    </div>
-                    {
-                        this.props.changeStatus === true ?
-                            <div className="approveDocument">
-                                <div className="approveDocumentBTNS">
-                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
-
-                                    {this.state.isApproveMode === true ?
-                                        <div >
-                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                        {this.state.isApproveMode === true ?
+                                            <div >
+                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
+                                            </div>
+                                            : null
+                                        }
+                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                        <span className="border"></span>
+                                        <div className="document__action--menu">
+                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                         </div>
-                                        : null
-                                    }
-                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                    <span className="border"></span>
-                                    <div className="document__action--menu">
-                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                     </div>
                                 </div>
-                            </div>
-                            : null
-                    }
-                    <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                            {this.state.currentComponent}
-                        </SkyLight>
+                                : null
+                        }
+                        <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                                {this.state.currentComponent}
+                            </SkyLight>
+                        </div>
                     </div>
                 </div>
             </div>
