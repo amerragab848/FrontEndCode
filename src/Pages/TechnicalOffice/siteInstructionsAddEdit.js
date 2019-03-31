@@ -85,6 +85,7 @@ class siteInstructionsAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
+            isLoading: false,
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
@@ -131,7 +132,9 @@ class siteInstructionsAddEdit extends Component {
         }
 
     };
-
+    componentWillUnmount() {
+        this.props.actions.documentForAdding()
+    }
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             this.setState({
@@ -393,7 +396,7 @@ class siteInstructionsAddEdit extends Component {
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         dataservice.addObject('EditLogsSiteInstructions', saveDocument).then(result => {
             this.setState({
-                isLoading: true
+                isLoading: false
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -411,10 +414,11 @@ class siteInstructionsAddEdit extends Component {
         saveDocument.replayDate = moment(saveDocument.replayDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         saveDocument.projectId = this.state.projectId;
-
+        this.setState({ isLoading: true })
         dataservice.addObject('AddLogsSiteInstructions', saveDocument).then(result => {
             this.setState({
-                docId: result.id
+                docId: result.id,
+                isLoading: false
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
@@ -427,16 +431,6 @@ class siteInstructionsAddEdit extends Component {
         });
     }
 
-    showBtnsSaving() {
-        let btn = null;
-
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
-        }
-        return btn;
-    }
 
     viewAttachments() {
         return (
@@ -645,7 +639,7 @@ class siteInstructionsAddEdit extends Component {
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact',{ label: Resources.fromContactRequired[currentLanguage], value: "0" })
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact', { label: Resources.fromContactRequired[currentLanguage], value: "0" })
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -685,7 +679,7 @@ class siteInstructionsAddEdit extends Component {
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event =>
-                                                                            this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact',{ label: Resources.toContactRequired[currentLanguage], value: "0" })}
+                                                                            this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact', { label: Resources.toContactRequired[currentLanguage], value: "0" })}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
@@ -741,7 +735,22 @@ class siteInstructionsAddEdit extends Component {
 
 
                                                     <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}
+                                                        <React.Fragment>{this.state.isLoading === false ? (
+                                                            <button
+                                                                className="primaryBtn-1 btn meduimBtn"
+                                                                type="submit"
+                                                            >  {this.state.docId > 0 && this.props.changeStatus === false ? Resources.saveAndExit[currentLanguage] : Resources.save[currentLanguage]}
+                                                            </button>
+                                                        ) :
+                                                            (
+                                                                <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>
+                                                            )}</React.Fragment>
                                                     </div>
                                                 </Form>
                                             )}

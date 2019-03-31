@@ -105,11 +105,7 @@ class reportsAddEdit extends Component {
         }
     }
     
-    componentWillUnmount() {
-        this.setState({
-            docId: 0
-        });
-    }
+   
 
     componentDidMount() {
 
@@ -164,7 +160,9 @@ class reportsAddEdit extends Component {
         }
     }
 
-
+    componentWillUnmount() {
+        this.props.actions.documentForAdding()
+    }
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
@@ -176,6 +174,7 @@ class reportsAddEdit extends Component {
 
             }
         } else {
+        this.props.actions.documentForAdding()
             let report = {
                 projectId: this.state.projectId,
                 fromCompanyId: '',

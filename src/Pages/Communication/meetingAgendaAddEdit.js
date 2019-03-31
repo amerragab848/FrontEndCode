@@ -277,6 +277,7 @@ class meetingAgendaAddEdit extends Component {
                 this.getTabelData()
             })
         } else {
+            this.props.actions.documentForAdding()
             Dataservice.GetDataList('GetCommunicationMeetingMinutesForAgenda?projectId=' + this.state.projectId, 'subject', 'id').then(res => {
                 this.setState({ meetingAgenda: res })
             })
@@ -358,6 +359,10 @@ class meetingAgendaAddEdit extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.actions.documentForAdding()
+    }
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -421,7 +426,7 @@ class meetingAgendaAddEdit extends Component {
                     id: res.id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
                     comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
                 })
-                this.setState({showPopUp: false, topics: topics})
+                this.setState({ showPopUp: false, topics: topics })
             }
             else {
                 let data = [...this.state.topics];
@@ -1028,8 +1033,23 @@ class meetingAgendaAddEdit extends Component {
                                         </div>
                                     </div>
                                     <div className="slider-Btns">
-                                        <button className="primaryBtn-1 btn meduimBtn" type='submit'>
-                                            {this.state.docId > 0 ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>
+
+                                    {this.state.isLoading === false ? (
+                                        <button
+                                            className="primaryBtn-1 btn meduimBtn"
+                                            type="submit"
+                                        >  {this.state.docId > 0 ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}
+                                        </button>
+                                    ) :
+                                        (
+                                            <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                        )}
                                     </div>
                                 </React.Fragment>
 
@@ -1059,7 +1079,7 @@ class meetingAgendaAddEdit extends Component {
                 this.props.changeStatus === true ?
                     <div className="approveDocument">
                         <div className="approveDocumentBTNS">
-                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
+                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editMeeting(e)}>{Resources.save[currentLanguage]}</button>
                             {this.state.isApproveMode === true ?
                                 <div >
                                     <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
