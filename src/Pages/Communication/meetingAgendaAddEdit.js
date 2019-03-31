@@ -216,19 +216,20 @@ class meetingAgendaAddEdit extends Component {
     }
 
     checkDocumentIsView() {
+
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(453))) {
+            if (!Config.IsAllow(453)) {
                 this.setState({ isViewMode: true });
             }
+
             if (this.state.isApproveMode != true && Config.IsAllow(453)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(453)) {
-                    if (this.props.document.status != false && Config.IsAllow(453)) {
+                    if (this.props.document.status !== false && Config.IsAllow(453)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
                     }
                 } else {
-
                     this.setState({ isViewMode: true });
                 }
             }
@@ -236,6 +237,8 @@ class meetingAgendaAddEdit extends Component {
         else {
             this.setState({ isViewMode: false });
         }
+
+
     }
 
     fillDropDowns(isEdit) {
@@ -353,6 +356,9 @@ class meetingAgendaAddEdit extends Component {
             this.setState({
                 document: { ...props.document },
                 step_1_Validation: validationSchema
+            }, function () {
+                let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
+                this.setState({ document: { ...this.state.document, docDate: docDate } });
             });
             this.fillDropDowns(true);
             this.checkDocumentIsView();
@@ -395,7 +401,9 @@ class meetingAgendaAddEdit extends Component {
             isLoading: true,
             firstComplete: true
         });
-        Api.post('EditCommunicationMeetingMinutes', this.state.document).then(result => {
+        let docDate =moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let document=Object.assign(this.state.document,{ docDate:docDate})
+        Api.post('EditCommunicationMeetingAgenda', document).then(result => {
             this.setState({
                 isLoading: false,
                 CurrStep: this.state.CurrStep + 1
@@ -568,13 +576,18 @@ class meetingAgendaAddEdit extends Component {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
+                if (this.props.changeStatus == true) {
+                    this.editMeeting();
+                }
+                else if (this.state.docId > 0) {
+                    let CurrStep = this.state.CurrStep + 1
+                    this.setState({ firstComplete: true, CurrStep })
+                }
                 this.setState({
                     fromContacts: [],
                     selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
                     selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-                    calledByContact: [],
-                    CurrStep: this.state.CurrStep + 1,
-                    firstComplete: true
+                    calledByContact: []
                 })
                 break;
             case 2:
@@ -661,6 +674,15 @@ class meetingAgendaAddEdit extends Component {
             selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" }
         })
+    }
+    showBtnsSaving() {
+        let btn = null;
+        if (this.state.docId === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+        } else if (this.state.docId > 0) {
+            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit'>{Resources.next[currentLanguage]}</button>
+        }
+        return btn;
     }
     render() {
         const dataGridTopic = this.state.isLoading === false ? (
@@ -865,12 +887,10 @@ class meetingAgendaAddEdit extends Component {
                     }}
                     enableReinitialize={true}
                     onSubmit={(values) => {
-                        if (this.props.changeStatus === true && this.state.docId > 0) {
-                            this.editMeeting();
-                        } else if (this.props.changeStatus === false && this.state.docId === 0) {
+                        if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.addMeetingAgenda()
                         } else {
-                            this.NextStep()
+                            this.NextStep();
                         }
                     }} >
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
@@ -1033,29 +1053,33 @@ class meetingAgendaAddEdit extends Component {
                                         </div>
                                     </div>
                                     <div className="slider-Btns">
-
-                                    {this.state.isLoading === false ? (
-                                        <button
-                                            className="primaryBtn-1 btn meduimBtn"
-                                            type="submit"
-                                        >  {this.state.docId > 0 ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}
-                                        </button>
-                                    ) :
-                                        (
-                                            <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button>
-                                        )}
+                                        {this.showBtnsSaving()}
                                     </div>
                                 </React.Fragment>
 
                                 : null}
 
-
+                            {
+                                this.props.changeStatus === true ?
+                                    <div className="approveDocument">
+                                        <div className="approveDocumentBTNS">
+                                            {this.state.isApproveMode === true ?
+                                                <div >
+                                                    <button type='button' className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                    <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                </div>
+                                                : null
+                                            }
+                                            <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                            <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                            <span className="border"></span>
+                                            <div className="document__action--menu">
+                                                <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    : null
+                            }
                         </Form>
                     )}
                 </Formik>
@@ -1075,28 +1099,7 @@ class meetingAgendaAddEdit extends Component {
                     }
                 </div>
             </div>
-            {
-                this.props.changeStatus === true ?
-                    <div className="approveDocument">
-                        <div className="approveDocumentBTNS">
-                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editMeeting(e)}>{Resources.save[currentLanguage]}</button>
-                            {this.state.isApproveMode === true ?
-                                <div >
-                                    <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                </div>
-                                : null
-                            }
-                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                            <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                            <span className="border"></span>
-                            <div className="document__action--menu">
-                                <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                            </div>
-                        </div>
-                    </div>
-                    : null
-            }
+
         </React.Fragment>
         let Step_2 = <React.Fragment>
             {attendeesContent}
