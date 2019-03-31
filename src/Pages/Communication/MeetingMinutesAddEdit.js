@@ -141,7 +141,7 @@ class MeetingMinutesAddEdit extends Component {
             }
             if (this.state.isApproveMode != true && Config.IsAllow(507)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(507)) {
-                    if (this.props.document.status !=false && Config.IsAllow(507)) {
+                    if (this.props.document.status != false && Config.IsAllow(507)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -194,6 +194,12 @@ class MeetingMinutesAddEdit extends Component {
 
     }
 
+    componentWillUnmount() {
+        this.props.action.documentForAdding()
+    }
+    componentWillUnmount() {
+        this.props.actions.documentForAdding()
+    }
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })
@@ -204,6 +210,7 @@ class MeetingMinutesAddEdit extends Component {
             })
 
         } else {
+            this.props.actions.documentForAdding()
             this.fillDropDowns(false);
             let document = {
                 projectId: projectId,
@@ -222,7 +229,7 @@ class MeetingMinutesAddEdit extends Component {
                 docCloseDate: '',
                 docLocationId: '',
                 requiredDate: '',
-                status:true
+                status: true
             };
             this.setState({ document });
         }
@@ -311,7 +318,7 @@ class MeetingMinutesAddEdit extends Component {
     addMeeting = () => {
         this.setState({ isLoading: true })
         let documentObj = { ...this.state.document };
-        documentObj.docDate =moment(documentObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        documentObj.docDate = moment(documentObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         documentObj.docLocationId = 0
         DataService.addObject('AddCommunicationMeetingMinutes', documentObj).then(result => {
             this.setState({
@@ -363,7 +370,7 @@ class MeetingMinutesAddEdit extends Component {
                 this.setState({ isLoading: false })
             }
         }).catch(res => {
-            toast.error(Resources["operationCanceled"][currentLanguage]); 
+            toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ isLoading: false })
 
         });
@@ -403,7 +410,7 @@ class MeetingMinutesAddEdit extends Component {
                 isLoading: false
             });
         }).catch(res => {
-            toast.error(Resources["operationCanceled"][currentLanguage]); 
+            toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ isLoading: false })
 
         });
@@ -727,8 +734,22 @@ class MeetingMinutesAddEdit extends Component {
                                 </div>
                             </div>
                             <div className="slider-Btns">
-                                <button className={"primaryBtn-1 btn meduimBtn  "} type='submit'>
-                                    {this.props.changeStatus? Resources.next[currentLanguage]:Resources[this.state.btnTxt][currentLanguage]}</button>
+                                {this.state.isLoading === false ? (
+                                    <button
+                                        className="primaryBtn-1 btn meduimBtn"
+                                        type="submit"
+                                    >  {this.state.docId > 0 ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}
+                                    </button>
+                                ) :
+                                    (
+                                        <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
+                                            <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                            </div>
+                                        </button>
+                                    )}
                             </div>
                         </Form>
                     )}
@@ -989,7 +1010,7 @@ class MeetingMinutesAddEdit extends Component {
         return (
             <React.Fragment>
                 <div className="mainContainer">
-                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper one__tab one_step noTabs__document"}>
+                    <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper one__tab one_step noTabs__document"}>
                         <div className="submittalHead">
                             <h2 className="zero">{Resources.meetingMinutesLog[currentLanguage]}
                                 <span>{projectName.replace(/_/gi, ' ')} · Communication</span>

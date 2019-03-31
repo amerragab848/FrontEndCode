@@ -2801,7 +2801,7 @@ button.companies_icon {
   overflow: auto;
   
 }
-.ui.modal.largeModal,  {
+.ui.modal.largeModal {
   max-width: 600px;
   max-height: 500px;
   overflow: auto;
@@ -2840,5 +2840,21 @@ button.companies_icon {
   width: auto;
 }
 .skylight-dialog .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+  width: 100%;
+}
+.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:only-child {
+  flex-flow: column;
+  margin-bottom: 16px;
+}
+.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields {
+  padding: 0;
+}
+.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+  width : 100%;
+}
+.skylight-dialog .document-fields .fullWidthWrapper.textLeft {
+  text-align: center;
+}
+.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .datepickerContainer.proForm .ui.input.inputDev input, .documents-stepper .doc-container .step-content .skylight-dialog .document-fields .proForm .linebylineInput .ui.input.inputDev {
   width: 100%;
 }
