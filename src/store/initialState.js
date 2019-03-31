@@ -20,6 +20,7 @@ export default {
 			attendees:[],
 			topics:[],
 			viewModel:false,
+			documentCycle:{},
 			moduleName:"",
 			items:[],
 			attachDocuments:[]

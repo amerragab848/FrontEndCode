@@ -65,7 +65,7 @@ const validationSchemaForAddCycle = Yup.object().shape({
     Subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
     ApprovalStatusCycle: Yup.string()
-        .required(Resources['approvalStatusName'][currentLanguage]),
+        .required(Resources['approvalStatusSelection'][currentLanguage]),
 
     Progress: Yup.number()
         .required(Resources['isRequiredField'][currentLanguage])
@@ -185,9 +185,9 @@ class NCRAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             let NCRDoc = nextProps.document
-            NCRDoc.docDate = moment(NCRDoc.docDate).format('DD-MM-YYYY')
-            NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD-MM-YYYY')
-            NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD-MM-YYYY')
+            NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
+            NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD/MM/YYYY')
+            NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD/MM/YYYY')
             this.setState({
                 document: NCRDoc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -216,47 +216,47 @@ class NCRAddEdit extends Component {
 
         } else {
             ///Is Add Mode
-            let NCRDoc = {
-                id: undefined,
-                projectId: projectId,
-                arrange: 1,
-                docDate: moment(),
-                status: true,
-                requiredDate: moment(),
-                resultDate: moment(),
-                fromCompanyId: '',
-                toCompanyId: '',
-                fromContactId: '',
-                toContactId: '',
-                reviewResultId: '',
-                bicCompanyId: '',
-                bicContactId: '',
-                inspectionRequestId: '',
-                fileNumberId: '',
-                disciplineId: '',
-                revisions: '',
-                areaId: '',
-                reasonForIssueId: '',
-                buildingNumberId: '',
-                apartmentNumberId: '',
-                specsSectionId: '',
-                orderId: '',
-                orderType: '',
-                contractId: '',
-                subject: '',
-                progressPercent: '',
-                approvalStatusId: '',
-                rfi: '',
-                refDoc: '',
-                answer: '',
-            }
+
 
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
-            Api.get('GetNextArrangeMainDoc?projectId=86&docType=101&companyId=' + cmi + '&contactId=' + cni + '').then(
+            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=101&companyId=' + cmi + '&contactId=' + cni + '').then(
                 res => {
+                    let NCRDoc = {
+                        id: undefined,
+                        projectId: projectId,
+                        arrange: res,
+                        docDate: moment(),
+                        status: true,
+                        requiredDate: moment(),
+                        resultDate: moment(),
+                        fromCompanyId: '',
+                        toCompanyId: '',
+                        fromContactId: '',
+                        toContactId: '',
+                        reviewResultId: '',
+                        bicCompanyId: '',
+                        bicContactId: '',
+                        inspectionRequestId: '',
+                        fileNumberId: '',
+                        disciplineId: '',
+                        revisions: '',
+                        areaId: '',
+                        reasonForIssueId: '',
+                        buildingNumberId: '',
+                        apartmentNumberId: '',
+                        specsSectionId: '',
+                        orderId: '',
+                        orderType: '',
+                        contractId: '',
+                        subject: '',
+                        progressPercent: '',
+                        approvalStatusId: '',
+                        rfi: '',
+                        refDoc: '',
+                        answer: '',
+                    }
                     this.setState({
-                        GetMaxArrange: res,
                         document: NCRDoc
                     })
                 }
@@ -268,8 +268,20 @@ class NCRAddEdit extends Component {
         this.FillDropDowns()
     }
 
-    FillDropDowns = () => {
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
 
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+            this.checkDocumentIsView();
+        }
+    }
+
+    FillDropDowns = () => {
         let DropDownsData = [
             { Api: 'GetAccountsDefaultList?listType=approvalstatus&pageNumber=0&pageSize=10000', DropDataName: 'approvalstatusList', Label: 'title', Value: 'id', Name: 'approvalStatusId', selectedValue: 'selectedApprovalStatusId' },
             { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
@@ -284,13 +296,11 @@ class NCRAddEdit extends Component {
             { Api: 'GetProjectProjectsCompaniesForList?projectId=' + projectId + '', DropDataName: 'companies', Label: 'companyName', Value: 'companyId', Name: 'toCompanyId', selectedValue: 'selectedFromCompany' },
             { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
         ]
-
         let CompaniesDropDownsData = [
             { Name: 'fromCompanyId', SelectedValueCompany: 'selectedFromCompany', ContactName: 'fromContactId', DropDataContactName: 'fromContacts', SelectedValueContact: 'selectedFromContact' },
             { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: 'toContactId', DropDataContactName: 'toContacts', SelectedValueContact: 'selectedToContact' },
             { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'bicContacts', SelectedValueContact: 'selectedActionByContactId' },
         ]
-
         DropDownsData.map(element => {
             return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
                 result => {
@@ -333,8 +343,6 @@ class NCRAddEdit extends Component {
                 }
             )
         })
-
-
     }
 
     onChangeMessage = (value) => {
@@ -439,28 +447,12 @@ class NCRAddEdit extends Component {
     saveNCR = () => {
         let NCRDoc = { ...this.state.document }
 
-        if (NCRDoc.docDate === '') {
-            NCRDoc.docDate = moment()
-        }
-        else {
-            NCRDoc.docDate = moment(NCRDoc.docDate)
-        }
-
-        if (NCRDoc.docDate === '') {
-            NCRDoc.requiredDate = moment()
-        }
-        else {
-            NCRDoc.requiredDate = moment(NCRDoc.requiredDate)
-        }
-
-        if (NCRDoc.docDate === '') {
-            NCRDoc.resultDate = moment()
-        } else {
-            NCRDoc.resultDate = moment(NCRDoc.resultDate)
-        }
+        NCRDoc.docDate = moment(NCRDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        NCRDoc.requiredDate = moment(NCRDoc.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        NCRDoc.resultDate = moment(NCRDoc.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
         if (this.state.docId > 0) {
-            dataservice.addObject('EditCommunicationNCRs', this.state.document).then(
+            dataservice.addObject('EditCommunicationNCRs', NCRDoc).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -468,7 +460,7 @@ class NCRAddEdit extends Component {
                 });
         }
         else {
-            dataservice.addObject('AddCommunicationNCRs', this.state.document).then(
+            dataservice.addObject('AddCommunicationNCRs', NCRDoc).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -663,11 +655,6 @@ class NCRAddEdit extends Component {
                                                     </div>
                                                 </div>
 
-
-
-
-
-
                                             </div>
 
                                             <div className="slider-Btns">
@@ -791,7 +778,6 @@ class NCRAddEdit extends Component {
 
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='docDate' startDate={this.state.document.docDate}
-                                                            //  Customformat={true}
                                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                     </div>
 
@@ -828,13 +814,11 @@ class NCRAddEdit extends Component {
 
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='requiredDateLog' startDate={this.state.document.requiredDate}
-                                                            //Customformat={true}
                                                             handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='resultDate' startDate={this.state.document.resultDate}
-                                                            //Customformat={true}
                                                             handleChange={e => this.handleChangeDate(e, 'resultDate')} />
                                                     </div>
 

@@ -56,8 +56,7 @@ import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
 import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks"; 
 import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
-import meetingAgendaAddEdit  from '../src/Pages/Communication/meetingAgendaAddEdit';
-
+import meetingAgendaAddEdit  from '../src/Pages/Communication/meetingAgendaAddEdit'; 
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
 import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialInspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
@@ -65,8 +64,11 @@ import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionLi
 import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
 import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEdit";
 import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
+import SubmittalAddEdit from "./Pages/TechnicalOffice/SubmittalAddEdit";
 import siteInstructionsAddEdit from "./Pages/TechnicalOffice/siteInstructionsAddEdit";
+import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
+import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
 
 
@@ -137,8 +139,8 @@ let originalRoutes = [
     , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     , <Route path="/DashboardProject" component={DashboardProject} />
     , <Route path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
-    ,<Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
-    ,<Route path="/meetingMinutesAddEdit" component={meetingMinutesAddEdit} />
+    , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
+    , <Route path="/meetingMinutesAddEdit" component={meetingMinutesAddEdit} />
     , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
     , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
     , <Route path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
@@ -147,8 +149,11 @@ let originalRoutes = [
     , <Route path="/NCRAddEdit" component={NCRAddEdit} />
     , <Route path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
     , <Route path="/clientModificationAddEdit" component={clientModificationAddEdit} />
+    , <Route path="/SubmittalAddEdit" component={SubmittalAddEdit} />
     , <Route path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
+    , <Route path="/punchListAddEdit" component={punchListAddEdit} />
     , <Route path="/boqAddEdit" component={boqAddEdit} />
+    , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
     

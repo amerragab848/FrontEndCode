@@ -49,7 +49,7 @@ class ViewAttachmments extends Component {
 
     getData() {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        if (this.props.files.length === 0 && this.props.changeStatus === true) {
+        if (this.props.files.length === 0 && this.props.changeStatus === true) {//
             this.props.actions.GetUploadedFiles(url);
         }
     }
@@ -142,7 +142,8 @@ class ViewAttachmments extends Component {
 function mapStateToProps(state, ownProps) {
     return {
         files: state.communication.files,
-        isLoadingFiles: state.communication.isLoadingFiles
+        isLoadingFiles: state.communication.isLoadingFiles,
+        changeStatus: state.communication.changeStatus
     }
 }
 

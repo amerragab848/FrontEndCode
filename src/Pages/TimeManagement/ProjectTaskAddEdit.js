@@ -245,6 +245,7 @@ class ProjectTaskAddEdit extends Component {
       this.setState({ document: taskDocument });
       this.fillDropDowns(false);
     }
+    this.props.actions.documentForAdding();
   }
 
   fillSubDropDownInEdit(url,param,value,subField,subSelectedValue,subDatasource) {
