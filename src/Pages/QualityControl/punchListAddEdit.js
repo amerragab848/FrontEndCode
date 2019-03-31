@@ -282,7 +282,7 @@ class punchListAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow,
             });
 
-            //this.checkDocumentIsView();
+            this.checkDocumentIsView();
         }
     }
 
@@ -295,7 +295,7 @@ class punchListAddEdit extends Component {
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
+         this.checkDocumentIsView();
         }
     }
 
@@ -331,6 +331,34 @@ class punchListAddEdit extends Component {
                 }
             )
             this.FillDropDowns()
+        }
+    }
+
+    componentDidMount = () => {
+        this.setState({
+            isLoading: false
+        })
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(275))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(275)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(275)) {
+                    if (this.props.document.status !== false && Config.IsAllow(275)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
         }
     }
 
@@ -426,12 +454,7 @@ class punchListAddEdit extends Component {
         })
     }
 
-    componentDidMount = () => {
-        this.setState({
-            isLoading: false
-        })
-    }
-
+  
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -1143,7 +1166,7 @@ class punchListAddEdit extends Component {
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue ">
                                         <input type="radio" name="StatusItemForEdit"
-                                            checked={!this.state.StatusItemForEdit} value='false'
+                                            checked={!this.state.StatusItemForEdit } value='false'
                                             onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
                                         <label> {Resources['closed'][currentLanguage]}</label>
                                     </div>
@@ -1187,18 +1210,27 @@ class punchListAddEdit extends Component {
                                     error={errors.AreaIdItem} touched={touched.AreaIdItem}
                                     index="IR-AreaIdItem" name="AreaIdItem" id="AreaIdItem" />
 
-                                <Dropdown data={this.state.ToContactsItem} selectedValue={this.state.selectedActionByContactItem}
-                                    handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem', false, '', '', '', 'selectedActionByContactItem')}
-                                    onChange={setFieldValue} onBlur={setFieldTouched}
-                                    error={errors.ActionByContactItem} touched={touched.ActionByContactItem}
-                                    index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" />
+                                <div className="linebylineInput valid-input mix_dropdown">
+                                    <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
+                                    <div className="supervisor__company">
+                                        <div className="super_name">
+                                            <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
+                                                onChange={setFieldValue} onBlur={setFieldTouched}
+                                                error={errors.bicContactId} touched={touched.bicContactId}
+                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" />
+                                        </div>
 
-                                <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyIdItem}
-                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.ActionByCompanyIdItem}
-                                    touched={touched.ActionByCompanyIdItem} name="ActionByCompanyIdItem"
-                                    handleChange={event =>
-                                        this.handleChangeDropDown(event, 'ActionByCompanyIdItem', true, 'ToContactsItem', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyIdItem', 'selectedActionByContactItem')}
-                                />
+                                        <div className="super_company">
+                                            <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
+                                                onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
+                                                touched={touched.bicCompanyId} name="bicCompanyId"
+                                                handleChange={event =>
+                                                    this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className="slider-Btns fullWidthWrapper">
                                     <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['addTitle'][currentLanguage]}</button>

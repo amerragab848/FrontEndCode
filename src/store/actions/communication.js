@@ -1,6 +1,6 @@
 import * as types from './types';
 import Api from '../../api';
-
+ 
 const _ = require('lodash')
 
 export function documentForEdit(urlAction) {
@@ -16,6 +16,24 @@ export function documentForEdit(urlAction) {
             dispatch({
                 type: types.Document_for_Edit,
                 document: []
+            });
+        });
+    }
+}
+
+export function GetDocumentCycle(urlAction) {
+    return (dispatch, getState) => {
+        return Api.get(urlAction).then(resp => {
+
+            dispatch({
+                type: types.GetDocumentCycle,
+                data: resp
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                type: types.GetDocumentCycle,
+                data: []
             });
         });
     }
