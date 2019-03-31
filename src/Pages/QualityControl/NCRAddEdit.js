@@ -75,6 +75,7 @@ const validationSchemaForAddCycle = Yup.object().shape({
 
 
 class NCRAddEdit extends Component {
+  
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);

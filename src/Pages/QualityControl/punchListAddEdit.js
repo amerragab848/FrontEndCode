@@ -275,7 +275,7 @@ class punchListAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             let SnagListDoc = nextProps.document
-            SnagListDoc.docDate = moment(SnagListDoc.docDate).format('DD/MM/YYYY')
+            SnagListDoc.docDate = moment(SnagListDoc.docDate).format("DD/MM/YYYY")
             this.setState({
                 document: SnagListDoc,
                 IsEditMode: true,
@@ -295,7 +295,7 @@ class punchListAddEdit extends Component {
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-         this.checkDocumentIsView();
+            this.checkDocumentIsView();
         }
     }
 
@@ -303,7 +303,7 @@ class punchListAddEdit extends Component {
         if (docId > 0) {
             let url = "GetLogsPunchListsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
-            Api.get('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId + '').then(
+            dataservice.GetDataGrid('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId + '').then(
                 res => {
                     this.setState({
                         IsEditMode: true,
@@ -318,7 +318,7 @@ class punchListAddEdit extends Component {
         } else {
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
-            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=61&companyId=' + cmi + '&contactId=' + cni + '').then(
+            dataservice.GetRowById('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=61&companyId=' + cmi + '&contactId=' + cni + '').then(
                 res => {
                     let SnagListDoc = {
                         projectId: projectId, fromCompanyId: '', toCompanyId: '', subject: '', status: true,
@@ -331,6 +331,7 @@ class punchListAddEdit extends Component {
                 }
             )
             this.FillDropDowns()
+            this.props.actions.documentForAdding();
         }
     }
 
@@ -399,6 +400,7 @@ class punchListAddEdit extends Component {
     }
 
     FillDropDowns = () => {
+      
         let DropDownsData = [
             { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
             { Api: 'GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', DropDataName: 'areas', Label: 'title', Value: 'id', Name: 'areaId', selectedValue: 'selecetedArea' },
@@ -406,6 +408,7 @@ class punchListAddEdit extends Component {
             { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
             { Api: 'GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', DropDataName: 'locations', Label: 'title', Value: 'id', Name: 'locationId', selectedValue: 'selectedlocation' },
         ]
+       
         let CompaniesDropDownsData = [
             { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'ToContacts', SelectedValueContact: 'selectedToContact' },
             { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
@@ -419,7 +422,7 @@ class punchListAddEdit extends Component {
                         [element.DropDataName]: result,
                     })
 
-                    if (this.state.IsEditMode) {
+                    if (this.state.IsEditMode && docId > 0) {
                         if (element.DropDataName === 'companies') {
                             CompaniesDropDownsData.map(company => {
                                 let elementID = this.state.document[company.Name];
@@ -454,7 +457,6 @@ class punchListAddEdit extends Component {
         })
     }
 
-  
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -615,7 +617,7 @@ class punchListAddEdit extends Component {
         let SnagListObj = this.state.document
         SnagListObj.docDate = moment(SnagListObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
-        if (this.state.IsEditMode) {
+        if (docId > 0) {
 
             dataservice.addObject('EditLogsPunchLists', SnagListObj).then(
                 res => {
@@ -851,7 +853,7 @@ class punchListAddEdit extends Component {
 
                                             <div className="linebylineInput valid-input alternativeDate">
                                                 <DatePicker title='docDate' startDate={this.state.document.docDate}
-                                                    handleChange={e => this.handleChangeDate(e, 'docDate')} />
+                                                   handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                             </div>
 
                                             <div className="linebylineInput valid-input">
@@ -1166,7 +1168,7 @@ class punchListAddEdit extends Component {
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue ">
                                         <input type="radio" name="StatusItemForEdit"
-                                            checked={!this.state.StatusItemForEdit } value='false'
+                                            checked={!this.state.StatusItemForEdit} value='false'
                                             onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
                                         <label> {Resources['closed'][currentLanguage]}</label>
                                     </div>
