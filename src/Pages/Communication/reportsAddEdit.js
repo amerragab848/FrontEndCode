@@ -31,7 +31,10 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
     fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
-    toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage])
+    toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
+    reportType: Yup.string().required(Resources['reportTypeRequired'][currentLanguage]),
+
+
 
 })
 
@@ -93,26 +96,21 @@ class reportsAddEdit extends Component {
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedReportType: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
+            selectedReportType: { label: Resources.pleaseSelectReportType[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue()
         }
 
         if (!Config.IsAllow(423) || !Config.IsAllow(424) || !Config.IsAllow(426)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: "/Report/" + projectId
+                pathname: "/Reports/" + projectId
             });
         }
     }
-    
-    componentWillUnmount() {
-        this.setState({
-            docId: 0
-        });
-    }
+
+
 
     componentDidMount() {
-
         this.checkDocumentIsView();
     };
 
@@ -128,7 +126,11 @@ class reportsAddEdit extends Component {
             this.setState({
                 document: { ...nextProps.document },
                 hasWorkflow: nextProps.hasWorkflow,
-                selectedReportType: { label: nextProps.document.reportTypeName, value: nextProps.document.reportTypeId }
+                selectedReportType: { label: nextProps.document.reportTypeName, value: nextProps.document.reportTypeId },
+                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
+            },function(){
+                let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
+                this.setState({document:{...this.state.document,docDate:docDate}})
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -164,7 +166,9 @@ class reportsAddEdit extends Component {
         }
     }
 
-
+    componentWillUnmount() {
+        this.props.actions.documentForAdding()
+    }
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
@@ -176,6 +180,7 @@ class reportsAddEdit extends Component {
 
             }
         } else {
+            this.props.actions.documentForAdding()
             let report = {
                 projectId: this.state.projectId,
                 fromCompanyId: '',
@@ -194,7 +199,27 @@ class reportsAddEdit extends Component {
             this.fillDropDowns(false);
         }
     };
+    onChangeMessage = (value) => {
+        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
+        if (isEmpty === false) {
 
+            this.setState({ message: value });
+            if (value.toString('markdown').length > 1) {
+                let original_document = { ...this.state.document };
+
+                let updated_document = {};
+
+                updated_document.message = value.toString('markdown');
+
+                updated_document = Object.assign(original_document, updated_document);
+
+                this.setState({
+                    document: updated_document
+                });
+            }
+        }
+
+    };
     fillDropDowns(isEdit) {
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
             if (isEdit) {
@@ -294,8 +319,9 @@ class reportsAddEdit extends Component {
         this.setState({
             isLoading: true
         });
-
-        dataservice.addObject('EditCommunicationReport', this.state.document).then(result => {
+        let docDate =moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let document=Object.assign(this.state.document,{ docDate:docDate})
+        dataservice.addObject('EditCommunicationReport', document).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -303,7 +329,7 @@ class reportsAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.props.history.push({
-                pathname: "/Report/" + this.state.projectId
+                pathname: "/Reports/" + this.state.projectId
             });
         });
     }
@@ -311,7 +337,7 @@ class reportsAddEdit extends Component {
     saveReport() {
         let reportTypeId = this.state.document.reportType.value
         let report = Object.assign({ ...this.state.document }, { reportTypeId: reportTypeId })
-        report.docDate = moment(report.docDate).format('MM/DD/YYYY');
+        report.docDate =moment(report.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         dataservice.addObject('AddCommunicationReport', report).then(result => {
             this.setState({
                 docId: result.id
@@ -319,26 +345,10 @@ class reportsAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     }
-    onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-            this.setState({ message: value });
-            if (value.toString('markdown').length > 1) {
-                let original_document = { ...this.state.document };
-                let updated_document = {};
-                updated_document.message = value.toString('markdown');
-                updated_document = Object.assign(original_document, updated_document);
-                this.setState({
-                    document: updated_document
-                });
-            }
 
-        }
-
-    };
     saveAndExit(event) {
         this.props.history.push({
-            pathname: "/Report/" + this.state.projectId
+            pathname: "/Reports/" + this.state.projectId
         });
     }
 
@@ -363,7 +373,6 @@ class reportsAddEdit extends Component {
     }
 
     handleShowAction = (item) => {
-        console.log(item);
         if (item.value != "0") {
 
             this.setState({
@@ -439,9 +448,10 @@ class reportsAddEdit extends Component {
                                                 subject: this.state.document.subject,
                                                 fromContact: this.state.selectedFromContact.value > 0 ? this.state.selectedFromContact : '',
                                                 toContact: this.state.selectedToContact.value > 0 ? this.state.selectedToContact : '',
-                                                refDoc: this.state.document.refDoc
+                                                refDoc: this.state.document.refDoc,
+                                                reportType: this.state.selectedReportType.value > 0 ? this.state.selectedReportType : ''
                                             }}
-
+                                            enableReinitialize={true}
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
@@ -518,8 +528,15 @@ class reportsAddEdit extends Component {
                                                                 title="reportType"
                                                                 data={this.state.reportType}
                                                                 selectedValue={this.state.selectedReportType}
-                                                                handleChange={event => this.handleChange('reportType', event)}
+                                                                handleChange={event => {
+                                                                    this.handleChange('reportType', event)
+                                                                    this.setState({ selectedReportType: event })
+                                                                }}
                                                                 index="letter-discipline"
+                                                                onChange={setFieldValue}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.reportType}
+                                                                touched={touched.reportType}
                                                             />
                                                         </div>
 
@@ -627,8 +644,34 @@ class reportsAddEdit extends Component {
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
                                                     </div>
+                                                    {
+                                                        this.props.changeStatus === true ?
+                                                            <div className="approveDocument">
+                                                                {/* <h2 className="zero">ACTIONS</h2> */}
+                                                                <div className="approveDocumentBTNS">
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit'>{Resources.save[currentLanguage]}</button>
+
+                                                                    {this.state.isApproveMode === true ?
+                                                                        <div >
+                                                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+
+                                                                        </div>
+                                                                        : null
+                                                                    }
+                                                                    <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                    <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <span className="border"></span>
+                                                                    <div className="document__action--menu">
+                                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            : null
+                                                    }
                                                 </Form>
                                             )}
+
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle">
@@ -645,34 +688,11 @@ class reportsAddEdit extends Component {
                                             }
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    {/* <h2 className="zero">ACTIONS</h2> */}
-                                    <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editReport(e)}>{Resources.save[currentLanguage]}</button>
 
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-                                            </div>
-                                            : null
-                                        }
-                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
-                                    </div>
-                                </div>
-                                : null
-                        }
                     </div>
 
                 </div>

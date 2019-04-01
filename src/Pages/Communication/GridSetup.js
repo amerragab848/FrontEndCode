@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
 import "../../Styles/gridStyle.css";
@@ -36,6 +36,9 @@ class GridSetup extends Component {
 
   componentWillMount = () => { };
 
+  componentDidMount() {
+    this.scrolllll();
+  }
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
 
@@ -231,7 +234,7 @@ class GridSetup extends Component {
   onRowClick = (index, value, column) => {
     if (value) {
       if (this.props.onRowClick != undefined) {
-        this.props.onRowClick(value, index,column);
+        this.props.onRowClick(value, index, column);
         this.setState({ selectedRow: value })
       }
     }
@@ -262,10 +265,24 @@ class GridSetup extends Component {
     });
   };
 
+  scrolllll() {
+    document.getElementById('top__scroll').addEventListener('scroll', function () {
+      document.getElementById('bottom__scroll').querySelector('.react-grid-Canvas').scrollLeft = this.scrollLeft;
+
+    });
+    document.getElementById('empty__div--scroll').style.width = document.getElementById('scrollWidthDiv').style.width;
+    document.getElementById('bottom__scroll').querySelector('.react-grid-Canvas').addEventListener('scroll', function () {
+      if (document.getElementById('top__scroll') != null) {
+        document.getElementById('top__scroll').scrollLeft = this.scrollLeft;
+      }
+      // document.getElementById('empty__div--scroll').style.width = document.getElementById('scrollWidthDiv').style.width;
+    });
+  }
+
   render() {
     const { rows, groupBy } = this.state;
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-    console.log("groupedRows....",groupedRows.length);
+    console.log("groupedRows....", groupedRows.length);
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
@@ -305,61 +322,73 @@ class GridSetup extends Component {
 
 
     return (
-      <DraggableContainer>
-        <ReactDataGrid
-          rowKey="id"
-          minHeight={this.props.minHeight !== undefined ? this.props.minHeight: 650}
-           columns={this.state.columns}
-          rowGetter={i => groupedRows[i]}
-          rowsCount={groupedRows.length}
-          enableCellSelect={true}
-          onGridRowsUpdated={this.onGridRowsUpdated}
-          onCellSelected={this.onCellSelected}
+      <Fragment>
+        <div id="top__scroll">
+          <div id="empty__div--scroll">
+          </div>
+        </div>
+        <div id="bottom__scroll">
+          <DraggableContainer>
 
-          onColumnResize={(idx, width, event) => {
-            //console.log(this.state.columns[idx-1]);
-            // console.log(`Column ${idx} has been resized to ${width}`);
-          }}
-          onGridSort={(sortColumn, sortDirection) =>
-            this.setState({
-              rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
-            })
-          }
-          enableDragAndDrop={true}
-          toolbar={
-            <CustomToolbar
-              groupBy={this.state.groupBy}
-              onColumnGroupAdded={columnKey =>
-                this.setState({ groupBy: this.groupColumn(columnKey) })
+            <ReactDataGrid
+              rowKey="id"
+              minHeight={this.props.minHeight !== undefined ? this.props.minHeight : 650}
+              height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
+              columns={this.state.columns}
+              rowGetter={i => groupedRows[i]}
+              rowsCount={groupedRows.length}
+              enableCellSelect={true}
+              onGridRowsUpdated={this.onGridRowsUpdated}
+              onCellSelected={this.onCellSelected}
+
+              onColumnResize={(idx, width, event) => {
+                this.scrolllll();
+
+                //console.log(this.state.columns[idx-1]);
+                // console.log(`Column ${idx} has been resized to ${width}`);
+              }}
+              onGridSort={(sortColumn, sortDirection) =>
+                this.setState({
+                  rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
+                })
               }
-              onColumnGroupDeleted={columnKey =>
-                this.setState({ groupBy: this.ungroupColumn(columnKey) })
+              enableDragAndDrop={true}
+              toolbar={
+                <CustomToolbar
+                  groupBy={this.state.groupBy}
+                  onColumnGroupAdded={columnKey =>
+                    this.setState({ groupBy: this.groupColumn(columnKey) })
+                  }
+                  onColumnGroupDeleted={columnKey =>
+                    this.setState({ groupBy: this.ungroupColumn(columnKey) })
+                  }
+                />
               }
+              rowSelection={{
+                showCheckbox: this.props.showCheckbox,
+                defaultChecked: false,
+                enableShiftSelect: true,
+                onRowsSelected: this.onRowsSelected,
+                onRowsDeselected: this.onRowsDeselected,
+                enableRowSelect: 'single',
+                selectBy: {
+                  indexes: this.state.selectedIndexes
+                }
+              }}
+
+              onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
+              onAddFilter={filter =>
+                this.setState({ setFilters: this.handleFilterChange(filter) })
+              }
+              onClearFilters={() => this.setState({ setFilters: {} })}
+              getValidFilterValues={columnKey =>
+                this.getValidFilterValues(this.state.rows, columnKey)
+              }
+              getCellActions={this.props.getCellActions}
             />
-          }
-          rowSelection={{
-            showCheckbox: this.props.showCheckbox,
-            defaultChecked: false,
-            enableShiftSelect: true,
-            onRowsSelected: this.onRowsSelected,
-            onRowsDeselected: this.onRowsDeselected,
-            enableRowSelect: 'single',
-            selectBy: {
-              indexes: this.state.selectedIndexes
-            }
-          }}
-
-          onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
-          onAddFilter={filter =>
-            this.setState({ setFilters: this.handleFilterChange(filter) })
-          }
-          onClearFilters={() => this.setState({ setFilters: {} })}
-          getValidFilterValues={columnKey =>
-            this.getValidFilterValues(this.state.rows, columnKey)
-          }
-          getCellActions={this.props.getCellActions}
-        />
-      </DraggableContainer>
+          </DraggableContainer >
+        </div>
+      </Fragment>
     );
   }
 }

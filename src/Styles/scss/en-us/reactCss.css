@@ -2948,6 +2948,22 @@ button.companies_icon {
 .skylight-dialog .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width: 100%;
 }
+.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:only-child {
+  flex-flow: column;
+  margin-bottom: 16px;
+}
+.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields {
+  padding: 0;
+}
+.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+  width : 100%;
+}
+.skylight-dialog .document-fields .fullWidthWrapper.textLeft {
+  text-align: center;
+}
+.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .datepickerContainer.proForm .ui.input.inputDev input, .documents-stepper .doc-container .step-content .skylight-dialog .document-fields .proForm .linebylineInput .ui.input.inputDev {
+  width: 100%;
+}
 .dropWrapper .fillter-status .ui.checkbox.radioBoxBlue:first-of-type {
   margin-right: 15PX;
 }
@@ -2972,4 +2988,22 @@ button.companies_icon {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+#top__scroll {
+  width: 100%;
+  overflow-x: scroll;
+  position: absolute;
+  top: 90px;
+  z-index: 13;
+}
+#top__scroll::-webkit-scrollbar, .react-grid-Canvas::-webkit-scrollbar {
+  height: 7px;
+}
+.grid-container {
+  position: relative;
+}
+#empty__div--scroll {
+  width: 2800px;
+  height: 1px;
 }
