@@ -15,7 +15,6 @@
     "en": "Reject",
     "ar": "رفض"
   },
-
   "actualFinishDate": {
     "en": "Actual Finish Date",
     "ar": "تاريخ الانتهاء الفعلى"
@@ -68,7 +67,6 @@
     "en": "-- Please select Account --",
     "ar": "-- برجاء اختيار الحساب --"
   },
-
   "statusName": {
     "en": "Status",
     "ar": "الحالة"
@@ -1123,7 +1121,6 @@
     "en": "Timesheet",
     "ar": "سجل الحضور"
   },
-
   "docApproval": {
     "en": "Doc Approval",
     "ar": "اعتماد وثائق"
@@ -1845,8 +1842,8 @@
       "notAssignedTothisProject": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
       "userNameExist": "<i class='fa fa-clock-o'></i> <i>User Name Already Exist ...</i>",
       "yes": "Yes",
-      "no": "No" ,
-      "cannotDelete":"Cannot Delete This User ..."
+      "no": "No",
+      "cannotDelete": "Cannot Delete This User ..."
     },
     "ar": {
       "title": "!احذر عملية خطيرة",
@@ -1861,7 +1858,7 @@
       "userNameExist": "<i class='fa fa-clock-o'></i> <i>...إسم المستخدم موجود قبل ذلك</i>",
       "yes": "نعم",
       "no": "لا",
-      "cannotDelete":"لا يمكن مسح هذا العنصر .."
+      "cannotDelete": "لا يمكن مسح هذا العنصر .."
     }
   },
   "smartSentAccountingMessage": {
@@ -6166,7 +6163,7 @@
     "en": "Contract Conditions",
     "ar": " شروط العقد"
   },
-  "menuDefaultData": { 
+  "menuDefaultData": {
     "en": "Menu Default Data",
     "ar": " قائمة البيانات الاساسية"
   },
@@ -7681,36 +7678,35 @@
   "submit": {
     "en": "Submit",
     "ar": "تنفيذ"
-  } , 
+  },
   "chooseFile": {
     "en": "Choose File",
     "ar": "اختر الملف"
-  } , 
+  },
   "mainAlerts": {
     "en": "Main Alerts",
     "ar": "التنبيهات الرئيسية"
-  }, 
+  },
   "pmCounters": {
     "en": "PM counters",
     "ar": "عدادات ادارة المشروعات"
-  }, 
+  },
   "projectsLogs": {
     "en": "Projects Logs",
     "ar": "سجلات المشاريع"
-  }, 
+  },
   "summaries": {
     "en": "Summaries",
     "ar": "الملخصات"
-  }, 
+  },
   "counters": {
     "en": "Counters",
     "ar": "المجموع"
-  }, 
+  },
   "respondingTime": {
     "en": "Responding time",
     "ar": "Responding time"
-  } 
-  ,
+  },
   "monitorTasks": {
     "en": "Monitor Tasks",
     "ar": "مراقبه المهام"
@@ -7718,7 +7714,7 @@
   "monthlyTasks": {
     "en": "Monthly Tasks",
     "ar": "المهام الشهريه"
-  } ,
+  },
   "contacts": {
     "en": "Contacts",
     "ar": "الاشخاص"
@@ -7758,9 +7754,13 @@
   "discplinesRequired": {
     "en": "Please Select Discplines",
     "ar": "برجاء اختيار التصميم"
-  } ,
+  },
   "arrayEmpty": {
     "en": "Please Select At Least One Record!...",
     "ar": "برجاء اختيار عنصر عالاقل"
-  } 
+  },
+  "itemCodeExist": {
+    "en": "Item Code Already Exist",
+    "ar": "رقم العنصر موجود"
+  }
 }

@@ -185,9 +185,9 @@ class NCRAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             let NCRDoc = nextProps.document
-            NCRDoc.docDate = moment(NCRDoc.docDate).format('DD-MM-YYYY')
-            NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD-MM-YYYY')
-            NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD-MM-YYYY')
+            NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
+            NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD/MM/YYYY')
+            NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD/MM/YYYY')
             this.setState({
                 document: NCRDoc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -216,11 +216,11 @@ class NCRAddEdit extends Component {
 
         } else {
             ///Is Add Mode
-           
+
 
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
-            Api.get('GetNextArrangeMainDoc?projectId='+projectId+'&docType=101&companyId=' + cmi + '&contactId=' + cni + '').then(
+            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=101&companyId=' + cmi + '&contactId=' + cni + '').then(
                 res => {
                     let NCRDoc = {
                         id: undefined,
@@ -266,6 +266,19 @@ class NCRAddEdit extends Component {
 
     componentDidMount = () => {
         this.FillDropDowns()
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+            this.checkDocumentIsView();
+        }
     }
 
     FillDropDowns = () => {
@@ -434,28 +447,12 @@ class NCRAddEdit extends Component {
     saveNCR = () => {
         let NCRDoc = { ...this.state.document }
 
-        if (NCRDoc.docDate === '') {
-            NCRDoc.docDate = moment()
-        }
-        else {
-            NCRDoc.docDate = moment(NCRDoc.docDate)
-        }
-
-        if (NCRDoc.docDate === '') {
-            NCRDoc.requiredDate = moment()
-        }
-        else {
-            NCRDoc.requiredDate = moment(NCRDoc.requiredDate)
-        }
-
-        if (NCRDoc.docDate === '') {
-            NCRDoc.resultDate = moment()
-        } else {
-            NCRDoc.resultDate = moment(NCRDoc.resultDate)
-        }
+        NCRDoc.docDate = moment(NCRDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        NCRDoc.requiredDate = moment(NCRDoc.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        NCRDoc.resultDate = moment(NCRDoc.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
         if (this.state.docId > 0) {
-            dataservice.addObject('EditCommunicationNCRs', this.state.document).then(
+            dataservice.addObject('EditCommunicationNCRs', NCRDoc).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -463,7 +460,7 @@ class NCRAddEdit extends Component {
                 });
         }
         else {
-            dataservice.addObject('AddCommunicationNCRs', this.state.document).then(
+            dataservice.addObject('AddCommunicationNCRs', NCRDoc).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -658,11 +655,6 @@ class NCRAddEdit extends Component {
                                                     </div>
                                                 </div>
 
-
-
-
-
-
                                             </div>
 
                                             <div className="slider-Btns">
@@ -786,7 +778,6 @@ class NCRAddEdit extends Component {
 
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='docDate' startDate={this.state.document.docDate}
-                                                            //  Customformat={true}
                                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                     </div>
 
@@ -823,13 +814,11 @@ class NCRAddEdit extends Component {
 
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='requiredDateLog' startDate={this.state.document.requiredDate}
-                                                            //Customformat={true}
                                                             handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='resultDate' startDate={this.state.document.resultDate}
-                                                            //Customformat={true}
                                                             handleChange={e => this.handleChangeDate(e, 'resultDate')} />
                                                     </div>
 

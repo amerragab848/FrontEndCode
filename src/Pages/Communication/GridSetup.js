@@ -342,6 +342,8 @@ class GridSetup extends Component {
               onCellSelected={this.onCellSelected}
 
               onColumnResize={(idx, width, event) => {
+                this.scrolllll();
+
                 //console.log(this.state.columns[idx-1]);
                 // console.log(`Column ${idx} has been resized to ${width}`);
               }}
