@@ -70,8 +70,8 @@ import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
-
-
+import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
+ 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -156,7 +156,7 @@ let originalRoutes = [
     , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
-    
+    , <Route path="/pcoAddEdit" component={pcoAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

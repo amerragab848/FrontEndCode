@@ -19,7 +19,6 @@ import {
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -38,13 +37,23 @@ const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
+    description: Yup.string().required(Resources['description'][currentLanguage]),
+
     contractId: Yup.string().required(Resources['selectContract'][currentLanguage])
         .nullable(true),
 
-    total: Yup.string()
+    companyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage])
+        .nullable(true),
+
+    profit: Yup.string().required(Resources['profit'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
 
-    timeExtension: Yup.string()
+    overHead: Yup.string().required(Resources['overHead'][currentLanguage])
+        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    approvalStatusId: Yup.string()
+        .required(Resources['overHead'][currentLanguage]),
+
+    timeExtension: Yup.string().required(Resources['timeExtension'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
 
@@ -55,11 +64,11 @@ const documentItemValidationSchema = Yup.object().shape({
         .required(Resources['resourceCode'][currentLanguage]),
     itemCode: Yup.string()
         .required(Resources['itemCode'][currentLanguage]),
-    unitPrice: Yup.string()
+    unitPrice: Yup.string().required(Resources['unitPrice'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
     days: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    quantity: Yup.string()
+    quantity: Yup.string().required(Resources['quantity'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
 
@@ -79,15 +88,15 @@ let columns = [
     }, {
         Header: Resources['unitPrice'][currentLanguage],
         accessor: 'unitPrice',
-        width:80,
+        width: 80,
     }, {
         Header: Resources['resourceCode'][currentLanguage],
         accessor: 'resourceCode',
-        width:120,
+        width: 120,
     }, {
         Header: Resources['itemCode'][currentLanguage],
         accessor: 'itemCode',
-        width:80,
+        width: 80,
     }, {
         Header: Resources['boqType'][currentLanguage],
         accessor: 'boqType',
@@ -99,7 +108,7 @@ let columns = [
     }, {
         Header: Resources['boqTypeChild'][currentLanguage],
         accessor: 'boqTypeChild',
-        width:120,
+        width: 120,
     }
 ]
 
@@ -110,7 +119,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
-class variationOrderAddEdit extends Component {
+class pcoAddEdit extends Component {
 
     constructor(props) {
 
@@ -137,6 +146,7 @@ class variationOrderAddEdit extends Component {
         }
 
         this.state = {
+            currIndex: 1,
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
@@ -148,15 +158,43 @@ class variationOrderAddEdit extends Component {
             isViewMode: false,
             isApproveMode: isApproveMode,
             isView: false,
+            companies: [],
+            approvalstatusList: [],
+            units: [],
+            variations: [],
+            boqTypes: [],
+            equipmentTypes: [],
+            selectedCVR: { label: Resources.cvr[currentLanguage], value: "0" },
+            selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+            selectedApprovalStatusId: { label: Resources.approvalStatus[currentLanguage], value: "0" },
+
+            selectedUnit: { label: Resources.unit[currentLanguage], value: "0" },
+            selectedBoqType: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqTypeChild: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqSubType: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedEquipmenttypeId: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
 
             docId: docId,
-            docTypeId: 66,
+            docTypeId: 65,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
 
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            voItem: {},
+            voItem: {
+                description: '',
+                quantity: 1,
+                unitPrice: 0,
+                unit: '',
+                boqTypeId: '',
+                boqSubTypeId: '',
+                boqTypeChildId: '',
+                days: 1,
+                itemCode: '',
+                resourceCode: '',
+                equipmenttypeId: '',
+                dueBack: moment()
+            },
 
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
@@ -173,7 +211,7 @@ class variationOrderAddEdit extends Component {
         if (!Config.IsAllow(366) || !Config.IsAllow(367) || !Config.IsAllow(369)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: "/changeOrder/" + projectId
+                pathname: "/pco/" + projectId
             });
         }
     }
@@ -242,35 +280,36 @@ class variationOrderAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId);
+            this.props.actions.documentForEdit("GetContractsPcoForEdit?id=" + this.state.docId);
 
-            dataservice.GetDataGrid("GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId).then(result => {
+            dataservice.GetDataGrid("GetContractsPcoItemsByProposalId?proposalId=" + this.state.docId).then(result => {
                 this.setState({
-                    voItems: [...result]
+                    voItems: result
                 });
             });
 
         } else {
-            let changeOrder = {
+            let pco = {
                 subject: '',
                 id: 0,
                 projectId: this.state.projectId,
                 arrange: '',
                 docDate: moment(),
                 status: 'true',
-                isRaisedPrices: 'false',
-                executed: 'yes',
-                pcoId: '',
+                isLumpSum: 'false',
                 refDoc: '',
-                total: 0,
+                profit: 0,
+                overHead: 0,
                 timeExtensionRequired: 0,
                 contractId: '',
-                pcoId: '',
+                companyId: '',
+                cvrId: '',
+                approvalStatusId: '',
                 dateApproved: moment()
 
             };
 
-            this.setState({ document: changeOrder }, function () {
+            this.setState({ document: pco }, function () {
                 this.GetNExtArrange();
             });
             this.fillDropDowns(false);
@@ -281,7 +320,7 @@ class variationOrderAddEdit extends Component {
     GetNExtArrange() {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0" ;
         this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
@@ -294,9 +333,75 @@ class variationOrderAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
+        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+
+            if (isEdit) {
+                let companyId = this.props.document.companyId;
+                if (companyId) {
+                    this.setState({
+                        selectedFromCompany: { label: this.props.document.companyName, value: companyId }
+                    });
+                }
+            }
+            this.setState({
+                companies: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+            if (isEdit) {
+                let approvalStatusId = this.state.document.approvalStatusId;
+                let approvalStatus = {};
+                if (approvalStatusId) {
+                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+
+                    this.setState({
+                        selectedApprovalStatusId: approvalStatus
+                    });
+                }
+            }
+            this.setState({
+                approvalstatusList: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=unit", 'title', 'title').then(result => {
+            this.setState({
+                units: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=equipmenttype", 'title', 'id').then(result => {
+            this.setState({
+                equipmentTypes: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetAllBoqParentNull?projectId=" + this.state.projectId, 'title', 'id').then(result => {
+            this.setState({
+                boqTypes: [...result]
+            });
+        });
+
+        dataservice.GetDataList("GetContractsVariationRequestByProjectIdForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+            if (isEdit) {
+                let selectedCVRId = this.state.document.cvrId;
+                let cvr = {};
+                if (selectedCVRId) {
+                    selectedCVRId = _.find(result, function (i) { return i.value == selectedCVRId; });
+
+                    this.setState({
+                        selectedCVR: cvr
+                    });
+                }
+            }
+            this.setState({
+                variations: [...result]
+            });
+        });
 
         if (isEdit === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'docId').then(result => {
                 this.setState({
                     contractsPos: [...result]
                 });
@@ -307,7 +412,6 @@ class variationOrderAddEdit extends Component {
                 });
             });
         }
-
     }
 
     componentWillUnmount() {
@@ -368,7 +472,22 @@ class variationOrderAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, selectedValue, isPCO) {
+    handleChangeDateItem(e, field) {
+
+        let original_document = { ...this.state.voItem };
+
+        let updated_document = {};
+
+        updated_document[field] = e;
+
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            voItem: updated_document
+        });
+    }
+
+    handleChangeDropDown(event, field, selectedValue) {
         if (event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -379,21 +498,7 @@ class variationOrderAddEdit extends Component {
             document: updated_document,
             [selectedValue]: event
         });
-        if (isPCO === true) {
-            if (this.props.changeStatus === false) {
-                dataservice.GetRowById("GetContractsPcoForEdit?id=" + event.value).then(result => {
-                    updated_document.total = result.total;
-                    updated_document.timeExtensionRequired = result.timeExtensionRequired;
-                    updated_document.contractId = result.contractId;
-                    updated_document.arrange = result.arrange;
-                    updated_document.subject = result.subject;
-
-                    this.setState({
-                        document: updated_document,
-                    });
-                });
-            }
-        }
+       
     }
 
     editVariationOrder(event) {
@@ -404,9 +509,8 @@ class variationOrderAddEdit extends Component {
         let saveDocument = this.state.document;
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.dateApproved = moment(saveDocument.dateApproved, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('EditContractsChangeOrder', saveDocument).then(result => {
+        dataservice.addObject('EditContractsPco', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -424,11 +528,10 @@ class variationOrderAddEdit extends Component {
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.dateApproved = moment(saveDocument.dateApproved, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         saveDocument.projectId = this.state.projectId;
 
-        dataservice.addObject('AddContractsChangeOrder', saveDocument).then(result => {
+        dataservice.addObject('AddContractsPco', saveDocument).then(result => {
             if (result.id) {
 
                 this.setState({
@@ -492,19 +595,9 @@ class variationOrderAddEdit extends Component {
                 ThirdStep: false
             })
         }
-        else if (this.state.CurrentStep === 2) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        } else {
+        else if (this.state.CurrentStep === 2) { 
             this.props.history.push({
-                pathname: "/changeOrder/" + projectId
+                pathname: "/pco/" + projectId
             });
         }
 
@@ -536,7 +629,7 @@ class variationOrderAddEdit extends Component {
             })
         } else {
             this.props.history.push({
-                pathname: "/changeOrder/" + projectId
+                pathname: "/pco/" + projectId
             });
         }
 
@@ -573,9 +666,10 @@ class variationOrderAddEdit extends Component {
     saveVariationOrderItem(event) {
         let saveDocument = { ...this.state.voItem };
 
-        saveDocument.changeOrderId = this.state.docId;
-
-        dataservice.addObject('AddVOItems', saveDocument).then(result => {
+        saveDocument.proposalId = this.state.docId;
+        let currentTab = this.state.currIndex;
+        saveDocument.action = currentTab;
+        dataservice.addObject('AddContractsPcoItems', saveDocument).then(result => {
             if (result) {
                 let oldItems = [...this.state.voItems];
                 oldItems.push(result);
@@ -639,13 +733,17 @@ class variationOrderAddEdit extends Component {
                     }}                >
                     {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
                         <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
-                            <header className="main__header">
-                                <div className="main__header--div">
-                                    <h2 className="zero">{Resources['addItems'][currentLanguage]}</h2>
-                                </div>
-                            </header>
 
                             <div className='document-fields'>
+
+                                <div className="company__total proForm tabinsideItem">
+
+                                    <ul id="stepper__tabs" className="data__tabs ">
+                                        <li className={"data__tabs--list " + (this.state.currIndex === 1 ? " active" : " ")} index={this.state.currIndex} onClick={e => { this.setState({ currIndex: 1 }) }} >{Resources.material[currentLanguage]}</li>
+                                        <li className={"data__tabs--list " + (this.state.currIndex === 2 ? " active" : " ")} onClick={e => { this.setState({ currIndex: 2 }) }} >{Resources.labor[currentLanguage]}</li>
+                                        <li className={"data__tabs--list " + (this.state.currIndex === 3 ? " active" : " ")} onClick={e => { this.setState({ currIndex: 3 }) }} >{Resources.equipment[currentLanguage]}</li>
+                                    </ul>
+                                </div>
 
                                 <div className="letterFullWidth proForm  first-proform proform__twoInput">
                                     <div className="linebylineInput valid-input">
@@ -665,25 +763,27 @@ class variationOrderAddEdit extends Component {
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.quantity[currentLanguage]}</label>
-                                        <div className="ui input inputDev"  >
+                                        <div className={"ui input inputDev" + (errors.quantity ? 'has-error' : !errors.quantity && touched.quantity ? (" has-success") : " ")}>
                                             <input type="text" className="form-control" id="quantity"
                                                 value={this.state.voItem.quantity}
                                                 name="quantity"
+                                                onBlur={handleBlur}
                                                 placeholder={Resources.quantity[currentLanguage]}
                                                 onChange={(e) => this.handleChangeItem(e, 'quantity')} />
-                                            {errors.itemCode ? (<em className="pError">{errors.quantity}</em>) : null}
+                                            {errors.quantity ? (<em className="pError">{errors.quantity}</em>) : null}
 
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
-                                        <div className="ui input inputDev"  >
+                                        <div className={"ui input inputDev" + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
                                             <input type="text" className="form-control" id="unitPrice"
-                                                value={this.state.voItemunitPrice}
+                                                value={this.state.voItem.unitPrice}
                                                 name="unitPrice"
+                                                onBlur={handleBlur}
                                                 placeholder={Resources.unitPrice[currentLanguage]}
                                                 onChange={(e) => this.handleChangeItem(e, 'unitPrice')} />
-                                            {errors.itemCode ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                                            {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
 
                                         </div>
                                     </div>
@@ -713,22 +813,10 @@ class variationOrderAddEdit extends Component {
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
                                             title="unit"
-                                            data={this.state.Units}
+                                            data={this.state.units}
                                             selectedValue={this.state.selectedUnit}
-                                            onChange={(e) => this.handleChangeItem(e, "unit")}
+                                            handleChange={(e) => this.handleChangeItemDropDown(e, "unit", 'selectedUnit', false, '', '', '')}
                                             index="unit" />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['days'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.days ? 'has-error' : !errors.days && touched.days ? (" has-success") : " ")}>
-                                            <input name='days'
-                                                className="form-control"
-                                                id="days" placeholder={Resources['days'][currentLanguage]}
-                                                autoComplete='off'
-                                                onBlur={handleBlur} value={this.state.voItem.days}
-                                                onChange={(e) => this.handleChangeItem(e, "days")} />
-                                            {errors.days ? (<em className="pError">{errors.days}</em>) : null}
-                                        </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
@@ -750,7 +838,7 @@ class variationOrderAddEdit extends Component {
                                             name="boqTypeChild"
                                             index="boqTypeChild" />
                                     </div>
-                                    <div className="letterFullWidth">
+                                    <div className="linebylineInput valid-input">
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
                                                 title="boqSubType"
@@ -761,6 +849,46 @@ class variationOrderAddEdit extends Component {
                                                 index="boqSubType" />
                                         </div>
                                     </div>
+
+                                    {this.state.currIndex === 3 ?
+                                        <Fragment>
+                                            <div className="linebylineInput valid-input">
+                                                <Dropdown
+                                                    title="equipmentType"
+                                                    data={this.state.equipmentTypes}
+                                                    selectedValue={this.state.selectedEquipmenttypeId}
+                                                    handleChange={event => this.handleChangeItemDropDown(event, 'equipmenttypeId', 'selectedEquipmenttypeId', false, '', '', '')}
+                                                    name="equipmenttypeId"
+                                                    index="equipmenttypeId" />
+                                            </div>
+                                            <div className="linebylineInput valid-input alternativeDate">
+                                                <DatePicker title='dueBack'
+                                                    format={'DD/MM/YYYY'}
+                                                    name="dueBack"
+                                                    startDate={this.state.voItem.dueBack}
+                                                    handleChange={e => this.handleChangeDateItem(e, 'dueBack')} />
+                                            </div>
+                                        </Fragment>
+
+
+                                        : null
+                                    }
+
+                                    {this.state.currIndex != 1 ?
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['days'][currentLanguage]} </label>
+                                            <div className={"inputDev ui input " + (errors.days ? 'has-error' : !errors.days && touched.days ? (" has-success") : " ")}>
+                                                <input name='days'
+                                                    className="form-control"
+                                                    id="days" placeholder={Resources['days'][currentLanguage]}
+                                                    autoComplete='off'
+                                                    onBlur={handleBlur} value={this.state.voItem.days}
+                                                    onChange={(e) => this.handleChangeItem(e, "days")} />
+                                                {errors.days ? (<em className="pError">{errors.days}</em>) : null}
+                                            </div>
+                                        </div>
+                                        : null
+                                    }
 
                                     <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                         <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources["save"][currentLanguage]}</button>
@@ -796,7 +924,7 @@ class variationOrderAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.changeOrder[currentLanguage]}
+                        <h2 className="zero">{Resources.pco[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · {Resources.contracts[currentLanguage]}</span>
                         </h2>
                         <div className="SubmittalHeadClose">
@@ -875,6 +1003,23 @@ class variationOrderAddEdit extends Component {
 
                                                             <div className="proForm datepickerContainer">
 
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                                                    <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                                        <input name='description' className="form-control fsadfsadsa" id="description"
+                                                                            placeholder={Resources.description[currentLanguage]}
+                                                                            autoComplete='off'
+                                                                            value={this.state.document.description}
+                                                                            onBlur={(e) => {
+                                                                                handleBlur(e)
+                                                                                handleChange(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'description')} />
+                                                                        {touched.description ? (<em className="pError">{errors.description}</em>) : null}
+
+                                                                    </div>
+                                                                </div>
+
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='docDate'
                                                                         format={'DD/MM/YYYY'}
@@ -887,37 +1032,60 @@ class variationOrderAddEdit extends Component {
                                                                         handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                                 </div>
 
-                                                                <div className="linebylineInput valid-input alternativeDate">
-                                                                    <DatePicker
-                                                                        title='dateApproved'
-                                                                        format={'DD/MM/YYYY'}
-                                                                        onChange={e => setFieldValue('dateApproved', e)}
-                                                                        name="dateApproved"
-                                                                        startDate={this.state.document.dateApproved}
-                                                                        handleChange={e => this.handleChangeDate(e, 'dateApproved')} />
-                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
+                                                                        title="fromCompany"
+                                                                        data={this.state.companies}
+                                                                        isMulti={false}
+                                                                        selectedValue={this.state.selectedFromCompany}
+                                                                        handleChange={event => {
+                                                                            this.handleChangeDropDown(event, 'companyId', false, '', '', '', '', '')
+                                                                        }}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.companyId}
+                                                                        touched={touched.companyId}
 
-                                                                <div className="linebylineInput  account__checkbox">
+                                                                        index="companyId"
+                                                                        name="companyId"
+                                                                        id="companyId" />
+                                                                </div>
+                                                                {this.props.changeStatus === true ?
                                                                     <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">{Resources.raisedPrices[currentLanguage]}</label>
-                                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isRaisedPrices')} />
-                                                                            <label>{Resources.yes[currentLanguage]}</label>
-                                                                        </div>
-                                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'isRaisedPrices')} />
-                                                                            <label>{Resources.no[currentLanguage]}</label>
+
+                                                                        <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                        <div className="ui input inputDev"  >
+                                                                            <input type="text" className="form-control" id="contractPotitle" readOnly
+                                                                                value={this.state.document.contractSubject}
+                                                                                name="contractPotitle" />
                                                                         </div>
                                                                     </div>
-
+                                                                    :
                                                                     <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">{Resources.executed[currentLanguage]}</label>
+                                                                        <Dropdown
+                                                                            title="contractPo"
+                                                                            data={this.state.contractsPos}
+                                                                            selectedValue={this.state.selectContract}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId', 'selectContract', false)}
+                                                                            index="contractId"
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                            error={errors.contractId}
+                                                                            touched={touched.contractId}
+                                                                            isClear={false}
+                                                                            name="contractId"
+                                                                            id="contractId" />
+                                                                    </div>
+                                                                }
+                                                                <div className="linebylineInput  account__checkbox">
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <label className="control-label">{Resources.isLumpSum[currentLanguage]}</label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "yes" ? null : 'checked'} value="yes" onChange={e => this.handleChange(e, 'executed')} />
+                                                                            <input type="radio" name="vo-isLumpSum" defaultChecked={this.state.document.isLumpSum === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isLumpSum')} />
                                                                             <label>{Resources.yes[currentLanguage]}</label>
                                                                         </div>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no" ? 'checked' : null} value="no" onChange={e => this.handleChange(e, 'executed')} />
+                                                                            <input type="radio" name="vo-isLumpSum" defaultChecked={this.state.document.isLumpSum === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'isLumpSum')} />
                                                                             <label>{Resources.no[currentLanguage]}</label>
                                                                         </div>
                                                                     </div>
@@ -944,63 +1112,82 @@ class variationOrderAddEdit extends Component {
                                                                 {this.props.changeStatus === true ?
                                                                     <div className="proForm first-proform letterFullWidth proform__twoInput">
                                                                         <div className="linebylineInput valid-input">
-
-                                                                            <label className="control-label">{Resources.pco[currentLanguage]}</label>
+                                                                            <label className="control-label">{Resources.approvalStatus[currentLanguage]}</label>
                                                                             <div className="ui input inputDev"  >
-                                                                                <input type="text" className="form-control" id="pcoSubject" readOnly
-                                                                                    value={this.state.document.pcoSubject}
-                                                                                    name="pcoSubject" />
+                                                                                <input type="text" className="form-control" id="approvalStatusTitle" readOnly
+                                                                                    value={this.state.document.approvalStatusTitle}
+                                                                                    name="approvalStatusTitle" />
                                                                             </div>
                                                                         </div>
 
                                                                         <div className="linebylineInput valid-input">
-                                                                            <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                            <label className="control-label">{Resources.cvr[currentLanguage]}</label>
                                                                             <div className="ui input inputDev"  >
-                                                                                <input type="text" className="form-control" id="contractSubject" readOnly
-                                                                                    value={this.state.document.contractSubject}
-                                                                                    name="contractSubject" />
+                                                                                <input type="text" className="form-control" id="cvrtitle" readOnly
+                                                                                    value={this.state.document.cvrName}
+                                                                                    name="cvrtitle" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     :
                                                                     <Fragment>
                                                                         <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="pco"
+                                                                            <Dropdown title="approvalStatus"
                                                                                 isMulti={false}
-                                                                                data={this.state.pcos}
-                                                                                selectedValue={this.state.selectPco}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'pcoId', 'selectPco', true)}
-                                                                                id="pcoId" />
-                                                                        </div>
+                                                                                data={this.state.approvalstatusList}
+                                                                                selectedValue={this.state.selectedApprovalStatusId}
+                                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", 'selectedApprovalStatusId', false, '', '', '', '')}
 
-                                                                        <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="contractPo"
-                                                                                data={this.state.contractsPos}
-                                                                                selectedValue={this.state.selectContract}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'contractId', 'selectContract', false)}
-                                                                                index="contractId"
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
-                                                                                error={errors.contractId}
-                                                                                touched={touched.contractId}
+                                                                                error={errors.approvalStatusId}
+                                                                                touched={touched.approvalStatusId}
+
                                                                                 isClear={false}
-                                                                                name="contractId" />
+                                                                                index="pco-approvalStatusId"
+                                                                                name="approvalStatusId"
+                                                                                id="approvalStatusId" />
+                                                                        </div>
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <Dropdown
+                                                                                title="cvr"
+                                                                                data={this.state.variations}
+                                                                                selectedValue={this.state.selectedCVR}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'cvrId', 'selectedCVR', false)}
+                                                                                index="cvrId"
+                                                                               
+                                                                                isClear={false}
+                                                                                name="cvrId" />
                                                                         </div>
                                                                     </Fragment>
                                                                 }
                                                                 <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.total[currentLanguage]}</label>
-                                                                    <div className={"ui input inputDev" + (errors.total && touched.total ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text" className="form-control" id="total" value={this.state.document.total} name="total"
-                                                                            placeholder={Resources.total[currentLanguage]}
+                                                                    <label className="control-label">{Resources.profit[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.profit && touched.profit ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" id="profit" value={this.state.document.profit} name="profit"
+                                                                            placeholder={Resources.profit[currentLanguage]}
                                                                             onBlur={(e) => {
                                                                                 handleChange(e)
                                                                                 handleBlur(e)
                                                                             }}
-                                                                            onChange={(e) => this.handleChange(e, 'total')} />
-                                                                        {touched.total ? (<em className="pError">{errors.total}</em>) : null}
+                                                                            onChange={(e) => this.handleChange(e, 'profit')} />
+                                                                        {touched.profit ? (<em className="pError">{errors.profit}</em>) : null}
+
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.overHead[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.overHead && touched.overHead ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control"
+                                                                            id="overHead" value={this.state.document.overHead}
+                                                                            name="overHead"
+                                                                            placeholder={Resources.overHead[currentLanguage]}
+                                                                            onBlur={(e) => {
+                                                                                handleChange(e)
+                                                                                handleBlur(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'overHead')} />
+                                                                        {touched.overHead ? (<em className="pError">{errors.overHead}</em>) : null}
 
                                                                     </div>
                                                                 </div>
@@ -1053,6 +1240,7 @@ class variationOrderAddEdit extends Component {
 
                                     <div className="subiTabsContent feilds__top">
 
+
                                         {this.addVariationDraw()}
 
                                         <div className="doc-pre-cycle">
@@ -1100,7 +1288,7 @@ class variationOrderAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.changeOrder[currentLanguage]}</h6>
+                                            <h6>{Resources.pco[currentLanguage]}</h6>
                                         </div>
                                     </div>
 
@@ -1173,4 +1361,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(variationOrderAddEdit))
+)(withRouter(pcoAddEdit))
