@@ -404,6 +404,14 @@ class InternalMemoAddEdit extends Component {
             this.simpleDialog.show()
         }
     }
+
+
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+    
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
