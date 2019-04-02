@@ -927,29 +927,10 @@ class ProjectTaskAddEdit extends Component {
                               </button>
                             ) : null}
                           </div>
-                        </Form>
-                      )}
-                    </Formik>
-                  </div>
-                  <div className="doc-pre-cycle letterFullWidth">
-                    <div>
-                      {this.state.docId > 0 ? (
-                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                      ) : null}
-                      {this.viewAttachments()}
-                      {this.props.changeStatus === true ? (
-                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {this.props.changeStatus === true ? (
+                          {this.props.changeStatus === true ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-                  <button className={ this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}
-                    onClick={e => this.editTask(e)}>
+                  <button className={ this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
                     {Resources.save[currentLanguage]}
                   </button>
                   {this.state.isApproveMode === true ? (
@@ -975,6 +956,25 @@ class ProjectTaskAddEdit extends Component {
                 </div>
               </div>
             ) : null}
+                        </Form>
+                      )}
+                    </Formik>
+                  </div>
+                  <div className="doc-pre-cycle letterFullWidth">
+                    <div>
+                      {this.state.docId > 0 ? (
+                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                      ) : null}
+                      {this.viewAttachments()}
+                      {this.props.changeStatus === true ? (
+                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
           </div>
         </div>
         <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>

@@ -907,8 +907,7 @@ class ProjectTasks extends Component {
             <button className={this.state.totalRows !== (this.state.pageSize * this.state.pageNumber) + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
               <i className="angle right icon" />
             </button>
-          </div>
-
+          </div> 
         </div>
         <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
