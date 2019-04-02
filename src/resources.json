@@ -1386,7 +1386,7 @@
     "ar": "هل تريد حذف مسئول الشركة ؟"
   },
   "toCompanyRequired": {
-    "en": "Please select To Company",
+    "en": " select To Company",
     "ar": "برجاء اختيار الى شركة"
   },
   "attention": {
@@ -4108,7 +4108,7 @@
     "ar": "برجاء ادخال سبب  الإصدار   "
   },
   "selectprogressPercent": {
-    "en": "Please Enter ؛rogress Percent ",
+    "en": "Please Enter Progress Percent ",
     "ar": " برجاء ادخال نسبة الإنجاز "
   },
   "in": {
@@ -7766,5 +7766,13 @@
   "alreadyContract": {
     "en": "You Have Already Added Contract Assigned To This BOQ",
     "ar": "هذا العقد موجود  مسبقا"
+  } ,
+  "responsibleCompanyName": {
+    "en": "Responsible Company",
+    "ar": " الشركه المسئوله"
+  },
+  "responsibleContactName": {
+    "en": "Responsible Contact",
+    "ar": "الشخص المسئول"
   }
 }

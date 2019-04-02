@@ -141,9 +141,7 @@ class RfiAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow,
                 message:RichTextEditor.createValueFromString(nextProps.document.rfi, 'html'),
                 replyMessage:RichTextEditor.createValueFromString(nextProps.document.answer, 'html'),
-            });
-
-            console.log(this.props.onChange);
+            }); 
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -262,7 +260,7 @@ class RfiAddEdit extends Component {
           this.setState({
             companies: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
   
       //discplines
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline","title","id").then(result => {
@@ -282,7 +280,7 @@ class RfiAddEdit extends Component {
           this.setState({
             discplines: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
       //area
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
         if (isEdit) {
@@ -301,7 +299,7 @@ class RfiAddEdit extends Component {
           this.setState({
             areas: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
       //location
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=location","title","id").then(result => {
         if (isEdit) {
@@ -320,7 +318,7 @@ class RfiAddEdit extends Component {
           this.setState({
             locations: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     onChangeMessage = (value,field) => {
@@ -406,7 +404,7 @@ class RfiAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-            })
+            }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
         }
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
@@ -436,7 +434,7 @@ class RfiAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.props.history.push("/Rfi/" + this.state.projectId);
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveRfi(event) {
@@ -450,7 +448,7 @@ class RfiAddEdit extends Component {
                 docId: result.id
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveAndExit(event) {  
@@ -533,8 +531,7 @@ class RfiAddEdit extends Component {
                                     </div>
                                 </header> : null
                         }
-                        <div className="step-content">
-
+                        <div className="step-content"> 
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
@@ -548,8 +545,7 @@ class RfiAddEdit extends Component {
                                                 } else {
                                                     this.saveAndExit();
                                                 }
-                                            }}>
-
+                                            }}> 
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                     <div className="proForm first-proform">
@@ -567,11 +563,11 @@ class RfiAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="rfi-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.oppened[currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="rfi-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.closed[currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -703,21 +699,21 @@ class RfiAddEdit extends Component {
                                                             <label className="control-label">{Resources.Building[currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors.Building && touched.Building ? (" has-error") : !errors.Building && touched.Building ? (" has-success") : " ")} >
                                                                 <input name='Building' className="form-control fsadfsadsa" id="Building"
-                                                                    placeholder={Resources.Building[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.building}
-                                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'building')} />
+                                                                       placeholder={Resources.Building[currentLanguage]}
+                                                                       autoComplete='off' value={this.state.document.building}
+                                                                       onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                                                       onChange={(e) => this.handleChange(e, 'building')} />
                                                                 {errors.Building && touched.Building ? (<em className="pError">{errors.Building}</em>) : null}
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.apartmentNumber[currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors.apartmentNumber && touched.apartmentNumber ? (" has-error") : !errors.apartmentNumber && touched.apartmentNumber ? (" has-success") : " ")} >
-                                                                <input name='subject' className="form-control fsadfsadsa" id="subject"
-                                                                    placeholder={Resources.apartmentNumber[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.apartment}
-                                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'apartment')} />
+                                                                <input name='apartmentNumber' className="form-control fsadfsadsa" id="apartmentNumber"
+                                                                       placeholder={Resources.apartmentNumber[currentLanguage]}
+                                                                       autoComplete='off' value={this.state.document.apartment}
+                                                                       onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                                                       onChange={(e) => this.handleChange(e, 'apartment')} />
                                                                 {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
                                                             </div>
                                                         </div>
@@ -732,9 +728,9 @@ class RfiAddEdit extends Component {
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings} name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                                           onChange={(e) => this.handleChange(e, 'sharedSettings')}
+                                                                           value={this.state.document.sharedSettings} name="sharedSettings"
+                                                                           placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
                                                             </div>
@@ -755,6 +751,26 @@ class RfiAddEdit extends Component {
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
                                                     </div>
+                                                    {
+                                                        this.props.changeStatus === true ?
+                                                            <div className="approveDocument"> 
+                                                                <div className="approveDocumentBTNS">
+                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>
+                                                                    {this.state.isApproveMode === true ?
+                                                                        <div >
+                                                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                        </div> : null
+                                                                    }
+                                                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <span className="border"></span>
+                                                                    <div className="document__action--menu">
+                                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                    </div>
+                                                                </div>
+                                                            </div> : null
+                                                    }
                                                 </Form>
                                             )}
                                         </Formik>
@@ -767,29 +783,8 @@ class RfiAddEdit extends Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                      
-                        </div>
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument"> 
-                                    <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editRfi(e)}>{Resources.save[currentLanguage]}</button>
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                            </div> : null
-                                        }
-                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
-                                    </div>
-                                </div> : null
-                        }
+                            </div> 
+                        </div> 
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
@@ -819,7 +814,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(RfiAddEdit))
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(RfiAddEdit))

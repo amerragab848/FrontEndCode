@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
 import CryptoJS from 'crypto-js';
@@ -13,8 +13,8 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import { toast } from "react-toastify";
 import { connect } from 'react-redux';
 import {
-    bindActionCreators
-} from 'redux'; 
+  bindActionCreators
+} from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
@@ -55,7 +55,7 @@ class AddDocAttachment extends Component {
         dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
           this.setState({
             storedDocuments: [...result]
-          }); 
+          });
           this.props.actions.ViewDocsAttachment(result);
         });
       }
@@ -87,7 +87,7 @@ class AddDocAttachment extends Component {
 
     newSelected[obj.id] = !this.state.selected[obj.id];
 
-    let setIndex = selectedRows.findIndex(x => x === obj.id);
+    let setIndex = selectedRows.findIndex(x => x.id === obj.id);
 
     if (setIndex > -1) {
       selectedRows.splice(setIndex, 1);
@@ -140,7 +140,7 @@ class AddDocAttachment extends Component {
     }
     else {
       toast.warning(Resources["arrayEmpty"][currentLanguage]);
-    } 
+    }
   }
 
   DeleteDocumentAttachment(id) {
@@ -159,19 +159,23 @@ class AddDocAttachment extends Component {
   };
 
   clickHandlerContinueMain = () => {
-    this.setState({
-      isLoading: true
-    });
+    let id = this.state.currentId;
+    dataservice.addObject("CommunicationDocsAttachDocDelete?id=" + id).then(result => {
+      let currentDosuments = this.props.attachDocuments;
+      let rowIndex = currentDosuments.findIndex(x => x.id === id);
 
-    dataservice.addObject("CommunicationDocsAttachDocDelete?id=" + this.state.currentId).then(result => {
-
-      let getIndex = listDocs.findIndex(x => x.id === this.state.currentId);
-
-      listDocs.splice(getIndex, 1);
+      currentDosuments.splice(rowIndex, 1);
+      this.props.actions.ViewDocsAttachment(currentDosuments);
 
       this.setState({ showDeleteModal: false });
+
       toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    }).catch(res => {
+
+      toast.error(Resources["operationCanceled"][currentLanguage]);
     });
+
   };
 
   renderLink(row) {
@@ -295,8 +299,11 @@ class AddDocAttachment extends Component {
         <br />
         <div className="precycle-grid modalTable">
           {
-            this.props.attachDocuments.length > 0 ? <ReactTable data={this.props.attachDocuments} columns={columnsDocument} defaultPageSize={10}
-              noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" /> : null
+            this.props.attachDocuments.length > 0 ?
+              <ReactTable data={this.props.attachDocuments}
+                columns={columnsDocument} defaultPageSize={5}
+                noDataText={Resources["noData"][currentLanguage]}
+                className="-striped -highlight" /> : null
           }
         </div>
         <div>
@@ -321,14 +328,20 @@ class AddDocAttachment extends Component {
                   <Dropdown title="docType" data={this.state.documents} selectedValue={this.state.selectDocument} handleChange={event => this.getDocuments(event)} />
                   {this.state.documentData.length > 0 ? (
                     <Fragment>
-                      <div className="fullWidthWrapper">
-                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveDocument.bind(this)}>
-                          {Resources["save"][currentLanguage]}
-                        </button>
-                      </div>
+                      {selectedRows.length > 0 ?
+                        <div className="fullWidthWrapper">
+                          <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveDocument.bind(this)}>
+                            {Resources["save"][currentLanguage]}
+                          </button>
+                        </div>
+                        : null
+                      }
                       <div className="precycle-grid modalTable">
-                        <ReactTable data={this.state.documentData} columns={columns} defaultPageSize={10}
-                          noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
+                        <ReactTable data={this.state.documentData}
+                          columns={columns}
+                          defaultPageSize={10}
+                          noDataText={Resources["noData"][currentLanguage]}
+                          className="-striped -highlight" />
                       </div>
                     </Fragment>
                   ) : null}
@@ -344,17 +357,17 @@ class AddDocAttachment extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    attachDocuments: state.communication.attachDocuments 
+    attachDocuments: state.communication.attachDocuments
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      actions: bindActionCreators(communicationActions, dispatch)
+    actions: bindActionCreators(communicationActions, dispatch)
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)( withRouter(AddDocAttachment));
+)(withRouter(AddDocAttachment));

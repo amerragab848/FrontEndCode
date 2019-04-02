@@ -724,7 +724,6 @@ class addEditModificationDrawing extends Component {
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'subject')} />
                                                                 {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-
                                                             </div>
                                                         </div>
 
@@ -991,7 +990,6 @@ class addEditModificationDrawing extends Component {
                                                                     data={this.state.approvalstatusList}
                                                                     selectedValue={this.state.selectedApprovalStatusId}
                                                                     handleChange={(e) => this.handleChangeDropDownCycle(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
-
                                                                     onChange={setFieldValue}
                                                                     onBlur={setFieldTouched}
                                                                     error={errors.approvalStatusId}
@@ -1020,7 +1018,12 @@ class addEditModificationDrawing extends Component {
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
+                                                        {this.props.changeStatus=== true ? 
+                                                          <button type='submit'  className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
+                                                        : null
+                                                        }
                                                     </div>
+
                                                 </Form>
                                             )}
                                         </Formik>
@@ -1040,6 +1043,7 @@ class addEditModificationDrawing extends Component {
                                         </div>
                                     </div>
                                     {this.showBtnsNewCycle()}
+
                                 </div>
                             </div>
                         </div>
@@ -1047,7 +1051,6 @@ class addEditModificationDrawing extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editDrawing(e)}>{Resources.save[currentLanguage]}</button>
 
                                         {this.state.isApproveMode === true ?
                                             <div >

@@ -70,7 +70,7 @@ let routes = [
             caption: "procoor-icon-task-groups"
         }
     },
-    
+
     {
         route: "ActionByAlerts",
         moduleId: "ActionByAlerts",
@@ -81,8 +81,20 @@ let routes = [
             permission: 778,
             caption: "procoor-icon-task-groups"
         }
-    }, 
-  
-   
+    },
+
+    {
+        route: "WorkFlow",
+        moduleId: "CommonLog",
+        title: "workFlow",
+        nav: true,
+        settings: {
+            General: true,
+            permission: 778,
+            caption: "procoor-icon-task-groups"
+        }
+    },
+
+
 ]
 export default routes
