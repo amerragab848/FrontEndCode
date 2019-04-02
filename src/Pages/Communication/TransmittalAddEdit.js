@@ -191,7 +191,7 @@ class TransmittalAddEdit extends Component {
 
         let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
 
-        this.props.actions.documentForEdit(url); 
+        this.props.actions.documentForEdit(url).catch(ex => toast.error(Resources["failError"][currentLanguage]));; 
       } else {
         const transmittalDocument = {
           //field
@@ -241,7 +241,7 @@ class TransmittalAddEdit extends Component {
                     [subDatasource]: result
                 });
             }
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     fillDropDowns(isEdit) {
@@ -273,27 +273,27 @@ class TransmittalAddEdit extends Component {
           this.setState({
             companies: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
   
       //discplines
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline","title","id").then(result => {
         if (isEdit) {
-          
-          let disciplineId = this.props.document.Discipline;
 
-          if (disciplineId) {
+            let disciplineId = this.props.document.discipline;
 
-            let disciplineName =result.find(i => i.value === disciplineId);
- 
-              this.setState({
-                selectedDiscpline: { label: disciplineName.label, value: disciplineId }
-              });
-          } 
-       }
+            if (disciplineId) {
+
+                let discipline = result.find(i => i.value === parseInt(disciplineId));
+
+                this.setState({
+                    selectedDiscpline: discipline
+                });
+            }
+        }
           this.setState({
             discplines: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
       //area
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
         if (isEdit) {
@@ -312,7 +312,8 @@ class TransmittalAddEdit extends Component {
           this.setState({
             areas: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+
       //location
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=location","title","id").then(result => {
         if (isEdit) {
@@ -331,7 +332,8 @@ class TransmittalAddEdit extends Component {
           this.setState({
             locations: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+
       //priorty
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority","title","id").then(result => {
         if (isEdit) {
@@ -350,7 +352,8 @@ class TransmittalAddEdit extends Component {
           this.setState({
             priority: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+
         //submittedFor
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=transmittalsubmittedfor","title","id").then(result => {
         if (isEdit) {
@@ -367,7 +370,7 @@ class TransmittalAddEdit extends Component {
           this.setState({
             transmittalSubmittedFor: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
         //sendingMethod
       dataservice.GetDataList("GetaccountsDefaultListForList?listType=sendingmethods","title","id").then(result => {
@@ -385,7 +388,7 @@ class TransmittalAddEdit extends Component {
           this.setState({
             sendingMethods: [...result]
           });
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     onChangeMessage = (value) => {
@@ -495,7 +498,7 @@ class TransmittalAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.props.history.push("/Transmittal/" + this.state.projectId);
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveTransmittal(event) {
@@ -511,7 +514,7 @@ class TransmittalAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveAndExit(event) {  
@@ -526,6 +529,8 @@ class TransmittalAddEdit extends Component {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
             btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+        }else if(this.state.docId > 0 && this.props.changeStatus === true){
+            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>  
         }
         return btn;
     }
@@ -611,8 +616,7 @@ class TransmittalAddEdit extends Component {
                                                 } else {
                                                     this.saveAndExit();
                                                 }
-                                            }}>
-
+                                            }}> 
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                     <div className="proForm first-proform">
@@ -620,21 +624,21 @@ class TransmittalAddEdit extends Component {
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
-                                                                    placeholder={Resources.subject[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.subject}
-                                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'subject')} />
+                                                                       placeholder={Resources.subject[currentLanguage]}
+                                                                       autoComplete='off' value={this.state.document.subject}
+                                                                       onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                                                       onChange={(e) => this.handleChange(e, 'subject')} />
                                                                 {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                             </div>
                                                         </div> 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="rfi-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.oppened[currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="rfi-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.closed[currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -755,31 +759,43 @@ class TransmittalAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="discipline" data={this.state.discplines} 
                                                                       selectedValue={this.state.selectedDiscpline}
+                                                                      name="discipline"
+                                                                      id="discipline" 
                                                                       handleChange={event => this.handleChangeDropDown(event, 'discipline', false, '', '', '', 'selectedDiscpline')}/>
                                                         </div>  
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="priority" data={this.state.priority} 
                                                                       selectedValue={this.state.selectedPriorityId}
+                                                                      name="priorityId"
+                                                                      id="priorityId" 
                                                                       handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedPriorityId')}/>
                                                         </div>  
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="submittedFor" data={this.state.transmittalSubmittedFor} 
                                                                       selectedValue={this.state.selectedSubmittedFor}
+                                                                      name="submittedForId"
+                                                                      id="submittedForId" 
                                                                       handleChange={event => this.handleChangeDropDown(event, 'submittedForId', false, '', '', '', 'selectedSubmittedFor')}/>
                                                         </div>  
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="sendingMethod" data={this.state.sendingMethods} 
                                                                       selectedValue={this.state.selectedSendingMethod}
+                                                                      name="sendingMethodId"
+                                                                      id="sendingMethodId" 
                                                                       handleChange={event => this.handleChangeDropDown(event, 'sendingMethodId', false, '', '', '', 'selectedSendingMethod')}/>
                                                         </div>  
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="area" data={this.state.areas} 
                                                                       selectedValue={this.state.selectedArea}
+                                                                      name="area"
+                                                                      id="area" 
                                                                       handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')}/>
                                                         </div> 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="location" data={this.state.locations} 
                                                                       selectedValue={this.state.selectedLocation}
+                                                                      name="location"
+                                                                      id="location" 
                                                                       handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocation')}/>
                                                         </div> 
                                                         <div className="linebylineInput valid-input">
@@ -796,7 +812,7 @@ class TransmittalAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.apartmentNumber[currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors.apartmentNumber && touched.apartmentNumber ? (" has-error") : !errors.apartmentNumber && touched.apartmentNumber ? (" has-success") : " ")} >
-                                                                <input name='subject' className="form-control fsadfsadsa" id="subject"
+                                                                <input name='apartmentNumber' className="form-control fsadfsadsa" id="apartmentNumber"
                                                                     placeholder={Resources.apartmentNumber[currentLanguage]}
                                                                     autoComplete='off' value={this.state.document.apartment}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
@@ -809,9 +825,9 @@ class TransmittalAddEdit extends Component {
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings} name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                                           onChange={(e) => this.handleChange(e, 'sharedSettings')}
+                                                                           value={this.state.document.sharedSettings} name="sharedSettings"
+                                                                           placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
                                                             </div>
@@ -824,7 +840,7 @@ class TransmittalAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}   
+                                                        {this.showBtnsSaving()} 
                                                     </div>
                                                 </Form>
                                             )}
@@ -848,7 +864,6 @@ class TransmittalAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument"> 
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editTransmittal(e)}>{Resources.save[currentLanguage]}</button>
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>

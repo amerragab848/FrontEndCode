@@ -511,7 +511,7 @@ class ProjectTasks extends Component {
           totalRows: result.total
         });
       }
-    );
+    ).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     this.props.actions.documentForAdding();
   }

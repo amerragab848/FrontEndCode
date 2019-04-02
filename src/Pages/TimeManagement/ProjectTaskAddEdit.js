@@ -208,9 +208,6 @@ class ProjectTaskAddEdit extends Component {
         let url = "GetTaskForEdit?id=" + this.state.docId;
       
       this.props.actions.documentForEdit(url);
-
-      if (!Config.IsAllow(357) ||!Config.IsAllow(358) ||!Config.IsAllow(360)) {
-      }
  
       this.setState({
         cycleDocument:cycleDocument
@@ -603,6 +600,12 @@ class ProjectTaskAddEdit extends Component {
           toast.warning("Finish Date Must Be Greater Than Start Date");
         } 
   }
+
+  componentWillUnmount() {
+    this.setState({
+        docId: 0
+    });
+}
 
   render() {
     let actions = [
