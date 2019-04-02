@@ -100,15 +100,13 @@ class riskAddEdit extends Component {
             { name: 'viewAttachments', code: 3327 },
             { name: 'deleteAttachments', code: 824 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+            selectedToCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
             selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
-            selectedSubmittedFor: { label: Resources.submittedForSelect[currentLanguage], value: "0" },
-            selectedSendingMethod: { label: Resources.sendingMethodRequired[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue()
         }
 
@@ -276,13 +274,9 @@ class riskAddEdit extends Component {
         //discplines
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
             if (isEdit) {
-
                 let disciplineId = this.props.document.discipline;
-
                 if (disciplineId) {
-
                     let discipline = result.find(i => i.value === parseInt(disciplineId));
-
                     this.setState({
                         selectedDiscpline: discipline
                     });
@@ -692,7 +686,7 @@ class riskAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">
-                                                            <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown isMulti={false} data={this.state.ToContacts}
@@ -748,6 +742,27 @@ class riskAddEdit extends Component {
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
                                                     </div>
+
+                                                    {
+                                                        this.props.changeStatus === true ?
+                                                            <div className="approveDocument">
+                                                                <div className="approveDocumentBTNS">
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editTransmittal(e)}>{Resources.save[currentLanguage]}</button>
+                                                                    {this.state.isApproveMode === true ?
+                                                                        <div >
+                                                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                        </div> : null
+                                                                    }
+                                                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <span className="border"></span>
+                                                                    <div className="document__action--menu">
+                                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                    </div>
+                                                                </div>
+                                                            </div> : null
+                                                    }
                                                 </Form>
                                             )}
                                         </Formik>
@@ -766,26 +781,6 @@ class riskAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editTransmittal(e)}>{Resources.save[currentLanguage]}</button>
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                            </div> : null
-                                        }
-                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
-                                    </div>
-                                </div> : null
-                        }
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
