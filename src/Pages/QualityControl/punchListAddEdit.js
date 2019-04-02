@@ -202,6 +202,7 @@ class punchListAddEdit extends Component {
         }
 
         this.state = {
+            IsAddModel: false,
             FirstStep: true,
             SecondStep: false,
             SecondStepComplate: false,
@@ -400,7 +401,7 @@ class punchListAddEdit extends Component {
     }
 
     FillDropDowns = () => {
-      
+
         let DropDownsData = [
             { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
             { Api: 'GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', DropDataName: 'areas', Label: 'title', Value: 'id', Name: 'areaId', selectedValue: 'selecetedArea' },
@@ -408,7 +409,7 @@ class punchListAddEdit extends Component {
             { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
             { Api: 'GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', DropDataName: 'locations', Label: 'title', Value: 'id', Name: 'locationId', selectedValue: 'selectedlocation' },
         ]
-       
+
         let CompaniesDropDownsData = [
             { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'ToContacts', SelectedValueContact: 'selectedToContact' },
             { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
@@ -562,9 +563,9 @@ class punchListAddEdit extends Component {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+            btn = <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -613,32 +614,37 @@ class punchListAddEdit extends Component {
     }
 
     SaveAddEditSnagList = () => {
-
-        let SnagListObj = this.state.document
-        SnagListObj.docDate = moment(SnagListObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-
-        if (docId > 0) {
-
-            dataservice.addObject('EditLogsPunchLists', SnagListObj).then(
-                res => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                });
+        if (this.state.IsAddModel) {
             this.NextStep()
         }
-
         else {
-            dataservice.addObject('AddLogsPunchLists', SnagListObj).then(
-                res => {
-                    this.setState({
-                        docId: res.id
-                    })
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                });
-            this.NextStep()
+            let SnagListObj = this.state.document
+            SnagListObj.docDate = moment(SnagListObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+
+            if (docId > 0) {
+
+                dataservice.addObject('EditLogsPunchLists', SnagListObj).then(
+                    res => {
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    }).catch(ex => {
+                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    });
+                this.NextStep()
+            }
+
+            else {
+                dataservice.addObject('AddLogsPunchLists', SnagListObj).then(
+                    res => {
+                        this.setState({
+                            docId: res.id,
+                            IsAddModel: true
+                        })
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    }).catch(ex => {
+                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    });
+                //this.NextStep()
+            }
         }
     }
 
@@ -752,7 +758,7 @@ class punchListAddEdit extends Component {
 
     viewAttachments() {
         return (
-            this.state.IsEditMode ? (
+            this.state.docId > 0 ? (
                 Config.IsAllow(3311) === true ?
                     <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={888} />
                     : null)
@@ -784,6 +790,12 @@ class punchListAddEdit extends Component {
             selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
             RequiredDateItem: moment(),
             OpenedDateItem: moment(),
+        })
+    }
+
+    saveAndExit = () => {
+        this.props.history.push({
+            pathname: '/punchList/' + projectId + '',
         })
     }
 
@@ -853,7 +865,7 @@ class punchListAddEdit extends Component {
 
                                             <div className="linebylineInput valid-input alternativeDate">
                                                 <DatePicker title='docDate' startDate={this.state.document.docDate}
-                                                   handleChange={e => this.handleChangeDate(e, 'docDate')} />
+                                                    handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                             </div>
 
                                             <div className="linebylineInput valid-input">
@@ -950,6 +962,7 @@ class punchListAddEdit extends Component {
                                     <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                     : null
                                 }
+
                                 {this.viewAttachments()}
 
                                 {this.props.changeStatus === true ?
@@ -1300,9 +1313,6 @@ class punchListAddEdit extends Component {
                                             <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
                                         </header>
                                         {dataGrid}
-                                    </div>
-
-                                    <div className="doc-pre-cycle">
                                         <div className="slider-Btns">
                                             <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveAndExit}>{Resources['next'][currentLanguage]}</button>
                                         </div>
@@ -1363,8 +1373,6 @@ class punchListAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
-
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>

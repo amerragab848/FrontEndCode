@@ -32,6 +32,7 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -75,7 +76,7 @@ const validationSchemaForAddCycle = Yup.object().shape({
 
 
 class NCRAddEdit extends Component {
-  
+
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -156,7 +157,8 @@ class NCRAddEdit extends Component {
             NCRCycleDocDate: moment(),
             showPopUp: false,
             Status: true,
-            SelectedApprovalStatusCycle: ''
+            SelectedApprovalStatusCycle: '',
+            IsAddModel: false
         }
 
     }
@@ -419,13 +421,19 @@ class NCRAddEdit extends Component {
         }
     }
 
+    saveAndExit = () => {
+        this.props.history.push({
+            pathname: '/Ncr/' + projectId + '',
+        })
+    }
+
     showBtnsSaving() {
         let btn = null;
 
-        if (!this.state.IsEditMode) {
+        if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.IsEditMode && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+        } else if (this.state.docId > 0) {
+            btn = <button className="primaryBtn-1 btn mediumBtn" onClick={this.saveAndExit} >{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -446,33 +454,49 @@ class NCRAddEdit extends Component {
     }
 
     saveNCR = () => {
-        let NCRDoc = { ...this.state.document }
 
-        NCRDoc.docDate = moment(NCRDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        NCRDoc.requiredDate = moment(NCRDoc.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        NCRDoc.resultDate = moment(NCRDoc.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-
-        if (this.state.docId > 0) {
-            dataservice.addObject('EditCommunicationNCRs', NCRDoc).then(
-                res => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                });
+        if (this.state.IsAddModel) {
+            this.saveAndExit()
         }
         else {
-            dataservice.addObject('AddCommunicationNCRs', NCRDoc).then(
-                res => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                });
+            this.setState({
+                isLoading: true
+            })
+            let NCRDoc = { ...this.state.document }
+            NCRDoc.docDate = moment(NCRDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            NCRDoc.requiredDate = moment(NCRDoc.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            NCRDoc.resultDate = moment(NCRDoc.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+
+            if (this.state.docId > 0) {
+                dataservice.addObject('EditCommunicationNCRs', NCRDoc).then(
+                    res => {
+                        this.setState({
+                            isLoading: false
+                        })
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    }).catch(ex => {
+                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    });
+
+            }
+            else {
+                dataservice.addObject('AddCommunicationNCRs', NCRDoc).then(
+                    res => {
+                        this.setState({
+                            docId: res.id,
+                            isLoading: false
+                        })
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    }).catch(ex => {
+                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    });
+            }
         }
     }
 
     viewAttachments() {
         return (
-            this.state.IsEditMode ? (
+            this.state.docId !== 0 ? (
                 Config.IsAllow(3308) === true ?
                     <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
@@ -702,7 +726,7 @@ class NCRAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-
+                {this.state.isLoading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <div className="submittalHead">
                         <h2 className="zero">{Resources.NCRLog[currentLanguage]}
@@ -1001,7 +1025,7 @@ class NCRAddEdit extends Component {
                                 </div>
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
-                                        {this.props.changeStatus === true && this.state.IsEditMode ?
+                                        {this.state.docId !== 0 ?
                                             <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null
                                         }

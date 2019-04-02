@@ -70,6 +70,7 @@ import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
+import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit';
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -156,6 +157,8 @@ let originalRoutes = [
     , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
+    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
+    
     
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
