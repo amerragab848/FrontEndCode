@@ -1661,7 +1661,7 @@ class bogAddEdit extends Component {
                                         <div className={"slider-Btns fullWidthWrapper textLeft "}>
 
                                             {this.state.isLoading === false ? (
-                                                <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disNone' : '')} type={this.state.docId > 0 ? 'button' : "submit"} disabled={this.state.isApproveMode}  >{Resources[this.state.btnTxt][currentLanguage]}</button>
+                                                <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources[this.state.btnTxt][currentLanguage]}</button>
                                             ) :
                                                 (
                                                     <button className="primaryBtn-1 btn  disabled" disabled="disabled">
