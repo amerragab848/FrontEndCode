@@ -139,7 +139,7 @@ class GridSetup extends Component {
       Id = rows.map(r => r.row.id);
       this.props.IsActiv(Id)
     }
-
+    this.props.onRowsSelected(rows)
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -175,6 +175,7 @@ class GridSetup extends Component {
   };
 
   onRowsDeselected = rows => {
+    this.props.onRowsDeselected()
     if (this.props.IsActiv !== undefined) {
       this.props.UnSelectIsActiv()
     }
@@ -231,7 +232,7 @@ class GridSetup extends Component {
   onRowClick = (index, value, column) => {
     if (value) {
       if (this.props.onRowClick != undefined) {
-        this.props.onRowClick(value, index,column);
+        this.props.onRowClick(value, index, column);
         this.setState({ selectedRow: value })
       }
     }
@@ -253,6 +254,13 @@ class GridSetup extends Component {
   };
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    console.log('out','form=',fromRow,' to=',toRow,' update=',updated)
+
+    if (this.props.onGridRowsUpdated!=undefined) {
+    console.log('in','form=',fromRow,' to=',toRow,' update=',updated)
+
+      this.props.onGridRowsUpdated({ fromRow, toRow, updated })
+    }
     this.setState(state => {
       const rows = state.rows.slice();
       for (let i = fromRow; i <= toRow; i++) {
@@ -265,7 +273,7 @@ class GridSetup extends Component {
   render() {
     const { rows, groupBy } = this.state;
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-    console.log("groupedRows....",groupedRows.length);
+    console.log("groupedRows....", groupedRows.length);
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
@@ -296,6 +304,12 @@ class GridSetup extends Component {
                 >
                   DELETE
                 </button>
+                {this.props.assign ? <button
+                  className="primaryBtn-1 btn smallBtn"
+                  onClick={() => this.props.assignFn()}
+                >
+                  <i className="fa fa-retweet"></i>
+                </button> : null}
               </div>
             </div>
           ) : null}
@@ -308,14 +322,14 @@ class GridSetup extends Component {
       <DraggableContainer>
         <ReactDataGrid
           rowKey="id"
-          minHeight={this.props.minHeight !== undefined ? this.props.minHeight: 650}
-           columns={this.state.columns}
+          minHeight={this.props.minHeight !== undefined ? this.props.minHeight : 650}
+          columns={this.state.columns}
           rowGetter={i => groupedRows[i]}
           rowsCount={groupedRows.length}
           enableCellSelect={true}
           onGridRowsUpdated={this.onGridRowsUpdated}
           onCellSelected={this.onCellSelected}
-
+          enableCellSelect={true}
           onColumnResize={(idx, width, event) => {
             //console.log(this.state.columns[idx-1]);
             // console.log(`Column ${idx} has been resized to ${width}`);

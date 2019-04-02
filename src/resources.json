@@ -7762,5 +7762,9 @@
   "itemCodeExist": {
     "en": "Item Code Already Exist",
     "ar": "رقم العنصر موجود"
+  },
+  "alreadyContract": {
+    "en": "You Have Already Added Contract Assigned To This BOQ",
+    "ar": "هذا العقد موجود  مسبقا"
   }
 }

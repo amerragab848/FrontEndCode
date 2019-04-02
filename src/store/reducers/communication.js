@@ -25,6 +25,7 @@ export default function (state = initialState.app.communication, action) {
         case types.Document_Adding:
             return {
                 ...state,
+                document:{},
                 showLeftMenu: true,
                 showSelectProject: false,
                 changeStatus: false

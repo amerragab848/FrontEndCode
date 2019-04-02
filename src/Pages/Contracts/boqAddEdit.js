@@ -44,13 +44,29 @@ const itemsValidationSchema = Yup.object().shape({
     itemCode: Yup.string().required(Resources['itemCodeRequired'][currentLanguage]),
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
     itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
-    days: Yup.number().required(Resources['daysRequired'][currentLanguage]),
+    days: Yup.number().required(Resources['daysRequired'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+    quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+    unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
 });
-const topicsValidationSchema = Yup.object().shape({
-    itemDescription: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
-    actionByContact: Yup.string().required(Resources['actionByContactRequired'][currentLanguage])
+const contractSchema = Yup.object().shape({
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    tax: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+    vat: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+    retainage: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+    insurance: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+    advancedPayment: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+    advancedPaymentAmount: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+});
+const purchaseSchema = Yup.object().shape({
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    advancedPaymentPercent: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage])
+});
+const BoqTypeSchema = Yup.object().shape({
+    boqType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
+    boqChild: Yup.string().required(Resources['boqSubType'][currentLanguage]),
+    boqSubType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
+});
 
-});
 let docId = 0;
 let projectId = 0;
 let projectName = "";
@@ -79,55 +95,6 @@ class bogAddEdit extends Component {
             }
             index++;
         }
-
-        this.topicColumns = [
-            {
-                key: "no",
-                name: Resources["no"][currentLanguage],
-                visible: true,
-                width: 50,
-            },
-            {
-                key: "description",
-                name: Resources["itemDescription"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "decision",
-                name: Resources["decisions"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "action",
-                name: Resources["action"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
-        ];
 
         this.itemsColumns = [
             {
@@ -193,32 +160,64 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
+            }, {
+                key: "revisedQuntitty",
+                name: Resources["receivedQuantity"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "unit",
+                name: Resources["unit"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "unitPrice",
+                name: Resources["unitPrice"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                editable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "total",
+                name: Resources["total"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "resourceCode",
+                name: Resources["resourceCode"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
             }
         ];
 
         this.state = {
             showForm: false,
+            addedContract: false,
+            AddedPurchase: false,
+            LoadingPage: false,
             docTypeId: 35,
-            topic: {
-                topics: [],
-                itemDescription: '',
-                decision: '',
-                comment: '',
-                requiredDate: moment(),
-                id: 0
-            },
-            actionByContacts: [],
-            selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: 0 },
-            selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: 0 },
             selectedRow: '',
-            attendees: [],
-            attendeesId: 0,
-            attendencesContacts: [],
-            currentComponent_2: 'attendeesContact',
             pageSize: 50,
-            agendaId: 0,
-            btnTxt: 'save',
-            CurrStep: 2,
+            CurrStep: 1,
             firstComplete: false,
             secondComplete: false,
             thirdComplete: false,
@@ -232,16 +231,15 @@ class bogAddEdit extends Component {
             docApprovalId: docApprovalId,
             arrange: arrange,
             showPopUp: false,
+            btnTxt: 'save',
             btnText: 'add',
-
-
-
+            activeTab: '',
             contractId: 0,
             Companies: [],
             Disciplines: [],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedDiscipline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            tableItems: [],
+            rows: [],
             items: {
                 parentId: 0,
                 description: '',
@@ -272,28 +270,18 @@ class bogAddEdit extends Component {
             BoqSubTypes: [],
             itemTypes: [],
             equipmentTypes: [],
-
-
-
-            calledContacts: [],
-            facilitatorContacts: [],
-            noteTakerContacts: [],
-            selectedTopicContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-            selectedTopicCompany: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-            selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
-            selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-            selectedFacilitatorCompany: { label: Resources.facilitatorCompanyRequired[currentLanguage], value: "0" },
-            selectedFacilitatorContact: { label: Resources.facilitatorContactReuired[currentLanguage], value: "0" },
-            selectedNoteTakerCompany: { label: Resources.noteTakerCompanyReuired[currentLanguage], value: "0" },
-            selectedNoteTakerContact: { label: Resources.noteTakerContactRequired[currentLanguage], value: "0" },
+            currency: [],
+            selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
             isLoading: true,
-            permission: [{ name: 'sendByEmail', code: 458 }, { name: 'sendByInbox', code: 457 },
-            { name: 'sendTask', code: 0 }, { name: 'distributionList', code: 967 },
-            { name: 'createTransmittal', code: 3055 }, { name: 'sendToWorkFlow', code: 719 },
-            { name: 'viewAttachments', code: 3324 }, { name: 'deleteAttachments', code: 838 }],
+            permission: [{ name: 'sendByEmail', code: 622 }, { name: 'sendByInbox', code: 621 },
+            { name: 'sendTask', code: 0 }, { name: 'distributionList', code: 971 },
+            { name: 'createTransmittal', code: 3057 }, { name: 'sendToWorkFlow', code: 720 },
+            { name: 'viewAttachments', code: 3295 }, { name: 'deleteAttachments', code: 862 }],
             document: {},
         }
-        if (!Config.IsAllow(452) || !Config.IsAllow(453) || !Config.IsAllow(455)) {
+        if (!Config.IsAllow(616) || !Config.IsAllow(617) || !Config.IsAllow(619)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
@@ -301,12 +289,12 @@ class bogAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(453) || this.props.document.contractId == 0 || this.props.document.contractId == null) {
+            if (!Config.IsAllow(617) || this.props.document.contractId !== null) {
                 this.setState({ isViewMode: true });
             }
-            else if (this.state.isApproveMode != true && Config.IsAllow(453)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(453)) {
-                    if (this.props.document.status != false && Config.IsAllow(453)) {
+            else if (this.state.isApproveMode != true && Config.IsAllow(617)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(617)) {
+                    if (this.props.document.status != false && Config.IsAllow(617)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -321,7 +309,9 @@ class bogAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
-
+    componentWillUnmount() {
+        this.props.actions.documentForAdding()
+    }
     fillDropDowns(isEdit) {
         DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId, 'companyName', 'companyId').then(res => {
             if (isEdit) {
@@ -336,7 +326,7 @@ class bogAddEdit extends Component {
             this.setState({ Companies: [...res], isLoading: false })
         })
 
-        DataService.GetDataList('GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', 'listType', 'id').then(res => {
+        DataService.GetDataList('GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
             if (isEdit) {
                 let disciplineId = this.state.document.discipline;
                 if (disciplineId) {
@@ -350,7 +340,7 @@ class bogAddEdit extends Component {
             this.setState({ Disciplines: [...res], isLoading: false })
         })
 
-        DataService.GetDataList('GetDefaultListForUnit?listType=unit', 'listType', 'id').then(res => {
+        DataService.GetDataList('GetDefaultListForUnit?listType=unit', 'listType', 'listType').then(res => {
             this.setState({ Units: [...res], isLoading: false })
         })
 
@@ -367,6 +357,10 @@ class bogAddEdit extends Component {
             this.setState({ equipmentTypes: [...res], isLoading: false })
         })
 
+        DataService.GetDataList('GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
+            this.setState({ currency: [...res], isLoading: false })
+        })
+
     }
     fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
         this.setState({ isLoading: true })
@@ -380,20 +374,24 @@ class bogAddEdit extends Component {
         });
     }
     componentDidMount() {
+
+    }
+    componentWillMount() {
         if (this.state.docId > 0) {
-            this.setState({ isLoading: true })
+            this.setState({ isLoading: true, LoadingPage: true })
             this.props.actions.documentForEdit('GetBoqForEdit?id=' + this.state.docId).then(() => {
-                this.setState({ isLoading: false, showForm: true })
+                this.setState({ isLoading: false, showForm: true, btnTxt: 'next', LoadingPage: false })
                 this.checkDocumentIsView();
                 this.getTabelData()
             })
         } else {
-
             let cmi = Config.getPayload().cmi
+            this.setState({ LoadingPage: true })
             Api.get('GetBoqNumber?projectId=' + + this.state.projectId + '&companyId=' + cmi).then(res => {
-                this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false })
+                this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false, LoadingPage: false })
             })
             this.fillDropDowns(false);
+
             let document = {
                 id: 0,
                 project: this.state.projectId,
@@ -407,37 +405,48 @@ class bogAddEdit extends Component {
                 showInSiteRequest: true,
                 showOptimization: true,
             };
+
             this.setState({ document });
+            this.props.actions.documentForAdding();
         }
-
     }
-
     getTabelData() {
-        let attendeesTable = []
-        this.setState({ isLoading: true })
-        this.props.actions.GetAttendeesTable('GetCommunicationMeetingAgendaAttendees?agendaId=' + this.state.agendaId).then(res => {
-            this.props.attendees.forEach((element, index) => {
-                console.log(element)
-                attendeesTable.push({
-                    id: element.Id, companyId: element.companyId, contactId: element.contactId, companyName: element.companyName, contactName: element.contactName
+        let Table = []
+        this.setState({ isLoading: true, LoadingPage: true })
+        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=0&pageSize=1000').then(res => {
+            res.forEach((element, index) => {
+                Table.push({
+                    id: element.id,
+                    boqId: element.boqId,
+                    unitPrice: this.state.items.unitPrice,
+                    itemType: element.itemType,
+                    itemTypeLabel: '',
+                    days: element.days,
+                    equipmentType: element.equipmentType,
+                    equipmentTypeLabel: '',
+                    editable: true,
+                    boqSubTypeId: element.boqSubTypeId,
+                    boqTypeId: element.boqTypeId,
+                    boqChildTypeId: element.boqChildTypeId,
+                    arrange: element.arrange,
+                    boqType: element.boqType,
+                    boqTypeChild: element.boqTypeChild,
+                    boqSubType: element.boqSubType,
+                    itemCode: element.itemCode,
+                    description: element.description,
+                    quantity: element.quantity,
+                    revisedQuntitty: element.revisedQuantity,
+                    unit: element.unit,
+                    unitPrice: element.unitPrice,
+                    total: element.total,
+                    resourceCode: element.resourceCode
                 })
             })
-            this.setState({ attendees: attendeesTable })
-            setTimeout(() => { this.setState({ isLoading: false }) }, 500)
+            this.setState({ rows: Table })
+            setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
         })
 
-        let topicstable = []
-        this.setState({ isLoading: true })
-        this.props.actions.GetTopicsTable('GetCommunicationMeetingAgendaTopics?agendaId=' + this.state.agendaId).then(res => {
-            this.props.topics.forEach((element, index) => {
-                topicstable.push({
-                    id: element.Id, no: index + 1, description: element.description, decision: element.decisions, action: element.action, comment: element.comment
-                    , byWhomCompanyId: element.calledByCompanyId, byWhomContactId: element.calledByContactId, requiredDate: element.requiredDate
-                })
-            })
-            this.setState({ topics: topicstable })
-            setTimeout(() => { this.setState({ isLoading: false }) }, 500)
-        })
+
     }
 
     componentDidUpdate(prevProps) {
@@ -448,10 +457,9 @@ class bogAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document && props.document.id > 0) {
-            this.setState({
-                document: { ...props.document },
-                step_1_Validation: poqSchema
-            });
+            let docDate = moment(props.document.documentDate)
+            let document = Object.assign(props.document, { documentDate: docDate })
+            this.setState({ document });
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
@@ -466,83 +474,70 @@ class bogAddEdit extends Component {
         )
     }
 
-    addPoq = () => {
+    addPoq = (values) => {
         this.setState({ isLoading: true })
-        let documentObj = { ...this.state.document };
-        documentObj.documentDate = moment(documentObj.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        let documentObj = {
+            project: this.state.projectId,
+            documentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            company: this.state.selectedFromCompany.value,
+            discipline: this.state.selectedDiscipline.value,
+            status: values.status,
+            arrange: this.state.document.arrange,
+            subject: values.subject,
+            showInCostCoding: false,
+            showInSiteRequest: values.showInSiteRequest,
+            showOptimization: values.showOptimization
+        };
         DataService.addObject('AddBoq', documentObj).then(result => {
             this.setState({
                 docId: result.id,
-                contractId: result.contractId,
                 isLoading: false,
                 selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
                 selected: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
                 btnTxt: 'next'
             })
             toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ isLoading: false })
         })
     }
-    editBoq = () => {
+    editBoq = (values) => {
         this.setState({
             isLoading: true,
             firstComplete: true
         });
-        Api.post('EditBoq', this.state.document).then(result => {
+        let documentObj = {
+            project: this.state.projectId,
+            id:this.state.docId,
+            arrange:this.state.document.arrange,
+            DocumentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            Company: Config.getPayload().cmi,
+            Discipline: this.state.selectedDiscipline.value,
+            Status: values.status,
+            Subject: values.subject,
+            ShowInCostCoding: false,
+            ShowInSiteRequest: values.showInSiteRequest,
+            ShowOptimization: values.showOptimization
+        };
+        Api.post('EditBoq', documentObj).then(result => {
             this.setState({
                 isLoading: false,
                 CurrStep: this.state.CurrStep + 1
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
-    }
-    addEditTopics = (edit) => {
-        this.setState({ isLoading: true })
-        let topic = {
-            requiredDate: moment(this.state.topic.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            itemDescription: this.state.topic.itemDescription,
-            agendaId: this.state.agendaId,
-            decisions: this.state.topic.decision,
-            action: this.state.topic.action,
-            byWhomCompanyId: this.state.selectedActionByCompany.value,
-            byWhomContactId: this.state.selectedActionByContact.value,
-            comment: this.state.topic.comment,
-            id: this.state.topic.id
-        }
-        let url = edit ? 'EditCommunicationMeetingAgendaTopics' : 'AddCommunicationMeetingAgendaTopics'
-        Api.post(url, topic).then((res) => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            if (edit) {
-                let id = this.state.topic.id
-                let topics = _.filter(this.state.topics, function (x) { return x.id != id; });
-                topics.push({
-                    id: res.id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
-                    comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
-                })
-                this.setState({ showPopUp: false, topics: topics })
-            }
-            else {
-                let data = [...this.state.topics];
-                data.push({
-                    id: res.id, no: this.state.topics.length + 1, description: res.itemDescription, decision: res.decisions, action: res.action,
-                    comment: res.comment, byWhomCompanyId: res.byWhomCompanyId, byWhomContactId: res.byWhomContactId, requiredDate: res.requiredDate
-                })
-                this.setState({ topics: data })
-            }
-            this.setState({
-                topic: { itemDescription: '', action: '', comment: '', decision: '', requiredDate: moment() },
-                selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-                selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
-                isLoading: false,
-                showPopUp: false,
-                btnText: 'add'
-            });
+            this.NextStep()
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ isLoading: false })
         })
     }
+
     addEditItems = () => {
         this.setState({ isLoading: true })
         let item = {
             id: this.state.items.id,
-            boqId: 9502, //this.state.docId,
+            boqId: this.state.docId,
             parentId: '',
             description: this.state.items.description,
             quantity: this.state.items.quantity,
@@ -569,28 +564,26 @@ class bogAddEdit extends Component {
         let url = this.state.showPopUp ? 'EditBoqItem' : 'AddBoqItem'
         Api.post(url, item).then((res) => {
             if (this.state.showPopUp) {
-                let items = Object.assign(this.state.tableItems)
-                this.state.tableItems.forEach((element, index) => {
+                let items = Object.assign(this.state.rows)
+                this.state.rows.forEach((element, index) => {
                     if (element.id == this.state.items.id) {
                         item.id = this.state.items.id;
                         items[index] = item
-                        this.setState({ tableItems: items }, function () {
+                        this.setState({ rows: items, isLoading: false }, function () {
                             toast.success(Resources["operationSuccess"][currentLanguage]);
-
                         })
                     }
-
                 })
             }
             else {
                 if (this.state.items.itemCode != null) {
-                    let data = [...this.state.tableItems];
+                    let data = [...this.state.rows];
                     item.id = res.id;
                     data.push({
                         ...item
                     })
                     this.setState({
-                        tableItems: data,
+                        rows: data,
                         items: { ...this.state.items, arrange: res.arrange + 1, description: '', quantity: '', itemCode: '', resourceCode: '', unitPrice: '', days: 1 }
                     }, function () {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -636,81 +629,24 @@ class bogAddEdit extends Component {
         this.setState({ isLoading: true })
         if (this.state.CurrStep == 2) {
             Api.post('ContractsBoqItemsMultipleDelete?', this.state.selectedRow).then((res) => {
-                let data = [...this.state.tableItems]
-                data.forEach(element => {
+                let data = [...this.state.rows]
+                data.forEach((element, index) => {
                     data = data.filter(item => { return item.id != element.id });
+                    if (index == data.length - 1) {
+                        this.setState({ rows: data, showDeleteModal: false, isLoading: false });
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    }
                 })
-                this.setState({ tableItems: data, showDeleteModal: false, isLoading: false });
-                toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
             })
         }
-        if (this.state.CurrStep == 3) {
-            Api.post('CommunicationMeetingAgendaTopicsDelete?id=' + this.state.selectedRow[0]).then((res) => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-                let data = this.state.topics.filter(item => item.id != this.state.selectedRow[0]);
-                this.setState({ topics: data, showDeleteModal: false, isLoading: false });
-            })
-        }
-
-    }
-
-    fillSubDropDownInEdit(url, param, value, subFieldId, subFieldName, subSelectedValue, subDatasource) {
-        this.setState({ isLoading: true })
-        let action = url + "?" + param + "=" + value
-        DataService.GetDataList(action, 'contactName', 'id').then(result => {
-            if (this.props.changeStatus === true) {
-                let _SubFieldId = this.state.document[subFieldId];
-                let _SubFieldName = this.state.document[subFieldName];
-                let targetFieldSelected = { label: _SubFieldName, value: _SubFieldId };
-                this.setState({
-                    [subSelectedValue]: targetFieldSelected,
-                    [subDatasource]: result,
-                    isLoading: false
-                });
-            }
-        });
-    }
-
-    updateSelectedValue = (selected, label, value, targetSelected) => {
-        this.setState({ isLoading: true })
-        let original_document = { ...this.state.document };
-        let updated_document = {};
-        updated_document[value] = selected.value;
-        updated_document[label] = selected.label;
-        updated_document = Object.assign(original_document, updated_document);
-        this.setState({
-            document: updated_document,
-            [targetSelected]: selected,
-            isLoading: false
-        });
-
-    }
-
-    handleChangeDropDowns = (item, lbl, val, selected, listData, selected_subScripe, initialState) => {
-        this.setState({ isLoading: true })
-        DataService.GetDataList('GetContactsByCompanyId?companyId=' + item.value, 'contactName', 'id').then(res => {
-            this.setState({
-                [listData]: res, isLoading: false, [selected]: item,
-                [selected_subScripe]: { label: Resources[initialState][currentLanguage], value: "0" },
-            })
-        })
-        this.updateSelectedValue(item, lbl, val)
-    }
-
-    handleChange = (key, value) => {
-        this.setState({ document: { ...this.state.document, [key]: value } })
     }
     NextStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
                 this.setState({
-                    fromContacts: [],
-                    selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
-                    selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-                    calledByContact: [],
                     CurrStep: this.state.CurrStep + 1,
                     firstComplete: true
                 })
@@ -718,14 +654,11 @@ class bogAddEdit extends Component {
             case 2:
                 this.setState({
                     CurrStep: this.state.CurrStep + 1, secondComplete: true,
-                    actionByContacts: [],
-                    selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: 0 },
-                    selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: 0 },
                     isLoading: false
                 })
                 break;
             case 3:
-                this.props.history.push({ pathname: '/CommunicationMeetingAgenda/' + this.state.projectId })
+                this.props.history.push({ pathname: '/boq/' + this.state.projectId })
                 break;
         }
     }
@@ -755,40 +688,35 @@ class bogAddEdit extends Component {
     }
 
     onRowClick = (value, index, column) => {
+        console.log('column.key', column.key)
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
-        else if (column.key != 0) {
+        else if (column.key != 'select-row' && column.key != 'unitPrice') {
             this.setState({ showPopUp: true, btnText: 'save' })
-            if (this.state.CurrStep == 3) {
-                let actionByCompany = _.find(this.state.Companies, function (company) { return company.value == value.byWhomCompanyId })
-                this.setState({ isLoading: true })
-                DataService.GetDataList('GetContactsByCompanyId?companyId=' + value.byWhomCompanyId, 'contactName', 'id').then(res => {
-                    let actionByContact = _.find(res, function (x) { return x.value == value.byWhomContactId })
-                    this.setState({
-                        topic: { itemDescription: value.description, action: value.action, decision: value.decision, comment: value.comment, id: value.id, requiredDate: moment(value.requiredDate) },
-                        selectedActionByCompany: actionByCompany, selectedActionByContact: actionByContact, actionByContacts: res, isLoading: false
-                    })
-                })
-            }
-            else if (this.state.CurrStep == 2) {
+            this.simpleDialog1.show()
+            if (this.state.CurrStep == 2) {
                 this.setState({ isLoading: true })
                 DataService.GetDataList('GetAllBoqChild?parentId=' + value.boqTypeId, 'title', 'id').then(res => {
                     this.setState({
                         BoqSubTypes: res,
                         BoqTypeChilds: res,
                         items: { id: value.id, description: value.description, arrange: value.arrange, quantity: value.quantity, unitPrice: value.unitPrice, itemCode: value.itemCode, resourceCode: value.resourceCode, days: value.days },
-                        selectedUnit: { label: value.unitLabel, value: value.unit },
-                        selectedBoqType: { label: value.boqType, value: value.boqTypeId },
-                        selectedBoqTypeChild: { label: value.boqTypeChild, value: value.boqTypeChildId },
-                        selectedBoqSubType: { label: value.boqSubType, value: value.boqSubTypeId },
-                        selectedItemType: { label: value.itemTypeLabel, value: value.itemType },
-                        selectedequipmentType: { label: value.equipmentTypeLabel, value: value.equipmentType },
+                        selectedUnit: value.unit ? { label: value.unit, value: value.unit } : { label: Resources.unitSelection[currentLanguage], value: "0" },
+                        selectedBoqType: value.boqTypeId > 0 ? { label: value.boqType, value: value.boqTypeId } : { label: Resources.boqType[currentLanguage], value: "0" },
+                        selectedBoqTypeChild: value.boqChildTypeId > 0 ? { label: value.boqTypeChild, value: value.boqTypeChildId } : { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+                        selectedBoqSubType: value.boqSubTypeId > 0 ? { label: value.boqSubType, value: value.boqSubTypeId } : { label: Resources.boqSubType[currentLanguage], value: "0" },
+                        selectedequipmentType: value.equipmentType > 0 ? { label: value.equipmentTypeLabel, value: value.equipmentType } : { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
+                        selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
                         isLoading: false
                     })
+                    if (value.itemType > 0) {
+                        let itemType = _.find(this.state.itemTypes, function (e) { return e.value == value.itemType })
+                        this.setState({ selectedItemType: itemType })
+                    }
                 })
             }
-            this.simpleDialog1.show()
+
         }
     }
     clickHandlerDeleteRowsMain = selectedRows => {
@@ -797,11 +725,49 @@ class bogAddEdit extends Component {
             selectedRow: selectedRows
         });
     };
+    onRowsSelected = selectedRows => {
+        this.setState({
+            selectedRow: selectedRows
+        });
+    }
+    onRowsDeselected = () => {
+        this.setState({
+            selectedRow: []
+        });
+    }
+    assign = () => {
+        this.setState({ showBoqModal: true })
+        this.boqTypeModal.show()
+    }
+    assignBoqType = () => {
+        this.setState({ showBoqModal: true, isLoading: true })
+        let itemsId = []
+        this.state.selectedRow.forEach(element => {
+            itemsId.push(element.row.id)
+        })
+        let boq = {
+            boqChildTypeId: this.state.selectedBoqTypeChildEdit.value,
+            boqItemId: itemsId,
+            boqSubTypeId: this.state.selectedBoqSubTypeEdit.value,
+        }
+        Api.post('EditBoqItemForSubType', boq).then(() => {
+            this.setState({ showBoqModal: false, isLoading: false })
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            this.getTabelData()
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ showBoqModal: false, isLoading: false })
+        })
+
+    }
     _executeBeforeModalClose = () => {
         this.setState({
-            showPopUp: false, btnText: 'add', topic: { requiredDate: moment() },
-            selectedActionByContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" }
+            showPopUp: false, btnText: 'add'
+        })
+    }
+    _executeBeforeModalOpen = () => {
+        this.setState({
+            btnText: 'save'
         })
     }
     showBtnsSaving() {
@@ -814,49 +780,143 @@ class bogAddEdit extends Component {
         }
         return btn;
     }
-    render() {
-        const dataGridTopic = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.topics}
-                showCheckbox={true}
-                pageSize={this.state.pageSize}
-                onRowClick={this.onRowClick}
-                columns={this.topicColumns}
-                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                single={true}
-                key='topic'
-            />) : <LoadingSection />;
 
-        const dataGridAttendees = this.state.isLoading === false ? (
+    addContract = (values) => {
+        if (this.props.document.contractId != null || this.state.addedContract)
+            toast.info(Resources.alreadyContract[currentLanguage])
+        else {
+            let contract = {
+                projectId: this.state.projectId,
+                boqId: this.state.docId,
+                subject: values.subject,
+                companyId: Config.getPayload().cmi,
+                completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                status: values.status == undefined ? this.props.document.status : values.status,
+                docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                reference: values.reference,
+                currencyAction: this.state.selectedCurrency != undefined ? this.state.selectedCurrency.value : 0,
+                tax: values.tax,
+                vat: values.vat,
+                advancedPayment: values.advancedPayment,
+                retainage: values.retainage,
+                insurance: values.insurance,
+                advancedPaymentAmount: values.advancedPaymentAmount,
+            }
+            this.setState({ isLoading: true })
+            DataService.addObject('AddContractsForBoq', contract).then(() => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.setState({
+                    selectedCurrency: { label: Resources.pleaseSelect[currentLanguage], value: "0" },
+                    isLoading: false,
+                    addedContract: true
+                })
+            }).catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ isLoading: false })
+
+            })
+            this.changeTab()
+        }
+    }
+
+    addPurchaseOrder = (values) => {
+        if (this.props.document.purchaseOrderId != null || this.state.AddedPurchase)
+            toast.info(Resources.alreadyContract[currentLanguage])
+        else {
+            let purchaseOrder = {
+                projectId: this.state.projectId,
+                boqId: this.state.docId,
+                subject: values.subject,
+                companyId: Config.getPayload().cmi,
+                completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                status: values.status,
+                useRevised: values.useRevised,
+                useItemization: values.useItemization,
+                docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                refDoc: values.reference,
+                actionCurrency: this.state.selectedCurrency != undefined ? this.state.selectedCurrency.value : 0,
+                advancePaymentPercent: values.advancedPaymentPercent,
+            }
+            this.setState({ isLoading: true, AddedPurchase: true })
+            DataService.addObject('AddContractsPurchaseOrdersForBoq', purchaseOrder).then(() => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.setState({ isLoading: false })
+
+            }).catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ isLoading: false })
+
+            })
+            this.changeTab()
+        }
+    }
+
+    changeTab = (tabName) => {
+        if (tabName == 'contract') {
+            if (this.props.document.contractId != null)
+                toast.info(Resources.alreadyContract[currentLanguage])
+            else
+                this.setState({ activeTab: tabName })
+        }
+        else if (tabName == 'purchase') {
+            if (this.props.document.purchaseOrderId != null)
+                toast.info(Resources.alreadyContract[currentLanguage])
+            else
+                this.setState({ activeTab: tabName })
+        }
+        else
+            this.setState({ activeTab: '' })
+    }
+
+
+    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+        this.setState(state => {
+            const rows = state.rows.slice();
+            for (let i = fromRow; i <= toRow; i++) {
+                rows[i] = { ...rows[i], ...updated };
+            }
+            return { rows };
+        });
+        Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        })
+    };
+
+    render() {
+        const ItemsGrid = this.state.isLoading === false ? (
             <GridSetup
-                rows={this.state.tableItems}
+                rows={this.state.rows}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
                 onRowClick={this.onRowClick}
                 columns={this.itemsColumns}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+                onRowsSelected={this.onRowsSelected}
+                onRowsDeselected={this.onRowsDeselected}
+                onGridRowsUpdated={this._onGridRowsUpdated}
+                assign={true}
+                assignFn={() => this.assign()}
                 key='items'
             />) : <LoadingSection />;
-
-
         const contractContent = <React.Fragment>
             <div className="document-fields">
                 {this.state.isLoading ? <LoadingSection /> : null}
                 <Formik
                     enableReinitialize={true}
                     initialValues={{
-                        description: this.state.items.description,
-                        unit: this.state.selectedUnit.value > 0 ? this.state.selectedUnit : '',
-                        itemType: this.state.selectedItemType.value > 0 ? this.state.selectedItemType : '',
-                        itemCode: this.state.items.itemCode,
-                        resourceCode: this.state.items.resourceCode,
-                        days: this.state.items.days
+                        subject: this.props.changeStatus ? this.props.document.subject : '',
+                        reference: 1,
+                        completionDate: moment(),
+                        docDate: this.props.changeStatus ? this.props.document.documentDate : moment(),
+                        status: this.props.document.status ? this.props.document.status : true
+
                     }}
-                    validationSchema={itemsValidationSchema}
+                    validationSchema={contractSchema}
                     onSubmit={(values) => {
-                        this.addEditItems()
+                        this.addContract(values)
                     }}
                 >
-                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
                         <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
 
                             <div className="proForm first-proform letterFullWidth">
@@ -866,19 +926,19 @@ class bogAddEdit extends Component {
                                         <input name='subject'
                                             className="form-control"
                                             id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
-                                            onBlur={handleBlur} value={this.props.document.subject}
-                                            onChange={e => { handleChange(e); this.setState({ document: { ...this.state.document, subject: e.target.value } }) }} />
+                                            onBlur={handleBlur} defaultValue={values.subject}
+                                            onChange={e => handleChange(e)} />
                                         {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.status[currentLanguage]}</label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                        <input type="radio" name="status" defaultChecked={values.status === false ? null : 'checked'} value="true" onChange={e => setFieldValue('status', true)} />
                                         <label>{Resources.oppened[currentLanguage]}</label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                        <input type="radio" name="status" defaultChecked={values.status === false ? 'checked' : null} value="false" onChange={e => setFieldValue('status', false)} />
                                         <label>{Resources.closed[currentLanguage]}</label>
                                     </div>
                                 </div>
@@ -887,108 +947,130 @@ class bogAddEdit extends Component {
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.reference[currentLanguage]}</label>
                                     <div className="ui input inputDev"  >
-                                        <input type="text" className="form-control" id="reference" readOnly
-                                            value={this.state.items.reference}
+                                        <input type="text" className="form-control" id="reference"
+                                            defaultValue={values.reference}
                                             name="reference"
                                             placeholder={Resources.reference[currentLanguage]}
-                                            onChange={(e) => this.handleChange(e, 'reference')} />
+                                        />
                                     </div>
                                 </div>
-
                                 <div className="linebylineInput valid-input">
                                     <DatePicker title='completionDate'
                                         format={'DD/MM/YYYY'}
                                         name="completionDate"
-                                        startDate={this.state.document.completionDate}
-                                        handleChange={e => this.handleChange('completionDate', e)} />
+                                        startDate={values.completionDate}
+                                        handleChange={e => setFieldValue('completionDate', e)} />
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <DatePicker title='docDate'
                                         format={'DD/MM/YYYY'}
                                         name="documentDate"
-                                        startDate={this.state.document.documentDate}
-                                        handleChange={e => this.handleChange('documentDate', e)} />
+                                        startDate={values.docDate}
+                                        handleChange={e => setFieldValue('docDate', e)}
+                                    />
                                 </div>
-
                                 <div className="linebylineInput valid-input">
                                     <Dropdown
                                         title="currency"
                                         data={this.state.currency}
-                                        selectedValue={this.state.selectedUnit}
+                                        selectedValue={this.state.selectedCurrency}
                                         handleChange={event => {
-                                            this.handleChange('currency', event.value);
-                                            this.setState({ selectedUnit: event })
+                                            this.setState({ selectedCurrency: event })
                                         }}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.currency}
-                                        touched={touched.currency}
                                         name="currency"
                                         index="currency" />
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.tax[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
-                                        <input type="text" className="form-control" id="Tax"
-                                            value={this.state.items.Tax}
-                                            name="Tax"
+                                    <div className={"inputDev ui input " + (errors.tax ? 'has-error' : !errors.tax && touched.tax ? (" has-success") : " ")}>
+                                        <input type="text" className="form-control" id="tax"
+                                            defaultValue={0}
+                                            onBlur={handleBlur}
+                                            onChange={e => handleChange(e)}
+                                            name="tax"
                                             placeholder={Resources.tax[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, Tax: e.target.value } })} />
+                                        />
+                                        {errors.tax ? (<em className="pError">{errors.tax}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.vat[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
+                                    <div className={"inputDev ui input " + (errors.vat ? 'has-error' : !errors.vat && touched.vat ? (" has-success") : " ")}>
                                         <input type="text" className="form-control" id="vat"
-                                            value={this.state.items.vat}
+                                            defaultValue={0}
+                                            onBlur={handleBlur}
+                                            onChange={e => handleChange(e)}
                                             name="vat"
                                             placeholder={Resources.vat[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, vat: e.target.value } })} />
+                                        />
+                                        {errors.vat ? (<em className="pError">{errors.vat}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.advancedPayment[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
+                                    <div className={"inputDev ui input " + (errors.advancedPayment ? 'has-error' : !errors.advancedPayment && touched.advancedPayment ? (" has-success") : " ")}>
                                         <input type="text" className="form-control" id="advancedPayment"
-                                            value={this.state.items.advancedPayment}
+                                            defaultValue={0}
+                                            onBlur={handleBlur}
+                                            onChange={e => handleChange(e)}
                                             name="advancedPayment"
                                             placeholder={Resources.advancedPayment[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, advancedPayment: e.target.value } })} />
+                                        />
+                                        {errors.advancedPayment ? (<em className="pError">{errors.advancedPayment}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.retainage[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
+                                    <div className={"inputDev ui input " + (errors.retainage ? 'has-error' : !errors.retainage && touched.retainage ? (" has-success") : " ")}>
                                         <input type="text" className="form-control" id="retainage"
-                                            value={this.state.items.retainage}
+                                            defaultValue={0}
+                                            onBlur={handleBlur}
+                                            onChange={e => handleChange(e)}
                                             name="retainage"
                                             placeholder={Resources.retainage[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, retainage: e.target.value } })} />
+                                        />
+                                        {errors.retainage ? (<em className="pError">{errors.retainage}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.insurance[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
+                                    <div className={"inputDev ui input " + (errors.insurance ? 'has-error' : !errors.insurance && touched.insurance ? (" has-success") : " ")}>
                                         <input type="text" className="form-control" id="insurance"
-                                            value={this.state.items.insurance}
+                                            defaultValue={0}
                                             name="insurance"
+                                            onBlur={handleBlur}
+                                            onChange={e => handleChange(e)}
                                             placeholder={Resources.insurance[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, insurance: e.target.value } })} />
+                                        />
+                                        {errors.insurance ? (<em className="pError">{errors.insurance}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.advancedPaymentAmount[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
+                                    <div className={"inputDev ui input " + (errors.advancedPaymentAmount ? 'has-error' : !errors.advancedPaymentAmount && touched.advancedPaymentAmount ? (" has-success") : " ")}>
                                         <input type="text" className="form-control" id="advancedPaymentAmount"
-                                            value={this.state.items.advancedPaymentAmount}
+                                            defaultValue={0}
+                                            onBlur={handleBlur}
+                                            onChange={e => handleChange(e)}
                                             name="advancedPaymentAmount"
                                             placeholder={Resources.advancedPaymentAmount[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, advancedPaymentAmount: e.target.value } })} />
+                                        />
+                                        {errors.advancedPaymentAmount ? (<em className="pError">{errors.advancedPaymentAmount}</em>) : null}
                                     </div>
                                 </div>
-
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                                    <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources[this.state.btnText][currentLanguage]}</button>
+                                    {this.state.isLoading === false ? (
+                                        <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources.save[currentLanguage]}</button>
+                                    ) :
+                                        (
+                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                        )}
                                 </div>
                             </div>
 
@@ -999,25 +1081,27 @@ class bogAddEdit extends Component {
 
         </React.Fragment >
         const purchaseOrderContent = <React.Fragment>
-
             <div className="document-fields">
+
                 {this.state.isLoading ? <LoadingSection /> : null}
                 <Formik
                     enableReinitialize={true}
                     initialValues={{
-                        description: this.state.items.description,
-                        unit: this.state.selectedUnit.value > 0 ? this.state.selectedUnit : '',
-                        itemType: this.state.selectedItemType.value > 0 ? this.state.selectedItemType : '',
-                        itemCode: this.state.items.itemCode,
-                        resourceCode: this.state.items.resourceCode,
-                        days: this.state.items.days
+                        subject: this.props.changeStatus ? this.props.document.subject : '',
+                        reference: 1,
+                        completionDate: moment(),
+                        docDate: this.props.changeStatus ? this.props.document.documentDate : moment(),
+                        status: this.props.document.status ? this.props.document.status : true,
+                        useItemization: false,
+                        useRevised: false,
+                        advancedPaymentPercent: 0
                     }}
-                    validationSchema={itemsValidationSchema}
+                    validationSchema={purchaseSchema}
                     onSubmit={(values) => {
-                        this.addEditItems()
+                        this.addPurchaseOrder(values)
                     }}
                 >
-                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
                         <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
 
                             <div className="proForm first-proform">
@@ -1027,19 +1111,19 @@ class bogAddEdit extends Component {
                                         <input name='subject'
                                             className="form-control"
                                             id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
-                                            onBlur={handleBlur} value={this.props.document.subject}
-                                            onChange={e => { handleChange(e); this.setState({ document: { ...this.state.document, subject: e.target.value } }) }} />
+                                            onBlur={handleBlur} defaultValue={values.subject}
+                                            onChange={e => { handleChange(e) }} />
                                         {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.status[currentLanguage]}</label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                        <input type="radio" name="status" defaultChecked={values.status === false ? null : 'checked'} value="true" onChange={() => setFieldValue('status', true)} />
                                         <label>{Resources.oppened[currentLanguage]}</label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                        <input type="radio" name="status" defaultChecked={values.status === false ? 'checked' : null} value="false" onChange={() => setFieldValue('status', false)} />
                                         <label>{Resources.closed[currentLanguage]}</label>
                                     </div>
                                 </div>
@@ -1049,10 +1133,10 @@ class bogAddEdit extends Component {
                                     <label className="control-label">{Resources.reference[currentLanguage]}</label>
                                     <div className="ui input inputDev"  >
                                         <input type="text" className="form-control" id="reference" readOnly
-                                            value={this.state.items.reference}
+                                            defaultValue={values.reference}
                                             name="reference"
                                             placeholder={Resources.reference[currentLanguage]}
-                                            onChange={(e) => this.handleChange(e, 'reference')} />
+                                        />
                                     </div>
                                 </div>
 
@@ -1060,26 +1144,27 @@ class bogAddEdit extends Component {
                                     <DatePicker title='completionDate'
                                         format={'DD/MM/YYYY'}
                                         name="completionDate"
-                                        startDate={this.state.document.completionDate}
-                                        handleChange={e => this.handleChange('completionDate', e)} />
+                                        startDate={values.completionDate}
+                                        handleChange={e => setFieldValue('completionDate', e)} />
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <DatePicker title='docDate'
                                         format={'DD/MM/YYYY'}
                                         name="documentDate"
                                         startDate={this.state.document.documentDate}
-                                        handleChange={e => this.handleChange('documentDate', e)} />
+                                        handleChange={e => setFieldValue('documentDate', e)} />
                                 </div>
 
 
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.advancedPayment[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
-                                        <input type="text" className="form-control" id="advancedPayment"
-                                            value={this.state.items.advancedPayment}
-                                            name="advancedPayment"
+                                    <div className={"inputDev ui input " + (errors.advancedPaymentPercent ? 'has-error' : !errors.advancedPaymentPercent && touched.advancedPaymentPercent ? (" has-success") : " ")}>
+                                        <input type="text" className="form-control" id="advancedPaymentPercent"
+                                            defaultValue={values.advancedPaymentPercent}
+                                            name="advancedPaymentPercent"
                                             placeholder={Resources.advancedPayment[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, advancedPayment: e.target.value } })} />
+                                            onChange={(e) => { handleChange(e); setFieldValue('advancedPaymentPercent', e.target.value) }} />
+                                        {errors.advancedPaymentPercent ? (<em className="pError">{errors.advancedPaymentPercent}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="fullWidthWrapper account__checkbox">
@@ -1087,11 +1172,11 @@ class bogAddEdit extends Component {
                                         <div className="linebylineInput">
                                             <label className="control-label">{Resources.useItemization[currentLanguage]}</label>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="useItemization" defaultChecked={this.state.document.useItemization === false ? null : 'checked'} value="true" onChange={e => this.handleChange('useItemization', 'true')} />
+                                                <input type="radio" name="useItemization" defaultChecked={values.useItemization === false ? null : 'checked'} value="true" onChange={() => setFieldValue('useItemization', true)} />
                                                 <label>{Resources.yes[currentLanguage]}</label>
                                             </div>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="useItemization" defaultChecked={this.state.document.useItemization === false ? 'checked' : null} value="false" onChange={e => this.handleChange('useItemization', 'false')} />
+                                                <input type="radio" name="useItemization" defaultChecked={values.useItemization === false ? 'checked' : null} value="false" onChange={() => setFieldValue('useItemization', false)} />
                                                 <label>{Resources.no[currentLanguage]}</label>
                                             </div>
                                         </div>
@@ -1100,11 +1185,11 @@ class bogAddEdit extends Component {
                                         <div className="linebylineInput">
                                             <label className="control-label">{Resources.useRevised[currentLanguage]}</label>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="Optemization" defaultChecked={this.state.document.useRevised === false ? null : 'checked'} value="true" onChange={e => this.handleChange('useRevised', 'true')} />
+                                                <input type="radio" name="useRevised" defaultChecked={values.useRevised === false ? null : 'checked'} value="true" onChange={() => setFieldValue('useRevised', true)} />
                                                 <label>{Resources.yes[currentLanguage]}</label>
                                             </div>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="Optemization" defaultChecked={this.state.document.useRevised === false ? 'checked' : null} value="false" onChange={e => this.handleChange('useRevised', 'false')} />
+                                                <input type="radio" name="useRevised" defaultChecked={values.useRevised === false ? 'checked' : null} value="false" onChange={() => setFieldValue('useRevised', false)} />
                                                 <label>{Resources.no[currentLanguage]}</label>
                                             </div>
                                         </div>
@@ -1114,23 +1199,26 @@ class bogAddEdit extends Component {
                                     <Dropdown
                                         title="currency"
                                         data={this.state.currency}
-                                        selectedValue={this.state.selectedUnit}
+                                        selectedValue={this.state.selectedCurrency}
                                         handleChange={event => {
-                                            this.handleChange('currency', event.value);
-                                            this.setState({ selectedUnit: event })
+                                            this.setState({ selectedCurrency: event })
                                         }}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.currency}
-                                        touched={touched.currency}
                                         name="currency"
                                         index="currency" />
                                 </div>
-
-
-
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                                    <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources[this.state.btnText][currentLanguage]}</button>
+                                    {this.state.isLoading === false ? (
+                                        <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources[this.state.btnText][currentLanguage]}</button>
+                                    ) :
+                                        (
+                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                        )}
                                 </div>
                             </div>
 
@@ -1138,7 +1226,6 @@ class bogAddEdit extends Component {
                     )}
                 </Formik>
             </div>
-
         </React.Fragment >
         const itemsContent = <React.Fragment>
             <div className="document-fields">
@@ -1147,7 +1234,7 @@ class bogAddEdit extends Component {
                     enableReinitialize={true}
                     initialValues={{
                         description: this.state.items.description,
-                        unit: this.state.selectedUnit.value > 0 ? this.state.selectedUnit : '',
+                        unit: this.state.selectedUnit.value != 0 ? this.state.selectedUnit : '',
                         itemType: this.state.selectedItemType.value > 0 ? this.state.selectedItemType : '',
                         itemCode: this.state.items.itemCode,
                         resourceCode: this.state.items.resourceCode,
@@ -1187,12 +1274,14 @@ class bogAddEdit extends Component {
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.quantity[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
+                                    <div className={"inputDev ui input " + (errors.quantity ? 'has-error' : !errors.quantity && touched.quantity ? (" has-success") : " ")}>
                                         <input type="text" className="form-control" id="quantity"
                                             value={this.state.items.quantity}
                                             name="quantity"
                                             placeholder={Resources.quantity[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, quantity: e.target.value } })} />
+                                            onBlur={handleBlur}
+                                            onChange={(e) => { handleChange(e); this.setState({ items: { ...this.state.items, quantity: e.target.value } }) }} />
+                                        {errors.quantity ? (<em className="pError">{errors.quantity}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
@@ -1201,7 +1290,6 @@ class bogAddEdit extends Component {
                                         data={this.state.Units}
                                         selectedValue={this.state.selectedUnit}
                                         handleChange={event => {
-                                            this.handleChange('unit', event.value);
                                             this.setState({ selectedUnit: event })
                                         }}
                                         onChange={setFieldValue}
@@ -1213,12 +1301,14 @@ class bogAddEdit extends Component {
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
-                                    <div className="ui input inputDev"  >
+                                    <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
                                         <input type="text" className="form-control" id="unitPrice"
                                             value={this.state.items.unitPrice}
                                             name="unitPrice"
+                                            onBlur={handleBlur}
                                             placeholder={Resources.unitPrice[currentLanguage]}
-                                            onChange={(e) => this.setState({ items: { ...this.state.items, unitPrice: e.target.value } })} />
+                                            onChange={(e) => { handleChange(e); this.setState({ items: { ...this.state.items, unitPrice: e.target.value } }) }} />
+                                        {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="letterFullWidth">
@@ -1319,7 +1409,7 @@ class bogAddEdit extends Component {
                                             {errors.days ? (<em className="pError">{errors.days}</em>) : null}
                                         </div>
                                     </div> : null}
-                                {this.state.selectedItemType.label == 'Equipment' || this.state.selectedequipmentType.value > 0 ?
+                                {this.state.selectedItemType.label == 'Equipment' || (this.state.selectedequipmentType.value > 0 && this.state.showPopUp) ?
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
                                             title="equipmentType"
@@ -1331,9 +1421,19 @@ class bogAddEdit extends Component {
                                             name="equipmentType"
                                             index="equipmentType" />
                                     </div> : null}
-
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                                    <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources[this.state.btnText][currentLanguage]}</button>
+                                    {this.state.isLoading === false ? (
+                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn  disNone" : "primaryBtn-1 btn "} type="submit" >{Resources[this.state.btnText][currentLanguage]}</button>
+                                    ) :
+                                        (
+                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                        )}
                                 </div>
                             </div>
 
@@ -1341,9 +1441,80 @@ class bogAddEdit extends Component {
                     )}
                 </Formik>
             </div>
-
         </React.Fragment >
+        const BoqTypeContent = <React.Fragment>
+            <div className="dropWrapper">
+                {this.state.isLoading ? <LoadingSection /> : null}
+                <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                        boqType: '',
+                        boqChild: '',
+                        boqSubType: ''
+                    }}
+                    validationSchema={BoqTypeSchema}
+                    onSubmit={(values) => {
+                        this.assignBoqType()
+                    }}
+                >
+                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
+                            <div className="fullWidthWrapper textLeft">
+                                <Dropdown
+                                    title="boqType"
+                                    data={this.state.boqTypes}
+                                    selectedValue={this.state.selectedBoqTypeEdit}
+                                    handleChange={event => {
+                                        this.fillSubDropDown('GetAllBoqChild', 'parentId', event.value, 'title', 'id', 'BoqSubTypes', 'BoqTypeChilds')
+                                        this.setState({
+                                            selectedBoqTypeEdit: event,
+                                            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+                                            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
+                                        })
+                                    }}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.boqType}
+                                    touched={touched.boqType}
+                                    name="boqType"
+                                    index="boqType" />
+                            </div>
+                            <Dropdown
+                                title="boqTypeChild"
+                                data={this.state.BoqTypeChilds}
+                                selectedValue={this.state.selectedBoqTypeChildEdit}
+                                handleChange={event => {
+                                    this.setState({ selectedBoqTypeChildEdit: event })
+                                }}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.boqChild}
+                                touched={touched.boqChild}
+                                name="boqChild"
+                                index="boqChild" />
+                            <Dropdown
+                                title="boqSubType"
+                                data={this.state.BoqSubTypes}
+                                selectedValue={this.state.selectedBoqSubTypeEdit}
+                                handleChange={event => {
+                                    this.setState({ selectedBoqSubTypeEdit: event })
+                                }}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.boqSubType}
+                                touched={touched.boqSubType}
+                                name="boqSubType"
+                                index="boqSubType" />
 
+                            <div className={"slider-Btns fullWidthWrapper"}>
+                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn  disNone" : "primaryBtn-1 btn "} type="submit" >{Resources[this.state.btnText][currentLanguage]}</button>
+                            </div>
+
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+        </React.Fragment >
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -1354,33 +1525,32 @@ class bogAddEdit extends Component {
                 title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
-
         ];
         let Step_1 = <React.Fragment>
-
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                     <div className="document-fields">
                         <Formik
                             initialValues={{
-                                subject: this.state.document.subject,
+                                subject: this.props.changeStatus ? this.state.document.subject : '',
                                 fromCompany: this.state.selectedFromCompany.value > 0 ? this.state.selectedFromCompany.value : '',
-                                discipline: this.state.selectedDiscipline.value > 0 ? this.state.selectedDiscipline.value : ''
-
+                                discipline: this.state.selectedDiscipline.value > 0 ? this.state.selectedDiscipline.value : '',
+                                status: this.props.changeStatus ? this.props.document.status : true,
+                                documentDate: this.props.changeStatus ? this.props.document.documentDate : moment(),
+                                showInSiteRequest: this.props.changeStatus ? this.props.document.showInSiteRequest : false,
+                                showOptimization: this.props.changeStatus ? this.props.document.showOptimization : false,
                             }}
                             validationSchema={poqSchema}
                             enableReinitialize={this.props.changeStatus}
                             onSubmit={(values) => {
                                 if (this.props.changeStatus === true && this.state.docId > 0) {
-                                    this.editBoq();
+                                    this.editBoq(values);
                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                    this.addPoq();
+                                    this.addPoq(values);
                                 }
                             }}  >
-
-                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                 <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                     <div className="proForm first-proform">
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['subject'][currentLanguage]} </label>
@@ -1388,19 +1558,19 @@ class bogAddEdit extends Component {
                                                 <input name='subject'
                                                     className="form-control"
                                                     id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
-                                                    onBlur={handleBlur} value={this.props.document.subject}
-                                                    onChange={e => { handleChange(e); this.setState({ document: { ...this.state.document, subject: e.target.value } }) }} />
+                                                    onBlur={handleBlur} defaultValue={values.subject}
+                                                    onChange={e => { handleChange(e); }} />
                                                 {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                <input type="radio" name="status" defaultChecked={values.status === false ? null : 'checked'} value="true" onChange={() => setFieldValue('status', true)} />
                                                 <label>{Resources.oppened[currentLanguage]}</label>
                                             </div>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                <input type="radio" name="status" defaultChecked={values.status === false ? 'checked' : null} value="false" onChange={() => setFieldValue('status', false)} />
                                                 <label>{Resources.closed[currentLanguage]}</label>
                                             </div>
                                         </div>
@@ -1412,18 +1582,18 @@ class bogAddEdit extends Component {
                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                             <div className="ui input inputDev"  >
                                                 <input type="text" className="form-control" id="arrange" readOnly
-                                                    value={this.state.document.arrange}
+                                                    defaultValue={this.state.document.arrange}
                                                     name="arrange"
                                                     placeholder={Resources.arrange[currentLanguage]}
-                                                    onChange={(e) => this.handleChange(e, 'arrange')} />
+                                                />
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
                                             <DatePicker title='docDate'
                                                 format={'DD/MM/YYYY'}
                                                 name="documentDate"
-                                                startDate={this.state.document.documentDate}
-                                                handleChange={e => this.handleChange('documentDate', e)} />
+                                                startDate={values.documentDate}
+                                                handleChange={e => { handleChange(e); setFieldValue('documentDate', e) }} />
                                         </div>
 
                                         <div className="linebylineInput valid-input">
@@ -1432,7 +1602,6 @@ class bogAddEdit extends Component {
                                                 data={this.state.Companies}
                                                 selectedValue={this.state.selectedFromCompany}
                                                 handleChange={event => {
-                                                    this.handleChange('company', event.value);
                                                     this.setState({ selectedFromCompany: event })
                                                 }}
                                                 onChange={setFieldValue}
@@ -1449,7 +1618,6 @@ class bogAddEdit extends Component {
                                                 data={this.state.Disciplines}
                                                 selectedValue={this.state.selectedDiscipline}
                                                 handleChange={event => {
-                                                    this.handleChange('discipline', event.value);
                                                     this.setState({ selectedDiscipline: event })
                                                 }}
                                                 onChange={setFieldValue}
@@ -1465,24 +1633,24 @@ class bogAddEdit extends Component {
                                                 <div className="linebylineInput">
                                                     <label className="control-label">{Resources.showInSiteRequest[currentLanguage]}</label>
                                                     <div className="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="showInSiteRequest" defaultChecked={this.state.document.showInSiteRequest === false ? null : 'checked'} value="true" onChange={e => this.handleChange('showInSiteRequest', 'true')} />
+                                                        <input type="radio" name="showInSiteRequest" defaultChecked={values.showInSiteRequest === false ? null : 'checked'} value="true" onChange={() => setFieldValue('showInSiteRequest', true)} />
                                                         <label>{Resources.yes[currentLanguage]}</label>
                                                     </div>
                                                     <div className="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="showInSiteRequest" defaultChecked={this.state.document.showInSiteRequest === false ? 'checked' : null} value="false" onChange={e => this.handleChange('showInSiteRequest', 'false')} />
+                                                        <input type="radio" name="showInSiteRequest" defaultChecked={values.showInSiteRequest === false ? 'checked' : null} value="false" onChange={() => setFieldValue('showInSiteRequest', false)} />
                                                         <label>{Resources.no[currentLanguage]}</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="proForm fullLinearInput">
                                                 <div className="linebylineInput">
-                                                    <label className="control-label">{Resources.useRevised[currentLanguage]}</label>
+                                                    <label className="control-label">{Resources.showOptemization[currentLanguage]}</label>
                                                     <div className="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="Optemization" defaultChecked={this.state.document.showOptemization === false ? null : 'checked'} value="true" onChange={e => this.handleChange('showOptemization', 'true')} />
+                                                        <input type="radio" name="showOptimization" defaultChecked={values.showOptimization === false ? null : 'checked'} value="true" onChange={() => setFieldValue('showOptimization', true)} />
                                                         <label>{Resources.yes[currentLanguage]}</label>
                                                     </div>
                                                     <div className="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="Optemization" defaultChecked={this.state.document.showOptemization === false ? 'checked' : null} value="false" onChange={e => this.handleChange('showOptemization', 'false')} />
+                                                        <input type="radio" name="showOptimization" defaultChecked={values.showOptimization === false ? 'checked' : null} value="false" onChange={() => setFieldValue('showOptimization', false)} />
                                                         <label>{Resources.no[currentLanguage]}</label>
                                                     </div>
                                                 </div>
@@ -1491,19 +1659,50 @@ class bogAddEdit extends Component {
 
 
                                         <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                                            <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources[this.state.btnText][currentLanguage]}</button>
+
+                                            {this.state.isLoading === false ? (
+                                                <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disNone' : '')} type={this.state.docId > 0 ? 'button' : "submit"} disabled={this.state.isApproveMode}  >{Resources[this.state.btnTxt][currentLanguage]}</button>
+                                            ) :
+                                                (
+                                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                )}
+
                                         </div>
 
-
-
-
                                     </div>
+                                    {this.props.changeStatus === true ?
+                                        <div className="approveDocument">
+                                            <div className="approveDocumentBTNS">
+                                                {this.state.isApproveMode === true ?
+
+                                                    <div >
+                                                        <button type='button' className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button >
+                                                        <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                    </div>
+                                                    : null}
+                                                <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                <span className="border"></span>
+                                                <div className="document__action--menu">
+                                                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        : null
+                                    }
                                 </Form>
                             )}
                         </Formik>
                         <div className="doc-pre-cycle letterFullWidth">
                             <div>
-                                {this.state.docId > 0 && this.state.isApproveMode === true ?
+                                {this.state.docId > 0 ?
                                     <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                     : null
                                 }
@@ -1517,29 +1716,7 @@ class bogAddEdit extends Component {
                         </div>
                     </div>
 
-                    {
-                        this.props.changeStatus === true ?
-                            <div className="approveDocument">
-                                <div className="approveDocumentBTNS">
-                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
-                                    {this.state.isApproveMode === true ?
 
-                                        <div >
-                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                        </div>
-                                        : null}
-                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                    <span className="border"></span>
-                                    <div className="document__action--menu">
-                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    </div>
-
-                                </div>
-                            </div>
-                            : null
-                    }
                 </div>
             </div>
 
@@ -1548,7 +1725,7 @@ class bogAddEdit extends Component {
             {itemsContent}
             <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
-                    {dataGridAttendees}
+                    {ItemsGrid}
                     <div class="slider-Btns">
                         <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
                     </div>
@@ -1556,7 +1733,21 @@ class bogAddEdit extends Component {
             </div>
         </React.Fragment>
         let Step_3 = <React.Fragment>
-            {contractContent}
+            <div className="company__total proForm">
+                <div className="form-group ">
+                    <label className="control-label">{Resources.company[currentLanguage]}</label>
+                    <div className="ui right labeled input">
+                        <input autoComplete="off" type="text" value={this.props.document.subject} readOnly data-toggle="tooltip" title="procoor Company" />
+                        <span className="total_money">{Resources.total[currentLanguage]}</span>
+                        <div className="ui basic label greyLabel"> {this.props.document.total}</div>
+                    </div>
+                </div>
+                <ul id="stepper__tabs" className="data__tabs">
+                    <li className={" data__tabs--list " + (this.state.activeTab == 'contract' ? "active" : '')} onClick={() => this.changeTab('contract')}>{Resources.contract[currentLanguage]}</li>
+                    <li className={"data__tabs--list " + (this.state.activeTab == 'purchase' ? "active" : '')} onClick={() => this.changeTab('purchase')}>{Resources.po[currentLanguage]}</li>
+                </ul>
+            </div>
+            {this.state.activeTab == 'purchase' ? <React.Fragment>{purchaseOrderContent}</React.Fragment> : (this.state.activeTab == 'contract' ? <React.Fragment>{contractContent}</React.Fragment> : null)}
             <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
                     <div class="slider-Btns">
@@ -1568,7 +1759,7 @@ class bogAddEdit extends Component {
         return (
             <React.Fragment>
                 <div className="mainContainer">
-                    <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+                    <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                         <div className="submittalHead">
                             <h2 className="zero">{Resources.boq[currentLanguage]}
                                 <span>{projectName.replace(/_/gi, ' ')} {Resources.contracts[currentLanguage]}</span>
@@ -1593,20 +1784,21 @@ class bogAddEdit extends Component {
                             </div>
                         </div>
                         <div className="doc-container">
-                          
-                            <div className="step-content">
-                                <Fragment>
-                                    {/* {this.state.CurrStep == 1 ? Step_1 : (this.state.CurrStep == 2 ? Step_2 : Step_3)} */}
-                                    {Step_3}
-                                    {/* <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
-                                        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref}
-                                            title={Resources.editTitle[currentLanguage] + ' - ' + Resources.meetingAgendaLog[currentLanguage]}
-                                            beforeClose={this._executeBeforeModalClose}>
-                                            {this.state.CurrStep == 2 ? itemsContent : topicContent}
-                                        </SkyLight>
-                                    </div> */}
 
-                                </Fragment>
+                            <div className="step-content">
+                                {this.state.LoadingPage ? <LoadingSection /> :
+                                    <Fragment>
+                                        {this.state.CurrStep == 1 ? Step_1 : (this.state.CurrStep == 2 ? Step_2 : Step_3)}
+                                        <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
+                                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref}
+                                                title={Resources.editTitle[currentLanguage] + ' - ' + Resources.edit[currentLanguage]}
+                                                beforeClose={this._executeBeforeModalClose}
+                                                beforeOpen={this._executeBeforeModalOpen}>
+                                                {itemsContent}
+                                            </SkyLight>
+                                        </div>
+                                    </Fragment>
+                                }
                             </div>
                             <div>
                                 <div className="docstepper-levels">
@@ -1665,6 +1857,11 @@ class bogAddEdit extends Component {
                         </SkyLight>
                     </div>
 
+                    <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? 'block' : 'none' }}>
+                        <SkyLight hideOnOverlayClicked ref={ref => this.boqTypeModal = ref} title={Resources.boqType[currentLanguage]}>
+                            {BoqTypeContent}
+                        </SkyLight>
+                    </div>
                 </div>
             </React.Fragment>
         )
@@ -1677,9 +1874,7 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow,
-        attendees: state.communication.attendees,
-        topics: state.communication.topics
+        hasWorkflow: state.communication.hasWorkflow
     }
 }
 

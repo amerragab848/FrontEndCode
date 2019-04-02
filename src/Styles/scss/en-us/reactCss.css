@@ -2000,7 +2000,7 @@ button.companies_icon {
 .one__tab.one_step .doc-container .step-content .document-fields {
   padding-left: 0;
   padding-right: 0;
-  padding-top: 50px;
+  padding-top: 25px;
 }
 .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
   width: 360px;
@@ -2280,12 +2280,12 @@ button.companies_icon {
   color: #252833 !important;
 }
 .Toastify__toast--info {
-  background-color: #26344c !important;
-}
-.Toastify__toast--default {
   background-color: #f9fbfc !important;
   border: solid 1px #dfe5eb !important;
   color: #252833 !important;
+}
+.Toastify__toast--default {
+  background-color: #26344c !important;
 }
 .Toastify__close-button {
   position: absolute;
@@ -2924,7 +2924,7 @@ button.companies_icon {
   left: 145px;
 } */
 .slider-Btns.fullWidthWrapper.textLeft {
-  margin: 0
+  margin-top: 0
 }
 .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
   max-width: 190px;
@@ -2974,4 +2974,84 @@ button.companies_icon {
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.proform__twoInput .linebylineInput:last-of-type {
   flex-flow: column;
   margin-bottom: 16px;
+}
+
+
+.company__total {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 15px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e9ecf0;
+  flex-wrap: wrap;
+  /* background: #e9ecf052; */
+  margin-top: 0;
+  padding-top: 10px;
+  /* padding-bottom: 20px; */
+}
+.company__total .form-group {
+  padding: 12px 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.company__total .form-group input{
+  width: 190px;
+}
+.company__total .ui.basic.label.greyLabel {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.total_money {
+  position: absolute;
+  left: 190px;
+  top: -24px;
+  letter-spacing: -0.2px;
+  color: #26344c;
+  font-family: font-opensb;
+  display: block;
+}
+.data__tabs {	
+  display: flex;
+  padding-top: 13px;
+  border-radius: 5px;
+  margin: 0;
+}
+.data__tabs li {
+  cursor: pointer;
+  font-size: 14px;
+  color: #26344c;
+  font-family: font-opensb;
+  margin: 0 10px;
+  border-bottom: 4px solid transparent;
+  display: flex;
+  align-items: center;
+  /* height: 60px; */
+  /* padding-bottom: 13px; */
+  background: #e9ecf0;
+  padding: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.data__tabs li.active {
+  border-bottom: 4px solid #3570E6;
+}
+.noTabs__document .doc-container .step-content .document-fields.contract-fields {
+  padding-top: 0;
+}
+@media screen and (max-width: 1200px) {
+  .company__total {
+      justify-content: center;
+      flex-flow: column;
+      align-items: center;
+  }
+  .company__total .data__tabs{
+      margin-top: 23px;
+  }
+}
+.react-grid-Toolbar .btn.primaryBtn-1, .react-grid-Toolbar .btn.primaryBtn-1:hover {
+  background: #4382f9;
+  color: #ffffff;
+  border-color: #4382f9;
+  min-width: unset;
 }
