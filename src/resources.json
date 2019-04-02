@@ -1386,7 +1386,7 @@
     "ar": "هل تريد حذف مسئول الشركة ؟"
   },
   "toCompanyRequired": {
-    "en": "Please select To Company",
+    "en": " select To Company",
     "ar": "برجاء اختيار الى شركة"
   },
   "attention": {
@@ -7762,5 +7762,13 @@
   "itemCodeExist": {
     "en": "Item Code Already Exist",
     "ar": "رقم العنصر موجود"
+  } ,
+  "responsibleCompanyName": {
+    "en": "Responsible Company",
+    "ar": " الشركه المسئوله"
+  },
+  "responsibleContactName": {
+    "en": "Responsible Contact",
+    "ar": "الشخص المسئول"
   }
 }

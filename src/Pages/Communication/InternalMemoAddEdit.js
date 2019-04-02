@@ -171,7 +171,7 @@ class InternalMemoAddEdit extends Component {
     componentWillMount() {
       if (this.state.docId > 0) {
         let url = "GetCommunicationInternalMemoForEdit?id=" + this.state.docId;
-        this.props.actions.documentForEdit(url);
+        this.props.actions.documentForEdit(url).catch(ex => toast.error(Resources["failError"][currentLanguage]));
    
       } else {
         const internalMemoDocument = {
@@ -211,7 +211,7 @@ class InternalMemoAddEdit extends Component {
                     [subDatasource]: result
                 });
             }
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     fillDropDowns(isEdit) {
@@ -243,7 +243,7 @@ class InternalMemoAddEdit extends Component {
           this.setState({
             companies: [...result]
           });
-        }); 
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     onChangeMessage = (value,field) => {
@@ -353,10 +353,11 @@ class InternalMemoAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.props.history.push("/InternalMemo/" + this.state.projectId);
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveInternalMemo(event) {
+
         let saveDocument = this.state.document;
 
         saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -367,7 +368,7 @@ class InternalMemoAddEdit extends Component {
                 docId: result.id
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveAndExit(event) {  
@@ -382,7 +383,10 @@ class InternalMemoAddEdit extends Component {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
             btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+        }else if(this.state.docId > 0 && this.props.changeStatus === true){
+            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>
         }
+
         return btn;
     }
    
@@ -404,6 +408,14 @@ class InternalMemoAddEdit extends Component {
             this.simpleDialog.show()
         }
     }
+
+
+    componentWillUnmount() {
+        this.setState({
+            docId: 0
+        });
+    }
+    
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -484,11 +496,11 @@ class InternalMemoAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="rfi-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.oppened[currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="rfi-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.closed[currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -624,6 +636,26 @@ class InternalMemoAddEdit extends Component {
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
                                                     </div>
+                                                    {
+                                                        this.props.changeStatus === true ?
+                                                            <div className="approveDocument"> 
+                                                                <div className="approveDocumentBTNS">
+                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit'>{Resources.save[currentLanguage]}</button>
+                                                                    {this.state.isApproveMode === true ?
+                                                                        <div >
+                                                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                        </div> : null
+                                                                    }
+                                                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <span className="border"></span>
+                                                                    <div className="document__action--menu">
+                                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                    </div>
+                                                                </div>
+                                                            </div> : null
+                                                    }
                                                 </Form>
                                             )}
                                         </Formik>
@@ -638,26 +670,6 @@ class InternalMemoAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument"> 
-                                    <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editInternalMemo(e)}>{Resources.save[currentLanguage]}</button>
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                            </div> : null
-                                        }
-                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
-                                    </div>
-                                </div> : null
-                        }
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>

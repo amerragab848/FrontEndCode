@@ -76,7 +76,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 
-class SubmittalAddEdit extends Component {
+class DrawingSetsAddEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -1488,7 +1488,7 @@ class SubmittalAddEdit extends Component {
         <div className="documents-stepper noTabs__document one__tab one_step">
           <div className="submittalHead">
             <h2 className="zero">
-              {Resources.Submittal[currentLanguage]}
+              {Resources.drawingSets[currentLanguage]}
               <span>{projectName.replace(/_/gi, " ")} · Communication</span>
             </h2>
             <div className="SubmittalHeadClose">
@@ -1616,24 +1616,7 @@ class SubmittalAddEdit extends Component {
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="linebylineInput valid-input">
-                                <div className="inputDev ui input input-group date NormalInputDate">
-                                  <div className="customDatepicker fillter-status fillter-item-c ">
-                                    <div className="proForm datepickerContainer">
-                                      <label className="control-label">
-                                        { Resources.forwardToDate[ currentLanguage ] }
-                                      </label>
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker date={ this.state.document.forwardToDate } format={"DD/MM/YYYY"} showBorder
-                                            onChange={e => this.handleChangeDate(e,"forwardToDate")} placeholder={"Select a date"} />
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              </div> 
                               <div className="linebylineInput valid-input">
                                 <label className="control-label">
                                   {Resources.arrange[currentLanguage]}
@@ -1661,7 +1644,7 @@ class SubmittalAddEdit extends Component {
                               </div>
                               <div className="linebylineInput valid-input mix_dropdown">
                                 <label className="control-label">
-                                  {Resources.fromCompany[currentLanguage]}
+                                  {Resources.actionByCompany[currentLanguage]}
                                 </label>
                                 <div className="supervisor__company">
                                   <div className="super_name">
@@ -2410,7 +2393,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(SubmittalAddEdit));
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(DrawingSetsAddEdit));

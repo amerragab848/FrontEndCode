@@ -73,6 +73,10 @@ import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawin
 import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit';
 
 
+import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
+import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
+import riskAddEdit from "./Pages/Contracts/riskAddEdit";
+ 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -160,6 +164,9 @@ let originalRoutes = [
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
     
     
+    , <Route path="/pcoAddEdit" component={pcoAddEdit} />
+    , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
+    , <Route path="/riskAddEdit" component={riskAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

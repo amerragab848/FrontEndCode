@@ -1047,6 +1047,19 @@ var routes = [
     }
   },
   {
+    route: "Risk",
+    moduleId: "commonLogs",
+    title: "risk",
+    nav: true,
+    hash: "#Risk",
+    settings: {
+      Contracts: true,
+      permission: 88,
+      caption: "procoor-icon-transmittals",
+      order: 3
+    }
+  },
+  {
     route:
       "transmittalAddEdit/:Id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "communication/transmittalAddEdit",

@@ -32,9 +32,7 @@ import GridSetup from "../Communication/GridSetup";
 import { func } from 'prop-types';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const meetingAgendaValidation = Yup.object().shape({
-    meetingAgenda: Yup.string().required(Resources['subjectRequired'][currentLanguage])
-});
+
 const poqSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromCompany: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
@@ -45,7 +43,7 @@ const itemsValidationSchema = Yup.object().shape({
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
     itemCode: Yup.string().required(Resources['itemCodeRequired'][currentLanguage]),
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
-    itemType:Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
+    itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
     days: Yup.number().required(Resources['daysRequired'][currentLanguage]),
 });
 const topicsValidationSchema = Yup.object().shape({
@@ -200,7 +198,6 @@ class bogAddEdit extends Component {
 
         this.state = {
             showForm: false,
-            step_1_Validation: meetingAgendaValidation,
             docTypeId: 35,
             topic: {
                 topics: [],
@@ -236,8 +233,6 @@ class bogAddEdit extends Component {
             arrange: arrange,
             showPopUp: false,
             btnText: 'add',
-            meetingAgenda: [],
-            selectedMeetingAgenda: { label: Resources.meetingMinutesSelect[currentLanguage], value: "0" },
 
 
 
@@ -393,9 +388,7 @@ class bogAddEdit extends Component {
                 this.getTabelData()
             })
         } else {
-            Dataservice.GetDataList('GetCommunicationMeetingMinutesForAgenda?projectId=' + this.state.projectId, 'subject', 'id').then(res => {
-                this.setState({ meetingAgenda: res })
-            })
+
             let cmi = Config.getPayload().cmi
             Api.get('GetBoqNumber?projectId=' + + this.state.projectId + '&companyId=' + cmi).then(res => {
                 this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false })
@@ -845,104 +838,308 @@ class bogAddEdit extends Component {
             />) : <LoadingSection />;
 
 
-        const topicContent = <div className="document-fields">
-            {this.state.isLoading ? <LoadingSection /> : null}
-            <Formik
-                initialValues={{
-                    itemDescription: this.state.topic.itemDescription,
-                    actionByContact: this.state.selectedActionByContact.value > 0 ? this.state.selectedActionByContact : ''
-                }
-                }
-                enableReinitialize={true}
-                validationSchema={topicsValidationSchema}
-                onSubmit={(values) => {
-                    if (this.state.showPopUp)
-                        this.addEditTopics(true)
-                    else
-                        this.addEditTopics(false)
-                }} >
-                {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue, values }) => (
-                    <Form id=" MinutesOfMeeting" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
-                        <div className="linebylineInput valid-input firstBigInput">
-                            <label className="control-label">{Resources['itemDescription'][currentLanguage]} </label>
-                            <div className={"inputDev ui input " + (errors.itemDescription ? 'has-error' : !errors.itemDescription && touched.itemDescription ? (" has-success") : " ")}>
-                                <input name='itemDescription'
-                                    className="form-control"
-                                    id="itemDescription" placeholder={Resources['itemDescription'][currentLanguage]} autoComplete='off'
-                                    onBlur={handleBlur} value={this.state.topic.itemDescription}
-                                    onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, itemDescription: e.target.value } }) }} />
-                                {errors.itemDescription ? (<em className="pError">{errors.itemDescription}</em>) : null}
+        const contractContent = <React.Fragment>
+            <div className="document-fields">
+                {this.state.isLoading ? <LoadingSection /> : null}
+                <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                        description: this.state.items.description,
+                        unit: this.state.selectedUnit.value > 0 ? this.state.selectedUnit : '',
+                        itemType: this.state.selectedItemType.value > 0 ? this.state.selectedItemType : '',
+                        itemCode: this.state.items.itemCode,
+                        resourceCode: this.state.items.resourceCode,
+                        days: this.state.items.days
+                    }}
+                    validationSchema={itemsValidationSchema}
+                    onSubmit={(values) => {
+                        this.addEditItems()
+                    }}
+                >
+                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
+
+                            <div className="proForm first-proform letterFullWidth">
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources['subject'][currentLanguage]} </label>
+                                    <div className={"inputDev ui input " + (errors.subject ? 'has-error' : !errors.subject && touched.subject ? (" has-success") : " ")}>
+                                        <input name='subject'
+                                            className="form-control"
+                                            id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
+                                            onBlur={handleBlur} value={this.props.document.subject}
+                                            onChange={e => { handleChange(e); this.setState({ document: { ...this.state.document, subject: e.target.value } }) }} />
+                                        {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                        <label>{Resources.oppened[currentLanguage]}</label>
+                                    </div>
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                        <label>{Resources.closed[currentLanguage]}</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="linebylineInput valid-input alternativeDate">
-                            <DatePicker
-                                name='requiredDate'
-                                title='requiredDate'
-                                startDate={this.state.topic.requiredDate}
-                                handleChange={(e) => {
-                                    handleChange(e)
-                                    this.setState({ topic: { ...this.state.topic, requiredDate: e } })
-                                }} />
-                        </div>
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">{Resources['action'][currentLanguage]} </label>
-                            <div className={'ui input inputDev '}>
-                                <input name='action' className="form-control" id="action" placeholder={Resources['action'][currentLanguage]} autoComplete='off'
-                                    value={this.state.topic.action}
-                                    onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, action: e.target.value } }) }} />
-                            </div>
-                        </div>
-                        <div className="linebylineInput valid-input mix_dropdown">
-                            <label className="control-label">{Resources['actionByCompany'][currentLanguage]}</label>
-                            <div className="supervisor__company">
-                                <div className="super_name">
+                            <div className="proForm datepickerContainer">
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.reference[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="reference" readOnly
+                                            value={this.state.items.reference}
+                                            name="reference"
+                                            placeholder={Resources.reference[currentLanguage]}
+                                            onChange={(e) => this.handleChange(e, 'reference')} />
+                                    </div>
+                                </div>
+
+                                <div className="linebylineInput valid-input">
+                                    <DatePicker title='completionDate'
+                                        format={'DD/MM/YYYY'}
+                                        name="completionDate"
+                                        startDate={this.state.document.completionDate}
+                                        handleChange={e => this.handleChange('completionDate', e)} />
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <DatePicker title='docDate'
+                                        format={'DD/MM/YYYY'}
+                                        name="documentDate"
+                                        startDate={this.state.document.documentDate}
+                                        handleChange={e => this.handleChange('documentDate', e)} />
+                                </div>
+
+                                <div className="linebylineInput valid-input">
                                     <Dropdown
-                                        name="actionByContact"
-                                        data={this.state.actionByContacts}
-                                        handleChange={e => this.setState({ selectedActionByContact: e })}
-                                        placeholder='ContactName'
-                                        selectedValue={this.state.selectedActionByContact}
+                                        title="currency"
+                                        data={this.state.currency}
+                                        selectedValue={this.state.selectedUnit}
+                                        handleChange={event => {
+                                            this.handleChange('currency', event.value);
+                                            this.setState({ selectedUnit: event })
+                                        }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
-                                        error={errors.actionByContact}
-                                        touched={touched.actionByContact}
-                                        id="actionByContact"
-                                    />
+                                        error={errors.currency}
+                                        touched={touched.currency}
+                                        name="currency"
+                                        index="currency" />
                                 </div>
-                                <div className="super_company">
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.tax[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="Tax"
+                                            value={this.state.items.Tax}
+                                            name="Tax"
+                                            placeholder={Resources.tax[currentLanguage]}
+                                            onChange={(e) => this.setState({ items: { ...this.state.items, Tax: e.target.value } })} />
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.vat[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="vat"
+                                            value={this.state.items.vat}
+                                            name="vat"
+                                            placeholder={Resources.vat[currentLanguage]}
+                                            onChange={(e) => this.setState({ items: { ...this.state.items, vat: e.target.value } })} />
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.advancedPayment[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="advancedPayment"
+                                            value={this.state.items.advancedPayment}
+                                            name="advancedPayment"
+                                            placeholder={Resources.advancedPayment[currentLanguage]}
+                                            onChange={(e) => this.setState({ items: { ...this.state.items, advancedPayment: e.target.value } })} />
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.retainage[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="retainage"
+                                            value={this.state.items.retainage}
+                                            name="retainage"
+                                            placeholder={Resources.retainage[currentLanguage]}
+                                            onChange={(e) => this.setState({ items: { ...this.state.items, retainage: e.target.value } })} />
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.insurance[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="insurance"
+                                            value={this.state.items.insurance}
+                                            name="insurance"
+                                            placeholder={Resources.insurance[currentLanguage]}
+                                            onChange={(e) => this.setState({ items: { ...this.state.items, insurance: e.target.value } })} />
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.advancedPaymentAmount[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="advancedPaymentAmount"
+                                            value={this.state.items.advancedPaymentAmount}
+                                            name="advancedPaymentAmount"
+                                            placeholder={Resources.advancedPaymentAmount[currentLanguage]}
+                                            onChange={(e) => this.setState({ items: { ...this.state.items, advancedPaymentAmount: e.target.value } })} />
+                                    </div>
+                                </div>
+
+                                <div className={"slider-Btns fullWidthWrapper textLeft "}>
+                                    <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources[this.state.btnText][currentLanguage]}</button>
+                                </div>
+                            </div>
+
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+
+        </React.Fragment >
+        const purchaseOrderContent = <React.Fragment>
+
+            <div className="document-fields">
+                {this.state.isLoading ? <LoadingSection /> : null}
+                <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                        description: this.state.items.description,
+                        unit: this.state.selectedUnit.value > 0 ? this.state.selectedUnit : '',
+                        itemType: this.state.selectedItemType.value > 0 ? this.state.selectedItemType : '',
+                        itemCode: this.state.items.itemCode,
+                        resourceCode: this.state.items.resourceCode,
+                        days: this.state.items.days
+                    }}
+                    validationSchema={itemsValidationSchema}
+                    onSubmit={(values) => {
+                        this.addEditItems()
+                    }}
+                >
+                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
+
+                            <div className="proForm first-proform">
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources['subject'][currentLanguage]} </label>
+                                    <div className={"inputDev ui input " + (errors.subject ? 'has-error' : !errors.subject && touched.subject ? (" has-success") : " ")}>
+                                        <input name='subject'
+                                            className="form-control"
+                                            id="subject" placeholder={Resources['subject'][currentLanguage]} autoComplete='off'
+                                            onBlur={handleBlur} value={this.props.document.subject}
+                                            onChange={e => { handleChange(e); this.setState({ document: { ...this.state.document, subject: e.target.value } }) }} />
+                                        {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                        <label>{Resources.oppened[currentLanguage]}</label>
+                                    </div>
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                        <label>{Resources.closed[currentLanguage]}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="proForm datepickerContainer">
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.reference[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="reference" readOnly
+                                            value={this.state.items.reference}
+                                            name="reference"
+                                            placeholder={Resources.reference[currentLanguage]}
+                                            onChange={(e) => this.handleChange(e, 'reference')} />
+                                    </div>
+                                </div>
+
+                                <div className="linebylineInput valid-input">
+                                    <DatePicker title='completionDate'
+                                        format={'DD/MM/YYYY'}
+                                        name="completionDate"
+                                        startDate={this.state.document.completionDate}
+                                        handleChange={e => this.handleChange('completionDate', e)} />
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <DatePicker title='docDate'
+                                        format={'DD/MM/YYYY'}
+                                        name="documentDate"
+                                        startDate={this.state.document.documentDate}
+                                        handleChange={e => this.handleChange('documentDate', e)} />
+                                </div>
+
+
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.advancedPayment[currentLanguage]}</label>
+                                    <div className="ui input inputDev"  >
+                                        <input type="text" className="form-control" id="advancedPayment"
+                                            value={this.state.items.advancedPayment}
+                                            name="advancedPayment"
+                                            placeholder={Resources.advancedPayment[currentLanguage]}
+                                            onChange={(e) => this.setState({ items: { ...this.state.items, advancedPayment: e.target.value } })} />
+                                    </div>
+                                </div>
+                                <div className="fullWidthWrapper account__checkbox">
+                                    <div className="proForm fullLinearInput">
+                                        <div className="linebylineInput">
+                                            <label className="control-label">{Resources.useItemization[currentLanguage]}</label>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input type="radio" name="useItemization" defaultChecked={this.state.document.useItemization === false ? null : 'checked'} value="true" onChange={e => this.handleChange('useItemization', 'true')} />
+                                                <label>{Resources.yes[currentLanguage]}</label>
+                                            </div>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input type="radio" name="useItemization" defaultChecked={this.state.document.useItemization === false ? 'checked' : null} value="false" onChange={e => this.handleChange('useItemization', 'false')} />
+                                                <label>{Resources.no[currentLanguage]}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="proForm fullLinearInput">
+                                        <div className="linebylineInput">
+                                            <label className="control-label">{Resources.useRevised[currentLanguage]}</label>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input type="radio" name="Optemization" defaultChecked={this.state.document.useRevised === false ? null : 'checked'} value="true" onChange={e => this.handleChange('useRevised', 'true')} />
+                                                <label>{Resources.yes[currentLanguage]}</label>
+                                            </div>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input type="radio" name="Optemization" defaultChecked={this.state.document.useRevised === false ? 'checked' : null} value="false" onChange={e => this.handleChange('useRevised', 'false')} />
+                                                <label>{Resources.no[currentLanguage]}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input">
                                     <Dropdown
-                                        name="actionByompany"
-                                        data={this.state.Companies}
-                                        handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedActionByCompany', 'actionByContacts', 'selectedActionByContact', 'toContactRequired')}
-                                        placeholder='actionByCompany'
-                                        selectedValue={this.state.selectedActionByCompany}
-                                    />
+                                        title="currency"
+                                        data={this.state.currency}
+                                        selectedValue={this.state.selectedUnit}
+                                        handleChange={event => {
+                                            this.handleChange('currency', event.value);
+                                            this.setState({ selectedUnit: event })
+                                        }}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.currency}
+                                        touched={touched.currency}
+                                        name="currency"
+                                        index="currency" />
+                                </div>
+
+
+
+                                <div className={"slider-Btns fullWidthWrapper textLeft "}>
+                                    <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disabled' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources[this.state.btnText][currentLanguage]}</button>
                                 </div>
                             </div>
-                        </div>
-                        <div className="linebylineInput valid-input linebylineInput__name">
-                            <label className="control-label">{Resources['decision'][currentLanguage]} </label>
-                            <div className={'ui input inputDev '}>
-                                <input name='decision' onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, decision: e.target.value } }) }} className="form-control" id="decision"
-                                    placeholder={Resources['decision'][currentLanguage]} autoComplete='off' value={this.state.topic.decision}
-                                />
-                            </div>
-                        </div>
-                        <div className="linebylineInput valid-input ">
-                            <label className="control-label">{Resources['comment'][currentLanguage]} </label>
-                            <div className={'ui input inputDev '}>
-                                <input name='comment' className="form-control" id='comment' placeholder={Resources['comment'][currentLanguage]} autoComplete='off'
-                                    onChange={e => { handleChange(e); this.setState({ topic: { ...this.state.topic, comment: e.target.value } }) }} value={this.state.topic.comment}
-                                />
-                            </div>
-                        </div>
-                        <div className="slider-Btns fullWidthWrapper textLeft">
-                            <button className={"primaryBtn-1 btn"} type="submit" >{Resources[this.state.btnText][currentLanguage]}</button>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
-        </div>
+
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+
+        </React.Fragment >
         const itemsContent = <React.Fragment>
             <div className="document-fields">
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -1279,7 +1476,7 @@ class bogAddEdit extends Component {
                                             </div>
                                             <div className="proForm fullLinearInput">
                                                 <div className="linebylineInput">
-                                                    <label className="control-label">{Resources.showOptemization[currentLanguage]}</label>
+                                                    <label className="control-label">{Resources.useRevised[currentLanguage]}</label>
                                                     <div className="ui checkbox radio radioBoxBlue">
                                                         <input type="radio" name="Optemization" defaultChecked={this.state.document.showOptemization === false ? null : 'checked'} value="true" onChange={e => this.handleChange('showOptemization', 'true')} />
                                                         <label>{Resources.yes[currentLanguage]}</label>
@@ -1359,10 +1556,9 @@ class bogAddEdit extends Component {
             </div>
         </React.Fragment>
         let Step_3 = <React.Fragment>
-            {topicContent}
+            {contractContent}
             <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
-                    {dataGridTopic}
                     <div class="slider-Btns">
                         <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
                     </div>
@@ -1374,8 +1570,8 @@ class bogAddEdit extends Component {
                 <div className="mainContainer">
                     <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                         <div className="submittalHead">
-                            <h2 className="zero">{Resources.meetingAgendaLog[currentLanguage]}
-                                <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
+                            <h2 className="zero">{Resources.boq[currentLanguage]}
+                                <span>{projectName.replace(/_/gi, ' ')} {Resources.contracts[currentLanguage]}</span>
                             </h2>
                             <div className="SubmittalHeadClose">
                                 <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -1397,17 +1593,18 @@ class bogAddEdit extends Component {
                             </div>
                         </div>
                         <div className="doc-container">
+                          
                             <div className="step-content">
                                 <Fragment>
                                     {/* {this.state.CurrStep == 1 ? Step_1 : (this.state.CurrStep == 2 ? Step_2 : Step_3)} */}
-                                    {Step_2}
-                                    <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
+                                    {Step_3}
+                                    {/* <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
                                         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref}
                                             title={Resources.editTitle[currentLanguage] + ' - ' + Resources.meetingAgendaLog[currentLanguage]}
                                             beforeClose={this._executeBeforeModalClose}>
                                             {this.state.CurrStep == 2 ? itemsContent : topicContent}
                                         </SkyLight>
-                                    </div>
+                                    </div> */}
 
                                 </Fragment>
                             </div>
@@ -1427,7 +1624,7 @@ class bogAddEdit extends Component {
                                                     <span>1</span>
                                                 </div>
                                                 <div className="steps-info">
-                                                    <h6>{Resources.addMeetingMinutes[currentLanguage]}</h6>
+                                                    <h6>{Resources.boq[currentLanguage]}</h6>
                                                 </div>
                                             </div>
                                             <div data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
@@ -1435,7 +1632,7 @@ class bogAddEdit extends Component {
                                                     <span>2</span>
                                                 </div>
                                                 <div className="steps-info">
-                                                    <h6 >{Resources.attendenceAdttion[currentLanguage]}</h6>
+                                                    <h6 >{Resources.items[currentLanguage]}</h6>
                                                 </div>
                                             </div>
                                             <div data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
@@ -1443,7 +1640,7 @@ class bogAddEdit extends Component {
                                                     <span>3</span>
                                                 </div>
                                                 <div className="steps-info">
-                                                    <h6>{Resources.topicsAddition[currentLanguage]}</h6>
+                                                    <h6>{Resources.changeBoqIntoContractOrPO[currentLanguage]}</h6>
                                                 </div>
                                             </div>
                                         </div>

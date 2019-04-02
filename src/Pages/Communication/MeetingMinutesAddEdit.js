@@ -136,12 +136,13 @@ class MeetingMinutesAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(507))) {
+            if (!Config.IsAllow(507)) {
                 this.setState({ isViewMode: true });
             }
+
             if (this.state.isApproveMode != true && Config.IsAllow(507)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(507)) {
-                    if (this.props.document.status != false && Config.IsAllow(507)) {
+                    if (this.props.document.status !== false && Config.IsAllow(507)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -285,6 +286,9 @@ class MeetingMinutesAddEdit extends Component {
         if (props.document && props.document.id > 0) {
             this.setState({
                 document: { ...props.document }
+            }, function () {
+                let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
+                this.setState({ document: { ...this.state.document, docDate: docDate } });
             });
             this.fillDropDowns(true);
             this.checkDocumentIsView();
@@ -296,7 +300,9 @@ class MeetingMinutesAddEdit extends Component {
             isLoading: true,
             firstComplete: true
         });
-        Api.post('EditCommunicationMeetingMinutes', this.state.document).then(result => {
+        let docDate =moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let document=Object.assign(this.state.document,{ docDate:docDate})
+        Api.post('EditCommunicationMeetingMinutes', document).then(result => {
             this.setState({
                 isLoading: false,
                 CurrStep: this.state.CurrStep + 1
@@ -494,15 +500,20 @@ class MeetingMinutesAddEdit extends Component {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
+                if (this.props.changeStatus == true) {
+                    this.editMeeting();
+                }
+                else if (this.state.docId > 0) {
+                    let CurrStep = this.state.CurrStep + 1
+                    this.setState({ firstComplete: true, CurrStep })
+                }
                 this.setState({
                     selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
                     selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
                     fromContacts: [],
                     selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
                     selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-                    calledByContact: [],
-                    CurrStep: this.state.CurrStep + 1,
-                    firstComplete: true
+                    calledByContact: []
                 })
                 break;
             case 2:
@@ -525,6 +536,15 @@ class MeetingMinutesAddEdit extends Component {
         }
     }
 
+    showBtnsSaving() {
+        let btn = null;
+        if (this.state.docId === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+        } else if (this.state.docId > 0) {
+            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit'>{Resources.next[currentLanguage]}</button>
+        }
+        return btn;
+    }
     //#endregion
     handleShowAction = (item) => {
         console.log(item);
@@ -567,9 +587,7 @@ class MeetingMinutesAddEdit extends Component {
                     }}
                     enableReinitialize={true}
                     onSubmit={(values) => {
-                        if (this.props.changeStatus === true && this.state.docId > 0) {
-                            this.editMeeting();
-                        } else if (this.props.changeStatus === false && this.state.docId === 0) {
+                        if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.addMeeting()
                         } else {
                             this.NextStep()
@@ -734,22 +752,7 @@ class MeetingMinutesAddEdit extends Component {
                                 </div>
                             </div>
                             <div className="slider-Btns">
-                                {this.state.isLoading === false ? (
-                                    <button
-                                        className="primaryBtn-1 btn meduimBtn"
-                                        type="submit"
-                                    >  {this.state.docId > 0 ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}
-                                    </button>
-                                ) :
-                                    (
-                                        <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                    )}
+                                {this.showBtnsSaving()}
                             </div>
                         </Form>
                     )}
@@ -774,16 +777,15 @@ class MeetingMinutesAddEdit extends Component {
                 this.props.changeStatus === true ?
                     <div className="approveDocument">
                         <div className="approveDocumentBTNS">
-                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
                             {this.state.isApproveMode === true ?
                                 <div >
-                                    <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                    <button type='button' className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                    <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                 </div>
                                 : null
                             }
-                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                            <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                            <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                            <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                             <span className="border"></span>
                             <div className="document__action--menu">
                                 <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
