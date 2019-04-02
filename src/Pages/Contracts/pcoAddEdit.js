@@ -399,19 +399,7 @@ class pcoAddEdit extends Component {
                 variations: [...result]
             });
         });
-
-        if (isEdit === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'docId').then(result => {
-                this.setState({
-                    contractsPos: [...result]
-                });
-            });
-            dataservice.GetDataList("GetContractsPcoByProjectIdForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-                this.setState({
-                    pcos: [...result]
-                });
-            });
-        }
+ 
     }
 
     componentWillUnmount() {
