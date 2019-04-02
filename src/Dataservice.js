@@ -14,6 +14,19 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
+    
+    static GetDataListWithNewVersion = (url, label, value) => {
+        let Data = []
+        return Api.get(url).then(result => {
+            (result.data).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                Data.push(obj);
+            });
+            return Data;
+        }).catch(ex => Data);
+    };
 
     static addObject = (url, docObj) => {
 

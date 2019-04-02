@@ -142,7 +142,7 @@ class GridSetup extends Component {
       Id = rows.map(r => r.row.id);
       this.props.IsActiv(Id)
     }
-
+    this.props.onRowsSelected(rows)
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -178,6 +178,7 @@ class GridSetup extends Component {
   };
 
   onRowsDeselected = rows => {
+    this.props.onRowsDeselected()
     if (this.props.IsActiv !== undefined) {
       this.props.UnSelectIsActiv()
     }
@@ -256,6 +257,11 @@ class GridSetup extends Component {
   };
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+
+    if (this.props.onGridRowsUpdated!=undefined) {
+
+      this.props.onGridRowsUpdated({ fromRow, toRow, updated })
+    }
     this.setState(state => {
       const rows = state.rows.slice();
       for (let i = fromRow; i <= toRow; i++) {
@@ -313,6 +319,12 @@ class GridSetup extends Component {
                 >
                   DELETE
                 </button>
+                {this.props.assign ? <button
+                  className="primaryBtn-1 btn smallBtn"
+                  onClick={() => this.props.assignFn()}
+                >
+                  <i className="fa fa-retweet"></i>
+                </button> : null}
               </div>
             </div>
           ) : null}

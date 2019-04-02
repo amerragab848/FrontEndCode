@@ -202,6 +202,7 @@ class punchListAddEdit extends Component {
         }
 
         this.state = {
+            IsAddModel: false,
             FirstStep: true,
             SecondStep: false,
             SecondStepComplate: false,
@@ -275,7 +276,7 @@ class punchListAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             let SnagListDoc = nextProps.document
-            SnagListDoc.docDate = moment(SnagListDoc.docDate).format('DD/MM/YYYY')
+            SnagListDoc.docDate = moment(SnagListDoc.docDate).format("DD/MM/YYYY")
             this.setState({
                 document: SnagListDoc,
                 IsEditMode: true,
@@ -295,7 +296,7 @@ class punchListAddEdit extends Component {
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-         this.checkDocumentIsView();
+            this.checkDocumentIsView();
         }
     }
 
@@ -303,7 +304,7 @@ class punchListAddEdit extends Component {
         if (docId > 0) {
             let url = "GetLogsPunchListsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
-            Api.get('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId + '').then(
+            dataservice.GetDataGrid('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId + '').then(
                 res => {
                     this.setState({
                         IsEditMode: true,
@@ -318,7 +319,7 @@ class punchListAddEdit extends Component {
         } else {
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
-            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=61&companyId=' + cmi + '&contactId=' + cni + '').then(
+            dataservice.GetRowById('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=61&companyId=' + cmi + '&contactId=' + cni + '').then(
                 res => {
                     let SnagListDoc = {
                         projectId: projectId, fromCompanyId: '', toCompanyId: '', subject: '', status: true,
@@ -331,6 +332,7 @@ class punchListAddEdit extends Component {
                 }
             )
             this.FillDropDowns()
+            this.props.actions.documentForAdding();
         }
     }
 
@@ -399,6 +401,7 @@ class punchListAddEdit extends Component {
     }
 
     FillDropDowns = () => {
+
         let DropDownsData = [
             { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
             { Api: 'GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', DropDataName: 'areas', Label: 'title', Value: 'id', Name: 'areaId', selectedValue: 'selecetedArea' },
@@ -406,6 +409,7 @@ class punchListAddEdit extends Component {
             { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
             { Api: 'GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', DropDataName: 'locations', Label: 'title', Value: 'id', Name: 'locationId', selectedValue: 'selectedlocation' },
         ]
+
         let CompaniesDropDownsData = [
             { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'ToContacts', SelectedValueContact: 'selectedToContact' },
             { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
@@ -419,7 +423,7 @@ class punchListAddEdit extends Component {
                         [element.DropDataName]: result,
                     })
 
-                    if (this.state.IsEditMode) {
+                    if (this.state.IsEditMode && docId > 0) {
                         if (element.DropDataName === 'companies') {
                             CompaniesDropDownsData.map(company => {
                                 let elementID = this.state.document[company.Name];
@@ -454,7 +458,6 @@ class punchListAddEdit extends Component {
         })
     }
 
-  
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -560,9 +563,9 @@ class punchListAddEdit extends Component {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+            btn = <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -611,32 +614,37 @@ class punchListAddEdit extends Component {
     }
 
     SaveAddEditSnagList = () => {
-
-        let SnagListObj = this.state.document
-        SnagListObj.docDate = moment(SnagListObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-
-        if (this.state.IsEditMode) {
-
-            dataservice.addObject('EditLogsPunchLists', SnagListObj).then(
-                res => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                });
+        if (this.state.IsAddModel) {
             this.NextStep()
         }
-
         else {
-            dataservice.addObject('AddLogsPunchLists', SnagListObj).then(
-                res => {
-                    this.setState({
-                        docId: res.id
-                    })
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                });
-            this.NextStep()
+            let SnagListObj = this.state.document
+            SnagListObj.docDate = moment(SnagListObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+
+            if (docId > 0) {
+
+                dataservice.addObject('EditLogsPunchLists', SnagListObj).then(
+                    res => {
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    }).catch(ex => {
+                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    });
+                this.NextStep()
+            }
+
+            else {
+                dataservice.addObject('AddLogsPunchLists', SnagListObj).then(
+                    res => {
+                        this.setState({
+                            docId: res.id,
+                            IsAddModel: true
+                        })
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    }).catch(ex => {
+                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    });
+                //this.NextStep()
+            }
         }
     }
 
@@ -750,7 +758,7 @@ class punchListAddEdit extends Component {
 
     viewAttachments() {
         return (
-            this.state.IsEditMode ? (
+            this.state.docId > 0 ? (
                 Config.IsAllow(3311) === true ?
                     <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={888} />
                     : null)
@@ -782,6 +790,12 @@ class punchListAddEdit extends Component {
             selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
             RequiredDateItem: moment(),
             OpenedDateItem: moment(),
+        })
+    }
+
+    saveAndExit = () => {
+        this.props.history.push({
+            pathname: '/punchList/' + projectId + '',
         })
     }
 
@@ -948,6 +962,7 @@ class punchListAddEdit extends Component {
                                     <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                     : null
                                 }
+
                                 {this.viewAttachments()}
 
                                 {this.props.changeStatus === true ?
@@ -1166,7 +1181,7 @@ class punchListAddEdit extends Component {
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue ">
                                         <input type="radio" name="StatusItemForEdit"
-                                            checked={!this.state.StatusItemForEdit } value='false'
+                                            checked={!this.state.StatusItemForEdit} value='false'
                                             onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
                                         <label> {Resources['closed'][currentLanguage]}</label>
                                     </div>
@@ -1298,9 +1313,6 @@ class punchListAddEdit extends Component {
                                             <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
                                         </header>
                                         {dataGrid}
-                                    </div>
-
-                                    <div className="doc-pre-cycle">
                                         <div className="slider-Btns">
                                             <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveAndExit}>{Resources['next'][currentLanguage]}</button>
                                         </div>
@@ -1361,8 +1373,6 @@ class punchListAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
-
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>

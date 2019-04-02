@@ -31,10 +31,10 @@ const ValidtionSchema = Yup.object().shape({
     ArrangeContact: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage]),
     Company: Yup.string()
-        .required(Resources['isRequiredField'][currentLanguage])
+        .required(Resources['toCompanyRequired'][currentLanguage])
         .nullable(true),
     ContactName: Yup.string()
-        .required(Resources['isRequiredField'][currentLanguage])
+        .required(Resources['toContactRequired'][currentLanguage])
         .nullable(false),
 });
 
@@ -42,11 +42,11 @@ const ValidtionSchemaForEdit = Yup.object().shape({
     ArrangeContactForEdit: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage]),
     CompanyForEdit: Yup.string()
-        .required(Resources['isRequiredField'][currentLanguage])
+        .required(Resources['toCompanyRequired'][currentLanguage])
         .nullable(true)
     ,
     ContactNameForEdit: Yup.string()
-        .required(Resources['isRequiredField'][currentLanguage])
+        .required(Resources['toContactRequired'][currentLanguage])
         .nullable(false),
 });
 
