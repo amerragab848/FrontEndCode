@@ -9612,7 +9612,7 @@
   "drawingSets": {
     "documentTitle": "drawingSets",
     "docTyp": 38,
-    "documentAddEditLink": "drawingSetsAddEdit/",
+    "documentAddEditLink": "drawingSetsAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 210,
     "documentEditPermission": 211,
