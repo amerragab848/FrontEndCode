@@ -527,11 +527,6 @@ class TransmittalAddEdit extends Component {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
             btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
-<<<<<<< HEAD
-        } else if (this.state.docId > 0 && this.props.changeStatus === true) {
-            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>
-=======
->>>>>>> e9d6395e3ec6d91f534a16060641b32468d74166
         }
         return btn;
     }
