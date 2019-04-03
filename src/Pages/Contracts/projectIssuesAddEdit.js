@@ -70,31 +70,30 @@ class ProjectIssuesAddEdit extends Component {
         }
 
         this.state = {
-            isLoading:false,
+            isLoading: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
             viewModel: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             docId: docId,
             docTypeId: 18,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
-            document: this.props.document ? Object.assign({}, this.props.document) : {}, 
+            document: this.props.document ? Object.assign({}, this.props.document) : {},
             permission: [{ name: 'sendByEmail', code: 3776 },
-                        { name: 'sendByInbox', code: 3775 },
-                        { name: 'sendTask', code: 1 },
-                        { name: 'distributionList', code: 1026 },
-                        { name: 'createTransmittal', code: 3027 },
-                        { name: 'sendToWorkFlow', code: 3779 },
-                        { name: 'viewAttachments', code: 3782 },
-                        { name: 'deleteAttachments', code: 3783 }] 
+            { name: 'sendByInbox', code: 3775 },
+            { name: 'sendTask', code: 1 },
+            { name: 'distributionList', code: 1026 },
+            { name: 'createTransmittal', code: 3027 },
+            { name: 'sendToWorkFlow', code: 3779 },
+            { name: 'viewAttachments', code: 3782 },
+            { name: 'deleteAttachments', code: 3783 }]
         }
 
         if (!Config.IsAllow(3770) || !Config.IsAllow(3771) || !Config.IsAllow(3773)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-
             this.props.history.push("/projectIssues/" + this.state.projectId);
         }
     }
@@ -119,24 +118,23 @@ class ProjectIssuesAddEdit extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
-
-            nextProps.document.docDate =nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('DD/MM/YYYY'):moment();
-            nextProps.document.openDate = nextProps.document.openDate != null ? moment(nextProps.document.openDate).format('DD/MM/YYYY'):moment();
+            nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('DD/MM/YYYY') : moment();
+            nextProps.document.openDate = nextProps.document.openDate != null ? moment(nextProps.document.openDate).format('DD/MM/YYYY') : moment();
             nextProps.document.dueDate = nextProps.document.dueDate != null ? moment(nextProps.document.dueDate).format('DD/MM/YYYY') : moment();
 
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow 
+                hasWorkflow: nextProps.hasWorkflow
             });
- 
+
             this.checkDocumentIsView();
         }
     };
 
     componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -148,7 +146,7 @@ class ProjectIssuesAddEdit extends Component {
             }
             if (this.state.isApproveMode != true && Config.IsAllow(3771)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(3771)) {
-                    if (this.props.document.status == true && Config.IsAllow(3771)) {
+                    if (this.props.document.status !== false && Config.IsAllow(3771)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -165,32 +163,28 @@ class ProjectIssuesAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-
             let url = "GetContractsProjectIssuesForEdit?id=" + this.state.docId;
-
             this.props.actions.documentForEdit(url);
         } else {
             const projectIssuesDocument = {
-                //field
                 id: 0,
                 projectId: projectId,
                 arrange: "1",
-                subject:"",
-                status:"true",
-                docDate:moment(),
-                openDate:moment(),
-                dueDate:moment(),
-                description:"" 
+                subject: "",
+                status: "true",
+                docDate: moment(),
+                openDate: moment(),
+                dueDate: moment(),
+                description: ""
             };
 
             this.setState({
                 document: projectIssuesDocument
-            }); 
+            });
+            this.props.actions.documentForAdding();
         }
-
-        this.props.actions.documentForAdding();
     }
- 
+
     handleChange(e, field) {
 
         let original_document = { ...this.state.document };
@@ -220,7 +214,7 @@ class ProjectIssuesAddEdit extends Component {
             document: updated_document
         });
     }
- 
+
     editProjectIssues(event) {
         this.setState({
             isLoading: true
@@ -313,7 +307,7 @@ class ProjectIssuesAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <div className="submittalHead">
                         <h2 className="zero">{Resources.projectIssuesLog[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · Communication</span>
+                            <span>{projectName.replace(/_/gi, ' ')} · {Resources.contracts[currentLanguage]}</span>
                         </h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -351,9 +345,9 @@ class ProjectIssuesAddEdit extends Component {
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
                                         <Formik initialValues={{ ...this.state.document }}
-                                                validationSchema={validationSchema}
-                                                enableReinitialize={this.props.changeStatus}
-                                                onSubmit={(values) => {
+                                            validationSchema={validationSchema}
+                                            enableReinitialize={this.props.changeStatus}
+                                            onSubmit={(values) => {
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editProjectIssues();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -363,7 +357,7 @@ class ProjectIssuesAddEdit extends Component {
                                                 }
                                             }}>
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                <Form id="projectIssueForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                     <div className="proForm first-proform">
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
@@ -442,17 +436,6 @@ class ProjectIssuesAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
-                                                                <input type="text" className="form-control" id="arrange" readOnly
-                                                                    value={this.state.document.arrange}
-                                                                    name="arrange"
-                                                                    placeholder={Resources.arrange[currentLanguage]}
-                                                                    onBlur={(e) => { handleChange(e); handleBlur(e) }}
-                                                                    onChange={(e) => this.handleChange(e, 'arrange')} />
-                                                            </div>
-                                                        </div>
-                                                        <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.description && touched.description ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="description"
@@ -463,33 +446,47 @@ class ProjectIssuesAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'description')} />
                                                                 {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                                                             </div>
-                                                        </div> 
+                                                        </div>
+                                                        {this.props.changeStatus == true ?
+                                                            < div className="linebylineInput valid-input">
+                                                                <label className="control-label">{Resources.arrange[currentLanguage]}</label>
+                                                                <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
+                                                                    <input type="text" className="form-control" id="arrange" readOnly
+                                                                        value={this.state.document.arrange}
+                                                                        name="arrange"
+                                                                        placeholder={Resources.arrange[currentLanguage]}
+                                                                        onBlur={(e) => { handleChange(e); handleBlur(e) }}
+                                                                        onChange={(e) => this.handleChange(e, 'arrange')} />
+                                                                </div>
+                                                            </div>
+                                                            : null
+                                                        }
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {
-                                                         this.state.isLoading === false ? this.showBtnsSaving() : 
-                                                            (<button className="primaryBtn-1 btn disabled">
-                                                                <div className="spinner">
-                                                                <div className="bounce1" />
-                                                                <div className="bounce2" />
-                                                                <div className="bounce3" />
-                                                                </div>
-                                                            </button>)
+                                                            this.state.isLoading === false ? this.showBtnsSaving() :
+                                                                (<button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>)
                                                         }
                                                     </div>
                                                     {
                                                         this.props.changeStatus === true ?
-                                                            <div className="approveDocument"> 
+                                                            <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
-                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit' >{Resources.save[currentLanguage]}</button>
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit' >{Resources.save[currentLanguage]}</button>
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
-                                                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-1 btn " type='button' onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" type='button' onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                                                         </div> : null
                                                                     }
-                                                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <button className="primaryBtn-2 btn middle__btn" type='button' onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                    <button className="primaryBtn-2 btn" type='button' onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                     <span className="border"></span>
                                                                     <div className="document__action--menu">
                                                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -500,20 +497,25 @@ class ProjectIssuesAddEdit extends Component {
                                                 </Form>
                                             )}
                                         </Formik>
-                                    </div> 
+                                    </div>
                                     <div className="doc-pre-cycle tableBTnabs">
                                         {this.state.docId > 0 && this.state.isViewMode === false ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
-                                            {this.viewAttachments()}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                            {this.props.document.id > 0 ?
+                                                (Config.IsAllow(3782) === true ?
+                                                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3783} />
+                                                    : null) :
+                                                null
+                                            }
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
@@ -521,7 +523,7 @@ class ProjectIssuesAddEdit extends Component {
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>
-            </div>
+            </div >
         );
     }
 }

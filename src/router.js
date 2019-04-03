@@ -70,7 +70,10 @@ import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
-import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit';  
+import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit';
+import AccountsAlerts  from './Pages/ProjectSetup/AccountsAlerts';
+import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
+
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
@@ -161,6 +164,10 @@ let originalRoutes = [
     , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
+    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
+    , <Route path="/AccountsAlerts" component={AccountsAlerts} />
+    , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
+    
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />

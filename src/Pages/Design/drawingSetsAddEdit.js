@@ -30,24 +30,24 @@ import { MapsTransferWithinAStation } from "material-ui/svg-icons";
 import save from "material-ui/svg-icons/content/save";
 
 const _ = require("lodash");
- 
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
-  fileNumberId : Yup.string().required(Resources["selectFileNumber"][currentLanguage]),
+  fileNumberId: Yup.string().required(Resources["selectFileNumber"][currentLanguage]),
   arrange: Yup.number().required(Resources["arrange"][currentLanguage]),
   progressPercent: Yup.number().required(Resources["selectprogressPercent"][currentLanguage]),
   bicContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
   disciplineId: Yup.string().required(Resources["disciplineRequired"][currentLanguage]).nullable(true),
-  reasonForIssueid: Yup.string().required(Resources["SelectReasonForIssueId"][currentLanguage]).nullable(true),
+  reasonForIssueId: Yup.string().required(Resources["SelectReasonForIssueId"][currentLanguage]).nullable(true),
   specsSectionId: Yup.string().required(Resources["specsSectionSelection"][currentLanguage]).nullable(true),
 });
 
-const validationSchemaItems = Yup.object().shape({ 
-    drawing: Yup.string().required(Resources["dwgNoRequired"][currentLanguage]).nullable(true)
+const validationSchemaItems = Yup.object().shape({
+  drawing: Yup.string().required(Resources["dwgNoRequired"][currentLanguage]).nullable(true)
 });
- 
+
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -56,8 +56,8 @@ let docApprovalId = 0;
 let arrange = 0;
 
 class DrawingSetsAddEdit extends Component {
- 
-    constructor(props) {
+
+  constructor(props) {
     super(props);
 
     const query = new URLSearchParams(this.props.location.search);
@@ -84,7 +84,7 @@ class DrawingSetsAddEdit extends Component {
     }
 
     this.state = {
-      Stepes: 1, 
+      Stepes: 1,
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
@@ -96,22 +96,22 @@ class DrawingSetsAddEdit extends Component {
       docId: docId,
       docTypeId: 38,
       projectId: projectId,
-      docApprovalId: docApprovalId,  
+      docApprovalId: docApprovalId,
       document: this.props.document ? Object.assign({}, this.props.document) : {},
-      drawingId:"",
-      drawingSetId:docId,
-      currentId:"",
-      drawing:[],
-      listDrawing:[],
+      drawingId: "",
+      drawingSetId: docId,
+      currentId: "",
+      drawing: [],
+      listDrawing: [],
       companies: [],
-      fromContacts: [], 
+      fromContacts: [],
       specsSection: [],
       reasonForIssue: [],
       disciplines: [],
       contracts: [],
-      areas: [],  
-      approvales: [], 
-      itemData: [],  
+      areas: [],
+      approvales: [],
+      itemData: [],
       permission: [
         { name: "sendByEmail", code: 217 },
         { name: "sendByInbox", code: 216 },
@@ -122,9 +122,9 @@ class DrawingSetsAddEdit extends Component {
         { name: "viewAttachments", code: 3331 },
         { name: "deleteAttachments", code: 896 }
       ],
-      selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0"},
-      selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0"},
-      selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0"},
+      selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+      selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+      selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
       selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
       selectedReasonForIssue: { label: Resources.SelectReasonForIssueId[currentLanguage], value: "0" },
       selectedArea: { label: Resources.area[currentLanguage], value: "0" },
@@ -140,7 +140,7 @@ class DrawingSetsAddEdit extends Component {
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll( ".noTabs__document .doc-container .linebylineInput" );
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
 
     for (var i = 0; i < links.length; i++) {
       if ((i + 1) % 2 == 0) {
@@ -154,44 +154,42 @@ class DrawingSetsAddEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps, prevProps) {
-    
+
     if (nextProps.document && nextProps.document.id) {
 
       nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
 
       dataservice.GetRowById("GetLogsDrawingsSetsDocsByProjectId?drawingSetId=" + docId).then(result => {
- 
-          this.setState({
-            listDrawing:[...result],
-            isEdit: true,
-            document: this.props.document,  
-            hasWorkflow: this.props.hasWorkflow
-          }); 
 
-          this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+        this.setState({
+          listDrawing: [...result],
+          isEdit: true,
+          document: this.props.document,
+          hasWorkflow: this.props.hasWorkflow
         });
+
+        this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+      });
 
       this.checkDocumentIsView();
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
     }
   }
 
   checkDocumentIsView() {
-
     if (this.props.changeStatus === true) {
-
-      if (!Config.IsAllow(212)) { 
-        this.setState({ isViewMode: true }); 
+      if (!Config.IsAllow(212)) {
+        this.setState({ isViewMode: true });
       }
 
       if (this.state.isApproveMode != true && Config.IsAllow(212)) {
         if (this.props.hasWorkflow == false && Config.IsAllow(212)) {
-          if (this.props.document.status == true && Config.IsAllow(212)) {
+          if (this.props.document.status !== false && Config.IsAllow(212)) {
             this.setState({ isViewMode: false });
           } else {
             this.setState({ isViewMode: true });
@@ -206,18 +204,18 @@ class DrawingSetsAddEdit extends Component {
   }
 
   componentWillMount() {
-   
+
     if (this.state.docId > 0) {
 
       let url = "GetLogsDrawingsSetsForEdit?id=" + this.state.docId;
 
-      this.props.actions.documentForEdit(url); 
-       
+      this.props.actions.documentForEdit(url);
+
     } else {
-        //field
+      //field
       const drawingDocument = {
         id: 0,
-        projectId: projectId,  
+        projectId: projectId,
         disciplineId: "",
         area: "",
         fileNumberId: "",
@@ -226,20 +224,20 @@ class DrawingSetsAddEdit extends Component {
         status: "true",
         subject: "",
         specsSectionId: "",
-        reasonForIssueid: "",  
+        reasonForIssueId: "",
         bicCompanyId: "",
         bicContactId: "",
-        progressPercent: "" 
+        progressPercent: ""
       };
 
       this.setState({ document: drawingDocument });
- 
+
       this.fillDropDowns(false);
     }
     this.props.actions.documentForAdding();
   }
 
-  fillSubDropDownInEdit(url,param,value,subField,subSelectedValue,subDatasource) {
+  fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
 
     let action = url + "?" + param + "=" + value;
 
@@ -248,7 +246,7 @@ class DrawingSetsAddEdit extends Component {
         if (subField != "flowContactId") {
           let toSubField = this.state.document[subField];
 
-          let targetFieldSelected = _.find(result, function(i) {
+          let targetFieldSelected = _.find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -259,7 +257,7 @@ class DrawingSetsAddEdit extends Component {
         } else {
           let toSubField = this.state.documentCycle[subField];
 
-          let targetFieldSelected = _.find(result, function(i) {
+          let targetFieldSelected = _.find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -275,125 +273,116 @@ class DrawingSetsAddEdit extends Component {
   fillDropDowns(isEdit) {
 
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId,"companyName","companyId").then(result => {
+    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+      if (isEdit) {
+        let companyId = this.props.document.bicCompanyId;
+        if (companyId) {
+          this.setState({
+            selectedFromCompany: {
+              label: this.props.document.bicCompanyName,
+              value: companyId
+            }
+          });
 
-        if (isEdit) {
-      
-          let companyId = this.props.document.bicCompanyId;
-
-
-          if (companyId) {
-            this.setState({
-              selectedFromCompany: {
-                label: this.props.document.bicCompanyName,
-                value: companyId
-              }
-            });
-
-            this.fillSubDropDownInEdit("GetContactsByCompanyId","companyId",companyId,"bicContactId","selectedFromContact","fromContacts");
-          }
+          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "bicContactId", "selectedFromContact", "fromContacts");
         }
+      }
 
-        this.setState({
-          companies: [...result]
-        });
+      this.setState({
+        companies: [...result]
+      });
     });
 
-         //area
+    //area
     dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
 
-        if (isEdit) {
-      
-          let areaId = this.props.document.area;
+      if (isEdit) {
 
-          if (areaId) {
-      
-            let areaIdName = result.find(i => i.value === parseInt(areaId));
+        let areaId = this.props.document.area;
 
-            this.setState({
-              selectedArea: { label: areaIdName.label, value: areaId }
-            });
-          }
+        if (areaId) {
+
+          let areaIdName = result.find(i => i.value === parseInt(areaId));
+
+          this.setState({
+            selectedArea: areaIdName
+          });
         }
-        this.setState({
-          areas: [...result]
-        });
+      }
+      this.setState({
+        areas: [...result]
+      });
     });
 
     //specsSection
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=specssection","title","id").then(result => {
+    dataservice.GetDataList("GetaccountsDefaultListForList?listType=specssection", "title", "id").then(result => {
 
-        if (isEdit) {
-      
-          let specsSectionId = this.props.document.specsSectionId;
+      if (isEdit) {
+        let specsSectionId = this.props.document.specsSectionId;
+        if (specsSectionId) {
+          let specsSection = result.find(i => i.value === parseInt(specsSectionId));
 
-          if (specsSectionId) {
-            let specsSectionName = result.find(i => i.value === parseInt(specsSectionId));
-
-            this.setState({
-              selectedSpecsSection: {
-                label: specsSectionName.label,
-                value: specsSectionId
-              }
-            });
-          }
+          this.setState({
+            selectedSpecsSection: specsSection
+          });
         }
+      }
 
-        this.setState({
-          specsSection: [...result]
-        });
+      this.setState({
+        specsSection: [...result]
+      });
     });
- 
+
     //discplines
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline","title","id").then(result => {
+    dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
 
-        if (isEdit) {
-      
-          let disciplineId = this.props.document.disciplineId;
+      if (isEdit) {
 
-          if (disciplineId) {
-      
-            let disciplineName = result.find(i => i.value === disciplineId);
+        let disciplineId = this.props.document.disciplineId;
 
-            this.setState({
-              selectedDiscpline: { label: disciplineName.label, value: disciplineId}
-            });
-          }
+        if (disciplineId) {
+
+          let discipline = result.find(i => i.value === disciplineId);
+
+          this.setState({
+            selectedDiscpline: discipline
+          });
         }
-        this.setState({
-          disciplines: [...result]
-        });
+      }
+      this.setState({
+        disciplines: [...result]
+      });
     });
-  
+
     //reasonForIssue
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonForIssue","title","id").then(result => {
+    dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id").then(result => {
 
-        if (isEdit) {
-      
-          let reasonFor = this.props.document.reasonForIssueid;
+      if (isEdit) {
 
-          if (reasonFor) {
-            this.setState({
-              selectedReasonForIssue: {label: this.props.document.reasonForIssueName,value: this.props.document.reasonForIssueid}
-            });
-          }
+        let reasonFor = this.props.document.reasonForIssueId;
+
+        if (reasonFor) {
+          this.setState({
+            selectedReasonForIssue: { label: this.props.document.reasonForIssueName, value: this.props.document.reasonForIssueId }
+          });
         }
-        this.setState({
-          reasonForIssue: [...result]
-        });
-    }); 
-    
+      }
+      this.setState({
+        reasonForIssue: [...result]
+      });
+    });
+
     //drawing
-    dataservice.GetDataListWithNewVersion("GetLogsDrawingsByProjectId?projectId="+projectId+"&pageNumber=0&pageSize=100000","subject","id").then(result => {
- 
-        this.setState({
-            drawing: [...result]
-        });
-    }); 
+    dataservice.GetDataListWithNewVersion("GetLogsDrawingsByProjectId?projectId=" + projectId + "&pageNumber=0&pageSize=100000", "subject", "id").then(result => {
+
+      this.setState({
+        drawing: [...result]
+      });
+    });
   }
 
   handleChange(e, field) {
-    
+
     let original_document = { ...this.state.document };
 
     let updated_document = {};
@@ -406,9 +395,9 @@ class DrawingSetsAddEdit extends Component {
       document: updated_document
     });
   }
- 
+
   handleChangeDate(e, field) {
-    
+
     let original_document = { ...this.state.document };
 
     let updated_document = {};
@@ -420,9 +409,9 @@ class DrawingSetsAddEdit extends Component {
     this.setState({
       document: updated_document
     });
-  }  
+  }
 
-  handleChangeDropDown(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
     if (event == null) return;
 
@@ -464,62 +453,62 @@ class DrawingSetsAddEdit extends Component {
     }
   }
 
-  handleChangeDropDownItems(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
+  handleChangeDropDownItems(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
     if (event == null) return;
 
     this.setState({
-        drawingId: event.value,
-        [selectedValue]: event
-    }); 
+      drawingId: event.value,
+      [selectedValue]: event
+    });
   }
-    
+
   editDrawing(event) {
-    
+
     this.setState({
       isLoading: true
     });
 
     let saveDocument = this.state.document;
-     
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"); 
+
+    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditLogsDrawingsSets", saveDocument).then(result => {
-     
-        this.setState({
-            isLoading: false,  
-            Stepes: this.state.Stepes + 1
-          });
+
+      this.setState({
+        isLoading: false,
+        Stepes: this.state.Stepes + 1
+      });
     });
   }
 
   saveDrawing(event) {
-   
+
     if (this.props.changeStatus === false) {
 
       this.setState({
         isLoading: true
       });
 
-      let saveDocument = { ...this.state.document }; 
+      let saveDocument = { ...this.state.document };
 
-      saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"); 
- 
+      saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+
       dataservice.addObject("AddLogsDrawingsSets", saveDocument).then(result => {
 
         this.setState({
-            docId: result.id,
-            drawingSetId:result.id,
-            isLoading: false
-          });
-
-        }).catch(ex => {
-          this.setState({
-            isLoading: false
-          });
-
-          toast.error(Resources["failError"][currentLanguage]);
+          docId: result.id,
+          drawingSetId: result.id,
+          isLoading: false
         });
+
+      }).catch(ex => {
+        this.setState({
+          isLoading: false
+        });
+
+        toast.error(Resources["failError"][currentLanguage]);
+      });
     } else {
       this.setState({
         Stepes: this.state.Stepes + 1
@@ -528,16 +517,16 @@ class DrawingSetsAddEdit extends Component {
   }
 
   saveAndExit(event) {
-    
-    if (this.state.Stepes === 1) { 
-        this.setState({ 
-            Stepes: this.state.Stepes + 1
-        });      
+
+    if (this.state.Stepes === 1) {
+      this.setState({
+        Stepes: this.state.Stepes + 1
+      });
     }
   }
 
   showBtnsSaving() {
-    
+
     let btn = null;
 
     if (this.state.docId === 0) {
@@ -558,14 +547,14 @@ class DrawingSetsAddEdit extends Component {
   }
 
   viewAttachments() {
-    
-    return this.state.docId > 0 ? (Config.IsAllow(3331) === true ? (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={896} />) : null ) : null;
+
+    return this.state.docId > 0 ? (Config.IsAllow(3331) === true ? (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={896} />) : null) : null;
   }
 
   handleShowAction = item => {
-    
+
     if (item.value != "0") {
-    
+
       this.setState({
         currentComponent: item.value,
         currentTitle: item.title,
@@ -579,15 +568,15 @@ class DrawingSetsAddEdit extends Component {
   NextStep() {
 
     if (this.state.Stepes === 1) {
-    
+
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
 
-          this.setState({
-              
-            itemData: data,  
-            Stepes: this.state.Stepes + 1
-          });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        this.setState({
+
+          itemData: data,
+          Stepes: this.state.Stepes + 1
+        });
+      }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     } else {
       this.props.history.push("/drawingSets/" + this.state.projectId);
     }
@@ -600,7 +589,7 @@ class DrawingSetsAddEdit extends Component {
       });
     }
   }
-  
+
   finishDocument() {
     this.props.history.push("/drawingSets/" + this.state.projectId);
   }
@@ -614,32 +603,31 @@ class DrawingSetsAddEdit extends Component {
   };
 
   clickHandlerContinueMain = () => {
- 
-      dataservice.addObject("DeleteLogsDrawingsSetsDocById?id=" + this.state.currentId+"&drawingSetId=" + docId).then(result => {
 
-          let originalData = this.state.listDrawing;
+    dataservice.addObject("DeleteLogsDrawingsSetsDocById?id=" + this.state.currentId + "&drawingSetId=" + docId).then(result => {
 
-          let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
+      let originalData = this.state.listDrawing;
 
-          originalData.splice(getIndex, 1);
+      let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
 
-          this.setState({
-            listDrawing: originalData,
-            showDeleteModal: false
-          });
+      originalData.splice(getIndex, 1);
 
-          toast.success(Resources["operationSuccess"][currentLanguage]);
+      this.setState({
+        listDrawing: originalData,
+        showDeleteModal: false
+      });
 
-        }).catch(ex => {
-          toast.success(Resources["operationSuccess"][currentLanguage]);
-        }); 
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    }).catch(ex => {
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+    });
   };
-   
 
-  addDrawingItems(){
+  addDrawingItems() {
 
     this.setState({
-        isLoading:true
+      isLoading: true
     });
 
     let saveDrawingItems = {};
@@ -647,30 +635,30 @@ class DrawingSetsAddEdit extends Component {
     saveDrawingItems.drawingId = this.state.drawingId;
     saveDrawingItems.drawingSetId = this.state.drawingSetId;
 
-      dataservice.addObject("AddLogsDrawingsSetsDoc",saveDrawingItems).then(result => {
+    dataservice.addObject("AddLogsDrawingsSetsDoc", saveDrawingItems).then(result => {
 
-        this.setState({
-            isLoading:false,
-            listDrawing:[...result],
-            selectedDrawing: { label: Resources.dwgNoRequired[currentLanguage], value: "0" }
-        });
-        toast.success(Resources["operationSuccess"][currentLanguage]);
-
+      this.setState({
+        isLoading: false,
+        listDrawing: [...result],
+        selectedDrawing: { label: Resources.dwgNoRequired[currentLanguage], value: "0" }
       });
-  }
-  
-  viewConfirmDelete(id) {
-    this.setState({ 
-      showDeleteModal: true ,
-      currentId : id
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+
     });
   }
- 
+
+  viewConfirmDelete(id) {
+    this.setState({
+      showDeleteModal: true,
+      currentId: id
+    });
+  }
+
   componentWillUnmount() {
     this.setState({
-        docId: 0
+      docId: 0
     });
-}
+  }
 
   render() {
     const columns = [
@@ -720,17 +708,18 @@ class DrawingSetsAddEdit extends Component {
         accessor: "status",
         width: 200,
         sortabel: true
-      } 
+      }
     ];
- 
+
     let actions = [
-      { title: "distributionList",
-        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>),
+      {
+        title: "distributionList",
+        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
         label: Resources["distributionList"][currentLanguage]
       },
       {
         title: "sendToWorkFlow",
-        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>),
+        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
         label: Resources["sendToWorkFlow"][currentLanguage]
       },
       {
@@ -743,7 +732,7 @@ class DrawingSetsAddEdit extends Component {
         value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       }
-    ]; 
+    ];
 
     return (
       <div className="mainContainer">
@@ -809,17 +798,18 @@ class DrawingSetsAddEdit extends Component {
                 <div className="subiTabsContent">
                   {this.state.Stepes === 1 ? (
                     <div className="document-fields">
-                      <Formik initialValues={ this.state.document }
+                      <Formik initialValues={this.state.document}
                         validationSchema={validationSchema}
                         enableReinitialize={this.props.changeStatus}
                         onSubmit={values => {
-                          if (this.props.changeStatus === true && this.state.docId > 0 ) {
+                          if (this.props.changeStatus === true && this.state.docId > 0) {
                             this.editDrawing();
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.saveDrawing();
                           } else {
                             this.saveAndExit();
-                          }}}>
+                          }
+                        }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                           <Form id="submittalForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                             <div className="proForm first-proform">
@@ -827,17 +817,17 @@ class DrawingSetsAddEdit extends Component {
                                 <label className="control-label">
                                   {Resources.subject[currentLanguage]}
                                 </label>
-                                <div className={ "ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "") }>
+                                <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
                                   <input name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
                                     autoComplete="off"
                                     value={this.state.document.subject}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                    onChange={e => this.handleChange(e, "subject") }/>
+                                    onChange={e => this.handleChange(e, "subject")} />
                                   {errors.subject && touched.subject ? (
-                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError" />) 
-                                    : !errors.subject && touched.subject ? 
-                                  (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                                  {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}  
+                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError" />)
+                                    : !errors.subject && touched.subject ?
+                                      (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                                  {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
@@ -845,16 +835,16 @@ class DrawingSetsAddEdit extends Component {
                                   {Resources.status[currentLanguage]}
                                 </label>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                  <input type="radio" name="status" defaultChecked={ this.state.document.status === false ? null : "checked" }
-                                    value="true" onChange={e => this.handleChange(e, "status") } />
+                                  <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : "checked"}
+                                    value="true" onChange={e => this.handleChange(e, "status")} />
                                   <label>
                                     {Resources.oppened[currentLanguage]}
                                   </label>
                                 </div>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                  <input type="radio" name="status" defaultChecked={ this.state.document.status === false ? "checked" : null }
+                                  <input type="radio" name="status" defaultChecked={this.state.document.status === false ? "checked" : null}
                                     value="false"
-                                    onChange={e => this.handleChange(e, "status") } />
+                                    onChange={e => this.handleChange(e, "status")} />
                                   <label>
                                     {Resources.closed[currentLanguage]}
                                   </label>
@@ -872,23 +862,23 @@ class DrawingSetsAddEdit extends Component {
                                       <div className="linebylineInput">
                                         <div className="inputDev ui input input-group date NormalInputDate">
                                           <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
-                                           onChange={e => this.handleChangeDate( e, "docDate" )} placeholder={"Select a date"} />
+                                            onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div> 
+                              </div>
                               <div className="linebylineInput valid-input">
                                 <label className="control-label">
                                   {Resources.arrange[currentLanguage]}
                                 </label>
-                                <div className={ "ui input inputDev fillter-item-c " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "") } >
-                                  <input type="text" className="form-control" readOnly value={this.state.document.arrange} name="arrange" placeholder={ Resources.arrange[currentLanguage] }
-                                         onBlur={e => { handleChange(e); handleBlur(e); }}
-                                         onChange={e => this.handleChange(e, "arrange") } />
-                                  {errors.arrange && touched.arrange ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" /> ) : 
-                                  !errors.arrange && touched.arrange ? (<span className="glyphicon form-control-feedback glyphicon-ok" /> ) : null}
+                                <div className={"ui input inputDev fillter-item-c " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "")} >
+                                  <input type="text" className="form-control" readOnly value={this.state.document.arrange} name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                    onBlur={e => { handleChange(e); handleBlur(e); }}
+                                    onChange={e => this.handleChange(e, "arrange")} />
+                                  {errors.arrange && touched.arrange ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                    !errors.arrange && touched.arrange ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                                   {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                                 </div>
                               </div>
@@ -898,11 +888,11 @@ class DrawingSetsAddEdit extends Component {
                                 </label>
                                 <div className={"ui input inputDev" + (errors.progressPercent && touched.progressPercent ? " has-error" : "ui input inputDev")}>
                                   <input type="text" className="form-control" id="progressPercent" value={this.state.document.progressPercent}
-                                         name="progressPercent" placeholder={ Resources.progressPercent[currentLanguage] }
-                                         onBlur={e => { handleChange(e); handleBlur(e); }}
-                                         onChange={e => this.handleChange(e, "progressPercent") }/>
-                                  {errors.progressPercent && touched.progressPercent ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" /> ) : 
-                                  !errors.progressPercent && touched.progressPercent ? (<span className="glyphicon form-control-feedback glyphicon-ok" /> ) : null}
+                                    name="progressPercent" placeholder={Resources.progressPercent[currentLanguage]}
+                                    onBlur={e => { handleChange(e); handleBlur(e); }}
+                                    onChange={e => this.handleChange(e, "progressPercent")} />
+                                  {errors.progressPercent && touched.progressPercent ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                    !errors.progressPercent && touched.progressPercent ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                                   {errors.progressPercent && touched.progressPercent ? (<em className="pError">{errors.progressPercent}</em>) : null}
                                 </div>
                               </div>
@@ -911,20 +901,20 @@ class DrawingSetsAddEdit extends Component {
                                   {Resources.fileNumber[currentLanguage]}
                                 </label>
                                 <div className="inputDev ui input">
-                                  <input name="fileNumberId" className="form-control fsadfsadsa" id="fileNumberId" placeholder={ Resources.fileNumber[currentLanguage] }
-                                         autoComplete="off" value={this.state.document.fileNumberId} 
-                                         onBlur={e => { handleBlur(e); handleChange(e); }}
-                                         onChange={e => this.handleChange(e, "fileNumberId") } />
-                                  {errors.fileNumberId && touched.fileNumberId ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" /> ) : 
-                                  !errors.fileNumberId && touched.fileNumberId ? (<span className="glyphicon form-control-feedback glyphicon-ok" /> ) : null}
+                                  <input name="fileNumberId" className="form-control fsadfsadsa" id="fileNumberId" placeholder={Resources.fileNumber[currentLanguage]}
+                                    autoComplete="off" value={this.state.document.fileNumberId}
+                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                    onChange={e => this.handleChange(e, "fileNumberId")} />
+                                  {errors.fileNumberId && touched.fileNumberId ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                    !errors.fileNumberId && touched.fileNumberId ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                                   {errors.fileNumberId && touched.fileNumberId ? (<em className="pError">{errors.fileNumberId}</em>) : null}
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
                                 <Dropdown title="area" data={this.state.areas} selectedValue={this.state.selectedArea}
-                                          handleChange={event => this.handleChangeDropDown(event,"area",false,"","","","selectedArea")}
-                                          onChange={setFieldValue} onBlur={setFieldTouched} error={errors.area} touched={touched.area} 
-                                          name="area" id="area" />
+                                  handleChange={event => this.handleChangeDropDown(event, "area", false, "", "", "", "selectedArea")}
+                                  onChange={setFieldValue} onBlur={setFieldTouched} error={errors.area} touched={touched.area}
+                                  name="area" id="area" />
                               </div>
                               <div className="linebylineInput valid-input mix_dropdown">
                                 <label className="control-label">
@@ -932,103 +922,48 @@ class DrawingSetsAddEdit extends Component {
                                 </label>
                                 <div className="supervisor__company">
                                   <div className="super_name">
-                                    <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={ this.state.selectedFromContact }
-                                              handleChange={event => this.handleChangeDropDown(event,"bicContactId",false,"","","","selectedFromContact")}
-                                              onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId} 
-                                              name="bicContactId" id="bicContactId" />
+                                    <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
+                                      handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedFromContact")}
+                                      onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
+                                      name="bicContactId" id="bicContactId" />
                                   </div>
                                   <div className="super_company">
-                                    <Dropdown data={this.state.companies} isMulti={false} selectedValue={ this.state.selectedFromCompany }
-                                              handleChange={event => { this.handleChangeDropDown(event,"bicCompanyId",true,"fromContacts","GetContactsByCompanyId","companyId","selectedFromCompany","selectedFromContact");}}
-                                              onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId" />
+                                    <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                      handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
+                                      onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId" />
                                   </div>
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="specsSection" data={this.state.specsSection} selectedValue={ this.state.selectedSpecsSection }
-                                          handleChange={event => this.handleChangeDropDown(event,"specsSectionId",false,"","","","selectedSpecsSection")}
-                                          onChange={setFieldValue} onBlur={setFieldTouched} error={errors.specsSectionId}
-                                          touched={touched.specsSectionId} name="specsSectionId" id="specsSectionId"/>
+                                <Dropdown title="specsSection" data={this.state.specsSection} selectedValue={this.state.selectedSpecsSection}
+                                  handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "", "", "", "selectedSpecsSection")}
+                                  onChange={setFieldValue} onBlur={setFieldTouched} error={errors.specsSectionId}
+                                  touched={touched.specsSectionId} name="specsSectionId" id="specsSectionId" />
                               </div>
                               <div className="linebylineInput valid-input">
                                 <Dropdown title="disciplineTitle" data={this.state.disciplines} isMulti={false} selectedValue={this.state.selectedDiscpline}
-                                          handleChange={event => this.handleChangeDropDown( event, "disciplineId", false, "", "", "", "selectedDiscpline")}
-                                          onChange={setFieldValue} onBlur={setFieldTouched} error={errors.disciplineId}
-                                          touched={touched.disciplineId} name="disciplineId" id="disciplineId" />
-                              </div>  
-                              <div className="linebylineInput valid-input">
-                                <Dropdown title="reasonForIssue" data={this.state.reasonForIssue} selectedValue={ this.state.selectedReasonForIssue}
-                                          handleChange={event => this.handleChangeDropDown( event, "reasonForIssueid", false, "", "", "", "selectedReasonForIssue")}
-                                          onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reasonForIssueid}
-                                          touched={touched.reasonForIssueid} name="reasonForIssueid" id="reasonForIssueid" />
-                              </div>  
-                            </div> 
-                            <div className="slider-Btns">
-                              {this.state.isLoading === false ? 
-                              (<button className="primaryBtn-1 btn meduimBtn" type="submit">
-                                  {this.state.docId > 0
-                                    ? Resources["next"][currentLanguage]
-                                    : Resources["save"][currentLanguage]}
-                                </button>
-                              ) : (
-                                <button className="primaryBtn-1 btn disabled">
-                                  <div className="spinner">
-                                    <div className="bounce1" />
-                                    <div className="bounce2" />
-                                    <div className="bounce3" />
-                                  </div>
-                                </button>
-                              )}
-                            </div> 
-                          </Form>
-                        )}
-                      </Formik>
-                      <br />
-                      <br /> 
-                      {this.state.listDrawing.length > 0 ? (
-                        <Fragment>
-                          <header className="main__header">
-                            <div className="main__header--div">
-                              <h2 className="zero">
-                                {Resources["listDetails"][currentLanguage]}
-                              </h2>
-                            </div>
-                          </header>
-                          <ReactTable data={this.state.listDrawing} columns={columns} defaultPageSize={10} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
-                        </Fragment>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <Fragment>
-                      <header className="main__header">
-                        <div className="main__header--div">
-                          <h2 className="zero">
-                            {Resources["items"][currentLanguage]}
-                          </h2>
-                        </div>
-                      </header>
-                      <div className="document-fields">
-                        <Formik initialValues={{...this.state.itemsDocumentSubmital}} 
-                                validationSchema={validationSchemaItems}
-                                onSubmit={values => { this.addDrawingItems(); }}>
-                          {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                            <Form onSubmit={handleSubmit}>
-                              <div className="proForm datepickerContainer"> 
-                                <div className="linebylineInput valid-input">
-                                  <div className="inputDev ui input">
-                                    <Dropdown isMulti={false} title="drawing" data={this.state.drawing} 
-                                              selectedValue={this.state.selectedDrawing}
-                                              onChange={setFieldValue} onBlur={setFieldTouched} 
-                                              error={errors.drawing} touched={touched.drawing}
-                                              name="drawing" id="drawing"
-                                              handleChange={event => this.handleChangeDropDownItems( event, "drawingId", false, "", "", "", "selectedDrawing" )}/>
-                                  </div>
-                                </div>  
+                                  handleChange={event => this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")}
+                                  onChange={setFieldValue} onBlur={setFieldTouched} error={errors.disciplineId}
+                                  touched={touched.disciplineId} name="disciplineId" id="disciplineId" />
                               </div>
-                              <div className="slider-Btns">
-                                {this.state.isLoading === false ? 
-                                (<button className="primaryBtn-1 btn meduimBtn" type="submit" >
-                                    {Resources["addTitle"][currentLanguage]}
+                              <div className="linebylineInput valid-input">
+                                <Dropdown title="reasonForIssue"
+                                  data={this.state.reasonForIssue}
+                                  selectedValue={this.state.selectedReasonForIssue}
+                                  handleChange={event => this.handleChangeDropDown(event, "reasonForIssueId", false, "", "", "", "selectedReasonForIssue")}
+                                  onChange={setFieldValue} onBlur={setFieldTouched}
+                                  error={errors.reasonForIssueId}
+                                  touched={touched.reasonForIssueId}
+                                  name="reasonForIssueId" id="reasonForIssueId" />
+                              </div>
+                            </div>
+                            <div className="slider-Btns">
+                              {this.state.isLoading === false ?
+                                (
+                                  <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type="submit">
+                                    {this.state.docId > 0
+                                      ? Resources["next"][currentLanguage]
+                                      : Resources["save"][currentLanguage]}
                                   </button>
                                 ) : (
                                   <button className="primaryBtn-1 btn disabled">
@@ -1039,18 +974,86 @@ class DrawingSetsAddEdit extends Component {
                                     </div>
                                   </button>
                                 )}
-                              </div>
-                            </Form>
-                          )}
-                        </Formik>
-                      </div>
-                      <div className="precycle-grid">
-                        <div className="reactTableActions"> 
-                          <ReactTable data={this.state.listDrawing} columns={columns} defaultPageSize={10} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight"/>
+                            </div>
+                          </Form>
+                        )}
+                      </Formik>
+                      <br />
+                      <br />
+                      {this.state.listDrawing.length > 0 ? (
+                        <Fragment>
+                          <header className="main__header">
+                            <div className="main__header--div">
+                              <h2 className="zero">
+                                {Resources["listDetails"][currentLanguage]}
+                              </h2>
+                            </div>
+                          </header>
+                          <ReactTable
+                            data={this.state.listDrawing}
+                            columns={columns}
+                            defaultPageSize={5}
+                            noDataText={Resources["noData"][currentLanguage]}
+                            className="-striped -highlight" />
+                        </Fragment>
+                      ) : null}
+                    </div>
+                  ) : (
+                      <Fragment>
+                        <header className="main__header">
+                          <div className="main__header--div">
+                            <h2 className="zero">
+                              {Resources["items"][currentLanguage]}
+                            </h2>
+                          </div>
+                        </header>
+                        <div className="document-fields">
+                          <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
+                            validationSchema={validationSchemaItems}
+                            onSubmit={values => { this.addDrawingItems(); }}>
+                            {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                              <Form onSubmit={handleSubmit}>
+                                <div className="proForm datepickerContainer">
+                                  <div className="linebylineInput valid-input">
+                                    <div className="inputDev ui input">
+                                      <Dropdown isMulti={false} title="drawing" data={this.state.drawing}
+                                        selectedValue={this.state.selectedDrawing}
+                                        onChange={setFieldValue} onBlur={setFieldTouched}
+                                        error={errors.drawing} touched={touched.drawing}
+                                        name="drawing" id="drawing"
+                                        handleChange={event => this.handleChangeDropDownItems(event, "drawingId", false, "", "", "", "selectedDrawing")} />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="slider-Btns">
+                                  {this.state.isLoading === false ?
+                                    (<button className="primaryBtn-1 btn meduimBtn" type="submit" >
+                                      {Resources["addTitle"][currentLanguage]}
+                                    </button>
+                                    ) : (
+                                      <button className="primaryBtn-1 btn disabled">
+                                        <div className="spinner">
+                                          <div className="bounce1" />
+                                          <div className="bounce2" />
+                                          <div className="bounce3" />
+                                        </div>
+                                      </button>
+                                    )}
+                                </div>
+                              </Form>
+                            )}
+                          </Formik>
                         </div>
-                      </div>
-                    </Fragment>
-                  )}
+                        <div className="precycle-grid">
+                          <div className="reactTableActions">
+                            <ReactTable data={this.state.listDrawing} columns={columns}
+                              defaultPageSize={5}
+                              noDataText={Resources["noData"][currentLanguage]}
+                              className="-striped -highlight" />
+                          </div>
+                        </div>
+                      </Fragment>
+                    )}
                   <div className="slider-Btns">
                     {this.state.Stepes === 2 ? (
                       <button className="primaryBtn-1 btn meduimBtn" onClick={this.finishDocument.bind(this)}>
@@ -1060,9 +1063,9 @@ class DrawingSetsAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.Stepes === 1 ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> ) : null}
+                      {this.state.docId > 0 && this.state.Stepes === 1 ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                       {this.state.Stepes === 1 ? this.viewAttachments() : null}
-                      {this.props.changeStatus === true ? ( <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
                   </div>
                 </div>
@@ -1089,7 +1092,7 @@ class DrawingSetsAddEdit extends Component {
                   </button>
                   <span className="border" />
                   <div className="document__action--menu">
-                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
+                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                   </div>
                 </div>
               </div>
@@ -1098,19 +1101,19 @@ class DrawingSetsAddEdit extends Component {
             <div className="docstepper-levels">
               <div className="step-content-foot">
                 <span onClick={this.PreviousStep.bind(this)}
-                      className={ this.state.Stepes != 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled" }>
+                  className={this.state.Stepes != 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
                   <i className="fa fa-caret-left" aria-hidden="true" />
                   Previous
                 </span>
                 <span onClick={this.NextStep.bind(this)}
-                      className={ this.state.Stepes != 2 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
+                  className={this.state.Stepes != 2 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
                   Next
                   <i className="fa fa-caret-right" aria-hidden="true" />
                 </span>
               </div>
               <div className="workflow-sliderSteps">
                 <div className="step-slider">
-                  <div data-id="step1" className={ "step-slider-item " + (this.state.Stepes === 1 ? "active" : "current__step") }>
+                  <div data-id="step1" className={"step-slider-item " + (this.state.Stepes === 1 ? "active" : "current__step")}>
                     <div className="steps-timeline">
                       <span>1</span>
                     </div>
@@ -1118,7 +1121,7 @@ class DrawingSetsAddEdit extends Component {
                       <h6>{Resources["Submittal"][currentLanguage]}</h6>
                     </div>
                   </div>
-                  <div data-id="step2 " className={ "step-slider-item " + (this.state.Stepes === 2 ? "active" : this.state.SecondStepComplate ? "current__step" : "") }>
+                  <div data-id="step2 " className={"step-slider-item " + (this.state.Stepes === 2 ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
                     <div className="steps-timeline">
                       <span>2</span>
                     </div>
@@ -1139,8 +1142,8 @@ class DrawingSetsAddEdit extends Component {
           </div>
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
-                               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
-                               clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} /> ) : null}
+              showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
+              clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
         </div>
       </div>
     );
@@ -1154,7 +1157,7 @@ function mapStateToProps(state, ownProps) {
     changeStatus: state.communication.changeStatus,
     file: state.communication.file,
     files: state.communication.files,
-    hasWorkflow: state.communication.hasWorkflow 
+    hasWorkflow: state.communication.hasWorkflow
   };
 }
 
@@ -1164,4 +1167,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(DrawingSetsAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DrawingSetsAddEdit));
