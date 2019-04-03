@@ -7774,5 +7774,9 @@
   "responsibleContactName": {
     "en": "Responsible Contact",
     "ar": "الشخص المسئول"
+  },
+  "chooseExcelFormat": {
+    "en": "Please Choose Excel File Extention : .xlsx",
+    "ar": "برجاء اختيار ملف اكسيل"
   }
 }

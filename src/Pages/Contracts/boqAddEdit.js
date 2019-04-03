@@ -30,7 +30,7 @@ import ConfirmationModal from '../../Componants/publicComponants/ConfirmationMod
 import Dataservice from '../../Dataservice';
 import GridSetup from "../Communication/GridSetup";
 import { func } from 'prop-types';
-
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const poqSchema = Yup.object().shape({
@@ -214,7 +214,7 @@ class bogAddEdit extends Component {
             addedContract: false,
             AddedPurchase: false,
             LoadingPage: false,
-            docTypeId: 35,
+            docTypeId: 64,
             selectedRow: '',
             pageSize: 50,
             CurrStep: 1,
@@ -509,8 +509,8 @@ class bogAddEdit extends Component {
         });
         let documentObj = {
             project: this.state.projectId,
-            id:this.state.docId,
-            arrange:this.state.document.arrange,
+            id: this.state.docId,
+            arrange: this.state.document.arrange,
             DocumentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             Company: Config.getPayload().cmi,
             Discipline: this.state.selectedDiscipline.value,
@@ -1723,9 +1723,16 @@ class bogAddEdit extends Component {
         </React.Fragment>
         let Step_2 = <React.Fragment>
             {itemsContent}
+            <Fragment>
+
+                <XSLfile docId={this.state.docId} docType='boq' link={Config.downloads+'/Downloads/Excel/BOQ.xlsx'} />
+
+            </Fragment>
             <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
-                    {ItemsGrid}
+                    <div className="grid-container">
+                        {ItemsGrid}
+                    </div>
                     <div class="slider-Btns">
                         <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
                     </div>

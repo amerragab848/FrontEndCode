@@ -2011,9 +2011,6 @@ button.companies_icon {
 .noTabs__document.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
   width: 46%;
 }
-.one__tab.one_step {
-  padding-bottom: 0;
-}
 @media screen and (max-width: 1200px) {
   .one__tab.one_step .doc-container .step-content {
     width: calc(100% - 290px);
@@ -3116,4 +3113,13 @@ button.companies_icon {
 .tabinsideItem .data__tabs li {
  min-width: 115px;
  justify-content: center;
+}
+.fileNameUp a {
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-family: font-opensb;
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.2px;
+  /* color: #252833; */
 }

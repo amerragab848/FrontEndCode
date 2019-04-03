@@ -76,6 +76,9 @@ import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
+
+import upload from "./Componants/OptionsPanels/XSLfiel";
+
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -162,6 +165,7 @@ let originalRoutes = [
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
+    , <Route path="/upload" component={upload} />
     
     
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
