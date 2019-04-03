@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
   fileNumberId : Yup.string().required(Resources["selectFileNumber"][currentLanguage]),
   arrange: Yup.number().required(Resources["arrange"][currentLanguage]),
-  progressPercent: Yup.string().required(Resources["selectprogressPercent"][currentLanguage]),
+  progressPercent: Yup.number().required(Resources["selectprogressPercent"][currentLanguage]),
   bicContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
   disciplineId: Yup.string().required(Resources["disciplineRequired"][currentLanguage]).nullable(true),
   reasonForIssueid: Yup.string().required(Resources["SelectReasonForIssueId"][currentLanguage]).nullable(true),
