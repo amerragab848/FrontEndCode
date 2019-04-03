@@ -6,18 +6,27 @@ import AttachDrag from '../../Styles/images/attachDraggable.png';
 import 'react-table/react-table.css'
 import Resources from '../../../src/resources'
 import { toast } from "react-toastify";
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+import Api from '../../api';
 
+import * as communicationActions from '../../store/actions/communication';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class XSLfile extends Component {
     constructor(props) {
+        console.log('props', props)
         super(props);
         this.state = {
             docType: this.props.docType,
             docId: this.props.docId,
-            link:this.props.link,
+            link: this.props.link,
             parentId: '',
-            _className: ''
+            _className: '',
+            header: this.props.header,
+            acceptedFiles: []
         }
     }
     onDrop = (acceptedFiles, rejectedFiles) => {
@@ -32,26 +41,39 @@ class XSLfile extends Component {
     }
 
     onDropAcceptedHandler = (acceptedFiles) => {
-        alert(acceptedFiles.length)
+        // alert(acceptedFiles.length)
         setTimeout(() => {
             this.setState({ _className: "hundredPercent" })
         }, 500)
-
-        let formData = new FormData();
-        formData.append("file0", acceptedFiles[0])
-        let header = { 'docType': this.props.docType }
-        this.props.actions.uploadFile("UploadExcelFiles?docId=" + this.state.docId, formData, header);
-
-        setTimeout(() => {
-            this.setState({ _className: "zeropercent" })
-        }, 1000)
+        this.setState({ acceptedFiles })
+    }
+    upload = () => {
+        if (this.state.acceptedFiles.length > 0) {
+            let formData = new FormData();
+            let file = this.state.acceptedFiles[0]
+            formData.append("file0", file)
+            console.log("file", this.state.acceptedFiles)
+            let docType = this.props.docType;
+            let header = { 'docType': docType }
+            Api.postFile("UploadExcelFiles?docId=" + this.state.docId, formData, header).then(resp => {
+                if (this.props.afterUpload != undefined) {
+                    this.props.afterUpload()
+                }
+                setTimeout(() => {
+                    this.setState({ _className: "zeropercent" })
+                }, 1000)
+            }).catch((ex) => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            })
+        }
     }
 
     render() {
         return (
-            <div >
-                <div className="fileNameUp">
-                    <a href={this.state.link} >moutasem</a>
+            <div className="doc-pre-cycle">
+                <header><h2 className="zero">{this.state.header ? Resources[this.state.header][currentLanguage] : ''}</h2></header>
+                <div className="fileDownUp">
+                    <a href={this.state.link} ><i className="fa fa-download" aria-hidden="true"></i>{Resources.downloadExcelFormatFile[currentLanguage]}</a>
                 </div>
                 <Dropzone
                     multiple={false}
@@ -99,12 +121,37 @@ class XSLfile extends Component {
                     }}
 
                 </Dropzone>
+                <div className="removeBtn">
+                    <div className="fileNameUploaded">
+                        <p>{Resources.fileName[currentLanguage]}
+                            {this.state.acceptedFiles.length > 0 ? <span>{this.state.acceptedFiles[0].name}</span> : null}
+                        </p>
+                    </div>
+                    <button className={"primaryBtn-1 btn smallBtn " + (this.props.disabled ? 'disabled' : '')} disabled={this.props.disabled ? 'disabled' : ''} onClick={this.upload}>{Resources['upload'][currentLanguage]}</button>
+                </div>
 
             </div>
         )
     }
 }
 
+function mapStateToProps(state) {
 
+    return {
+        file: state.communication.file,
+        files: state.communication.files,
+        isLoadingFiles: state.communication.isLoadingFiles
+    }
+}
 
-export default XSLfile
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(XSLfile)
+

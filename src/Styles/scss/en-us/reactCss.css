@@ -3114,12 +3114,45 @@ button.companies_icon {
  min-width: 115px;
  justify-content: center;
 }
-.fileNameUp a {
+.fileDownUp a, .fileDownUp a:hover {
   font-size: 14px;
   margin-bottom: 10px;
   font-family: font-opensb;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
+  display: block;
+  text-decoration: underline;
   /* color: #252833; */
+}
+.fileDownUp a i {
+  color: #A8B0BF;
+  margin-right: 5px;
+}
+.doc-pre-cycle .removeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-pre-cycle .removeBtn p {
+  display: flex;
+  align-items: center
+}
+.doc-pre-cycle .removeBtn p span {
+  display: inline-block;
+  color: #252833;
+  font-size: 14px;
+  max-width: 300px;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border: 1px solid #DADEE6;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 7px;
+}
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
+  padding: 0;
 }
