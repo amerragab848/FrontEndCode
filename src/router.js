@@ -71,14 +71,13 @@ import boqAddEdit from "./Pages/Contracts/boqAddEdit";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
 import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit';
-
+import AccountsAlerts  from './Pages/ProjectSetup/AccountsAlerts';
+import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
-
-import upload from "./Componants/OptionsPanels/XSLfiel";
-
+import projectIssuesAddEdit from "./Pages/Contracts/projectIssuesAddEdit";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -165,12 +164,14 @@ let originalRoutes = [
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
-    , <Route path="/upload" component={upload} />
+    , <Route path="/AccountsAlerts" component={AccountsAlerts} />
+    , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
     
-    
+    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
     , <Route path="/riskAddEdit" component={riskAddEdit} />
+    , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

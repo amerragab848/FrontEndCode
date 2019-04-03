@@ -1,3 +1,7 @@
+
+
+
+
 import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -50,11 +54,11 @@ const ValidtionSchemaForAdd = Yup.object().shape({
         .nullable(true),
 });
 
-class ActionByAlerts extends Component {
+class AccountsAlerts extends Component {
     constructor(props) {
         super(props)
 
-        if (!config.IsAllow(3180)) {
+        if (!config.IsAllow(3277)) {
             toast.warn(Resources['missingPermissions'][currentLanguage])
             this.props.history.goBack()
         }
@@ -126,7 +130,7 @@ class ActionByAlerts extends Component {
             IsEditModel: false,
             ShowPopup: false,
             FilterColumns: FilterColumns,
-            ApiFilter: 'GetFilterAccountsBic?',
+            ApiFilter: 'GetSearchAccountsAlerts?',
             viewfilter: false,
             query: '',
             PageNumber: 1,
@@ -141,7 +145,7 @@ class ActionByAlerts extends Component {
     }
 
     componentDidMount = () => {
-        Api.get('GetAccountBic?projectId=' + CurrProject + '&pageNumber=0&pageSize=200').then(
+        Api.get('GetAccountsAlerts?projectId=' + CurrProject + '&pageNumber=0&pageSize=200').then(
             res => {
                 this.setState({
                     rows: res,
@@ -149,7 +153,7 @@ class ActionByAlerts extends Component {
                 })
             }
         )
-        if (config.IsAllow(3179)) {
+        if (config.IsAllow(3276)) {
             this.setState({
                 showCheckbox: true
             })
@@ -159,11 +163,11 @@ class ActionByAlerts extends Component {
     }
 
     onRowClick = (obj) => {
-        if (!config.IsAllow(3178)) {
+        if (!config.IsAllow(3275)) {
             toast.warn(Resources['missingPermissions'][currentLanguage])
         }
         else {
-            Api.get('GetAccountsBicForEdit?id=' + obj.id + '').then(
+            Api.get('GetAccountsAlertsForEdit?id=' + obj.id + '').then(
                 res => {
                     this.setState({
                         ActionByAlertsDataForEdit: res,
@@ -194,7 +198,7 @@ class ActionByAlerts extends Component {
         this.setState({
             isLoading: true
         })
-        Api.post('AccountsBicMultipleDelete', this.state.selectedRows).then(
+        Api.post('AccountsAlertsMultipleDelete', this.state.selectedRows).then(
             res => {
                 let originalRows = this.state.rows
 
@@ -294,7 +298,7 @@ class ActionByAlerts extends Component {
     AddEditAction = (values, actions) => {
         this.setState({ ShowPopup: false, isLoading: true })
         if (this.state.IsEditModel) {
-            Api.post('EditAccountsBic', {
+            dataservice.addObject('EditAccountsAlerts', {
                 id: this.state.ActionByAlertsDataForEdit.id,
                 projectId: CurrProject,
                 redAlertDays: values.HighAlert,
@@ -311,7 +315,7 @@ class ActionByAlerts extends Component {
             )
         }
         else {
-            Api.post('AddAccountsBic', {
+            dataservice.addObject('AddAccountsAlerts', {
                 id: undefined,
                 projectId: CurrProject,
                 redAlertDays: values.HighAlert,
@@ -337,7 +341,6 @@ class ActionByAlerts extends Component {
     }
 
     render() {
-
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
@@ -363,7 +366,7 @@ class ActionByAlerts extends Component {
                 <div className='mainContainer'>
                     <div className="submittalFilter">
                         <div className="subFilter">
-                            <h3 className="zero">{CurrProjectName + ' - ' + Resources['docAlerts'][currentLanguage]}</h3>
+                            <h3 className="zero">{CurrProjectName + ' - ' + Resources['bicAlerts'][currentLanguage]}</h3>
                             {/* <span>{this.state.totalRows}</span> */}
                             <div className="ui labeled icon top right pointing dropdown fillter-button"
                                 tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
@@ -398,7 +401,7 @@ class ActionByAlerts extends Component {
                             </div>
                         </div>
                         <div className="filterBTNS">
-                            {config.IsAllow(0) ?
+                            {config.IsAllow(3274) ?
                                 <button className="primaryBtn-1 btn mediumBtn" onClick={this.AddActionByAlerts}>New</button>
                                 : null}
                             {btnExport}
@@ -592,7 +595,4 @@ class ActionByAlerts extends Component {
 
     }
 }
-export default withRouter(ActionByAlerts)
-
-
-
+export default withRouter(AccountsAlerts)

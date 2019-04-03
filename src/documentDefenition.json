@@ -6636,13 +6636,13 @@
   "projectIssues": {
     "documentTitle": "projectIssuesLog",
     "docTyp": 18,
-    "documentAddEditLink": "projectIssuesAddEdit/",
+    "documentAddEditLink": "projectIssuesAddEdit",
     "documentAddEditPopUp": "",
-    "documentAddPermission": 20,
-    "documentEditPermission": 21,
-    "documentDeletePermission": 22,
-    "documentViewPermission": 23,
-    "documentPermission": 24,
+    "documentAddPermission": 3770,
+    "documentEditPermission": 3771,
+    "documentDeletePermission": 3772,
+    "documentViewPermission": 3774,
+    "documentPermission": 3773,
     "documentApi": {
       "get": "GetContractsProjectIssues",
       "getCustom": "GetContractsProjectIssuesCustom",
@@ -18416,7 +18416,7 @@
         "cellTemplate": "",
         "isCustom": false,
         "exportDataType": "d"
-      }       
+      }
     ],
     "filterApi": "TransmittalFilter",
     "filters": [
@@ -18523,10 +18523,9 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false
-      } 
+      }
     ]
-  }
-  ,
+  },
   "WorkFlow": {
     "documentTitle": "workFlow",
     "docTyp": 16,
@@ -18566,8 +18565,8 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "s"
-      }
-      ,{
+      },
+      {
         "field": "subject",
         "friendlyName": "subject",
         "minWidth": 200,
@@ -18725,6 +18724,153 @@
         "field": "alertDays",
         "type": "string",
         "isCustom": true
+      }
+    ]
+  },
+  "projectPictures": {
+    "documentTitle": "projectPictures",
+    "docTyp": 2,
+    "documentAddEditLink": "projectPicturesAddEdit/",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 550,
+    "documentEditPermission": 551,
+    "documentDeletePermission": 552,
+    "documentPermission": 554,
+    "documentApi": {
+      "get": "ProjectPicturesGet",
+      "getCustom": "",
+      "delete": "DeleteMultipleProjectPicture"
+    },
+    "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#proposalAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromCompanyName",
+        "friendlyName": "fromCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromContactName",
+        "friendlyName": "fromContact",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "picDate",
+        "friendlyName": "picDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+     
+      {
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      }
+    ],
+    "filterApi": "PicturesFilters",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "isCustom": true
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "fromCompany",
+        "field": "fromCompanyName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "fromContact",
+        "field": "fromContactName",
+        "type": "string",
+        "isCustom": true
+      },
+     {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "docClosedate",
+        "field": "docCloseDate",
+        "type": "date",
+        "isCustom": false
+      },
+      {
+        "name": "picDate",
+        "field": "picDate",
+        "type": "string",
+        "isCustom": false
       }
     ]
   }

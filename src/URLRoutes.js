@@ -1455,7 +1455,7 @@ var routes = [
     nav: true,
     hash: "#projectIssues",
     settings: {
-      Contracts: false,
+      Contracts: true,
       caption: "procoor-icon-Issues",
       permission: 24
     }
