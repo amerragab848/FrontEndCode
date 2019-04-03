@@ -401,8 +401,8 @@ class meetingAgendaAddEdit extends Component {
             isLoading: true,
             firstComplete: true
         });
-        let docDate =moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        let document=Object.assign(this.state.document,{ docDate:docDate})
+        let docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let document = Object.assign(this.state.document, { docDate: docDate })
         Api.post('EditCommunicationMeetingAgenda', document).then(result => {
             this.setState({
                 isLoading: false,
@@ -1059,27 +1059,7 @@ class meetingAgendaAddEdit extends Component {
 
                                 : null}
 
-                            {
-                                this.props.changeStatus === true ?
-                                    <div className="approveDocument">
-                                        <div className="approveDocumentBTNS">
-                                            {this.state.isApproveMode === true ?
-                                                <div >
-                                                    <button type='button' className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                    <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                </div>
-                                                : null
-                                            }
-                                            <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                            <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                            <span className="border"></span>
-                                            <div className="document__action--menu">
-                                                <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    : null
-                            }
+
                         </Form>
                     )}
                 </Formik>
@@ -1161,7 +1141,27 @@ class meetingAgendaAddEdit extends Component {
                                             {this.state.CurrStep == 2 ? attendeesContent : topicContent}
                                         </SkyLight>
                                     </div>
-
+                                    {
+                                        this.props.changeStatus === true ?
+                                            <div className="approveDocument">
+                                                <div className="approveDocumentBTNS">
+                                                    {this.state.isApproveMode === true ?
+                                                        <div >
+                                                            <button type='button' className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                            <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                        </div>
+                                                        : null
+                                                    }
+                                                    <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                    <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                    <span className="border"></span>
+                                                    <div className="document__action--menu">
+                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            : null
+                                    }
                                 </Fragment>
                             </div>
                             <div>
