@@ -1273,7 +1273,7 @@ class SubmittalAddEdit extends Component {
     this.setState({
       selectedCycleAprrovalStatus: { label: Resources.selectResult[currentLanguage], value: "0"},
       selectedNewFromContactCycles: {label: Resources.fromContactRequired[currentLanguage],value: "0"},
-      selectedNewFromCompanyCycles: {label: Resources.selectedNewFromCompanyCycles[currentLanguage],value: "0"},
+      selectedNewFromCompanyCycles: {label: Resources.fromCompanyRequired[currentLanguage],value: "0"},
       addCycleSubmital: submittalCycle,
       addNewCycle: true
     });
