@@ -428,16 +428,18 @@ class CommonLog extends Component {
   }
 
   GetLogData(url) {
-    Api.get(url).then(result => {
-      this.setState({
-        rows: result.data,
-        totalRows: result.total,
-        isLoading: false
+ 
+      Api.get(url).then(result => {
+        this.setState({
+          rows: result.data,
+          totalRows: result.total,
+          isLoading: false
+        });
+  
+      }).catch(ex => {
+        this.setState({ isLoading: false });
       });
-
-    }).catch(ex => {
-      this.setState({ isLoading: false });
-    });
+    
   };
 
   handleMinimize = () => {
