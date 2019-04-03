@@ -256,7 +256,7 @@
     "ar": "تم تنفيذ العمليه بنجاح"
   },
   "changeBoqIntoContractOrPO": {
-    "en": "Change BOQ Into Contract/Purchase Order",
+    "en": "Create BOQ To Contract/PO",
     "ar": "تحويل قائمة الكميات إلي عقد / أمر الشراء"
   },
   "selectProjectClick": {
