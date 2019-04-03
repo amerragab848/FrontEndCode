@@ -2000,7 +2000,7 @@ button.companies_icon {
 .one__tab.one_step .doc-container .step-content .document-fields {
   padding-left: 0;
   padding-right: 0;
-  padding-top: 50px;
+  padding-top: 25px;
 }
 .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
   width: 360px;
@@ -2280,12 +2280,12 @@ button.companies_icon {
   color: #252833 !important;
 }
 .Toastify__toast--info {
-  background-color: #26344c !important;
-}
-.Toastify__toast--default {
   background-color: #f9fbfc !important;
   border: solid 1px #dfe5eb !important;
   color: #252833 !important;
+}
+.Toastify__toast--default {
+  background-color: #26344c !important;
 }
 .Toastify__close-button {
   position: absolute;
@@ -2924,7 +2924,7 @@ button.companies_icon {
   left: 145px;
 } */
 .slider-Btns.fullWidthWrapper.textLeft {
-  margin: 0
+  margin-top: 0
 }
 .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
   max-width: 190px;
@@ -2975,6 +2975,8 @@ button.companies_icon {
   flex-flow: column;
   margin-bottom: 16px;
 }
+
+
 .fullInputWidth ui.input.inputDev , .fullInputWidth input  {
   width: 100% !important;
 }
@@ -3027,6 +3029,10 @@ button.companies_icon {
   margin-bottom: 30px;
   border-bottom: 1px solid #e9ecf0;
   flex-wrap: wrap;
+  /* background: #e9ecf052; */
+  margin-top: 0;
+  padding-top: 10px;
+  /* padding-bottom: 20px; */
 /*            background: #e9ecf052;*/
   margin-top: 0;
   padding-top: 10px;
@@ -3034,6 +3040,10 @@ button.companies_icon {
 .company__total .form-group {
   padding: 12px 0;
   padding-bottom: 0;
+  margin-bottom: 0;
+}
+.company__total .form-group input{
+  width: 190px;
   margin-bottom: 25px;
 }
 .company__total .form-group input{
@@ -3043,6 +3053,16 @@ button.companies_icon {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+.total_money {
+  position: absolute;
+  left: 190px;
+  top: -24px;
+  letter-spacing: -0.2px;
+  color: #26344c;
+  font-family: font-opensb;
+  display: block;
+}
+
 .data__tabs {
   display: flex;
   padding-top: 13px;
@@ -3058,6 +3078,12 @@ button.companies_icon {
   border-bottom: 4px solid transparent;
   display: flex;
   align-items: center;
+  /* height: 60px; */
+  /* padding-bottom: 13px; */
+  background: #e9ecf0;
+  padding: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   height: 60px;
   background: #e9ecf0;
   padding: 0 10px;
@@ -3077,6 +3103,12 @@ button.companies_icon {
   .company__total .data__tabs{
       margin-top: 23px;
   }
+}
+.react-grid-Toolbar .btn.primaryBtn-1, .react-grid-Toolbar .btn.primaryBtn-1:hover {
+  background: #4382f9;
+  color: #ffffff;
+  border-color: #4382f9;
+  min-width: unset;
 }
 .tabinsideItem {
   justify-content: center
