@@ -2032,23 +2032,7 @@ class SubmittalAddEdit extends Component {
                                 defaultPageSize={5}
                                 noDataText={Resources["noData"][currentLanguage]}
                                 className="-striped -highlight" />
-
-                              {this.state.itemData.length > 0 ? (
-                                <Fragment>
-                                  <header className="main__header">
-                                    <div className="main__header--div">
-                                      <h2 className="zero">
-                                        {Resources["listDetails"][currentLanguage]}
-                                      </h2>
-                                    </div>
-                                  </header>
-                                  <ReactTable
-                                    data={this.state.itemData} columns={columnsItems}
-                                    defaultPageSize={5}
-                                    noDataText={Resources["noData"][currentLanguage]}
-                                    className="-striped -highlight" />
-                                </Fragment>
-                              ) : null}
+ 
                             </div>
                           </Fragment>
 
@@ -2177,6 +2161,14 @@ class SubmittalAddEdit extends Component {
                                     </div>
                                   </div>
                                 ) : null}
+                                
+                                <header className="main__header">
+                                    <div className="main__header--div">
+                                      <h2 className="zero">
+                                        {Resources["listDetails"][currentLanguage]}
+                                      </h2>
+                                    </div>
+                                  </header>
                                 <ReactTable data={this.state.itemData} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
                                   className="-striped -highlight"
                                   getTrProps={(state, rowInfo, column, instance) => {
