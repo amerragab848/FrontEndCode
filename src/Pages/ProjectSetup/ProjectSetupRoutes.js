@@ -93,7 +93,18 @@ let routes = [
             permission: 778,
             caption: "procoor-icon-task-groups"
         }
+    },{
+        route: "AccountsAlerts",
+        moduleId: "AccountsAlerts",
+        title: "docAlerts",
+        nav: true,
+        settings: {
+            General: true,
+            permission: 3274,
+            caption: "procoor-icon-task-groups"
+        }
     },
+
 
 
 ]

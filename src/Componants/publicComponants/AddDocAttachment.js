@@ -182,8 +182,8 @@ class AddDocAttachment extends Component {
 
     let obj = {
       docId: row.docId,
-      projectId: row.projectId,
-      projectName: row.projectName,
+      projectId: row.projectId ?  row.projectId: this.props.projectId,
+      projectName: row.projectName ? row.projectName: this.props.projectName,
       arrange: 0,
       docApprovalId: 0,
       isApproveMode: false

@@ -142,7 +142,11 @@ class GridSetup extends Component {
       Id = rows.map(r => r.row.id);
       this.props.IsActiv(Id)
     }
-    this.props.onRowsSelected(rows)
+
+
+    if (this.props.onRowsSelected !== undefined) {
+      this.props.onRowsSelected(rows)
+    }
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -153,7 +157,6 @@ class GridSetup extends Component {
       prevRows.push(rows[0].rowIdx);
       prevRowsId.push(rows[0].row.id);
     }
-
     else if (rows.length > 1) {
       prevRows = [];
       prevRowsId = [];
@@ -178,11 +181,13 @@ class GridSetup extends Component {
   };
 
   onRowsDeselected = rows => {
-    this.props.onRowsDeselected()
     if (this.props.IsActiv !== undefined) {
       this.props.UnSelectIsActiv()
     }
-
+    else if (this.props.onRowsDeselected !== undefined) {
+      this.props.onRowsDeselected()
+    }
+    
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -258,7 +263,7 @@ class GridSetup extends Component {
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
 
-    if (this.props.onGridRowsUpdated!=undefined) {
+    if (this.props.onGridRowsUpdated != undefined) {
 
       this.props.onGridRowsUpdated({ fromRow, toRow, updated })
     }
@@ -281,7 +286,6 @@ class GridSetup extends Component {
       if (document.getElementById('top__scroll') != null) {
         document.getElementById('top__scroll').scrollLeft = this.scrollLeft;
       }
-      // document.getElementById('empty__div--scroll').style.width = document.getElementById('scrollWidthDiv').style.width;
     });
   }
 
@@ -344,7 +348,7 @@ class GridSetup extends Component {
 
             <ReactDataGrid
               rowKey="id"
-              minHeight={this.props.minHeight !== undefined ? this.props.minHeight : 650}
+              minHeight={groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 650)}
               height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
               columns={this.state.columns}
               rowGetter={i => groupedRows[i]}

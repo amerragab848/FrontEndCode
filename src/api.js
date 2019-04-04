@@ -144,6 +144,8 @@ export default class Api {
             headers.docid = header.docId
             headers.doctypeid = header.docTypeId
             headers.parentid = header.parentId
+
+            headers.docType = header.docType
         }
         return fetch(url, {
             method: 'POST',
