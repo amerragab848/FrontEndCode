@@ -46,45 +46,64 @@ class EpsPermission extends Component {
             isEdit: false,
             showDeleteModal: false
         }
+
+        if (!Config.IsAllow(1260) || !Config.IsAllow(1263) || !Config.IsAllow(1264)) {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: "/"
+            });
+        }
     }
 
 
-    versionHandler = (parentId) => {
-        let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
-        Api.get(urlVersion).then(result => {
 
-        }).catch(ex => {
-        });
-    }
     addEditEps = () => {
+
         if (this.state.isEdit) {
 
-            this.setState({ isLoading: true })
-            let item = Object.assign(this.state.item, { title: this.state.values.englishTitle }, { titleAr: this.state.values.arabicTitle }, { titleEn: this.state.values.englishTitle })
-            Api.post("EditEpsById", item).then((res) => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.setState({ isLoading: false, showModal: false, type: '' })
-                this.EditRecord(res)
-            }).catch(res => {
-                this.setState({ isLoading: false, showModal: false })
-
-            });
-        } else {
-            let Eps = {
-                parentId: this.state.type == 'child' ? this.state.item.id : null,
-                titleEn: this.state.values.englishTitle,
-                titleAr: this.state.values.arabicTitle,
-                showInReport: this.state.values.showInReport
+            if (!Config.IsAllow(1263)) {
+                toast.success(Resources["missingPermissions"][currentLanguage]);
             }
-            this.setState({ isLoading: true })
-            Api.post("AddEps", Eps).then((res) => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.setState({ isLoading: false, showModal: false, type: '' })
-                this.addRecord(res)
-            }).catch(res => {
-                this.setState({ isLoading: false, showModal: false })
+            else {
+                this.setState({ isLoading: true })
+                let item = Object.assign(this.state.item, { title: this.state.values.englishTitle }, { titleAr: this.state.values.arabicTitle }, { titleEn: this.state.values.englishTitle })
+                Api.post("EditEpsById", item).then((res) => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.setState({ isLoading: false, showModal: false, type: '' })
+                    this.EditRecord(res)
+                }).catch(res => {
+                    this.setState({ isLoading: false, showModal: false })
 
-            });
+                });
+            }
+
+        } else {
+            if (this.state.type != 'child' && !Config.IsAllow(1261)) {
+                toast.success(Resources["missingPermissions"][currentLanguage]);
+            }
+            else if (this.state.type == 'child' && !Config.IsAllow(1262)) {
+                toast.success(Resources["missingPermissions"][currentLanguage]);
+
+            }
+            else {
+                let Eps = {
+                    parentId: this.state.type == 'child' ? this.state.item.id : null,
+                    titleEn: this.state.values.englishTitle,
+                    titleAr: this.state.values.arabicTitle,
+                    showInReport: this.state.values.showInReport
+                }
+                this.setState({ isLoading: true })
+                Api.post("AddEps", Eps).then((res) => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.setState({ isLoading: false, showModal: false, type: '' })
+                    this.addRecord(res)
+                }).catch(res => {
+                    this.setState({ isLoading: false, showModal: false })
+
+                });
+            }
+
+
         }
     }
 
@@ -126,14 +145,21 @@ class EpsPermission extends Component {
     }
 
     ConfirmDelete = () => {
-        this.setState({ isLoading: true, showDeleteModal: false })
-        Api.post("DeletEpsById?id=" + this.state.item.id).then((res) => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ isLoading: false, showModal: false, type: '' })
-            this.deleteRecord(this.state.item)
-        }).catch(res => {
-            this.setState({ isLoading: false, showModal: false })
-        });
+
+        if (!Config.IsAllow(1264)) {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+        }
+        else {
+            this.setState({ isLoading: true, showDeleteModal: false })
+            Api.post("DeletEpsById?id=" + this.state.item.id).then((res) => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.setState({ isLoading: false, showModal: false, type: '' })
+                this.deleteRecord(this.state.item)
+            }).catch(res => {
+                this.setState({ isLoading: false, showModal: false })
+            });
+        }
+
     }
 
     getData() {
