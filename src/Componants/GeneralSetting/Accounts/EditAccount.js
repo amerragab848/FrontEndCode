@@ -15,7 +15,6 @@ import { Formik, Form, withFormik } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
-import { string } from 'prop-types';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const publicConfiguarion = config.getPayload();
 const getPublicConfiguartion = config.getPublicConfiguartion();
@@ -34,6 +33,7 @@ const validationSchema = Yup.object().shape({
 });
 
 class EditAccount extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
