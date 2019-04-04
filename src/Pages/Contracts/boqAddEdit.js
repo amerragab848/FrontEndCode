@@ -503,33 +503,42 @@ class bogAddEdit extends Component {
         })
     }
     editBoq = (values) => {
-        this.setState({
-            isLoading: true,
-            firstComplete: true
-        });
-        let documentObj = {
-            project: this.state.projectId,
-            id: this.state.docId,
-            arrange: this.state.document.arrange,
-            DocumentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            Company: Config.getPayload().cmi,
-            Discipline: this.state.selectedDiscipline.value,
-            Status: values.status,
-            Subject: values.subject,
-            ShowInCostCoding: false,
-            ShowInSiteRequest: values.showInSiteRequest,
-            ShowOptimization: values.showOptimization
-        };
-        Api.post('EditBoq', documentObj).then(result => {
-            this.setState({
-                isLoading: false,
-            });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
+        if(this.state.isViewMode)
+        {
             this.NextStep()
-        }).catch(() => {
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ isLoading: false })
-        })
+
+        }
+        else
+        {
+            this.setState({
+                isLoading: true,
+                firstComplete: true
+            });
+            let documentObj = {
+                project: this.state.projectId,
+                id: this.state.docId,
+                arrange: this.state.document.arrange,
+                DocumentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                Company: Config.getPayload().cmi,
+                Discipline: this.state.selectedDiscipline.value,
+                Status: values.status,
+                Subject: values.subject,
+                ShowInCostCoding: false,
+                ShowInSiteRequest: values.showInSiteRequest,
+                ShowOptimization: values.showOptimization
+            };
+            Api.post('EditBoq', documentObj).then(result => {
+                this.setState({
+                    isLoading: false,
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.NextStep()
+            }).catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ isLoading: false })
+            })
+        }
+      
     }
 
     addEditItems = () => {
