@@ -18,6 +18,7 @@ class UploadAttachment extends Component {
         this.state = {
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
+            link:this.props.link,
             parentId:'',
             _className: ''
         }

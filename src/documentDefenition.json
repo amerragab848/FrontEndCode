@@ -7288,7 +7288,7 @@
   "qs": {
     "documentTitle": "contractsQs",
     "docTyp": 98,
-    "documentAddEditLink": "qsAddEdit/",
+    "documentAddEditLink": "qsAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 765,
     "documentEditPermission": 766,

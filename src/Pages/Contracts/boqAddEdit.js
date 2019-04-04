@@ -27,10 +27,10 @@ import * as communicationActions from '../../store/actions/communication';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
-import Dataservice from '../../Dataservice';
 import GridSetup from "../Communication/GridSetup";
 import { func } from 'prop-types';
-
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
+import IPConfig from '../../IP_Configrations'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const poqSchema = Yup.object().shape({
@@ -210,11 +210,13 @@ class bogAddEdit extends Component {
         ];
 
         this.state = {
+            isCompany: Config.getPayload().uty == 'company' ? true : false,
             showForm: false,
-            addedContract: false,
+            loadingContractPurchase: false,
             AddedPurchase: false,
+            loadingContract: false,
             LoadingPage: false,
-            docTypeId: 35,
+            docTypeId: 64,
             selectedRow: '',
             pageSize: 50,
             CurrStep: 1,
@@ -492,8 +494,6 @@ class bogAddEdit extends Component {
             this.setState({
                 docId: result.id,
                 isLoading: false,
-                selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                selected: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
                 btnTxt: 'next'
             })
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -503,34 +503,42 @@ class bogAddEdit extends Component {
         })
     }
     editBoq = (values) => {
-        this.setState({
-            isLoading: true,
-            firstComplete: true
-        });
-        let documentObj = {
-            project: this.state.projectId,
-            id:this.state.docId,
-            arrange:this.state.document.arrange,
-            DocumentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            Company: Config.getPayload().cmi,
-            Discipline: this.state.selectedDiscipline.value,
-            Status: values.status,
-            Subject: values.subject,
-            ShowInCostCoding: false,
-            ShowInSiteRequest: values.showInSiteRequest,
-            ShowOptimization: values.showOptimization
-        };
-        Api.post('EditBoq', documentObj).then(result => {
-            this.setState({
-                isLoading: false,
-                CurrStep: this.state.CurrStep + 1
-            });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
+        if(this.state.isViewMode)
+        {
             this.NextStep()
-        }).catch(() => {
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ isLoading: false })
-        })
+
+        }
+        else
+        {
+            this.setState({
+                isLoading: true,
+                firstComplete: true
+            });
+            let documentObj = {
+                project: this.state.projectId,
+                id: this.state.docId,
+                arrange: this.state.document.arrange,
+                DocumentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                Company: Config.getPayload().cmi,
+                Discipline: this.state.selectedDiscipline.value,
+                Status: values.status,
+                Subject: values.subject,
+                ShowInCostCoding: false,
+                ShowInSiteRequest: values.showInSiteRequest,
+                ShowOptimization: values.showOptimization
+            };
+            Api.post('EditBoq', documentObj).then(result => {
+                this.setState({
+                    isLoading: false,
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.NextStep()
+            }).catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ isLoading: false })
+            })
+        }
+      
     }
 
     addEditItems = () => {
@@ -548,17 +556,17 @@ class bogAddEdit extends Component {
             revisedQuantity: 0,
             resourceCode: this.state.items.resourceCode,
             itemCode: this.state.items.itemCode,
-            itemType: this.state.selectedItemType.value,
+            itemType: this.state.selectedItemType.value == '0' ? null : this.state.selectedItemType.value,
             itemTypeLabel: this.state.selectedItemType.label,
             days: this.state.items.days,
             equipmentType: this.state.selectedequipmentType.value > 0 ? this.state.selectedequipmentType.value : '',
             equipmentTypeLabel: this.state.selectedequipmentType.value > 0 ? this.state.selectedequipmentType.label : '',
             editable: true,
-            boqSubTypeId: this.state.selectedBoqSubType.value,
+            boqSubTypeId: this.state.selectedBoqSubType.value == '0' ? null : this.state.selectedBoqSubType.value,
             boqSubType: this.state.selectedBoqSubType.label,
-            boqTypeId: this.state.selectedBoqType.value,
+            boqTypeId: this.state.selectedBoqType.value == '0' ? null : this.state.selectedBoqType.value,
             boqType: this.state.selectedBoqType.label,
-            boqChildTypeId: this.state.selectedBoqTypeChild.value,
+            boqChildTypeId: this.state.selectedBoqTypeChild.value == '0' ? null : this.state.selectedBoqTypeChild.value,
             boqTypeChild: this.state.selectedBoqTypeChild.label,
         }
         let url = this.state.showPopUp ? 'EditBoqItem' : 'AddBoqItem'
@@ -630,15 +638,17 @@ class bogAddEdit extends Component {
         if (this.state.CurrStep == 2) {
             Api.post('ContractsBoqItemsMultipleDelete?', this.state.selectedRow).then((res) => {
                 let data = [...this.state.rows]
+                let length = data.length
                 data.forEach((element, index) => {
                     data = data.filter(item => { return item.id != element.id });
-                    if (index == data.length - 1) {
+                    if (index == length - 1) {
                         this.setState({ rows: data, showDeleteModal: false, isLoading: false });
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                     }
                 })
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ showDeleteModal: false, isLoading: false });
             })
         }
     }
@@ -652,6 +662,12 @@ class bogAddEdit extends Component {
                 })
                 break;
             case 2:
+                if (this.state.docId > 0) {
+                    this.setState({ isLoading: true, LoadingPage: true })
+                    this.props.actions.documentForEdit('GetBoqForEdit?id=' + this.state.docId).then(() => {
+                        this.setState({ LoadingPage: false })
+                    })
+                }
                 this.setState({
                     CurrStep: this.state.CurrStep + 1, secondComplete: true,
                     isLoading: false
@@ -802,17 +818,17 @@ class bogAddEdit extends Component {
                 insurance: values.insurance,
                 advancedPaymentAmount: values.advancedPaymentAmount,
             }
-            this.setState({ isLoading: true })
+            this.setState({ loadingContractPurchase: true })
             DataService.addObject('AddContractsForBoq', contract).then(() => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 this.setState({
                     selectedCurrency: { label: Resources.pleaseSelect[currentLanguage], value: "0" },
-                    isLoading: false,
+                    loadingContractPurchase: false,
                     addedContract: true
                 })
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
-                this.setState({ isLoading: false })
+                this.setState({ loadingContractPurchase: false })
 
             })
             this.changeTab()
@@ -837,14 +853,14 @@ class bogAddEdit extends Component {
                 actionCurrency: this.state.selectedCurrency != undefined ? this.state.selectedCurrency.value : 0,
                 advancePaymentPercent: values.advancedPaymentPercent,
             }
-            this.setState({ isLoading: true, AddedPurchase: true })
+            this.setState({ loadingContractPurchase: true, AddedPurchase: true })
             DataService.addObject('AddContractsPurchaseOrdersForBoq', purchaseOrder).then(() => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.setState({ isLoading: false })
+                this.setState({ loadingContractPurchase: false })
 
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
-                this.setState({ isLoading: false })
+                this.setState({ loadingContractPurchase: false })
 
             })
             this.changeTab()
@@ -900,7 +916,6 @@ class bogAddEdit extends Component {
             />) : <LoadingSection />;
         const contractContent = <React.Fragment>
             <div className="document-fields">
-                {this.state.isLoading ? <LoadingSection /> : null}
                 <Formik
                     enableReinitialize={true}
                     initialValues={{
@@ -1082,8 +1097,6 @@ class bogAddEdit extends Component {
         </React.Fragment >
         const purchaseOrderContent = <React.Fragment>
             <div className="document-fields">
-
-                {this.state.isLoading ? <LoadingSection /> : null}
                 <Formik
                     enableReinitialize={true}
                     initialValues={{
@@ -1548,6 +1561,9 @@ class bogAddEdit extends Component {
                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                     this.addPoq(values);
                                 }
+                                else if (this.props.changeStatus === false && this.state.docId > 0) {
+                                    this.NextStep();
+                                }
                             }}  >
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                 <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -1676,27 +1692,7 @@ class bogAddEdit extends Component {
                                         </div>
 
                                     </div>
-                                    {this.props.changeStatus === true ?
-                                        <div className="approveDocument">
-                                            <div className="approveDocumentBTNS">
-                                                {this.state.isApproveMode === true ?
 
-                                                    <div >
-                                                        <button type='button' className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button >
-                                                        <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                    </div>
-                                                    : null}
-                                                <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                <span className="border"></span>
-                                                <div className="document__action--menu">
-                                                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        : null
-                                    }
                                 </Form>
                             )}
                         </Formik>
@@ -1723,9 +1719,21 @@ class bogAddEdit extends Component {
         </React.Fragment>
         let Step_2 = <React.Fragment>
             {itemsContent}
+            <Fragment>
+                <XSLfile key='boqImport' docId={this.state.docId} docType='boq' link={IPConfig.downloads + '/Downloads/Excel/BOQ.xlsx'} header='addManyItems'
+                    disabled={this.props.changeStatus ? (this.props.document.contractId > 0 ? true : false) : false} afterUpload={() => this.getTabelData()} />
+            </Fragment>
+            {this.state.isCompany ?
+                <Fragment>
+                    <XSLfile key='boqStructure' docId={this.state.docId} docType='boq2' link={IPConfig.downloads + '/Downloads/Excel/BOQ2.xlsx'} header='addManyItems'
+                        disabled={this.props.changeStatus ? (this.props.document.contractId > 0 ? true : false) : false} afterUpload={() => this.getTabelData()} />
+                </Fragment> : null}
             <div className="doc-pre-cycle letterFullWidth">
+                <header><h2 className="zero">{Resources.itemList[currentLanguage]}</h2></header>
                 <div className='precycle-grid'>
-                    {ItemsGrid}
+                    <div className="grid-container">
+                        {ItemsGrid}
+                    </div>
                     <div class="slider-Btns">
                         <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
                     </div>
@@ -1733,6 +1741,7 @@ class bogAddEdit extends Component {
             </div>
         </React.Fragment>
         let Step_3 = <React.Fragment>
+            {this.state.loadingContractPurchase ? <LoadingSection /> : null}
             <div className="company__total proForm">
                 <div className="form-group ">
                     <label className="control-label">{Resources.company[currentLanguage]}</label>
@@ -1797,6 +1806,28 @@ class bogAddEdit extends Component {
                                                 {itemsContent}
                                             </SkyLight>
                                         </div>
+
+                                        {this.props.changeStatus === true ?
+                                            <div className="approveDocument">
+                                                <div className="approveDocumentBTNS">
+                                                    {this.state.isApproveMode === true ?
+
+                                                        <div >
+                                                            <button type='button' className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button >
+                                                            <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                        </div>
+                                                        : null}
+                                                    <button type='button' className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                    <button type='button' className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                    <span className="border"></span>
+                                                    <div className="document__action--menu">
+                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            : null
+                                        }
                                     </Fragment>
                                 }
                             </div>
