@@ -18738,7 +18738,7 @@
     "documentPermission": 554,
     "documentApi": {
       "get": "ProjectPicturesGet",
-      "getCustom": "",
+      "getCustom": "ProjectPicturesGet",
       "delete": "DeleteMultipleProjectPicture"
     },
     "documentColumns": [
@@ -18793,8 +18793,8 @@
       {
         "field": "docDate",
         "friendlyName": "docDate",
-        "minWidth": 85,
-        "width": "15%",
+        "minWidth": 110,
+        "width": "20%",
         "dataType": "date",
         "isDate": true,
         "isTime": false,
@@ -18805,8 +18805,8 @@
       {
         "field": "picDate",
         "friendlyName": "picDate",
-        "minWidth": 85,
-        "width": "15%",
+        "minWidth": 110,
+        "width": "20%",
         "dataType": "date",
         "isDate": true,
         "isTime": false,

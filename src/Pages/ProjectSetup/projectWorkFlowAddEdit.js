@@ -6,7 +6,6 @@ import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
-
 import Api from '../../api';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -50,7 +49,6 @@ const ValidtionSchemaContactsForAdd = Yup.object().shape({
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 });
 
-
 const ValidtionSchemaDocumentType = Yup.object().shape({
     DocumentTypeDrop: Yup.string()
         .required(Resources['selectDocType'][currentLanguage])
@@ -86,7 +84,6 @@ const ValidtionSchemaContactsForEdit = Yup.object().shape({
         .required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 });
-
 
 const validationSchemaForAddEditWorkFlow = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -286,16 +283,15 @@ class projectWorkFlowAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
         if (nextProps.document && nextProps.document.id) {
             let WorkFlowDoc = nextProps.document
             WorkFlowDoc.docDate = moment(WorkFlowDoc.docDate).format("DD/MM/YYYY")
+
             this.setState({
                 document: WorkFlowDoc,
                 IsEditMode: true,
                 hasWorkflow: nextProps.hasWorkflow,
             });
-
             this.checkDocumentIsView();
         }
     }
@@ -523,42 +519,35 @@ class projectWorkFlowAddEdit extends Component {
         });
     }
 
+    SelectedValueDropsInEditMode = (RejData, NextWFData) => {
+        if (docId !== 0) {
+            let RejectionOptionsId = this.state.document.rejectionOptions;
+            let selectedRejectionOptions = _.find(RejData, function (i) { return i.value == RejectionOptionsId });
+            let NextWorkFlowId = this.state.document.nextWorkFlowId;
+            let selectedNextWorkFlow = _.find(NextWFData, function (i) { return i.value == NextWorkFlowId });
+            this.setState({
+                selectedRejectionOptions: selectedRejectionOptions,
+                selectedNextWorkFlow: selectedNextWorkFlow,
+            })
+        }
+    }
+
     FillDropDowns = () => {
         dataservice.GetDataList('GetDefaultListForList?listType=rejectionOptions', 'title', 'id').then(
             res => {
-
                 this.setState({
                     RejectionOptionData: res,
                 })
-
-                if (this.state.IsEditMode && this.state.docId > 0) {
-                    let RejectionOptionsId = this.state.document.rejectionOptions;
-                    let selectedRejectionOptions = _.find(res, function (i) { return i.value == RejectionOptionsId });
-                    this.setState({
-                        selectedRejectionOptions: selectedRejectionOptions
-                    })
-
-                }
+                dataservice.GetDataList('ProjectWorkFlowGetList?projectId=' + projectId + '', 'subject', 'id').then(
+                    result => {
+                        this.setState({
+                            NextWorkFlowData: result,
+                        })
+                        this.SelectedValueDropsInEditMode(res, result)
+                    }
+                )
             }
         )
-        dataservice.GetDataList('ProjectWorkFlowGetList?projectId=' + projectId + '', 'subject', 'id').then(
-            result => {
-
-                this.setState({
-                    NextWorkFlowData: result,
-                })
-
-                if (this.state.IsEditMode && this.state.docId > 0) {
-                    let NextWorkFlowId = this.state.document.nextWorkFlowId;
-                    let selectedNextWorkFlow = _.find(result, function (i) { return i.value == NextWorkFlowId });
-                    this.setState({
-                        selectedNextWorkFlow: selectedNextWorkFlow
-                    })
-                }
-            }
-        )
-
-
 
     }
 
@@ -578,7 +567,7 @@ class projectWorkFlowAddEdit extends Component {
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
-                //this.NextStep()
+                this.NextStep()
             }
 
             else {
@@ -592,7 +581,7 @@ class projectWorkFlowAddEdit extends Component {
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
-                //this.NextStep()
+                this.NextStep()
             }
         }
     }
@@ -624,7 +613,19 @@ class projectWorkFlowAddEdit extends Component {
                         isLoading: false,
                     })
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    values.Company = ''
+                    values.ContactName = ''
+                    values.Description = ''
+                    Api.get('GetWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.docId + '').then(
+                        result => {
+                            this.setState({
+                                MultiApprovalData: result,
+                                NewMultiApprovalData: result
+                            })
+                        }
+                    )
                 }
+
             )
         }
         else {
@@ -635,18 +636,9 @@ class projectWorkFlowAddEdit extends Component {
                 })
             }, 300);
             toast.error('This Contact Already Exist in Same Level ....')
+            values.ContactName = ''
         }
-        values.Company = ''
-        values.ContactName = ''
-        values.Description = ''
-        Api.get('GetWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.docId + '').then(
-            res => {
-                this.setState({
-                    MultiApprovalData: res,
-                    NewMultiApprovalData: res
-                })
-            }
-        )
+
     }
 
     PreviousStep = () => {
@@ -735,6 +727,11 @@ class projectWorkFlowAddEdit extends Component {
                 CurrStep: this.state.CurrStep + 1,
             })
         }
+        else if (this.state.CurrStep === 5) {
+            this.props.history.push({
+                pathname: '/WorkFlow/' + projectId + '',
+            })
+        }
 
     }
 
@@ -818,9 +815,6 @@ class projectWorkFlowAddEdit extends Component {
         }
         else {
             values.SelectedCompanyForEditContacts = ''
-            values.SelectedCompanyForEditContacts = ''
-            values.DescriptionForEdit = ''
-            values.levelNoForEdit = ''
             setTimeout(() => {
                 this.setState({
                     isLoading: false,
@@ -846,7 +840,8 @@ class projectWorkFlowAddEdit extends Component {
                     this.setState({
                         IsLoadingCheckCode: false
                     })
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    toast.error(Resources['operationCanceled'][currentLanguage])
+                    values.ContactNameFollowUp = ''
                 }
 
                 else {
@@ -857,6 +852,7 @@ class projectWorkFlowAddEdit extends Component {
                         IsLoadingCheckCode: false
                     })
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    values.ContactNameFollowUp = ''
                 }
             }
 
@@ -1293,87 +1289,94 @@ class projectWorkFlowAddEdit extends Component {
 
         let SecondStepContacts = () => {
             return (
-                <Formik
-                    initialValues={{
-                        levelNo: this.state.rows.length ? Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })) : 1,
-                        Company: '',
-                        ContactName: '',
-                        Description: '',
-                    }}
+                <div className="subiTabsContent feilds__top">
+                    <Formik
+                        initialValues={{
+                            levelNo: this.state.rows.length ? Math.max.apply(Math, this.state.rows.map(function (o) { return o.arrange + 1 })) : 1,
+                            Company: '',
+                            ContactName: '',
+                            Description: '',
+                        }}
 
-                    enableReinitialize={true}
-                    validationSchema={ValidtionSchemaContactsForAdd}
-                    onSubmit={(values, actions) => {
-                        this.AddContact(values, actions)
-                    }}>
+                        enableReinitialize={true}
+                        validationSchema={ValidtionSchemaContactsForAdd}
+                        onSubmit={(values, actions) => {
+                            this.AddContact(values, actions)
+                        }}>
 
-                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form onSubmit={handleSubmit}>
-                            <header className="main__header">
-                                <div className="main__header--div">
-                                    <h2 className="zero">{Resources['addContact'][currentLanguage]}</h2>
+                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                            <Form onSubmit={handleSubmit}>
+                                <header className="main__header">
+                                    <div className="main__header--div">
+                                        <h2 className="zero">{Resources['addContact'][currentLanguage]}</h2>
+                                    </div>
+                                </header>
+
+                                <div className='document-fields'>
+
+                                    <div className="proForm datepickerContainer">
+
+                                        <div className="linebylineInput valid-input">
+                                            <div className="inputDev ui input">
+                                                <Dropdown title="company" data={this.state.CompanyData} name="Company"
+                                                    selectedValue={values.Company} onChange={setFieldValue}
+                                                    handleChange={(e) => this.handleChangeDrops(e, "Company")} touched={touched.Company}
+                                                    onBlur={setFieldTouched} error={errors.Company} value={values.Company} />
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <div className="inputDev ui input">
+                                                <Dropdown title="ContactName" data={this.state.ContactData} name="ContactName"
+                                                    selectedValue={values.ContactName} onChange={setFieldValue} value={values.ContactName}
+                                                    handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
+                                                    onBlur={setFieldTouched} error={errors.ContactName} touched={touched.ContactName} />
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['levelNo'][currentLanguage]}</label>
+                                            <div className={'ui input inputDev ' + (errors.levelNo && touched.levelNo ? 'has-error' : null) + ' '}>
+                                                <input autoComplete="off" value={values.levelNo} className="form-control" name="levelNo"
+                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }}
+                                                    placeholder={Resources['levelNo'][currentLanguage]} />
+                                                {errors.levelNo && touched.levelNo ? (<em className="pError">{errors.levelNo}</em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['description'][currentLanguage]}</label>
+                                            <div className="inputDev ui input">
+                                                <input autoComplete="off" className="form-control" value={values.Description} name="Description"
+                                                    onChange={(e) => { handleChange(e) }} placeholder={Resources['description'][currentLanguage]} />
+                                            </div>
+                                        </div>
+
+                                        <div className="slider-Btns">
+                                            <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['add'][currentLanguage]}</button>
+                                        </div>
+                                    </div>
+
+                                    <div className="doc-pre-cycle">
+                                        <header>
+                                            <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
+                                        </header>
+                                        {dataGrid}
+
+                                    </div>
                                 </div>
-                            </header>
+                            </Form>
+                        )}
 
-                            <div className='document-fields'>
-
-                                <div className="proForm datepickerContainer">
-
-                                    <div className="linebylineInput valid-input">
-                                        <div className="inputDev ui input">
-                                            <Dropdown title="company" data={this.state.CompanyData} name="Company"
-                                                selectedValue={values.Company} onChange={setFieldValue}
-                                                handleChange={(e) => this.handleChangeDrops(e, "Company")} touched={touched.Company}
-                                                onBlur={setFieldTouched} error={errors.Company} value={values.Company} />
-                                        </div>
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <div className="inputDev ui input">
-                                            <Dropdown title="ContactName" data={this.state.ContactData} name="ContactName"
-                                                selectedValue={values.ContactName} onChange={setFieldValue} value={values.ContactName}
-                                                handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
-                                                onBlur={setFieldTouched} error={errors.ContactName} touched={touched.ContactName} />
-                                        </div>
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['levelNo'][currentLanguage]}</label>
-                                        <div className={'ui input inputDev ' + (errors.levelNo && touched.levelNo ? 'has-error' : null) + ' '}>
-                                            <input autoComplete="off" value={values.levelNo} className="form-control" name="levelNo"
-                                                onBlur={(e) => { handleBlur(e) }} onChange={(e) => { handleChange(e) }}
-                                                placeholder={Resources['levelNo'][currentLanguage]} />
-                                            {errors.levelNo && touched.levelNo ? (<em className="pError">{errors.levelNo}</em>) : null}
-                                        </div>
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['description'][currentLanguage]}</label>
-                                        <div className="inputDev ui input">
-                                            <input autoComplete="off" className="form-control" value={values.Description} name="Description"
-                                                onChange={(e) => { handleChange(e) }} placeholder={Resources['description'][currentLanguage]} />
-                                        </div>
-                                    </div>
-
-                                    <div className="slider-Btns">
-                                        <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['add'][currentLanguage]}</button>
-                                    </div>
-                                </div>
-
-                                <div className="doc-pre-cycle">
-                                    <header>
-                                        <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
-                                    </header>
-                                    {dataGrid}
-
-                                </div>
-                            </div>
-                        </Form>
-                    )}
-
-                </Formik>
-
+                    </Formik>
+                    <div className="doc-pre-cycle">
+                        <div className="slider-Btns">
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>NEXT STEP</button>
+                        </div>
+                    </div>
+                </div>
             )
+
         }
 
         let ThirdStepFollowingUps = () => {
@@ -1708,11 +1711,8 @@ class projectWorkFlowAddEdit extends Component {
             )
         }
 
-
         return (
-
             <div className="mainContainer">
-
                 {this.state.IsLoadingCheckCode ?
                     <LoadingSection /> : null
                 }
@@ -1783,7 +1783,7 @@ class projectWorkFlowAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6 onClick={e =>this.setState({CurrStep:1})}>{Resources['workFlow'][currentLanguage]}</h6>
+                                            <h6 onClick={e => this.setState({ CurrStep: 1 })}>{Resources['workFlow'][currentLanguage]}</h6>
                                         </div>
                                     </div>
 

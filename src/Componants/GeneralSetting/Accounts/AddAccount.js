@@ -7,6 +7,9 @@ import config from "../../../Services/Config";
 import _ from "lodash";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { connect } from 'react-redux'
+import * as AdminstrationActions from '../../../store/actions/Adminstration'
+import { bindActionCreators } from 'redux';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -240,6 +243,7 @@ class AddAccount extends Component {
                             dayId = item
                             // Api.post('UpdateVacations?accountId='+this.state.AccountId+'&dayId='+dayId+'').catch(ex => { })
                         }),
+                        this.props.actions.routeToTabIndex(0),
                         this.props.history.push({
                             pathname: '/TemplatesSettings',
                         })
@@ -578,4 +582,15 @@ class AddAccount extends Component {
 
     }
 }
-export default withRouter(AddAccount)
+
+const mapStateToProps = (state) => {
+    let sState = state;
+    return sState;
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(AdminstrationActions, dispatch)
+    };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddAccount));

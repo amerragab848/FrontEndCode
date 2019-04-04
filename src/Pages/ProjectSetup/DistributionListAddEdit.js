@@ -26,8 +26,7 @@ import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Recycle from '../../Styles/images/attacheRecycle.png'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-let CurrProjectId = localStorage.getItem('lastSelectedProject')
-let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
+
 const _ = require('lodash')
 let MaxArrange = 1
 
@@ -61,6 +60,7 @@ class TaskGroupsAddEdit extends Component {
 
     constructor(props) {
         super(props)
+        
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
@@ -219,15 +219,11 @@ class TaskGroupsAddEdit extends Component {
                 CurrStep: this.state.CurrStep + 1,
             })
         }
-        else {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
-                    SecondStep: false,
-                    CurrStep: this.state.CurrStep + 1,
-                })
-            }
+        else if (this.state.CurrStep === 2) {
+            window.scrollTo(0, 0)
+            this.props.history.push({
+                pathname: '/TaskGroups/' + projectId + '',
+            })
         }
     }
 
@@ -273,7 +269,7 @@ class TaskGroupsAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document && props.document.id > 0) {
-            let date = moment(props.document.docDate).format("DD-MM-YYYY")
+            let date = moment(props.document.docDate).format("DD/MM/YYYY")
             this.setState({
                 IsEditMode: true,
                 Dis_ListData: { ...props.document },

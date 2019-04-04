@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -10,7 +9,6 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
-
 
 import { connect } from 'react-redux';
 import {
@@ -129,6 +127,7 @@ class projectPicturesAddEdit extends Component {
         if (nextProps.document && nextProps.document.id) {
             let ProjectPicDoc = nextProps.document
             ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate).format('DD/MM/YYYY')
+            ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate).format('DD/MM/YYYY')
             this.setState({
                 document: ProjectPicDoc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -198,7 +197,7 @@ class projectPicturesAddEdit extends Component {
                     })
                     dataservice.GetDataList('GetContactsByCompanyId?companyId=' + this.state.document.fromCompanyId + '', 'contactName', 'id').then(result => {
                         let elementIDContact = this.state.document.fromContactId;
-                        let SelectedValueContact = _.find(res, function (i) { return i.value == elementIDContact });
+                        let SelectedValueContact = _.find(result, function (i) { return i.value == elementIDContact });
                         this.setState({
                             fromContacts: result,
                             selectedFromContact: SelectedValueContact
@@ -301,48 +300,44 @@ class projectPicturesAddEdit extends Component {
 
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0) {
+        } else if (this.state.IsEditMode ===false ) {
             btn = <button className="primaryBtn-1 btn mediumBtn" onClick={this.saveAndExit} >{Resources.saveAndExit[currentLanguage]}</button>
         }
         return btn;
     }
 
     AddEditProjectPic = () => {
-        if (this.state.IsAddModel) {
-            this.saveAndExit()
+        this.setState({
+            isLoading: true
+        })
+        let ProjectPicDoc = { ...this.state.document }
+        ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+
+        if (this.state.docId > 0) {
+            dataservice.addObject('EditProjectPicture', ProjectPicDoc).then(
+                res => {
+                    this.setState({
+                        isLoading: false
+                    })
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
+                this.saveAndExit()
+
         }
         else {
-            this.setState({
-                isLoading: true
-            })
-            let ProjectPicDoc = { ...this.state.document }
-            ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-            ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-
-            if (this.state.docId > 0) {
-                dataservice.addObject('EditProjectPicture', ProjectPicDoc).then(
-                    res => {
-                        this.setState({
-                            isLoading: false
-                        })
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    }).catch(ex => {
-                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                    });
-
-            }
-            else {
-                dataservice.addObject('AddProjectPicture', ProjectPicDoc).then(
-                    res => {
-                        this.setState({
-                            docId: res.id,
-                            isLoading: false
-                        })
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    }).catch(ex => {
-                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                    });
-            }
+            dataservice.addObject('AddProjectPicture', ProjectPicDoc).then(
+                res => {
+                    this.setState({
+                        docId: res.id,
+                        isLoading: false
+                    })
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
         }
     }
 
@@ -454,7 +449,7 @@ class projectPicturesAddEdit extends Component {
                                                         <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                                         <div className="inputDev ui input">
                                                             <input autoComplete="off" className="form-control" value={this.state.document.description} name="description"
-                                                               onChange={(e) => this.handleChange(e, 'description')} placeholder={Resources['description'][currentLanguage]} />
+                                                                onChange={(e) => this.handleChange(e, 'description')} placeholder={Resources['description'][currentLanguage]} />
                                                         </div>
                                                     </div>
 
@@ -480,11 +475,34 @@ class projectPicturesAddEdit extends Component {
                                                         </div>
                                                     </div>
 
-
                                                 </div>
                                                 <div className="slider-Btns">
                                                     {this.showBtnsSaving()}
                                                 </div>
+                                                { this.state.IsEditMode === true && docId !== 0?
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
+
+                                                                {this.state.isApproveMode === true ?
+                                                                    <div >
+                                                                        <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+
+
+                                                                    </div>
+                                                                    : null
+                                                                }
+                                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                <span className="border"></span>
+                                                                <div className="document__action--menu">
+                                                                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        : null
+                                                }
                                             </Form>
                                         )}
                                     </Formik>
@@ -506,31 +524,7 @@ class projectPicturesAddEdit extends Component {
                             </div>
                         </div>
 
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
 
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
-                                            </div>
-                                            : null
-                                        }
-                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
-                                    </div>
-                                </div>
-                                : null
-                        }
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
