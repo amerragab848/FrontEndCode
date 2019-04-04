@@ -142,7 +142,11 @@ class GridSetup extends Component {
       Id = rows.map(r => r.row.id);
       this.props.IsActiv(Id)
     }
-    this.props.onRowsSelected(rows)
+
+
+    if (this.props.onRowsSelected !== undefined) {
+      this.props.onRowsSelected(rows)
+    }
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -153,7 +157,6 @@ class GridSetup extends Component {
       prevRows.push(rows[0].rowIdx);
       prevRowsId.push(rows[0].row.id);
     }
-
     else if (rows.length > 1) {
       prevRows = [];
       prevRowsId = [];
@@ -280,7 +283,7 @@ class GridSetup extends Component {
     document.getElementById('bottom__scroll').querySelector('.react-grid-Canvas').addEventListener('scroll', function () {
       if (document.getElementById('top__scroll') != null) {
         document.getElementById('top__scroll').scrollLeft = this.scrollLeft;
-      } 
+      }
     });
   }
 
