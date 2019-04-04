@@ -9,6 +9,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
+import Eyepw from '../../../Styles/images/eyepw.svg';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const publicConfiguarion = config.getPayload();
 const getPublicConfiguartion = config.getPublicConfiguartion();
@@ -344,14 +345,24 @@ class AddAccount extends Component {
                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                     <label className="control-label">{Resources['password'][currentLanguage]} </label>
                                                     <div className={'ui input inputDev ' + (errors.Password && touched.Password ? 'has-error' : null) + ' '}>
+                                                        <span className="inputsideNote togglePW">
+                                                            <img src={Eyepw} alt="" />
+                                                            <span className="show"> Show</span>
+                                                            <span className="hide"> Hide</span>
+                                                        </span>
                                                         <input name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]} autoComplete='off'
                                                             onBlur={(e) => {
                                                                 this.passwordChangeHandler(e)
                                                                 handleBlur(e)
                                                             }} onChange={handleChange} />
-                                                        {errors.Password && touched.Password ? (<em className="pError">{errors.Password}</em>) : null}
+                                                        {/* {errors.Password && touched.Password ? (<em className="pError">{errors.Password}</em>) : null} */}
+                                                        <em class="formInputP">Password must include:
+                                                            <span class="charsNumber">8 characters </span>|
+                                                            <span class="capsSpan">Capital letter</span>
+                                                        </em>
                                                     </div>
                                                 </div>
+                                                
                                                 <div className="linebylineInput valid-input">
                                                     <Fragment>
                                                         <label className="control-label">{Resources['employeeCode'][currentLanguage]} </label>
@@ -370,7 +381,7 @@ class AddAccount extends Component {
                                                     </Fragment>
                                                 </div>
 
-                                                
+
                                                 <div className="linebylineInput valid-input">
                                                     <div className={this.state.ContactValidation && touched.ContactValidation ? ("has-error") :
                                                         !this.state.ContactValidation && touched.ContactValidation ? "" : ""} >

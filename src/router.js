@@ -76,6 +76,7 @@ import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
+import variationRequestAddEdit from "./Pages/Contracts/variationRequestAddEdit";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -167,6 +168,7 @@ let originalRoutes = [
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
     , <Route path="/riskAddEdit" component={riskAddEdit} />
+    , <Route path="/variationRequestAddEdit" component={variationRequestAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
