@@ -222,7 +222,7 @@ class TaskGroupsAddEdit extends Component {
         else if (this.state.CurrStep === 2) {
             window.scrollTo(0, 0)
             this.props.history.push({
-                pathname: '/TaskGroups/' + projectId + '',
+                pathname: '/DistributionList/' + projectId + '',
             })
         }
     }

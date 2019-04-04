@@ -366,7 +366,7 @@ class AccountsAlerts extends Component {
                 <div className='mainContainer'>
                     <div className="submittalFilter">
                         <div className="subFilter">
-                            <h3 className="zero">{CurrProjectName + ' - ' + Resources['bicAlerts'][currentLanguage]}</h3>
+                            <h3 className="zero">{CurrProjectName + ' - ' + Resources['docAlerts'][currentLanguage]}</h3>
                             {/* <span>{this.state.totalRows}</span> */}
                             <div className="ui labeled icon top right pointing dropdown fillter-button"
                                 tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
