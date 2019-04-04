@@ -99,17 +99,18 @@ class phoneAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(90))) {
+            if (!Config.IsAllow(90)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(90)) {
+            else if (this.state.isApproveMode != true && Config.IsAllow(90)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(90)) {
-                    if (this.props.document.status == true && Config.IsAllow(90)) {
+                    if (this.props.document.status != false && Config.IsAllow(90)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
                     }
                 } else {
+
                     this.setState({ isViewMode: true });
                 }
             }
@@ -215,8 +216,8 @@ class phoneAddEdit extends Component {
     componentDidMount() {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId)
-
             this.checkDocumentIsView();
+
         } else {
             this.fillDropDowns(false);
             let phone = {
@@ -236,6 +237,7 @@ class phoneAddEdit extends Component {
                 toPhone: ''
             };
             this.setState({ phone });
+            this.props.actions.documentForAdding()
         }
     }
 
@@ -258,13 +260,16 @@ class phoneAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document && props.document.id > 0) {
+            let document = props.document;
+            document.docDate = moment(document.docDate).format('DD/MM/YYYY');
             this.setState({
-                phone: { ...props.document },
+                phone: { ...document },
                 isLoading: false
+            }, function () {
+                this.checkDocumentIsView();
             });
 
             this.fillDropDowns(true);
-            this.checkDocumentIsView();
         }
     }
 
@@ -272,7 +277,10 @@ class phoneAddEdit extends Component {
         this.setState({
             isLoading: true
         });
-        Api.post('EditPhoneById', this.state.phone).then(result => {
+
+        let phoneObj = { ...this.state.phone };
+        phoneObj.docDate = moment(phoneObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        Api.post('EditPhoneById', phoneObj).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -286,7 +294,7 @@ class phoneAddEdit extends Component {
     save = () => {
         this.setState({ isLoading: true })
         let phoneObj = { ...this.state.phone };
-        phoneObj.docDate = moment(phoneObj.docDate).format('MM/DD/YYYY');
+        phoneObj.docDate = moment(phoneObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         DataService.addObject('AddPhone', phoneObj).then(result => {
             this.setState({
@@ -324,7 +332,7 @@ class phoneAddEdit extends Component {
                 : null
         )
     }
-    
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -385,14 +393,15 @@ class phoneAddEdit extends Component {
                                     {this.state.isLoading ? <LoadingSection /> : null}
                                     <Formik
                                         initialValues={{
-                                            subject:this.state.phone.subject,
-                                            fromContact:this.state.selectedFromContact.value>0?this.state.selectedFromContact:'',
-                                            toContact:this.state.selectedToContact.value>0?this.state.selectedToContact:'',
-                                            callTime:this.state.phone.callTime
+                                            subject: this.state.phone.subject,
+                                            fromContact: this.state.selectedFromContact.value > 0 ? this.state.selectedFromContact : '',
+                                            toContact: this.state.selectedToContact.value > 0 ? this.state.selectedToContact : '',
+                                            callTime: this.state.phone.callTime
                                         }}
+                                        enableReinitialize={true}
                                         validationSchema={validationSchema}
                                         onSubmit={(values) => {
-                                            if (this.props.changeStatus === true && this.props.docId > 0) {
+                                            if (this.props.changeStatus === true && this.state.docId > 0) {
                                                 this.editPhone();
                                             } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                 this.save();
@@ -540,6 +549,28 @@ class phoneAddEdit extends Component {
                                                 <div className="slider-Btns fullWidthWrapper textLeft" style={{ margin: 0 }}>
                                                     {this.showBtnsSaving()}
                                                 </div>
+                                                {
+                                                    this.props.changeStatus === true ?
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                <button type="submit" className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
+                                                                {this.state.isApproveMode === true ?
+                                                                    <div >
+                                                                        <button type="button" className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                    </div>
+                                                                    : null
+                                                                }
+                                                                <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                <span className="border"></span>
+                                                                <div className="document__action--menu">
+                                                                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        : null
+                                                }
                                             </Form>
                                         )}
                                     </Formik>
@@ -561,28 +592,7 @@ class phoneAddEdit extends Component {
                             </div>
                         </div>
                     </div>
-                    {
-                        this.props.changeStatus === true ?
-                            <div className="approveDocument">
-                                <div className="approveDocumentBTNS">
-                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editPhone(e)}>{Resources.save[currentLanguage]}</button>
-                                    {this.state.isApproveMode === true ?
-                                        <div >
-                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                        </div>
-                                        : null
-                                    }
-                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                    <span className="border"></span>
-                                    <div className="document__action--menu">
-                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    </div>
-                                </div>
-                            </div>
-                            : null
-                    }
+
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
