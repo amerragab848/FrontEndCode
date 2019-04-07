@@ -187,7 +187,7 @@ class GridSetup extends Component {
     else if (this.props.onRowsDeselected !== undefined) {
       this.props.onRowsDeselected()
     }
-    
+
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
 
@@ -262,18 +262,24 @@ class GridSetup extends Component {
   };
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-
+    // if (fromRow === toRow) {
     if (this.props.onGridRowsUpdated != undefined) {
-
       this.props.onGridRowsUpdated({ fromRow, toRow, updated })
-    }
-    this.setState(state => {
-      const rows = state.rows.slice();
-      for (let i = fromRow; i <= toRow; i++) {
-        rows[i] = { ...rows[i], ...updated };
-      }
-      return { rows };
-    });
+      console.log(fromRow, toRow, updated)
+    } //else {
+    // alert('in elses');
+    // this.setState(state => {
+    //   const rows = state.rows.slice();
+    //   for (let i = fromRow; i <= toRow; i++) {
+    //     rows[i] = { ...rows[i], ...updated };
+    //   }
+    //   return { rows };
+    // });
+    //  }
+    // }else{
+    //   console.log('else....',fromRow,toRow,updated)
+
+    // }
   };
 
   scrolllll() {

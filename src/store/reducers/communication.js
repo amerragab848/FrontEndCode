@@ -17,6 +17,7 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 document: action.document,
+                docId: action.docId,
                 changeStatus: true,
                 showLeftMenu: true,
                 showSelectProject: false
@@ -45,6 +46,12 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 files: [...state.files, action.file],
                 isLoadingFiles: true
+            };
+
+        case types.add_item:
+            return {
+                ...state,
+                items: [...state.items, ...action.item] 
             };
 
         case types.Delete_File:

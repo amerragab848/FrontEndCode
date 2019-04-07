@@ -32,7 +32,7 @@ export default class Dataservice {
 
         return Api.post(url, docObj).then(result => {
             return result;
-        }).catch(ex => { });
+        });//.catch(ex => { });
     };
 
     static GetNextArrangeMainDocument = (url) => {
