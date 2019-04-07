@@ -27,6 +27,8 @@ export const ViewDocumentAttach = 'ViewDocumentAttach';
 export const GetDocumentCycle = 'GetDocumentCycle';
 export const ViewDocsAttachment = 'ViewDocsAttachment';
 
+export const add_item = 'add_item';
+
 // ProjectActionsTypes
 
 //----ExpenesWorkFlow

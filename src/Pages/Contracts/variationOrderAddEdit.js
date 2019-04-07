@@ -28,6 +28,7 @@ import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -48,20 +49,20 @@ const validationSchema = Yup.object().shape({
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
 
-const documentItemValidationSchema = Yup.object().shape({
-    description: Yup.string()
-        .required(Resources['subjectRequired'][currentLanguage]),
-    resourceCode: Yup.string()
-        .required(Resources['resourceCode'][currentLanguage]),
-    itemCode: Yup.string()
-        .required(Resources['itemCode'][currentLanguage]),
-    unitPrice: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    days: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    quantity: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
-})
+// const documentItemValidationSchema = Yup.object().shape({
+//     description: Yup.string()
+//         .required(Resources['subjectRequired'][currentLanguage]),
+//     resourceCode: Yup.string()
+//         .required(Resources['resourceCode'][currentLanguage]),
+//     itemCode: Yup.string()
+//         .required(Resources['itemCode'][currentLanguage]),
+//     unitPrice: Yup.string()
+//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+//     days: Yup.string()
+//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+//     quantity: Yup.string()
+//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+// })
 
 let columns = [
     {
@@ -79,15 +80,15 @@ let columns = [
     }, {
         Header: Resources['unitPrice'][currentLanguage],
         accessor: 'unitPrice',
-        width:80,
+        width: 80,
     }, {
         Header: Resources['resourceCode'][currentLanguage],
         accessor: 'resourceCode',
-        width:120,
+        width: 120,
     }, {
         Header: Resources['itemCode'][currentLanguage],
         accessor: 'itemCode',
-        width:80,
+        width: 80,
     }, {
         Header: Resources['boqType'][currentLanguage],
         accessor: 'boqType',
@@ -99,7 +100,7 @@ let columns = [
     }, {
         Header: Resources['boqTypeChild'][currentLanguage],
         accessor: 'boqTypeChild',
-        width:120,
+        width: 120,
     }
 ]
 
@@ -170,7 +171,7 @@ class variationOrderAddEdit extends Component {
             CurrentStep: 1
         }
 
-        if (!Config.IsAllow(366) || !Config.IsAllow(367) || !Config.IsAllow(369)) {
+        if (!Config.IsAllow(159) || !Config.IsAllow(158) || !Config.IsAllow(160)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/changeOrder/" + projectId
@@ -214,15 +215,15 @@ class variationOrderAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(367)) {
+            if (!Config.IsAllow(158)) {
                 alert('not have edit...');
                 this.setState({ isViewMode: true });
             }
 
-            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(158)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(158)) {
                     //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(367)) {
+                    if (this.props.document.status !== false && Config.IsAllow(158)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -240,16 +241,18 @@ class variationOrderAddEdit extends Component {
         console.log('checkDocumentIsView...', this.props, this.state);
     }
 
+    fillVoItems() {
+
+        dataservice.GetDataGrid("GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId).then(result => {
+            this.setState({
+                voItems: [...result]
+            });
+            this.props.actions.setItemDescriptions(result);
+        });
+    }
     componentWillMount() {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId);
-
-            dataservice.GetDataGrid("GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId).then(result => {
-                this.setState({
-                    voItems: [...result]
-                });
-            });
-
         } else {
             let changeOrder = {
                 subject: '',
@@ -491,6 +494,12 @@ class variationOrderAddEdit extends Component {
                 CurrentStep: this.state.CurrentStep + 1,
                 ThirdStep: false
             })
+            if (this.props.changeStatus === true) {
+                if (this.props.items.length == 0) {
+                    this.fillVoItems();
+                }
+            }
+
         }
         else if (this.state.CurrentStep === 2) {
 
@@ -523,6 +532,11 @@ class variationOrderAddEdit extends Component {
                 CurrentStep: this.state.CurrentStep + 1,
                 ThirdStep: false
             })
+            if (this.props.changeStatus === true) {
+                if (this.props.items.length == 0) {
+                    this.fillVoItems();
+                }
+            }
         }
         else if (this.state.CurrentStep === 2) {
 
@@ -606,13 +620,13 @@ class variationOrderAddEdit extends Component {
 
     handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
         if (event == null) return;
-        let original_document = { ...this.state.documentCycle };
+        let original_document = { ...this.state.voItem };
         let updated_document = {};
         updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
-            documentCycle: updated_document,
+            voItem: updated_document,
             [selectedValue]: event
         });
 
@@ -627,154 +641,152 @@ class variationOrderAddEdit extends Component {
     }
 
     addVariationDraw() {
-        return (
+        // return (
 
-            <Fragment>
-                <Formik
-                    initialValues={{ ...this.state.voItem }}
-                    validationSchema={documentItemValidationSchema}
-                    enableReinitialize={true}
-                    onSubmit={(values) => {
-                        this.saveVariationOrderItem()
-                    }}                >
-                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
-                        <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
-                            <header className="main__header">
-                                <div className="main__header--div">
-                                    <h2 className="zero">{Resources['addItems'][currentLanguage]}</h2>
-                                </div>
-                            </header>
+        //     <Fragment>
+        //         <Formik
+        //             initialValues={{ ...this.state.voItem }}
+        //             validationSchema={documentItemValidationSchema}
+        //             enableReinitialize={true}
+        //             onSubmit={(values) => {
+        //                 this.saveVariationOrderItem()
+        //             }}                >
+        //             {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+        //                 <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
+        //                     <header className="main__header">
+        //                         <div className="main__header--div">
+        //                             <h2 className="zero">{Resources['addItems'][currentLanguage]}</h2>
+        //                         </div>
+        //                     </header>
 
-                            <div className='document-fields'>
+        //                     <div className='document-fields'>
 
-                                <div className="letterFullWidth proForm  first-proform proform__twoInput">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['description'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.description ? 'has-error' : !errors.description && touched.description ? (" has-success") : " ")}>
-                                            <input name='description'
-                                                className="form-control"
-                                                id="description" placeholder={Resources['description'][currentLanguage]}
-                                                autoComplete='off'
-                                                onBlur={handleBlur}
-                                                value={this.state.voItem.description}
-                                                onChange={(e) => this.handleChangeItem(e, 'description')} />
-                                            {errors.description ? (<em className="pError">{errors.description}</em>) : null}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources.quantity[currentLanguage]}</label>
-                                        <div className="ui input inputDev"  >
-                                            <input type="text" className="form-control" id="quantity"
-                                                value={this.state.voItem.quantity}
-                                                name="quantity"
-                                                placeholder={Resources.quantity[currentLanguage]}
-                                                onChange={(e) => this.handleChangeItem(e, 'quantity')} />
-                                            {errors.itemCode ? (<em className="pError">{errors.quantity}</em>) : null}
+        //                         <div className="letterFullWidth proForm  first-proform proform__twoInput">
+        //                             <div className="linebylineInput valid-input">
+        //                                 <label className="control-label">{Resources['description'][currentLanguage]} </label>
+        //                                 <div className={"inputDev ui input " + (errors.description ? 'has-error' : !errors.description && touched.description ? (" has-success") : " ")}>
+        //                                     <input name='description'
+        //                                         className="form-control"
+        //                                         id="description" placeholder={Resources['description'][currentLanguage]}
+        //                                         autoComplete='off'
+        //                                         onBlur={handleBlur}
+        //                                         value={this.state.voItem.description}
+        //                                         onChange={(e) => this.handleChangeItem(e, 'description')} />
+        //                                     {errors.description ? (<em className="pError">{errors.description}</em>) : null}
+        //                                 </div>
+        //                             </div>
+        //                         </div>
+        //                         <div className="proForm datepickerContainer">
+        //                             <div className="linebylineInput valid-input">
+        //                                 <label className="control-label">{Resources.quantity[currentLanguage]}</label>
+        //                                 <div className="ui input inputDev"  >
+        //                                     <input type="text" className="form-control" id="quantity"
+        //                                         value={this.state.voItem.quantity}
+        //                                         name="quantity"
+        //                                         placeholder={Resources.quantity[currentLanguage]}
+        //                                         onChange={(e) => this.handleChangeItem(e, 'quantity')} />
+        //                                     {errors.itemCode ? (<em className="pError">{errors.quantity}</em>) : null}
 
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
-                                        <div className="ui input inputDev"  >
-                                            <input type="text" className="form-control" id="unitPrice"
-                                                value={this.state.voItemunitPrice}
-                                                name="unitPrice"
-                                                placeholder={Resources.unitPrice[currentLanguage]}
-                                                onChange={(e) => this.handleChangeItem(e, 'unitPrice')} />
-                                            {errors.itemCode ? (<em className="pError">{errors.unitPrice}</em>) : null}
+        //                                 </div>
+        //                             </div>
+        //                             <div className="linebylineInput valid-input">
+        //                                 <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
+        //                                 <div className="ui input inputDev"  >
+        //                                     <input type="text" className="form-control" id="unitPrice"
+        //                                         value={this.state.voItemunitPrice}
+        //                                         name="unitPrice"
+        //                                         placeholder={Resources.unitPrice[currentLanguage]}
+        //                                         onChange={(e) => this.handleChangeItem(e, 'unitPrice')} />
+        //                                     {errors.itemCode ? (<em className="pError">{errors.unitPrice}</em>) : null}
 
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['itemCode'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.itemCode ? 'has-error' : !errors.itemCode && touched.itemCode ? (" has-success") : " ")}>
-                                            <input name='itemCode'
-                                                className="form-control"
-                                                id="itemCode" placeholder={Resources['itemCode'][currentLanguage]} autoComplete='off'
-                                                onBlur={handleBlur} value={this.state.voItemitemCode}
-                                                onChange={(e) => this.handleChangeItem(e, "itemCode")} />
-                                            {errors.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
-                                        </div>
-                                    </div>
+        //                                 </div>
+        //                             </div>
+        //                             <div className="linebylineInput valid-input">
+        //                                 <label className="control-label">{Resources['itemCode'][currentLanguage]} </label>
+        //                                 <div className={"inputDev ui input " + (errors.itemCode ? 'has-error' : !errors.itemCode && touched.itemCode ? (" has-success") : " ")}>
+        //                                     <input name='itemCode'
+        //                                         className="form-control"
+        //                                         id="itemCode" placeholder={Resources['itemCode'][currentLanguage]} autoComplete='off'
+        //                                         onBlur={handleBlur} value={this.state.voItemitemCode}
+        //                                         onChange={(e) => this.handleChangeItem(e, "itemCode")} />
+        //                                     {errors.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
+        //                                 </div>
+        //                             </div>
 
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['resourceCode'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
-                                            <input name='resourceCode'
-                                                className="form-control"
-                                                id="resourceCode" placeholder={Resources['resourceCode'][currentLanguage]} autoComplete='off'
-                                                onBlur={handleBlur} value={this.state.voItem.resourceCode}
-                                                onChange={(e) => this.handleChangeItem(e, "resourceCode")} />
-                                            {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="unit"
-                                            data={this.state.Units}
-                                            selectedValue={this.state.selectedUnit}
-                                            onChange={(e) => this.handleChangeItem(e, "unit")}
-                                            index="unit" />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['days'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.days ? 'has-error' : !errors.days && touched.days ? (" has-success") : " ")}>
-                                            <input name='days'
-                                                className="form-control"
-                                                id="days" placeholder={Resources['days'][currentLanguage]}
-                                                autoComplete='off'
-                                                onBlur={handleBlur} value={this.state.voItem.days}
-                                                onChange={(e) => this.handleChangeItem(e, "days")} />
-                                            {errors.days ? (<em className="pError">{errors.days}</em>) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="boqType"
-                                            data={this.state.boqTypes}
-                                            selectedValue={this.state.selectedBoqType}
-                                            handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds')}
-                                            name="boqType"
-                                            index="boqType" />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="boqTypeChild"
-                                            data={this.state.BoqTypeChilds}
+        //                             <div className="linebylineInput valid-input">
+        //                                 <label className="control-label">{Resources['resourceCode'][currentLanguage]} </label>
+        //                                 <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
+        //                                     <input name='resourceCode'
+        //                                         className="form-control"
+        //                                         id="resourceCode" placeholder={Resources['resourceCode'][currentLanguage]} autoComplete='off'
+        //                                         onBlur={handleBlur} value={this.state.voItem.resourceCode}
+        //                                         onChange={(e) => this.handleChangeItem(e, "resourceCode")} />
+        //                                     {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
+        //                                 </div>
+        //                             </div>
+        //                             <div className="linebylineInput valid-input">
+        //                                 <Dropdown
+        //                                     title="unit"
+        //                                     data={this.state.Units}
+        //                                     selectedValue={this.state.selectedUnit}
+        //                                     onChange={(e) => this.handleChangeItem(e, "unit")}
+        //                                     index="unit" />
+        //                             </div>
+        //                             <div className="linebylineInput valid-input">
+        //                                 <label className="control-label">{Resources['days'][currentLanguage]} </label>
+        //                                 <div className={"inputDev ui input " + (errors.days ? 'has-error' : !errors.days && touched.days ? (" has-success") : " ")}>
+        //                                     <input name='days'
+        //                                         className="form-control"
+        //                                         id="days" placeholder={Resources['days'][currentLanguage]}
+        //                                         autoComplete='off'
+        //                                         onBlur={handleBlur} value={this.state.voItem.days}
+        //                                         onChange={(e) => this.handleChangeItem(e, "days")} />
+        //                                     {errors.days ? (<em className="pError">{errors.days}</em>) : null}
+        //                                 </div>
+        //                             </div>
+        //                             <div className="linebylineInput valid-input">
+        //                                 <Dropdown
+        //                                     title="boqType"
+        //                                     data={this.state.boqTypes}
+        //                                     selectedValue={this.state.selectedBoqType}
+        //                                     handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds')}
+        //                                     name="boqType"
+        //                                     index="boqType" />
+        //                             </div>
+        //                             <div className="linebylineInput valid-input">
+        //                                 <Dropdown
+        //                                     title="boqTypeChild"
+        //                                     data={this.state.BoqTypeChilds}
 
-                                            selectedValue={this.state.selectedBoqTypeChild}
-                                            handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
+        //                                     selectedValue={this.state.selectedBoqTypeChild}
+        //                                     handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
 
-                                            name="boqTypeChild"
-                                            index="boqTypeChild" />
-                                    </div>
-                                    <div className="letterFullWidth">
-                                        <div className="linebylineInput valid-input">
-                                            <Dropdown
-                                                title="boqSubType"
-                                                data={this.state.BoqSubTypes}
-                                                selectedValue={this.state.selectedBoqSubType}
-                                                handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '')}
-                                                name="boqSubType"
-                                                index="boqSubType" />
-                                        </div>
-                                    </div>
+        //                                     name="boqTypeChild"
+        //                                     index="boqTypeChild" />
+        //                             </div>
+        //                             <div className="letterFullWidth">
+        //                                 <div className="linebylineInput valid-input">
+        //                                     <Dropdown
+        //                                         title="boqSubType"
+        //                                         data={this.state.BoqSubTypes}
+        //                                         selectedValue={this.state.selectedBoqSubType}
+        //                                         handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '')}
+        //                                         name="boqSubType"
+        //                                         index="boqSubType" />
+        //                                 </div>
+        //                             </div>
 
-                                    <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                                        <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources["save"][currentLanguage]}</button>
-                                    </div>
+        //                             <div className={"slider-Btns fullWidthWrapper textLeft "}>
+        //                                 <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources["save"][currentLanguage]}</button>
+        //                             </div>
 
-                                </div>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-
-            </Fragment>
-
-        )
+        //                         </div>
+        //                     </div>
+        //                 </Form>
+        //             )}
+        //         </Formik>
+        //     </Fragment>
+        //)
     }
 
     render() {
@@ -1050,10 +1062,14 @@ class variationOrderAddEdit extends Component {
                                 </Fragment>
                                 :
                                 <Fragment>
-
                                     <div className="subiTabsContent feilds__top">
-
-                                        {this.addVariationDraw()}
+                                        {/* {this.addVariationDraw()} */}
+                                        <AddItemDescription docLink="/Downloads/Excel/BOQ.xlsx"
+                                            showImportExcel={false} docType="vo"
+                                            isViewMode={this.state.isViewMode}
+                                            mainColumn="changeOrderId" addItemApi="AddVOItems"
+                                            projectId={this.state.projectId} 
+                                            showItemType ={false} />
 
                                         <div className="doc-pre-cycle">
                                             <header>
@@ -1063,7 +1079,7 @@ class variationOrderAddEdit extends Component {
                                                 ref={(r) => {
                                                     this.selectTable = r;
                                                 }}
-                                                data={this.state.voItems}
+                                                data={this.props.items}
                                                 columns={columns}
                                                 defaultPageSize={10}
                                                 minRows={2}
@@ -1160,7 +1176,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        items: state.communication.items
     }
 }
 

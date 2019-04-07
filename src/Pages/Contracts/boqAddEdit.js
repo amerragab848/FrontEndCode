@@ -24,11 +24,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import Recycle from '../../Styles/images/attacheRecycle.png'
+//import Recycle from '../../Styles/images/attacheRecycle.png'
+import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
+
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetup from "../Communication/GridSetup";
-import { func } from 'prop-types';
+//import { func } from 'prop-types';
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import IPConfig from '../../IP_Configrations'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -341,24 +343,6 @@ class bogAddEdit extends Component {
 
             this.setState({ Disciplines: [...res], isLoading: false })
         })
-
-        DataService.GetDataList('GetDefaultListForUnit?listType=unit', 'listType', 'listType').then(res => {
-            this.setState({ Units: [...res], isLoading: false })
-        })
-
-        DataService.GetDataList('GetAllBoqParentNull?projectId=' + this.state.projectId, 'title', 'id').then(res => {
-            this.setState({ boqTypes: [...res], isLoading: false })
-        })
-
-        DataService.GetDataList('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
-            this.setState({ itemTypes: [...res], isLoading: false })
-        })
-
-
-        DataService.GetDataList('GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
-            this.setState({ equipmentTypes: [...res], isLoading: false })
-        })
-
         DataService.GetDataList('GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
             this.setState({ currency: [...res], isLoading: false })
         })
@@ -445,6 +429,8 @@ class bogAddEdit extends Component {
                 })
             })
             this.setState({ rows: Table })
+            this.props.actions.setItemDescriptions(Table);
+
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
         })
 
@@ -503,13 +489,11 @@ class bogAddEdit extends Component {
         })
     }
     editBoq = (values) => {
-        if(this.state.isViewMode)
-        {
+        if (this.state.isViewMode) {
             this.NextStep()
 
         }
-        else
-        {
+        else {
             this.setState({
                 isLoading: true,
                 firstComplete: true
@@ -538,7 +522,7 @@ class bogAddEdit extends Component {
                 this.setState({ isLoading: false })
             })
         }
-      
+
     }
 
     addEditItems = () => {
@@ -708,9 +692,22 @@ class bogAddEdit extends Component {
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
+
         else if (column.key != 'select-row' && column.key != 'unitPrice') {
             this.setState({ showPopUp: true, btnText: 'save' })
+               DataService.GetDataList('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+                
+                this.setState({ 
+                    itemTypes: result
+                })
+            })
+
+            DataService.GetDataList('GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
+                this.setState({ equipmentTypes: [...res] })
+            })
+
             this.simpleDialog1.show()
+
             if (this.state.CurrStep == 2) {
                 this.setState({ isLoading: true })
                 DataService.GetDataList('GetAllBoqChild?parentId=' + value.boqTypeId, 'title', 'id').then(res => {
@@ -886,22 +883,31 @@ class bogAddEdit extends Component {
 
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+
+        let updateRow = this.state.rows[fromRow];
+
         this.setState(state => {
             const rows = state.rows.slice();
             for (let i = fromRow; i <= toRow; i++) {
                 rows[i] = { ...rows[i], ...updated };
             }
             return { rows };
+        }, function () {
+            if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
+                alert('not equal');
+                updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
+                Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice).catch(() => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
+                    console.log(this.state.rows);
+                })
+            }
         });
-        Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice).catch(() => {
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-        })
     };
 
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <GridSetup
-                rows={this.state.rows}
+                rows={this.props.items}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
                 onRowClick={this.onRowClick}
@@ -914,6 +920,7 @@ class bogAddEdit extends Component {
                 assignFn={() => this.assign()}
                 key='items'
             />) : <LoadingSection />;
+
         const contractContent = <React.Fragment>
             <div className="document-fields">
                 <Formik
@@ -1240,6 +1247,20 @@ class bogAddEdit extends Component {
                 </Formik>
             </div>
         </React.Fragment >
+
+        const addItemContent = <React.Fragment>
+            <div className="document-fields">
+                {this.state.isLoading ? <LoadingSection /> : null}
+                <AddItemDescription docLink="/Downloads/Excel/BOQ.xlsx"
+                    showImportExcel={false} docType="boq"
+                    isViewMode={this.state.isViewMode}
+                    mainColumn="boqId" addItemApi="AddBoqItem"
+                    projectId={this.state.projectId}
+                    showItemType={true} />
+
+            </div>
+        </React.Fragment >
+
         const itemsContent = <React.Fragment>
             <div className="document-fields">
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -1455,6 +1476,7 @@ class bogAddEdit extends Component {
                 </Formik>
             </div>
         </React.Fragment >
+
         const BoqTypeContent = <React.Fragment>
             <div className="dropWrapper">
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -1718,7 +1740,7 @@ class bogAddEdit extends Component {
 
         </React.Fragment>
         let Step_2 = <React.Fragment>
-            {itemsContent}
+            {addItemContent}
             <Fragment>
                 <XSLfile key='boqImport' docId={this.state.docId} docType='boq' link={IPConfig.downloads + '/Downloads/Excel/BOQ.xlsx'} header='addManyItems'
                     disabled={this.props.changeStatus ? (this.props.document.contractId > 0 ? true : false) : false} afterUpload={() => this.getTabelData()} />
@@ -1734,8 +1756,8 @@ class bogAddEdit extends Component {
                     <div className="grid-container">
                         {ItemsGrid}
                     </div>
-                    <div class="slider-Btns">
-                        <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
+                    <div className="slider-Btns">
+                        <button className="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
                     </div>
                 </div>
             </div>
@@ -1759,8 +1781,8 @@ class bogAddEdit extends Component {
             {this.state.activeTab == 'purchase' ? <React.Fragment>{purchaseOrderContent}</React.Fragment> : (this.state.activeTab == 'contract' ? <React.Fragment>{contractContent}</React.Fragment> : null)}
             <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
-                    <div class="slider-Btns">
-                        <button class="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
+                    <div className="slider-Btns">
+                        <button className="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
                     </div>
                 </div>
             </div>
@@ -1905,7 +1927,8 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        items: state.communication.items
     }
 }
 

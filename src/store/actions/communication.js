@@ -9,13 +9,15 @@ export function documentForEdit(urlAction) {
 
             dispatch({
                 type: types.Document_for_Edit,
-                document: resp
+                document: resp,
+                docId: resp.id
             });
 
         }).catch((ex) => {
             dispatch({
                 type: types.Document_for_Edit,
-                document: []
+                document: [],
+                docId: 0
             });
         });
     }
@@ -95,6 +97,23 @@ export function uploadFile(BlobUpload, formData, header) {
                 type: types.File_Upload,
                 file: {}
             });
+        });
+    }
+}
+
+export function addItemDescription(item) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.add_item,
+            item: item
+        });
+    }
+}
+export function setItemDescriptions(items) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.add_item,
+            item: items
         });
     }
 }
