@@ -2650,6 +2650,9 @@ button.companies_icon {
     width: 72%;
   }
 } */
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
+  cursor: pointer;
+}
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline {
   background-color: #5fd45f;
   color: #fff;
