@@ -3163,3 +3163,21 @@ button.companies_icon {
 .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
   padding: 0;
 }
+.fullWidthWrapper.textRight {
+  text-align: right;
+}
+
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachPlus::after {
+  background-image: url(../../images/plus-EpsHover.png);
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEdit::after {
+  background-image: url(../../images/DesignmanagementHover.png);
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEye img {
+  height: auto;
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEye::after {
+  background-image: url(../../images/EyeShowHover.png);
+  height: 11px;
+  top: 3px;
+}
