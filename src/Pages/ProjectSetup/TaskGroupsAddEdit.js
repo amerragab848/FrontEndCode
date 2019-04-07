@@ -591,6 +591,7 @@ class TaskGroupsAddEdit extends Component {
                 </Fragment>
             )
         }
+        
         return (
             <div className="mainContainer" >
                 <div className="documents-stepper noTabs__document one__tab one_step">

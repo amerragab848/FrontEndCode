@@ -152,9 +152,13 @@ class LettersAddEdit extends Component {
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
+        
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });  
+        } 
     }
 
     checkDocumentIsView() {
@@ -792,7 +796,8 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal:  state.communication.showModal
     }
 }
 

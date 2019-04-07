@@ -453,6 +453,9 @@ class bogAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });  
+        } 
     }
 
     componentWillReceiveProps(props, state) {
@@ -463,6 +466,7 @@ class bogAddEdit extends Component {
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
+        
     }
     viewAttachments() {
         return (
@@ -1946,7 +1950,8 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        items: state.communication.items
+        items: state.communication.items,
+        showModal:  state.communication.showModal
     }
 }
 

@@ -83,10 +83,17 @@ export default function (state = initialState.app.communication, action) {
         case types.Send_WorkFlow:
             return {
                 ...state,
-                cycles: action.cycles
+                cycles: action.cycles,
+                showModal: action.showModal
             };
 
         case types.SendByEmail:
+            return {
+                ...state,
+                showModal: action.showModal
+            };
+
+        case types.SendByInbox:
             return {
                 ...state,
                 showModal: action.showModal
@@ -102,6 +109,11 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 document: { ...state.document, ...action.arrange }
+            };
+        case types.showActionPanel:
+            return {
+                ...state,
+                showModal: action.showModal
             };
         case types.RouteToDashboardProject:
 
