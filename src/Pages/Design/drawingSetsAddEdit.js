@@ -181,27 +181,49 @@ class DrawingSetsAddEdit extends Component {
     }
   }
 
+  // checkDocumentIsView() {
+  //   if (this.props.changeStatus === true) {
+  //     if (!Config.IsAllow(212)) {
+  //       this.setState({ isViewMode: true });
+  //     }
+
+  //     if (this.state.isApproveMode != true && Config.IsAllow(212)) {
+  //       if (this.props.hasWorkflow == false && Config.IsAllow(212)) {
+  //         if (this.props.document.status !== false && Config.IsAllow(212)) {
+  //           this.setState({ isViewMode: false });
+  //         } else {
+  //           this.setState({ isViewMode: true });
+  //         }
+  //       } else {
+  //         this.setState({ isViewMode: true });
+  //       }
+  //     }
+  //   } else {
+  //     this.setState({ isViewMode: false });
+  //   }
+  // }
+
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(212)) {
-        this.setState({ isViewMode: true });
-      }
-
-      if (this.state.isApproveMode != true && Config.IsAllow(212)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(212)) {
-          if (this.props.document.status !== false && Config.IsAllow(212)) {
-            this.setState({ isViewMode: false });
-          } else {
+        if (!(Config.IsAllow(212))) {
             this.setState({ isViewMode: true });
-          }
-        } else {
-          this.setState({ isViewMode: true });
         }
-      }
-    } else {
-      this.setState({ isViewMode: false });
+        if (this.state.isApproveMode != true && Config.IsAllow(212)) {
+            if (this.props.hasWorkflow == false && Config.IsAllow(212)) {
+                if (this.props.document.status !== false && Config.IsAllow(212)) {
+                    this.setState({ isViewMode: false });
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            } else {
+                this.setState({ isViewMode: true });
+            }
+        }
     }
-  }
+    else {
+        this.setState({ isViewMode: false });
+    }
+}
 
   componentWillMount() {
 

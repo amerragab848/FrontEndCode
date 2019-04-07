@@ -865,7 +865,7 @@ table edition
 }
 
 .disNone {
-  display: none;
+  display: none !important;
 }
 .resetPassword .spinner > div {
   background-color: rgb(198, 217, 253);
@@ -2650,6 +2650,9 @@ button.companies_icon {
     width: 72%;
   }
 } */
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
+  cursor: pointer;
+}
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline {
   background-color: #5fd45f;
   color: #fff;
@@ -2865,6 +2868,9 @@ button.companies_icon {
   background: #f9fafb;
   border-bottom: 1px solid rgba(34,36,38,.1)
 }
+.ReactTable .rt-thead .rt-resizable-header-content {
+  padding: 0 5px;;
+}
 .precycle-grid .ReactTable {
   border-right: 0;
   border-left: 0;
@@ -2888,6 +2894,10 @@ button.companies_icon {
   background: #fff;
   border-bottom: 1px solid rgba(34,36,38,.1)
 }
+.precycle-grid .ReactTable .rt-tbody .rt-td .btn{
+  padding: 0 5px;
+  margin-left: 0 !important;
+}
 .precycle-grid .ReactTable .rt-thead {
   height: 58px;
 }
@@ -2898,7 +2908,7 @@ button.companies_icon {
   max-width: 600px;
   max-height: 500px;
   overflow: auto;
-  
+
 }
 .ui.modal.largeModal {
   max-width: 600px;
@@ -3155,4 +3165,22 @@ button.companies_icon {
 }
 .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
   padding: 0;
+}
+.fullWidthWrapper.textRight {
+  text-align: right;
+}
+
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachPlus::after {
+  background-image: url(../../images/plus-EpsHover.png);
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEdit::after {
+  background-image: url(../../images/DesignmanagementHover.png);
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEye img {
+  height: auto;
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEye::after {
+  background-image: url(../../images/EyeShowHover.png);
+  height: 11px;
+  top: 3px;
 }

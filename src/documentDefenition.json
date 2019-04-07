@@ -8327,7 +8327,7 @@
   "variationRequest": {
     "documentTitle": "variationRequest",
     "docTyp": 108,
-    "documentAddEditLink": "variationRequestAddEdit/",
+    "documentAddEditLink": "variationRequestAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 3162,
     "documentEditPermission": 3163,

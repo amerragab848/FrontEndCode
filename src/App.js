@@ -12,6 +12,7 @@ import {
 import configureStore from './store/configureStore'; 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./Styles/css/rodal.css";
 const store = configureStore();
  
 const IsAuthorize = api.IsAuthorized()

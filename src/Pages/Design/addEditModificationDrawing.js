@@ -266,9 +266,7 @@ class addEditModificationDrawing extends Component {
 
         if (this.state.docId > 0) {
             let url = "GetLogsDrawingsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
-
-
+            this.props.actions.documentForEdit(url); 
         } else {
             let drawing = {
                 subject: '',
@@ -990,12 +988,14 @@ class addEditModificationDrawing extends Component {
                                                                     data={this.state.approvalstatusList}
                                                                     selectedValue={this.state.selectedApprovalStatusId}
                                                                     handleChange={(e) => this.handleChangeDropDownCycle(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
+                                                                    
                                                                     onChange={setFieldValue}
                                                                     onBlur={setFieldTouched}
                                                                     error={errors.approvalStatusId}
                                                                     touched={touched.approvalStatusId}
+
                                                                     isClear={false}
-                                                                    index="clientSelection-approvalStatusId"
+                                                                    index="approvalStatusId"
                                                                     name="approvalStatusId"
                                                                     id="approvalStatusId" />
                                                             </div>
