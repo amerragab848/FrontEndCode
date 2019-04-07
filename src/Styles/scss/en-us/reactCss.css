@@ -3184,3 +3184,6 @@ button.companies_icon {
   height: 11px;
   top: 3px;
 }
+.editorCell span{
+color: #4382f9 !important;
+}
