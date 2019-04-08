@@ -129,12 +129,17 @@ class EpsPermission extends Component {
 
     }
     deleteRecord(recod) {
-        this.setState({ isLoadingEps: true })
-        Api.get('GetEps').then(res => {
-            this.setState({ eps: res, isLoadingEps: false })
-        }).catch(() => {
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-        })
+        if (!Config.IsAllow(1264)) {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+        }
+        else {
+            this.setState({ isLoadingEps: true })
+            Api.get('GetEps').then(res => {
+                this.setState({ eps: res, isLoadingEps: false })
+            }).catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            })
+        }
     }
     onCloseModal() {
         this.setState({ showDeleteModal: false });

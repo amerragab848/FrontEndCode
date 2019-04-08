@@ -29,7 +29,8 @@ export default function (state = initialState.app.communication, action) {
                 document:{},
                 showLeftMenu: true,
                 showSelectProject: false,
-                changeStatus: false
+                changeStatus: false,
+                items: []
             };
 
         case types.Document_Add:
@@ -48,10 +49,23 @@ export default function (state = initialState.app.communication, action) {
                 isLoadingFiles: true
             };
 
-        case types.add_item:
+            case types.add_item:
             return {
                 ...state,
                 items: [...state.items, ...action.item] 
+            };
+
+            case types.delete_item:
+            let originalData = state.items;
+            action.data.forEach(item => {
+               let getIndex = originalData.findIndex(x=>x.id === item.id);
+              
+               originalData.splice(getIndex,1);
+
+            });
+            return {
+                ...state,
+                items: [...originalData] 
             };
 
         case types.Delete_File:
@@ -83,17 +97,10 @@ export default function (state = initialState.app.communication, action) {
         case types.Send_WorkFlow:
             return {
                 ...state,
-                cycles: action.cycles,
-                showModal: action.showModal
+                cycles: action.cycles
             };
 
         case types.SendByEmail:
-            return {
-                ...state,
-                showModal: action.showModal
-            };
-
-        case types.SendByInbox:
             return {
                 ...state,
                 showModal: action.showModal
@@ -109,11 +116,6 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 document: { ...state.document, ...action.arrange }
-            };
-        case types.showActionPanel:
-            return {
-                ...state,
-                showModal: action.showModal
             };
         case types.RouteToDashboardProject:
 

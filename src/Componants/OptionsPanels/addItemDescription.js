@@ -119,7 +119,7 @@ class addItemDescription extends Component {
                 this.props.actions.addItemDescription(arr);
                 this.setState({
                     itemDescription: {},
-                    isLoading: true
+                    isLoading: false
                 });
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -400,7 +400,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(addItemDescription))
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(addItemDescription))

@@ -11,8 +11,6 @@ export const Get_Topics_Table = 'Get_Topics_Table';
 export const Update_Field = 'Update_Field';
 export const Delete_File = 'Delete_File';
 export const SendByEmail = 'SendByEmail';
-export const SendByInbox = 'SendByInbox';
-export const showActionPanel = 'showActionPanel';
 export const Add_Contact = 'AddContact';
 export const edit_Contact = 'edit_Contact';
 export const Get_Contacts = 'Get_Contacts';
@@ -30,6 +28,7 @@ export const GetDocumentCycle = 'GetDocumentCycle';
 export const ViewDocsAttachment = 'ViewDocsAttachment';
 
 export const add_item = 'add_item';
+export const delete_item = 'delete_item';
 
 // ProjectActionsTypes
 

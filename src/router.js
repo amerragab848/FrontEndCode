@@ -84,6 +84,7 @@ import variationRequestAddEdit from "./Pages/Contracts/variationRequestAddEdit";
 import projectIssuesAddEdit from "./Pages/Contracts/projectIssuesAddEdit";
 import qsAddEdit from "./Pages/Contracts/qsAddEdit";
 import EpsPermission from "./Pages/Eps/EpsPermission";
+import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -183,6 +184,7 @@ let originalRoutes = [
     , <Route path="/variationRequestAddEdit" component={variationRequestAddEdit} />
     , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
     , <Route path="/qsAddEdit" component={qsAddEdit} />
+    , <Route path="/projectsAddEdit" component={projectsAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
