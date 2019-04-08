@@ -1950,8 +1950,8 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        items: state.communication.items,
-        showModal:  state.communication.showModal
+        items: state.communication.items, 
+        projectId: state.communication.projectId, showModal:  state.communication.showModal 
     }
 }
 
