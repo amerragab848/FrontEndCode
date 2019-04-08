@@ -123,9 +123,12 @@ class XSLfile extends Component {
                 </Dropzone>
                 <div className="removeBtn">
                     <div className="fileNameUploaded">
-                        <p>{Resources.fileName[currentLanguage]}
-                            {this.state.acceptedFiles.length > 0 ? <span>{this.state.acceptedFiles[0].name}</span> : null}
-                        </p>
+                        {this.state.acceptedFiles.length > 0 ?
+                            <p>{Resources.fileName[currentLanguage]}
+                                {this.state.acceptedFiles.length > 0 ? <span>{this.state.acceptedFiles[0].name}</span> : null}
+                            </p>
+                            : null
+                        }
                     </div>
                     <button className={"primaryBtn-1 btn smallBtn " + (this.props.disabled ? 'disabled' : '')} disabled={this.props.disabled ? 'disabled' : ''} onClick={this.upload}>{Resources['upload'][currentLanguage]}</button>
                 </div>

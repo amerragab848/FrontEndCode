@@ -17,6 +17,7 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 document: action.document,
+                docId: action.docId,
                 changeStatus: true,
                 showLeftMenu: true,
                 showSelectProject: false
@@ -45,6 +46,12 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 files: [...state.files, action.file],
                 isLoadingFiles: true
+            };
+
+        case types.add_item:
+            return {
+                ...state,
+                items: [...state.items, ...action.item] 
             };
 
         case types.Delete_File:
@@ -76,10 +83,17 @@ export default function (state = initialState.app.communication, action) {
         case types.Send_WorkFlow:
             return {
                 ...state,
-                cycles: action.cycles
+                cycles: action.cycles,
+                showModal: action.showModal
             };
 
         case types.SendByEmail:
+            return {
+                ...state,
+                showModal: action.showModal
+            };
+
+        case types.SendByInbox:
             return {
                 ...state,
                 showModal: action.showModal
@@ -95,6 +109,11 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 document: { ...state.document, ...action.arrange }
+            };
+        case types.showActionPanel:
+            return {
+                ...state,
+                showModal: action.showModal
             };
         case types.RouteToDashboardProject:
 

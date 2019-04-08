@@ -3,8 +3,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import addNoDataModule from 'highcharts/modules/no-data-to-display';
 import exporting from 'highcharts/modules/exporting'
-//import 'bootstrap/dist/css/bootstrap.css';
-import Api from '../../api';
+ import Api from '../../api';
 import language from '../../resources.json'
 let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
 
@@ -29,7 +28,7 @@ class BarChartComp extends Component {
                     },
                 },
                 chart: {
-                    type: 'column'
+                    type: 'line',
                 },
                 title: {
                     text: this.props.title
@@ -86,7 +85,7 @@ class BarChartComp extends Component {
                     enabled:true
                 } 
             }
-        }  
+        }
     }
 
     componentDidMount = () => {
@@ -124,13 +123,13 @@ class BarChartComp extends Component {
             }
 
         }).catch((ex) => {
-            console.log(ex);
+            //console.log(ex);
         });
     }
 
     render() { 
         return ( 
-            <div className="panel">
+            <div className="panel barChart__container">
                 <div className="panel-body">
                     <HighchartsReact 
                         highcharts={Highcharts}

@@ -135,7 +135,8 @@ function mapStateToProps(state) {
 
     return {
         workFlowCycles: state.communication.workFlowCycles,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        showModal:  state.communication.showModal
     }
 }
 

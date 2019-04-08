@@ -865,7 +865,7 @@ table edition
 }
 
 .disNone {
-  display: none;
+  display: none !important;
 }
 .resetPassword .spinner > div {
   background-color: rgb(198, 217, 253);
@@ -2391,6 +2391,7 @@ button.companies_icon {
 .SummeriesContainer .SummeriesContainerContent.numbersContainerContent {
   background-color: transparent;
   border: 0;
+  justify-content: center;
 }
 .noTabs__document .doc-container .step-content .document-fields .proForm .account__checkbox {
   display: flex;
@@ -2653,6 +2654,9 @@ button.companies_icon {
     width: 72%;
   }
 } */
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
+  cursor: pointer;
+}
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline {
   background-color: #5fd45f;
   color: #fff;
@@ -3279,3 +3283,101 @@ button.companies_icon {
   align-items: unset;
 }
 /* react table */
+.fullWidthWrapper.textRight {
+  text-align: right;
+}
+
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachPlus::after {
+  background-image: url(../../images/plus-EpsHover.png);
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEdit::after {
+  background-image: url(../../images/DesignmanagementHover.png);
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEye img {
+  height: auto;
+}
+.attachmentTable tbody tr td.tdHover .attachmentAction a.attachEye::after {
+  background-image: url(../../images/EyeShowHover.png);
+  height: 11px;
+  top: 3px;
+}
+.editorCell span{
+color: #4382f9 !important;
+}
+
+
+
+.charts__row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 40px;
+  justify-content: center;
+}
+.charts__row .highcharts-color-0, .charts__row .highcharts-color-0 .highcharts-point {
+  stroke: transparent;
+  fill:  #07bc0c;
+}
+.charts__row .highcharts-color-1, .charts__row .highcharts-color-1 .highcharts-point {
+  stroke: transparent;
+  fill:  #47cc4a;
+}
+.charts__row .highcharts-color-2, .charts__row .highcharts-color-2 .highcharts-point {
+  stroke: transparent;
+  fill:  #7cdb79;
+}
+.charts__row .highcharts-color-3, .charts__row .highcharts-color-3 .highcharts-point {
+  stroke: transparent;
+  fill: #5fd45f;
+}
+.charts__row .highcharts-color-4, .charts__row .highcharts-color-4 .highcharts-point {
+  stroke: transparent;
+  fill: #119015
+}
+.charts__row .highcharts-color-5, .charts__row .highcharts-color-5 .highcharts-point {
+  stroke: transparent;
+  fill: #07bc0cbb
+}
+.charts__row .highcharts-legend-item.highcharts-pie-series.highcharts-legend-item-hidden .highcharts-point{
+  fill: rgb(204, 204, 204) !important;
+}
+.charts__row .highcharts-background {
+  fill: transparent
+}
+.charts__row .barChart__container .highcharts-plot-border {
+  fill: rgba(219, 251, 220, 0.6);
+}
+.charts__row .barChart__container .highcharts-graph {
+  stroke: #47cc4a;
+  stroke-width: 3px;
+}
+.charts__row .barChart__container .highcharts-color-0, .charts__row .barChart__container .highcharts-color-0 .highcharts-point{
+  stroke: #07bc0c;
+  stroke-width: 2px;
+  fill:  #ffffff
+}
+.charts__row .barChart__container .highcharts-legend-item.highcharts-line-series.highcharts-color-0.highcharts-series-0 ,.charts__row tspan,.charts__row .highcharts-title{
+  font-family: font-r;
+  fill: #252833;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  font-size: 10px;
+  stroke-width: 0;
+}
+.charts__row .highcharts-title tspan {
+  font-size: 20px;
+}
+
+
+/*
+.highcharts-color-6 {
+  stroke: transparent;
+  fill: 
+}
+.highcharts-color-7 {
+  stroke: transparent;
+  fill: 
+}
+.highcharts-color-8 {
+  stroke: transparent;
+  fill: 
+} */
