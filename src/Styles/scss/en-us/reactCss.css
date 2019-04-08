@@ -2375,6 +2375,9 @@ button.companies_icon {
 .errorClass.customD_Menu .css-vj8t7z {
   border: solid 2px #e74c3c !important;
 }
+.errorClass.customD_Menu .css-vj8t7z:hover {
+  border: solid 2px #e74c3c !important;
+}
 .css-15k3avv {
   border-radius: 4px;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
@@ -3163,3 +3166,116 @@ button.companies_icon {
 .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
   padding: 0;
 }
+
+/* TextEditor */
+.public-DraftStyleDefault-ltr span span, .public-DraftStyleDefault-rtl span span {
+  font-family: font-r;
+  font-size: 14px;
+  line-height: 1.71;
+  letter-spacing: -0.2px;
+  color: #3e4352;
+}
+
+.EditorToolbar__root___3_Aqz {
+  margin: 0 !important;
+  padding: 3px 10px 3px !important;
+}
+
+.public-DraftStyleDefault-block {
+  min-height: 79px !important;
+}
+
+.ButtonGroup__root___3lEAn {
+  border-right: 1px solid #e9ecf0;
+}
+
+.Button__root___1gz0c {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+}
+
+.IconButton__icon___3YgOS {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.ButtonGroup__root___3lEAn {
+  margin-bottom: 0 !important;
+}
+
+.IconButton__icon-bold___2zl9t {
+  background-image: url(../../images/textEditor/bold.png) !important;
+  background-size: auto !important;
+}
+
+.IconButton__icon-italic___2hHzc {
+  background-image: url(../../images/textEditor/italic.png) !important;
+  background-size: auto !important;
+}
+
+.IconButton__icon-unordered-list-item___Pvkrr {
+  background-image: url(../../images/textEditor/list.png) !important;
+  background-size: auto !important;
+}
+
+.IconButton__icon-ordered-list-item___2rzD0 {
+  background-image: url(../../images/textEditor/number.png) !important;
+  background-size: auto !important;
+}
+
+.IconButton__icon-image___1gW7U {
+  background-size: contain !important;
+}
+.IconButton__isActive___2Ey8p {
+  opacity: 0.4;
+}
+/* TeaxtEditor */
+.twoLineHeader, .skylight-dialog .modal-title {
+  display: block;
+  text-align: left;
+  border-bottom: 1px solid #e1e3e8;
+  padding-bottom: 14px;
+  font-family: font-b;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
+}
+.twoLineHeader::after , .twoLineHeader::before {
+  display: none;
+}
+/* React Table */
+.ReactTable {
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+.ReactTable .rt-thead {
+  background: #fafbfc;
+  border-bottom: 1px solid #e9ecf0;
+  box-shadow: none !important;
+}
+.ReactTable .rt-thead .rt-th {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  background: #fafbfc;
+}
+.ReactTable .rt-tbody .rt-tr-group {
+  height: 50px;
+}
+.ReactTable .rt-tbody .rt-td {
+  display: flex;
+  align-items: center !important;
+}
+.ReactTable .rt-tbody .rt-tr-group .fillter-status.fillter-item-c {
+  margin-bottom: 0;
+  width: 100%;
+}
+.ReactTable .rt-tbody .rt-tr-group .fillter-status.fillter-item-c .spanValidation {
+  display: none;
+}
+.fullWidthWrapper .ReactTable >div .rt-tbody div {
+  overflow: visible;
+  align-items: unset;
+}
+/* react table */
