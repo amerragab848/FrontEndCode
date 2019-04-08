@@ -2981,7 +2981,7 @@ button.companies_icon {
 }
 
 
-.fullInputWidth ui.input.inputDev , .fullInputWidth input  {
+.fullInputWidth .ui.input.inputDev , .fullInputWidth input  {
   width: 100% !important;
 }
 .control-label {
@@ -3180,4 +3180,21 @@ button.companies_icon {
   background-image: url(../../images/EyeShowHover.png);
   height: 11px;
   top: 3px;
+}
+
+.noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer.fullWidthWrapper {
+  margin-top: 30px;
+}
+.check__radio {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.check__radio--row {
+  display: flex;
+  flex-flow: column;
+}
+.check__radio--row >div {
+  margin-bottom: 5px;
 }

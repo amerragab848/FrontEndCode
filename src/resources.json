@@ -3591,6 +3591,10 @@
     "en": "--  Please select a Transaction Type --",
     "ar": "-- برجاء اختيار نوع القيد --"
   },
+  "selectProject": {
+    "en": "--  Please select a project Type --",
+    "ar": "-- برجاء اختيار نوع المشروع --"
+  },
   "transactionTypeRequired": {
     "en": "Please insert Transaction Type",
     "ar": "برجاء ادخال نوع القيد"
