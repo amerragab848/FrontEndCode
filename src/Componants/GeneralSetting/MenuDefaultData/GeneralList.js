@@ -169,7 +169,7 @@ class GeneralList extends Component {
                     showCheckbox: true,
                     isLoading: false
                 })
-            } 
+            }
         }
     }
 
@@ -409,8 +409,8 @@ class GeneralList extends Component {
                 <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false, IsEdit: false, showNotify: false })} title={this.state.IsEdit ?
                     Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['editTitle'][currentLanguage]
                     : Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['goAdd'][currentLanguage]}
-                    onCloseClicked={() => this.setState({showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}>
-                   
+                    onCloseClicked={() => this.setState({ showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}>
+
                     <Formik
                         initialValues={{
                             EnTitle: this.state.IsEdit ? ' ' : '',

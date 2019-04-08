@@ -820,7 +820,7 @@ class QsAddEdit extends Component {
           <div className="submittalHead">
             <h2 className="zero">
               {Resources.contractsQs[currentLanguage]}
-              <span>{projectName.replace(/_/gi, " ")} · Communication</span>
+              <span>{projectName.replace(/_/gi, " ")} · {Resources.contract[currentLanguage]} </span>
             </h2>
             <div className="SubmittalHeadClose">
               <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" >
@@ -988,7 +988,7 @@ class QsAddEdit extends Component {
                   ) : (
                     <Fragment>
                     <div className="document-fields"> 
-                        <AddItemDescription docLink="/Downloads/Excel/QS.xlsx" showImportExcel={true} docType="qs"
+                        <AddItemDescription docLink="/Downloads/Excel/QS.xlsx" showImportExcel={true} docType="qs" 
                                             isViewMode={this.state.isViewMode} mainColumn="qsId" addItemApi="AddContractsQsItems"
                                             projectId={this.state.projectId} showItemType={true} /> 
                     </div>
@@ -1153,7 +1153,7 @@ class QsAddEdit extends Component {
                                      placeholder={ Resources.quantity[currentLanguage]} autoComplete="off"
                                      value={ this.state.addItemDocument.quantity }
                                      onBlur={e => { handleBlur(e); handleChange(e); }}
-                                     onChange={e => this.handleChangeItems(e, "Quantity") } />
+                                     onChange={e => this.handleChangeItems(e, "quantity") } />
                               {errors.Quantity && touched.Quantity ? (<em className="pError">{errors.Quantity}</em>) : null}
                             </div>
                           </div> 
@@ -1272,7 +1272,8 @@ function mapStateToProps(state, ownProps) {
     file: state.communication.file,
     files: state.communication.files,
     hasWorkflow: state.communication.hasWorkflow,
-    items:state.communication.items
+    items:state.communication.items,
+    docId:state.communication.docId
   };
 }
 

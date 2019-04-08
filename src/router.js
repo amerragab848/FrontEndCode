@@ -73,6 +73,9 @@ import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawin
 import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit';
 import AccountsAlerts  from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
+import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
+
+
 
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
@@ -81,6 +84,7 @@ import variationRequestAddEdit from "./Pages/Contracts/variationRequestAddEdit";
 import projectIssuesAddEdit from "./Pages/Contracts/projectIssuesAddEdit";
 import qsAddEdit from "./Pages/Contracts/qsAddEdit";
 import EpsPermission from "./Pages/Eps/EpsPermission";
+import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -169,8 +173,10 @@ let originalRoutes = [
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
     , <Route path="/AccountsAlerts" component={AccountsAlerts} />
     , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
+    , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
     , <Route path="/EpsPermission" component={EpsPermission} />
     
+
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
@@ -178,6 +184,7 @@ let originalRoutes = [
     , <Route path="/variationRequestAddEdit" component={variationRequestAddEdit} />
     , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
     , <Route path="/qsAddEdit" component={qsAddEdit} />
+    , <Route path="/projectsAddEdit" component={projectsAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

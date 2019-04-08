@@ -75,6 +75,8 @@ let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
+
+
 class bogAddEdit extends Component {
     constructor(props) {
         super(props)
@@ -97,6 +99,14 @@ class bogAddEdit extends Component {
             }
             index++;
         }
+
+        let editUnitPrice = ({ value, row }) => {
+            let subject = "";
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.unitPrice}</span></a>;
+            }
+            return null;
+        };
 
         this.itemsColumns = [
             {
@@ -189,7 +199,8 @@ class bogAddEdit extends Component {
                 editable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: editUnitPrice
             }, {
                 key: "total",
                 name: Resources["total"][currentLanguage],
@@ -285,6 +296,7 @@ class bogAddEdit extends Component {
             { name: 'viewAttachments', code: 3295 }, { name: 'deleteAttachments', code: 862 }],
             document: {},
         }
+
         if (!Config.IsAllow(616) || !Config.IsAllow(617) || !Config.IsAllow(619)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
@@ -441,6 +453,9 @@ class bogAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });  
+        } 
     }
 
     componentWillReceiveProps(props, state) {
@@ -451,6 +466,7 @@ class bogAddEdit extends Component {
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
+        
     }
     viewAttachments() {
         return (
@@ -695,9 +711,9 @@ class bogAddEdit extends Component {
 
         else if (column.key != 'select-row' && column.key != 'unitPrice') {
             this.setState({ showPopUp: true, btnText: 'save' })
-               DataService.GetDataList('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
-                
-                this.setState({ 
+            DataService.GetDataList('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+
+                this.setState({
                     itemTypes: result
                 })
             })
@@ -883,6 +899,7 @@ class bogAddEdit extends Component {
 
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+        this.setState({ isLoading: true })
 
         let updateRow = this.state.rows[fromRow];
 
@@ -894,12 +911,17 @@ class bogAddEdit extends Component {
             return { rows };
         }, function () {
             if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-                alert('not equal');
+               
                 updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-                Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice).catch(() => {
+                Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice)
+                .then(() => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                     this.setState({ isLoading: false })
+                }) 
+                .catch(() => {
                     toast.error(Resources["operationCanceled"][currentLanguage]);
-                    console.log(this.state.rows);
-                })
+                     this.setState({ isLoading: false })
+                }) 
             }
         });
     };
@@ -1928,7 +1950,8 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        items: state.communication.items
+        items: state.communication.items, 
+        projectId: state.communication.projectId, showModal:  state.communication.showModal 
     }
 }
 

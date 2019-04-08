@@ -1501,6 +1501,29 @@
     "en": "Use E-mail",
     "ar": "استخدام البريد الالكتروني"
   },
+ 
+  "useBOQPermission": {
+    "en": "Use BOQ Permission",
+    "ar": "صلاحيه استخدام الكميات"
+  },
+  "useAverageReleasePrice": {
+    "en": "Use Average Release Price",
+    "ar": "استخدام متوسط ​​سعر التوريد"
+  },
+
+  "usePermissionsOnLog": {
+    "en": "User Permission on Logs",
+    "ar": "صلاحيه رؤيه سجلات المستخدمين"
+  },
+  "bOQPermissions": {
+    "en": "BOQ Permissions",
+    "ar": "صلاحيات الكميات"
+  },
+ 
+ 
+
+
+
   "useSSL": {
     "en": "Use SSL",
     "ar": "استخدام SSL"
@@ -3463,6 +3486,11 @@
     "en": "Day Name",
     "ar": "اسم اليوم"
   },
+  "ValidtionDay": {
+    "en": "This Day Has Already Added Before",
+    "ar": "تمت إضافة هذا اليوم بالفعل من قبل"
+  },
+  
   "Vacationdays": {
     "en": "HR Vacation Days",
     "ar": "أيام العطلة "
@@ -3590,6 +3618,10 @@
   "selectTransaction": {
     "en": "--  Please select a Transaction Type --",
     "ar": "-- برجاء اختيار نوع القيد --"
+  },
+  "selectProject": {
+    "en": "--  Please select a project Type --",
+    "ar": "-- برجاء اختيار نوع المشروع --"
   },
   "transactionTypeRequired": {
     "en": "Please insert Transaction Type",
@@ -4638,10 +4670,6 @@
   "projectInventoryAddition": {
     "en": "Project Inventory Addition",
     "ar": "اضافة مخزن مشروع"
-  },
-  "addMaterialRelease": {
-    "en": "Add Material Release",
-    "ar": "اضافة امر صرف مواد"
   },
   "retainagePercent": {
     "en": "Retainage Percent",
@@ -6618,10 +6646,6 @@
   "createTransmittal": {
     "en": "Create Transmittal",
     "ar": "التقديمات"
-  },
-  "createBoq": {
-    "en": "Create Boq",
-    "ar": "قائمة الكميات"
   },
   "pendingQuantityRequired": {
     "en": "Please insert Pending Quantity",

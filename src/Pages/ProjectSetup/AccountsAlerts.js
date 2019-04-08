@@ -266,7 +266,6 @@ class AccountsAlerts extends Component {
 
     }
 
-
     handleChangeDropsForEdit = (SelectedItem, DropName) => {
         switch (DropName) {
             case 'ModuleDrop':

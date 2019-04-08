@@ -2984,7 +2984,7 @@ button.companies_icon {
 }
 
 
-.fullInputWidth ui.input.inputDev , .fullInputWidth input  {
+.fullInputWidth .ui.input.inputDev , .fullInputWidth input  {
   width: 100% !important;
 }
 .control-label {
@@ -3187,4 +3187,7 @@ button.companies_icon {
 .one__tab.one_step .doc-container .step-content .step-content , .one__tab.one_step .doc-container .step-content .step-content .subiTabsContent {
   padding: 0;
   width: 100%;
+}
+.editorCell span{
+color: #4382f9 !important;
 }

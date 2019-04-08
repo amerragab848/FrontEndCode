@@ -1,212 +1,229 @@
-import * as types from "../../store/actions/types";
 
-import initialState from "../initialState";
+import * as types from '../../store/actions/types';
 
-export default function(state = initialState.app.communication, action) {
-  switch (action.type) {
-    case types.ViewDocsAttachment:
-      state.attachDocuments = action.attachDocuments;
-      return {
-        ...state
-      };
+import initialState from '../initialState';
 
-    case types.Document_for_Edit:
-      return {
-        ...state,
-        document: action.document,
-        docId: action.docId,
-        changeStatus: true,
-        showLeftMenu: true,
-        showSelectProject: false
-      };
+export default function (state = initialState.app.communication, action) {
 
-    case types.Document_Adding:
-      return {
-        ...state,
-        document: {},
-        showLeftMenu: true,
-        showSelectProject: false,
-        changeStatus: false
-      };
+    switch (action.type) {
+        
+        case types.ViewDocsAttachment:
+            state.attachDocuments = action.attachDocuments
+            return {
+                ...state
+            }
 
-    case types.Document_Add:
-      return {
-        ...state,
-        document: action.document,
-        changeStatus: false,
-        showLeftMenu: true,
-        showSelectProject: false
-      };
+        case types.Document_for_Edit:
+            return {
+                ...state,
+                document: action.document,
+                docId: action.docId,
+                changeStatus: true,
+                showLeftMenu: true,
+                showSelectProject: false
+            };
 
-    case types.File_Upload:
-      return {
-        ...state,
-        files: [...state.files, action.file],
-        isLoadingFiles: true
-      };
+        case types.Document_Adding:
+            return {
+                ...state,
+                document:{},
+                showLeftMenu: true,
+                showSelectProject: false,
+                changeStatus: false,
+                items: []
+            };
 
-    case types.add_item:
-      return {
-        ...state,
-        items: [...state.items, ...action.item]
-      };
-    case types.delete_item:
-      let originalData = state.items;
-      action.data.forEach(item => {
-        let getIndex = originalData.findIndex(x => x.id === item.id);
-        originalData.splice(getIndex, 1);
-      });
-      return {
-        ...state,
-        items: [...originalData]
-      };
+        case types.Document_Add:
+            return {
+                ...state,
+                document: action.document,
+                changeStatus: false,
+                showLeftMenu: true,
+                showSelectProject: false
+            };
 
-    case types.Delete_File:
-      let files = [...state.files];
-      let index = files.indexOf(action.file);
-      if (index !== -1) {
-        files.splice(index, 1);
-      }
-      return {
-        ...state,
-        files: files
-      };
+        case types.File_Upload:
+            return {
+                ...state,
+                files: [...state.files, action.file],
+                isLoadingFiles: true
+            };
 
-    case types.Get_Files:
-      return {
-        ...state,
-        files: [...action.files],
-        isLoadingFiles: true
-      };
+            case types.add_item:
+            return {
+                ...state,
+                items: [...state.items, ...action.item] 
+            };
 
-    case types.Cycles_WorkFlow:
-      return {
-        ...state,
-        workFlowCycles: action.workFlowCycles,
-        hasWorkflow: action.hasWorkflow
-      };
+            case types.delete_item:
+            let originalData = state.items;
+            action.data.forEach(item => {
+               let getIndex = originalData.findIndex(x=>x.id === item.id);
+              
+               originalData.splice(getIndex,1);
 
-    case types.Send_WorkFlow:
-      return {
-        ...state,
-        cycles: action.cycles
-      };
+            });
+            return {
+                ...state,
+                items: [...originalData] 
+            };
 
-    case types.SendByEmail:
-      return {
-        ...state,
-        showModal: action.showModal
-      };
+        case types.Delete_File:
+            let files = [...state.files];
+            let index = files.indexOf(action.file);
+            if (index !== -1) {
+                files.splice(index, 1);
+            }
+            return {
+                ...state,
+                files: files
+            };
 
-    case types.Update_Field:
-      return {
-        ...state,
-        document: action.document
-      };
+        case types.Get_Files:
+            return {
+                ...state,
+                files: [...action.files],
+                isLoadingFiles: true
+            };
 
-    case types.NextArrange:
-      return {
-        ...state,
-        document: { ...state.document, ...action.arrange }
-      };
-    case types.RouteToDashboardProject:
-      return {
-        ...state,
-        showLeftMenu: action.showLeftMenu,
-        showSelectProject: action.showSelectProject,
-        projectId: action.projectId,
-        projectName: action.projectName
-      };
-    case types.RouteToTemplate:
-      return {
-        ...state,
-        showLeftMenu: action.showLeftMenu,
-        showSelectProject: action.showSelectProject
-      };
-    case types.RouteToMainDashboard:
-      return {
-        ...state,
-        showLeftMenu: action.showLeftMenu,
-        showSelectProject: action.showSelectProject,
-        projectId: action.projectId,
-        projectName: action.projectName
-      };
+        case types.Cycles_WorkFlow:
+            return {
+                ...state,
+                workFlowCycles: action.workFlowCycles,
+                hasWorkflow: action.hasWorkflow
+            };
 
-    case types.AboveSelectProject:
-      return {
-        ...state,
-        showLeftMenu: action.showLeftMenu,
-        showSelectProject: action.showSelectProject,
-        projectId: action.projectId,
-        projectName: action.projectName
-      };
 
-    case types.LeftMenuClick:
-      return {
-        ...state,
-        showLeftMenu: action.showLeftMenu,
-        showSelectProject: action.showSelectProject,
-        projectId: action.projectId,
-        projectName: action.projectName,
-        moduleName: action.moduleName
-      };
+        case types.Send_WorkFlow:
+            return {
+                ...state,
+                cycles: action.cycles
+            };
 
-    case types.FillGridLeftMenu:
-      return {
-        ...state,
-        showLeftMenu: action.showLeftMenu,
-        showSelectProject: action.showSelectProject,
-        projectId: localStorage.getItem("lastSelectedProject"),
-        projectName: localStorage.getItem("lastSelectedprojectName")
-      };
+        case types.SendByEmail:
+            return {
+                ...state,
+                showModal: action.showModal
+            };
 
-    case types.Get_Attendees_Table:
-      let table = [];
-      action.data.forEach(element => {
-        table.push({
-          companyId: element.companyId,
-          Id: element.id,
-          companyName: element.companyName,
-          contactId: element.contactId,
-          contactName: element.contactName
-        });
-      });
+        case types.Update_Field:
+            return {
+                ...state,
+                document: action.document
+            };
 
-      state.attendees = table;
-      return {
-        ...state
-      };
+        case types.NextArrange:
+            return {
+                ...state,
+                document: { ...state.document, ...action.arrange }
+            };
+        case types.RouteToDashboardProject:
 
-    case types.Get_Topics_Table:
-      let table1 = [];
-      action.data.forEach(element => {
-        table1.push({
-          description: element.itemDescription,
-          calledByCompanyId: element.byWhomCompanyId,
-          calledByCompany: element.byWhomCompanyName,
-          calledByContactId: element.byWhomContactId,
-          calledByContact: element.byWhomContactName,
-          decisions: element.decisions,
-          action: element.action,
-          comment: element.comment,
-          Id: element.id,
-          requiredDate: element.requiredDate
-        });
-      });
-      state.topics = table1;
-      return {
-        ...state
-      };
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject,
+                projectId: action.projectId,
+                projectName: action.projectName
+            };
+        case types.RouteToTemplate:
 
-    case types.GetDocumentCycle:
-      state.documentCycle = action.data;
-      return {
-        ...state
-      };
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject
+            };
+        case types.RouteToMainDashboard:
 
-    default:
-      return {
-        ...state
-      };
-  }
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject,
+                projectId: action.projectId,
+                projectName: action.projectName
+            };
+
+        case types.AboveSelectProject:
+
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject,
+                projectId: action.projectId,
+                projectName: action.projectName
+            };
+
+        case types.LeftMenuClick:
+
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject,
+                projectId: action.projectId,
+                projectName: action.projectName,
+                moduleName: action.moduleName
+            };
+
+        case types.FillGridLeftMenu:
+
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject,
+                projectId: localStorage.getItem('lastSelectedProject'),
+                projectName: localStorage.getItem('lastSelectedprojectName')
+            };
+
+        case types.Get_Attendees_Table:
+            let table = []
+            action.data.forEach(element => {
+                table.push({
+                    companyId: element.companyId,
+                    Id: element.id,
+                    companyName: element.companyName,
+                    contactId: element.contactId,
+                    contactName: element.contactName
+
+                })
+            });
+            
+            state.attendees = table
+            return {
+                ...state 
+            };
+
+        case types.Get_Topics_Table:
+            let table1 = []
+            action.data.forEach(element => {
+                table1.push({
+                    description: element.itemDescription,
+                    calledByCompanyId: element.byWhomCompanyId,
+                    calledByCompany: element.byWhomCompanyName,
+                    calledByContactId: element.byWhomContactId,
+                    calledByContact: element.byWhomContactName,
+                    decisions: element.decisions,
+                    action: element.action,
+                    comment: element.comment,
+                    Id: element.id,
+                    requiredDate: element.requiredDate
+
+                })
+            });
+            state.topics = table1
+            return {
+                ...state
+            };
+
+            case types.GetDocumentCycle:
+       
+            state.documentCycle = action.data
+            return {
+                ...state 
+            };
+
+        default:
+            return {
+                ...state
+            }; 
+    }
 }

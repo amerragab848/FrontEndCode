@@ -27,32 +27,39 @@ const validationSchema = Yup.object().shape({
         .min(.5, Resources['numbersGreaterThanOrEqualHalf'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
     UserName: Yup.string()
-        .required(Resources['isRequiredField'][currentLanguage]),
+        .required(Resources['userNameRequired'][currentLanguage]),
     Password: Yup.string()
-        .required(Resources['isRequiredField'][currentLanguage])
+        .required(Resources['passwordRequired'][currentLanguage])
         .min(5, Resources['numbersGreaterThanOrEqualHalf'][currentLanguage]),
     EmpCode: Yup.number()
-        .required(Resources['isRequiredField'][currentLanguage]),
-
+        .required(Resources['employeeCodeRequired'][currentLanguage]),
+    ContactName: Yup.string()
+        .required(Resources['toContactRequired'][currentLanguage])
+        .nullable(false),
+    SupervisorName: Yup.string()
+        .required(Resources['supervisorNameRequired'][currentLanguage])
+        .nullable(false),
 });
 
 
 class AddAccount extends Component {
+
     constructor(props) {
         super(props)
+
         this.state = {
             UserName: '',
             Password: '',
             CompanyData: [],
-            CompanyId: '',
+            CompanyId: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             ContactData: [],
-            ContactId: '',
+            ContactId: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             WorkingHours: '',
             HoursRate: '',
             SupervisorCompanyData: [],
-            SupervisorCompanyId: '',
+            SupervisorCompanyId: { label: Resources.supervisorCompanyRequired[currentLanguage], value: "0" },
             SupervisorNameData: [],
-            SupervisorId: '',
+            SupervisorId: { label: Resources.supervisorNameRequired[currentLanguage], value: "0" },
             GroupNameData: [],
             GroupNameId: '',
             EmpCode: '',
@@ -126,25 +133,25 @@ class AddAccount extends Component {
     }
 
     CompanyNamehandleChange = (e) => {
-        this.setState({ CompanyId: e.value, CompanyValidation: false })
+        this.setState({ CompanyId: e })
         this.GetData('GetContactsNotUsersByCompanyId?companyId=' + e.value + '', 'contactName', 'id', 'ContactData')
     }
 
     SupervisorCompanyhandleChange = (e) => {
-        this.setState({ SupervisorCompanyId: e.value, SupervisorCompanyValidation: false })
+        this.setState({ SupervisorCompanyId: e })
         this.GetData('GetContactsByCompanyIdForOnlyUsers?companyId=' + e.value + '', 'contactName', 'id', 'SupervisorNameData')
     }
 
     SupervisorNamehandleChange = (e) => {
-        this.setState({ SupervisorId: e.value, SupervisorNameValidation: false })
+        this.setState({ SupervisorId: e})
     }
 
     ContactNamehandleChange = (e) => {
-        this.setState({ ContactId: e.value, ContactValidation: false })
+        this.setState({ ContactId: e })
     }
 
     GroupNameData = (e) => {
-        this.setState({ GroupNameId: e.value })
+        this.setState({ GroupNameId: e})
     }
 
     UserNameChangeHandler = (e) => {
@@ -211,20 +218,19 @@ class AddAccount extends Component {
     }
 
     AddAccount = () => {
-        if (!this.state.CompanyValidation && !this.state.SupervisorNameValidation && !this.state.SupervisorCompanyValidation && !this.state.ContactValidation) {
             Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + this.state.CompanyId + '', null, 'POST').then(
                 Api.post('AddAccount',
                     {
                         'userName': this.state.UserName,
                         'userPassword': this.state.Password,
                         'accountCompanyId': getPublicConfiguartion.accountCompanyId,
-                        'companyId': this.state.CompanyId,
-                        'contactId': this.state.ContactId,
-                        'contactSupervisorId': this.state.SupervisorId,
-                        'companySupervisorId': this.state.SupervisorCompanyId,
+                        'companyId': this.state.CompanyId.value,
+                        'contactId': this.state.ContactId.value,
+                        'contactSupervisorId': this.state.SupervisorId.value,
+                        'companySupervisorId': this.state.SupervisorCompanyId.value,
                         'defaultHours': this.state.WorkingHours,
                         'userRate': this.state.HoursRate,
-                        'groupId': this.state.GroupNameId,
+                        'groupId': this.state.GroupNameId.value,
                         'empCode': this.state.EmpCode,
                         'designTeam': this.state.DesignTeam,
                         'isTaskAdmin': this.state.TaskAdmin,
@@ -254,7 +260,7 @@ class AddAccount extends Component {
                     pathname: '/TemplatesSettings',
                 })
             })
-        }
+        
     }
 
     render() {
@@ -298,12 +304,10 @@ class AddAccount extends Component {
                                             UserName: '',
                                             Password: '',
                                             WorkHours: '',
-                                            SupervisorCompanyValidation: '',
                                             EmpCode: '',
                                             RateHours: '',
-                                            SupervisorNameValidation: '',
-                                            CompanyValidation: '',
-                                            ContactValidation: '',
+                                            SupervisorName: '',
+                                            ContactName: '',
                                         }}
 
                                         validationSchema={validationSchema}
@@ -313,7 +317,7 @@ class AddAccount extends Component {
 
                                         }} >
 
-                                        {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
+                                        {({ errors, touched, handleBlur, values, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullProformWrapper">
                                                     <div className="linebylineInput valid-input">
@@ -386,51 +390,53 @@ class AddAccount extends Component {
                                                 </div>
 
 
-                                                <div className="linebylineInput valid-input">
-                                                    <div className={this.state.ContactValidation && touched.ContactValidation ? ("has-error") :
-                                                        !this.state.ContactValidation && touched.ContactValidation ? "" : ""} >
-                                                        <DropdownMelcous title='ContactName' data={this.state.ContactData}
-                                                            handleChange={this.ContactNamehandleChange} placeholder='ContactName' name="ContactName" />
-                                                        {this.state.ContactValidation && touched.ContactValidation ? (
-                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
-                                                    </div>
-                                                </div>
 
-                                                <div className="linebylineInput valid-input">
-                                                    <div className={this.state.CompanyValidation && touched.CompanyValidation ? ("has-error") :
-                                                        !this.state.CompanyValidation && touched.CompanyValidation ? "" : ""} >
-                                                        <DropdownMelcous title='CompanyName' data={this.state.CompanyData}
-                                                            handleChange={this.CompanyNamehandleChange} placeholder='selectCompany' name="CompanyName" />
-                                                        {this.state.CompanyValidation && touched.CompanyValidation ? (
-                                                            <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+                                                <div className="linebylineInput valid-input mix_dropdown">
+                                                    <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
+                                                    <div className="supervisor__company">
+                                                        <div className="super_name">
+                                                            <DropdownMelcous data={this.state.ContactData} onChange={setFieldValue} name="ContactName"
+                                                                onBlur={setFieldTouched} error={errors.ContactName} id="ContactName"
+                                                                touched={touched.ContactName} index="IR-ContactName"
+                                                                handleChange={this.ContactNamehandleChange}
+                                                                selectedValue={this.state.ContactId}
+                                                            />
+                                                        </div>
+
+                                                        <div className="super_company">
+                                                            <DropdownMelcous data={this.state.CompanyData} name="CompanyName"
+                                                                selectedValue={this.state.selectedFromCompany}
+                                                                handleChange={this.CompanyNamehandleChange} selectedValue={this.state.CompanyId} />
+                                                        </div>
                                                     </div>
                                                 </div>
 
 
                                                 <div className="linebylineInput valid-input mix_dropdown">
-                                                    {/* <label class="control-label"> Employee Code </label> */}
+                                                    <label className="control-label">{Resources.SupervisorCompany[currentLanguage]}</label>
                                                     <div className="supervisor__company">
-                                                        <div className={this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? ("super_name has-error") :
-                                                            !this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? "super_name" : "super_name"} >
-                                                            <DropdownMelcous title='SupervisorName' data={this.state.SupervisorNameData}
-                                                                handleChange={this.SupervisorNamehandleChange} placeholder='SupervisorName' name="SupervisorName" />
-                                                            {this.state.SupervisorNameValidation && touched.SupervisorNameValidation ? (
-                                                                <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+                                                        <div className="super_name">
+                                                            <DropdownMelcous data={this.state.SupervisorNameData} onChange={setFieldValue} name="SupervisorName"
+                                                                onBlur={setFieldTouched} error={errors.SupervisorName} id="SupervisorName"
+                                                                touched={touched.SupervisorName} index="IR-SupervisorName"
+                                                                handleChange={this.SupervisorNamehandleChange}
+                                                                selectedValue={this.state.SupervisorId}
+                                                            />
                                                         </div>
-                                                        <div className={this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? ("has-error super_company") :
-                                                            !this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? "super_company" : "super_company"} >
-                                                            <DropdownMelcous title='SupervisorCompany' data={this.state.CompanyData}
-                                                                handleChange={this.SupervisorCompanyhandleChange} placeholder='SupervisorCompany' name="SupervisorCompany" />
-                                                            {this.state.SupervisorCompanyValidation && touched.SupervisorCompanyValidation ? (
-                                                                <em className="pError">{Resources['isRequiredField'][currentLanguage]}</em>) : null}
+
+                                                        <div className="super_company">
+                                                            <DropdownMelcous data={this.state.CompanyData} name="SupervisorCompany"
+                                                                selectedValue={this.state.selectedFromCompany}
+                                                                handleChange={this.SupervisorCompanyhandleChange} selectedValue={this.state.SupervisorCompanyId} />
                                                         </div>
                                                     </div>
                                                 </div>
 
+
                                                 <div className="linebylineInput valid-input">
                                                     <DropdownMelcous title='GroupName'
                                                         data={this.state.GroupNameData}
-                                                        handleChange={this.GroupNamehandleChange}
+                                                        handleChange={this.GroupNameData}
                                                         placeholder='GroupName' />
                                                 </div>
 
