@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import Accounts from './Accounts/Accounts'
 import Companies from './Companies/Index';
 import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
+import GeneralConfiguration from './Project/GeneralConfiguration'
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
@@ -15,88 +16,98 @@ class TemplatesSettings extends Component {
         super(props);
         this.state = {
             tabIndex: this.props.Adminstration.tabIndex,
-            showNotify:false
+            showNotify: false
         };
         //
     }
-    NoPermission=()=>{
+    NoPermission = () => {
         this.setState({
-            showNotify:true
+            showNotify: true
         })
         setTimeout(() => {
             this.setState({
-                showNotify:false
+                showNotify: false
             })
         }, 1000);
     }
     render() {
         return (
-            <div className='mainContainer main__fulldash'>    
-           
-                    <Tabs className="settings-container" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
-                        <div className="settings-tabs-items">
-                            <h3 className="zero">Settings</h3>
-                            <TabList>
-                                <li className="title">
-                                        <h4 className="zero">{Resources['userMenu'][currentLanguage]}</h4>
-                                </li>
-                                <Tab>
-                                    <span className="subUlTitle">{Resources['titleAccounts'][currentLanguage]}</span>
-                                </Tab>
-                                <Tab>
-                                    <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
-                                </Tab>
+            <div className='mainContainer main__fulldash'>
 
-                                <li className="title">
-                                    <h4 className="zero">{Resources['Project'][currentLanguage]}</h4>
-                                </li>
-                                {(config.IsAllow(1179)) ?
+                <Tabs className="settings-container" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+                    <div className="settings-tabs-items">
+                        <h3 className="zero">Settings</h3>
+                        <TabList>
+                            <li className="title">
+                                <h4 className="zero">{Resources['userMenu'][currentLanguage]}</h4>
+                            </li>
+                            <Tab>
+                                <span className="subUlTitle">{Resources['titleAccounts'][currentLanguage]}</span>
+                            </Tab>
+                            <Tab>
+                                <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
+                            </Tab>
+
+                            <li className="title">
+                                <h4 className="zero">{Resources['Project'][currentLanguage]}</h4>
+                            </li>
+                            {(config.IsAllow(1179)) ?
                                 <Tab>
                                     <span className="subUlTitle">{Resources['expensesWorkFlow'][currentLanguage]}</span>
-                                </Tab> :null}
+                                </Tab> : null}
+
+                            {(config.IsAllow(388)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['GeneralConfig'][currentLanguage]}</span>
+                                </Tab> : null}
 
 
-                                <li className="title">
-                                    <h4 className="zero">{Resources['menuDefaultData'][currentLanguage]}</h4>
-                                </li>
-                                {(config.IsAllow(1179)) ?
+                            <li className="title">
+                                <h4 className="zero">{Resources['menuDefaultData'][currentLanguage]}</h4>
+                            </li>
+                            {(config.IsAllow(1179)) ?
                                 <Tab>
                                     <span className="subUlTitle">{Resources['AccountsDefaultList'][currentLanguage]}</span>
-                                </Tab> :null}
+                                </Tab> : null}
 
 
-                            </TabList>
-                        </div>
-            
-                        <div className="setting-tabs-contant">
+                        </TabList>
+                    </div>
 
-                     {(config.IsAllow(794)) ? 
+                    <div className="setting-tabs-contant">
+
+                        {(config.IsAllow(794)) ?
                             <TabPanel>
                                 <Accounts />
                             </TabPanel>
-                          :null} 
-                            
-                            {(config.IsAllow(1001105)) ? 
+                            : null}
+
+                        {(config.IsAllow(1001105)) ?
                             <TabPanel>
                                 <Companies />
                             </TabPanel>
-                             :null} 
+                            : null}
 
-                
-                           {(config.IsAllow(1001105)) ?
+
+                        {(config.IsAllow(1001105)) ?
                             <TabPanel>
                                 <ExpensesWorkFlowLog />
                             </TabPanel>
-                            :null}
+                            : null}
+                                  {(config.IsAllow(388)) ?
+                            <TabPanel>
+                                <GeneralConfiguration />
+                            </TabPanel>
+                            : null}
 
 
-                            {(config.IsAllow(1179)) ?
+                        {(config.IsAllow(1179)) ?
                             <TabPanel>
                                 <GeneralList />
                             </TabPanel>
-                             : null  }
-                        </div>
-                    </Tabs> 
+                            : null}
+                    </div>
+                </Tabs>
 
             </div>
         )

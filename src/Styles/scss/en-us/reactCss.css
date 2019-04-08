@@ -865,7 +865,7 @@ table edition
 }
 
 .disNone {
-  display: none;
+  display: none !important;
 }
 .resetPassword .spinner > div {
   background-color: rgb(198, 217, 253);
@@ -2650,6 +2650,9 @@ button.companies_icon {
     width: 72%;
   }
 } */
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
+  cursor: pointer;
+}
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.current__step .steps-timeline {
   background-color: #5fd45f;
   color: #fff;
@@ -3181,20 +3184,6 @@ button.companies_icon {
   height: 11px;
   top: 3px;
 }
-
-.noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer.fullWidthWrapper {
-  margin-top: 30px;
-}
-.check__radio {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-.check__radio--row {
-  display: flex;
-  flex-flow: column;
-}
-.check__radio--row >div {
-  margin-bottom: 5px;
+.editorCell span{
+color: #4382f9 !important;
 }
