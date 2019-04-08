@@ -118,9 +118,6 @@ class projectsAddEdit extends Component {
             });
         }
     }
-
-
-
     componentDidMount() {
         this.checkDocumentIsView();
     };
@@ -178,8 +175,8 @@ class projectsAddEdit extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.documentForAdding()
     }
+
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
@@ -191,7 +188,6 @@ class projectsAddEdit extends Component {
 
             }
         } else {
-            this.props.actions.documentForAdding()
             let document = {
                 projectNameEn: '',
                 abbreviationEn: '',
@@ -230,7 +226,7 @@ class projectsAddEdit extends Component {
                 epsId: '',
                 showInReport: false,
             };
-            this.setState({ document,emailSection:false });
+            this.setState({ document, emailSection: false });
             this.fillDropDowns(false);
         }
     };
@@ -312,35 +308,40 @@ class projectsAddEdit extends Component {
 
 
     addEditProject(values) {
+
         console.log('values', values)
-        let project = Object.assign({...values},
-            {epsId: this.state.epsId},
-            { projectTypeId: this.state.selectedProjectType.value =='0'?null: this.state.selectedProjectType.value},
-            { countryId: this.state.selectedCountry.value =='0'?null: this.state.selectedCountry.value },
-            { projectManager: this.state.selectedProjectManagerCompany.value =='0'?null: this.state.selectedProjectManagerCompany.value },
-            { projectManagerContactId: this.state.selectedProjectManagerContact.value  =='0'?null: this.state.selectedProjectManagerContact.value},
-            { projectExcuteCompanyId: this.state.selectedExecutiveManagerCompany.value  =='0'?null: this.state.selectedExecutiveManagerCompany.value},
-            { projectExcuteContactId: this.state.selectedExecutiveManagerContact.value  =='0'?null: this.state.selectedExecutiveManagerContact.value},
-            { companyId: this.state.selectedYourCompany.value =='0'?null: this.state.selectedYourCompany.value},
-            { roleId: this.state.selectedYourCompanyRole.value =='0'?null: this.state.selectedYourCompanyRole.value},
-            { ownerId: this.state.selectedOwner.value =='0'?null: this.state.selectedOwner.value},
-            { generalConstractor: this.state.selectedGeneralContractor.value =='0'?null: this.state.selectedGeneralContractor.value},
-            { engineerOfRecord: this.state.selectedEngineerofRecord.value =='0'?null: this.state.selectedEngineerofRecord.value},
-            { projectManagementCompany: this.state.selectedProjectManagementCompany.value =='0'?null: this.state.selectedProjectManagementCompany.value},
-            { submittalCoordinator: this.state.selectedSubmittalCoordinator.value =='0'?null: this.state.selectedSubmittalCoordinator.value},
+
+        let project = Object.assign({ ...values },
+            { epsId: this.state.epsId },
+            { projectTypeId: this.state.selectedProjectType.value == '0' ? null : this.state.selectedProjectType.value },
+            { countryId: this.state.selectedCountry.value == '0' ? null : this.state.selectedCountry.value },
+            { projectManager: this.state.selectedProjectManagerCompany.value == '0' ? null : this.state.selectedProjectManagerCompany.value },
+            { projectManagerContactId: this.state.selectedProjectManagerContact.value == '0' ? null : this.state.selectedProjectManagerContact.value },
+            { projectExcuteCompanyId: this.state.selectedExecutiveManagerCompany.value == '0' ? null : this.state.selectedExecutiveManagerCompany.value },
+            { projectExcuteContactId: this.state.selectedExecutiveManagerContact.value == '0' ? null : this.state.selectedExecutiveManagerContact.value },
+            { companyId: this.state.selectedYourCompany.value == '0' ? null : this.state.selectedYourCompany.value },
+            { roleId: this.state.selectedYourCompanyRole.value == '0' ? null : this.state.selectedYourCompanyRole.value },
+            { ownerId: this.state.selectedOwner.value == '0' ? null : this.state.selectedOwner.value },
+            { generalConstractor: this.state.selectedGeneralContractor.value == '0' ? null : this.state.selectedGeneralContractor.value },
+            { engineerOfRecord: this.state.selectedEngineerofRecord.value == '0' ? null : this.state.selectedEngineerofRecord.value },
+            { projectManagementCompany: this.state.selectedProjectManagementCompany.value == '0' ? null : this.state.selectedProjectManagementCompany.value },
+            { submittalCoordinator: this.state.selectedSubmittalCoordinator.value == '0' ? null : this.state.selectedSubmittalCoordinator.value },
         );
+
         console.log('project', project)
-        this.setState({isLoading:true})
+
+        this.setState({ isLoading: true })
+
         dataservice.addObject('ProjectProjectsAdd', project).then(result => {
             this.setState({
                 docId: result.id,
-                isLoading:false
+                isLoading: false
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            
-        }).catch((ex)=>{
-            console.log('ex',ex)
-            this.setState({isLoading:false})
+
+        }).catch((ex) => {
+            console.log('ex', ex)
+            this.setState({ isLoading: false })
             toast.error(Resources["operationCanceled"][currentLanguage]);
         })
     }
