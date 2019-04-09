@@ -85,6 +85,7 @@ import projectIssuesAddEdit from "./Pages/Contracts/projectIssuesAddEdit";
 import qsAddEdit from "./Pages/Contracts/qsAddEdit";
 import EpsPermission from "./Pages/Eps/EpsPermission";
 import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
+import baseAddEdit from "./Pages/estimation/baseAddEdit";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -174,9 +175,7 @@ let originalRoutes = [
     , <Route path="/AccountsAlerts" component={AccountsAlerts} />
     , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
     , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
-    , <Route path="/EpsPermission" component={EpsPermission} />
-    
-
+    , <Route path="/EpsPermission" component={EpsPermission} /> 
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
@@ -185,6 +184,7 @@ let originalRoutes = [
     , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
     , <Route path="/qsAddEdit" component={qsAddEdit} />
     , <Route path="/projectsAddEdit" component={projectsAddEdit} />
+    , <Route path="/baseAddEdit" component={baseAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

@@ -156,7 +156,7 @@ class QsAddEdit extends Component {
 
   componentWillReceiveProps(nextProps, prevProps) {
     if (nextProps.document && nextProps.document.id) {
-      dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + nextProps.document.id).then(result => {
+     
           nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
 
           this.setState({
@@ -166,7 +166,7 @@ class QsAddEdit extends Component {
           });
 
           this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-        });
+       
 
       this.checkDocumentIsView();
     }
