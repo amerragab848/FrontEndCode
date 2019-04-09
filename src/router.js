@@ -74,6 +74,7 @@ import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit
 import AccountsAlerts  from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
+import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
 
 
 
@@ -174,6 +175,8 @@ let originalRoutes = [
     , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
     , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
     , <Route path="/EpsPermission" component={EpsPermission} />
+    , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
+    
     
 
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 

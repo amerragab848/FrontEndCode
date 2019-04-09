@@ -314,7 +314,7 @@ class GridSetup extends Component {
             onColumnGroupDeleted={onColumnGroupDeleted}
             noColumnsSelectedMessage={drag}
           />
-          {this.state.selectedRows.length > 0 ? (
+          {this.state.selectedRows.length > 0 ? (     
             <div className="gridSystemSelected active">
               <div className="tableselcted-items">
                 <span id="count-checked-checkboxes">
@@ -326,8 +326,8 @@ class GridSetup extends Component {
                 <button
                   className="defaultBtn btn smallBtn"
                   onClick={this.clickHandlerDeleteRows}
-                >
-                  DELETE
+                >{this.props.NoShowDeletedBar === undefined ?
+                  'DELETE':'Currency'}
                 </button>
                 {this.props.assign ? <button
                   className="primaryBtn-1 btn smallBtn"
@@ -336,7 +336,7 @@ class GridSetup extends Component {
                   <i className="fa fa-retweet"></i>
                 </button> : null}
               </div>
-            </div>
+            </div> 
           ) : null}
         </Toolbar>
       );
@@ -344,7 +344,7 @@ class GridSetup extends Component {
 
 
     return (
-      <Fragment>
+      <div className="grid-container">
         <div id="top__scroll">
           <div id="empty__div--scroll">
           </div>
@@ -410,7 +410,7 @@ class GridSetup extends Component {
             />
           </DraggableContainer >
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
