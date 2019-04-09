@@ -85,6 +85,7 @@ import projectIssuesAddEdit from "./Pages/Contracts/projectIssuesAddEdit";
 import qsAddEdit from "./Pages/Contracts/qsAddEdit";
 import EpsPermission from "./Pages/Eps/EpsPermission";
 import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
+import Projects from "./Pages/Eps/Projects/Index";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -175,6 +176,7 @@ let originalRoutes = [
     , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
     , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
     , <Route path="/EpsPermission" component={EpsPermission} />
+    , <Route path="/Projects" component={Projects} />
     
 
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 

@@ -60,6 +60,9 @@ export default class Api {
 
                 return json;
             }
+            else if (resp.status === 409) {
+                return resp;
+            }
 
             return json.then(err => {
                 throw err

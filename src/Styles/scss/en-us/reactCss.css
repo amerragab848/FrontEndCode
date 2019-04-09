@@ -76,7 +76,7 @@
   font-size: 14px;
 }
 .dropWrapper {
-  /* padding: 25PX; */
+  padding: 5px 10px;
   display: flex;
   justify-content: space-between;
   width: auto;
@@ -2625,9 +2625,6 @@ button.companies_icon {
   padding-bottom: 20px;
   margin: 10px 40px;
 }
-.dropWrapper {
-  padding: 15px 10px;
-}
 .attachmentTable tbody tr .contentCell.tableCell-3 {
   min-width: 150px;
   max-width: 200px;
@@ -2771,6 +2768,10 @@ button.companies_icon {
 .main__fulldash {
   padding-left: 0;
   padding-right: 0
+}
+.main__withouttabs {
+  padding-left: 40px;
+  padding-right: 40px
 }
 .ReactTable {
   overflow-x: scroll;
@@ -3168,8 +3169,12 @@ button.companies_icon {
 }
 .fullWidthWrapper.textRight {
   text-align: right;
+  margin-bottom: 0;
+  margin-top: 30px
 }
-
+.fullWidthWrapper button:nth-child(2) {
+  margin-left: 10px;
+}
 .attachmentTable tbody tr td.tdHover .attachmentAction a.attachPlus::after {
   background-image: url(../../images/plus-EpsHover.png);
 }
