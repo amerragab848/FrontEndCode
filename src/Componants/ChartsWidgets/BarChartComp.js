@@ -85,7 +85,7 @@ class BarChartComp extends Component {
                     enabled:true
                 } 
             }
-        }  
+        }
     }
 
     componentDidMount = () => {
@@ -129,7 +129,7 @@ class BarChartComp extends Component {
 
     render() { 
         return ( 
-            <div className="panel">
+            <div className="panel barChart__container">
                 <div className="panel-body">
                     <HighchartsReact 
                         highcharts={Highcharts}

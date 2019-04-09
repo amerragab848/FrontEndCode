@@ -74,6 +74,7 @@ import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit
 import AccountsAlerts  from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
+import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
 
 
 
@@ -86,6 +87,8 @@ import qsAddEdit from "./Pages/Contracts/qsAddEdit";
 import EpsPermission from "./Pages/Eps/EpsPermission";
 import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
 import Projects from "./Pages/Eps/Projects/Index";
+import baseAddEdit from "./Pages/estimation/baseAddEdit";
+import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -177,8 +180,10 @@ let originalRoutes = [
     , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
     , <Route path="/EpsPermission" component={EpsPermission} />
     , <Route path="/Projects" component={Projects} />
+    , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
     
-
+    
+    , <Route path="/EpsPermission" component={EpsPermission} /> 
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
@@ -187,6 +192,8 @@ let originalRoutes = [
     , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
     , <Route path="/qsAddEdit" component={qsAddEdit} />
     , <Route path="/projectsAddEdit" component={projectsAddEdit} />
+    , <Route path="/baseAddEdit" component={baseAddEdit} />
+    , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
