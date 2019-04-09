@@ -300,7 +300,7 @@ class Index extends Component {
           </div>
           <TabPanel>{this.state.tabIndex === 0 ? this.renderThreeCard(0) : null}</TabPanel>
           <TabPanel> {this.state.tabIndex === 1 ? this.renderThreeCard(1) : null}</TabPanel>
-          <TabPanel className="App"><div className="row">{this.state.tabIndex === 2 ? this.renderCharts() : null}</div></TabPanel>
+          <TabPanel className="App"><div className="row charts__row">{this.state.tabIndex === 2 ? this.renderCharts() : null}</div></TabPanel>
         </Tabs>
         {this.state.viewDashBoard ? (<DashBoard opened={this.state.viewDashBoard} closed={this.closeModal.bind(this)} />) : null}
       </div>
