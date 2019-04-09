@@ -3187,3 +3187,11 @@ button.companies_icon {
 .editorCell span{
 color: #4382f9 !important;
 }
+.editableRows {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.editableRows button{
+  margin: 0
+}

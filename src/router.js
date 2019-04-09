@@ -77,6 +77,7 @@ import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralCon
 
 
 
+import RequestPaymentsAddEdit from "./Pages/Contracts/requestPaymentsAddEdit";
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
@@ -184,6 +185,7 @@ let originalRoutes = [
     , <Route path="/variationRequestAddEdit" component={variationRequestAddEdit} />
     , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
     , <Route path="/qsAddEdit" component={qsAddEdit} />
+    , <Route path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />
     , <Route path="/projectsAddEdit" component={projectsAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

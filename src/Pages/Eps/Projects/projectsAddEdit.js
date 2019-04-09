@@ -31,7 +31,7 @@ const validationSchema = Yup.object().shape({
     projectNameEn: Yup.string().required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
     projectNameAr: Yup.string().required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
     job: Yup.string().required(Resources['referenceCode'][currentLanguage]),
-    projectType: Yup.string().required(Resources['selectProject'][currentLanguage]),
+    projectType: Yup.string().required(Resources['pleaseSelectProjectType'][currentLanguage]),
     country: Yup.string().required(Resources['pleaseSelectCountry'][currentLanguage]),
     projectManagerContact: Yup.string().required(Resources['pleaseSelectProjectManagerContact'][currentLanguage]),
 })

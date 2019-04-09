@@ -10,6 +10,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ReactTable from "react-table";
+import GridSetup from "../Communication/GridSetup";
 
 import { withRouter } from "react-router-dom";
 
@@ -19,6 +20,7 @@ import {
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
@@ -28,10 +30,10 @@ import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import { func } from "prop-types";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -42,12 +44,23 @@ const validationSchema = Yup.object().shape({
     contractId: Yup.string().required(Resources['selectContract'][currentLanguage])
         .nullable(true),
 
-    total: Yup.string()
+    vat: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    tax: Yup.string()
+        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    insurance: Yup.string()
+        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    advancePaymentPercent: Yup.string()
+        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    retainagePercent: Yup.string()
+        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+})
 
-    timeExtension: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
-}) 
+const BoqTypeSchema = Yup.object().shape({
+    boqType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
+    boqChild: Yup.string().required(Resources['boqSubType'][currentLanguage]),
+    boqSubType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
+});
 
 let columns = [
     {
@@ -121,13 +134,16 @@ class requestPaymentsAddEdit extends Component {
             }
             index++;
         }
-
         this.state = {
+            isLoading: false,
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
+            FourthStep: false,
+
             SecondStepComplate: false,
             ThirdStepComplate: false,
+            FourthStepComplate: false,
 
             currentTitle: "sendToWorkFlow",
             showModal: false,
@@ -135,8 +151,11 @@ class requestPaymentsAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
 
+            pageNumber: 0,
+            pageSize: 2000,
+
             docId: docId,
-            docTypeId: 66,
+            docTypeId: 71,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -149,21 +168,229 @@ class requestPaymentsAddEdit extends Component {
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
             { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
             selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
-            selectPco: { label: Resources.pco[currentLanguage], value: "0" },
-            pcos: [],
             contractsPos: [],
-            voItems: [],
-            CurrentStep: 1
+            paymentsItems: [],
+            CurrentStep: 1,
+            editRows: []
         }
 
         if (!Config.IsAllow(159) || !Config.IsAllow(158) || !Config.IsAllow(160)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: "/changeOrder/" + projectId
+                pathname: "/requestPayments/" + projectId
             });
         }
+        this.editRowsClick = this.editRowsClick.bind(this);
     }
 
+    buildColumns() {
+        let editPaymentPercent = ({ value, row }) => {
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.paymentPercent}</span></a>;
+            }
+            return null;
+        };
+
+        let editQuantityComplete = ({ value, row }) => {
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer', color: row.revisedQuantity >= row.quantityComplete ? 'black' : '#F50505' }}>{row.quantityComplete}</span></a>;
+            }
+            return null;
+        };
+
+        let editPercentComplete = ({ value, row }) => {
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.percentComplete}</span></a>;
+            }
+            return null;
+        };
+
+        let editSiteQuantityComplete = ({ value, row }) => {
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.siteQuantityComplete}</span></a>;
+            }
+            return null;
+        };
+
+        let editSitePercentComplete = ({ value, row }) => {
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.sitePercentComplete}</span></a>;
+            }
+            return null;
+        };
+
+        this.itemsColumns = [
+            {
+                key: "arrange",
+                name: Resources["no"][currentLanguage],
+                width: 50,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "boqType",
+                name: Resources["boqType"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "secondLevel",
+                name: Resources["boqTypeChild"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "boqSubType",
+                name: Resources["boqSubType"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "itemCode",
+                name: Resources["itemCode"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "description",
+                name: Resources["details"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "quantity",
+                name: Resources["boqQuanty"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "revisedQuantity",
+                name: Resources["approvedQuantity"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "unitPrice",
+                name: Resources["unitPrice"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "unit",
+                name: Resources["unit"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+
+            }, {
+                key: "prevoiuseQnty",
+                name: Resources["previousQuantity"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "oldPaymentPercent",
+                name: Resources["previousPaymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "sitePercentComplete",
+                name: Resources["sitePercentComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: editSitePercentComplete,
+                editable: !this.props.changeStatus
+            }, {
+                key: "siteQuantityComplete",
+                name: Resources["siteQuantityComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: editSiteQuantityComplete,
+                editable: !this.props.changeStatus
+            }, {
+                key: "percentComplete",
+                name: Resources["percentComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: editPercentComplete,
+                editable: this.props.changeStatus,
+                visible: this.props.changeStatus
+            }, {
+                key: "quantityComplete",
+                name: Resources["quantityComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: editQuantityComplete,
+                editable: this.props.changeStatus,
+                visible: this.props.changeStatus
+            }, {
+                key: "paymentPercent",
+                name: Resources["paymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: editPaymentPercent,
+                editable: true
+            }
+        ];
+
+
+    }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -180,8 +407,6 @@ class requestPaymentsAddEdit extends Component {
         if (nextProps.document && nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
-            serverChangeOrder.dateApproved = moment(serverChangeOrder.resultDate).format('DD/MM/YYYY');
-            serverChangeOrder.timeExtensionRequired = serverChangeOrder.timeExtensionRequired ? parseFloat(serverChangeOrder.timeExtensionRequired) : 0;
             this.setState({
                 document: { ...serverChangeOrder },
                 hasWorkflow: nextProps.hasWorkflow
@@ -227,7 +452,6 @@ class requestPaymentsAddEdit extends Component {
     }
 
     fillVoItems() {
-
         dataservice.GetDataGrid("GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId).then(result => {
             this.setState({
                 voItems: [...result]
@@ -235,30 +459,30 @@ class requestPaymentsAddEdit extends Component {
             this.props.actions.setItemDescriptions(result);
         });
     }
+
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId);
+            this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
         } else {
-            let changeOrder = {
-                subject: '',
+            let paymentRequistion = {
+                subject: '..',
                 id: 0,
                 projectId: this.state.projectId,
                 arrange: '',
                 docDate: moment(),
-                status: 'true',
-                isRaisedPrices: 'false',
-                executed: 'yes',
-                pcoId: '',
-                refDoc: '',
-                total: 0,
-                timeExtensionRequired: 0,
+                status: true,
+                useCommulative: true,
+                advancedPaymentAmount: 0,
                 contractId: '',
-                pcoId: '',
-                dateApproved: moment()
-
+                vat: 0,
+                tax: 0,
+                insurance: 0,
+                advancePaymentPercent: 0,
+                collected: 0,
+                useQuantity: false
             };
 
-            this.setState({ document: changeOrder }, function () {
+            this.setState({ document: paymentRequistion }, function () {
                 this.GetNExtArrange();
             });
             this.fillDropDowns(false);
@@ -269,7 +493,7 @@ class requestPaymentsAddEdit extends Component {
     GetNExtArrange() {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
         this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
@@ -284,14 +508,18 @@ class requestPaymentsAddEdit extends Component {
     fillDropDowns(isEdit) {
 
         if (isEdit === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-                this.setState({
-                    contractsPos: [...result]
+
+            dataservice.GetDataGrid("GetContractsListForPaymentRequistion?projectId=" + this.state.projectId).then(result => {
+                let Data = [];
+                (result).forEach(item => {
+                    var obj = {};
+                    obj.label = item['subject'];
+                    obj.value = item['id'];
+                    Data.push(obj);
                 });
-            });
-            dataservice.GetDataList("GetContractsPcoByProjectIdForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
                 this.setState({
-                    pcos: [...result]
+                    contractsPos: [...Data],
+                    contractsPool: result
                 });
             });
         }
@@ -356,7 +584,7 @@ class requestPaymentsAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, selectedValue, isPCO) {
+    handleChangeDropDownContract(event, field, selectedValue) {
         if (event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -367,24 +595,42 @@ class requestPaymentsAddEdit extends Component {
             document: updated_document,
             [selectedValue]: event
         });
-        if (isPCO === true) {
-            if (this.props.changeStatus === false) {
-                dataservice.GetRowById("GetContractsPcoForEdit?id=" + event.value).then(result => {
-                    updated_document.total = result.total;
-                    updated_document.timeExtensionRequired = result.timeExtensionRequired;
-                    updated_document.contractId = result.contractId;
-                    updated_document.arrange = result.arrange;
-                    updated_document.subject = result.subject;
 
-                    this.setState({
-                        document: updated_document,
-                    });
+        if (this.props.changeStatus === false) {
+            this.setState({
+                isLoading: true
+            });
+
+            this.buildColumns();
+            dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                this.setState({
+                    paymentsItems: result,
+                    isLoading: false
+                });
+            });
+            let contract = _.find(this.state.contractsPool, function (x) { return x.id == event.value });
+            if (contract) {
+
+                var objDate = new Date(),
+                    month = objDate.toLocaleString('en', { month: "long" });
+                var year = objDate.getFullYear();
+
+                updated_document.subject = 'Payment Requisition ' + contract.subject + ' (' + year + '/' + month + ') ' + original_document.arrange;
+                updated_document.vat = parseFloat(contract.vat);
+                updated_document.tax = parseFloat(contract.tax);
+                updated_document.insurance = parseFloat(contract.insurance);
+                updated_document.advancePaymentPercent = parseFloat(contract.advancedPayment);
+                updated_document.retainagePercent = parseFloat(contract.retainage);
+                updated_document.advancedPaymentAmount = contract.advancedPaymentAmount != null ? parseFloat(contract.advancedPaymentAmount) : 0;
+
+                this.setState({
+                    document: updated_document
                 });
             }
         }
     }
 
-    editVariationOrder(event) {
+    editPaymentRequistion(event) {
         this.setState({
             isLoading: true
         });
@@ -392,35 +638,37 @@ class requestPaymentsAddEdit extends Component {
         let saveDocument = this.state.document;
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.dateApproved = moment(saveDocument.dateApproved, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('EditContractsChangeOrder', saveDocument).then(result => {
+        dataservice.addObject('EditContractsRequestPayments', saveDocument).then(result => {
             this.setState({
-                isLoading: true
+                isLoading: false
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(res => {
             this.setState({
-                isLoading: true
+                isLoading: false
             });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
 
     saveVariationOrder(event) {
+        this.setState({
+            isLoading: true
+        });
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.dateApproved = moment(saveDocument.dateApproved, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         saveDocument.projectId = this.state.projectId;
 
-        dataservice.addObject('AddContractsChangeOrder', saveDocument).then(result => {
+        dataservice.addObject('AddContractsRequestPayment', saveDocument).then(result => {
             if (result.id) {
 
                 this.setState({
-                    docId: result.id
+                    docId: result.id,
+                    isLoading: false
                 });
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -437,6 +685,7 @@ class requestPaymentsAddEdit extends Component {
         } else if (this.state.docId > 0) {
             btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit'>{Resources.next[currentLanguage]}</button>
         }
+
         return btn;
     }
 
@@ -464,12 +713,35 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
+    FillGridItems() {
+
+        let contractId = this.state.document.contractId;
+
+        if (this.props.changeStatus == true) {
+
+            let paymentsItems = [...this.state.paymentsItems];
+            if (paymentsItems.length == 0) {
+                this.setState({
+                    isLoading: true
+                });
+                this.buildColumns();
+                dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                    this.setState({
+                        paymentsItems: result,
+                        isLoading: false
+                    });
+
+                });
+            }
+        }
+    }
+
     NextStep = () => {
 
         if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) {
-                this.editVariationOrder();
-            }
+            this.FillGridItems();
+            this.editPaymentRequistion();
+
             window.scrollTo(0, 0)
             this.setState({
                 FirstStep: false,
@@ -498,7 +770,7 @@ class requestPaymentsAddEdit extends Component {
             })
         } else {
             this.props.history.push({
-                pathname: "/changeOrder/" + projectId
+                pathname: "/requestPayments/" + projectId
             });
         }
 
@@ -508,6 +780,8 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.CurrentStep === 1) {
 
+            this.FillGridItems();
+
             window.scrollTo(0, 0)
             this.setState({
                 FirstStep: false,
@@ -517,11 +791,7 @@ class requestPaymentsAddEdit extends Component {
                 CurrentStep: this.state.CurrentStep + 1,
                 ThirdStep: false
             })
-            if (this.props.changeStatus === true) {
-                if (this.props.items.length == 0) {
-                    this.fillVoItems();
-                }
-            }
+
         }
         else if (this.state.CurrentStep === 2) {
 
@@ -535,7 +805,7 @@ class requestPaymentsAddEdit extends Component {
             })
         } else {
             this.props.history.push({
-                pathname: "/changeOrder/" + projectId
+                pathname: "/requestPayments/" + projectId
             });
         }
 
@@ -624,7 +894,139 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     }
- 
+
+    onRowClick = (value, index, column) => {
+        if (!Config.IsAllow(11)) {
+            toast.warning("you don't have permission");
+        }
+
+        else if (column.key != 'select-row' && column.key != 'unitPrice') {
+            // this.setState({ showPopUp: true, btnText: 'save' })
+            // dataservice.GetDataList('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+            //     this.setState({
+            //         itemTypes: result
+            //     })
+            // })
+
+            // dataservice.GetDataList('GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
+            //     this.setState({ equipmentTypes: [...res] })
+            // })
+
+            // this.simpleDialog1.show()
+
+            // if (this.state.CurrStep == 2) {
+            //     this.setState({ isLoading: true })
+            //     dataservice.GetDataList('GetAllBoqChild?parentId=' + value.boqTypeId, 'title', 'id').then(res => {
+            //         this.setState({
+            //             BoqSubTypes: res,
+            //             BoqTypeChilds: res,
+            //             items: { id: value.id, description: value.description, arrange: value.arrange, quantity: value.quantity, unitPrice: value.unitPrice, itemCode: value.itemCode, resourceCode: value.resourceCode, days: value.days },
+            //             selectedUnit: value.unit ? { label: value.unit, value: value.unit } : { label: Resources.unitSelection[currentLanguage], value: "0" },
+            //             selectedBoqType: value.boqTypeId > 0 ? { label: value.boqType, value: value.boqTypeId } : { label: Resources.boqType[currentLanguage], value: "0" },
+            //             selectedBoqTypeChild: value.boqChildTypeId > 0 ? { label: value.boqTypeChild, value: value.boqTypeChildId } : { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+            //             selectedBoqSubType: value.boqSubTypeId > 0 ? { label: value.boqSubType, value: value.boqSubTypeId } : { label: Resources.boqSubType[currentLanguage], value: "0" },
+            //             selectedequipmentType: value.equipmentType > 0 ? { label: value.equipmentTypeLabel, value: value.equipmentType } : { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
+            //             selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
+            //             isLoading: false
+            //         })
+            //         if (value.itemType > 0) {
+            //             let itemType = _.find(this.state.itemTypes, function (e) { return e.value == value.itemType })
+            //             this.setState({ selectedItemType: itemType })
+            //         }
+            //     })
+            // }
+
+        }
+    }
+
+    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+        //  this.setState({ isLoading: true })
+        let rows = [...this.state.paymentsItems];
+        let updateRow = rows[fromRow];
+
+        this.setState(state => {
+            const paymentsItems = state.paymentsItems.slice();
+            for (let i = fromRow; i <= toRow; i++) {
+                rows[i] = { ...rows[i], ...updated };
+            }
+            return { paymentsItems };
+        }, function () {
+            if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
+                if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
+                    updateRow.revisedQuantity = 1;
+                }
+                let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+                updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
+
+                switch (Object.keys(updated)[0]) {
+                    case 'quantityComplete':
+                        updateRow.percentComplete = (((newValue) / updateRow.revisedQuantity) * 100);
+                        break;
+                    case 'percentComplete':
+                        updateRow.quantityComplete = ((newValue / 100) * updateRow.revisedQuantity);
+                        break;
+                    case 'sitePercentComplete':
+                        updateRow.siteQuantityComplete = ((newValue / 100) * updateRow.revisedQuantity);
+
+                        break;
+                    case 'siteQuantityComplete':
+                        updateRow.sitePercentComplete = ((newValue / updateRow.revisedQuantity) * 100);
+                        if (this.props.changeStatus == false) {
+                            updateRow.percentComplete = (((newValue) / updateRow.revisedQuantity) * 100);
+                        }
+                        break;
+                }
+                let editRows = [...this.state.editRows];
+
+                let sameRow = _.find(editRows, function (x) { return x.id === updateRow.id });
+                if (sameRow) {
+                    editRows = editRows.filter(function (i) {
+                        return i.id != updateRow.id;
+                    });
+                }
+                editRows.push(updateRow);
+
+                this.setState({
+                    editRows: editRows
+                    // isLoading: false
+                });
+            }
+        });
+    };
+
+    editRowsClick() {
+        this.setState({ isLoading: true })
+
+        let editItems = [...this.state.editRows];
+        editItems.map(i => {
+            if (i.revisedQuantity == 0 && i.siteQuantityComplete > 0) {
+                i.revisedQuantity = 1;
+            }
+            i.percentComplete = ((parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100);
+            i.sitePercentComplete = ((parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100);
+            i.contractId = this.state.document.contractId;
+            i.requestId = this.state.docId;
+            i.projectId = projectId;
+
+        })
+
+        let api = this.props.changeStatus === true ? 'EditContractsRequestPaymentsItems' : 'AddContractsRequestPaymentsItemsNewScenario';
+        dataservice.addObject(api, editItems)
+            .then(() => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.setState({ isLoading: false })
+            })
+            .catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ isLoading: false })
+            })
+    }
+
+    assign = () => {
+        this.setState({ showBoqModal: true })
+        this.boqTypeModal.show()
+    }
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -638,13 +1040,99 @@ class requestPaymentsAddEdit extends Component {
             }
 
         ];
+        const ItemsGrid = this.state.isLoading === false ? (
+            <GridSetup
+                rows={this.state.paymentsItems}
+                showCheckbox={false}
+                pageSize={this.state.pageSize}
+                onRowClick={this.onRowClick}
+                columns={this.itemsColumns}
+                onGridRowsUpdated={this._onGridRowsUpdated}
+                assign={true}
+                assignFn={() => this.assign()}
+                key='PRitems'
+            />) : <LoadingSection />;
+
+        const BoqTypeContent = <Fragment>
+            <div className="dropWrapper">
+                {this.state.isLoading ? <LoadingSection /> : null}
+                <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                        boqType: '',
+                        boqChild: '',
+                        boqSubType: ''
+                    }}
+                    validationSchema={BoqTypeSchema}
+                    onSubmit={(values) => {
+                        this.assignBoqType()
+                    }}
+                >
+                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
+                            <div className="fullWidthWrapper textLeft">
+                                <Dropdown
+                                    title="boqType"
+                                    data={this.state.boqTypes}
+                                    selectedValue={this.state.selectedBoqTypeEdit}
+                                    handleChange={event => {
+                                        this.fillSubDropDown('GetAllBoqChild', 'parentId', event.value, 'title', 'id', 'BoqSubTypes', 'BoqTypeChilds')
+                                        this.setState({
+                                            selectedBoqTypeEdit: event,
+                                            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+                                            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
+                                        })
+                                    }}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.boqType}
+                                    touched={touched.boqType}
+                                    name="boqType"
+                                    index="boqType" />
+                            </div>
+                            <Dropdown
+                                title="boqTypeChild"
+                                data={this.state.BoqTypeChilds}
+                                selectedValue={this.state.selectedBoqTypeChildEdit}
+                                handleChange={event => {
+                                    this.setState({ selectedBoqTypeChildEdit: event })
+                                }}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.boqChild}
+                                touched={touched.boqChild}
+                                name="boqChild"
+                                index="boqChild" />
+                            <Dropdown
+                                title="boqSubType"
+                                data={this.state.BoqSubTypes}
+                                selectedValue={this.state.selectedBoqSubTypeEdit}
+                                handleChange={event => {
+                                    this.setState({ selectedBoqSubTypeEdit: event })
+                                }}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.boqSubType}
+                                touched={touched.boqSubType}
+                                name="boqSubType"
+                                index="boqSubType" />
+
+                            <div className={"slider-Btns fullWidthWrapper"}>
+                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn  disNone" : "primaryBtn-1 btn "} type="submit" >{Resources['save'][currentLanguage]}</button>
+                            </div>
+
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+        </Fragment >
 
         return (
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.changeOrder[currentLanguage]}
+                        <h2 className="zero">{Resources.paymentRequisitions[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · {Resources.contracts[currentLanguage]}</span>
                         </h2>
                         <div className="SubmittalHeadClose">
@@ -735,37 +1223,27 @@ class requestPaymentsAddEdit extends Component {
                                                                         handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                                 </div>
 
-                                                                <div className="linebylineInput valid-input alternativeDate">
-                                                                    <DatePicker
-                                                                        title='dateApproved'
-                                                                        format={'DD/MM/YYYY'}
-                                                                        onChange={e => setFieldValue('dateApproved', e)}
-                                                                        name="dateApproved"
-                                                                        startDate={this.state.document.dateApproved}
-                                                                        handleChange={e => this.handleChangeDate(e, 'dateApproved')} />
-                                                                </div>
-
                                                                 <div className="linebylineInput  account__checkbox">
                                                                     <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">{Resources.raisedPrices[currentLanguage]}</label>
+                                                                        <label className="control-label">{Resources.collectedStatus[currentLanguage]}</label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isRaisedPrices')} />
+                                                                            <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === false ? null : 'checked'} value="1" onChange={e => this.handleChange(e, 'collected')} />
                                                                             <label>{Resources.yes[currentLanguage]}</label>
                                                                         </div>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'isRaisedPrices')} />
+                                                                            <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === false ? 'checked' : null} value="0" onChange={e => this.handleChange(e, 'collected')} />
                                                                             <label>{Resources.no[currentLanguage]}</label>
                                                                         </div>
                                                                     </div>
 
                                                                     <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">{Resources.executed[currentLanguage]}</label>
+                                                                        <label className="control-label">{Resources.useCommulative[currentLanguage]}</label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "yes" ? null : 'checked'} value="yes" onChange={e => this.handleChange(e, 'executed')} />
+                                                                            <input type="radio" name="PR-useCommulativeValue" defaultChecked={this.state.document.useCommulativeValue === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'useCommulativeValue')} />
                                                                             <label>{Resources.yes[currentLanguage]}</label>
                                                                         </div>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no" ? 'checked' : null} value="no" onChange={e => this.handleChange(e, 'executed')} />
+                                                                            <input type="radio" name="PR-useCommulativeValue" defaultChecked={this.state.document.useCommulativeValue === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'useCommulativeValue')} />
                                                                             <label>{Resources.no[currentLanguage]}</label>
                                                                         </div>
                                                                     </div>
@@ -791,89 +1269,149 @@ class requestPaymentsAddEdit extends Component {
 
                                                                 {this.props.changeStatus === true ?
                                                                     <div className="proForm first-proform letterFullWidth proform__twoInput">
-                                                                        <div className="linebylineInput valid-input">
-
-                                                                            <label className="control-label">{Resources.pco[currentLanguage]}</label>
-                                                                            <div className="ui input inputDev"  >
-                                                                                <input type="text" className="form-control" id="pcoSubject" readOnly
-                                                                                    value={this.state.document.pcoSubject}
-                                                                                    name="pcoSubject" />
-                                                                            </div>
-                                                                        </div>
 
                                                                         <div className="linebylineInput valid-input">
-                                                                            <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                            <label className="control-label">{Resources.contractName[currentLanguage]}</label>
                                                                             <div className="ui input inputDev"  >
                                                                                 <input type="text" className="form-control" id="contractSubject" readOnly
-                                                                                    value={this.state.document.contractSubject}
+                                                                                    value={this.state.document.contractName}
                                                                                     name="contractSubject" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     :
-                                                                    <Fragment>
-                                                                        <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="pco"
-                                                                                isMulti={false}
-                                                                                data={this.state.pcos}
-                                                                                selectedValue={this.state.selectPco}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'pcoId', 'selectPco', true)}
-                                                                                id="pcoId" />
-                                                                        </div>
-
-                                                                        <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="contractPo"
-                                                                                data={this.state.contractsPos}
-                                                                                selectedValue={this.state.selectContract}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'contractId', 'selectContract', false)}
-                                                                                index="contractId"
-                                                                                onChange={setFieldValue}
-                                                                                onBlur={setFieldTouched}
-                                                                                error={errors.contractId}
-                                                                                touched={touched.contractId}
-                                                                                isClear={false}
-                                                                                name="contractId" />
-                                                                        </div>
-                                                                    </Fragment>
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <Dropdown
+                                                                            title="contractName"
+                                                                            data={this.state.contractsPos}
+                                                                            selectedValue={this.state.selectContract}
+                                                                            handleChange={event => this.handleChangeDropDownContract(event, 'contractId', 'selectContract')}
+                                                                            index="contractId"
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                            error={errors.contractId}
+                                                                            touched={touched.contractId}
+                                                                            isClear={false}
+                                                                            name="contractId" />
+                                                                    </div>
                                                                 }
                                                                 <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.total[currentLanguage]}</label>
-                                                                    <div className={"ui input inputDev" + (errors.total && touched.total ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text" className="form-control" id="total" value={this.state.document.total} name="total"
-                                                                            placeholder={Resources.total[currentLanguage]}
+                                                                    <label className="control-label">{Resources.advancePaymentPercent[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" value={this.state.document.advancePaymentPercent} name="advancePaymentPercent"
+                                                                            placeholder={Resources.advancePaymentPercent[currentLanguage]}
                                                                             onBlur={(e) => {
                                                                                 handleChange(e)
                                                                                 handleBlur(e)
                                                                             }}
-                                                                            onChange={(e) => this.handleChange(e, 'total')} />
-                                                                        {touched.total ? (<em className="pError">{errors.total}</em>) : null}
+                                                                            onChange={(e) => this.handleChange(e, 'advancePaymentPercent')} />
+                                                                        {touched.advancePaymentPercent ? (<em className="pError">{errors.advancePaymentPercent}</em>) : null}
 
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.timeExtension[currentLanguage]}</label>
-                                                                    <div className={"ui input inputDev" + (errors.timeExtension && touched.timeExtension ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text"
-                                                                            className="form-control"
-                                                                            id="timeExtension"
-                                                                            value={this.state.document.timeExtensionRequired}
-                                                                            name="timeExtension"
-                                                                            placeholder={Resources.timeExtension[currentLanguage]}
+                                                                    <label className="control-label">{Resources.retainagePercent[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.retainagePercent && touched.retainagePercent ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" id="retainagePercent" name="retainagePercent" readonly
+                                                                            value={this.state.document.retainagePercent}
+                                                                            placeholder={Resources.retainagePercent[currentLanguage]}
                                                                             onBlur={(e) => {
                                                                                 handleChange(e)
                                                                                 handleBlur(e)
                                                                             }}
-                                                                            onChange={(e) => this.handleChange(e, 'timeExtensionRequired')} />
-                                                                        {touched.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}
+                                                                            onChange={(e) => this.handleChange(e, 'retainagePercent')} />
+                                                                        {touched.retainagePercent ? (<em className="pError">{errors.retainagePercent}</em>) : null}
 
                                                                     </div>
                                                                 </div>
 
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.tax[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.tax && touched.tax ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" id="tax" name="tax" readonly
+                                                                            value={this.state.document.tax}
+                                                                            placeholder={Resources.tax[currentLanguage]}
+                                                                            onBlur={(e) => {
+                                                                                handleChange(e)
+                                                                                handleBlur(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'tax')} />
+                                                                        {touched.tax ? (<em className="pError">{errors.tax}</em>) : null}
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.vat[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.vat && touched.vat ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" id="vat" name="vat" readonly
+                                                                            value={this.state.document.vat}
+                                                                            placeholder={Resources.vat[currentLanguage]}
+                                                                            onBlur={(e) => {
+                                                                                handleChange(e)
+                                                                                handleBlur(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'vat')} />
+                                                                        {touched.vat ? (<em className="pError">{errors.vat}</em>) : null}
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.insurance[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.insurance && touched.insurance ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" id="insurance" name="insurance"
+                                                                            value={this.state.document.insurance}
+                                                                            placeholder={Resources.insurance[currentLanguage]}
+                                                                            onBlur={(e) => {
+                                                                                handleChange(e)
+                                                                                handleBlur(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'insurance')} />
+                                                                        {touched.insurance ? (<em className="pError">{errors.insurance}</em>) : null}
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.actualPayment[currentLanguage]}</label>
+                                                                    <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? (" has-error") : "ui input inputDev")} >
+                                                                        <input type="text" className="form-control" id="actualPayment" name="actualPayment"
+                                                                            value={this.state.document.actualPayment}
+                                                                            placeholder={Resources.actualPayment[currentLanguage]}
+                                                                            onBlur={(e) => {
+                                                                                handleChange(e)
+                                                                                handleBlur(e)
+                                                                            }}
+                                                                            onChange={(e) => this.handleChange(e, 'actualPayment')} />
+                                                                        {touched.actualPayment ? (<em className="pError">{errors.actualPayment}</em>) : null}
+
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.remainingPayment[currentLanguage]}</label>
+                                                                    <div className="ui input inputDev"   >
+                                                                        <input type="text" className="form-control" name="remainingPayment"
+                                                                            value={this.state.document.remainingPayment}
+                                                                            placeholder={Resources.remainingPayment[currentLanguage]}
+                                                                            onChange={(e) => this.handleChange(e, 'remainingPayment')} />
+
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div className="slider-Btns">
-                                                                {this.showBtnsSaving()}
+                                                                {this.state.isLoading === false ? this.showBtnsSaving()
+                                                                    :
+                                                                    (
+                                                                        <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button>
+                                                                    )}
+
                                                             </div>
                                                         </Form>
                                                     )}
@@ -896,16 +1434,38 @@ class requestPaymentsAddEdit extends Component {
                                         </div>
                                     </div>
                                 </Fragment>
-                                :
+                                : null
+                            }
+                            {this.state.SecondStep ?
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
-                                        {/* {this.addVariationDraw()} */}
-                                        <AddItemDescription docLink="/Downloads/Excel/BOQ.xlsx"
-                                            showImportExcel={false} docType="vo"
-                                            isViewMode={this.state.isViewMode}
-                                            mainColumn="changeOrderId" addItemApi="AddVOItems"
-                                            projectId={this.state.projectId} 
-                                            showItemType ={false} />
+
+                                        <div className="doc-pre-cycle">
+                                            <header>
+                                                <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
+                                            </header>
+                                            {this.state.editRows.length > 0 ?
+                                                <div className="doc-pre-cycle">
+                                                    <div className="slider-Btns editableRows">
+                                                        <span>No.Update Rows.{this.state.editRows.length}</span>
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>{Resources['edit'][currentLanguage]}</button>
+
+                                                    </div>
+
+                                                </div>
+                                                : null}
+                                            {ItemsGrid}
+                                        </div>
+                                    </div>
+
+                                </Fragment>
+                                : null
+                            }
+
+                            {this.state.ThirdStep ?
+
+                                <Fragment>
+                                    <div className="subiTabsContent feilds__top">
 
                                         <div className="doc-pre-cycle">
                                             <header>
@@ -931,8 +1491,42 @@ class requestPaymentsAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                </Fragment>}
+                                </Fragment>
+                                : null
+                            }
 
+                            {this.state.FourthStep ?
+
+                                <Fragment>
+                                    <div className="subiTabsContent feilds__top">
+
+                                        <div className="doc-pre-cycle">
+                                            <header>
+                                                <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
+                                            </header>
+                                            <ReactTable
+                                                ref={(r) => {
+                                                    this.selectTable = r;
+                                                }}
+                                                data={this.props.items}
+                                                columns={columns}
+                                                defaultPageSize={10}
+                                                minRows={2}
+                                                noDataText={Resources['noData'][currentLanguage]}
+                                            />
+                                        </div>
+
+                                        <div className="doc-pre-cycle">
+                                            <div className="slider-Btns">
+                                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </Fragment>
+                                : null
+                            }
                         </div>
                         <div className="docstepper-levels">
                             {/* Next & Previous */}
@@ -952,16 +1546,34 @@ class requestPaymentsAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.changeOrder[currentLanguage]}</h6>
+                                            <h6>{Resources.paymentRequisitions[currentLanguage]}</h6>
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.SecondStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
                                         <div className="steps-info">
                                             <h6 >{Resources.items[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+
+                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>3</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6 >{Resources.summaries[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+
+                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>4</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6 >{Resources.deductions[currentLanguage]}</h6>
                                         </div>
                                     </div>
 
@@ -997,6 +1609,12 @@ class requestPaymentsAddEdit extends Component {
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
+                    </SkyLight>
+                </div>
+
+                <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.boqTypeModal = ref} title={Resources.boqType[currentLanguage]}>
+                        {BoqTypeContent}
                     </SkyLight>
                 </div>
             </div>

@@ -12,8 +12,8 @@
     "fmApp": "FM",
     "hrApp": "HR",
     "local": "http://localhost:11480",
-    "loginServer": "http://172.30.1.17:8901",
+    "loginServer": "https://procoorauthorization.procoor.com",
     "pmApp": "PM",
     "static": "http://localhost:11480",
-    "downloads": "http://172.30.1.17:8900"
+    "downloads": "https://demov4services.procoor.com"
 }
