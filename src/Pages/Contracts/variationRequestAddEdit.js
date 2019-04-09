@@ -46,6 +46,9 @@ const validationSchema = Yup.object().shape({
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
+    contractId: Yup.string().required(Resources['contractRequired'][currentLanguage])
+        .nullable(true),
+
     toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
 
@@ -99,7 +102,6 @@ class VariationRequestAdd extends Component {
             companies: [],
             ToContacts: [],
             fromContacts: [],
-            //discplines: [],
             contracts: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
@@ -109,9 +111,7 @@ class VariationRequestAdd extends Component {
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            //selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedContractSubjects: { label: Resources.contractSubject[currentLanguage], value: "0" },
-            // message: RichTextEditor.createEmptyValue()
+            selectedContractSubject: { label: Resources.contractSubject[currentLanguage], value: "0" },
         }
 
         if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
@@ -121,6 +121,7 @@ class VariationRequestAdd extends Component {
             });
         }
     }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -132,7 +133,7 @@ class VariationRequestAdd extends Component {
             }
         }
         this.checkDocumentIsView();
-    };
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
@@ -144,7 +145,7 @@ class VariationRequestAdd extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-    };
+    }
 
     componentWillUnmount() {
         this.setState({
@@ -183,7 +184,7 @@ class VariationRequestAdd extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetLettersById?id=" + this.state.docId
+            let url = "GetContractsVariationRequestForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
 
         } else {
@@ -200,8 +201,6 @@ class VariationRequestAdd extends Component {
                 status: 'false',
                 description: '',
                 refDoc: '',
-                // sharedSettings: '',
-                // message: '',
                 contractId: ''
             };
             this.setState({ document: Variation });
@@ -209,16 +208,17 @@ class VariationRequestAdd extends Component {
             this.props.actions.documentForAdding();
             this.GetNextArrange();
         }
-    };
-    GetNextArrange(){
+    }
+
+    GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
         this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             let original_document = { ...this.state.document };
             let updated_document = {};
-            updated_document.arrange =res;
+            updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
-     
+
             this.setState({
                 document: updated_document
             });
@@ -265,21 +265,24 @@ class VariationRequestAdd extends Component {
                 companies: [...result]
             });
         });
-        dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId , 'subject', 'id').then(result => {
-            if (isEdit) {
-                let contractId = this.props.document.contractId;
-                let contractSubject = {};
-                if (contractId) {
-                    contractSubject = _.find(result, function (i) { return i.value === contractId; });
 
+        dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId, 'subject', 'id').then(ContractData => {
+            if (isEdit) {
+
+                this.setState({
+                    contracts: ContractData
+                })
+
+                if (this.state.document.contractId) {
+                    let contractId = this.state.document.contractId;
+                    let contractSubject = _.find(ContractData, function (i) { return i.value === contractId });
                     this.setState({
-                        selectedContractSubjects: contractSubject
-                    });
+                        selectedContractSubject: contractSubject
+                    })
                 }
+
             }
-            this.setState({
-                contracts: [...result]
-            });
+
         });
 
     }
@@ -349,7 +352,7 @@ class VariationRequestAdd extends Component {
             document: updated_document,
             [selectedValue]: event
         });
- 
+
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -360,12 +363,12 @@ class VariationRequestAdd extends Component {
         }
     }
 
-    editVariationRequest(event) {
+    editRequest(event) {
         this.setState({
             isLoading: true
         });
 
-        dataservice.addObject('EditVariationRequest', this.state.document).then(result => {
+        dataservice.addObject('EditContractsVariationRequest', this.state.document).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -383,7 +386,7 @@ class VariationRequestAdd extends Component {
 
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
-        dataservice.addObject('AddVariationRequest', saveDocument).then(result => {
+        dataservice.addObject('AddContractsVariationRequest', saveDocument).then(result => {
             this.setState({
                 docId: result
             });
@@ -435,6 +438,7 @@ class VariationRequestAdd extends Component {
     // }
 
     render() {
+
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -447,6 +451,7 @@ class VariationRequestAdd extends Component {
             }
 
         ];
+
         return (
             <div className="mainContainer">
 
@@ -538,11 +543,11 @@ class VariationRequestAdd extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="vr-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.oppened[currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                                <input type="radio" name="vr-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
                                                                 <label>{Resources.closed[currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -680,7 +685,14 @@ class VariationRequestAdd extends Component {
                                                                 selectedValue={this.state.selectedContractSubject}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContractSubject')}
                                                                 index="vr-contractId"
-                                                                
+
+                                                                onChange={setFieldValue}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.contractId}
+                                                                touched={touched.contractId}
+
+                                                                name="contractId"
+                                                                id="contractId"
                                                             />
                                                         </div>
 

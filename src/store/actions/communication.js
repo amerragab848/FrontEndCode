@@ -109,6 +109,16 @@ export function addItemDescription(item) {
         });
     }
 }
+
+export function deleteItemDescription(item) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.delete_item,
+            data: item
+        });
+    }
+}
+
 export function setItemDescriptions(items) {
     return (dispatch, getState) => {
         dispatch({

@@ -10027,7 +10027,7 @@
   "base": {
     "documentTitle": "estimationBaseLog",
     "docTyp": 84,
-    "documentAddEditLink": "baseAddEdit/",
+    "documentAddEditLink": "baseAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 577,
     "documentEditPermission": 578,
@@ -18874,4 +18874,5 @@
       }
     ]
   }
+
 }

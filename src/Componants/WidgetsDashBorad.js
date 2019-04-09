@@ -326,7 +326,7 @@ var widgets = [
         { 
           title: "openedSummary",
           key: "0-2-9",
-          canView: false,
+          canView: 1372,
           checked:false,
           order:9,
           type:"threeWidget",

@@ -29,7 +29,8 @@ export default function (state = initialState.app.communication, action) {
                 document:{},
                 showLeftMenu: true,
                 showSelectProject: false,
-                changeStatus: false
+                changeStatus: false,
+                items: []
             };
 
         case types.Document_Add:
@@ -48,10 +49,23 @@ export default function (state = initialState.app.communication, action) {
                 isLoadingFiles: true
             };
 
-        case types.add_item:
+            case types.add_item:
             return {
                 ...state,
                 items: [...state.items, ...action.item] 
+            };
+
+            case types.delete_item:
+            let originalData = state.items;
+            action.data.forEach(item => {
+               let getIndex = originalData.findIndex(x=>x.id === item.id);
+              
+               originalData.splice(getIndex,1);
+
+            });
+            return {
+                ...state,
+                items: [...originalData] 
             };
 
         case types.Delete_File:

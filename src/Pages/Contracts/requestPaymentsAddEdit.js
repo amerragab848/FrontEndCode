@@ -47,22 +47,7 @@ const validationSchema = Yup.object().shape({
 
     timeExtension: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
-})
-
-// const documentItemValidationSchema = Yup.object().shape({
-//     description: Yup.string()
-//         .required(Resources['subjectRequired'][currentLanguage]),
-//     resourceCode: Yup.string()
-//         .required(Resources['resourceCode'][currentLanguage]),
-//     itemCode: Yup.string()
-//         .required(Resources['itemCode'][currentLanguage]),
-//     unitPrice: Yup.string()
-//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-//     days: Yup.string()
-//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-//     quantity: Yup.string()
-//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
-// })
+}) 
 
 let columns = [
     {
@@ -111,7 +96,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
-class variationOrderAddEdit extends Component {
+class requestPaymentsAddEdit extends Component {
 
     constructor(props) {
 
@@ -1041,4 +1026,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(variationOrderAddEdit))
+)(withRouter(requestPaymentsAddEdit))

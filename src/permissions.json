@@ -10213,7 +10213,71 @@
                 "ar": "عرض السجل"
               },
               "value": false
-            }
+            },
+            {
+              "code": 3725,
+              "title": {
+                "en": "View",
+                "ar": "عرض السجل"
+              },
+              "value": false
+            },
+            {
+              "code": 3789,
+              "title": {
+                "en": "Send By Inbox",
+                "ar": "ارسال الى البريد الداخلى"
+              },
+              "value": false
+            },
+            {
+              "code": 3790,
+              "title": {
+                "en": "Send By Mail",
+                "ar": "ارسال الى البريد الالكترونى"
+              },
+              "value": false
+            },
+            {
+              "code": 3791,
+              "title": {
+                "en": "Send To Correspondence Sent",
+                "ar": "ارسال الى صادر المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 3792,
+              "title": {
+                "en": "Send To Correspondence Received",
+                "ar": "ارسال الى وارد المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 3793,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            },
+            {
+              "code": 3794,
+              "title": {
+                "en": "Send To Distribution List",
+                "ar": "ارسال الى قائمةالتوزيع"
+              },
+              "value": false
+            },
+            {
+              "code": 3795,
+              "title": {
+                "en": "Create Transmittal",
+                "ar": "انشاء ارسالية"
+              },
+              "value": false
+            } 
           ]
         },
         {

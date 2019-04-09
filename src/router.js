@@ -85,6 +85,9 @@ import variationRequestAddEdit from "./Pages/Contracts/variationRequestAddEdit";
 import projectIssuesAddEdit from "./Pages/Contracts/projectIssuesAddEdit";
 import qsAddEdit from "./Pages/Contracts/qsAddEdit";
 import EpsPermission from "./Pages/Eps/EpsPermission";
+import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
+import baseAddEdit from "./Pages/estimation/baseAddEdit";
+import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -178,7 +181,7 @@ let originalRoutes = [
     , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
     
     
-
+    , <Route path="/EpsPermission" component={EpsPermission} /> 
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
@@ -186,6 +189,9 @@ let originalRoutes = [
     , <Route path="/variationRequestAddEdit" component={variationRequestAddEdit} />
     , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
     , <Route path="/qsAddEdit" component={qsAddEdit} />
+    , <Route path="/projectsAddEdit" component={projectsAddEdit} />
+    , <Route path="/baseAddEdit" component={baseAddEdit} />
+    , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

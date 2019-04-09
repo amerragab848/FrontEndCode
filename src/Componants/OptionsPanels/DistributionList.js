@@ -5,17 +5,20 @@ import Dropdown from "./DropdownMelcous";
 import DatePicker from './DatePicker'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import ReactTable from "react-table";
-import 'react-table/react-table.css'
 import moment from 'moment';
 import { Formik, Form } from 'formik';
-// import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-// import NotifiMsg from '../publicComponants/NotifiMsg' 
+
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
 
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
-
 
 
 class DistributionList extends Component {
@@ -64,7 +67,7 @@ class DistributionList extends Component {
             }))
         }
     }
-    
+
     onAdd = () => {
         if (this.state.selectedCompany != null && this.state.selectedConstact != null) {
             const data = [...this.state.sendingData.itemContacts];
@@ -122,11 +125,11 @@ class DistributionList extends Component {
             this.setState(state);
         }, 400);
     }
-    
+
     Priority_handelChange = (item) => {
         this.setState({ sendingData: { ...this.state.sendingData, Priority: item.value }, PriorityValidation: false })
     }
-    
+
     componentDidMount = () => {
         let url = "getProjectDistributionList?projectId=" + this.props.projectId;
         let url2 = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
@@ -135,10 +138,8 @@ class DistributionList extends Component {
 
         this.GetData(url2, 'companyName', 'companyId', 'CompanyData');
         this.GetData("GetaccountsDefaultListForList?listType=distribution_action", 'title', 'action', 'ActionData');
+    }
 
-
-    } 
-    
     DatehandleChange = (date) => {
         this.setState({ sendingData: { ...this.state.sendingData, RequiredDate: date } });
     }
@@ -215,9 +216,28 @@ class DistributionList extends Component {
         );
     }
 
+    SendDisHandler() {
+
+        let sta={... this.state};
+
+        let tempData = sta.sendingData.itemContacts.map(item => {
+            let iContactId=sta[item['contactId'] + '-drop'];
+            return {
+                companyId: item['companyId'], contactId: item['contactId'], companyName: item['companyName'],
+                contactName: item['contactName'], action: iContactId.value
+            }
+        })
+
+        var emailObj = { ...this.state.sendingData };
+
+        emailObj.itemContacts = tempData;
+
+        this.props.actions.SendByInbox("SnedToDistributionList", emailObj);
+    }
+
     render() {
         return (
-            <div className="dropWrapper"> 
+            <div className="dropWrapper">
                 <Formik
                     initialValues={{
                         DistributionValidation: '',
@@ -227,21 +247,8 @@ class DistributionList extends Component {
 
                         if (!this.state.DistributionValidation && !this.state.PriorityValidation) {
                             this.setState({ submitLoading: true })
-                            let tempData = this.state.sendingData.itemContacts.map(item => {
-                                return {
-                                    companyId: item['companyId'], contactId: item['contactId'], companyName: item['companyName'],
-                                    contactName: item['contactName'], action: this.state[item['contactId'] + '-drop'].value
-                                }
-                            })
-                            this.setState({
-                                sendingData: { ...this.state.sendingData, itemContacts: tempData }
-                            })
-                            setTimeout(() => {
-                                Api.post("SnedToDistributionList", this.state.sendingData).then(
-                                    this.setState({ ApiResponse: true })
-                                ).then(this.setState({ companyLoading: false }),
-                                    window.location.reload())
-                            }, 500)
+
+                            this.SendDisHandler();
                         }
                     }}
                 >
@@ -318,4 +325,19 @@ class DistributionList extends Component {
     }
 }
 
-export default DistributionList;
+
+function mapStateToProps(state) {
+    return {
+        showModal: state.communication.showModal
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DistributionList);
