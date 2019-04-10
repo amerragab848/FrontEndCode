@@ -90,6 +90,9 @@ import Projects from "./Pages/Eps/Projects/Index";
 import baseAddEdit from "./Pages/estimation/baseAddEdit";
 import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
 import Itemize from "./Pages/Contracts/Itemize";
+import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
+
+
  
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -186,8 +189,6 @@ let originalRoutes = [
     // , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/Projects" component={Projects} />
     , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
-    
-    
     , <Route path="/EpsPermission" component={EpsPermission} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
@@ -200,6 +201,7 @@ let originalRoutes = [
     , <Route path="/baseAddEdit" component={baseAddEdit} />
     , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
     , <Route path="/Itemize" component={Itemize} />
+    , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

@@ -154,13 +154,13 @@ class GeneralConfiguration extends Component {
             WFSettingsData: [],
             ListOfDays: ListOfDays,
             SelectedDay: {},
-            CheckInMin: moment('00:00:00', 'HH:mm:ss').format('HH:mm:ss'),
-            CheckOutMin: moment('00:00:00', 'HH:mm:ss').format('HH:mm:ss'),
+            CheckInMin: '',
+            CheckOutMin: '',
             showDeleteModal: false,
             IsVacation: false,
             isLoading: false
         }
-      
+
     }
 
     componentWillMount = () => {
@@ -318,6 +318,19 @@ class GeneralConfiguration extends Component {
         })
     }
 
+    handleChangeCheck = (e, name) => {
+        if (name === 'checkIn') {
+            this.setState({
+                CheckInMin: e.target.value
+            })
+        }
+        if (name === 'CheckOutMin') {
+            this.setState({
+                ChecInMin: e.target.value
+            })
+        }
+    }
+
     render() {
 
         let WFSettingsData = this.state.WFSettingsData
@@ -368,14 +381,22 @@ class GeneralConfiguration extends Component {
 
                         {this.state.IsVacation ? null :
                             <Fragment>
-                                <div className="linebylineInput valid-input alternativeDate">
-                                    <DatePicker title='checkIn' startDate={this.state.CheckInMin}
-                                        handleChange={e => this.handleChangeDate(e, 'checkIn')} />
-                                </div>
+                                <div className="linebylineInput valid-input fullInputWidth">
+                                        <label className="control-label">{Resources.checkIn[currentLanguage]}</label>
+                                        <div className="inputDev ui input" >
+                                            <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckInMin}
+                                                onChange={(e) => this.handleChangeCheck(e, 'checkIn')} />
+                                        </div>
 
-                                <div className="linebylineInput valid-input alternativeDate">
-                                    <DatePicker title='checkOut' startDate={this.state.CheckOutMin}
-                                        Customformat={true} MinsFormat={'HH:mm:ss'} handleChange={e => this.handleChangeDate(e, 'checkOut')} />
+                                    </div>
+
+                                    <div className="linebylineInput valid-input fullInputWidth">
+                                        <label className="control-label">{Resources.checkOut[currentLanguage]}</label>
+                                        <div className="inputDev ui input" >
+                                            <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckOutMin}
+                                                onChange={(e) => this.handleChangeCheck(e, 'checkOut')} />
+                                        </div>
+        
                                 </div>
                             </Fragment>}
 
@@ -627,7 +648,7 @@ class GeneralConfiguration extends Component {
                                                             <label>{Resources['useTransferToCompany'][currentLanguage]}</label>
                                                         </div>
                                                         <div className="ui checkbox checkBoxGray300 checked">
-                                                          
+
 
                                                             <input type="checkbox" value='BOQPermissions' onChange={() => this.handleChange('BOQPermissions', 'useAVG')} checked={this.state.DefaultConfigurations.useAVG ? 'checked' : null} />
                                                             <label>{Resources['useAverageReleasePrice'][currentLanguage]}</label>
@@ -646,7 +667,7 @@ class GeneralConfiguration extends Component {
 
                                                 </div>
                                             </div>
-                                         
+
                                             {RenderWorkFlowSettings()}
 
                                             <div className="slider-Btns">

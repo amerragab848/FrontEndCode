@@ -362,7 +362,7 @@ class editItemDescription extends Component {
 
                                         {this.state.isLoading === false ? (
                                             <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                                                <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
+                                                <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["edit"][currentLanguage]}</button>
                                             </div>
                                         ) : (
                                                 <button className="primaryBtn-1 btn  disabled" disabled="disabled">
