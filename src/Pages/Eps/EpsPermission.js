@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import 'react-table/react-table.css'
-import pdf from '../../Styles/images/pdfAttache.png'
-import xlsx from '../../Styles/images/attatcheXLS.png'
-import doc from '../../Styles/images/attatcheDOC.png'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import EyeShow from '../../Styles/images/EyeShow.png'
 import Plus from '../../Styles/images/plus-Eps.png'
@@ -12,6 +9,7 @@ import Resources from '../../resources.json';
 import { toast } from "react-toastify";
 import { connect } from 'react-redux';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
+import CryptoJS from 'crypto-js'
 import {
     bindActionCreators
 } from 'redux';
@@ -21,9 +19,8 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
-import { Record } from 'immutable';
-import { element, func } from 'prop-types';
-
+import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous'
+const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const validationSchema = Yup.object().shape({
     englishTitle: Yup.string().required(Resources['titleEnValid'][currentLanguage]),
@@ -41,6 +38,7 @@ class EpsPermission extends Component {
                 showInReport: true
             },
             eps: [],
+            projects: [],
             item: {},
             type: '',
             isEdit: false,
@@ -55,12 +53,8 @@ class EpsPermission extends Component {
         }
     }
 
-
-
     addEditEps = () => {
-
         if (this.state.isEdit) {
-
             if (!Config.IsAllow(1263)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
             }
@@ -107,8 +101,16 @@ class EpsPermission extends Component {
         }
     }
 
-
     componentDidMount() {
+        this.setState({ isLoading: true })
+        Api.get('GetActiveProjects').then(res => {
+            let projects = []
+            res.forEach(element => {
+                projects.push({ label: element.projectName, value: element.epsId })
+            })
+            this.setState({ projectsList: res, isLoading: false, projects })
+
+        })
         this.getData()
     }
     addRecord(recod) {
@@ -176,8 +178,23 @@ class EpsPermission extends Component {
         })
     }
 
-    view = () => {
-        alert('lesa mt3mlha4 implmention !!')
+    view = (item) => {
+        if (!Config.IsAllow(1265)) {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+        }
+        else {
+            let obj = {
+                epsName: item.title,
+                epsId: item.id
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+            this.props.history.push({
+                pathname: "/projects",
+                search: "?id=" + encodedPaylod
+            });
+        }
+
     }
 
     openModal = () => {
@@ -196,7 +213,25 @@ class EpsPermission extends Component {
             this.simpleDialog.show()
         }
     }
+    routeProjects = (event) => {
+        if (!Config.IsAllow(1265)) {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+        }
+        else {
+            let eps = _.find(this.state.projectsList, (item) => item.epsId == event.value)
+            let obj = {
+                epsName: eps.projectName,
+                epsId: eps.epsId
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+            this.props.history.push({
+                pathname: "/projects",
+                search: "?id=" + encodedPaylod
+            });
+        }
 
+    }
     render() {
         let tabel = this.state.eps ? this.state.eps.map((item, Index) => {
             return (
@@ -233,7 +268,6 @@ class EpsPermission extends Component {
                 </tr>
             );
         }) : ''
-
         let Eps = <React.Fragment>
             <div>
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -300,6 +334,14 @@ class EpsPermission extends Component {
 
         return (
             <div className='mainContainer'>
+                <Dropdown
+                    title="chooseProject"
+                    data={this.state.projects}
+                    selectedValue={this.state.selectedProject}
+                    handleChange={event => this.routeProjects(event)}
+                    name="Project"
+                    index="Project"
+                />
                 {this.state.isLoadingEps == true ? null :
                     <Fragment>
                         <div className="fullWidthWrapper textRight">

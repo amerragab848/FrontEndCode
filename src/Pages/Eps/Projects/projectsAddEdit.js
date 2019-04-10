@@ -1,52 +1,34 @@
 import React, { Component } from "react";
-
-import OptionContainer from "../../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../../Dataservice";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../../Componants/OptionsPanels/ViewAttachmments'
-import ViewWorkFlow from "../../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../../resources.json";
-import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../../Services/Config";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight from 'react-skylight';
 import * as communicationActions from '../../../store/actions/communication';
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-import Distribution from '../../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../../Componants/OptionsPanels/wfApproval'
 import { toast } from "react-toastify";
 import Api from '../../../api'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
 const validationSchema = Yup.object().shape({
     projectNameEn: Yup.string().required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
     projectNameAr: Yup.string().required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
     job: Yup.string().required(Resources['referenceCode'][currentLanguage]),
-    projectType: Yup.string().required(Resources['selectProject'][currentLanguage]),
+    projectType: Yup.string().required(Resources['pleaseSelectProjectType'][currentLanguage]),
     country: Yup.string().required(Resources['pleaseSelectCountry'][currentLanguage]),
     projectManagerContact: Yup.string().required(Resources['pleaseSelectProjectManagerContact'][currentLanguage]),
 })
 
 let docId = 0;
-let projectId = 0;
-let projectName = 0;
-let isApproveMode = 0;
-let docApprovalId = 0;
-let arrange = 0;
+let epsId = 0;
 const _ = require('lodash')
 class projectsAddEdit extends Component {
-
     constructor(props) {
-
         super(props);
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
@@ -54,13 +36,8 @@ class projectsAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
                     docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
+                    epsId = obj.epsId;
                 }
                 catch{
                     this.props.history.goBack();
@@ -69,19 +46,14 @@ class projectsAddEdit extends Component {
             index++;
         }
         this.state = {
-            currentTitle: "sendToWorkFlow",
             isLoading: true,
+            saveLoading: false,
             showModal: false,
             isViewMode: false,
             emailSection: false,
-            isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            epsId: 1,
-            docTypeId: 19,
-            projectId: projectId,
-            docApprovalId: docApprovalId,
-            arrange: arrange,
+            epsId: epsId,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             ownerId: Config.getPayload().aoi,
             companies: [],
@@ -105,81 +77,27 @@ class projectsAddEdit extends Component {
             selectedProjectManagementCompany: { label: Resources.pleaseSelectProjectManagementCompany[currentLanguage], value: "0" },
             selectedSubmittalCoordinator: { label: Resources.pleaseSelectSubmittalCoordinator[currentLanguage], value: "0" },
 
-            permission: [{ name: 'sendByEmail', code: 429 }, { name: 'sendByInbox', code: 428 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 957 },
-            { name: 'createTransmittal', code: 3043 }, { name: 'sendToWorkFlow', code: 708 },
-            { name: 'viewAttachments', code: 3326 }, { name: 'deleteAttachments', code: 822 }]
         }
-
-        if (!Config.IsAllow(423) || !Config.IsAllow(424) || !Config.IsAllow(426)) {
+        if (!Config.IsAllow(522)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: "/Reports/" + projectId
+                pathname: "/projects/"
             });
         }
     }
-    componentDidMount() {
-        this.checkDocumentIsView();
-    };
 
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
     componentWillReceiveProps(nextProps, prevProps) {
-        console.log('props', nextProps)
         if (nextProps.document && nextProps.document.id) {
             this.setState({
-                document: { ...nextProps.document },
-                hasWorkflow: nextProps.hasWorkflow,
-                selectedReportType: { label: nextProps.document.reportTypeName, value: nextProps.document.reportTypeId },
-                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
-            }, function () {
-                let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
-                this.setState({ document: { ...this.state.document, docDate: docDate } })
+                document: { ...nextProps.document }
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
         }
     };
-
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(426))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(426)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(426)) {
-                    if (this.props.document.status == true && Config.IsAllow(426)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillUnmount() {
-    }
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetCommunicationReportForEdit?id=" + this.state.docId
+            let url = "ProjectProjectsById?id=" + this.state.docId
             this.props.actions.documentForEdit(url).then(() => {
                 this.setState({ isLoading: false })
             })
@@ -232,186 +150,185 @@ class projectsAddEdit extends Component {
     };
 
     fillDropDowns(isEdit) {
+        this.setState({ isLoading: true })
         dataservice.GetDataList("GetCompanies?accountOwnerId=" + this.state.ownerId, 'companyName', 'id').then(result => {
             if (isEdit) {
-                let companyId = this.props.document.fromCompanyId;
+                let companyId = this.props.document.projectManager;
                 if (companyId) {
+                    let selectedProjectManagerCompany = result.find(element => element.value == this.props.document.projectManager)
+                    dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + this.props.document.projectManager, 'contactName', 'id').then(result => {
+                        let selectedProjectManagerContact = result.find(element => element.value == this.props.document.projectManagerContactId)
+                        this.setState({
+                            projectManagerContacts: result,
+                            selectedProjectManagerCompany, selectedProjectManagerContact
+                        });
+                    })
+                    if (this.props.document.projectExcuteCompanyId) {
+                        let selectedExecutiveManagerCompany = result.find(element => element.value == this.props.document.projectExcuteCompanyId)
+                        dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + this.props.document.projectExcuteCompanyId, 'contactName', 'id').then(result => {
+                            let selectedExecutiveManagerContact = result.find(element => element.value == this.props.document.projectExcuteContactId)
+                            this.setState({
+                                executiveManagerContacts: result,
+                                selectedExecutiveManagerCompany, selectedExecutiveManagerContact
+                            });
+                        })
+                    }
+                    let selectedYourCompany = result.find(element => element.value == this.props.document.companyId)
+                    let selectedOwner = result.find(element => element.value == this.props.document.ownerId)
+                    let selectedGeneralContractor = result.find(element => element.value == this.props.document.generalConstractor)
+                    let selectedEngineerofRecord = result.find(element => element.value == this.props.document.engineerOfRecord)
+                    let selectedProjectManagementCompany = result.find(element => element.value == this.props.document.projectManagementCompany)
+                    let selectedSubmittalCoordinator = result.find(element => element.value == this.props.document.submittalCoordinator)
                     this.setState({
-                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-                    });
-
-                    this.fillSubDropDown('GetContactsByCompanyIdForOnlyUsers?', 'companyId', companyId, 'id', 'contactName', 'selectedProjectManagerContact', 'projectManagerContacts');
-                }
-
-                let toCompanyId = this.props.document.toCompanyId;
-                if (toCompanyId) {
-                    this.setState({
-                        selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
+                        selectedYourCompany, selectedOwner,
+                        selectedGeneralContractor, selectedEngineerofRecord, selectedProjectManagementCompany, selectedSubmittalCoordinator
                     });
                 }
             }
             this.setState({
-                companies: [...result]
+                companies: [...result], isLoading: false
             });
         });
-
+        this.setState({ isLoading: true })
         dataservice.GetDataList("GetAccountsDefaultList?listType=country&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+            if (isEdit) {
+                let selectedCountry = result.find(element => element.value == this.props.document.countryId)
+                this.setState({ selectedCountry })
+            }
             this.setState({
                 countries: [...result],
                 isLoading: false
+
             });
         });
+        this.setState({ isLoading: true })
         dataservice.GetDataList("GetAccountsDefaultList?listType=project_type&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+            if (isEdit) {
+                let selectedProjectType = result.find(element => element.value == this.props.document.projectTypeId)
+                this.setState({ selectedProjectType })
+            }
             this.setState({
                 projectType: [...result],
                 isLoading: false
             });
         });
+        this.setState({ isLoading: true })
         dataservice.GetDataList("GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
             this.setState({
                 currency: [...result],
                 isLoading: false
             });
         });
-
+        this.setState({ isLoading: true })
         dataservice.GetDataList("GetAccountsDefaultList?listType=companyrole&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+            if (isEdit) {
+                let selectedYourCompanyRole = result.find(element => element.value == this.props.document.roleId)
+                this.setState({ selectedYourCompanyRole })
+            }
+
             this.setState({
                 copmanyRole: [...result],
                 isLoading: false
             });
-        });
 
+        });
     }
 
     fillSubDropDown(url, param, value, subFieldId, subFieldName, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
+        this.setState({ isLoading: true })
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
-            this.setState({ isLoading: true })
             this.setState({
-                [subDatasource]: result,
+                projectManagerContacts: result,
+                executiveManagerContacts: result,
                 isLoading: false
             });
-            // if (this.props.changeStatus === true) {
-            //     this.setState({isLoading:true})
-            //     let _SubFieldId = this.state.document[subFieldId];
-            //     let _SubFieldName = this.state.document[subFieldName];
-            //     let targetFieldSelected = { label: _SubFieldName, value: _SubFieldId };
-            //     this.setState({
-            //         [subSelectedValue]: targetFieldSelected,
-            //         [subDatasource]: result,
-            //         isLoading:false
-            //     });
-            // }
         });
     }
-
-
 
     addEditProject(values) {
-
-        console.log('values', values)
-
-        let project = Object.assign({ ...values },
-            { epsId: this.state.epsId },
-            { projectTypeId: this.state.selectedProjectType.value == '0' ? null : this.state.selectedProjectType.value },
-            { countryId: this.state.selectedCountry.value == '0' ? null : this.state.selectedCountry.value },
-            { projectManager: this.state.selectedProjectManagerCompany.value == '0' ? null : this.state.selectedProjectManagerCompany.value },
-            { projectManagerContactId: this.state.selectedProjectManagerContact.value == '0' ? null : this.state.selectedProjectManagerContact.value },
-            { projectExcuteCompanyId: this.state.selectedExecutiveManagerCompany.value == '0' ? null : this.state.selectedExecutiveManagerCompany.value },
-            { projectExcuteContactId: this.state.selectedExecutiveManagerContact.value == '0' ? null : this.state.selectedExecutiveManagerContact.value },
-            { companyId: this.state.selectedYourCompany.value == '0' ? null : this.state.selectedYourCompany.value },
-            { roleId: this.state.selectedYourCompanyRole.value == '0' ? null : this.state.selectedYourCompanyRole.value },
-            { ownerId: this.state.selectedOwner.value == '0' ? null : this.state.selectedOwner.value },
-            { generalConstractor: this.state.selectedGeneralContractor.value == '0' ? null : this.state.selectedGeneralContractor.value },
-            { engineerOfRecord: this.state.selectedEngineerofRecord.value == '0' ? null : this.state.selectedEngineerofRecord.value },
-            { projectManagementCompany: this.state.selectedProjectManagementCompany.value == '0' ? null : this.state.selectedProjectManagementCompany.value },
-            { submittalCoordinator: this.state.selectedSubmittalCoordinator.value == '0' ? null : this.state.selectedSubmittalCoordinator.value },
-        );
-
-        console.log('project', project)
-
-        this.setState({ isLoading: true })
-
-        dataservice.addObject('ProjectProjectsAdd', project).then(result => {
-            this.setState({
-                docId: result.id,
-                isLoading: false
+        if (!Config.IsAllow(522)) {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: "/projects/"
             });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }
+        else {
+            let url = ''
+            if (this.state.docId > 0) {
+                url = 'ProjectProjectsEdit'
+            }
+            else {
+                url = 'ProjectProjectsAdd'
+            }
+            let project = Object.assign({ ...values },
+                { epsId: this.state.epsId },
+                { projectTypeId: this.state.selectedProjectType == undefined ? null : (this.state.selectedProjectType.value == '0' ? null : this.state.selectedProjectType.value) },
+                { countryId: this.state.selectedCountry == undefined ? null : (this.state.selectedCountry.value == '0' ? null : this.state.selectedCountry.value) },
+                { projectManager: this.state.selectedProjectManagerCompany == undefined ? null : (this.state.selectedProjectManagerCompany.value == '0' ? null : this.state.selectedProjectManagerCompany.value) },
+                { projectManagerContactId: this.state.selectedProjectManagerContact == undefined ? null : (this.state.selectedProjectManagerContact.value == '0' ? null : this.state.selectedProjectManagerContact.value) },
+                { projectExcuteCompanyId: this.state.selectedExecutiveManagerCompany == undefined ? null : (this.state.selectedExecutiveManagerCompany.value == '0' ? null : this.state.selectedExecutiveManagerCompany.value) },
+                { projectExcuteContactId: this.state.selectedExecutiveManagerContact == undefined ? null : (this.state.selectedExecutiveManagerContact.value == '0' ? null : this.state.selectedExecutiveManagerContact.value) },
+                { companyId: this.state.selectedYourCompany == undefined ? null : (this.state.selectedYourCompany.value == '0' ? null : this.state.selectedYourCompany.value) },
+                { roleId: this.state.selectedYourCompanyRole == undefined ? null : (this.state.selectedYourCompanyRole.value == '0' ? null : this.state.selectedYourCompanyRole.value) },
+                { ownerId: this.state.selectedOwner == undefined ? null : (this.state.selectedOwner.value == '0' ? null : this.state.selectedOwner.value) },
+                { generalConstractor: this.state.selectedGeneralContractor == undefined ? null : (this.state.selectedGeneralContractor.value == '0' ? null : this.state.selectedGeneralContractor.value) },
+                { engineerOfRecord: this.state.selectedEngineerofRecord == undefined ? null : (this.state.selectedEngineerofRecord.value == '0' ? null : this.state.selectedEngineerofRecord.value) },
+                { projectManagementCompany: this.state.selectedProjectManagementCompany == undefined ? null : (this.state.selectedProjectManagementCompany.value == '0' ? null : this.state.selectedProjectManagementCompany.value) },
+                { submittalCoordinator: this.state.selectedSubmittalCoordinator == undefined ? null : (this.state.selectedSubmittalCoordinator.value == '0' ? null : this.state.selectedSubmittalCoordinator.value) },
+                { country: null },
+                { executiveManagerContact: null },
+                { projectManagerContact: null },
+                { projectType: null }
+            );
+            this.setState({ saveLoading: true })
+            Api.post(url, project).then(result => {
+                if (result != null) {
+                    if (result.status == 409) {
+                        toast.warn(Resources["englishArabicAlreadyExisted"][currentLanguage]);
+                    }
+                    this.setState({ saveLoading: false })
+                }
+                else {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.setState({ saveLoading: false })
+                    this.props.history.push({ pathname: '/projects' })
+                }
 
-        }).catch((ex) => {
-            console.log('ex', ex)
-            this.setState({ isLoading: false })
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-        })
+
+            }).catch((ex) => {
+                this.setState({ saveLoading: false })
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            })
+        }
+
     }
     checkReferenceCode(code) {
-        Api.get('CheckReferanceCode?code=' + code).then(res => {
-            if (res == true) {
-                toast.error(Resources["itemCodeExist"][currentLanguage])
-                this.setState({ document: { ...this.state.document, job: '' } })
-            }
-        })
+        if (this.state.docI == 0 | code !== this.props.document.job)
+            Api.get('CheckReferanceCode?code=' + code).then(res => {
+                if (res == true) {
+                    toast.error(Resources["itemCodeExist"][currentLanguage])
+                    this.setState({ document: { ...this.state.document, job: '' } })
+                }
+            })
     }
-    saveAndExit(event) {
-        this.props.history.push({
-            pathname: "/Reports/" + this.state.projectId
+    handleChange(e, field) {
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document[field] = e.target.value;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            document: updated_document
         });
     }
-
-    showBtnsSaving() {
-        let btn = null;
-
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
-        }
-        return btn;
-    }
-    viewAttachments() {
-        return (
-            this.state.docId > 0 ? (
-                Config.IsAllow(3326) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
-                    : null)
-                : null
-        )
-    }
-
-    handleShowAction = (item) => {
-        if (item.value != "0") {
-
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-
-            this.simpleDialog.show()
-        }
-    }
     render() {
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
-        ];
         return (
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources.Reports[currentLanguage]}
-                            {/* <span>{projectName.replace(/_/gi, ' ')} · Communication</span> */}
+                        <h2 className="zero">{this.state.docId > 0 ? Resources.projectsEdit[currentLanguage] : Resources.projectsAdd[currentLanguage]}
                         </h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -434,7 +351,7 @@ class projectsAddEdit extends Component {
                     </div>
                     <div className="doc-container">
                         {
-                            this.props.changeStatus == true ?
+                            this.state.docId > 0 ?
                                 <header className="main__header">
                                     <div className="main__header--div">
                                         <h2 className="zero">
@@ -454,10 +371,9 @@ class projectsAddEdit extends Component {
                                         <Formik
                                             initialValues={{
                                                 ...this.state.document,
-                                                projectType: this.state.document.projectTypeId,
-                                                country: this.state.document.countryId,
-                                                projectManagerContact: this.state.document.projectManagerContactId,
-
+                                                projectType: this.state.selectedProjectType.value == '0' ? '' : this.state.selectedProjectType.value,
+                                                country: this.state.selectedCountry.value == '0' ? '' : this.state.selectedCountry.value,
+                                                projectManagerContact: this.state.selectedProjectManagerContact.value == '0' ? '' : this.state.selectedProjectManagerContact.value
                                             }}
                                             enableReinitialize={true}
                                             validationSchema={validationSchema}
@@ -475,7 +391,7 @@ class projectsAddEdit extends Component {
                                                                 autoComplete='off'
                                                                 defaultValue={values.projectNameEn}
                                                                 onBlur={handleBlur}
-                                                                onChange={e => { handleChange(e); setFieldValue('projectNameEn', e.target.value) }} />
+                                                                onChange={(e) => this.handleChange(e, 'projectNameEn')} />
                                                             {touched.projectNameEn ? (<em className="pError">{errors.projectNameEn}</em>) : null}
 
                                                         </div>
@@ -488,7 +404,7 @@ class projectsAddEdit extends Component {
                                                                 autoComplete='off'
                                                                 defaultValue={values.projectNameAr}
                                                                 onBlur={handleBlur}
-                                                                onChange={handleChange} />
+                                                                onChange={(e) => this.handleChange(e, 'projectNameAr')} />
                                                             {touched.projectNameAr ? (<em className="pError">{errors.projectNameAr}</em>) : null}
 
                                                         </div>
@@ -497,7 +413,7 @@ class projectsAddEdit extends Component {
                                                         <label className="control-label"> {Resources['location'][currentLanguage]} </label>
                                                         <div className="ui input inputDev " >
                                                             <input autoComplete="off" type='text' className="form-control" name="location" defaultValue={values.location}
-                                                                onBlur={handleBlur} onChange={handleChange}
+                                                                onBlur={handleBlur} onChange={(e) => this.handleChange(e, 'location')}
                                                                 placeholder={Resources['location'][currentLanguage]} />
                                                         </div>
                                                     </div>
@@ -509,7 +425,7 @@ class projectsAddEdit extends Component {
                                                                 onBlur={e => {
                                                                     handleBlur(e);
                                                                     this.checkReferenceCode(e.target.value)
-                                                                }} onChange={handleChange} />
+                                                                }} onChange={(e) => this.handleChange(e, 'job')} />
                                                             {errors.job ? (<em className="pError">{errors.job}</em>) : null}
                                                         </div>
                                                     </div>
@@ -517,28 +433,28 @@ class projectsAddEdit extends Component {
                                                         <label className="control-label"> {Resources['projectNeeds'][currentLanguage]} </label>
                                                         <div className="ui input inputDev">
                                                             <input autoComplete="off" type='text' className="form-control" name="projectNeeds" value={values.projectNeeds}
-                                                                onBlur={handleBlur} onChange={handleChange} placeholder={Resources['projectNeeds'][currentLanguage]} />
+                                                                onBlur={handleBlur} onChange={(e) => this.handleChange(e, 'projectNeeds')} placeholder={Resources['projectNeeds'][currentLanguage]} />
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input fullInputWidth">
                                                         <label className="control-label"> {Resources['clientsConstraints'][currentLanguage]} </label>
                                                         <div className="ui input inputDev" >
                                                             <input autoComplete="off" type='text' className="form-control" name="clientsConstraints" defaultValue={values.clientsConstraints}
-                                                                onBlur={handleBlur} onChange={handleChange} placeholder={Resources['clientsConstraints'][currentLanguage]} />
+                                                                onBlur={handleBlur} onChange={(e) => this.handleChange(e, 'clientsConstraints')} placeholder={Resources['clientsConstraints'][currentLanguage]} />
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input ">
                                                         <label className="control-label"> {Resources['contractValue'][currentLanguage]} </label>
                                                         <div className="ui input inputDev" >
                                                             <input autoComplete="off" type='text' className="form-control" name="contractValue" defaultValue={values.contractValue}
-                                                                onBlur={handleBlur} onChange={handleChange} placeholder={Resources['contractValue'][currentLanguage]} />
+                                                                onBlur={handleBlur} onChange={(e) => this.handleChange(e, 'contractValue')} placeholder={Resources['contractValue'][currentLanguage]} />
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input fullInputWidth">
                                                         <label className="control-label"> {Resources['description'][currentLanguage]} </label>
                                                         <div className="ui input inputDev" >
                                                             <input autoComplete="off" type='text' className="form-control" name="description" defaultValue={values.description}
-                                                                onBlur={handleBlur} onChange={handleChange} placeholder={Resources['description'][currentLanguage]} />
+                                                                onBlur={handleBlur} onChange={(e) => this.handleChange(e, 'description')} placeholder={Resources['description'][currentLanguage]} />
                                                         </div>
                                                     </div>
                                                     <div className="fullWidthWrapper textLeft proForm datepickerContainer">
@@ -733,7 +649,7 @@ class projectsAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="ui checkbox checkBoxGray300 checked">
-                                                                <input type="checkbox" name='showInReport' onChange={e => setFieldValue('showInReport', e.target.checked)} />
+                                                                <input type="checkbox" name='showInReport' defaultChecked={values.showInReport == true ? 'checked' : null} onChange={e => setFieldValue('showInReport', e.target.checked)} />
                                                                 <label>{Resources.showInReport[currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -785,7 +701,7 @@ class projectsAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input fullInputWidth">
-                                                                ss                                                                <label className="control-label"> {Resources['password'][currentLanguage]} </label>
+                                                                <label className="control-label"> {Resources['password'][currentLanguage]} </label>
                                                                 <div className="ui input inputDev" >
                                                                     <input autoComplete="off" type='text' className="form-control" name="projectPassword" defaultValue={values.projectPassword}
                                                                         onBlur={handleBlur} onChange={handleChange} placeholder={Resources['password'][currentLanguage]} />
@@ -808,7 +724,7 @@ class projectsAddEdit extends Component {
                                                         </React.Fragment>
                                                         : null}
                                                     <div className="fullWidthWrapper textLeft slider-Btns">
-                                                        {this.state.isLoading === false ? (
+                                                        {this.state.saveLoading === false ? (
                                                             <button
                                                                 className="primaryBtn-1 btn "
                                                                 type="submit"
@@ -831,34 +747,17 @@ class projectsAddEdit extends Component {
                                         </Formik>
 
                                     </div>
-                                    <div className="doc-pre-cycle">
-                                        <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
-                                            {this.viewAttachments()}
-
-                                            {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
-                                        </div>
-                                    </div>
 
                                 </div>
+
                             </div>
                         </div>
-
                     </div>
 
                 </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
-                </div>
+
             </div>
+
 
         );
     }

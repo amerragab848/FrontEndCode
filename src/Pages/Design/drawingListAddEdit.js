@@ -38,7 +38,7 @@ const _ = require('lodash')
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    projectTypeId: Yup.string().required(Resources['selectProject'][currentLanguage])
+    projectTypeId: Yup.string().required(Resources['selectProjects'][currentLanguage])
         .nullable(true),
 })
 
@@ -155,7 +155,7 @@ class drawingListAddEdit extends Component {
             { name: 'createTransmittal', code: 3085 }, { name: 'sendToWorkFlow', code: 745 },
             { name: 'viewAttachments', code: 3732 }, { name: 'deleteAttachments', code: 3733 }],
             selectDescipline: { label: Resources.selectDescipline[currentLanguage], value: "0" },
-            selectProject: { label: Resources.selectProject[currentLanguage], value: "0" },
+            selectProject: { label: Resources.selectProjects[currentLanguage], value: "0" },
             IsEditMode: false,
             showPopUp: false,
             IsAddModel: false,
