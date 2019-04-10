@@ -45,7 +45,24 @@ class addItemDescription extends Component {
         this.state = {
             isLoading: false,
             itemsList: [],
-            itemDescription: {}, Units: [], selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" },
+            itemDescription: {
+                id:0,
+                description:'',
+                unit:'',
+                unitPrice:0,
+                quantity:0,
+                revisedQuantity:0,
+                boqTypeId:'',
+                SubBoqTypeId:'',
+                boqTypeChildId:'',
+                arrange:0,
+                parentId:'',
+                itemType:'',
+                equipmentType:'',
+                itemCode:'',
+                resourceCode:'' 
+            }, 
+            Units: [], selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" },
 
             columns: [],
             action: null,
@@ -118,7 +135,23 @@ class addItemDescription extends Component {
                 arr.push(result);
                 this.props.actions.addItemDescription(arr);
                 this.setState({
-                    itemDescription: {},
+                    itemDescription: {
+                        id:0,
+                        description:'',
+                        unit:'',
+                        unitPrice:0,
+                        quantity:0,
+                        revisedQuantity:0,
+                        boqTypeId:'',
+                        SubBoqTypeId:'',
+                        boqTypeChildId:'',
+                        arrange:0,
+                        parentId:'',
+                        itemType:'',
+                        equipmentType:'',
+                        itemCode:'',
+                        resourceCode:'' 
+                    },
                     isLoading: false
                 });
 
