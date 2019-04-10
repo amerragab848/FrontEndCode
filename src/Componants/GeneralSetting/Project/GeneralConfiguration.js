@@ -450,7 +450,7 @@ class GeneralConfiguration extends Component {
                                             <div className="fullWidthWrapper textLeft proForm datepickerContainer">
                                                 {TimesheetInputs.map(s => {
                                                     return (
-                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                        <div className="linebylineInput valid-input fullInputWidth" key={s.Name}>
                                                             <label className="control-label">{Resources[s.Title][currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors[s.Name] && touched[s.Name] ? (" has-error") : !errors[s.Name] && touched[s.Name] ? (" has-success") : " ")} >
                                                                 <input name={s.Name} className="form-control fsadfsadsa"
@@ -481,7 +481,7 @@ class GeneralConfiguration extends Component {
                                             <div className="fullWidthWrapper textLeft proForm datepickerContainer">
                                                 {QuantityInputs.map(s => {
                                                     return (
-                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                        <div className="linebylineInput valid-input fullInputWidth" key={s.Name}>
                                                             <label className="control-label">{Resources[s.Title][currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors[s.Name] && touched[s.Name] ? (" has-error") : !errors[s.Name] && touched[s.Name] ? (" has-success") : " ")} >
                                                                 <input name={s.Name} className="form-control fsadfsadsa"
@@ -505,7 +505,7 @@ class GeneralConfiguration extends Component {
                                             <div className="fullWidthWrapper textLeft proForm datepickerContainer">
                                                 {ExpensesInputs.map(s => {
                                                     return (
-                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                        <div className="linebylineInput valid-input fullInputWidth" key={s.Name}>
                                                             <label className="control-label">{Resources[s.Title][currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors[s.Name] && touched[s.Name] ? (" has-error") : !errors[s.Name] && touched[s.Name] ? (" has-success") : " ")} >
                                                                 <input name={s.Name} className="form-control fsadfsadsa"
@@ -529,7 +529,7 @@ class GeneralConfiguration extends Component {
                                             <div className="fullWidthWrapper textLeft proForm datepickerContainer">
                                                 {PaymentInputs.map(s => {
                                                     return (
-                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                        <div className="linebylineInput valid-input fullInputWidth" key={s.Name}>
                                                             <label className="control-label">{Resources[s.Title][currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors[s.Name] && touched[s.Name] ? (" has-error") : !errors[s.Name] && touched[s.Name] ? (" has-success") : " ")} >
                                                                 <input name={s.Name} className="form-control fsadfsadsa"
@@ -553,7 +553,7 @@ class GeneralConfiguration extends Component {
                                             <div className="fullWidthWrapper textLeft proForm datepickerContainer">
                                                 {InvoicesInputs.map(s => {
                                                     return (
-                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                        <div className="linebylineInput valid-input fullInputWidth" key={s.Name}>
                                                             <label className="control-label">{Resources[s.Title][currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors[s.Name] && touched[s.Name] ? (" has-error") : !errors[s.Name] && touched[s.Name] ? (" has-success") : " ")} >
                                                                 <input name={s.Name} className="form-control fsadfsadsa"

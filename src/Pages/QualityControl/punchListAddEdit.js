@@ -11,9 +11,6 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import Api from '../../api';
 import { withRouter } from "react-router-dom";
-
-import RichTextEditor from 'react-rte';
-
 import { connect } from 'react-redux';
 import {
     bindActionCreators
