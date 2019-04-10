@@ -75,9 +75,6 @@ import AccountsAlerts  from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
 import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
-
-
-
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
@@ -88,7 +85,11 @@ import EpsPermission from "./Pages/Eps/EpsPermission";
 import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
 import baseAddEdit from "./Pages/estimation/baseAddEdit";
 import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
+import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
+
+
  
+
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -179,8 +180,6 @@ let originalRoutes = [
     , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
     , <Route path="/EpsPermission" component={EpsPermission} />
     , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
-    
-    
     , <Route path="/EpsPermission" component={EpsPermission} /> 
     , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
@@ -192,6 +191,7 @@ let originalRoutes = [
     , <Route path="/projectsAddEdit" component={projectsAddEdit} />
     , <Route path="/baseAddEdit" component={baseAddEdit} />
     , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
+    , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

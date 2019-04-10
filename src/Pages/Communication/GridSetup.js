@@ -314,7 +314,7 @@ class GridSetup extends Component {
             onColumnGroupDeleted={onColumnGroupDeleted}
             noColumnsSelectedMessage={drag}
           />
-          {this.state.selectedRows.length > 0 ? (     
+          {this.state.selectedRows.length > 0 ? (
             <div className="gridSystemSelected active">
               <div className="tableselcted-items">
                 <span id="count-checked-checkboxes">
@@ -327,16 +327,30 @@ class GridSetup extends Component {
                   className="defaultBtn btn smallBtn"
                   onClick={this.clickHandlerDeleteRows}
                 >{this.props.NoShowDeletedBar === undefined ?
-                  'DELETE':'Currency'}
+                  'DELETE' : 'Currency'}
                 </button>
                 {this.props.assign ? <button
                   className="primaryBtn-1 btn smallBtn"
-                  onClick={() => this.props.assignFn()}
-                >
+                  onClick={() => this.props.assignFn()} >
                   <i className="fa fa-retweet"></i>
                 </button> : null}
+
+                {this.props.Panels !== undefined ?
+                  <Fragment>
+                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} >
+                      T.G
+                  {/* <i className="fa fa-retweet"></i> */}
+                    </button>
+
+                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} >
+                      P.T
+                  {/* <i className="fa fa-retweet"></i> */}
+                    </button>
+                  </Fragment>
+                  : null}
+
               </div>
-            </div> 
+            </div>
           ) : null}
         </Toolbar>
       );
