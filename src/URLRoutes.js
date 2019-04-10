@@ -1433,8 +1433,7 @@ var routes = [
     }
   },
   {
-    route:
-      "costCodingTreeAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)",
+    route:"costCodingTreeAddEdit",
     moduleId: "contracts/costCodingTreeAddEdit",
     title: "costCodingTree",
     nav: true,

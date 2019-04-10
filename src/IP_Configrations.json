@@ -11,9 +11,9 @@
     "exportStatic": "https://demov4.procoor.com",
     "fmApp": "FM",
     "hrApp": "HR",
-    "local": "http://localhost:11480",
+    "local": "https://demov4services.procoor.com/pm",
     "loginServer": "https://procoorauthorization.procoor.com",
     "pmApp": "PM",
-    "static": "http://localhost:11480",
+    "static": "https://demov4services.procoor.com/pm",
     "downloads": "https://demov4services.procoor.com"
 }

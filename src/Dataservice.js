@@ -51,6 +51,13 @@ export default class Dataservice {
         }).catch(ex => []);
     };
 
+    static GetDataGridPost = (url) => {
+
+        return Api.post(url).then(result => {
+
+            return result;
+        }).catch(ex => []);
+    };
     static GetRowById = (url) => {
 
         return Api.get(url).then(result => {

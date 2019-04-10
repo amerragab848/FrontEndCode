@@ -9,7 +9,9 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ReactTable from "react-table";
+
+import RichTextEditor from 'react-rte';
+
 import GridSetup from "../Communication/GridSetup";
 
 import { withRouter } from "react-router-dom";
@@ -56,51 +58,19 @@ const validationSchema = Yup.object().shape({
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
 })
 
+const validationDeductionSchema = Yup.object().shape({
+
+    title: Yup.string().required(Resources['description'][currentLanguage]),
+
+    deductionValue: Yup.string()
+        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+})
+
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
     boqChild: Yup.string().required(Resources['boqSubType'][currentLanguage]),
     boqSubType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
 });
-
-let columns = [
-    {
-        Header: 'arrange',
-        accessor: 'arrange',
-        width: 60,
-    }, {
-        Header: Resources['description'][currentLanguage],
-        accessor: 'description',
-        width: 180,
-    }, {
-        Header: Resources['quantity'][currentLanguage],
-        accessor: 'quantity',
-        width: 80,
-    }, {
-        Header: Resources['unitPrice'][currentLanguage],
-        accessor: 'unitPrice',
-        width: 80,
-    }, {
-        Header: Resources['resourceCode'][currentLanguage],
-        accessor: 'resourceCode',
-        width: 120,
-    }, {
-        Header: Resources['itemCode'][currentLanguage],
-        accessor: 'itemCode',
-        width: 80,
-    }, {
-        Header: Resources['boqType'][currentLanguage],
-        accessor: 'boqType',
-        width: 120,
-    }, {
-        Header: Resources['boqSubType'][currentLanguage],
-        accessor: 'boqSubType',
-        width: 120,
-    }, {
-        Header: Resources['boqTypeChild'][currentLanguage],
-        accessor: 'boqTypeChild',
-        width: 120,
-    }
-]
 
 let docId = 0;
 let projectId = 0;
@@ -109,6 +79,8 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
+let itemsColumns = [];
+
 class requestPaymentsAddEdit extends Component {
 
     constructor(props) {
@@ -134,7 +106,23 @@ class requestPaymentsAddEdit extends Component {
             }
             index++;
         }
+
         this.state = {
+
+            selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
+
+            boqTypes: [],
+            BoqTypeChilds: [],
+            BoqSubTypes: [],
+            boqStractureObj: {},
+            documentDeduction: {},
+            currentAndPreviousTotal: [],
+            approvedInvoicesParent: [],
+            approvedInvoicesChilds: [],
+            deductionObservableArray: [],
+            paymentRequestItemsHistory: [],
             isLoading: false,
             FirstStep: true,
             SecondStep: false,
@@ -171,7 +159,9 @@ class requestPaymentsAddEdit extends Component {
             contractsPos: [],
             paymentsItems: [],
             CurrentStep: 1,
-            editRows: []
+            editRows: [],
+            comment: RichTextEditor.createEmptyValue()
+
         }
 
         if (!Config.IsAllow(159) || !Config.IsAllow(158) || !Config.IsAllow(160)) {
@@ -181,6 +171,8 @@ class requestPaymentsAddEdit extends Component {
             });
         }
         this.editRowsClick = this.editRowsClick.bind(this);
+
+        this.GetCellActions = this.GetCellActions.bind(this);
     }
 
     buildColumns() {
@@ -219,7 +211,11 @@ class requestPaymentsAddEdit extends Component {
             return null;
         };
 
-        this.itemsColumns = [
+        itemsColumns = [
+            {
+                key: 'BtnActions',
+                width: 150
+            },
             {
                 key: "arrange",
                 name: Resources["no"][currentLanguage],
@@ -389,7 +385,6 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-
     }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
@@ -407,6 +402,14 @@ class requestPaymentsAddEdit extends Component {
         if (nextProps.document && nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
+            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
+            serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
+            serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
+            serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
+            serverChangeOrder.actualPayment = serverChangeOrder.actualPayment != null ? serverChangeOrder.actualPayment : 0;
+            serverChangeOrder.advancedPaymentAmount = serverChangeOrder.advancedPaymentAmount != null ? serverChangeOrder.advancedPaymentAmount : 0;
+            serverChangeOrder.retainagePercent = serverChangeOrder.retainagePercent != null ? serverChangeOrder.retainagePercent : 0;
+            serverChangeOrder.remainingPayment = serverChangeOrder.remainingPayment != null ? serverChangeOrder.remainingPayment : 0;
             this.setState({
                 document: { ...serverChangeOrder },
                 hasWorkflow: nextProps.hasWorkflow
@@ -414,6 +417,9 @@ class requestPaymentsAddEdit extends Component {
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+            this.setState({
+                isLoading: false
+            });
         }
     };
 
@@ -426,7 +432,6 @@ class requestPaymentsAddEdit extends Component {
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(158)) {
-                alert('not have edit...');
                 this.setState({ isViewMode: true });
             }
 
@@ -439,8 +444,6 @@ class requestPaymentsAddEdit extends Component {
                         this.setState({ isViewMode: true });
                     }
                 } else {
-
-                    alert('not have edit and hasWorkflow = ' + this.props.hasWorkflow);
                     this.setState({ isViewMode: true });
                 }
             }
@@ -448,7 +451,6 @@ class requestPaymentsAddEdit extends Component {
         else {
             this.setState({ isViewMode: false });
         }
-        console.log('checkDocumentIsView...', this.props, this.state);
     }
 
     fillVoItems() {
@@ -461,8 +463,18 @@ class requestPaymentsAddEdit extends Component {
     }
 
     componentWillMount() {
+        let documentDeduction = {
+            title: '',
+            deductionValue: 0
+        };
+
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
+
+            this.setState({
+                isLoading: true,
+                documentDeduction: documentDeduction
+            });
         } else {
             let paymentRequistion = {
                 subject: '..',
@@ -482,7 +494,10 @@ class requestPaymentsAddEdit extends Component {
                 useQuantity: false
             };
 
-            this.setState({ document: paymentRequistion }, function () {
+            this.setState({
+                document: paymentRequistion,
+                documentDeduction: documentDeduction
+            }, function () {
                 this.GetNExtArrange();
             });
             this.fillDropDowns(false);
@@ -504,7 +519,6 @@ class requestPaymentsAddEdit extends Component {
             });
         })
     }
-
     fillDropDowns(isEdit) {
 
         if (isEdit === false) {
@@ -523,7 +537,6 @@ class requestPaymentsAddEdit extends Component {
                 });
             });
         }
-
     }
 
     componentWillUnmount() {
@@ -536,19 +549,12 @@ class requestPaymentsAddEdit extends Component {
         let isEmpty = !value.getEditorState().getCurrentContent().hasText();
         if (isEmpty === false) {
 
-            this.setState({ [field]: value });
             if (value.toString('markdown').length > 1) {
 
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document[field] = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
+                let comment = value.toString('markdown');
 
                 this.setState({
-                    document: updated_document
+                    comment: comment
                 });
             }
         }
@@ -721,10 +727,8 @@ class requestPaymentsAddEdit extends Component {
 
             let paymentsItems = [...this.state.paymentsItems];
             if (paymentsItems.length == 0) {
-                this.setState({
-                    isLoading: true
-                });
                 this.buildColumns();
+
                 dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
                         paymentsItems: result,
@@ -739,6 +743,9 @@ class requestPaymentsAddEdit extends Component {
     NextStep = () => {
 
         if (this.state.CurrentStep === 1) {
+            this.setState({
+                isLoading: true
+            });
             this.FillGridItems();
             this.editPaymentRequistion();
 
@@ -759,6 +766,7 @@ class requestPaymentsAddEdit extends Component {
 
         }
         else if (this.state.CurrentStep === 2) {
+            this.FillSummariesTab();
 
             window.scrollTo(0, 0)
             this.setState({
@@ -768,7 +776,21 @@ class requestPaymentsAddEdit extends Component {
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: true
             })
-        } else {
+        }
+        else if (this.state.CurrentStep === 3) {
+            this.fillDeductions();
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: false,
+                FourthStep: true,
+                FourthStepComplate: true
+            })
+        } else if (this.state.CurrentStep === 4) {
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
@@ -776,10 +798,107 @@ class requestPaymentsAddEdit extends Component {
 
     }
 
+    FillSummariesTab() {
+        let contractId = this.state.document.contractId;
+        let currentAndPreviousTotal = [...this.state.currentAndPreviousTotal];
+        if (currentAndPreviousTotal.length == 0) {
+            this.setState({
+                isLoading: true
+            });
+            dataservice.GetDataGridPost("/GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+                this.setState({
+                    currentAndPreviousTotal: result,
+                    isLoading: false
+                });
+
+            });
+        }
+        let approvedInvoicesChilds = [...this.state.approvedInvoicesChilds];
+        if (approvedInvoicesChilds.length == 0) {
+            this.setState({
+                isLoading: true
+            });
+            let rowTotal = 0;
+            dataservice.GetDataGridPost("/GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+                var obj = {};
+                var conditionString = "";
+                dataservice.GetDataGridPost("/GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(res => {
+                    let approvedInvoicesParent = [];
+
+                    result.map(parent => {
+                        let sumRowTotal = 0;
+                        let sumtotal = 0;
+                        //config.itemsColumnDefenition2.friendlyNames.push(parent.details);
+
+                        res.map(child => {
+
+                            //config.itemsColumnDefenition2.fields.push(child.building);
+
+                            var total = child[parent.details];
+                            sumRowTotal += parseFloat(child.rowTotal);
+                            sumtotal = total + sumtotal;
+                            parent.total = sumtotal;
+
+                        });
+
+                        rowTotal = sumRowTotal;
+
+                        conditionString = parent.details;
+
+                        obj.building = "Total";
+                        obj.code = "";
+                        obj.exists = "";
+                        obj.serial = "";
+                        obj[conditionString] = parent.total;
+                        obj.rowTotal = rowTotal;
+
+                        approvedInvoicesChilds.push(obj);
+                        if (parent.total === null) {
+                            parent.total = 0;
+                        }
+
+                        approvedInvoicesParent.push(parent);
+                    });
+
+                    this.setState({
+                        approvedInvoicesChilds: res,
+                        approvedInvoicesParent: approvedInvoicesParent,
+                        isLoading: false,
+                        rowTotal: rowTotal
+                    });
+
+                });
+            });
+        }
+    }
+
+    fillDeductions() {
+        let deductionObservableArray = [...this.state.deductionObservableArray];
+
+        if (deductionObservableArray.length == 0) {
+            this.setState({
+                isLoading: true
+            });
+
+            dataservice.GetDataGrid("/GetContractsRequestPaymentsDeductions?requestId=" + this.state.docId).then(result => {
+                this.setState({
+                    deductionObservableArray: result,
+                    isLoading: false
+                });
+            }).catch(res => {
+                this.setState({
+                    isLoading: false
+                });
+            });
+        }
+    }
+
     NextTopStep = () => {
 
         if (this.state.CurrentStep === 1) {
-
+            this.setState({
+                isLoading: true
+            });
             this.FillGridItems();
 
             window.scrollTo(0, 0)
@@ -794,7 +913,7 @@ class requestPaymentsAddEdit extends Component {
 
         }
         else if (this.state.CurrentStep === 2) {
-
+            this.FillSummariesTab();
             window.scrollTo(0, 0)
             this.setState({
                 FirstStep: false,
@@ -803,7 +922,20 @@ class requestPaymentsAddEdit extends Component {
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: true
             })
-        } else {
+        }
+        else if (this.state.CurrentStep === 3) {
+            this.fillDeductions();
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: false,
+                FourthStep: true,
+                FourthStepComplate: true
+            })
+        } else if (this.state.CurrentStep === 4) {
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
@@ -813,6 +945,18 @@ class requestPaymentsAddEdit extends Component {
 
     PreviousStep = () => {
         if (this.state.docId !== 0) {
+            if (this.state.CurrentStep === 4) {
+                window.scrollTo(0, 0)
+                this.setState({
+                    FirstStep: false,
+                    SecondStep: false,
+                    ThirdStep: false,
+                    CurrentStep: (this.state.CurrentStep - 1),
+                    ThirdStepComplate: false,
+                    FourthStep: true,
+                    FourthStepComplate: true
+                })
+            }
             if (this.state.CurrentStep === 3) {
                 window.scrollTo(0, 0)
                 this.setState({
@@ -860,7 +1004,7 @@ class requestPaymentsAddEdit extends Component {
 
     handleChangeItem(e, field) {
 
-        let original_document = { ...this.state.voItem };
+        let original_document = { ...this.state.documentDeduction };
 
         let updated_document = {};
 
@@ -869,7 +1013,7 @@ class requestPaymentsAddEdit extends Component {
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
-            voItem: updated_document
+            documentDeduction: updated_document
         });
     }
 
@@ -899,43 +1043,102 @@ class requestPaymentsAddEdit extends Component {
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
+    }
 
-        else if (column.key != 'select-row' && column.key != 'unitPrice') {
-            // this.setState({ showPopUp: true, btnText: 'save' })
-            // dataservice.GetDataList('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
-            //     this.setState({
-            //         itemTypes: result
-            //     })
-            // })
+    GetCellActions(column, row) {
+        if (column.key === 'BtnActions') {
+            return [
+                {
+                    icon: "fa fa-pencil",
+                    actions: [
+                        (this.props.changeStatus ?
+                            ({
+                                text: Resources['viewHistory'][currentLanguage],
+                                callback: (e) => {
+                                    if (this.props.changeStatus) {
+                                        this.setState({
+                                            isLoading: true
+                                        });
+                                        dataservice.GetDataGrid("/GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
+                                            this.setState({
+                                                paymentRequestItemsHistory: result,
+                                                isLoading: false,
+                                                showViewHistoryModal: true
+                                            });
 
-            // dataservice.GetDataList('GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
-            //     this.setState({ equipmentTypes: [...res] })
-            // })
+                                            this.ViewHistoryModal.show()
+                                        });
 
-            // this.simpleDialog1.show()
+                                    }
+                                }
+                            }) : null),
+                        {
+                            text: 'showAddComment',
+                            callback: () => {
+                                if (Config.IsAllow(1001103)) {
+                                    this.setState({
+                                        showCommentModal: true,
+                                        comment: RichTextEditor.createValueFromString(row.comment, 'html')
 
-            // if (this.state.CurrStep == 2) {
-            //     this.setState({ isLoading: true })
-            //     dataservice.GetDataList('GetAllBoqChild?parentId=' + value.boqTypeId, 'title', 'id').then(res => {
-            //         this.setState({
-            //             BoqSubTypes: res,
-            //             BoqTypeChilds: res,
-            //             items: { id: value.id, description: value.description, arrange: value.arrange, quantity: value.quantity, unitPrice: value.unitPrice, itemCode: value.itemCode, resourceCode: value.resourceCode, days: value.days },
-            //             selectedUnit: value.unit ? { label: value.unit, value: value.unit } : { label: Resources.unitSelection[currentLanguage], value: "0" },
-            //             selectedBoqType: value.boqTypeId > 0 ? { label: value.boqType, value: value.boqTypeId } : { label: Resources.boqType[currentLanguage], value: "0" },
-            //             selectedBoqTypeChild: value.boqChildTypeId > 0 ? { label: value.boqTypeChild, value: value.boqTypeChildId } : { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-            //             selectedBoqSubType: value.boqSubTypeId > 0 ? { label: value.boqSubType, value: value.boqSubTypeId } : { label: Resources.boqSubType[currentLanguage], value: "0" },
-            //             selectedequipmentType: value.equipmentType > 0 ? { label: value.equipmentTypeLabel, value: value.equipmentType } : { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
-            //             selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
-            //             isLoading: false
-            //         })
-            //         if (value.itemType > 0) {
-            //             let itemType = _.find(this.state.itemTypes, function (e) { return e.value == value.itemType })
-            //             this.setState({ selectedItemType: itemType })
-            //         }
-            //     })
-            // }
+                                    });
 
+                                    this.addCommentModal.show()
+                                }
+                            }
+                        },
+                        {
+                            text: Resources['editBoq'][currentLanguage],
+                            callback: () => {
+                                if (Config.IsAllow(1001104)) {
+                                    let boqStractureObj = { ...this.state.boqStractureObj };
+                                    let boqTypes = [...this.state.boqTypes];
+                                    boqStractureObj.id = row.id;
+                                    boqStractureObj.requestId = this.state.docId;
+                                    boqStractureObj.contractId = this.state.document.contractId;
+
+                                    if (boqTypes.length > 0) {
+                                        this.setState({
+                                            boqStractureObj: boqStractureObj,
+                                            showBoqModal: true
+                                        });
+                                        this.boqTypeModal.show()
+                                    } else {
+                                        dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
+                                            this.setState({
+                                                boqTypes: data,
+                                                boqStractureObj: boqStractureObj,
+                                                showBoqModal: true
+                                            });
+                                            this.boqTypeModal.show()
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }];
+        }
+    }
+
+    handleChangeItemDropDownItems(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
+        if (event == null) return;
+        let original_document = { ...this.state.boqStractureObj };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            boqStractureObj: updated_document,
+            [selectedValue]: event
+        });
+
+        if (isSubscribe) {
+            let action = url + "?" + param + "=" + event.value
+            dataservice.GetDataList(action, 'title', 'id').then(result => {
+                this.setState({
+                    [nextTragetState]: result
+                });
+            });
         }
     }
 
@@ -1027,6 +1230,63 @@ class requestPaymentsAddEdit extends Component {
         this.boqTypeModal.show()
     }
 
+    addDeduction() {
+        this.setState({
+            isLoading: true
+        });
+
+        let saveDocument = this.state.documentDeduction;
+
+        saveDocument.requestId = this.state.docId;
+
+        dataservice.addObject('AddContractsRequestPaymentsDeductions', saveDocument).then(result => {
+            let list = [...this.state.deductionObservableArray];
+            list.push(result);
+
+            let documentDeduction = {
+                title: '',
+                deductionValue: 0,
+                deductionObservableArray: list
+            };
+            this.setState({
+                isLoading: false,
+                documentDeduction: documentDeduction
+            });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(res => {
+            this.setState({
+                isLoading: false
+            });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+    }
+
+    assignBoqType = () => {
+        let boqStractureObj = { ...this.state.boqStractureObj };
+
+        this.setState({ showBoqModal: true, isLoading: true })
+
+        dataservice.addObject('EditBoqStarcureRequestItem', boqStractureObj).then(() => {
+            this.setState({ showBoqModal: false, isLoading: false })
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ showBoqModal: false, isLoading: false })
+        })
+
+    }
+
+    addCommentClick = () => {
+        let comment = { ...this.state.comment };
+
+        this.setState({ showCommentModal: true, isLoading: true })
+        if (this.props.changeStatus) {
+            this.setState({ showCommentModal: false, isLoading: false })
+        }
+
+    }
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -1040,16 +1300,15 @@ class requestPaymentsAddEdit extends Component {
             }
 
         ];
-        const ItemsGrid = this.state.isLoading === false ? (
+        const ItemsGrid = this.state.isLoading === false && this.state.CurrentStep === 2 && itemsColumns.length > 0 ? (
             <GridSetup
                 rows={this.state.paymentsItems}
                 showCheckbox={false}
                 pageSize={this.state.pageSize}
                 onRowClick={this.onRowClick}
-                columns={this.itemsColumns}
+                columns={itemsColumns}
                 onGridRowsUpdated={this._onGridRowsUpdated}
-                assign={true}
-                assignFn={() => this.assign()}
+                getCellActions={this.GetCellActions}
                 key='PRitems'
             />) : <LoadingSection />;
 
@@ -1075,14 +1334,8 @@ class requestPaymentsAddEdit extends Component {
                                     title="boqType"
                                     data={this.state.boqTypes}
                                     selectedValue={this.state.selectedBoqTypeEdit}
-                                    handleChange={event => {
-                                        this.fillSubDropDown('GetAllBoqChild', 'parentId', event.value, 'title', 'id', 'BoqSubTypes', 'BoqTypeChilds')
-                                        this.setState({
-                                            selectedBoqTypeEdit: event,
-                                            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-                                            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
-                                        })
-                                    }}
+                                    handleChange={event => this.handleChangeItemDropDownItems(event, 'boqTypeId', 'selectedBoqTypeEdit', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds')}
+
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
                                     error={errors.boqType}
@@ -1094,9 +1347,8 @@ class requestPaymentsAddEdit extends Component {
                                 title="boqTypeChild"
                                 data={this.state.BoqTypeChilds}
                                 selectedValue={this.state.selectedBoqTypeChildEdit}
-                                handleChange={event => {
-                                    this.setState({ selectedBoqTypeChildEdit: event })
-                                }}
+                                handleChange={event => this.handleChangeItemDropDownItems(event, 'boqTypeChildId', 'selectedBoqTypeChildEdit', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
+
                                 onChange={setFieldValue}
                                 onBlur={setFieldTouched}
                                 error={errors.boqChild}
@@ -1107,9 +1359,8 @@ class requestPaymentsAddEdit extends Component {
                                 title="boqSubType"
                                 data={this.state.BoqSubTypes}
                                 selectedValue={this.state.selectedBoqSubTypeEdit}
-                                handleChange={event => {
-                                    this.setState({ selectedBoqSubTypeEdit: event })
-                                }}
+                                handleChange={event => this.handleChangeItemDropDownItems(event, 'boqSubTypeId', 'selectedBoqSubTypeEdit', false, '', '', '')}
+
                                 onChange={setFieldValue}
                                 onBlur={setFieldTouched}
                                 error={errors.boqSubType}
@@ -1126,6 +1377,132 @@ class requestPaymentsAddEdit extends Component {
                 </Formik>
             </div>
         </Fragment >
+
+        let interimTable = this.state.isLoading === false ?
+            this.state.currentAndPreviousTotal.map(i =>
+                <tr key={i.id}>
+                    {i.comment == 'True' ?
+                        <td colSpan="9" >
+                            <div className="contentCell tableCell-2">
+                                <a>
+                                    {i.workDescription != null ? i.workDescription.slice(0, (i.workDescription.lastIndexOf('-')) == -1 ? i.workDescription.length : (i.workDescription.lastIndexOf('-'))) : ''}
+                                </a>
+                            </div>
+                        </td>
+                        :
+                        <Fragment>
+                            <td colSpan="6" >
+                                <div className="contentCell tableCell-2">
+                                    <a data-toggle="tooltip"
+                                        title={i.workDescription != null ? (i.workDescription.slice(0, (i.workDescription.lastIndexOf('-')) == -1 ? i.workDescription.length : (i.workDescription.lastIndexOf('-')))) : ''}                                    >
+                                        {i.workDescription != null ? (i.workDescription.slice(0, (i.workDescription.lastIndexOf('-')) == -1 ? i.workDescription.length : (i.workDescription.lastIndexOf('-')))) : ''}
+                                    </a>
+                                </div>
+                            </td>
+                            <td >
+                                <div className="contentCell">
+                                    {i.previous != null ? parseFloat(i.previous).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
+                                </div> </td>
+                            <td >
+                                <div className="contentCell">
+                                    {i.current != null ? parseFloat(i.current.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
+                                </div> </td>
+                            <td >
+                                <div className="contentCell">
+                                    {i.total != null ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
+                                </div> </td>
+                            <td >
+                                <div className="contentCell">
+                                    {i.comment}
+                                </div></td>
+                        </Fragment>
+                    }
+                </tr>
+            ) : <LoadingSection />;
+
+        let deductionTable = this.state.isLoading === false ?
+            this.state.deductionObservableArray.map(i =>
+                <tr key={i.id}>
+                    <Fragment>
+                        <td><div className="contentCell">{i.title}</div> </td>
+                        <td><div className="contentCell">{i.deductionValue}</div> </td>
+                        {/* <td><div className="contentCell"></div></td> */}
+                    </Fragment>
+
+                </tr>
+            ) : <LoadingSection />;
+
+        let viewHistory =
+            <div className="doc-pre-cycle">
+                <table className="attachmentTable" key="DeductionsCertificate">
+                    <thead>
+                        <tr>
+                            <th ><div className="headCell" >{Resources['description'][currentLanguage]}</div></th>
+                            <th ><div className="headCell" >{Resources['completedQuantity'][currentLanguage]}</div></th>
+                            <th><div className="headCell">{Resources['paymentPercent'][currentLanguage]}</div></th>
+                            <th ><div className="headCell" >{Resources['addedBy'][currentLanguage]}</div></th>
+                            <th ><div className="headCell" >{Resources['addedDate'][currentLanguage]}</div></th>
+                            <th ><div className="headCell" >{Resources['comment'][currentLanguage]}</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.paymentRequestItemsHistory.map(i =>
+                            <tr key={i.id}>
+                                <Fragment>
+                                    <td ><div className="contentCell">{i.description}</div> </td>
+                                    <td ><div className="contentCell">{i.completedQnty}</div> </td>
+                                    <td ><div className="contentCell">{i.paymentPercent}</div> </td>
+                                    <td ><div className="contentCell">{i.addedByName}</div> </td>
+                                    <td ><div className="contentCell">{moment(i.addedDate).format('DD/MM/YYYY')}</div> </td>
+                                    <td ><div className="contentCell">{i.comment}</div> </td>
+                                </Fragment>
+
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+        let approvedSummaries = this.state.isLoading === false ?
+            <Fragment>
+                <header>
+                    <h2 className="zero">{Resources['interimPaymentCertificate'][currentLanguage]}</h2>
+                </header>
+                <table className="attachmentTable " key="interimPaymentCertificate">
+                    <thead>
+                        <tr>
+                            <td width="15%" >{Resources['JobBuilding'][currentLanguage]}</td>
+                            {this.state.approvedInvoicesParent.map(i =>
+                                <td >{i.details.slice(0, i.details.lastIndexOf('-'))}</td>
+                            )}
+                            <td width="10%" >{Resources['total'][currentLanguage]} </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.approvedInvoicesChilds.map(i =>
+                            <tr>
+                                <td >{i.building.slice(0, i.building.lastIndexOf('-'))}</td>
+
+                                {this.state.approvedInvoicesParent.map(data =>
+                                    <td>{parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                                )}
+                                <td >{parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ,')}</td>
+
+                            </tr>
+                        )}
+                    </tbody>
+                    <tfoot>
+                        <tr style={{ backgroundColor: 'whitesmoke', color: 'black' }}>
+                            <td width="15%">{Resources['total'][currentLanguage]}</td>
+                            {this.state.approvedInvoicesParent.map(i =>
+                                <td >{parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                            )}
+                            <td >{this.state.rowTotal} </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </Fragment>
+            : <LoadingSection />
 
         return (
             <div className="mainContainer">
@@ -1298,7 +1675,9 @@ class requestPaymentsAddEdit extends Component {
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.advancePaymentPercent[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text" className="form-control" value={this.state.document.advancePaymentPercent} name="advancePaymentPercent"
+                                                                        <input type="text" className="form-control"
+                                                                            value={this.state.document.advancePaymentPercent}
+                                                                            name="advancePaymentPercent"
                                                                             placeholder={Resources.advancePaymentPercent[currentLanguage]}
                                                                             onBlur={(e) => {
                                                                                 handleChange(e)
@@ -1312,7 +1691,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.retainagePercent[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev" + (errors.retainagePercent && touched.retainagePercent ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text" className="form-control" id="retainagePercent" name="retainagePercent" readonly
+                                                                        <input type="text" className="form-control" id="retainagePercent" name="retainagePercent" readOnly
                                                                             value={this.state.document.retainagePercent}
                                                                             placeholder={Resources.retainagePercent[currentLanguage]}
                                                                             onBlur={(e) => {
@@ -1328,7 +1707,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.tax[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev" + (errors.tax && touched.tax ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text" className="form-control" id="tax" name="tax" readonly
+                                                                        <input type="text" className="form-control" id="tax" name="tax" readOnly
                                                                             value={this.state.document.tax}
                                                                             placeholder={Resources.tax[currentLanguage]}
                                                                             onBlur={(e) => {
@@ -1344,7 +1723,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.vat[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev" + (errors.vat && touched.vat ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text" className="form-control" id="vat" name="vat" readonly
+                                                                        <input type="text" className="form-control" id="vat" name="vat" readOnly
                                                                             value={this.state.document.vat}
                                                                             placeholder={Resources.vat[currentLanguage]}
                                                                             onBlur={(e) => {
@@ -1469,26 +1848,46 @@ class requestPaymentsAddEdit extends Component {
 
                                         <div className="doc-pre-cycle">
                                             <header>
-                                                <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
+                                                <h2 className="zero">{Resources['interimPaymentCertificate'][currentLanguage]}</h2>
                                             </header>
-                                            <ReactTable
-                                                ref={(r) => {
-                                                    this.selectTable = r;
-                                                }}
-                                                data={this.props.items}
-                                                columns={columns}
-                                                defaultPageSize={10}
-                                                minRows={2}
-                                                noDataText={Resources['noData'][currentLanguage]}
-                                            />
+                                            <table className="attachmentTable" key="interimPaymentCertificate">
+                                                <thead>
+                                                    <tr>
+                                                        <th colSpan="6">
+                                                            <div className="headCell">
+                                                                {Resources['workDescription'][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            <div className="headCell">
+                                                                {Resources['previous'][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            <div className="headCell">
+                                                                {Resources['current'][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            <div className="headCell">
+                                                                {Resources['total'][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th>
+
+                                                            <div className="headCell">
+                                                                {Resources['comments'][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {interimTable}
+                                                </tbody>
+                                            </table>
+                                            {approvedSummaries}
                                         </div>
 
-                                        <div className="doc-pre-cycle">
-                                            <div className="slider-Btns">
-                                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
-                                            </div>
-
-                                        </div>
                                     </div>
 
                                 </Fragment>
@@ -1499,28 +1898,91 @@ class requestPaymentsAddEdit extends Component {
 
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
+                                        <header>
+                                            <h2 className="zero">{Resources['deductions'][currentLanguage]}</h2>
+                                        </header>
 
-                                        <div className="doc-pre-cycle">
-                                            <header>
-                                                <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
-                                            </header>
-                                            <ReactTable
-                                                ref={(r) => {
-                                                    this.selectTable = r;
-                                                }}
-                                                data={this.props.items}
-                                                columns={columns}
-                                                defaultPageSize={10}
-                                                minRows={2}
-                                                noDataText={Resources['noData'][currentLanguage]}
-                                            />
+                                        <div className="document-fields">
+                                            <Formik
+                                                initialValues={{ ...this.state.documentDeduction }}
+                                                validationSchema={validationDeductionSchema}
+                                                enableReinitialize={true}
+                                                onSubmit={(values) => {
+                                                    this.addDeduction();
+                                                }}  >
+
+                                                {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                                    <Form id="deductionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                        <div className="proForm datepickerContainer">
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                                                <div className="ui input inputDev" >
+                                                                    <input type="text" className="form-control" id="title" name="title"
+                                                                        value={this.state.documentDeduction.title}
+                                                                        placeholder={Resources.description[currentLanguage]}
+                                                                        onBlur={(e) => {
+                                                                            handleChange(e)
+                                                                            handleBlur(e)
+                                                                        }}
+                                                                        onChange={(e) => this.handleChangeItem(e, 'title')} />
+                                                                    {touched.title ? (<em className="pError">{errors.title}</em>) : null}
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">{Resources.deductions[currentLanguage]}</label>
+                                                                <div className={"ui input inputDev" + (errors.deductionValue && touched.deductionValue ? (" has-error") : "ui input inputDev")} >
+                                                                    <input type="text" className="form-control" id="deductionValue" name="deductionValue"
+                                                                        value={this.state.documentDeduction.deductionValue}
+                                                                        placeholder={Resources.deductions[currentLanguage]}
+                                                                        onBlur={(e) => {
+                                                                            handleChange(e)
+                                                                            handleBlur(e)
+                                                                        }}
+                                                                        onChange={(e) => this.handleChangeItem(e, 'deductionValue')} />
+                                                                    {touched.deductionValue ? (<em className="pError">{errors.deductionValue}</em>) : null}
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="slider-Btns">
+                                                            {this.state.isLoading === false ?
+                                                                <button className="primaryBtn-1 btn meduimBtn">{Resources['save'][currentLanguage]}</button>
+                                                                :
+                                                                (
+                                                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                )}
+
+                                                        </div>
+                                                    </Form>
+                                                )}
+                                            </Formik>
                                         </div>
 
                                         <div className="doc-pre-cycle">
+                                            <table className="attachmentTable" key="DeductionsCertificate">
+                                                <thead>
+                                                    <tr>
+                                                        <th><div className="headCell">{Resources['description'][currentLanguage]}</div>
+                                                        </th>
+                                                        <th><div className="headCell">{Resources['deductions'][currentLanguage]}</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {deductionTable}
+                                                </tbody>
+                                            </table>
                                             <div className="slider-Btns">
                                                 <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
                                             </div>
-
                                         </div>
                                     </div>
 
@@ -1534,7 +1996,7 @@ class requestPaymentsAddEdit extends Component {
                                 <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
                                     "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
 
-                                <span onClick={this.NextTopStep} className={!this.state.ThirdStepComplate && this.state.docId !== 0 ? "step-content-btn-prev "
+                                <span onClick={this.NextTopStep} className={!this.state.FourthStepComplate && this.state.docId !== 0 ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
@@ -1589,8 +2051,6 @@ class requestPaymentsAddEdit extends Component {
                                             <div >
                                                 <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                                 <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
                                             </div>
                                             : null
                                         }
@@ -1615,6 +2075,32 @@ class requestPaymentsAddEdit extends Component {
                 <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.boqTypeModal = ref} title={Resources.boqType[currentLanguage]}>
                         {BoqTypeContent}
+                    </SkyLight>
+                </div>
+                <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.addCommentModal = ref} title={Resources.comments[currentLanguage]}>
+                        <div className="proForm datepickerContainer">
+                            <div className="linebylineInput valid-input mix_dropdown">
+
+                                <div className="letterFullWidth">
+                                    <label className="control-label">{Resources.comment[currentLanguage]}</label>
+                                    <div className="inputDev ui input">
+                                        <RichTextEditor
+                                            value={this.state.comment}
+                                            onChange={this.onChangeMessage.bind(this)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button className="primaryBtn-1 btn " onClick={(e) => this.addCommentClick(e)} >{Resources.save[currentLanguage]}</button>
+
+                    </SkyLight>
+                </div>
+
+                <div className="largePopup largeModal " style={{ display: this.state.showViewHistoryModal ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.ViewHistoryModal = ref} title={Resources.viewHistory[currentLanguage]}>
+                        {viewHistory}
                     </SkyLight>
                 </div>
             </div>
