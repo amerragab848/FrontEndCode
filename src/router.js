@@ -89,6 +89,7 @@ import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
 import Projects from "./Pages/Eps/Projects/Index";
 import baseAddEdit from "./Pages/estimation/baseAddEdit";
 import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
+import Itemize from "./Pages/Contracts/Itemize";
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
@@ -194,6 +195,7 @@ let originalRoutes = [
     , <Route path="/projectsAddEdit" component={projectsAddEdit} />
     , <Route path="/baseAddEdit" component={baseAddEdit} />
     , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
+    , <Route path="/Itemize" component={Itemize} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

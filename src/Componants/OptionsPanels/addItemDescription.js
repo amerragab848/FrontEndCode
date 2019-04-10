@@ -111,6 +111,7 @@ class addItemDescription extends Component {
         let saveDocument = { ...this.state.itemDescription };
 
         saveDocument[this.props.mainColumn] = this.props.docId;
+        saveDocument.parentId = this.props.parentId;
 
         dataservice.addObject(this.props.addItemApi, saveDocument).then(result => {
             if (result) {
@@ -390,7 +391,7 @@ function mapStateToProps(state) {
     return {
         docId: state.communication.docId,
         changeStatus: state.communication.changeStatus,
-        //projectId: state.communication.projectId,
+        projectId: state.communication.projectId,
     }
 }
 
