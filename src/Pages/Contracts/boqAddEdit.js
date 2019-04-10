@@ -896,8 +896,7 @@ class bogAddEdit extends Component {
         else
             this.setState({ activeTab: '' })
     }
-
-
+ 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
         this.setState({ isLoading: true })
 

@@ -11,19 +11,21 @@ import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import DataService from '../../Dataservice'
 import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import Config from "../../Services/Config.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 //import Recycle from '../../Styles/images/attacheRecycle.png'
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
+import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
 
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetup from "../Communication/GridSetup";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import IPConfig from '../../IP_Configrations'
+import SkyLight from 'react-skylight';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 
@@ -32,8 +34,6 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 let docId = 0;
 let projectId = 0;
 let projectName = "";
-let isApproveMode = 0;
-let docApprovalId = 0;
 let arrange = 0;
 
 
@@ -48,9 +48,6 @@ class Itemize extends Component {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     docId = obj.docId;
                     projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
                 }
                 catch{
@@ -183,13 +180,15 @@ class Itemize extends Component {
         ];
 
         this.state = {
-            boqId:9509,
-            parentId:0,
+            boqId: 9509,
+            parentId: 8399,
+            showPopUp: false,
             activeTab: '',
             isCompany: Config.getPayload().uty == 'company' ? true : false,
             LoadingPage: false,
             docTypeId: 64,
             selectedRow: '',
+            selectedItem:{},
             pageSize: 50,
             docId: docId,
             arrange: arrange,
@@ -214,9 +213,9 @@ class Itemize extends Component {
         let Table = []
         this.setState({ isLoading: true, LoadingPage: true })
         Api.get('GetBoqItem?id=8399').then(item => {
-     
 
-            this.setState({ item,parentId:item.id })
+
+            this.setState({ item, parentId: item != null ? item.id : 0 })
             // this.props.actions.setItemDescriptions(Table);
 
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
@@ -255,7 +254,7 @@ class Itemize extends Component {
 
             })
             this.setState({ items: subTable })
-            this.props.actions.setItemDescriptions(subTable);
+            this.props.actions.setItemDescriptions(subTable, 9509);
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
         })
 
@@ -266,12 +265,10 @@ class Itemize extends Component {
     }
 
     componentWillReceiveProps(props, state) {
-        if (props.document && props.document.id > 0) {
-            let docDate = moment(props.document.documentDate)
-            let document = Object.assign(props.document, { documentDate: docDate })
-            this.setState({ document });
-            this.fillDropDowns(true);
-            this.checkDocumentIsView();
+        this.setState({ isLoading: true })
+        if (props.items) {
+            let items = props.items
+            this.setState({ items, activeTab: '' }, function () { this.setState({ isLoading: false }) })
         }
 
     }
@@ -396,41 +393,29 @@ class Itemize extends Component {
         }
 
         else if (column.key != 'select-row' && column.key != 'unitPrice') {
-            this.setState({ showPopUp: true, btnText: 'save' })
-            DataService.GetDataList('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+            this.setState({ showPopUp: true })
+            this.simpleDialog.show()
+            console.log('value', value)
+            this.setState({ selectedItem: value })
+            // DataService.GetDataList('GetAllBoqChild?parentId=' + value.boqTypeId, 'title', 'id').then(res => {
+            //     this.setState({
+            //         BoqSubTypes: res,
+            //         BoqTypeChilds: res,
+            //         items: { id: value.id, description: value.description, arrange: value.arrange, quantity: value.quantity, unitPrice: value.unitPrice, itemCode: value.itemCode, resourceCode: value.resourceCode, days: value.days },
+            //         selectedUnit: value.unit ? { label: value.unit, value: value.unit } : { label: Resources.unitSelection[currentLanguage], value: "0" },
+            //         selectedBoqType: value.boqTypeId > 0 ? { label: value.boqType, value: value.boqTypeId } : { label: Resources.boqType[currentLanguage], value: "0" },
+            //         selectedBoqTypeChild: value.boqChildTypeId > 0 ? { label: value.boqTypeChild, value: value.boqTypeChildId } : { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+            //         selectedBoqSubType: value.boqSubTypeId > 0 ? { label: value.boqSubType, value: value.boqSubTypeId } : { label: Resources.boqSubType[currentLanguage], value: "0" },
+            //         selectedequipmentType: value.equipmentType > 0 ? { label: value.equipmentTypeLabel, value: value.equipmentType } : { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
+            //         selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
+            //         isLoading: false
+            //     })
+            //     if (value.itemType > 0) {
+            //         let itemType = _.find(this.state.itemTypes, function (e) { return e.value == value.itemType })
+            //         this.setState({ selectedItemType: itemType })
+            //     }
+            // })
 
-                this.setState({
-                    itemTypes: result
-                })
-            })
-
-            DataService.GetDataList('GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
-                this.setState({ equipmentTypes: [...res] })
-            })
-
-            this.simpleDialog1.show()
-
-            if (this.state.CurrStep == 2) {
-                this.setState({ isLoading: true })
-                DataService.GetDataList('GetAllBoqChild?parentId=' + value.boqTypeId, 'title', 'id').then(res => {
-                    this.setState({
-                        BoqSubTypes: res,
-                        BoqTypeChilds: res,
-                        items: { id: value.id, description: value.description, arrange: value.arrange, quantity: value.quantity, unitPrice: value.unitPrice, itemCode: value.itemCode, resourceCode: value.resourceCode, days: value.days },
-                        selectedUnit: value.unit ? { label: value.unit, value: value.unit } : { label: Resources.unitSelection[currentLanguage], value: "0" },
-                        selectedBoqType: value.boqTypeId > 0 ? { label: value.boqType, value: value.boqTypeId } : { label: Resources.boqType[currentLanguage], value: "0" },
-                        selectedBoqTypeChild: value.boqChildTypeId > 0 ? { label: value.boqTypeChild, value: value.boqTypeChildId } : { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-                        selectedBoqSubType: value.boqSubTypeId > 0 ? { label: value.boqSubType, value: value.boqSubTypeId } : { label: Resources.boqSubType[currentLanguage], value: "0" },
-                        selectedequipmentType: value.equipmentType > 0 ? { label: value.equipmentTypeLabel, value: value.equipmentType } : { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
-                        selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
-                        isLoading: false
-                    })
-                    if (value.itemType > 0) {
-                        let itemType = _.find(this.state.itemTypes, function (e) { return e.value == value.itemType })
-                        this.setState({ selectedItemType: itemType })
-                    }
-                })
-            }
 
         }
     }
@@ -466,19 +451,19 @@ class Itemize extends Component {
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
         this.setState({ isLoading: true })
 
-        let updateRow = this.state.rows[fromRow];
+        let updateRow = this.state.items[fromRow];
 
         this.setState(state => {
-            const rows = state.rows.slice();
+            const items = state.items.slice();
             for (let i = fromRow; i <= toRow; i++) {
-                rows[i] = { ...rows[i], ...updated };
+                items[i] = { ...items[i], ...updated };
             }
-            return { rows };
+            return { items };
         }, function () {
             if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
 
                 updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-                Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice)
+                Api.post('EditBoqItemChildUnitPrice?id=' + this.state.items[fromRow].id + '&parentId=' + this.state.parentId + '&unitPrice=' + updated.unitPrice)
                     .then(() => {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                         this.setState({ isLoading: false })
@@ -506,7 +491,7 @@ class Itemize extends Component {
 
         const subItemsGrid = this.state.isLoading === false ? (
             <GridSetup
-                rows={this.props.items}
+                rows={this.state.items}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
                 onRowClick={this.onRowClick}
@@ -518,37 +503,50 @@ class Itemize extends Component {
                 key='sub-items'
             />) : <LoadingSection />;
         const itemTable =
-        this.state.isLoading ? null :
-            <table className="taskAdminTable">
-                <thead>
-                    <tr>
-                        <th>{Resources['no'][currentLanguage]}</th>
-                        <th>{Resources['itemCode'][currentLanguage]}</th>
-                        <th>{Resources['details'][currentLanguage]}</th>
-                        <th>{Resources['quantity'][currentLanguage]}</th>
-                        <th>{Resources['revQuantity'][currentLanguage]}</th>
-                        <th>{Resources['unit'][currentLanguage]}</th>
-                        <th>{Resources['unitPrice'][currentLanguage]}</th>
-                        <th>{Resources['total'][currentLanguage]}</th>
-                        <th>{Resources['resourceCode'][currentLanguage]}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr key={'table'}>
-                        <td >{this.state.item.arrange} </td>
-                        <td >{this.state.item.itemCode} </td>
-                        <td >{this.state.item.description} </td>
-                        <td >{this.state.item.quantity} </td>
-                        <td >{this.state.item.revisedQuantity} </td>
-                        <td >{this.state.item.unit} </td>
-                        <td >{this.state.item.unitPrice} </td>
-                        <td >{this.state.item.total} </td>
-                        <td >{this.state.item.resourceCode} </td>
-                    </tr>
-                </tbody>
-            </table>
+            this.state.isLoading ? null : (this.state.item != null ?
+                <table className="taskAdminTable">
+                    <thead>
+                        <tr>
+                            <th>{Resources['no'][currentLanguage]}</th>
+                            <th>{Resources['itemCode'][currentLanguage]}</th>
+                            <th>{Resources['details'][currentLanguage]}</th>
+                            <th>{Resources['quantity'][currentLanguage]}</th>
+                            <th>{Resources['revQuantity'][currentLanguage]}</th>
+                            <th>{Resources['unit'][currentLanguage]}</th>
+                            <th>{Resources['unitPrice'][currentLanguage]}</th>
+                            <th>{Resources['total'][currentLanguage]}</th>
+                            <th>{Resources['resourceCode'][currentLanguage]}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr key={'table'}>
+                            <td >{this.state.item.arrange} </td>
+                            <td >{this.state.item.itemCode} </td>
+                            <td >{this.state.item.description} </td>
+                            <td >{this.state.item.quantity} </td>
+                            <td >{this.state.item.revisedQuantity} </td>
+                            <td >{this.state.item.unit} </td>
+                            <td >{this.state.item.unitPrice} </td>
+                            <td >{this.state.item.total} </td>
+                            <td >{this.state.item.resourceCode} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                : null)
 
+        const editItemContent = <React.Fragment>
+            <div className="document-fields" key='editItem'>
+                <EditItemDescription
+                    showImportExcel={false} docType="boq"
+                    isViewMode={this.state.isViewMode}
+                    mainColumn="boqId" addItemApi="AddBoqItemChild"
+                    parentId={this.state.parentId}
+                    projectId={2}
+                    showItemType={true} 
+                    item={this.state.selectedItem}/>
 
+            </div>
+        </React.Fragment >
         const addItemContent = <React.Fragment>
             <div className="document-fields">
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -557,6 +555,7 @@ class Itemize extends Component {
                     isViewMode={this.state.isViewMode}
                     mainColumn="boqId" addItemApi="AddBoqItemChild"
                     parentId={this.state.parentId}
+                    projectId={2}
                     showItemType={true} />
 
             </div>
@@ -594,7 +593,11 @@ class Itemize extends Component {
             </div>
             {this.state.activeTab == 'one' ? addItemContent : (this.state.activeTab == 'many' ? addManyItems : null)}
             {this.state.items.length > 0 ? subItemsGrid : null}
-
+            <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
+                <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources.boqType[currentLanguage]}>
+                    {editItemContent}
+                </SkyLight>
+            </div>
         </React.Fragment>
 
         return (

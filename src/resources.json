@@ -1976,7 +1976,7 @@
     "ar": "تاريخ الحركة"
   },
   "pleaseSelectProjectType": {
-    "en": "Please Select a Project Type",
+    "en": "Select a Project Type",
     "ar": "من فضلك اختر نوع المشروع"
   },
   "credit": {
@@ -3614,10 +3614,6 @@
   "selectTransaction": {
     "en": "--  Please select a Transaction Type --",
     "ar": "-- برجاء اختيار نوع القيد --"
-  },
-  "selectProject": {
-    "en": "--  Please select a project Type --",
-    "ar": "-- برجاء اختيار نوع المشروع --"
   },
   "transactionTypeRequired": {
     "en": "Please insert Transaction Type",

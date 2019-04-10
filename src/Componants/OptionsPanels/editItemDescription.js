@@ -3,9 +3,8 @@ import React, { Component } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
-import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import DataService from '../../Dataservice'
 
 import { withRouter } from "react-router-dom";
@@ -16,7 +15,6 @@ import {
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
-import IPConfig from '../../IP_Configrations'
 
 import { toast } from "react-toastify";
 import _ from "lodash";
@@ -37,7 +35,7 @@ const documentItemValidationSchema = Yup.object().shape({
     quantity: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
-class addItemDescription extends Component {
+class editItemDescription extends Component {
 
     constructor(props) {
 
@@ -63,7 +61,6 @@ class addItemDescription extends Component {
                 resourceCode:'' 
             }, 
             Units: [], selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" },
-
             columns: [],
             action: null,
             selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
@@ -75,42 +72,41 @@ class addItemDescription extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.docId) {
-            this.fillTable();
+            console.log('props',nextProps)
         }
     };
 
     componentDidUpdate(prevProps) {
-        if (this.props.isViewMode !== prevProps.isViewMode) {
-        }
+        
     }
     componentWillMount() {
-        this.fillTable();
-        DataService.GetDataList('GetDefaultListForUnit?listType=unit', 'listType', 'listType').then(res => {
-            this.setState({ Units: [...res] })
-        })
+        // this.fillTable();
+        // DataService.GetDataList('GetDefaultListForUnit?listType=unit', 'listType', 'listType').then(res => {
+        //     this.setState({ Units: [...res] })
+        // })
 
-        DataService.GetDataList('GetAllBoqParentNull?projectId=' + this.props.projectId, 'title', 'id').then(res => {
-            this.setState({ boqTypes: [...res] })
-        })
-        if (this.props.showItemType === true) {
-            DataService.GetDataGrid('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000').then(result => {
-                let Data = [];
-                (result).forEach(item => {
-                    var obj = {};
-                    obj.label = item.title;
-                    obj.value = item.id;
-                    Data.push(obj);
-                });
-                this.setState({
-                    itemTypes: [...Data],
-                    poolItemTypes: result
-                })
-            })
+        // DataService.GetDataList('GetAllBoqParentNull?projectId=' + this.props.projectId, 'title', 'id').then(res => {
+        //     this.setState({ boqTypes: [...res] })
+        // })
+        // if (this.props.showItemType === true) {
+        //     DataService.GetDataGrid('GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000').then(result => {
+        //         let Data = [];
+        //         (result).forEach(item => {
+        //             var obj = {};
+        //             obj.label = item.title;
+        //             obj.value = item.id;
+        //             Data.push(obj);
+        //         });
+        //         this.setState({
+        //             itemTypes: [...Data],
+        //             poolItemTypes: result
+        //         })
+        //     })
 
-            DataService.GetDataList('GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
-                this.setState({ equipmentTypes: [...res] })
-            })
-        }
+        //     DataService.GetDataList('GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
+        //         this.setState({ equipmentTypes: [...res] })
+        //     })
+        // }
 
     };
 
@@ -134,7 +130,7 @@ class addItemDescription extends Component {
             if (result) {
                 let arr = [];
                 arr.push(result);
-                this.props.actions.addItemDescription(arr);
+                this.props.actions.editItemDescription(arr);
                 this.setState({
                     itemDescription: {
                         id:0,
@@ -165,15 +161,10 @@ class addItemDescription extends Component {
     }
 
     handleChangeItem(e, field) {
-
         let original_document = { ...this.state.itemDescription };
-
         let updated_document = {};
-
         updated_document[field] = e.target.value;
-
         updated_document = Object.assign(original_document, updated_document);
-
         this.setState({
             itemDescription: updated_document
         });
@@ -185,7 +176,6 @@ class addItemDescription extends Component {
         let updated_document = {};
         updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
         this.setState({
             itemDescription: updated_document,
             [selectedValue]: event
@@ -197,7 +187,6 @@ class addItemDescription extends Component {
                 this.setState({
                     action: item.action
                 });
-
             }
         }
         console.log(event, selectedValue.label);
@@ -214,12 +203,7 @@ class addItemDescription extends Component {
 
         return (
             <div className="step-content">
-                {this.props.showImportExcel !== false ?
-                    <XSLfile key='boqImport' docId={this.props.docId} docType={this.props.docType} link={IPConfig.downloads + this.props.docLink} header='addManyItems'
-                        disabled={this.props.changeStatus ? (this.props.docId > 0 ? true : false) : false} afterUpload={() => this.fillTable()} />
-                    : null
-                }
-                <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
+         
                     <Formik
                         initialValues={{ ...this.state.itemDescription }}
                         validationSchema={documentItemValidationSchema}
@@ -334,10 +318,8 @@ class addItemDescription extends Component {
                                             <Dropdown
                                                 title="boqTypeChild"
                                                 data={this.state.BoqTypeChilds}
-
                                                 selectedValue={this.state.selectedBoqTypeChild}
                                                 handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
-
                                                 name="boqTypeChild"
                                                 index="boqTypeChild" />
                                         </div>
@@ -373,7 +355,6 @@ class addItemDescription extends Component {
                                                     title="equipmentType"
                                                     data={this.state.equipmentTypes}
                                                     selectedValue={this.state.selectedequipmentType}
-
                                                     handleChange={event => this.handleChangeItemDropDown(event, "equipmentType", 'selectedequipmentType', false, '', '', '')}
                                                     name="equipmentType"
                                                     index="equipmentType" />
@@ -398,24 +379,8 @@ class addItemDescription extends Component {
                         )}
                     </Formik>
 
-                    {/* <div className="doc-pre-cycle">
-                        <header>
-                            <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
-                        </header>
-                        <ReactTable
-                            ref={(r) => {
-                                this.selectTable = r;
-                            }}
-                            data={this.state.itemsList}
-                            columns={this.state.columns}
-                            defaultPageSize={10}
-                            minRows={2}
-                            noDataText={Resources['noData'][currentLanguage]}
-                        />
-                    </div> */}
                 </div>
 
-            </div>
         )
     }
 }
@@ -434,4 +399,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(addItemDescription))
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(editItemDescription))
