@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from "react";
-import dataservice from "../../Dataservice";
+//import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js";
+//import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
 import Tree from "../../Componants/OptionsPanels/Tree";
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import { stat } from "fs";
-let id = ''
+//import LoadingSection from '../../Componants/publicComponants/LoadingSection';
+//import { stat } from "fs";
+//let id = ''
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class rptCostCodingTree extends Component {
@@ -20,35 +20,19 @@ class rptCostCodingTree extends Component {
       projectId: '',
       NodeData: {}
     }
-  }
+  } 
 
-
-  componentWillReceiveProps(props) {
-    console.log('props', props.projectId)
+  componentWillReceiveProps(props) { 
     this.setState({
       projectId: props.projectId
     })
   }
 
   componentWillMount = () => {
+    this.props.actions.documentForAdding(); 
+  } 
 
-  }
-
-//   GetNodeData = (id) => {
-//     if (this.state.IsNodeModeData) {
-//         Api.get('GetSummaryOfCostCoding?id=' + id + '').then(
-//             res => {
-//                 this.setState({
-//                     NodeData: res
-//                 })
-//             }
-//         )
-//     }
-// }
-
-  render() {
-
-
+  render() { 
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document">
@@ -73,7 +57,6 @@ class rptCostCodingTree extends Component {
                 </g>
               </svg>
             </div>
-
           </div>
           <Tree projectId={this.state.projectId} IsNodeModeData={true} />
         </div>

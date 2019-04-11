@@ -19,64 +19,41 @@ class Tree extends Component {
         super(props);
 
         this.state = {
-            projectId:this.props.projectId,
+            projectId: this.props.projectId,
             trees: [],
             childerns: [],
             rowIndex: null,
             isEdit: false,
             parentId: "",
             isLoading: false,
-            drawChilderns: false,
-            docId: "",
-            ApiDrawTree: 'GetCostCodingTreeByProjectId?projectId=',
+            ApiDrawTree: 'GetCostTreeByProjectId?projectId=',
             IsNodeModeData: this.props.IsNodeModeData,
             NodeData: {},
         };
-    }
-
-    componentDidMount() {
-
+        this.printChild = this.printChild.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
 
         if (nextProps.projectId !== this.props.projectId) {
-
             dataservice.GetDataGrid(this.state.ApiDrawTree + nextProps.projectId).then(result => {
                 this.setState({
-                    trees: result ,
-                    projectId:nextProps.projectId
+                    trees: result,
+                    projectId: nextProps.projectId
                 })
             })
         }
     }
 
     componentWillMount() {
-        let treeDocument = {
-            codeTreeTitle: "",
-            budgetThisPeriod: "",
-            budgetAtComplete: "",
-            originalBudget: "",
-            costForcast: "",
-            parentId: ""
-        };
-
         this.props.actions.documentForAdding();
 
         dataservice.GetDataGrid(this.state.ApiDrawTree + this.state.projectId).then(result => {
             this.setState({
-                trees: result,
-                document: treeDocument
+                trees: result
             });
         });
     }
-
-    parentCollapsed(rowIndex) {
-        this.setState({
-            rowIndex: rowIndex
-        });
-    }
-
 
     GetNodeData = (id) => {
         if (this.state.IsNodeModeData) {
@@ -89,62 +66,80 @@ class Tree extends Component {
             )
         }
     }
+    search(id, trees, updateTrees, parentId) {
+
+        trees.map(item => {
+            if (id == item.id) {
+                item.collapse = !item.collapse;
+            } else {
+                //item.collapse = item.id != parentId ? true : item.collapse; 
+            }
+            updateTrees.push(item);
+            if (item.trees.length > 0) {
+                this.search(id, item.trees, updateTrees, parentId);
+            }
+        });
+        return updateTrees;
+    };
+
+    printChild(children) {
+        return (
+            children.map((item, i) => {
+                return (
+                    <Fragment>
+                        <div className={"epsTitle" + (item.collapse === false ? ' active' : ' ')} key={item.id}>
+                            <div className="listTitle">
+
+                                <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }} onClick={() => this.viewChild(item)}>
+                                    <i className="dropdown icon" />
+                                </span>
+
+                                <span className="accordionTitle"   onClick={() => this.GetNodeData(item.id)}>{item.codeTreeTitle}</span>
+                            </div>
+                        </div>
+                        <div className="epsContent">
+                            {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                        </div>
+                    </Fragment>
+                )
+            })
+        )
+    }
+
     viewChild(item) {
+
+        let trees = [...this.state.trees];
+
+        this.search(item.id, trees, [], item.parentId);
         this.setState({
-            rowIndex: item.id,
-        })
-
-        this.GetNodeData(item.id)
-
-        console.log(item.trees)
-    }
-
-    openChild(item) {
-        let childerns = [];
-        //let childern =
-        return item.trees.map(result => {
-            return (
-                <div className="epsContent" key={result.id}>
-                    <div className="epsTitle">
-                        <div className="listTitle">
-                            <span className="dropArrow">
-                                <i className="dropdown icon" />
-                            </span>
-                            <span className="accordionTitle">{result.codeTreeTitle}</span>
-                        </div>
-                    </div>
-                </div>
-            )
-
+            trees
         });
     }
-
-    designParent() {
-        return this.state.trees.map((item, index) => {
-            return (
-                <Fragment>
-                    <div className={this.state.rowIndex === item.id ? "epsTitle active" : "epsTitle"} key={item.id} onClick={() => this.viewChild(item)}>
-                        <div className="listTitle">
-                            <span className="dropArrow">
-                                <i className="dropdown icon" />
-                            </span>
-                            <span className="accordionTitle">{item.codeTreeTitle}</span>
-                        </div>
-                    </div>
-                    {this.state.rowIndex === item.id ? this.openChild(item) : null}
-                </Fragment>
-            );
-        });
-    }
-
 
     render() {
         return (
-
-
             <Fragment>
+
                 <div className="Eps__list">
-                    {this.designParent()}
+                    {
+                        this.state.trees.map((item, i) => {
+                            return (
+                                <Fragment>
+                                    <div className="epsTitle active" key={item.id}>
+                                        <div className="listTitle">
+                                            <span className="dropArrow">
+                                                <i className="dropdown icon" />
+                                            </span>
+                                            <span className="accordionTitle">{item.codeTreeTitle}</span>
+                                        </div> 
+                                    </div>
+                                    <div class="epsContent">
+                                        {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                                    </div>
+                                </Fragment>
+                            )
+                        })
+                    }
                 </div>
 
                 {this.state.IsNodeModeData ?
@@ -191,7 +186,6 @@ class Tree extends Component {
                             </table>
                         </div>
                     </div>
-
                     : null}
             </Fragment>
         )
@@ -202,7 +196,7 @@ function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
-        projectId:state.communication.projectId
+        projectId: state.communication.projectId
     };
 }
 

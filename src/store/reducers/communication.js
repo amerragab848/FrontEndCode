@@ -30,7 +30,8 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 changeStatus: false,
-                items: []
+                items: [], 
+                projectId: state.projectId == 0 ?  localStorage.getItem('lastSelectedProject'): state.projectId 
             };
 
         case types.Document_Add:
