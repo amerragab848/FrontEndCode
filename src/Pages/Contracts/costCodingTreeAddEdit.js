@@ -78,6 +78,7 @@ class CostCodingTreeAddEdit extends Component {
       }
     }
   }
+  
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.projectId !== this.props.projectId) {

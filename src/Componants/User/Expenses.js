@@ -7,7 +7,7 @@ import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
-import Export from "../../Componants/OptionsPanels/Export";
+import Export from "../OptionsPanels/Export";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 

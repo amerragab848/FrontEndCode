@@ -119,11 +119,12 @@ export function deleteItemDescription(item) {
     }
 }
 
-export function setItemDescriptions(items) {
+export function setItemDescriptions(items,docId) {
     return (dispatch, getState) => {
         dispatch({
             type: types.add_item,
-            item: items
+            item: items,
+            docId:docId
         });
     }
 }

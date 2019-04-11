@@ -4,7 +4,7 @@ import Api from "../../api";
 import Resources from "../../resources.json";
 import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import Export from "../../Componants/OptionsPanels/Export";
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
