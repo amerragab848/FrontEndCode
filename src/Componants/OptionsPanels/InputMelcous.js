@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "./node_modules/react";
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

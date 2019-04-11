@@ -1,5 +1,5 @@
-import React from 'react';
-import SkyLight from 'react-skylight';
+import React from './node_modules/react';
+import SkyLight from './node_modules/react-skylight';
 import DropDown from './DropdownMelcous'
 import SendTask from "./SendTask";
 import CreateTransmittal from "./CreateTransmittal";
@@ -10,16 +10,16 @@ import Resources from '../../resources.json';
 import Config from '../../Services/Config';
 //import permissions from '../../permissions.json';
  
-import { connect } from 'react-redux';
+import { connect } from './node_modules/react-redux';
 import {
     bindActionCreators
-} from 'redux';
+} from './node_modules/redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require("lodash")
+const _ = require("./node_modules/lodash")
  
 class OptionContainer extends React.Component {
     constructor(props) {

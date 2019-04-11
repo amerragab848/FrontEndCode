@@ -7,7 +7,7 @@ import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import Export from "../../Componants/OptionsPanels/Export";
+import Export from "../OptionsPanels/Export";
 import { truncateSync } from "fs";
 import fastForward from "material-ui/svg-icons/av/fast-forward";
 

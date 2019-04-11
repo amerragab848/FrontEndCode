@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from './node_modules/react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 import InputMelcous from './InputMelcous'
 import Resources from '../../resources.json';
 import DatePicker from './DatePicker'
-import moment from 'moment';
+import moment from './node_modules/moment';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 

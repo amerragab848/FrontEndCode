@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { Component } from "./node_modules/react";
 import Api from "../../api";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
 
-import { connect } from 'react-redux';
+import { connect } from './node_modules/react-redux';
 import {
   bindActionCreators
-} from 'redux';
+} from './node_modules/redux';
 
 import * as communicationActions from '../../store/actions/communication';
 

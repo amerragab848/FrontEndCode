@@ -1,24 +1,24 @@
 //////////important note  version of anthor implmentation for this component is pushed with commit No. (5f09adf)////////////
-import React, { Component } from 'react'
+import React, { Component } from './node_modules/react'
 import Api from '../../api';
 import Dropdown from "./DropdownMelcous";
 import DatePicker from './DatePicker'
 import Recycle from '../../Styles/images/attacheRecycle.png'
-import ReactTable from "react-table";
-import moment from 'moment';
-import { Formik, Form } from 'formik';
+import ReactTable from "./node_modules/react-table";
+import moment from './node_modules/moment';
+import { Formik, Form } from './node_modules/formik';
 
-import { connect } from 'react-redux';
+import { connect } from './node_modules/react-redux';
 import {
     bindActionCreators
-} from 'redux';
+} from './node_modules/redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('lodash')
+const _ = require('./node_modules/lodash')
 
 
 class DistributionList extends Component {

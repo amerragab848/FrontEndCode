@@ -4,20 +4,20 @@
 // missing and not complated
 //create step Number on top of work flow  "when work flow is in multi level" 
 
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from './node_modules/react'
 import Api from '../../api';
-import Moment from 'moment';
+import Moment from './node_modules/moment';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
 
-import { connect } from 'react-redux';
+import { connect } from './node_modules/react-redux';
 import {
     bindActionCreators
-} from 'redux';
+} from './node_modules/redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
-const _ = require('lodash')
+const _ = require('./node_modules/lodash')
 
 class ViewWorkFlow extends Component {
 
