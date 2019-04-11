@@ -89,6 +89,7 @@ import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
 import Projects from "./Pages/Eps/Projects/Index";
 import baseAddEdit from "./Pages/estimation/baseAddEdit";
 import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
+import Itemize from "./Pages/Contracts/Itemize";
 import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
 import rptCostCodingTree from './Pages/CostControl/rptCostCodingTree';
 
@@ -199,6 +200,7 @@ let originalRoutes = [
     , <Route path="/projectsAddEdit" component={projectsAddEdit} />
     , <Route path="/baseAddEdit" component={baseAddEdit} />
     , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
+    , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
 ];
