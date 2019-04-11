@@ -2681,6 +2681,8 @@ button.companies_icon {
   position: absolute;
   left: 18%;
   top: 12px;
+  cursor: pointer;
+  display: block;
 }
 .dashboard__selectMenu .css-10nd86i {
   max-width: 204px;
@@ -3341,6 +3343,18 @@ color: #4382f9 !important;
   stroke: transparent;
   fill: #07bc0cbb
 }
+.charts__row .highcharts-color-6, .charts__row .highcharts-color-6 .highcharts-point {
+  stroke: transparent;
+}
+.charts__row .highcharts-color-7, .charts__row .highcharts-color-7 .highcharts-point {
+  stroke: transparent;
+}
+.charts__row .highcharts-color-8, .charts__row .highcharts-color-8 .highcharts-point {
+  stroke: transparent;
+}
+.charts__row .highcharts-color-9, .charts__row .highcharts-color-9 .highcharts-point {
+  stroke: transparent;
+}
 .charts__row .highcharts-legend-item.highcharts-pie-series.highcharts-legend-item-hidden .highcharts-point{
   fill: rgb(204, 204, 204) !important;
 }
@@ -3370,7 +3384,22 @@ color: #4382f9 !important;
 .charts__row .highcharts-title tspan {
   font-size: 20px;
 }
+.highcharts-halo {
+  fill-opacity: 1;
+}
 
+path.highcharts-label-box.highcharts-tooltip-box {
+  fill: rgba(0,0,0,0.3);
+  stroke: rgba(0,0,0,0.3);
+}
+path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-box.highcharts-tooltip-box + text tspan{
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+.main-header {
+  top: 41px;
+}
 
 /*
 .highcharts-color-6 {
