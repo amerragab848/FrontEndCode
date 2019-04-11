@@ -14,8 +14,10 @@ import Delete from "../../Styles/images/epsActions/delete.png";
 import Rodal from "../../Styles/js/rodal";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
+import _ from "lodash";
 
 import { toast } from "react-toastify";
+import visibility from "material-ui/svg-icons/action/visibility";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -80,7 +82,7 @@ class CostCodingTreeAddEdit extends Component {
 
     if (nextProps.projectId !== this.props.projectId) {
 
-      dataservice.GetDataGrid("GetCostCodingTreeByProjectId?projectId=" + nextProps.projectId).then(result => {
+      dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + nextProps.projectId).then(result => {
         this.setState({
           trees: result
         });
@@ -101,7 +103,7 @@ class CostCodingTreeAddEdit extends Component {
     };
     this.props.actions.documentForAdding();
 
-    dataservice.GetDataGrid("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId).then(result => {
+    dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + this.state.projectId).then(result => {
       this.setState({
         trees: result,
         document: treeDocument
@@ -116,16 +118,18 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   viewChild(item) {
+
     this.setState({
-      rowIndex: item.id,
-      //drawChilderns: true,
-      //  childerns: item.trees
+      isLoading: true
     });
-    // setTimeout(() => {
-    //   this.setState({
-    //     drawChilderns: false
-    //   })
-    // }, 2000)
+
+    let trees = [...this.state.trees];
+    let updateTrees = [];
+    updateTrees = this.search(item.id, trees, updateTrees, item.parentId);
+    this.setState({
+      trees,
+      isLoading: false
+    });
     console.log(item.trees);
   }
 
@@ -146,17 +150,63 @@ class CostCodingTreeAddEdit extends Component {
     });
   }
 
+  search(id, trees, updateTrees, parentId) {
+
+    trees.map(item => {
+      if (id == item.id) {
+        item.collapse = !item.collapse;
+      } else {
+        // let parent = _.find(trees, function (x) { return x.id == item.parentId });
+        // if (parent && parent.collapse == false) {
+
+        //   item.collapse = false;
+        // } else {
+        //   item.collapse = true;// this.searchIdInRoot(parentId, [...this.state.trees]);
+        // }
+        item.collapse = item.id != parentId ? true : item.collapse;
+        // //here check if curent item not parent for id
+      }
+      updateTrees.push(item);
+      if (item.trees.length > 0) {
+        this.search(id, item.trees, updateTrees, parentId);
+      }
+    });
+    return updateTrees;
+  };
+
+  searchIdInRoot(parentId, trees) {
+    // let parent = _.find(trees, function (x) { return x.id == item.parentId });
+    // if (parent && parent.collapse == false) {
+    //   item.collapse = false;
+    // } else {
+    trees.map(item => {
+      if (parentId == item.id) {
+        if (item.collapse !== false) {
+          return false
+        }
+      }
+      if (item.trees.length > 0) {
+        this.searchIdInRoot(parentId, item.trees);
+      }
+    });
+    //}
+  };
+
   openChild(item) {
-    let childerns = [];
-    //let childern =
-  return  item.trees.map(result => {
-      return ( 
-        <div className="epsContent" key={result.id}>
-          <div className="epsTitle">
+
+    return item.trees.map((result, index) => {
+      return (
+        <Fragment>
+          <div className={"epsTitle " + (result.collapse === true  ? " " : "active")} key={result.id} onClick={() => this.viewChild(result)}>
             <div className="listTitle">
-              <span className="dropArrow">
-                <i className="dropdown icon" />
-              </span>
+              {result.trees.length > 0 ?
+                <span className="dropArrow">
+                  <i className="dropdown icon" />
+                </span>
+                :
+                <span className="dropArrow" style={{ visibility: 'hidden' }}>
+                  <i className="dropdown icon" />
+                </span>}
               <span className="accordionTitle">{result.codeTreeTitle}</span>
             </div>
             <div className="Project__num">
@@ -167,29 +217,27 @@ class CostCodingTreeAddEdit extends Component {
                 <a className="plusIcon" onClick={() => this.AddDocument(result)}>
                   <img src={Plus} alt="Add" />
                 </a>
-                <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
+                <a className="deleteIcon" onClick={() => this.DeleteDocument(result.id)}>
                   <img src={Delete} alt="Delete" />
                 </a>
               </div>
             </div>
           </div>
-        </div> 
+          {this.state.isLoading === true ? <LoadingSection /> :
+            <div className="epsContent" key={index + "-" + result.id}>
+              {result.trees.length > 0 ? this.openChild(result) : null}
+            </div>
+          }
+        </Fragment>
       )
-      //childerns.push(childern);
     });
-
-    // this.setState({
-    //   childerns: childerns,
-    //   isLoading: false
-    // });
   }
 
   designParent() {
     return this.state.trees.map((item, index) => {
       return (
         <Fragment>
-          {/* parent */}
-          <div className={this.state.rowIndex === item.id ? "epsTitle active" : "epsTitle"} key={item.id} onClick={() => this.viewChild(item)}>
+          <div className="epsTitle active" key={item.id} onClick={() => this.viewChild(item)}>
             <div className="listTitle">
               <span className="dropArrow">
                 <i className="dropdown icon" />
@@ -197,11 +245,6 @@ class CostCodingTreeAddEdit extends Component {
               <span className="accordionTitle">{item.codeTreeTitle}</span>
             </div>
             <div className="Project__num">
-              {/* for count Project */}
-              {/* <p>
-                        <span className="project__num--span">19</span>
-                        Project
-                    </p> */}
               <div className="eps__actions">
                 <a className="editIcon" onClick={() => this.EditDocument(item)}>
                   <img src={Edit} alt="Edit" />
@@ -218,7 +261,11 @@ class CostCodingTreeAddEdit extends Component {
               </div>
             </div>
           </div>
-          {this.state.rowIndex === item.id ? this.openChild(item) : null}
+          {this.state.isLoading === true ? <LoadingSection /> :
+            <div className="epsContent" key={index + "-" + item.id}>
+              {item.trees.length > 0 ? this.openChild(item, item.id) : null}
+            </div>
+          }
         </Fragment>
       );
     });
@@ -252,31 +299,28 @@ class CostCodingTreeAddEdit extends Component {
     saveDocument.parentId = this.state.parentId;
     saveDocument.projectId = this.state.projectId;
 
-    dataservice
-      .addObject("AddcostCodeTree", saveDocument)
-      .then(result => {
-        toast.success(Resources["operationSuccess"][currentLanguage]);
+    dataservice.addObject("AddcostCodeTree", saveDocument).then(result => {
+      toast.success(Resources["operationSuccess"][currentLanguage]);
 
-        let treeDocument = {
-          codeTreeTitle: "",
-          budgetThisPeriod: "",
-          budgetAtComplete: "",
-          originalBudget: "",
-          costForcast: "",
-          parentId: ""
-        };
+      let treeDocument = {
+        codeTreeTitle: "",
+        budgetThisPeriod: "",
+        budgetAtComplete: "",
+        originalBudget: "",
+        costForcast: "",
+        parentId: ""
+      };
 
-        this.setState({
-          viewPopUp: false,
-          document: treeDocument,
-          isLoading: false
-        });
-      })
-      .catch(ex => {
-        this.setState({ viewPopUp: false });
-
-        toast.error(Resources["failError"][currentLanguage]);
+      this.setState({
+        viewPopUp: false,
+        document: treeDocument,
+        isLoading: false
       });
+    }).catch(ex => {
+      this.setState({ viewPopUp: false });
+
+      toast.error(Resources["failError"][currentLanguage]);
+    });
   }
 
   editTree() {
@@ -335,7 +379,6 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   render() {
-    //let drawChilderns = 
 
     return (
       <div className="mainContainer">
@@ -393,36 +436,7 @@ class CostCodingTreeAddEdit extends Component {
               </svg>
             </div>
           </div>
-          <div className="Eps__list">{this.designParent()}
-
-          </div>
-          {/* {this.state.drawChilderns === false ?
-            this.state.childerns.map(result =>
-              <div className="epsContent" key={result.id}>
-                <div className="epsTitle">
-                  <div className="listTitle">
-                    <span className="dropArrow">
-                      <i className="dropdown icon" />
-                    </span>
-                    <span className="accordionTitle">{result.codeTreeTitle}</span>
-                  </div>
-                  <div className="Project__num">
-                    <div className="eps__actions">
-                      <a className="editIcon" onClick={() => this.EditDocument(result)}>
-                        <img src={Edit} alt="Edit" />
-                      </a>
-                      <a className="plusIcon" onClick={() => this.AddDocument(result)}>
-                        <img src={Plus} alt="Add" />
-                      </a>
-                      <a className="deleteIcon" onClick={() => this.DeleteDocument(result.id)}>
-                        <img src={Delete} alt="Delete" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : <LoadingSection />
-          } */}
+          {this.state.isLoading === true ? <LoadingSection /> : <div className="Eps__list">{this.designParent()}          </div>}
         </div>
         {this.state.viewPopUp ? (
           <Fragment>
