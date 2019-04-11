@@ -14,8 +14,10 @@ import Delete from "../../Styles/images/epsActions/delete.png";
 import Rodal from "../../Styles/js/rodal";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
+import _ from "lodash";
 
 import { toast } from "react-toastify";
+import visibility from "material-ui/svg-icons/action/visibility";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -61,6 +63,8 @@ class CostCodingTreeAddEdit extends Component {
 
       this.props.history.push("/DashBoard/" + this.state.projectId);
     }
+
+    this.printChild = this.printChild.bind(this);
   }
 
   componentDidMount() {
@@ -76,11 +80,12 @@ class CostCodingTreeAddEdit extends Component {
       }
     }
   }
+
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.projectId !== this.props.projectId) {
 
-      dataservice.GetDataGrid("GetCostCodingTreeByProjectId?projectId=" + nextProps.projectId).then(result => {
+      dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + nextProps.projectId).then(result => {
         this.setState({
           trees: result
         });
@@ -101,32 +106,12 @@ class CostCodingTreeAddEdit extends Component {
     };
     this.props.actions.documentForAdding();
 
-    dataservice.GetDataGrid("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId).then(result => {
+    dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + this.state.projectId).then(result => {
       this.setState({
         trees: result,
         document: treeDocument
       });
     });
-  }
-
-  parentCollapsed(rowIndex) {
-    this.setState({
-      rowIndex: rowIndex
-    });
-  }
-
-  viewChild(item) {
-    this.setState({
-      rowIndex: item.id,
-      //drawChilderns: true,
-      //  childerns: item.trees
-    });
-    // setTimeout(() => {
-    //   this.setState({
-    //     drawChilderns: false
-    //   })
-    // }, 2000)
-    console.log(item.trees);
   }
 
   AddDocument(item) {
@@ -146,82 +131,76 @@ class CostCodingTreeAddEdit extends Component {
     });
   }
 
-  openChild(item) {
-    let childerns = [];
-    //let childern =
-  return  item.trees.map(result => {
-      return ( 
-        <div className="epsContent" key={result.id}>
-          <div className="epsTitle">
-            <div className="listTitle">
-              <span className="dropArrow">
-                <i className="dropdown icon" />
-              </span>
-              <span className="accordionTitle">{result.codeTreeTitle}</span>
-            </div>
-            <div className="Project__num">
-              <div className="eps__actions">
-                <a className="editIcon" onClick={() => this.EditDocument(result)}>
-                  <img src={Edit} alt="Edit" />
-                </a>
-                <a className="plusIcon" onClick={() => this.AddDocument(result)}>
-                  <img src={Plus} alt="Add" />
-                </a>
-                <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
-                  <img src={Delete} alt="Delete" />
-                </a>
+  search(id, trees, updateTrees, parentId) {
+
+    trees.map(item => {
+      if (id == item.id) {
+        item.collapse = !item.collapse;
+      } else {
+        //item.collapse = item.id != parentId ? true : item.collapse; 
+      }
+      updateTrees.push(item);
+      if (item.trees.length > 0) {
+        this.search(id, item.trees, updateTrees, parentId);
+      }
+    });
+    return updateTrees;
+  };
+
+  printChild(children) {
+    return (
+      children.map((item, i) => {
+        return (
+          <Fragment>
+            <div className={"epsTitle" + (item.collapse === false ? ' active' : ' ')} key={item.id} onClick={() => this.viewChild(item)} >
+              <div className="listTitle">
+
+                <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }}>
+                  <i className="dropdown icon" />
+                </span>
+
+                <span className="accordionTitle">{item.codeTreeTitle}</span>
+              </div>
+              <div className="Project__num">
+                <div className="eps__actions">
+                  <a className="editIcon" onClick={() => this.EditDocument(item)}>
+                    <img src={Edit} alt="Edit" />
+                  </a>
+                  <a className="plusIcon" onClick={() => this.AddDocument(item)}>
+                    <img src={Plus} alt="Add" />
+                  </a>
+                  <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
+                    <img
+                      src={Delete}
+                      alt="Delete"
+                    />
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </div> 
-      )
-      //childerns.push(childern);
-    });
-
-    // this.setState({
-    //   childerns: childerns,
-    //   isLoading: false
-    // });
+            <div className="epsContent">
+              {item.trees.length > 0 ? this.printChild(item.trees) : null}
+            </div>
+          </Fragment>
+        )
+      })
+    )
   }
 
-  designParent() {
-    return this.state.trees.map((item, index) => {
-      return (
-        <Fragment>
-          {/* parent */}
-          <div className={this.state.rowIndex === item.id ? "epsTitle active" : "epsTitle"} key={item.id} onClick={() => this.viewChild(item)}>
-            <div className="listTitle">
-              <span className="dropArrow">
-                <i className="dropdown icon" />
-              </span>
-              <span className="accordionTitle">{item.codeTreeTitle}</span>
-            </div>
-            <div className="Project__num">
-              {/* for count Project */}
-              {/* <p>
-                        <span className="project__num--span">19</span>
-                        Project
-                    </p> */}
-              <div className="eps__actions">
-                <a className="editIcon" onClick={() => this.EditDocument(item)}>
-                  <img src={Edit} alt="Edit" />
-                </a>
-                <a className="plusIcon" onClick={() => this.AddDocument(item)}>
-                  <img src={Plus} alt="Add" />
-                </a>
-                <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
-                  <img
-                    src={Delete}
-                    alt="Delete"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-          {this.state.rowIndex === item.id ? this.openChild(item) : null}
-        </Fragment>
-      );
+  viewChild(item) {
+
+    this.setState({
+      isLoading: true
     });
+
+    let trees = [...this.state.trees];
+
+    this.search(item.id, trees, [], item.parentId);
+    this.setState({
+      trees,
+      isLoading: false
+    });
+    console.log(item.trees);
   }
 
   closePopUp() {
@@ -252,31 +231,28 @@ class CostCodingTreeAddEdit extends Component {
     saveDocument.parentId = this.state.parentId;
     saveDocument.projectId = this.state.projectId;
 
-    dataservice
-      .addObject("AddcostCodeTree", saveDocument)
-      .then(result => {
-        toast.success(Resources["operationSuccess"][currentLanguage]);
+    dataservice.addObject("AddcostCodeTree", saveDocument).then(result => {
+      toast.success(Resources["operationSuccess"][currentLanguage]);
 
-        let treeDocument = {
-          codeTreeTitle: "",
-          budgetThisPeriod: "",
-          budgetAtComplete: "",
-          originalBudget: "",
-          costForcast: "",
-          parentId: ""
-        };
+      let treeDocument = {
+        codeTreeTitle: "",
+        budgetThisPeriod: "",
+        budgetAtComplete: "",
+        originalBudget: "",
+        costForcast: "",
+        parentId: ""
+      };
 
-        this.setState({
-          viewPopUp: false,
-          document: treeDocument,
-          isLoading: false
-        });
-      })
-      .catch(ex => {
-        this.setState({ viewPopUp: false });
-
-        toast.error(Resources["failError"][currentLanguage]);
+      this.setState({
+        viewPopUp: false,
+        document: treeDocument,
+        isLoading: false
       });
+    }).catch(ex => {
+      this.setState({ viewPopUp: false });
+
+      toast.error(Resources["failError"][currentLanguage]);
+    });
   }
 
   editTree() {
@@ -335,7 +311,6 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   render() {
-    //let drawChilderns = 
 
     return (
       <div className="mainContainer">
@@ -345,45 +320,16 @@ class CostCodingTreeAddEdit extends Component {
               {Resources.costCodingTree[currentLanguage]}
             </h2>
             <div className="SubmittalHeadClose">
-              <svg
-                width="56px"
-                height="56px"
-                viewBox="0 0 56 56"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-              >
-                <g
-                  id="Symbols"
-                  stroke="none"
-                  strokeWidth="1"
-                  fill="none"
-                  fillRule="evenodd"
-                >
-                  <g
-                    id="Components/Sections/Doc-page/Title/Base"
-                    transform="translate(-1286.000000, -24.000000)"
-                  >
+              <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"              >
+                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"                >
+                  <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)"                  >
                     <g id="Group-2">
-                      <g
-                        id="Action-icons/Close/Circulated/56px/Light-grey_Normal"
-                        transform="translate(1286.000000, 24.000000)"
-                      >
+                      <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)"                      >
                         <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
                           <g id="Group">
-                            <circle
-                              id="Oval"
-                              fill="#E9ECF0"
-                              cx="28"
-                              cy="28"
-                              r="28"
-                            />
-                            <path
-                              d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z"
-                              id="Combined-Shape"
-                              fill="#858D9E"
-                              fillRule="nonzero"
-                            />
+                            <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28" />
+                            <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z"
+                              id="Combined-Shape" fill="#858D9E" fillRule="nonzero" />
                           </g>
                         </g>
                       </g>
@@ -393,36 +339,41 @@ class CostCodingTreeAddEdit extends Component {
               </svg>
             </div>
           </div>
-          <div className="Eps__list">{this.designParent()}
 
-          </div>
-          {/* {this.state.drawChilderns === false ?
-            this.state.childerns.map(result =>
-              <div className="epsContent" key={result.id}>
-                <div className="epsTitle">
-                  <div className="listTitle">
-                    <span className="dropArrow">
-                      <i className="dropdown icon" />
-                    </span>
-                    <span className="accordionTitle">{result.codeTreeTitle}</span>
-                  </div>
-                  <div className="Project__num">
-                    <div className="eps__actions">
-                      <a className="editIcon" onClick={() => this.EditDocument(result)}>
-                        <img src={Edit} alt="Edit" />
-                      </a>
-                      <a className="plusIcon" onClick={() => this.AddDocument(result)}>
-                        <img src={Plus} alt="Add" />
-                      </a>
-                      <a className="deleteIcon" onClick={() => this.DeleteDocument(result.id)}>
-                        <img src={Delete} alt="Delete" />
-                      </a>
+          <div className="Eps__list">
+            {
+              this.state.trees.map((item, i) => {
+                return (
+                  <Fragment>
+                    <div className="epsTitle active" key={item.id}>
+                      <div className="listTitle">
+                        <span className="dropArrow">
+                          <i className="dropdown icon" />
+                        </span>
+                        <span className="accordionTitle">{item.codeTreeTitle}</span>
+                      </div>
+                      <div className="Project__num">
+                        <div className="eps__actions">
+                          <a className="editIcon" onClick={() => this.EditDocument(item)}>
+                            <img src={Edit} alt="Edit" />
+                          </a>
+                          <a className="plusIcon" onClick={() => this.AddDocument(item)}>
+                            <img src={Plus} alt="Add" />
+                          </a>
+                          <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
+                            <img src={Delete} alt="Delete" />
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            ) : <LoadingSection />
-          } */}
+                    <div className="epsContent">
+                      {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                    </div>
+                  </Fragment>
+                )
+              })
+            }
+          </div>
         </div>
         {this.state.viewPopUp ? (
           <Fragment>

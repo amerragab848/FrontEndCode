@@ -9,7 +9,7 @@ import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
 import { withRouter } from "react-router-dom";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import Export from "../../Componants/OptionsPanels/Export";
+import Export from "../OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const dateFormate = ({ value }) => {

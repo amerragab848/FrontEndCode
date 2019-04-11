@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Api from "../../../api";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
-import Export from "../../../Componants/OptionsPanels/Export";
+import Export from "../../OptionsPanels/Export";
 import "../../../Styles/css/semantic.min.css";
 import "../../../Styles/scss/en-us/layout.css";
 import GridSetup from "../../../Pages/Communication/GridSetup";

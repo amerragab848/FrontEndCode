@@ -87,7 +87,6 @@ export function deleteFile(urlDelete, file) {
 export function uploadFile(BlobUpload, formData, header) {
     return (dispatch, getState) => {
         return Api.postFile(BlobUpload, formData, header).then(resp => {
-            //console.log('in uploadFile',resp); 
             dispatch({
                 type: types.File_Upload,
                 file: resp[0]
