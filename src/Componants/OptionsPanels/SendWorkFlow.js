@@ -1,19 +1,19 @@
-import React, { Component } from './node_modules/react'
+import React, { Component } from 'react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
 
 import Resources from '../../resources.json';
 
-import { connect } from './node_modules/react-redux';
+import { connect } from 'react-redux';
 import {
     bindActionCreators
-} from './node_modules/redux';
+} from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('./node_modules/lodash')
+const _ = require('lodash')
 
 class SendWorkFlow extends Component {
     constructor(props) {
@@ -135,8 +135,7 @@ function mapStateToProps(state) {
 
     return {
         workFlowCycles: state.communication.workFlowCycles,
-        hasWorkflow: state.communication.hasWorkflow,
-        showModal:  state.communication.showModal
+        hasWorkflow: state.communication.hasWorkflow
     }
 }
 

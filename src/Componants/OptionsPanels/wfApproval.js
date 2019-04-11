@@ -1,10 +1,10 @@
-import React, { Component } from "./node_modules/react";
-import { Formik, Form } from "./node_modules/formik";
+import React, { Component } from "react";
+import { Formik, Form } from "formik";
 import Api from "../../api";
 import eyeShow from "../../Styles/images/eyepw.svg";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
-import { toast } from "./node_modules/react-toastify";
+import { toast } from "react-toastify";
 import dataservice from "../../Dataservice";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

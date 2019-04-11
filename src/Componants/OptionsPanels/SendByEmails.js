@@ -1,16 +1,17 @@
-import React, { Component } from "./node_modules/react";
+import React, { Component } from "react";
 import Api from "../../api";
 import Dropdown from "./DropdownMelcous";
+import "react-table/react-table.css";
 import Resources from "../../resources.json";
 
-import { connect } from './node_modules/react-redux';
+import { connect } from 'react-redux';
 import {
-  bindActionCreators
-} from './node_modules/redux';
+    bindActionCreators
+} from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class SendByEmails extends Component {
   constructor(props) {
@@ -18,8 +19,8 @@ class SendByEmails extends Component {
     this.state = {
       emailObj: {
         projectId: this.props.projectId,
-        docType: this.props.docTypeId,
-        docId: this.props.docId,
+        docType:  this.props.docTypeId,
+        docId:  this.props.docId,
         priorityId: null,
         submittedFor: null,
         toCompanyId: null,
@@ -71,7 +72,7 @@ class SendByEmails extends Component {
       });
     });
 
-    Api.get("GetProjectProjectsCompaniesForList?projectId=" + this.state.emailObj.projectId).then(result => {
+    Api.get( "GetProjectProjectsCompaniesForList?projectId=" +  this.state.emailObj.projectId ).then(result => {
       var data = [];
 
       result.map(item => {
@@ -87,7 +88,7 @@ class SendByEmails extends Component {
       });
     });
 
-    Api.get("GetProjectProjectsCompaniesForList?projectId=" + this.state.emailObj.projectId).then(result => {
+    Api.get("GetProjectProjectsCompaniesForList?projectId=" +this.state.emailObj.projectId).then(result => {
       var data = [];
 
       result.map(item => {
@@ -208,46 +209,46 @@ class SendByEmails extends Component {
 
   SendEmailHandler() {
     var emailObj = { ...this.state.emailObj };
-
-    this.props.actions.SendByEmail("SendByEmail", emailObj);
+      
+    this.props.actions.SendByEmail("SendByEmail",emailObj);
 
   }
 
   render() {
     return (
       <div className="dropWrapper">
-
+ 
         <Dropdown
           name="color"
           title="priority"
-          data={this.state.Priorities}
+          data={this.state.Priorities} 
           handleChange={event => this.PrioritiesHanleChange(event)}
           index="priority"
         />
         <Dropdown
           title="submittedFor"
-          data={this.state.Submitted}
+          data={this.state.Submitted} 
           handleChange={this.SubmittedHandelChange}
           index="submittedFor"
         />
 
         <Dropdown
           title="toCompany"
-          data={this.state.ToCompanies}
+          data={this.state.ToCompanies} 
           handleChange={event => this.ToCompanyHandleChangeHandler(event)}
           index="toCompany"
         />
 
         <Dropdown
           title="attention"
-          data={this.state.ToContacts}
+          data={this.state.ToContacts} 
           handleChange={event => this.AttentionHandleChange(event)}
           index="attention"
         />
 
         <Dropdown
           title="ccCompany"
-          data={this.state.CCCompanies}
+          data={this.state.CCCompanies} 
           handleChange={event => this.CCCompanyHandleChange(event)}
           index="ccCompany"
         />
@@ -255,7 +256,7 @@ class SendByEmails extends Component {
         <div className="fullWidthWrapper">
           <Dropdown
             title="ccContact"
-            data={this.state.CCContact}
+            data={this.state.CCContact} 
             handleChange={event => this.CCContactHandleChange(event)}
             index="ccContact"
             isMulti="true"
@@ -276,17 +277,18 @@ class SendByEmails extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    showModal: state.communication.showModal
-  }
+    
+    return {
+      showModal: false
+    }
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(communicationActions, dispatch)
-  };
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
 }
-export default connect(
+export default  connect(
   mapStateToProps,
   mapDispatchToProps
 )(SendByEmails);

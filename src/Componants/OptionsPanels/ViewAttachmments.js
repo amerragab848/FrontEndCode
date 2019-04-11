@@ -1,5 +1,5 @@
-import React, { Component } from './node_modules/react'
-import './node_modules/react-table/react-table.css'
+import React, { Component } from 'react'
+import 'react-table/react-table.css'
 import pdf from '../../Styles/images/pdfAttache.png'
 import xlsx from '../../Styles/images/attatcheXLS.png'
 import doc from '../../Styles/images/attatcheDOC.png'
@@ -8,11 +8,11 @@ import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
 import Api from '../../api';
 import Resources from '../../resources.json';
-import { connect } from './node_modules/react-redux';
+import { connect } from 'react-redux';
 import {
     bindActionCreators
-} from './node_modules/redux';
-import moment from "./node_modules/moment";
+} from 'redux';
+import moment from "moment";
 
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';

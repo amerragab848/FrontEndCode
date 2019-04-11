@@ -1,14 +1,14 @@
-import React, { Component } from './node_modules/react'
-import Dropzone from './node_modules/react-dropzone';
-import classNames from './node_modules/classnames'
+import React, { Component } from 'react'
+import Dropzone from 'react-dropzone';
+import classNames from 'classnames'
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
-import './node_modules/react-table/react-table.css'
+import 'react-table/react-table.css'
  
-import { connect } from './node_modules/react-redux';
+import { connect } from 'react-redux';
 import {
     bindActionCreators
-} from './node_modules/redux';
+} from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
