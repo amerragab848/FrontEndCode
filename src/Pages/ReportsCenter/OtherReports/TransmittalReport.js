@@ -29,7 +29,7 @@ class TransmittalReport extends Component {
             status: true
         }
 
-        if (!Config.IsAllow(1260) || !Config.IsAllow(1263) || !Config.IsAllow(1264)) {
+        if (!Config.IsAllow(4018) ) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"

@@ -94,7 +94,7 @@ class WFUsageReport extends Component {
 
         }
 
-        if (!Config.IsAllow(1260) || !Config.IsAllow(1263) || !Config.IsAllow(1264)) {
+        if (!Config.IsAllow(3749) ) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"

@@ -25,7 +25,7 @@ class WFActivity extends Component {
             rows: []
         }
 
-        if (!Config.IsAllow(1260) || !Config.IsAllow(1263) || !Config.IsAllow(1264)) {
+        if (!Config.IsAllow(4017) ) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
