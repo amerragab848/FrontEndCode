@@ -1,15 +1,13 @@
 import React, { Component, Fragment } from "react";
-//import dataservice from "../../Dataservice";
+import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-//import Config from "../../Services/Config.js";
+import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
 import Tree from "../../Componants/OptionsPanels/Tree";
-//import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-//import { stat } from "fs";
-//let id = ''
+import Api from '../../api'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class rptCostCodingTree extends Component {
@@ -20,22 +18,38 @@ class rptCostCodingTree extends Component {
       projectId: '',
       NodeData: {}
     }
-  } 
+  }
 
-  componentWillReceiveProps(props) { 
+
+  componentWillReceiveProps(props) {
+    console.log('props', props.projectId)
     this.setState({
       projectId: props.projectId
     })
   }
 
   componentWillMount = () => {
-    this.props.actions.documentForAdding(); 
-  } 
 
-  render() { 
+  }
+
+
+  GetNodeData = (id) => {
+    Api.get('GetSummaryOfCostCoding?id=' + id + '').then(
+      res => {
+        this.setState({
+          NodeData: res
+        })
+      }
+    )
+  }
+
+  render() {
+
+
     return (
       <div className="mainContainer">
-        <div className="documents-stepper noTabs__document">
+    
+       <div className="documents-stepper noTabs__document">
           <div className="submittalHead">
             <h2 className="zero">  {Resources.costCodingTreeReport[currentLanguage]} </h2>
             <div className="SubmittalHeadClose">
@@ -57,9 +71,55 @@ class rptCostCodingTree extends Component {
                 </g>
               </svg>
             </div>
+
           </div>
-          <Tree projectId={this.state.projectId} IsNodeModeData={true} />
+          <Tree projectId={this.state.projectId} GetNodeData={this.GetNodeData} />
         </div>
+
+        <div className="doc-pre-cycle">
+          <div className='document-fields'>
+            <table className="ui table">
+              <tbody>
+
+                <tr>
+                  <td>{Resources['projectName'][currentLanguage]}</td>
+                  <td>{this.state.NodeData.projectName}</td>
+                </tr>
+
+                <tr>
+                  <td>{Resources['costCoding'][currentLanguage]}</td>
+                  <td>{this.state.NodeData.costCodingTitle}</td>
+                </tr>
+
+                <tr>
+                  <td>{Resources['totalCost'][currentLanguage]}</td>
+                  <td>{this.state.NodeData.totalCostCode}</td>
+                </tr>
+
+                <tr>
+                  <td>{Resources['invoicesTotal'][currentLanguage]}</td>
+                  <td>{this.state.NodeData.invoicesTotal}</td>
+                </tr>
+
+                <tr>
+                  <td>{Resources['paymentTotal'][currentLanguage]}</td>
+                  <td>{this.state.NodeData.paymentTotal}</td>
+                </tr>
+                <tr>
+                  <td>{Resources['materialRequestcount'][currentLanguage]}</td>
+                  <td>{this.state.NodeData.totalMaterialRelease}</td>
+                </tr>
+                <tr>
+                  <td>{Resources['expensesTotal'][currentLanguage]}</td>
+                  <td>{this.state.NodeData.expenses}</td>
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     )
   }
