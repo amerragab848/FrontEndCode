@@ -6,7 +6,7 @@ import initialState from '../initialState';
 export default function (state = initialState.app.communication, action) {
 
     switch (action.type) {
-        
+
         case types.ViewDocsAttachment:
             state.attachDocuments = action.attachDocuments
             return {
@@ -26,7 +26,7 @@ export default function (state = initialState.app.communication, action) {
         case types.Document_Adding:
             return {
                 ...state,
-                document:{},
+                document: {},
                 showLeftMenu: true,
                 showSelectProject: false,
                 changeStatus: false,
@@ -49,23 +49,25 @@ export default function (state = initialState.app.communication, action) {
                 isLoadingFiles: true
             };
 
-            case types.add_item:
+        case types.add_item:
+            let docId = state.docId == 0 ? action.docId : state.docId;
             return {
                 ...state,
-                items: [...state.items, ...action.item] 
+                docId,
+                items: [...state.items, ...action.item]
             };
 
-            case types.delete_item:
+        case types.delete_item:
             let originalData = state.items;
             action.data.forEach(item => {
-               let getIndex = originalData.findIndex(x=>x.id === item.id);
-              
-               originalData.splice(getIndex,1);
+                let getIndex = originalData.findIndex(x => x.id === item.id);
+
+                originalData.splice(getIndex, 1);
 
             });
             return {
                 ...state,
-                items: [...originalData] 
+                items: [...originalData]
             };
 
         case types.Delete_File:
@@ -186,10 +188,10 @@ export default function (state = initialState.app.communication, action) {
 
                 })
             });
-            
+
             state.attendees = table
             return {
-                ...state 
+                ...state
             };
 
         case types.Get_Topics_Table:
@@ -214,16 +216,16 @@ export default function (state = initialState.app.communication, action) {
                 ...state
             };
 
-            case types.GetDocumentCycle:
-       
+        case types.GetDocumentCycle:
+
             state.documentCycle = action.data
             return {
-                ...state 
+                ...state
             };
 
         default:
             return {
                 ...state
-            }; 
+            };
     }
 }

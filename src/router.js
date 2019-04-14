@@ -15,10 +15,10 @@ import ScheduleAlertsSummaryDetails from "./Componants/DashBoardDetails/Schedule
 import TimeSheetDetails from "./Componants/DashBoardDetails/TimeSheetDetails";
 import DocApprovalDetails from "./Componants/DashBoardDetails/DocApprovalDetails";
 import PendingExpensesDetails from "./Componants/DashBoardDetails/PendingExpensesDetails";
-import CommonLog from "./Pages/Communication/CommonLog"; 
+import CommonLog from "./Pages/Communication/CommonLog";
 import PrivacySetting from '../src/Componants/User/PrivacySetting';
 import ProfileSetting from "../src/Componants/User/index";
-import TimeSheetWorkFlow from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow"; 
+import TimeSheetWorkFlow from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
 import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
 import Companies from './Componants/GeneralSetting/Companies/Index';
 import AddEditCompany from './Componants/GeneralSetting/Companies/AddEditCompany';
@@ -44,7 +44,7 @@ import ExpensesWorkFlowLog from './Componants/GeneralSetting/Project/ExpensesWor
 import ExpensesWorkFlowAddEdit from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
 import RfiAddEdit from "./Pages/Communication/RfiAddEdit";
-import phoneAddEdit from './Pages/Communication/phoneAddEdit'; 
+import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 import ProjectSetup from './Pages/ProjectSetup/ProjectSetup'
 import reportsAddEdit from './Pages/Communication/reportsAddEdit';
@@ -54,13 +54,13 @@ import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 import meetingMinutesAddEdit from "../src/Pages/Communication/MeetingMinutesAddEdit";
 import TaskGroupsAddEdit from './Pages/ProjectSetup/TaskGroupsAddEdit';
 import InternalMemoAddEdit from "../src/Pages/Communication/InternalMemoAddEdit";
-import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks"; 
-import ActionByAlerts  from './Pages/ProjectSetup/ActionByAlerts';
-import meetingAgendaAddEdit  from '../src/Pages/Communication/meetingAgendaAddEdit'; 
+import ProjectTasks from "../src/Pages/TimeManagement/ProjectTasks";
+import ActionByAlerts from './Pages/ProjectSetup/ActionByAlerts';
+import meetingAgendaAddEdit from '../src/Pages/Communication/meetingAgendaAddEdit';
 import inspectionRequestAddEdit from "./Pages/QualityControl/inspectionRequestAddEdit";
 import materialInspectionRequestAddEdit from "./Pages/QualityControl/materialInspectionRequestAddEdit";
 import ProjectTaskAddEdit from "./Pages/TimeManagement/ProjectTaskAddEdit";
-import projectDistributionListAddEdit  from './Pages/ProjectSetup/DistributionListAddEdit';
+import projectDistributionListAddEdit from './Pages/ProjectSetup/DistributionListAddEdit';
 import NCRAddEdit from "./Pages/QualityControl/NCRAddEdit";
 import clientSelectionAddEdit from "./Pages/TechnicalOffice/clientSelectionAddEdit";
 import clientModificationAddEdit from "./Pages/TechnicalOffice/clientModificationAddEdit";
@@ -70,13 +70,14 @@ import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
-import projectWorkFlowAddEdit  from './Pages/ProjectSetup/projectWorkFlowAddEdit';
-import AccountsAlerts  from './Pages/ProjectSetup/AccountsAlerts';
+import projectWorkFlowAddEdit from './Pages/ProjectSetup/projectWorkFlowAddEdit';
+import AccountsAlerts from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
-
-
-
+ 
+import RequestPaymentsAddEdit from "./Pages/Contracts/requestPaymentsAddEdit";
+import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
+ 
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
@@ -85,13 +86,22 @@ import projectIssuesAddEdit from "./Pages/Contracts/projectIssuesAddEdit";
 import qsAddEdit from "./Pages/Contracts/qsAddEdit";
 import EpsPermission from "./Pages/Eps/EpsPermission";
 import projectsAddEdit from "./Pages/Eps/Projects/projectsAddEdit";
+import Projects from "./Pages/Eps/Projects/Index";
+import baseAddEdit from "./Pages/estimation/baseAddEdit";
+import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
+import Itemize from "./Pages/Contracts/Itemize";
+import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
+
+
  
+
 let setupRoutes = ProjectSetupRoutes.map((item) => {
-    let path = item.moduleId === "ProjectSetup" ?  "/" + item.route + "/:projectId" :"/:document/:projectId";
+    let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
-    return <Route path={path} component={compoenet}/>})
-    
-    
+    return <Route path={path} component={compoenet} />
+})
+
+
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
     , <Route path="/LettersAddEdit" component={LettersAddEdit} />
@@ -149,7 +159,7 @@ let originalRoutes = [
     , <Route path="/RfiAddEdit" component={RfiAddEdit} />
     , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
     , <Route path="/phoneAddEdit" component={phoneAddEdit} />
-    , <Route path="/reportsAddEdit" component={reportsAddEdit}/>
+    , <Route path="/reportsAddEdit" component={reportsAddEdit} />
     , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
     , <Route path="/DashboardProject" component={DashboardProject} />
     , <Route path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
@@ -170,30 +180,37 @@ let originalRoutes = [
     , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
-    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
     , <Route path="/AccountsAlerts" component={AccountsAlerts} />
     , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
     , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
     , <Route path="/EpsPermission" component={EpsPermission} />
-    
-
-    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
+    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
+    // , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
+    // , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
+    , <Route path="/Projects" component={Projects} />
+    , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
+    , <Route path="/EpsPermission" component={EpsPermission} /> 
     , <Route path="/pcoAddEdit" component={pcoAddEdit} />
     , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
     , <Route path="/riskAddEdit" component={riskAddEdit} />
     , <Route path="/variationRequestAddEdit" component={variationRequestAddEdit} />
     , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
     , <Route path="/qsAddEdit" component={qsAddEdit} />
+    , <Route path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />
     , <Route path="/projectsAddEdit" component={projectsAddEdit} />
+    , <Route path="/baseAddEdit" component={baseAddEdit} />
+    , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
+    , <Route path="/Itemize" component={Itemize} />
+    , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
 
     <Switch >
-        {originalRoutes.map((item) =>  
+        {originalRoutes.map((item) =>
             item
-        )} 
+        )}
         <Route path="/:document/:projectId" component={CommonLog} />
     </Switch>
-); 
+);
 export default routes;

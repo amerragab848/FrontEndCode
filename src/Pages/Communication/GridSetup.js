@@ -326,15 +326,27 @@ class GridSetup extends Component {
                 <button
                   className="defaultBtn btn smallBtn"
                   onClick={this.clickHandlerDeleteRows}
-                >
-                  DELETE
+                >{this.props.NoShowDeletedBar === undefined ?
+                  'DELETE' : 'Currency'}
                 </button>
                 {this.props.assign ? <button
                   className="primaryBtn-1 btn smallBtn"
-                  onClick={() => this.props.assignFn()}
-                >
+                  onClick={() => this.props.assignFn()} >
                   <i className="fa fa-retweet"></i>
                 </button> : null}
+
+                {this.props.Panels !== undefined ?
+                  <Fragment>
+                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTaskGroups'][currentLanguage]} >
+                      <i class="fa fa-users" aria-hidden="true"></i>
+                    </button>
+
+                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTask'][currentLanguage]} >
+                      <i class="fa fa-tasks" aria-hidden="true"></i>
+                    </button>
+                  </Fragment>
+                  : null}
+
               </div>
             </div>
           ) : null}
@@ -344,7 +356,7 @@ class GridSetup extends Component {
 
 
     return (
-      <Fragment>
+      <div className="grid-container">
         <div id="top__scroll">
           <div id="empty__div--scroll">
           </div>
@@ -410,7 +422,7 @@ class GridSetup extends Component {
             />
           </DraggableContainer >
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
