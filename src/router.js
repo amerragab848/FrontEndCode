@@ -92,6 +92,10 @@ import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
 import Itemize from "./Pages/Contracts/Itemize";
 import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
 import rptCostCodingTree from './Pages/CostControl/rptCostCodingTree';
+import WFActivity from './Pages/ReportsCenter/OtherReports/WFActivity';
+import TransmittalReport from './Pages/ReportsCenter/OtherReports/TransmittalReport';
+import WFUsageReport from './Pages/ReportsCenter/OtherReports/WFUsageReport';
+import FollowUpUsageReport from './Pages/ReportsCenter/OtherReports/FollowUpUsageReport';
 
  
 
@@ -203,6 +207,11 @@ let originalRoutes = [
     , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
+    , <Route path="/WFActivity" component={WFActivity} />
+    , <Route path="/WFUsageReport" component={WFUsageReport} />
+    , <Route path="/TransmittalReport" component={TransmittalReport} />
+    , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />
+
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
