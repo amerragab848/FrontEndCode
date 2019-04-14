@@ -27,8 +27,6 @@ class Tree extends Component {
             parentId: "",
             isLoading: false,
             ApiDrawTree: 'GetCostTreeByProjectId?projectId=',
-            IsNodeModeData: this.props.IsNodeModeData,
-            NodeData: {},
         };
         this.printChild = this.printChild.bind(this);
     }
@@ -55,17 +53,7 @@ class Tree extends Component {
         });
     }
 
-    GetNodeData = (id) => {
-        if (this.state.IsNodeModeData) {
-            Api.get('GetSummaryOfCostCoding?id=' + id + '').then(
-                res => {
-                    this.setState({
-                        NodeData: res
-                    })
-                }
-            )
-        }
-    }
+
     search(id, trees, updateTrees, parentId) {
 
         trees.map(item => {
@@ -80,7 +68,8 @@ class Tree extends Component {
             }
         });
         return updateTrees;
-    };
+    }
+
 
     printChild(children) {
         return (
@@ -94,7 +83,7 @@ class Tree extends Component {
                                     <i className="dropdown icon" />
                                 </span>
 
-                                <span className="accordionTitle"   onClick={() => this.GetNodeData(item.id)}>{item.codeTreeTitle}</span>
+                                <span className="accordionTitle"   onClick={() => this.props.GetNodeData(item.id)}>{item.codeTreeTitle}</span>
                             </div>
                         </div>
                         <div className="epsContent">
@@ -142,51 +131,6 @@ class Tree extends Component {
                     }
                 </div>
 
-                {this.state.IsNodeModeData ?
-                    <div className="doc-pre-cycle">
-                        <div className='document-fields'>
-                            <table className="ui table">
-                                <tbody>
-
-                                    <tr>
-                                        <td>{Resources['projectName'][currentLanguage]}</td>
-                                        <td>{this.state.NodeData.projectName}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>{Resources['costCoding'][currentLanguage]}</td>
-                                        <td>{this.state.NodeData.costCodingTitle}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>{Resources['totalCost'][currentLanguage]}</td>
-                                        <td>{this.state.NodeData.totalCostCode}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>{Resources['invoicesTotal'][currentLanguage]}</td>
-                                        <td>{this.state.NodeData.invoicesTotal}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>{Resources['paymentTotal'][currentLanguage]}</td>
-                                        <td>{this.state.NodeData.paymentTotal}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{Resources['materialRequestcount'][currentLanguage]}</td>
-                                        <td>{this.state.NodeData.totalMaterialRelease}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{Resources['expensesTotal'][currentLanguage]}</td>
-                                        <td>{this.state.NodeData.expenses}</td>
-                                    </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    : null}
             </Fragment>
         )
     }
