@@ -7,7 +7,7 @@ import Config from '../../../Services/Config';
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-
+import CryptoJS from 'crypto-js';
 import moment from "moment";
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -71,7 +71,7 @@ class TransmittalReport extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,formatter: this.subjectLink
             }, {
                 key: "fromCompanyName",
                 name: Resources["fromCompany"][currentLanguage],
@@ -175,6 +175,26 @@ class TransmittalReport extends Component {
     componentWillMount() {
 
     }
+    subjectLink = ({ value, row }) => {
+        let subject = "";
+        if (row) {
+            let obj = {
+                docId: row.id,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+            let doc_view = "/TransmittalAddEdit?id=" + encodedPaylod
+            subject = row.subject;
+            return <a href={doc_view}> {subject} </a>;
+        }
+        return null;
+    };
+
     getGridRows = () => {
         this.setState({ isLoading: true })
         let reportobj = {
@@ -205,7 +225,7 @@ class TransmittalReport extends Component {
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'transmittalReport'} />
             : null;
         return (
-            <div className='mainContainer'>
+            <div className='mainContainer main__fulldash'>
                 <div className="documents-stepper noTabs__document">
                     <div className="submittalHead">
                         <h2 className="zero">{Resources['transmittalReport'][currentLanguage]}</h2>

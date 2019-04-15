@@ -164,8 +164,8 @@ class requestPaymentsAddEdit extends Component {
 
         }
 
-        if (!Config.IsAllow(159) || !Config.IsAllow(158) || !Config.IsAllow(160)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(184) || !Config.IsAllow(187) || !Config.IsAllow(185)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
@@ -431,14 +431,14 @@ class requestPaymentsAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(158)) {
+            if (!Config.IsAllow(187)) {
                 this.setState({ isViewMode: true });
             }
 
-            if (this.state.isApproveMode != true && Config.IsAllow(158)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(158)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(187)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
                     //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(158)) {
+                    if (this.props.document.status !== false && Config.IsAllow(187)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });

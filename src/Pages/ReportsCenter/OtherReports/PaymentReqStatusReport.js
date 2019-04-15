@@ -10,10 +10,13 @@ import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+    let date = value != undefined ? value.split('-')[0] : '';
+    let days = value != undefined ? value.split('-')[0] : '';
+    return value ? (moment(date).format("DD/MM/YYYY") + "-" + days + ' days') : "Pending";
 };
-class WFUsageReport extends Component {
+class PaymentReqStatusReport extends Component {
 
     constructor(props) {
         super(props)
@@ -21,12 +24,27 @@ class WFUsageReport extends Component {
             isLoading: false,
             WFList: [],
             dropDownList: [],
-            selectedWF: { label: Resources.slectWorkFlow[currentLanguage], value: "0" },
+            payment: { label: Resources.months[currentLanguage], value: "0" },
             rows: [],
+            code: 0,
+            months: [
+                { label: "January", value: "January" },
+                { label: "February", value: "February" },
+                { label: "March", value: "March" },
+                { label: "April", value: "April" },
+                { label: "May", value: "May" },
+                { label: "June", value: "June" },
+                { label: "July", value: "July" },
+                { label: "August", value: "August" },
+                { label: "September", value: "September" },
+                { label: "October", value: "October" },
+                { label: "November", value: "November" },
+                { label: "December", value: "December" }
+            ],
             columns: [
                 {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
+                    key: "projectName",
+                    name: Resources["projectName"][currentLanguage],
                     width: 120,
                     draggable: true,
                     sortable: true,
@@ -36,8 +54,8 @@ class WFUsageReport extends Component {
                 }
 
                 , {
-                    key: "weekNo",
-                    name: Resources["weekNumber"][currentLanguage],
+                    key: "contractName",
+                    name: Resources["contractName"][currentLanguage],
                     width: 120,
                     draggable: true,
                     sortable: true,
@@ -45,44 +63,8 @@ class WFUsageReport extends Component {
                     filterable: true,
                     sortDescendingFirst: true
                 }, {
-                    key: "weeklyPending",
-                    name: Resources["weeklyPending"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "weeklyTotal",
-                    name: Resources["weeklyTotal"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "avgDurationWeekly",
-                    name: Resources["avgDurationWeekly"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "avgDuration",
-                    name: Resources["avgDuration"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "totalDocs",
-                    name: Resources["totalDocs"][currentLanguage],
+                    key: "subject",
+                    name: Resources["subject"][currentLanguage],
                     width: 120,
                     draggable: true,
                     sortable: true,
@@ -94,7 +76,7 @@ class WFUsageReport extends Component {
 
         }
 
-        if (!Config.IsAllow(3749) ) {
+        if (!Config.IsAllow(3758)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -103,29 +85,16 @@ class WFUsageReport extends Component {
 
     }
 
-
-
     componentDidMount() {
     }
 
     componentWillMount() {
-        Api.get('GetAllWorkFlowList').then(result => {
-            let list = []
-            result.forEach((element) => {
-                list.push({ label: element.subject, value: element.code })
-            })
-            this.setState({
-                WFList: result,
-                dropDownList: list
-            });
-        }).catch(() => {
-            toast.error('somthing wrong')
-        })
+  
     }
     getGridRows = () => {
-        if (this.state.selectedWF.value != '0') {
+        if (this.state.payment.value != '0') {
             this.setState({ isLoading: true })
-            Api.post('GetWFUsageChilds?code=' + this.state.selectedWF.value).then((res) => {
+            Api.post('GetReqPaymentStatusChilds?code=' + this.state.code + '&date='+this.state.payment.value).then((res) => {
                 this.setState({ rows: res, isLoading: false })
             }).catch(() => {
                 this.setState({ isLoading: false })
@@ -133,16 +102,14 @@ class WFUsageReport extends Component {
         }
 
     }
-    DropdownChange = (event) => {
-        this.setState({ selectedWF: event, isLoading: true })
-        Api.post('GetWFUsageParent?code=' + event.value).then(res => {
-            let docNo = res[0].docNo
-            let duration = res[0].duration
+    handleBlur = () => {
+
+        if (this.state.payment.value != '0' && this.state.code != 0) {
             let columns = [
                 {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 100,
+                    key: "projectName",
+                    name: Resources["projectName"][currentLanguage],
+                    width: 120,
                     draggable: true,
                     sortable: true,
                     resizable: true,
@@ -151,54 +118,18 @@ class WFUsageReport extends Component {
                 }
 
                 , {
-                    key: "weekNo",
-                    name: Resources["weekNumber"][currentLanguage],
-                    width: 100,
+                    key: "contractName",
+                    name: Resources["contractName"][currentLanguage],
+                    width: 120,
                     draggable: true,
                     sortable: true,
                     resizable: true,
                     filterable: true,
                     sortDescendingFirst: true
                 }, {
-                    key: "weeklyPending",
-                    name: Resources["weeklyPending"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "weeklyTotal",
-                    name: Resources["weeklyTotal"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "avgDurationWeekly",
-                    name: Resources["avgDurationWeekly"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "avgDuration",
-                    name: Resources["avgDuration"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "totalDocs",
-                    name: Resources["totalDocs"][currentLanguage],
-                    width: 100,
+                    key: "subject",
+                    name: Resources["subject"][currentLanguage],
+                    width: 120,
                     draggable: true,
                     sortable: true,
                     resizable: true,
@@ -206,31 +137,35 @@ class WFUsageReport extends Component {
                     sortDescendingFirst: true
                 }
             ]
-
-            columns.push(
-                {
-                    key: docNo,
-                    name: docNo,
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                })
-            columns.push({
-                key: duration,
-                name: duration,
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            Api.post('GetReqPaymentStatusParent?code=' + this.state.code + '&date='+this.state.payment.value).then(res => {
+                this.setState({ isLoading: true })
+                let wfLevelDescription = res[0] != null ? res[0].wfLevelDescription : null
+                if (wfLevelDescription != null) {
+                    wfLevelDescription.forEach(element => {
+                        let afterReplace = element.subject.replace(/#|_|&|\s/g, '-')
+                        columns.push(
+                            {
+                                key: afterReplace,
+                                name: afterReplace,
+                                width: 100,
+                                draggable: true,
+                                sortable: true,
+                                resizable: true,
+                                filterable: true,
+                                sortDescendingFirst: true,
+                                formatter: dateFormate
+                            })
+                    })
+                    this.setState({ columns, isLoading: false, rows: [] })
+                }
+                else {
+                    this.setState({ isLoading: false })
+                }
             })
-            this.setState({ columns, isLoading: false, rows: [] })
+        }
 
-        })
+
+
     }
     render() {
         const dataGrid = this.state.isLoading === false ? (
@@ -241,14 +176,14 @@ class WFUsageReport extends Component {
                 columns={this.state.columns}
             />) : <LoadingSection />;
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'workFlowActivity'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'paymentReqStatusReport'} />
             : null;
         return (
 
             <div className='mainContainer main__fulldash'>
                 <div className="documents-stepper noTabs__document">
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['workFlowUsageReport'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['paymentReqStatusReport'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -274,14 +209,29 @@ class WFUsageReport extends Component {
                                     {btnExport}
                                 </div>
                                 <div className="proForm datepickerContainer">
-                                    <Dropdown className='fullWidthWrapper'
-                                        title="workFlow"
-                                        data={this.state.dropDownList}
-                                        selectedValue={this.state.selectedWF}
-                                        handleChange={event => this.DropdownChange(event)}
-                                        name="workFlows"
-                                        index="workFlows"
-                                    />
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown
+                                            title="workFlow"
+                                            data={this.state.months}
+                                            selectedValue={this.state.payment}
+                                            handleChange={event => { this.setState({ payment: event }); }}
+                                            onBlur={this.handleBlur}
+                                            name="workFlows"
+                                            index="workFlows"
+                                        />
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.code[currentLanguage]}</label>
+                                        <div className="ui input inputDev"  >
+                                            <input type="text" className="form-control" id="code"
+                                                defaultValue={this.state.code}
+                                                name="code"
+                                                onChange={event => this.setState({ code: event.target.value })}
+                                                onBlur={() => this.handleBlur()}
+                                                placeholder={Resources.code[currentLanguage]}
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="fullWidthWrapper ">
                                         <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
                                     </div>
@@ -304,4 +254,4 @@ class WFUsageReport extends Component {
 }
 
 
-export default WFUsageReport
+export default PaymentReqStatusReport

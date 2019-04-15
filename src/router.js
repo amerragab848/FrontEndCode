@@ -92,10 +92,12 @@ import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
 import Itemize from "./Pages/Contracts/Itemize";
 import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
 import rptCostCodingTree from './Pages/CostControl/rptCostCodingTree';
-import WFActivity from './Pages/ReportsCenter/OtherReports/WFActivity';
+import WFActivityReport from './Pages/ReportsCenter/OtherReports/WFActivityReport';
 import TransmittalReport from './Pages/ReportsCenter/OtherReports/TransmittalReport';
 import WFUsageReport from './Pages/ReportsCenter/OtherReports/WFUsageReport';
 import FollowUpUsageReport from './Pages/ReportsCenter/OtherReports/FollowUpUsageReport';
+import WFDistributionAccountReport from './Pages/ReportsCenter/OtherReports/WFDistributionAccountReport';
+import PaymentReqStatusReport from './Pages/ReportsCenter/OtherReports/PaymentReqStatusReport';
 
  
 
@@ -207,10 +209,12 @@ let originalRoutes = [
     , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
-    , <Route path="/WFActivity" component={WFActivity} />
+    , <Route path="/WFActivityReport" component={WFActivityReport} />
     , <Route path="/WFUsageReport" component={WFUsageReport} />
     , <Route path="/TransmittalReport" component={TransmittalReport} />
     , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />
+    , <Route path="/WFDistributionAccountReport" component={WFDistributionAccountReport} />
+    , <Route path="/PaymentReqStatusReport" component={PaymentReqStatusReport} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

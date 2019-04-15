@@ -7,25 +7,23 @@ import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
-import moment from "moment";
+import dataservice from "../../../Dataservice";
+import CryptoJS from 'crypto-js';
+import SkyLight from 'react-skylight';
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-class WFActivity extends Component {
-
+class WFDistributionAccountReport extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            employeesList: [],
             dropDownList: [],
-            selectedEmployee: { label: Resources.selectEmployee[currentLanguage], value: "0" },
+            selectedContact: { label: Resources.selectContact[currentLanguage], value: "0" },
+            selectedContact_level:{ label: Resources.selectContact[currentLanguage], value: "0" },
             rows: []
         }
 
-        if (!Config.IsAllow(4017) ) {
+        if (!Config.IsAllow(3720)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -33,26 +31,6 @@ class WFActivity extends Component {
         }
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["levelNo"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
-
-            , {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
                 key: "subject",
                 name: Resources["subject"][currentLanguage],
                 width: 120,
@@ -60,10 +38,11 @@ class WFActivity extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: this.subjectLink
             }, {
-                key: "docDurationDays",
-                name: Resources["docDurationDays"][currentLanguage],
+                key: "description",
+                name: Resources["description"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
@@ -71,8 +50,8 @@ class WFActivity extends Component {
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "docTypeName",
-                name: Resources["docType"][currentLanguage],
+                key: "type",
+                name: Resources["type"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
@@ -80,99 +59,126 @@ class WFActivity extends Component {
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "previousLevelApprovalDate",
-                name: Resources["previousLevelApprovalDate"][currentLanguage],
+                key: "projectName",
+                name: Resources["projectName"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "userApprovalDate",
-                name: Resources["userApprovalDate"][currentLanguage],
+                key: "levelCount",
+                name: Resources["levelNo"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: dateFormate
-            }, {
-                key: "approvalStatusName",
-                name: Resources["approvalStatusName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "userDurationDays",
-                name: Resources["userDurationDays"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ];
-
     }
 
-
-
-    componentDidMount() {
-    }
 
     componentWillMount() {
-        Api.get('GetAllContactsWithAccount').then(result => {
-            let list = []
-            result.forEach((element) => {
-                list.push({ label: element.contactName, value: element.id })
-            })
+        dataservice.GetDataList('GetContactsHasAccountsWithoutCompId', 'contactName', 'id').then(result => {
             this.setState({
-                employeesList: result,
-                dropDownList: list
+                dropDownList: result
             });
         }).catch(() => {
             toast.error('somthing wrong')
         })
     }
     getGridRows = () => {
-        if (this.state.selectedEmployee.value != '0') {
-            this.state.employeesList.forEach(employee => {
-                if (employee.id == this.state.selectedEmployee.value) {
-                    this.setState({ isLoading: true })
-                    Api.get('GetWorkFlowActivity?accountId=' + employee.accountId).then((res) => {
-                        this.setState({ rows: res, isLoading: false })
-                    }).catch(() => {
-                        this.setState({ isLoading: false })
-                    })
-                }
-            });
-
+        if (this.state.selectedContact.value != '0') {
+            this.setState({ isLoading: true })
+            Api.get('GetContactsWorkFlowDist?contactId=' + this.state.selectedContact.value).then((res) => {
+                this.setState({ rows: res, isLoading: false })
+            }).catch(() => {
+                this.setState({ isLoading: false })
+            })
         }
     }
+    showPopUp = () => {
+        this.setState({showModal:true})
+        this.simpleDialog.show()
+    }
+
+    subjectLink = ({ value, row }) => {
+        let subject = "";
+        if (row) {
+            let obj = {
+                docId: row.id,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+            let doc_view = "/projectWorkFlowAddEdit?id=" + encodedPaylod
+            subject = row.subject;
+            return <a href={doc_view}> {subject} </a>;
+        }
+        return null;
+    };
+
+    selectedRows(rows) {
+        this.setState({ selectedRows: rows })
+    }
+    addLevel(){
+        if(this.state.selectedContact_level.value!='0'){
+            Api.post('AddWFItemsToSameLevel?contactId='+this.state.selectedContact.value+'&toContactId='+this.state.selectedContact_level.value,this.state.selectedRows).then(()=>{
+                toast.success(Resources.operationSuccess[currentLanguage])
+                this.setState({showModal:false})
+            }).catch(()=>{
+                toast.error(Resources.operationCanceled[currentLanguage])
+            })
+        }
+    }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup
+
                 rows={this.state.rows}
-                showCheckbox={false}
+                showCheckbox={true}
+                selectedCopmleteRow={true}
+                selectedRows={rows=>this.selectedRows(rows)}
                 pageSize={this.state.pageSize}
                 columns={this.columns}
+                addLevel={e => this.showPopUp()}
             />) : <LoadingSection />;
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'workFlowActivity'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'wokFlowDistrbutionAccountsReport'} />
             : null;
+        const addToSameLevel = <div className="doc-container">
+            <div className="step-content">
+                <div className="document-fields">
+                    <div className="proForm datepickerContainer">
+                        <Dropdown className='fullWidthWrapper textLeft'
+                            title="ContactName"
+                            data={this.state.dropDownList}
+                            selectedValue={this.state.selectedContact_level}
+                            handleChange={event => this.setState({ selectedContact_level: event })}
+                            name="ContactName"
+                            index="ContactName"
+                        />
+                        <div className="fullWidthWrapper ">
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addLevel()}>{Resources['save'][currentLanguage]}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         return (
 
-            <div className='mainContainer'>
+            <div className='mainContainer main__fulldash'>
                 <div className="documents-stepper noTabs__document">
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['workFlowActivity'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['wokFlowDistrbutionAccountsReport'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -198,13 +204,13 @@ class WFActivity extends Component {
                                     {btnExport}
                                 </div>
                                 <div className="proForm datepickerContainer">
-                                    <Dropdown className='fullWidthWrapper'
-                                        title="employee"
+                                    <Dropdown className='fullWidthWrapper textLeft'
+                                        title="ContactName"
                                         data={this.state.dropDownList}
-                                        selectedValue={this.state.selectedEmployee}
-                                        handleChange={event => this.setState({ selectedEmployee: event })}
-                                        name="employees"
-                                        index="employees"
+                                        selectedValue={this.state.selectedContact}
+                                        handleChange={event => this.setState({ selectedContact: event })}
+                                        name="ContactName"
+                                        index="ContactName"
                                     />
                                     <div className="fullWidthWrapper ">
                                         <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
@@ -219,7 +225,11 @@ class WFActivity extends Component {
                         </div>
                     </div>
                 </div>
-
+                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources['addToTheSameLevel'][currentLanguage]}>
+                        {addToSameLevel}
+                    </SkyLight>
+                </div>
             </div >
         )
     }
@@ -227,4 +237,4 @@ class WFActivity extends Component {
 }
 
 
-export default WFActivity
+export default WFDistributionAccountReport

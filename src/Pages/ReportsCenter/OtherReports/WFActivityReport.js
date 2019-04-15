@@ -13,83 +13,39 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
-class WFUsageReport extends Component {
+class WFActivityReport extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
+            employeesList: [],
             dropDownList: [],
-            selectedWF: { label: Resources.slectWorkFlow[currentLanguage], value: "0" },
-            rows: [],
-            columns : [
-                {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 150,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                } , {
-                    key: "level",
-                    name: Resources["levelNo"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                },
-            ]
-    
+            selectedEmployee: { label: Resources.selectEmployee[currentLanguage], value: "0" },
+            rows: []
         }
 
-        if (!Config.IsAllow(3750) ) {
+        if (!Config.IsAllow(4017) ) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             });
         }
-   
-    }
-
-
-
-    componentDidMount() {
-    }
-
-    componentWillMount() {
-        Api.get('GetAllWorkFlowList').then(result => {
-            let list = []
-            result.forEach((element) => {
-                list.push({ label: element.subject, value: element.code })
-            })
-            this.setState({
-                dropDownList: list
-            });
-        }).catch(() => {
-            toast.error('somthing wrong')
-        })
-    }
-
-    DropdownChange=(event)=>{
-        this.setState({ selectedWF: event,isLoading:true })
-        Api.post('GetFollowUpsUsageParent?code='+event.value).then(res=>{
-            let columns=[  
-                {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 150,
+        this.columns = [
+            {
+                key: "arrange",
+                name: Resources["levelNo"][currentLanguage],
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            } , {
-                key: "level",
-                name: Resources["levelNo"][currentLanguage],
+            }
+
+            , {
+                key: "projectName",
+                name: Resources["projectName"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
@@ -97,43 +53,104 @@ class WFUsageReport extends Component {
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "level",
-                name: Resources["levelNo"][currentLanguage],
+                key: "subject",
+                name: Resources["subject"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            }]
-            res.forEach((element)=>{
-                columns.push(
-                    {
-                        key: element.projectName,
-                        name: element.projectName,
-                        width: 120,
-                        draggable: true,
-                        sortable: true,
-                        resizable: true,
-                        filterable: true,
-                        sortDescendingFirst: true
-                    })
-              
-            })
-       
-        this.setState({columns,isLoading:false, rows: []})
+            }, {
+                key: "docDurationDays",
+                name: Resources["docDurationDays"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "docTypeName",
+                name: Resources["docType"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "previousLevelApprovalDate",
+                name: Resources["previousLevelApprovalDate"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            }, {
+                key: "userApprovalDate",
+                name: Resources["userApprovalDate"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            }, {
+                key: "approvalStatusName",
+                name: Resources["approvalStatusName"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "userDurationDays",
+                name: Resources["userDurationDays"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }
+        ];
 
+    }
+ 
+    componentDidMount() {
+    }
+
+    componentWillMount() {
+        Api.get('GetAllContactsWithAccount').then(result => {
+            let list = []
+            result.forEach((element) => {
+                list.push({ label: element.contactName, value: element.id })
+            })
+            this.setState({
+                employeesList: result,
+                dropDownList: list
+            });
+        }).catch(() => {
+            toast.error('somthing wrong')
         })
     }
     getGridRows = () => {
-        if (this.state.selectedWF.value != '0') {
-            this.setState({ isLoading: true })
-            Api.post('GetFollowUpsUsageChilds?code=' + this.state.selectedWF.value).then((res) => {
-                this.setState({ rows: res, isLoading: false })
-            }).catch(() => {
-                this.setState({ isLoading: false })
-            })
-
+        if (this.state.selectedEmployee.value != '0') {
+            this.state.employeesList.forEach(employee => {
+                if (employee.id == this.state.selectedEmployee.value) {
+                    this.setState({ isLoading: true })
+                    Api.get('GetWorkFlowActivity?accountId=' + employee.accountId).then((res) => {
+                        this.setState({ rows: res, isLoading: false })
+                    }).catch(() => {
+                        this.setState({ isLoading: false })
+                    })
+                }
+            });
 
         }
     }
@@ -143,17 +160,17 @@ class WFUsageReport extends Component {
                 rows={this.state.rows}
                 showCheckbox={false}
                 pageSize={this.state.pageSize}
-                columns={this.state.columns}
+                columns={this.columns}
             />) : <LoadingSection />;
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'followUpsUsageReport'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'workFlowActivity'} />
             : null;
         return (
 
             <div className='mainContainer main__fulldash'>
                 <div className="documents-stepper noTabs__document">
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['followUpsUsageReport'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['workFlowActivity'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -180,12 +197,12 @@ class WFUsageReport extends Component {
                                 </div>
                                 <div className="proForm datepickerContainer">
                                     <Dropdown className='fullWidthWrapper'
-                                        title="workFlow"
+                                        title="employee"
                                         data={this.state.dropDownList}
-                                        selectedValue={this.state.selectedWF}
-                                        handleChange={event =>this.DropdownChange(event)}
-                                        name="workFlows"
-                                        index="workFlows"
+                                        selectedValue={this.state.selectedEmployee}
+                                        handleChange={event => this.setState({ selectedEmployee: event })}
+                                        name="employees"
+                                        index="employees"
                                     />
                                     <div className="fullWidthWrapper ">
                                         <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
@@ -206,6 +223,4 @@ class WFUsageReport extends Component {
     }
 
 }
-
-
-export default WFUsageReport
+export default WFActivityReport
