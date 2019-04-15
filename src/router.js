@@ -93,6 +93,7 @@ import Itemize from "./Pages/Contracts/Itemize";
 import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
 import rptCostCodingTree from './Pages/CostControl/rptCostCodingTree';
 import WFActivityReport from './Pages/ReportsCenter/OtherReports/WFActivityReport';
+import boqStructure from "./Pages/ProjectSetup/boqStructure";
 import TransmittalReport from './Pages/ReportsCenter/OtherReports/TransmittalReport';
 import WFUsageReport from './Pages/ReportsCenter/OtherReports/WFUsageReport';
 import FollowUpUsageReport from './Pages/ReportsCenter/OtherReports/FollowUpUsageReport';
@@ -100,7 +101,7 @@ import WFDistributionAccountReport from './Pages/ReportsCenter/OtherReports/WFDi
 import PaymentReqStatusReport from './Pages/ReportsCenter/OtherReports/PaymentReqStatusReport';
 
  
-
+ 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -210,6 +211,7 @@ let originalRoutes = [
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
     , <Route path="/WFActivityReport" component={WFActivityReport} />
+    , <Route path="/boqStructure" component={boqStructure} />
     , <Route path="/WFUsageReport" component={WFUsageReport} />
     , <Route path="/TransmittalReport" component={TransmittalReport} />
     , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />

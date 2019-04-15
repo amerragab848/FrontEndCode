@@ -577,13 +577,19 @@ table edition
         color: #26344c;
         font-size: 26px;
       }
-      .textarea-group textarea {
+      .textarea-group textarea{
         overflow: auto;
         width: 100%;
         min-height: 100px;
         border-radius: 4px;
         border: 1px solid #DADEE6;
         padding: 10px;
+      }
+      .textarea-group .ui.input.inputDev {
+        width: 100%;
+      }
+      .textarea-group .ui.input.inputDev.has-error textarea{
+        border: 1px solid #e74c3c;
       }
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
