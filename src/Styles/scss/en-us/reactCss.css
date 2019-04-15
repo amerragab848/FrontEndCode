@@ -940,6 +940,7 @@ table edition
   flex-flow: column;
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 20;
+  min-height: 250px;
 }
 .cutome__inputs .dashboardLoading {
   position: fixed !important;
@@ -1574,11 +1575,12 @@ tfoot tr td p{
 .noTabs__document .doc-container {
   background: #fff;
   flex-flow: column; }
-  .noTabs__document .doc-container .main__header {
+  .noTabs__document .doc-container .main__header, .main__header {
     width: 100%;
     padding: 0;
-    border-bottom: 1px solid #e9ecf0; }
-    .noTabs__document .doc-container .main__header .main__header--div {
+    border-bottom: 1px solid #e9ecf0; 
+  }
+    .noTabs__document .doc-container .main__header .main__header--div,.main__header .main__header--div {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -1592,6 +1594,9 @@ tfoot tr td p{
       margin: 0 auto;
       height: 72px;
     }
+    .main__header .main__header--div {
+      width: auto;
+    }
 @media screen and (max-width: 1250px) {
   .noTabs__document .doc-container .step-content, .noTabs__document .doc-container .main__header .main__header--div {
     padding-left: 20px ;
@@ -1599,13 +1604,13 @@ tfoot tr td p{
   }
 }
 
-    .noTabs__document .doc-container .main__header h2 {
+    .noTabs__document .doc-container .main__header h2, .main__header h2 {
       font-family: font-b;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
       color: #252833; }
-    .noTabs__document .doc-container .main__header p {
+    .noTabs__document .doc-container .main__header p, .main__header p {
       font-family: font-opens;
       font-size: 12px;
       line-height: 1.33;
@@ -2967,12 +2972,12 @@ button.companies_icon {
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields {
   padding: 0;
 }
-.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+/* .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width : 100%;
-}
-.skylight-dialog .document-fields .fullWidthWrapper.textLeft {
+} */
+/* .skylight-dialog .document-fields .fullWidthWrapper.textLeft {
   text-align: center;
-}
+} */
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .datepickerContainer.proForm .ui.input.inputDev input, .documents-stepper .doc-container .step-content .skylight-dialog .document-fields .proForm .linebylineInput .ui.input.inputDev {
   width: 100%;
 }
@@ -2994,6 +2999,10 @@ button.companies_icon {
 }
 .control-label {
   display: block;
+  letter-spacing: -0.2px;
+  color: #26344c;
+  font-family: font-opensb;
+  margin-bottom: 4px;
 }
 .dropWrapper .proForm {
   margin-top: 0;
@@ -3096,7 +3105,7 @@ button.companies_icon {
   padding: 10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  height: 60px;
+  height: 40px;
   background: #e9ecf0;
   padding: 0 10px;
 }
@@ -3539,4 +3548,11 @@ color: #4382f9 !important;
 .highcharts-color-8 {
   stroke: transparent;
   fill: 
+} */
+.skylight-dialog .letterFullWidth {
+  margin-bottom: 10px;
+}
+/* .whiteBackground {
+  background: #fff;
+  padding: 40px;
 } */

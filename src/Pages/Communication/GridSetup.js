@@ -298,7 +298,7 @@ class GridSetup extends Component {
   render() {
     const { rows, groupBy } = this.state;
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-    console.log("groupedRows....", groupedRows.length);
+//    console.log("groupedRows....", groupedRows.length);
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
@@ -368,11 +368,11 @@ class GridSetup extends Component {
 
             <ReactDataGrid
               rowKey="id"
-              minHeight={groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 650)}
+              minHeight={groupedRows!=undefined? (groupedRows.length< 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 650)):1}
               height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
               columns={this.state.columns}
-              rowGetter={i => groupedRows[i]}
-              rowsCount={groupedRows.length}
+              rowGetter={i => groupedRows[i]!=null? groupedRows[i]:''}
+              rowsCount={groupedRows!=undefined?groupedRows.length:1}
               enableCellSelect={true}
               onGridRowsUpdated={this.onGridRowsUpdated}
               onCellSelected={this.onCellSelected}

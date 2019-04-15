@@ -28,7 +28,9 @@ export const GetDocumentCycle = 'GetDocumentCycle';
 export const ViewDocsAttachment = 'ViewDocsAttachment';
 
 export const add_item = 'add_item';
+export const edit_item = 'edit_item';
 export const delete_item = 'delete_item';
+export const delete_items = 'delete_items';
 
 // ProjectActionsTypes
 

@@ -29,34 +29,15 @@ import SkyLight from 'react-skylight';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 
-
-
-let docId = 0;
+let boqId = 0;
 let projectId = 0;
+let id = 0;
 let projectName = "";
-let arrange = 0;
-
 
 class Itemize extends Component {
     constructor(props) {
         super(props)
-        const query = new URLSearchParams(this.props.location.search);
-        let index = 0;
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    arrange = obj.arrange;
-                }
-                catch{
-                    this.props.history.goBack();
-                }
-            }
-            index++;
-        }
-
+        this.extractDataFromURL(this.props.location.search);
         let editUnitPrice = ({ value, row }) => {
             let subject = "";
             if (row) {
@@ -67,6 +48,11 @@ class Itemize extends Component {
 
         this.itemsColumns = [
             {
+                formatter: this.customButton,
+                key: 'customBtn'
+
+            },
+            {
                 key: "arrange",
                 name: Resources["no"][currentLanguage],
                 width: 50,
@@ -75,34 +61,9 @@ class Itemize extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            }, {
-                key: "boqType",
-                name: Resources["boqType"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "boqTypeChild",
-                name: Resources["boqTypeChild"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "boqSubType",
-                name: Resources["boqSubType"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
+            }
+
+            , {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
                 width: 100,
@@ -180,18 +141,19 @@ class Itemize extends Component {
         ];
 
         this.state = {
-            boqId: 9509,
-            parentId: 8399,
+            currentMode: '',
+            boqId: boqId,
+            parentId: id,
             showPopUp: false,
             activeTab: '',
             isCompany: Config.getPayload().uty == 'company' ? true : false,
             LoadingPage: false,
             docTypeId: 64,
             selectedRow: '',
-            selectedItem:{},
+            selectedItem: {},
+            projectName: projectName,
             pageSize: 50,
-            docId: docId,
-            arrange: arrange,
+            arrange: 0,
             items: [],
             item: {},
             isLoading: true,
@@ -200,6 +162,10 @@ class Itemize extends Component {
 
     }
 
+    customButton = () => {
+        return <button className="companies_icon" style={{ cursor: 'pointer' }} ><i class="fa fa-folder-open"></i></button>;
+    };
+
     componentWillUnmount() {
     }
 
@@ -207,55 +173,56 @@ class Itemize extends Component {
 
     }
     componentWillMount() {
-        this.getTabelData()
+        this.getTabelData(this.state.parentId)
     }
-    getTabelData() {
-        let Table = []
+
+    getTabelData(id) {
+
         this.setState({ isLoading: true, LoadingPage: true })
-        Api.get('GetBoqItem?id=8399').then(item => {
-
-
+        Api.get('GetBoqItem?id=' + id).then(item => {
             this.setState({ item, parentId: item != null ? item.id : 0 })
-            // this.props.actions.setItemDescriptions(Table);
-
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
         })
 
         let subTable = []
         this.setState({ isLoading: true, LoadingPage: true })
-        Api.get('GetBoqItemChildren?id=8399').then(items => {
-            items.forEach(item => {
-                subTable.push({
-                    id: item.id,
-                    boqId: item.boqId,
-                    unitPrice: this.state.items.unitPrice,
-                    itemType: item.itemType,
-                    itemTypeLabel: '',
-                    days: item.days,
-                    equipmentType: item.equipmentType,
-                    equipmentTypeLabel: '',
-                    editable: true,
-                    boqSubTypeId: item.boqSubTypeId,
-                    boqTypeId: item.boqTypeId,
-                    boqChildTypeId: item.boqChildTypeId,
-                    arrange: item.arrange,
-                    boqType: item.boqType,
-                    boqTypeChild: item.boqTypeChild,
-                    boqSubType: item.boqSubType,
-                    itemCode: item.itemCode,
-                    description: item.description,
-                    quantity: item.quantity,
-                    revisedQuntitty: item.revisedQuantity,
-                    unit: item.unit,
-                    unitPrice: item.unitPrice,
-                    total: item.total,
-                    resourceCode: item.resourceCode
-                })
+        Api.get('GetBoqItemChildren?id=' + id).then(items => {
+            if (items) {
+                items.forEach(item => {
+                    subTable.push({
+                        id: item.id,
+                        parentId: item.parentId,
+                        boqId: item.boqId,
+                        unitPrice: this.state.items.unitPrice,
+                        itemType: item.itemType,
+                        itemTypeLabel: '',
+                        days: item.days,
+                        equipmentType: item.equipmentType,
+                        equipmentTypeLabel: '',
+                        editable: true,
+                        boqSubTypeId: item.boqSubTypeId,
+                        boqTypeId: item.boqTypeId,
+                        boqChildTypeId: item.boqChildTypeId,
+                        arrange: item.arrange,
+                        boqType: item.boqType,
+                        boqTypeChild: item.boqTypeChild,
+                        boqSubType: item.boqSubType,
+                        itemCode: item.itemCode,
+                        description: item.description,
+                        quantity: item.quantity,
+                        revisedQuntitty: item.revisedQuantity,
+                        unit: item.unit,
+                        unitPrice: item.unitPrice,
+                        total: item.total,
+                        resourceCode: item.resourceCode
+                    })
 
-            })
-            this.setState({ items: subTable })
-            this.props.actions.setItemDescriptions(subTable, 9509);
-            setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
+                })
+                this.setState({ items: subTable })
+                this.props.actions.setItemDescriptions(subTable, 9509);
+                setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
+            }
+
         })
 
     }
@@ -263,93 +230,48 @@ class Itemize extends Component {
     componentDidUpdate(prevProps) {
 
     }
-
+    extractDataFromURL(url) {
+        const query = new URLSearchParams(url);
+        let index = 0;
+        for (let param of query.entries()) {
+            if (index == 0) {
+                try {
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+                    boqId = obj.boqId;
+                    projectId = obj.projectId;
+                    id = obj.id;
+                    projectName = obj.projectName;
+                }
+                catch{
+                    this.props.history.goBack();
+                }
+            }
+            index++;
+        }
+    }
+    componentWillUnmount() {
+        this.props.actions.deleteItemsDescription()
+    }
     componentWillReceiveProps(props, state) {
-        this.setState({ isLoading: true })
+        if (props.location.search !== this.props.location.search) {
+            this.extractDataFromURL(props.location.search);
+            this.props.actions.deleteItemsDescription()
+            this.setState({
+                parentId: id,
+                isLoading: true,
+                currentMode: ''
+            });
+            this.getTabelData(id)
+
+        }
         if (props.items) {
+            this.setState({ isLoading: true })
             let items = props.items
             this.setState({ items, activeTab: '' }, function () { this.setState({ isLoading: false }) })
         }
 
     }
 
-
-    addEditItems = () => {
-        this.setState({ isLoading: true })
-        let item = {
-            id: this.state.items.id,
-            boqId: this.state.docId,
-            parentId: '',
-            description: this.state.items.description,
-            quantity: this.state.items.quantity,
-            arrange: this.state.items.arrange,
-            unit: this.state.selectedUnit.value,
-            unitLabel: this.state.selectedUnit.label,
-            unitPrice: this.state.items.unitPrice,
-            revisedQuantity: 0,
-            resourceCode: this.state.items.resourceCode,
-            itemCode: this.state.items.itemCode,
-            itemType: this.state.selectedItemType.value == '0' ? null : this.state.selectedItemType.value,
-            itemTypeLabel: this.state.selectedItemType.label,
-            days: this.state.items.days,
-            equipmentType: this.state.selectedequipmentType.value > 0 ? this.state.selectedequipmentType.value : '',
-            equipmentTypeLabel: this.state.selectedequipmentType.value > 0 ? this.state.selectedequipmentType.label : '',
-            editable: true,
-            boqSubTypeId: this.state.selectedBoqSubType.value == '0' ? null : this.state.selectedBoqSubType.value,
-            boqSubType: this.state.selectedBoqSubType.label,
-            boqTypeId: this.state.selectedBoqType.value == '0' ? null : this.state.selectedBoqType.value,
-            boqType: this.state.selectedBoqType.label,
-            boqChildTypeId: this.state.selectedBoqTypeChild.value == '0' ? null : this.state.selectedBoqTypeChild.value,
-            boqTypeChild: this.state.selectedBoqTypeChild.label,
-        }
-        let url = this.state.showPopUp ? 'EditBoqItem' : 'AddBoqItem'
-        Api.post(url, item).then((res) => {
-            if (this.state.showPopUp) {
-                let items = Object.assign(this.state.rows)
-                this.state.rows.forEach((element, index) => {
-                    if (element.id == this.state.items.id) {
-                        item.id = this.state.items.id;
-                        items[index] = item
-                        this.setState({ rows: items, isLoading: false }, function () {
-                            toast.success(Resources["operationSuccess"][currentLanguage]);
-                        })
-                    }
-                })
-            }
-            else {
-                if (this.state.items.itemCode != null) {
-                    let data = [...this.state.rows];
-                    item.id = res.id;
-                    data.push({
-                        ...item
-                    })
-                    this.setState({
-                        rows: data,
-                        items: { ...this.state.items, arrange: res.arrange + 1, description: '', quantity: '', itemCode: '', resourceCode: '', unitPrice: '', days: 1 }
-                    }, function () {
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    })
-                }
-            }
-            this.setState({
-                selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" },
-                selectedBoqType: { label: Resources.boqType[currentLanguage], value: "0" },
-                selectedBoqTypeChild: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-                selectedBoqSubType: { label: Resources.boqSubType[currentLanguage], value: "0" },
-                selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
-                selectedequipmentType: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
-                BoqTypeChilds: [],
-                BoqSubTypes: [],
-                isLoading: false,
-                showPopUp: false,
-                btnText: 'add'
-
-            });
-        }).catch(() => {
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ isLoading: false })
-        })
-    }
     checkItemCode = (code) => {
         Api.get('GetItemCode?itemCode=' + code + '&projectId=' + this.state.projectId).then(res => {
             if (res == true) {
@@ -368,55 +290,47 @@ class Itemize extends Component {
 
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
-        if (this.state.CurrStep == 2) {
-            Api.post('ContractsBoqItemsMultipleDelete?', this.state.selectedRow).then((res) => {
-                let data = [...this.state.rows]
-                let length = data.length
-                data.forEach((element, index) => {
-                    data = data.filter(item => { return item.id != element.id });
-                    if (index == length - 1) {
-                        this.setState({ rows: data, showDeleteModal: false, isLoading: false });
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    }
-                })
-            }).catch(() => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-                this.setState({ showDeleteModal: false, isLoading: false });
-            })
-        }
+        Api.post('ContractsBoqItemsMultipleDelete?', this.state.selectedRow).then((res) => {
+            let originalData = [...this.state.items]
+            this.state.selectedRow.forEach(item => {
+                let getIndex = originalData.findIndex(x => x.id === item.id);
+                originalData.splice(getIndex, 1);
+            });
+            this.setState({ items: originalData, showDeleteModal: false, isLoading: false });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ showDeleteModal: false, isLoading: false });
+        })
+
+    }
+    itemization = (value) => {
+        let obj = {
+            id: value.id,
+            boqId: value.boqId,
+            projectId: this.state.projectId,
+            projectName: this.state.projectName
+        };
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+        this.props.history.push({
+            pathname: "/Itemize",
+            search: "?id=" + encodedPaylod
+        });
     }
 
     onRowClick = (value, index, column) => {
-        console.log('column.key', column.key)
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
+        else if (column.key == 'customBtn') {
+            this.itemization(value)
 
+        }
         else if (column.key != 'select-row' && column.key != 'unitPrice') {
-            this.setState({ showPopUp: true })
+            this.setState({ showPopUp: true, currentMode: 'edit' })
             this.simpleDialog.show()
-            console.log('value', value)
             this.setState({ selectedItem: value })
-            // DataService.GetDataList('GetAllBoqChild?parentId=' + value.boqTypeId, 'title', 'id').then(res => {
-            //     this.setState({
-            //         BoqSubTypes: res,
-            //         BoqTypeChilds: res,
-            //         items: { id: value.id, description: value.description, arrange: value.arrange, quantity: value.quantity, unitPrice: value.unitPrice, itemCode: value.itemCode, resourceCode: value.resourceCode, days: value.days },
-            //         selectedUnit: value.unit ? { label: value.unit, value: value.unit } : { label: Resources.unitSelection[currentLanguage], value: "0" },
-            //         selectedBoqType: value.boqTypeId > 0 ? { label: value.boqType, value: value.boqTypeId } : { label: Resources.boqType[currentLanguage], value: "0" },
-            //         selectedBoqTypeChild: value.boqChildTypeId > 0 ? { label: value.boqTypeChild, value: value.boqTypeChildId } : { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-            //         selectedBoqSubType: value.boqSubTypeId > 0 ? { label: value.boqSubType, value: value.boqSubTypeId } : { label: Resources.boqSubType[currentLanguage], value: "0" },
-            //         selectedequipmentType: value.equipmentType > 0 ? { label: value.equipmentTypeLabel, value: value.equipmentType } : { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
-            //         selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
-            //         isLoading: false
-            //     })
-            //     if (value.itemType > 0) {
-            //         let itemType = _.find(this.state.itemTypes, function (e) { return e.value == value.itemType })
-            //         this.setState({ selectedItemType: itemType })
-            //     }
-            // })
-
-
         }
     }
     clickHandlerDeleteRowsMain = selectedRows => {
@@ -486,7 +400,9 @@ class Itemize extends Component {
         }
         this.setState({ activeTab })
     }
-
+    closePopUp = () => {
+        this.setState({ showPopUp: false, currentMode: '' })
+    }
     render() {
 
         const subItemsGrid = this.state.isLoading === false ? (
@@ -535,18 +451,20 @@ class Itemize extends Component {
                 : null)
 
         const editItemContent = <React.Fragment>
-            <div className="document-fields" key='editItem'>
-                <EditItemDescription
-                    showImportExcel={false} docType="boq"
-                    isViewMode={this.state.isViewMode}
-                    mainColumn="boqId" addItemApi="AddBoqItemChild"
-                    parentId={this.state.parentId}
-                    projectId={2}
-                    showItemType={true} 
-                    item={this.state.selectedItem}/>
+            {this.state.currentMode == 'edit' ?
+                <div className="document-fields" key='editItem'>
+                    <EditItemDescription
+                        showImportExcel={false} docType="boq"
+                        isViewMode={this.state.isViewMode}
+                        mainColumn="boqId" editItemApi="EditBoqItemChild"
+                        parentId={this.state.parentId}
+                        projectId={this.state.projectId}
+                        showItemType={true}
+                        item={this.state.selectedItem}
+                        onSave={e => this.closePopUp()} />
 
-            </div>
-        </React.Fragment >
+                </div>
+                : null}</React.Fragment >
         const addItemContent = <React.Fragment>
             <div className="document-fields">
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -555,7 +473,7 @@ class Itemize extends Component {
                     isViewMode={this.state.isViewMode}
                     mainColumn="boqId" addItemApi="AddBoqItemChild"
                     parentId={this.state.parentId}
-                    projectId={2}
+                    projectId={this.state.projectId}
                     showItemType={true} />
 
             </div>
@@ -575,14 +493,6 @@ class Itemize extends Component {
         </Fragment>
         let Step_2 = <React.Fragment>
             <div className="company__total proForm">
-                <div className="form-group ">
-                    <label className="control-label">{Resources.company[currentLanguage]}</label>
-                    <div className="ui right labeled input">
-                        <input autoComplete="off" type="text" value={this.props.document.subject} readOnly data-toggle="tooltip" title="procoor Company" />
-                        <span className="total_money">{Resources.total[currentLanguage]}</span>
-                        <div className="ui basic label greyLabel"> {this.props.document.total}</div>
-                    </div>
-                </div>
                 <ul id="stepper__tabs" className="data__tabs">
                     <li className={" data__tabs--list " + (this.state.activeTab == 'one' ? "active" : '')} onClick={() => this.changeTab('one')}>{Resources.addOneItem[currentLanguage]}</li>
                     <li className={"data__tabs--list " + (this.state.activeTab == 'many' ? "active" : '')} onClick={() => this.changeTab('many')}>{Resources.addManyItems[currentLanguage]}</li>
@@ -605,8 +515,8 @@ class Itemize extends Component {
                 <div className="mainContainer">
                     <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                         <div className="submittalHead">
-                            <h2 className="zero">{Resources.boq[currentLanguage]}
-                                <span>{projectName.replace(/_/gi, ' ')} {Resources.contracts[currentLanguage]}</span>
+                            <h2 className="zero">{Resources.contract[currentLanguage]}
+                                <span>{this.state.projectName ? this.state.projectName.replace(/_/gi, ' ') : ''} {Resources.contracts[currentLanguage]} {Resources.itemize[currentLanguage]} </span>
                             </h2>
                             <div className="SubmittalHeadClose">
                                 <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
