@@ -92,6 +92,7 @@ import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
 import Itemize from "./Pages/Contracts/Itemize";
 import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
 import rptCostCodingTree from './Pages/CostControl/rptCostCodingTree';
+import boqStructure from "./Pages/ProjectSetup/boqStructure";
 
  
 
@@ -203,6 +204,8 @@ let originalRoutes = [
     , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
+    , <Route path="/boqStructure" component={boqStructure} />
+    
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (
