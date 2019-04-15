@@ -1581,11 +1581,12 @@ tfoot tr td p{
 .noTabs__document .doc-container {
   background: #fff;
   flex-flow: column; }
-  .noTabs__document .doc-container .main__header {
+  .noTabs__document .doc-container .main__header, .main__header {
     width: 100%;
     padding: 0;
-    border-bottom: 1px solid #e9ecf0; }
-    .noTabs__document .doc-container .main__header .main__header--div {
+    border-bottom: 1px solid #e9ecf0; 
+  }
+    .noTabs__document .doc-container .main__header .main__header--div,.main__header .main__header--div {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -1599,6 +1600,9 @@ tfoot tr td p{
       margin: 0 auto;
       height: 72px;
     }
+    .main__header .main__header--div {
+      width: auto;
+    }
 @media screen and (max-width: 1250px) {
   .noTabs__document .doc-container .step-content, .noTabs__document .doc-container .main__header .main__header--div {
     padding-left: 20px ;
@@ -1606,13 +1610,13 @@ tfoot tr td p{
   }
 }
 
-    .noTabs__document .doc-container .main__header h2 {
+    .noTabs__document .doc-container .main__header h2, .main__header h2 {
       font-family: font-b;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
       color: #252833; }
-    .noTabs__document .doc-container .main__header p {
+    .noTabs__document .doc-container .main__header p, .main__header p {
       font-family: font-opens;
       font-size: 12px;
       line-height: 1.33;
@@ -3001,6 +3005,10 @@ button.companies_icon {
 }
 .control-label {
   display: block;
+  letter-spacing: -0.2px;
+  color: #26344c;
+  font-family: font-opensb;
+  margin-bottom: 4px;
 }
 .dropWrapper .proForm {
   margin-top: 0;
@@ -3550,3 +3558,7 @@ color: #4382f9 !important;
 .skylight-dialog .letterFullWidth {
   margin-bottom: 10px;
 }
+/* .whiteBackground {
+  background: #fff;
+  padding: 40px;
+} */
