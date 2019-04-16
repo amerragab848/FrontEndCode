@@ -222,8 +222,6 @@ let originalRoutes = [
     , <Route path="/boqStructure" component={boqStructure} />
     , <Route path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />
     , <Route path="/ClaimsAddEdit" component={ClaimsAddEdit} />
-    
-    , <Route path="/WFActivity" component={WFActivity} />
     , <Route path="/WFUsageReport" component={WFUsageReport} />
     , <Route path="/TransmittalReport" component={TransmittalReport} />
     , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />

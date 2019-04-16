@@ -23,7 +23,7 @@ class approvalDocument extends Component {
             finishDate: moment(),
             startDate: moment()
         }
-        if (!Config.IsAllow(3762)) {
+        if (!Config.IsAllow(3763)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"

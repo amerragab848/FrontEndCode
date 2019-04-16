@@ -22,7 +22,7 @@ class ContractorsPerformance extends Component {
             noClicks: 0
         }
 
-        if (!Config.IsAllow(3761)) {
+        if (!Config.IsAllow(3764)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
