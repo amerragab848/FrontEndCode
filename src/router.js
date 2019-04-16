@@ -102,6 +102,8 @@ import PaymentReqStatusReport from './Pages/ReportsCenter/OtherReports/PaymentRe
 import TechnicalOfficeReport from './Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport';
 import SubmittalsPerNeighBorhood from './Pages/ReportsCenter/TechnicalOffice/SubmittalsPerNeighBorhood';
 import ProgressDocuments from './Pages/ReportsCenter/TechnicalOffice/ProgressDocuments';
+import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocument';
+import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
 
  
  
@@ -223,6 +225,8 @@ let originalRoutes = [
     , <Route path="/TechnicalOfficeReport" component={TechnicalOfficeReport} />
     , <Route path="/SubmittalsPerNeighBorhood" component={SubmittalsPerNeighBorhood} />
     , <Route path="/ProgressDocuments" component={ProgressDocuments} />
+    , <Route path="/approvalDocument" component={approvalDocument} />
+    , <Route path="/contractorsPerformance" component={contractorsPerformance} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

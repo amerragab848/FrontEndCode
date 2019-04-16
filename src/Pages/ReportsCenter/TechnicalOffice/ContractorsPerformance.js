@@ -1,30 +1,28 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Api from '../../../api';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import moment from "moment";
-import dataService from '../../../Dataservice'
 import BarChartComp from './BarChartComp'
+import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-class TechnicalOfficeReport extends Component {
+class ContractorsPerformance extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            showChart: false,
-            noClicks:0,
-            projectList: [],
-            project: { label: Resources.projectSelection[currentLanguage], value: "-1" },
+            isLoading: null,
             finishDate: moment(),
-            startDate: moment(),xAxis:{},series:[]
+            startDate: moment(),
+            reportData: [],
+            noClicks: 0
         }
 
-        if (!Config.IsAllow(3760)) {
+        if (!Config.IsAllow(3761)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -36,55 +34,61 @@ class TechnicalOfficeReport extends Component {
     componentDidMount() {
     }
     componentWillMount() {
-        dataService.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(res => {
-            this.setState({ projectList: res })
-        })
+
     }
+    componentWillReceiveProps(props) {
 
+    }
     getChartData = () => {
-        if (this.state.project.value != '-1') {
-            this.setState({ currentComponent: null })
-            let reportobj = {
-                projectId: this.state.project.value,
-                fromDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                toDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            }
-            let noClicks = this.state.noClicks;
-            this.setState({ isLoading: true})
-            Api.post('GetTechnicalOfficeDocument', reportobj).then(res => {
-                this.setState({  isLoading: false })
-                let _catag = []
-                let _data = []
-                res.map((item, index) => {
-                    _catag.push(item.docName);
-                    _data.push(item.count)
-                })
-                let series = []
-                series.push({ name: Resources['count'][currentLanguage], data: _data })
-                let xAxis = { categories: _catag }
-                this.setState({ series,xAxis, noClicks: noClicks + 1});
-            })
-
+        let reportobj = {
+            fromDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            toDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
+        let noClicks = this.state.noClicks;
 
+        this.setState({ isLoading: true })
+        Api.post('GetContractorsPerformance', reportobj).then(res => {
+            this.setState({ isLoading: false })
 
+            if (res.length > 0) {
+                let _catag = []
+                let series = []
+                res[0].listCounts.map((item, index) => {
+                    _catag.push(item.companyName);
+
+                })
+                let listCount = []
+                res.map((item, index) => {
+                    listCount = []
+                    item.listCounts.map((element, index) => {
+                        listCount.push(element.count)
+                    })
+                    series.push({ name: item.epsName, data: listCount })
+                })
+                let xAxis = { categories: _catag }
+                this.setState({ series, xAxis, noClicks: noClicks + 1 });
+            }
+        })
     }
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
+
     render() {
         const Chart =
-            <BarChartComp 
-            noClicks={this.state.noClicks}
-            series={this.state.series}
-            xAxis={this.state.xAxis}
-            title={Resources['technicalOfficeDocument'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
+            <BarChartComp
+                stack={'normal'}
+                noClicks={this.state.noClicks}
+                type={'column'}
+                series={this.state.series}
+                xAxis={this.state.xAxis}
+                title={Resources['contractorsPerformance'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} />
 
         return (
             <div className='mainContainer main__fulldash'>
                 <div className="documents-stepper noTabs__document">
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['technicalOfficeDocument'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['contractorsPerformance'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -103,23 +107,9 @@ class TechnicalOfficeReport extends Component {
                             </svg>
                         </div>
                     </div>
-
                     <div className="doc-container">
                         <div className="step-content">
                             <div className="document-fields">
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input ">
-                                        <Dropdown
-                                            title="Projects"
-                                            data={this.state.projectList}
-                                            selectedValue={this.state.project}
-                                            handleChange={event => { this.setState({ project: event }); }}
-                                            name="projects"
-                                            index="projects"
-                                        />
-
-                                    </div>
-                                </div>
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='startDate'
@@ -131,15 +121,13 @@ class TechnicalOfficeReport extends Component {
                                             startDate={this.state.finishDate}
                                             handleChange={e => this.handleChange('finishDate', e)} />
                                     </div>
-
                                     <div className="fullWidthWrapper ">
                                         <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.getChartData()}>{Resources['search'][currentLanguage]}</button>
                                     </div>
                                 </div>
-
                             </div>
                             <div className="doc-pre-cycle letterFullWidth">
-                                {Chart }
+                                {Chart}
                             </div>
 
                         </div>
@@ -155,4 +143,4 @@ class TechnicalOfficeReport extends Component {
 }
 
 
-export default TechnicalOfficeReport
+export default ContractorsPerformance
