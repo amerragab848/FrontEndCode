@@ -675,6 +675,19 @@ var routes = [
     }
   },
   {
+    route: "claims",
+    moduleId: "commonLogs",
+    title: "claims",
+    nav: true,
+    hash: "#claims",
+    settings: {
+      Communication: true,
+      permission: 52,
+      caption: "procoor-icon-letters",
+      order: 1
+    }
+  },
+  {
     route:
       "internalMemoAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "communication/internalMemoAddEdit",

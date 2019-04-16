@@ -77,7 +77,9 @@ import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralCon
  
 import RequestPaymentsAddEdit from "./Pages/Contracts/requestPaymentsAddEdit";
 import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
- 
+import projectPrimaveraScheduleAddEdit from "./Pages/TimeManagement/projectPrimaveraScheduleAddEdit";
+
+
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
@@ -97,7 +99,7 @@ import WFActivity from './Pages/ReportsCenter/OtherReports/WFActivity';
 import TransmittalReport from './Pages/ReportsCenter/OtherReports/TransmittalReport';
 import WFUsageReport from './Pages/ReportsCenter/OtherReports/WFUsageReport';
 import FollowUpUsageReport from './Pages/ReportsCenter/OtherReports/FollowUpUsageReport';
-
+import ClaimsAddEdit from "./Pages/Communication/ClaimsAddEdit";
  
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -209,6 +211,8 @@ let originalRoutes = [
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
     , <Route path="/boqStructure" component={boqStructure} />
+    , <Route path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />
+    , <Route path="/ClaimsAddEdit" component={ClaimsAddEdit} />
     
     , <Route path="/WFActivity" component={WFActivity} />
     , <Route path="/WFUsageReport" component={WFUsageReport} />

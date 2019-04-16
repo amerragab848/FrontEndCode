@@ -477,7 +477,12 @@ table edition
     flex-flow: column;
     justify-content: center;
     position: relative;
-    z-index: 1; }
+    z-index: 1; 
+    overflow: visible !important;
+  }
+  .ReactTable .rt-table {
+    overflow: visible !important;
+  }
   .uploadForm.dragHover {
     border-color: #83B4FC;
     background: #E8F4FC; }
@@ -2790,6 +2795,7 @@ button.companies_icon {
 }
 .ReactTable {
   overflow-x: scroll;
+  overflow-y: visible
 }
 .ReactTable .-pagination .-previous, .ReactTable .-pagination .-next {
   -webkit-flex: 0.5 1 !important;
@@ -3275,7 +3281,7 @@ button.companies_icon {
   box-shadow: none !important;
 }
 .ReactTable .rt-thead .rt-th {
-  height: 48px;
+  height: 100%;
   display: flex;
   align-items: center;
   background: #fafbfc;
@@ -3286,6 +3292,7 @@ button.companies_icon {
 .ReactTable .rt-tbody .rt-td {
   display: flex;
   align-items: center !important;
+  overflow: visible;
 }
 .ReactTable .rt-tbody .rt-tr-group .fillter-status.fillter-item-c {
   margin-bottom: 0;
