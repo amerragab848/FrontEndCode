@@ -6847,6 +6847,11 @@
     "en": "Replacment",
     "ar": "اليوزر البديل"
   },
+  "claims": {
+    "en": "Claims",
+    "ar": "مطالبات"
+  },
+  
   "wokFlowDistrbutionAccountsReport": {
     "en": "Workflow/Distribution Accounts Report",
     "ar": "تقرير الدورة المستندية و التوزيع"

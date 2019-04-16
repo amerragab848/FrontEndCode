@@ -26,7 +26,8 @@ class XSLfile extends Component {
             parentId: '',
             _className: '',
             header: this.props.header,
-            acceptedFiles: []
+            acceptedFiles: [],
+            Isloading: false
         }
     }
     onDrop = (acceptedFiles, rejectedFiles) => {
@@ -62,6 +63,38 @@ class XSLfile extends Component {
                 setTimeout(() => {
                     this.setState({ _className: "zeropercent" })
                 }, 1000)
+
+            }).catch((ex) => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            })
+        }
+    }
+
+    CustomUpload = () => {
+        if (this.state.acceptedFiles.length > 0) {
+            this.setState({
+                Isloading: true
+            })
+            let formData = new FormData();
+            let file = this.state.acceptedFiles[0]
+            formData.append("file0", file)
+            console.log("file", this.state.acceptedFiles)
+            let docType = this.props.docType;
+            let header = { 'docType': docType }
+            let id = this.props.docId
+            let projectId = this.props.projectId
+            Api.postFile('UploadSingleFile?scheduleId=' + id + '&projectId=' + projectId + '&fileName=[object%20FileList]&isEdit=true', formData, header).then(resp => {
+
+
+                if (this.props.afterUpload != undefined) {
+                    this.props.afterUpload()
+                }
+                setTimeout(() => {
+                    this.setState({ _className: "zeropercent" })
+                }, 1000)
+                this.setState({
+                    Isloading: false
+                })
             }).catch((ex) => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
             })
@@ -72,12 +105,13 @@ class XSLfile extends Component {
         return (
             <div className="doc-pre-cycle">
                 <header><h2 className="zero">{this.state.header ? Resources[this.state.header][currentLanguage] : ''}</h2></header>
-                <div className="fileDownUp">
-                    <a href={this.state.link} ><i className="fa fa-download" aria-hidden="true"></i>{Resources.downloadExcelFormatFile[currentLanguage]}</a>
-                </div>
+                {this.props.CantDownload ? null :
+                    <div className="fileDownUp">
+                        <a href={this.state.link} ><i className="fa fa-download" aria-hidden="true"></i>{Resources.downloadExcelFormatFile[currentLanguage]}</a>
+                    </div>}
                 <Dropzone
                     multiple={false}
-                    accept='.xlsx'
+                    accept={this.props.CustomAccept ? '.xer' : '.xlsx'}
                     onDrop={e => this.onDrop(e)}
                     onDragLeave={e => this.setState({ _className: " " })}
                     onDragOver={e => this.setState({ _className: "dragHover" })}
@@ -130,8 +164,15 @@ class XSLfile extends Component {
                             : null
                         }
                     </div>
-                    <button className={"primaryBtn-1 btn smallBtn " + (this.props.disabled ? 'disabled' : '')} disabled={this.props.disabled ? 'disabled' : ''} onClick={this.upload}>{Resources['upload'][currentLanguage]}</button>
-                </div>
+                    {this.state.Isloading ?
+                        <button className="primaryBtn-1 btn smallBtn disabled" disabled="disabled">
+                            <div className="spinner">
+                                <div className="bounce1" />
+                                <div className="bounce2" />
+                                <div className="bounce3" />
+                            </div>
+                        </button>
+                        : <button className={"primaryBtn-1 btn smallBtn " + (this.props.disabled ? 'disabled' : '')} disabled={this.props.disabled ? 'disabled' : ''} onClick={this.props.CustomUpload ? this.CustomUpload : this.upload}>{Resources['upload'][currentLanguage]}</button>} </div>
 
             </div>
         )
