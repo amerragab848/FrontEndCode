@@ -99,6 +99,9 @@ import WFUsageReport from './Pages/ReportsCenter/OtherReports/WFUsageReport';
 import FollowUpUsageReport from './Pages/ReportsCenter/OtherReports/FollowUpUsageReport';
 import WFDistributionAccountReport from './Pages/ReportsCenter/OtherReports/WFDistributionAccountReport';
 import PaymentReqStatusReport from './Pages/ReportsCenter/OtherReports/PaymentReqStatusReport';
+import TechnicalOfficeReport from './Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport';
+import SubmittalsPerNeighBorhood from './Pages/ReportsCenter/TechnicalOffice/SubmittalsPerNeighBorhood';
+import ProgressDocuments from './Pages/ReportsCenter/TechnicalOffice/ProgressDocuments';
 
  
  
@@ -217,6 +220,9 @@ let originalRoutes = [
     , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />
     , <Route path="/WFDistributionAccountReport" component={WFDistributionAccountReport} />
     , <Route path="/PaymentReqStatusReport" component={PaymentReqStatusReport} />
+    , <Route path="/TechnicalOfficeReport" component={TechnicalOfficeReport} />
+    , <Route path="/SubmittalsPerNeighBorhood" component={SubmittalsPerNeighBorhood} />
+    , <Route path="/ProgressDocuments" component={ProgressDocuments} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

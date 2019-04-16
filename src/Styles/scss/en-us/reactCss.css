@@ -3562,3 +3562,66 @@ color: #4382f9 !important;
   background: #fff;
   padding: 40px;
 } */
+
+.doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell , .doc-pre-cycle.has__table .attachmentTable thead tr .headCell{
+  width: 100%;
+  max-width: inherit;
+  min-width: auto;
+  height: 100%;
+  position: relative;
+  justify-content: center;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr td:first-child .contentCell , .doc-pre-cycle.has__table .attachmentTable thead tr th:first-child .headCell{
+  justify-content: flex-start;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell p {
+  z-index: 1;
+  position: relative;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell span.percentage__color{
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+}
+.doc-pre-cycle.has__table {
+  display: flex;
+}
+.doc-pre-cycle.has__table .attachmentTable{
+  margin: 0;
+}
+
+.doc-pre-cycle.has__table .attachmentTable tbody tr td, .doc-pre-cycle.has__table .attachmentTable thead tr th {
+  border-right: 1px solid #e9ecf0;
+}
+
+.doc-pre-cycle.has__table .table__scroll{
+  overflow: auto;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr td:first-child .contentCell {
+  width: 140px;
+  max-width: inherit;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr td:nth-child(2) {
+  width: 100px;
+}
+.table__figure {
+  max-width: 110px;
+  margin-left: 15px;
+}
+.table__figure .table__figure--item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.table__figure .table__figure--item span{
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+.table__figure .table__figure--item p{
+  font-family: font-r
+}
