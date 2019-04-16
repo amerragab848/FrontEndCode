@@ -105,7 +105,7 @@ class Login extends Component {
                         if (primeData.permissions && primeData.permissions.length > 0) {
                             let permission = CryptoJS.enc.Utf8.parse(JSON.stringify(primeData.permissions))
                             let encodedPermission = CryptoJS.enc.Base64.stringify(permission)
-                            tokenStore.setItem('permission', encodedPermission)
+                            tokenStore.setItem('permissions', encodedPermission)
                         }
                         if (primeData.timeSheetSettings) {
                             tokenStore.setItem('timeSheetSettings', JSON.stringify(primeData.timeSheetSettings))
@@ -116,8 +116,9 @@ class Login extends Component {
                         if (primeData.appComponants) {
                             tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
                         }
-                    })
+                        
                     window.location.reload();
+                    })
                 })
             }
          

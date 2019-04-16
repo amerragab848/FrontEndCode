@@ -94,12 +94,18 @@ import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
 import Itemize from "./Pages/Contracts/Itemize";
 import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
 import rptCostCodingTree from './Pages/CostControl/rptCostCodingTree';
+import WFActivityReport from './Pages/ReportsCenter/OtherReports/WFActivityReport';
 import boqStructure from "./Pages/ProjectSetup/boqStructure";
-import WFActivity from './Pages/ReportsCenter/OtherReports/WFActivity';
 import TransmittalReport from './Pages/ReportsCenter/OtherReports/TransmittalReport';
 import WFUsageReport from './Pages/ReportsCenter/OtherReports/WFUsageReport';
 import FollowUpUsageReport from './Pages/ReportsCenter/OtherReports/FollowUpUsageReport';
 import ClaimsAddEdit from "./Pages/Communication/ClaimsAddEdit";
+import WFDistributionAccountReport from './Pages/ReportsCenter/OtherReports/WFDistributionAccountReport';
+import PaymentReqStatusReport from './Pages/ReportsCenter/OtherReports/PaymentReqStatusReport';
+import TechnicalOfficeReport from './Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport';
+import SubmittalsPerNeighBorhood from './Pages/ReportsCenter/TechnicalOffice/SubmittalsPerNeighBorhood';
+import ProgressDocuments from './Pages/ReportsCenter/TechnicalOffice/ProgressDocuments';
+
  
  
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -210,6 +216,7 @@ let originalRoutes = [
     , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
+    , <Route path="/WFActivityReport" component={WFActivityReport} />
     , <Route path="/boqStructure" component={boqStructure} />
     , <Route path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />
     , <Route path="/ClaimsAddEdit" component={ClaimsAddEdit} />
@@ -218,6 +225,11 @@ let originalRoutes = [
     , <Route path="/WFUsageReport" component={WFUsageReport} />
     , <Route path="/TransmittalReport" component={TransmittalReport} />
     , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />
+    , <Route path="/WFDistributionAccountReport" component={WFDistributionAccountReport} />
+    , <Route path="/PaymentReqStatusReport" component={PaymentReqStatusReport} />
+    , <Route path="/TechnicalOfficeReport" component={TechnicalOfficeReport} />
+    , <Route path="/SubmittalsPerNeighBorhood" component={SubmittalsPerNeighBorhood} />
+    , <Route path="/ProgressDocuments" component={ProgressDocuments} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
