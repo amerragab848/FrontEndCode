@@ -77,7 +77,9 @@ import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralCon
  
 import RequestPaymentsAddEdit from "./Pages/Contracts/requestPaymentsAddEdit";
 import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
- 
+import projectPrimaveraScheduleAddEdit from "./Pages/TimeManagement/projectPrimaveraScheduleAddEdit";
+
+
 import pcoAddEdit from "./Pages/Contracts/pcoAddEdit";
 import drawingSetsAddEdit from "./Pages/Design/drawingSetsAddEdit";
 import riskAddEdit from "./Pages/Contracts/riskAddEdit";
@@ -97,8 +99,18 @@ import boqStructure from "./Pages/ProjectSetup/boqStructure";
 import TransmittalReport from './Pages/ReportsCenter/OtherReports/TransmittalReport';
 import WFUsageReport from './Pages/ReportsCenter/OtherReports/WFUsageReport';
 import FollowUpUsageReport from './Pages/ReportsCenter/OtherReports/FollowUpUsageReport';
+import ClaimsAddEdit from "./Pages/Communication/ClaimsAddEdit";
 import WFDistributionAccountReport from './Pages/ReportsCenter/OtherReports/WFDistributionAccountReport';
 import PaymentReqStatusReport from './Pages/ReportsCenter/OtherReports/PaymentReqStatusReport';
+import TechnicalOfficeReport from './Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport';
+import SubmittalsPerNeighBorhood from './Pages/ReportsCenter/TechnicalOffice/SubmittalsPerNeighBorhood';
+import ProgressDocuments from './Pages/ReportsCenter/TechnicalOffice/ProgressDocuments';
+import ProjectInvoices from './Pages/ReportsCenter/ContractsPOReports/ProjectInvoices';
+import CollectedPaymentRequisition from './Pages/ReportsCenter/ContractsPOReports/CollectedPaymentRequisition';
+import SiteRequestReleasedQnt from './Pages/ReportsCenter/ContractsPOReports/SiteRequestReleasedQnt';
+import InvoicesLogReport from './Pages/ReportsCenter/ContractsPOReports/InvoicesLogReport';
+import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocument';
+import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
 
  
  
@@ -212,11 +224,25 @@ let originalRoutes = [
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
     , <Route path="/WFActivityReport" component={WFActivityReport} />
     , <Route path="/boqStructure" component={boqStructure} />
+    , <Route path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />
+    , <Route path="/ClaimsAddEdit" component={ClaimsAddEdit} />
+    
     , <Route path="/WFUsageReport" component={WFUsageReport} />
     , <Route path="/TransmittalReport" component={TransmittalReport} />
     , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />
     , <Route path="/WFDistributionAccountReport" component={WFDistributionAccountReport} />
     , <Route path="/PaymentReqStatusReport" component={PaymentReqStatusReport} />
+    , <Route path="/TechnicalOfficeReport" component={TechnicalOfficeReport} />
+    , <Route path="/SubmittalsPerNeighBorhood" component={SubmittalsPerNeighBorhood} />
+    , <Route path="/ProgressDocuments" component={ProgressDocuments} />
+    , <Route path="/ProjectInvoices" component={ProjectInvoices} />
+    , <Route path="/CollectedPaymentRequisition" component={CollectedPaymentRequisition} />
+    , <Route path="/SiteRequestReleasedQnt" component={SiteRequestReleasedQnt} />
+    , <Route path="/InvoicesLogReport" component={InvoicesLogReport} />
+    
+    
+    , <Route path="/approvalDocument" component={approvalDocument} />
+    , <Route path="/contractorsPerformance" component={contractorsPerformance} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

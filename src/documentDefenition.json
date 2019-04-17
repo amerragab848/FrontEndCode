@@ -18814,7 +18814,6 @@
         "isCustom": false,
         "exportDataType": "d"
       },
-     
       {
         "field": "docCloseDate",
         "friendlyName": "docClosedate",
@@ -18854,7 +18853,7 @@
         "type": "string",
         "isCustom": true
       },
-     {
+      {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
@@ -18873,6 +18872,328 @@
         "isCustom": false
       }
     ]
+  },
+  "claims": {
+    "documentTitle": "claims",
+    "docTyp": 109,
+    "documentAddEditLink": "ClaimsAddEdit/",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 48,
+    "documentEditPermission": 49,
+    "documentDeletePermission": 50,
+    "documentViewPermission": 51,
+    "documentPermission": 52,
+    "documentApi": {
+      "get": "GetLettersByProjectId",
+      "getCustom": "GetLettersByProjectIdCustom",
+      "delete": "DeletMultipleLettersById"
+    },
+    "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "statusName",
+        "friendlyName": "status",
+        "minWidth": 155,
+        "width": "7%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#lettersAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromCompanyName",
+        "friendlyName": "fromCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromContactName",
+        "friendlyName": "fromContact",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "toCompanyName",
+        "friendlyName": "toCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "toContactName",
+        "friendlyName": "ToContact",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "openedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 150,
+        "width": "8%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "total",
+        "friendlyName": "total",
+        "minWidth": 80,
+        "width": "10%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "sendDate",
+        "friendlyName": "sendDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
+        "minWidth": 85,
+        "width": "8%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "disciplineName",
+        "friendlyName": "disciplineName",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "replyDate",
+        "friendlyName": "replyDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "refDoc",
+        "friendlyName": "refDoc",
+        "minWidth": 85,
+        "width": "3%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastSendDate",
+        "friendlyName": "lastSendDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendTime",
+        "friendlyName": "lastSendTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastApproveDate",
+        "friendlyName": "lastApproveDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastApproveTime",
+        "friendlyName": "lastApprovedTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      }
+    ],
+    "filterApi": "LettersFilters",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "isCustom": true
+      },
+      {
+        "name": "status",
+        "field": "status",
+        "type": "toggle",
+        "isCustom": true,
+        "trueLabel": "oppened",
+        "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "fromCompany",
+        "field": "fromCompanyName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "fromContact",
+        "field": "fromContactName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "toCompany",
+        "field": "toCompanyName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "ToContact",
+        "field": "toContactName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "docClosedate",
+        "field": "docClosedate",
+        "type": "date",
+        "isCustom": false
+      },
+      {
+        "name": "disciplineName",
+        "field": "disciplineName",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "refDoc",
+        "field": "refDoc",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "total",
+        "field": "total",
+        "type": "number",
+        "isCustom": true
+      }
+    ]
   }
-
 }
