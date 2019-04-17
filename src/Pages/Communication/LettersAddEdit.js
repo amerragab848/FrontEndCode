@@ -130,6 +130,7 @@ class LettersAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
+
     };
 
     componentWillReceiveProps(nextProps) {
@@ -139,6 +140,24 @@ class LettersAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow,
                 message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
             });
+
+            let fields = [
+                { name: Resources.subject[currentLanguage], value: nextProps.document.subject},
+                { name: Resources.numberAbb[currentLanguage], value: nextProps.document.arrange},
+                { name: Resources.status[currentLanguage], value: nextProps.document.statusName},
+                { name: Resources.docDate[currentLanguage], value: moment(nextProps.document.docDate).format("DD/MM/YYYY")},
+                { name: Resources.refDoc[currentLanguage], value: nextProps.document.refDoc},
+                { name: Resources.fromCompany[currentLanguage], value: nextProps.document.fromCompanyName},
+                { name: Resources.fromContact[currentLanguage], value: nextProps.document.fromContactName},
+                { name: Resources.toCompany[currentLanguage], value: nextProps.document.toCompanyName},
+                { name: Resources.attention[currentLanguage], value: nextProps.document.toContactName},
+                { name: Resources.projectName[currentLanguage], value: nextProps.document.projectName }
+            ];
+            
+            let data={fields: fields,columnsItems :[]};
+
+            this.props.actions.ExportingData(data);
+
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
@@ -155,10 +174,10 @@ class LettersAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-        
+
         if (prevProps.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });  
-        } 
+            this.setState({ showModal: this.props.showModal });
+        }
     }
 
     checkDocumentIsView() {
@@ -736,15 +755,15 @@ class LettersAddEdit extends Component {
 
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
-                                                                            <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                                                         </div>
                                                                         : null
                                                                     }
                                                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                   <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                     <span className="border"></span>
                                                                     <div className="document__action--menu">
                                                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -796,7 +815,7 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId, showModal:  state.communication.showModal 
+        projectId: state.communication.projectId, showModal: state.communication.showModal
     }
 }
 

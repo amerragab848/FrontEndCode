@@ -1,6 +1,6 @@
 import * as types from './types';
 import Api from '../../api';
- 
+
 const _ = require('lodash')
 
 export function documentForEdit(urlAction) {
@@ -45,6 +45,16 @@ export function documentForAdding(doc) {
     return (dispatch, getState) => {
         dispatch({
             type: types.Document_Adding
+        });
+    }
+}
+
+export function ExportingData(data) {
+    return (dispatch, getState) => {
+        dispatch({ 
+            type: types.Export_Document,
+            fields: data.fields,
+            columns:  data.columnsItems
         });
     }
 }
@@ -127,12 +137,12 @@ export function deleteItemsDescription(item) {
     }
 }
 
-export function setItemDescriptions(items,docId) {
+export function setItemDescriptions(items, docId) {
     return (dispatch, getState) => {
         dispatch({
             type: types.add_item,
             item: items,
-            docId:docId
+            docId: docId
         });
     }
 }
@@ -146,10 +156,10 @@ export function editItemDescriptions(item) {
     }
 }
 
-export function updateField(field, value, document) { 
+export function updateField(field, value, document) {
     let oldDoc = { ...document };
     oldDoc[field] = value;
- 
+
     return (dispatch, getState) => {
         dispatch({
             type: types.Update_Field,
@@ -194,7 +204,7 @@ export function GetNextArrange(urlAction) {
 
 export function SnedToWorkFlow(url, formData, urlCycle) {
     return (dispatch, getState) => {
-        return Api.post(url, formData).then(resp => { 
+        return Api.post(url, formData).then(resp => {
             this.GetWorkFlowCycles(urlCycle);
         }).catch((ex) => {
             dispatch({
@@ -232,7 +242,7 @@ export function RouteToTemplate() {
         dispatch({
             type: types.RouteToTemplate,
             showLeftMenu: false,
-            showSelectProject: false 
+            showSelectProject: false
         });
     }
 }
@@ -269,7 +279,7 @@ export function AboveSelectProject(event) {
         });
     }
 }
-export function LeftMenuClick(event,moduleName) {
+export function LeftMenuClick(event, moduleName) {
     return (dispatch, getState) => {
         dispatch({
             type: types.LeftMenuClick,
@@ -287,7 +297,7 @@ export function FillGridLeftMenu() {
         dispatch({
             type: types.FillGridLeftMenu,
             showLeftMenu: true,
-            showSelectProject: false 
+            showSelectProject: false
         });
     }
 }
@@ -324,18 +334,18 @@ export function GetTopicsTable(urlAction) {
         });
     }
 }
- 
+
 export const ViewDocsAttachment = (docs) => {
     return (dispatch, getState) => {
         return (
             dispatch({
-                type: types.ViewDocsAttachment ,
+                type: types.ViewDocsAttachment,
                 attachDocuments: docs
             })
         )
     }
 }
- 
+
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
     let cycles = [];

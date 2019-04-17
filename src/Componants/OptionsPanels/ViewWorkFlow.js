@@ -4,8 +4,7 @@
 // missing and not complated
 //create step Number on top of work flow  "when work flow is in multi level" 
 
-import React, { Component, Fragment } from 'react'
-import Api from '../../api';
+import React, { Component, Fragment } from 'react' 
 import Moment from 'moment';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
@@ -105,7 +104,7 @@ class ViewWorkFlow extends Component {
     renderCycles(workFlowCycles) {
         let cycles = workFlowCycles.map(cycle => {
             return (
-                <div className="workflowWrapper" key={Math.random()}>
+                <div className="workflowWrapper" key={Math.random()} id='wfCycles'>
                     <div className="workflow-header">
                         <h4>{cycle.subject + " -Currently at Level:" + cycle.currentLevel + " -Sent in:" + Moment(cycle.creationDate).format('DD-MM-YYYY')}</h4>
                     </div>

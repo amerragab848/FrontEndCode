@@ -7,16 +7,12 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import moment from 'moment';
-import { Formik, Form } from 'formik';
-// import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-// import NotifiMsg from '../publicComponants/NotifiMsg' 
+import { Formik, Form } from 'formik'; 
 
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('lodash')
-
-
+const _ = require('lodash') 
 
 class DistributionList extends Component {
     constructor(props) {

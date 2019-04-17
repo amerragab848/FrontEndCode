@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Api from '../../../api';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
@@ -7,19 +7,14 @@ import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
-import moment from "moment";
-const _ = require('lodash')
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+ 
 class WFUsageReport extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            WFList: [],
             dropDownList: [],
             selectedWF: { label: Resources.slectWorkFlow[currentLanguage], value: "0" },
             rows: [],
@@ -94,7 +89,7 @@ class WFUsageReport extends Component {
 
         }
 
-        if (!Config.IsAllow(3749) ) {
+        if (!Config.IsAllow(3749)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -102,9 +97,6 @@ class WFUsageReport extends Component {
         }
 
     }
-
-
-
     componentDidMount() {
     }
 
@@ -115,7 +107,6 @@ class WFUsageReport extends Component {
                 list.push({ label: element.subject, value: element.code })
             })
             this.setState({
-                WFList: result,
                 dropDownList: list
             });
         }).catch(() => {
@@ -134,83 +125,29 @@ class WFUsageReport extends Component {
 
     }
     DropdownChange = (event) => {
-        this.setState({ selectedWF: event, isLoading: true })
+        this.setState({ selectedWF: event })
         Api.post('GetWFUsageParent?code=' + event.value).then(res => {
-            let docNo = res[0].docNo
-            let duration = res[0].duration
-            let columns = [
-                {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }
+            if (res[0]!=undefined) {
+                this.setState({isLoading: true})
+                let docNo = res[0].docNo
+                let duration = res[0].duration
+                let columns = [...this.state.columns];
+ 
+                columns.push(
+                    {
+                        key: docNo,
+                        name: docNo,
+                        width: 100,
+                        draggable: true,
+                        sortable: true,
+                        resizable: true,
+                        filterable: true,
+                        sortDescendingFirst: true
+                    })
 
-                , {
-                    key: "weekNo",
-                    name: Resources["weekNumber"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "weeklyPending",
-                    name: Resources["weeklyPending"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "weeklyTotal",
-                    name: Resources["weeklyTotal"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "avgDurationWeekly",
-                    name: Resources["avgDurationWeekly"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "avgDuration",
-                    name: Resources["avgDuration"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "totalDocs",
-                    name: Resources["totalDocs"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }
-            ]
-
-            columns.push(
-                {
-                    key: docNo,
-                    name: docNo,
+                columns.push({
+                    key: duration,
+                    name: duration,
                     width: 100,
                     draggable: true,
                     sortable: true,
@@ -218,18 +155,9 @@ class WFUsageReport extends Component {
                     filterable: true,
                     sortDescendingFirst: true
                 })
-            columns.push({
-                key: duration,
-                name: duration,
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            })
-            this.setState({ columns, isLoading: false, rows: [] })
 
+                this.setState({ columns, isLoading: false, rows: [] })
+            }
         })
     }
     render() {
