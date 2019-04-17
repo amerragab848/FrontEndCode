@@ -105,6 +105,10 @@ import PaymentReqStatusReport from './Pages/ReportsCenter/OtherReports/PaymentRe
 import TechnicalOfficeReport from './Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport';
 import SubmittalsPerNeighBorhood from './Pages/ReportsCenter/TechnicalOffice/SubmittalsPerNeighBorhood';
 import ProgressDocuments from './Pages/ReportsCenter/TechnicalOffice/ProgressDocuments';
+import ProjectInvoices from './Pages/ReportsCenter/ContractsPOReports/ProjectInvoices';
+import CollectedPaymentRequisition from './Pages/ReportsCenter/ContractsPOReports/CollectedPaymentRequisition';
+import SiteRequestReleasedQnt from './Pages/ReportsCenter/ContractsPOReports/SiteRequestReleasedQnt';
+import InvoicesLogReport from './Pages/ReportsCenter/ContractsPOReports/InvoicesLogReport';
 
  
  
@@ -221,7 +225,6 @@ let originalRoutes = [
     , <Route path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />
     , <Route path="/ClaimsAddEdit" component={ClaimsAddEdit} />
     
-    , <Route path="/WFActivity" component={WFActivity} />
     , <Route path="/WFUsageReport" component={WFUsageReport} />
     , <Route path="/TransmittalReport" component={TransmittalReport} />
     , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />
@@ -230,6 +233,12 @@ let originalRoutes = [
     , <Route path="/TechnicalOfficeReport" component={TechnicalOfficeReport} />
     , <Route path="/SubmittalsPerNeighBorhood" component={SubmittalsPerNeighBorhood} />
     , <Route path="/ProgressDocuments" component={ProgressDocuments} />
+    , <Route path="/ProjectInvoices" component={ProjectInvoices} />
+    , <Route path="/CollectedPaymentRequisition" component={CollectedPaymentRequisition} />
+    , <Route path="/SiteRequestReleasedQnt" component={SiteRequestReleasedQnt} />
+    , <Route path="/InvoicesLogReport" component={InvoicesLogReport} />
+    
+    
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

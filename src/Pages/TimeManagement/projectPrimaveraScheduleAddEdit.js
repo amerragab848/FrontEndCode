@@ -3,7 +3,6 @@ import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
-import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
@@ -11,12 +10,9 @@ import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SkyLightStateless } from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config.js";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
-import IPConfig from '../../IP_Configrations'
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
@@ -290,7 +286,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
         return btn;
     }
 
-    AddEditProjectEstimation = () => {
+    AddEditDoc = () => {
         if (this.state.IsAddModel) {
             this.NextStep()
         }
@@ -530,7 +526,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
-                                                this.AddEditProjectEstimation();
+                                                this.AddEditDoc();
                                             }}  >
 
                                             {({ errors, touched, handleBlur, values, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (

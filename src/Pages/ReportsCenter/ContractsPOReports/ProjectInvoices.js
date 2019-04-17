@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import Api from '../../../api';
+import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
@@ -8,171 +8,161 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
-const _ = require('lodash')
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+import Dataservice from '../../../Dataservice';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
+
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-class WFActivityReport extends Component {
+}
+
+const ValidtionSchema = Yup.object().shape({
+    selectedProject: Yup.string()
+        .required(Resources['projectSelection'][currentLanguage])
+        .nullable(true),
+});
+
+class ProjectInvoices extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            employeesList: [],
-            dropDownList: [],
-            selectedEmployee: { label: Resources.selectEmployee[currentLanguage], value: "0" },
+            ProjectsData: [],
+            selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
             rows: []
         }
 
-        if (!Config.IsAllow(4017) ) {
+        if (!Config.IsAllow(3691)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
-            });
+            })
         }
+
         this.columns = [
             {
                 key: "arrange",
-                name: Resources["levelNo"][currentLanguage],
+                name: Resources["numberAbb"][currentLanguage],
+                width: 80,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "subject",
+                name: Resources["subject"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "docDate",
+                name: Resources["docDate"][currentLanguage],
+                width: 160,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            }, {
+                key: "total",
+                name: Resources["total"][currentLanguage],
                 width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            }
-
-            , {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 120,
+            }, {
+                key: "balance",
+                name: Resources["balanceToFinish"][currentLanguage],
+                width: 140,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
             }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "docDurationDays",
-                name: Resources["docDurationDays"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "docTypeName",
-                name: Resources["docType"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "previousLevelApprovalDate",
-                name: Resources["previousLevelApprovalDate"][currentLanguage],
-                width: 120,
+                key: "docCloseDate",
+                name: Resources["docClosedate"][currentLanguage],
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: dateFormate
-            }, {
-                key: "userApprovalDate",
-                name: Resources["userApprovalDate"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            }, {
-                key: "approvalStatusName",
-                name: Resources["approvalStatusName"][currentLanguage],
-                width: 120,
+            },
+            {
+                key: "createdBy",
+                name: Resources["createdBy"][currentLanguage],
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            }, {
-                key: "userDurationDays",
-                name: Resources["userDurationDays"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
+            },
         ];
 
     }
- 
+
     componentDidMount() {
     }
 
     componentWillMount() {
-        Api.get('GetAllContactsWithAccount').then(result => {
-            let list = []
-            result.forEach((element) => {
-                list.push({ label: element.contactName, value: element.id })
+        Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
+            result => {
+                this.setState({
+                    ProjectsData: result
+                })
+            }).catch(() => {
+                toast.error('somthing wrong')
             })
-            this.setState({
-                employeesList: result,
-                dropDownList: list
-            });
-        }).catch(() => {
-            toast.error('somthing wrong')
+    }
+
+
+    getGridRows = () => {
+        this.setState({ isLoading: true })
+        Dataservice.GetDataGrid('GetContractsInvoicesForPoByProjectIdWithOutPaging?projectId=' + this.state.selectedProject.value + '').then(
+            res => {
+                this.setState({
+                    rows: res.data,
+                    isLoading: false
+                })
+            }
+        ).catch(() => {
+            this.setState({ isLoading: false })
         })
     }
- 
-    getGridRows = () => {
-        if (this.state.selectedEmployee.value != '0') {
-            this.state.employeesList.forEach(employee => {
-                if (employee.id == this.state.selectedEmployee.value) {
-                    this.setState({ isLoading: true })
-                    Api.get('GetWorkFlowActivity?accountId=' + employee.accountId).then((res) => {
-                        this.setState({ rows: res, isLoading: false })
-                    }).catch(() => {
-                        this.setState({ isLoading: false })
-                    })
-                }
-            });
 
-        }
-    }
-  
     render() {
+
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup
-                rows={this.state.rows}
-                showCheckbox={false}
-                pageSize={this.state.pageSize}
-                columns={this.columns}
-            />) : <LoadingSection />;
+            <GridSetup rows={this.state.rows} showCheckbox={false}
+                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'workFlowActivity'} />
-            : null;
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
+            : null
+
         return (
 
             <div className='mainContainer main__fulldash'>
+
                 <div className="documents-stepper noTabs__document">
+
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['workFlowActivity'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['projectInvoices'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -191,25 +181,50 @@ class WFActivityReport extends Component {
                             </svg>
                         </div>
                     </div>
+
                     <div className="doc-container">
+
                         <div className="step-content">
                             <div className="document-fields">
                                 <div className=" fullWidthWrapper textRight">
                                     {btnExport}
                                 </div>
-                                <div className="proForm datepickerContainer">
-                                    <Dropdown className='fullWidthWrapper textLeft' 
-                                        title="employee"
-                                        data={this.state.dropDownList}
-                                        selectedValue={this.state.selectedEmployee}
-                                        handleChange={event => this.setState({ selectedEmployee: event })}
-                                        name="employees"
-                                        index="employees"
-                                    />
-                                    <div className="fullWidthWrapper ">
-                                        <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
-                                    </div>
-                                </div>
+
+                                <Formik
+
+                                    initialValues={{
+                                        selectedProject: '',
+                                    }}
+
+                                    enableReinitialize={true}
+
+                                    validationSchema={ValidtionSchema}
+
+                                    onSubmit={(values, actions) => {
+
+                                        this.getGridRows()
+                                    }}>
+
+                                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                                        <Form onSubmit={handleSubmit}>
+                                            <div className="proForm datepickerContainer">
+                                                <Dropdown className="fullWidthWrapper textLeft" title='Projects' data={this.state.ProjectsData} name='selectedProject'
+                                                    selectedValue={this.state.selectedProject} onChange={setFieldValue}
+                                                    handleChange={e => this.setState({ selectedProject: e })}
+                                                    onBlur={setFieldTouched}
+                                                    error={errors.selectedProject}
+                                                    touched={touched.selectedProject}
+                                                    value={values.selectedProject} />
+                                            </div>
+
+                                            <div className="fullWidthWrapper ">
+                                                <button className="primaryBtn-1 btn mediumBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                                            </div>
+
+                                        </Form>
+                                    )}
+                                </Formik>
+
 
                             </div>
                             <div className="doc-pre-cycle letterFullWidth">
@@ -225,4 +240,4 @@ class WFActivityReport extends Component {
     }
 
 }
-export default WFActivityReport
+export default withRouter(ProjectInvoices)

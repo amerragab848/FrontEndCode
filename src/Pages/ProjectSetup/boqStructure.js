@@ -17,8 +17,6 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { EditorFormatListBulleted } from "material-ui/svg-icons";
-import { __esModule } from "material-ui/svg-icons/communication/call-received";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -62,7 +60,7 @@ class boqStructure extends Component {
             IsFirstParent: false
         };
 
-        if (!Config.IsAllow(134) || !Config.IsAllow(135) || !Config.IsAllow(137)) {
+        if (!Config.IsAllow(3670)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/DashBoard/" + this.state.projectId);
         }
@@ -202,24 +200,29 @@ class boqStructure extends Component {
                             </div>
                             <div className="Project__num">
                                 <div className="eps__actions">
-                                    <a className="editIcon" onClick={() => this.EditNode(item)}>
-                                        <img src={Edit} alt="Edit" />
-                                    </a>
-                                    <a className="plusIcon" onClick={() => this.AddNode(item)}>
-                                        <img src={Plus} alt="Add" />
-                                    </a>
-                                    <a className="deleteIcon" onClick={() => this.DeleteNode(item.id)}>
-                                        <img
-                                            src={Delete}
-                                            alt="Delete"
-                                        />
-                                    </a>
-                                    <a className="deleteIcon" onClick={() => this.ViewPopUpCopyTo(item.id)}>
-                                        <img
-                                            src={Delete}
-                                            alt="Delete"
-                                        />
-                                    </a>
+                                    {Config.IsAllow(3657) ?
+                                        <a className="editIcon" onClick={() => this.EditNode(item)}>
+                                            <img src={Edit} alt="Edit" />
+                                        </a>
+                                        : null}
+
+                                    {Config.IsAllow(3656) ?
+                                        <a className="plusIcon" onClick={() => this.AddNode(item)}>
+                                            <img src={Plus} alt="Add" />
+                                        </a>
+                                        : null}
+
+                                    {Config.IsAllow(3658) ?
+                                        <a className="deleteIcon" onClick={() => this.DeleteNode(item.id)}>
+                                            <img src={Delete} alt="Delete" />
+                                        </a>
+                                        : null}
+
+                                    {Config.IsAllow(3671) ?
+                                        <a className="deleteIcon" onClick={() => this.ViewPopUpCopyTo(item.id)}>
+                                            <img src={Delete} alt="Delete" />
+                                        </a>
+                                        : null}
                                 </div>
                             </div>
                         </div>
@@ -476,18 +479,30 @@ class boqStructure extends Component {
                                         </div>
                                         <div className="Project__num">
                                             <div className="eps__actions">
-                                                <a className="editIcon" onClick={() => this.EditNode(item)}>
-                                                    <img src={Edit} alt="Edit" />
-                                                </a>
-                                                <a className="plusIcon" onClick={() => this.AddNode(item)}>
-                                                    <img src={Plus} alt="Add" />
-                                                </a>
-                                                <a className="deleteIcon" onClick={() => this.DeleteNode(item.id)}>
-                                                    <img src={Delete} alt="Delete" />
-                                                </a>
-                                                <a className="deleteIcon" onClick={() => this.ViewPopUpCopyTo(item.id)}>
-                                                    <img src={Delete} alt="Delete" />
-                                                </a>
+                                                {Config.IsAllow(3657) ?
+                                                    <a className="editIcon" onClick={() => this.EditNode(item)}>
+                                                        <img src={Edit} alt="Edit" />
+                                                    </a>
+                                                    : null}
+
+                                                {Config.IsAllow(3656) ?
+                                                    <a className="plusIcon" onClick={() => this.AddNode(item)}>
+                                                        <img src={Plus} alt="Add" />
+                                                    </a>
+                                                    : null}
+
+                                                {Config.IsAllow(3658) ?
+                                                    <a className="deleteIcon" onClick={() => this.DeleteNode(item.id)}>
+                                                        <img src={Delete} alt="Delete" />
+                                                    </a>
+                                                    : null}
+
+                                                {Config.IsAllow(3671) ?
+                                                    <a className="deleteIcon" onClick={() => this.ViewPopUpCopyTo(item.id)}>
+                                                        <img src={Delete} alt="Delete" />
+                                                    </a>
+                                                    : null}
+
                                             </div>
                                         </div>
                                     </div>
