@@ -300,7 +300,7 @@ class AddDocAttachment extends Component {
         <div className="precycle-grid modalTable">
           {
             this.props.attachDocuments.length > 0 ?
-              <ReactTable data={this.props.attachDocuments}
+              <ReactTable data={this.props.attachDocuments} id="attachDocuments"
                 columns={columnsDocument} defaultPageSize={5}
                 noDataText={Resources["noData"][currentLanguage]}
                 className="-striped -highlight" /> : null

@@ -25,7 +25,8 @@ export default {
 			items:[],
 			attachDocuments:[],
 			fields:[],
-			columns:[]
+			columns:[],
+			fieldsItems:[]
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},

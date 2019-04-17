@@ -20,7 +20,9 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 fields: action.fields,
-                columns: action.columns
+                columns: action.columns ? action.columns : [] ,
+                fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
+                items: action.items ? action.items: []
             }
 
 

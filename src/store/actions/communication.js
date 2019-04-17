@@ -54,7 +54,9 @@ export function ExportingData(data) {
         dispatch({ 
             type: types.Export_Document,
             fields: data.fields,
-            columns:  data.columnsItems
+            columns:  data.columnsItems,
+            fieldsItems:  data.fieldsItems,
+            items:  data.items
         });
     }
 }

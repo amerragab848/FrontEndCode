@@ -155,9 +155,51 @@ class TransmittalAddEdit extends Component {
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+            this.Export_Document();
         }
     };
 
+    Export_Document() {
+        let document = { ...this.state.document };
+
+        let fields = [
+            { name: Resources.subject[currentLanguage], value: document.subject },
+            { name: Resources.status[currentLanguage], value: document.statusName },
+            { name: Resources.refDoc[currentLanguage], value: document.refDoc },
+            { name: Resources.docDate[currentLanguage], value: document.docDate },
+            { name: Resources.requiredDate[currentLanguage], value: document.requiredDate },
+            { name: Resources.sendingMethod[currentLanguage], value: document.sendingMethodName },
+            { name: Resources.submittedFor[currentLanguage], value: document.submittedForName },
+            { name: Resources.description[currentLanguage], value: document.description },
+            { name: Resources.discipline[currentLanguage], value: document.discipline },
+            { name: Resources.area[currentLanguage], value: document.area },
+            { name: Resources.buildingNumber[currentLanguage], value: document.building },
+            { name: Resources.apartmentNumber[currentLanguage], value: document.apartment },
+            { name: Resources.fromCompany[currentLanguage], value: document.fromCompanyName },
+            { name: Resources.fromContact[currentLanguage], value: document.fromContactName },
+            { name: Resources.toCompany[currentLanguage], value: document.toCompanyName },
+            { name: Resources.attention[currentLanguage], value: document.toContactName },
+            { name: Resources.projectName[currentLanguage], value: projectName }
+        ]; 
+
+        let friendlyNames = [
+              Resources.arrange[currentLanguage]
+            , Resources.subject[currentLanguage]
+            , Resources.status[currentLanguage]
+            , Resources.CompanyName[currentLanguage]
+            , Resources.ContactName[currentLanguage]
+            , Resources.docDate[currentLanguage]
+            , Resources.approvalStatus[currentLanguage]
+            , Resources.progressPercent[currentLanguage]
+            , Resources.answer[currentLanguage]
+        ];
+        let fieldsItems = [];
+        let items = [];
+        let data = { fields: fields, columnsItems: friendlyNames, fieldsItems: fieldsItems, items: items };
+
+        this.props.actions.ExportingData(data);
+    }
+    
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
@@ -241,7 +283,7 @@ class TransmittalAddEdit extends Component {
                     [subDatasource]: result
                 });
             }
-        }); 
+        });
     }
 
     fillDropDowns(isEdit) {
@@ -273,7 +315,7 @@ class TransmittalAddEdit extends Component {
             this.setState({
                 companies: [...result]
             });
-        }) 
+        })
 
         //discplines
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
@@ -293,7 +335,7 @@ class TransmittalAddEdit extends Component {
             this.setState({
                 discplines: [...result]
             });
-        }) ;
+        });
 
         //area
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
@@ -843,17 +885,17 @@ class TransmittalAddEdit extends Component {
                                                     </div>
                                                     {
                                                         this.props.changeStatus === true ?
-                                                            <div className="approveDocument"> 
+                                                            <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
-                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit'>{Resources.save[currentLanguage]}</button>
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit'>{Resources.save[currentLanguage]}</button>
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
-                                                                            <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                                                         </div> : null
                                                                     }
                                                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                   <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                     <span className="border"></span>
                                                                     <div className="document__action--menu">
                                                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -879,7 +921,7 @@ class TransmittalAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                    
+
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>

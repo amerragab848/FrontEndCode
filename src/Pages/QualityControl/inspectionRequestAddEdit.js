@@ -206,8 +206,8 @@ class inspectionRequestAddEdit extends Component {
             else {
                 links[i].classList.add('odd');
             }
-        }
-        //this.checkDocumentIsView();
+        } 
+
     };
 
     componentWillReceiveProps(nextProps) {
@@ -226,20 +226,77 @@ class inspectionRequestAddEdit extends Component {
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+            
+        this.Export_Document();
         }
     };
 
     componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
+    }
+
+    Export_Document() {
+        let document = { ...this.state.document };
+
+        let fields = [
+
+            { name: Resources.subject[currentLanguage], value: document.subject },
+            { name: Resources.projectName[currentLanguage], value: document.projectName },
+            { name: Resources.status[currentLanguage], value: document.statusName },
+            { name: Resources.docDate[currentLanguage], value: moment(document.docDate).format("DD/MM/YYYY") },
+            { name: Resources.arrange[currentLanguage], value: document.arrange },
+            { name: Resources.refrences[currentLanguage], value: document.refDoc },
+            { name: Resources.requiredDate[currentLanguage], value: moment(document.requiredDate).format("DD/MM/YYYY") },
+            { name: Resources.fromCompany[currentLanguage], value: document.fromCompanyName },
+            { name: Resources.fromContact[currentLanguage], value: document.fromContactName },
+            { name: Resources.toCompany[currentLanguage], value: document.toCompanyName },
+            { name: Resources.ToContact[currentLanguage], value: document.toContactName },
+            { name: Resources.actionByCompany[currentLanguage], value: document.bicCompanyName },
+            { name: Resources.actionByContact[currentLanguage], value: document.bicContactName },
+            { name: Resources.contractPo[currentLanguage], value: document.orderType },
+            { name: Resources.discipline[currentLanguage], value: document.disciplineName },
+            { name: Resources.specsSection[currentLanguage], value: document.specsSectionName },
+            { name: Resources.reasonForIssue[currentLanguage], value: document.reasonForIssueName },
+            { name: Resources.fileNumber[currentLanguage], value: document.fileNumberName },
+            { name: Resources.area[currentLanguage], value: document.areaName },
+            { name: Resources.Building[currentLanguage], value: document.buildingNoName },
+            { name: Resources.apartmentNumber[currentLanguage], value: document.apartmentNoName },
+            { name: Resources.answer[currentLanguage], value: document.rfi != null ? document.rfi : "" },
+            { name: Resources.message[currentLanguage], value: document.answer != null ? document.answer : "" },
+            // { name: '', value: '' },
+            { name: Resources.CycleDetails[currentLanguage], value: "    " },
+            // { name: '', value: '' },
+            { name: Resources.cycleSubject[currentLanguage], value: document.cycleSubject },
+            { name: Resources.status[currentLanguage], value: document.cycleStatusName },
+            { name: Resources.cycleDate[currentLanguage], value: moment(document.cycleDocDate).format("DD/MM/YYYY") },
+            { name: Resources.approvalStatus[currentLanguage], value: document.cycleApprovalStatusName },
+            { name: Resources.progressPercent[currentLanguage], value: document.cycleProgressPercent },
+            { name: Resources.resultDate[currentLanguage], value: moment(document.resultDate).format("DD/MM/YYYY") },
+        ];
+
+        let friendlyNames = [
+            Resources.arrange[currentLanguage]
+            , Resources.subject[currentLanguage]
+            , Resources.status[currentLanguage]
+            , Resources.CompanyName[currentLanguage]
+            , Resources.ContactName[currentLanguage]
+            , Resources.docDate[currentLanguage]
+            , Resources.approvalStatus[currentLanguage]
+            , Resources.progressPercent[currentLanguage]
+            , Resources.answer[currentLanguage]
+        ];
+        let fieldsItems = ['arrange', 'subject', 'statusName', 'flowCompanyName', 'flowContactName', 'docDate', 'approvalStatusName', 'progressPercent', 'cycleComment'];
+        let items = this.state.IRCycles;
+        let data = { fields: fields, columnsItems: friendlyNames, fieldsItems: fieldsItems, items: items };
+
+        this.props.actions.ExportingData(data);
     }
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(367)) {
-                alert('not have edit...');
                 this.setState({ isViewMode: true });
             }
 
@@ -249,13 +306,9 @@ class inspectionRequestAddEdit extends Component {
                     if (this.props.document.status !== false && Config.IsAllow(367)) {
                         this.setState({ isViewMode: false });
                     } else {
-                        // alert('not have edit and status = ' + this.props.document.status);
-                        // alert('not have edit and status = ' + this.props.document.id);
                         this.setState({ isViewMode: true });
                     }
                 } else {
-
-                    alert('not have edit and hasWorkflow = ' + this.props.hasWorkflow);
                     this.setState({ isViewMode: true });
                 }
             }
@@ -263,7 +316,6 @@ class inspectionRequestAddEdit extends Component {
         else {
             this.setState({ isViewMode: false });
         }
-        console.log('checkDocumentIsView...', this.props, this.state);
     }
 
     componentWillMount() {
@@ -1368,8 +1420,8 @@ class inspectionRequestAddEdit extends Component {
                                         :
                                         //Third Step
                                         <Fragment>
-                                          
-                                          <div className="document-fields tableBTnabs">
+
+                                            <div className="document-fields tableBTnabs">
                                                 {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                             </div>
 
@@ -1432,15 +1484,15 @@ class inspectionRequestAddEdit extends Component {
 
                                         {this.state.isApproveMode === true ?
                                             <div >
-                                                <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                             </div>
                                             : null
                                         }
                                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                       <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
