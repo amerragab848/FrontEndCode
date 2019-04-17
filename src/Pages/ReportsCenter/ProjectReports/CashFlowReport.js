@@ -35,7 +35,7 @@ class CashFlowReport extends Component {
             rows: []
         }
 
-        if (!Config.IsAllow(3691)) {
+        if (!Config.IsAllow(3678)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
