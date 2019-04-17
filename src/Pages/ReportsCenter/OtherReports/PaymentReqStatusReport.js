@@ -11,11 +11,7 @@ import moment from "moment";
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const dateFormate = ({ value }) => {
-    let date = value != undefined ? value.split('-')[0] : '';
-    let days = value != undefined ? value.split('-')[0] : '';
-    return value ? (moment(date).format("DD/MM/YYYY") + "-" + days + ' days') : "Pending";
-};
+
 class PaymentReqStatusReport extends Component {
 
     constructor(props) {
@@ -51,9 +47,7 @@ class PaymentReqStatusReport extends Component {
                     resizable: true,
                     filterable: true,
                     sortDescendingFirst: true
-                }
-
-                , {
+                }   , {
                     key: "contractName",
                     name: Resources["contractName"][currentLanguage],
                     width: 120,
@@ -89,12 +83,12 @@ class PaymentReqStatusReport extends Component {
     }
 
     componentWillMount() {
-  
+
     }
     getGridRows = () => {
         if (this.state.payment.value != '0') {
             this.setState({ isLoading: true })
-            Api.post('GetReqPaymentStatusChilds?code=' + this.state.code + '&date='+this.state.payment.value).then((res) => {
+            Api.post('GetReqPaymentStatusChilds?code=' + this.state.code + '&date=' + this.state.payment.value).then((res) => {
                 this.setState({ rows: res, isLoading: false })
             }).catch(() => {
                 this.setState({ isLoading: false })
@@ -105,6 +99,17 @@ class PaymentReqStatusReport extends Component {
     handleBlur = () => {
 
         if (this.state.payment.value != '0' && this.state.code != 0) {
+            this.setState({ isLoading: true })
+            let dateFormate = ({ value }) => {
+                let levelDesc = "Pending";
+                if (value) { 
+                    let date = value != undefined ? value.split('-')[0] : '';
+                    let days = value != undefined ? value.split('-')[1] : '';
+                    levelDesc = moment(date).format("DD/MM/YYYY") + "-" + days + ' days';
+                }
+                return levelDesc;
+            };
+
             let columns = [
                 {
                     key: "projectName",
@@ -137,8 +142,8 @@ class PaymentReqStatusReport extends Component {
                     sortDescendingFirst: true
                 }
             ]
-            Api.post('GetReqPaymentStatusParent?code=' + this.state.code + '&date='+this.state.payment.value).then(res => {
-                this.setState({ isLoading: true })
+            Api.post('GetReqPaymentStatusParent?code=' + this.state.code + '&date=' + this.state.payment.value).then(res => {
+               
                 let wfLevelDescription = res[0] != null ? res[0].wfLevelDescription : null
                 if (wfLevelDescription != null) {
                     wfLevelDescription.forEach(element => {

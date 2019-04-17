@@ -13,6 +13,19 @@ export default function (state = initialState.app.communication, action) {
                 ...state
             }
 
+        case types.Export_Document:
+            // state.fields = action.data.fields
+            // state.columns = action.data.columnsItems
+            console.log('exporting...',action)
+            return {
+                ...state,
+                fields: action.fields,
+                columns: action.columns ? action.columns : [] ,
+                fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
+                items: action.items ? action.items: []
+            }
+
+
         case types.Document_for_Edit:
             return {
                 ...state,
@@ -30,8 +43,8 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 changeStatus: false,
-                items: [], 
-                projectId: state.projectId == 0 ?  localStorage.getItem('lastSelectedProject'): state.projectId 
+                items: [],
+                projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId
             };
 
         case types.Document_Add:
@@ -78,7 +91,7 @@ export default function (state = initialState.app.communication, action) {
                 originalData.splice(getIndex, 1);
 
             });
-            case types.delete_items:
+        case types.delete_items:
             return {
                 ...state,
                 items: []
