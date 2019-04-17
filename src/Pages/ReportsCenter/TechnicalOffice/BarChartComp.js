@@ -3,17 +3,17 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import addNoDataModule from 'highcharts/modules/no-data-to-display';
 import exporting from 'highcharts/modules/exporting'
-import Api from '../../../api';
 import language from '../../../resources.json'
+import { func } from 'prop-types';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 addNoDataModule(Highcharts);
 exporting(Highcharts)
 class BarChartComp extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-
+            isLoading: false,
+            noClicks: null,
             options:
             {
                 lang: {
@@ -27,7 +27,7 @@ class BarChartComp extends Component {
                     },
                 },
                 chart: {
-                    type: 'line',
+                    type:this.props.type ? this.props.type : 'line',
                 },
                 title: {
                     text: this.props.title
@@ -87,30 +87,28 @@ class BarChartComp extends Component {
         }
     }
 
-    componentWillReceiveProps = (props) => {
-        let _catag = []
-        let _data = []
-        Api.post(props.api, props.sendingObj).then(results => {
-            results.map((item) => {
-                _catag.push(item[props.catagName]);
-                _data.push(item[props.catagValue])
-                return null;
-            })
-            this.setState({ options: { series: { name: props.seriesName, data: _data }, xAxis: { categories: _catag } } });
-        }).catch((ex) => {
-            //console.log(ex);
-        });
+    componentWillReceiveProps(props) {
+        if (props.noClicks != this.state.noClicks) {
+            this.setState({ isLoading: true, noClicks: props.noClicks })
+            let options = { ...this.state.options };
+            options.series = props.series
+            options.xAxis = props.xAxis
+            this.setState({ options }, function () { this.setState({ isLoading: false }) });
+        }
     }
 
     render() {
+        let test = <HighchartsReact
+            highcharts={Highcharts}
+            options={this.state.options}
+        />
         return (
             <div className="charts__row">
                 <div className="panel barChart__container">
                     <div className="panel-body">
-                        <HighchartsReact
-                            highcharts={Highcharts}
-                            options={this.state.options}
-                        />
+                        {this.state.isLoading == true ? null :
+                            test
+                        }
                     </div>
                 </div>
             </div>

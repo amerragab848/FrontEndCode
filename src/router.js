@@ -109,6 +109,8 @@ import ProjectInvoices from './Pages/ReportsCenter/ContractsPOReports/ProjectInv
 import CollectedPaymentRequisition from './Pages/ReportsCenter/ContractsPOReports/CollectedPaymentRequisition';
 import SiteRequestReleasedQnt from './Pages/ReportsCenter/ContractsPOReports/SiteRequestReleasedQnt';
 import InvoicesLogReport from './Pages/ReportsCenter/ContractsPOReports/InvoicesLogReport';
+import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocument';
+import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
 
  
  
@@ -239,6 +241,8 @@ let originalRoutes = [
     , <Route path="/InvoicesLogReport" component={InvoicesLogReport} />
     
     
+    , <Route path="/approvalDocument" component={approvalDocument} />
+    , <Route path="/contractorsPerformance" component={contractorsPerformance} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

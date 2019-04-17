@@ -1,13 +1,12 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Api from '../../../api';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import moment from "moment";
-import dataService from '../../../Dataservice'
 import BarChartComp from './BarChartComp'
+import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -16,9 +15,10 @@ class SubmittalsPerNeighBorhood extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            showChart: false,
+            isLoading: null,
             finishDate: moment(),
-            startDate: moment()
+            startDate: moment(),
+            noClicks: 0,xAxis:{},series:[]
         }
 
         if (!Config.IsAllow(3761)) {
@@ -33,29 +33,52 @@ class SubmittalsPerNeighBorhood extends Component {
     componentDidMount() {
     }
     componentWillMount() {
-      
-    }
 
+    }
+    componentWillReceiveProps(props) {
+
+    }
     getChartData = () => {
-            this.setState({ currentComponent: null })
-            let reportobj = {
-                fromDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                toDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            }
-            let currentComponent = <BarChartComp api={'GetEpsCountFromSubmittals'} sendingObj={reportobj} catagName={'title'} catagValue={'count'}
-                title={Resources['submittalsPerNeighBorhood'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} seriesName={Resources['count'][currentLanguage]} />
-            this.setState({ currentComponent, showChart: true })
+        let reportobj = {
+            fromDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            toDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+        }
+        let noClicks = this.state.noClicks;
+
+        this.setState({ isLoading: true})
+        Api.post('GetEpsCountFromSubmittals', reportobj).then(res => {
+            this.setState({  isLoading: false  })
+            let _catag = []
+            let _data = []
+            res.map((item, index) => {
+                _catag.push(item.title);
+                _data.push(item.count)
+            })
+            let series = []
+            series.push({ name: Resources['count'][currentLanguage], data: _data })
+            let xAxis = { categories: _catag }
+            this.setState({ series,xAxis, noClicks: noClicks + 1});
+
+        })
+
     }
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
+
     render() {
-        const Chart = this.state.currentComponent
+        const Chart =
+            <BarChartComp 
+                noClicks={this.state.noClicks}
+                series={this.state.series}
+                xAxis={this.state.xAxis}
+                title={Resources['submittalsPerNeighBorhood'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} />
+
         return (
             <div className='mainContainer main__fulldash'>
                 <div className="documents-stepper noTabs__document">
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['technicalOfficeDocument'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['submittalsPerNeighBorhood'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -74,7 +97,6 @@ class SubmittalsPerNeighBorhood extends Component {
                             </svg>
                         </div>
                     </div>
-
                     <div className="doc-container">
                         <div className="step-content">
                             <div className="document-fields">
@@ -89,15 +111,13 @@ class SubmittalsPerNeighBorhood extends Component {
                                             startDate={this.state.finishDate}
                                             handleChange={e => this.handleChange('finishDate', e)} />
                                     </div>
-
                                     <div className="fullWidthWrapper ">
                                         <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.getChartData()}>{Resources['search'][currentLanguage]}</button>
                                     </div>
                                 </div>
-
                             </div>
                             <div className="doc-pre-cycle letterFullWidth">
-                                {this.state.showChart ? Chart : null}
+                                {Chart}
                             </div>
 
                         </div>
