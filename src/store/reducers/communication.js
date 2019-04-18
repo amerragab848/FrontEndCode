@@ -30,7 +30,8 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 changeStatus: false,
-                items: []
+                items: [], 
+                projectId: state.projectId == 0 ?  localStorage.getItem('lastSelectedProject'): state.projectId 
             };
 
         case types.Document_Add:
@@ -56,6 +57,18 @@ export default function (state = initialState.app.communication, action) {
                 docId,
                 items: [...state.items, ...action.item]
             };
+        case types.edit_item:
+            let updateRow = action.item;
+            let items = []
+            state.items.forEach(item => {
+                if (item.id == updateRow.id)
+                    item = updateRow
+                items.push(item)
+            })
+            return {
+                ...state,
+                items
+            };
 
         case types.delete_item:
             let originalData = state.items;
@@ -65,9 +78,10 @@ export default function (state = initialState.app.communication, action) {
                 originalData.splice(getIndex, 1);
 
             });
+            case types.delete_items:
             return {
                 ...state,
-                items: [...originalData]
+                items: []
             };
 
         case types.Delete_File:

@@ -4,7 +4,7 @@ import LoadingSection from "../../../../Componants/publicComponants/LoadingSecti
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
 import GridSetup from "../../../../Pages/Communication/GridSetup";
 import NotifiMsg from '../../../publicComponants/NotifiMsg'
-import Export from "../../../../Componants/OptionsPanels/Export";
+import Export from "../../../OptionsPanels/Export";
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import Api from '../../../../api';

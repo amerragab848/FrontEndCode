@@ -91,8 +91,9 @@ import baseAddEdit from "./Pages/estimation/baseAddEdit";
 import costCodingTreeAddEdit from "./Pages/Contracts/costCodingTreeAddEdit";
 import Itemize from "./Pages/Contracts/Itemize";
 import drawingListAddEdit from "./Pages/Design/drawingListAddEdit";
+import rptCostCodingTree from './Pages/CostControl/rptCostCodingTree';
 
-
+import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
  
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -202,6 +203,9 @@ let originalRoutes = [
     , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
     , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
+    , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
+
+    , <Route path="/projectScheduleAddEdit" component={projectScheduleAddEdit} />
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
 let routes = (

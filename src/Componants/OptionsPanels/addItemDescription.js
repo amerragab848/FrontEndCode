@@ -321,6 +321,8 @@ class addItemDescription extends Component {
                                                 {errors.days ? (<em className="pError">{errors.days}</em>) : null}
                                             </div>
                                         </div>
+                                        {this.props.showBoqType==true?
+                                        <React.Fragment>
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
                                                 title="boqType"
@@ -352,7 +354,7 @@ class addItemDescription extends Component {
                                                     index="boqSubType" />
                                             </div>
                                         </div>
-
+                                        </React.Fragment>:null}
                                         <div className={"linebylineInput valid-input " + (this.props.showItemType !== false ? ' ' : ' disNone')}>
                                             <Dropdown
                                                 title="itemType"

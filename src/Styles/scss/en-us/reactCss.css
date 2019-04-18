@@ -137,7 +137,7 @@
   position: relative;
 }
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div >div{
-  z-index: 13;
+  z-index: 14;
 }
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div::after{
   content: '';
@@ -602,8 +602,8 @@ table edition
   overflow-x: hidden;
   box-shadow: 0px 5px 12px #888888;
 }
-.EastWestProject  ul {
-  max-height: 1150px;
+.EastWestProject ul {
+  max-height: inherit;
   transition: all 0.2s ease-in-out;
   overflow: hidden;
 }
@@ -940,6 +940,7 @@ table edition
   flex-flow: column;
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 20;
+  min-height: 250px;
 }
 .cutome__inputs .dashboardLoading {
   position: fixed !important;
@@ -2039,9 +2040,9 @@ button.companies_icon {
     min-width: 130px;
   }
 }
-.one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+/* .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
   width: 100%;
-}
+} */
 .noTabs__document.one__tab.one_step .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width: 100%;
 }
@@ -2971,12 +2972,12 @@ button.companies_icon {
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields {
   padding: 0;
 }
-.one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
+/* .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width : 100%;
-}
-.skylight-dialog .document-fields .fullWidthWrapper.textLeft {
+} */
+/* .skylight-dialog .document-fields .fullWidthWrapper.textLeft {
   text-align: center;
-}
+} */
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .datepickerContainer.proForm .ui.input.inputDev input, .documents-stepper .doc-container .step-content .skylight-dialog .document-fields .proForm .linebylineInput .ui.input.inputDev {
   width: 100%;
 }
@@ -3020,7 +3021,7 @@ button.companies_icon {
 }
 
 #empty__div--scroll {
-  width: 2800px;
+  /* width: 2800px; */
   height: 1px;
 }
 
@@ -3098,7 +3099,7 @@ button.companies_icon {
   padding: 10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  height: 60px;
+  height: 40px;
   background: #e9ecf0;
   padding: 0 10px;
 }
@@ -3262,7 +3263,7 @@ button.companies_icon {
   box-shadow: none !important;
 }
 .ReactTable .rt-thead .rt-th {
-  height: 48px;
+  height: 100%;
   display: flex;
   align-items: center;
   background: #fafbfc;
@@ -3581,4 +3582,51 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
 
 .drop-item .remove {
   cursor: pointer;
+}
+.skylight-dialog .letterFullWidth {
+  margin-bottom: 10px;
+}
+.react-grid-HeaderCell .react-grid-HeaderCell-sortable {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* @media screen and (min-width: 1440px) {
+  .one__tab.one_step .doc-container .step-content, .noTabs__document .doc-container .step-content {
+    width: 70%;
+  }
+} */
+
+/* .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
+  width: 100%;
+}
+.one__tab.one_step .doc-container .step-content {
+  padding: 0 70px 0 170px;
+  width: unset;
+}
+.linebylineInput .customD_Menu {
+  width: 100%;
+}
+.customDatepicker.fillter-status.fillter-item-c {
+  max-width: 200px;
+} */
+.documents-stepper .doc-container .docstepper-levels .step-content-foot, .one__tab.one_step .doc-container .docstepper-levels {
+  position: sticky;
+  top: 72px;
+}
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
+  position: sticky;
+  top: 144px;
+}
+
+.react-grid-checkbox:checked+.react-grid-checkbox-label:before {
+  content: url(../../images/checkmark.svg);
+  background: #4382F9 !important;
+  box-shadow: none !important;
+  border-color: transparent;
+  border-radius: 0.21428571rem;
+}
+.-padRow .rt-td {
+  border-bottom: none !important;
 }

@@ -87,7 +87,6 @@ export function deleteFile(urlDelete, file) {
 export function uploadFile(BlobUpload, formData, header) {
     return (dispatch, getState) => {
         return Api.postFile(BlobUpload, formData, header).then(resp => {
-            //console.log('in uploadFile',resp); 
             dispatch({
                 type: types.File_Upload,
                 file: resp[0]
@@ -119,12 +118,30 @@ export function deleteItemDescription(item) {
     }
 }
 
+export function deleteItemsDescription(item) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.delete_items,
+            data: item
+        });
+    }
+}
+
 export function setItemDescriptions(items,docId) {
     return (dispatch, getState) => {
         dispatch({
             type: types.add_item,
             item: items,
             docId:docId
+        });
+    }
+}
+
+export function editItemDescriptions(item) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.edit_item,
+            item: item,
         });
     }
 }

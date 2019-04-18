@@ -602,7 +602,8 @@ class drawingListAddEdit extends Component {
                 res => {
                     this.setState({
                         rows: res,
-                        isLoading: false
+                        isLoading: false ,
+                        showPopUp: false,
                     })
                     this.GetMaxArrangeItem()
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -907,7 +908,7 @@ class drawingListAddEdit extends Component {
                 </div>
 
 
-                {this.state.isLoading ? <LoadingSection /> : null}
+                {/* {this.state.isLoading ? <LoadingSection /> : null} */}
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
