@@ -15,35 +15,37 @@ import BarChartComp from '../TechnicalOffice/BarChartComp'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-
+const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+}
 
 const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
+    selectedStatus: Yup.string()
         .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
-    selectedMaterialRequest: Yup.string()
-        .required(Resources['siteRequestSelection'][currentLanguage])
         .nullable(true),
 });
 
-class SiteRequestReleasedQnt extends Component {
+const StatusDropData = [
+    { label: Resources.equal[currentLanguage], value: 0 },
+    { label: Resources.positive[currentLanguage], value: 1 },
+    { label: Resources.negative[currentLanguage], value: 2 },
+]
+
+class ProjectBalanceReport extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            noClicks: 0,
             isLoading: false,
-            ProjectsData: [],
-            MaterialRequest: [],
-            selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
-            selectedMaterialRequest: { label: Resources.siteRequestSelection[currentLanguage], value: "0" },
+            selectedStatus: { label: Resources.statusTypeSelect[currentLanguage], value: "0" },
             rows: [],
             showChart: true,
             series: [],
-            xAxis: { type: 'category' }
+            xAxis: {},
+            noClicks: 0,
         }
 
-        if (!Config.IsAllow(3693)) {
+        if (!Config.IsAllow(3676)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -51,11 +53,10 @@ class SiteRequestReleasedQnt extends Component {
         }
 
         this.columns = [
-
             {
-                key: "details",
-                name: Resources["description"][currentLanguage],
-                width: 500,
+                key: "projectName",
+                name: Resources["projectName"][currentLanguage],
+                width: 230,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -63,8 +64,18 @@ class SiteRequestReleasedQnt extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "requestedQuantity",
-                name: Resources["requestedQuantity"][currentLanguage],
+                key: "referenceCode",
+                name: Resources["referenceCode"][currentLanguage],
+                width: 170,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "totalExpenses",
+                name: Resources["expensesTotal"][currentLanguage],
                 width: 150,
                 draggable: true,
                 sortable: true,
@@ -72,15 +83,25 @@ class SiteRequestReleasedQnt extends Component {
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "releasedQuantity",
-                name: Resources["releasedQuantity"][currentLanguage],
+                key: "totalBudgeted",
+                name: Resources["totalBudgeted"][currentLanguage],
                 width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-            }
+            },
+            {
+                key: "balance",
+                name: Resources["balance"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
         ];
 
     }
@@ -89,48 +110,38 @@ class SiteRequestReleasedQnt extends Component {
     }
 
     componentWillMount() {
-        Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
-            result => {
-                this.setState({
-                    ProjectsData: result
-                })
-            }).catch(() => {
-                toast.error('somthing wrong')
-            })
     }
 
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-
-        let noClicks = this.state.noClicks;
-        Dataservice.GetDataGrid('GetSiteRequestItemsForReport?RequestId=' + this.state.selectedMaterialRequest.value + '').then(
+        Dataservice.GetDataGrid('GetProjectsWithNegativeAndPositiveBalanceReport?statusBalance=' + this.state.selectedStatus.value + '').then(
             res => {
-                this.setState({
-                    rows: res,
-                    isLoading: false
+                let noClicks = this.state.noClicks;
+                let _Equal = 0
+                let _Positive = 0
+                let _Negative = 0
+                res.map(i => {
+                    i.balance > 0 ? _Positive = _Positive + 1 : i.balance < 0 ? _Negative = _Negative + 1 : _Equal = _Equal + 1
                 })
 
-                let totalRequested = 0
-                let totalReleased = 0
+                let seriesData = [
+                    { name: Resources['equal'][currentLanguage], y: _Equal }
+                    , { name: Resources['positive'][currentLanguage], y: _Positive }
+                    , { name: Resources['negative'][currentLanguage], y: _Negative }
+                ]
 
-                res.forEach(element => {
-                    totalRequested += element['requestedQuantity']
-                    totalReleased += element['releasedQuantity']
-                });
-
-            
-
-
-
-                let seriesData = [{ name: Resources['requestedQuantity'][currentLanguage], y: totalRequested }
-                    , { name: Resources['releasedQuantity'][currentLanguage], y: totalReleased }]
+                let _catag = []
+                _catag.push(Resources['equal'][currentLanguage])
+                _catag.push(Resources['positive'][currentLanguage])
+                _catag.push(Resources['negative'][currentLanguage])
 
                 let series = []
-                series.push({ name: Resources['total'][currentLanguage], data: seriesData })
+                series.push({ name: Resources['balance'][currentLanguage], data: seriesData })
 
+                let xAxis = { categories: _catag }
                 this.setState({
-                    series,
+                    series, xAxis,
                     rows: res,
                     noClicks: noClicks + 1,
                     isLoading: false
@@ -141,19 +152,6 @@ class SiteRequestReleasedQnt extends Component {
         })
     }
 
-    HandleChangeProject = (e) => {
-        this.setState({ selectedProject: e })
-        Dataservice.GetDataList('GetContractsSiteRequestList?projectId=' + e.value + '&pageNumber=0&pageSize=1000', 'subject', 'id').then(
-            res => {
-                console.log(res.total)
-                this.setState({
-                    MaterialRequest: res
-                })
-            }).catch((e) => {
-                toast.error('somthing wrong')
-            })
-    }
-
     render() {
 
         let Chart =
@@ -161,7 +159,7 @@ class SiteRequestReleasedQnt extends Component {
                 noClicks={this.state.noClicks}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
-                title='Payment Requisition Quantities'
+                title={Resources['projectBalanceReport'][currentLanguage]}
                 yTitle={Resources['total'][currentLanguage]} />
 
         const dataGrid = this.state.isLoading === false ? (
@@ -169,7 +167,7 @@ class SiteRequestReleasedQnt extends Component {
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectBalanceReport'} />
             : null
 
         return (
@@ -179,15 +177,15 @@ class SiteRequestReleasedQnt extends Component {
                 <div className="documents-stepper noTabs__document">
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['siteRequestReleasedQntReport'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['projectBalanceReport'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                                     <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
                                         <g id="Group-2">
                                             <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
                                                 <g id="Action-icons/Close/Circulated/20pt/Grey_Normal"><g id="Group"><circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                    <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fill-rule="nonzero">
+                                                    <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fillRule="nonzero">
                                                     </path>
                                                 </g>
                                                 </g>
@@ -210,8 +208,7 @@ class SiteRequestReleasedQnt extends Component {
                                 <Formik
 
                                     initialValues={{
-                                        selectedProject: '',
-                                        selectedMaterialRequest: ''
+                                        selectedStatus: '',
                                     }}
 
                                     enableReinitialize={true}
@@ -226,24 +223,14 @@ class SiteRequestReleasedQnt extends Component {
                                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                                         <Form onSubmit={handleSubmit}>
                                             <div className="proForm datepickerContainer">
-                                                <div className="linebylineInput valid-input">
-                                                    <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
-                                                        selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                                        handleChange={e => this.HandleChangeProject(e)}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedProject}
-                                                        touched={touched.selectedProject}
-                                                        value={values.selectedProject} />
-                                                </div>
-                                                <div className="linebylineInput valid-input " >
-                                                    <Dropdown title='siteRequest' data={this.state.MaterialRequest} name='selectedMaterialRequest'
-                                                        selectedValue={this.state.selectedMaterialRequest} onChange={setFieldValue}
-                                                        handleChange={e => this.setState({ selectedMaterialRequest: e })}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedMaterialRequest}
-                                                        touched={touched.selectedMaterialRequest}
-                                                        value={values.selectedMaterialRequest} />
-                                                </div>
+                                                <Dropdown className="fullWidthWrapper textLeft" title='statusName' data={StatusDropData}
+                                                    name='selectedStatus' value={values.selectedStatus}
+                                                    selectedValue={this.state.selectedStatus} onChange={setFieldValue}
+                                                    handleChange={e => this.setState({ selectedStatus: e })}
+                                                    onBlur={setFieldTouched}
+                                                    error={errors.selectedStatus}
+                                                    touched={touched.selectedStatus} />
+
                                             </div>
 
                                             <div className="fullWidthWrapper ">
@@ -256,12 +243,15 @@ class SiteRequestReleasedQnt extends Component {
 
 
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
-                            </div>
+
                             <div className="doc-pre-cycle letterFullWidth">
                                 {Chart}
                             </div>
+
+                            <div className="doc-pre-cycle letterFullWidth">
+                                {dataGrid}
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -271,4 +261,4 @@ class SiteRequestReleasedQnt extends Component {
     }
 
 }
-export default withRouter(SiteRequestReleasedQnt)
+export default withRouter(ProjectBalanceReport)

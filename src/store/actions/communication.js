@@ -3,14 +3,15 @@ import Api from '../../api';
 
 const _ = require('lodash')
 
-export function documentForEdit(urlAction) {
+export function documentForEdit(urlAction,docTypeId) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
 
             dispatch({
                 type: types.Document_for_Edit,
                 document: resp,
-                docId: resp.id
+                docId: resp.id,
+                docTypeId: docTypeId
             });
 
         }).catch((ex) => {
@@ -52,10 +53,7 @@ export function documentForAdding(doc) {
 export function ExportingData(data) {
     return (dispatch, getState) => {
         dispatch({ 
-            type: types.Export_Document,
-            fields: data.fields,
-            columns:  data.columnsItems,
-            fieldsItems:  data.fieldsItems,
+            type: types.Export_Document, 
             items:  data.items
         });
     }

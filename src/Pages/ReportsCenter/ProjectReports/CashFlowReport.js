@@ -11,39 +11,31 @@ import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import BarChartComp from '../TechnicalOffice/BarChartComp'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-
+const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+}
 
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
         .required(Resources['projectSelection'][currentLanguage])
         .nullable(true),
-    selectedMaterialRequest: Yup.string()
-        .required(Resources['siteRequestSelection'][currentLanguage])
-        .nullable(true),
 });
 
-class SiteRequestReleasedQnt extends Component {
+class CashFlowReport extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            noClicks: 0,
             isLoading: false,
             ProjectsData: [],
-            MaterialRequest: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
-            selectedMaterialRequest: { label: Resources.siteRequestSelection[currentLanguage], value: "0" },
-            rows: [],
-            showChart: true,
-            series: [],
-            xAxis: { type: 'category' }
+            rows: []
         }
 
-        if (!Config.IsAllow(3693)) {
+        if (!Config.IsAllow(3678)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -51,11 +43,10 @@ class SiteRequestReleasedQnt extends Component {
         }
 
         this.columns = [
-
             {
-                key: "details",
-                name: Resources["description"][currentLanguage],
-                width: 500,
+                key: "arrange",
+                name: Resources["numberAbb"][currentLanguage],
+                width: 80,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -63,24 +54,64 @@ class SiteRequestReleasedQnt extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "requestedQuantity",
-                name: Resources["requestedQuantity"][currentLanguage],
-                width: 150,
+                key: "subject",
+                name: Resources["subject"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "docDate",
+                name: Resources["docDate"][currentLanguage],
+                width: 160,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            }, {
+                key: "total",
+                name: Resources["total"][currentLanguage],
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "releasedQuantity",
-                name: Resources["releasedQuantity"][currentLanguage],
-                width: 150,
+                key: "balance",
+                name: Resources["balanceToFinish"][currentLanguage],
+                width: 140,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-            }
+            }, {
+                key: "docCloseDate",
+                name: Resources["docClosedate"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            },
+            {
+                key: "createdBy",
+                name: Resources["createdBy"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
         ];
 
     }
@@ -102,37 +133,10 @@ class SiteRequestReleasedQnt extends Component {
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-
-        let noClicks = this.state.noClicks;
-        Dataservice.GetDataGrid('GetSiteRequestItemsForReport?RequestId=' + this.state.selectedMaterialRequest.value + '').then(
+        Dataservice.GetDataGrid('GetCashFlow?projectId=' + this.state.selectedProject.value + '').then(
             res => {
                 this.setState({
                     rows: res,
-                    isLoading: false
-                })
-
-                let totalRequested = 0
-                let totalReleased = 0
-
-                res.forEach(element => {
-                    totalRequested += element['requestedQuantity']
-                    totalReleased += element['releasedQuantity']
-                });
-
-            
-
-
-
-                let seriesData = [{ name: Resources['requestedQuantity'][currentLanguage], y: totalRequested }
-                    , { name: Resources['releasedQuantity'][currentLanguage], y: totalReleased }]
-
-                let series = []
-                series.push({ name: Resources['total'][currentLanguage], data: seriesData })
-
-                this.setState({
-                    series,
-                    rows: res,
-                    noClicks: noClicks + 1,
                     isLoading: false
                 })
             }
@@ -141,32 +145,8 @@ class SiteRequestReleasedQnt extends Component {
         })
     }
 
-    HandleChangeProject = (e) => {
-        this.setState({ selectedProject: e })
-        Dataservice.GetDataList('GetContractsSiteRequestList?projectId=' + e.value + '&pageNumber=0&pageSize=1000', 'subject', 'id').then(
-            res => {
-                console.log(res.total)
-                this.setState({
-                    MaterialRequest: res
-                })
-            }).catch((e) => {
-                toast.error('somthing wrong')
-            })
-    }
-
     render() {
 
-        let Chart =
-            <BarChartComp
-                noClicks={this.state.noClicks}
-                series={this.state.series}
-                xAxis={this.state.xAxis}
-                title='Payment Requisition Quantities'
-                yTitle={Resources['total'][currentLanguage]} />
-
-        const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
@@ -177,9 +157,9 @@ class SiteRequestReleasedQnt extends Component {
             <div className='mainContainer main__fulldash'>
 
                 <div className="documents-stepper noTabs__document">
-
+                    {this.state.isLoading ? <LoadingSection /> : null}
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['siteRequestReleasedQntReport'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['cashFlow'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -211,7 +191,6 @@ class SiteRequestReleasedQnt extends Component {
 
                                     initialValues={{
                                         selectedProject: '',
-                                        selectedMaterialRequest: ''
                                     }}
 
                                     enableReinitialize={true}
@@ -226,24 +205,13 @@ class SiteRequestReleasedQnt extends Component {
                                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                                         <Form onSubmit={handleSubmit}>
                                             <div className="proForm datepickerContainer">
-                                                <div className="linebylineInput valid-input">
-                                                    <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
-                                                        selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                                        handleChange={e => this.HandleChangeProject(e)}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedProject}
-                                                        touched={touched.selectedProject}
-                                                        value={values.selectedProject} />
-                                                </div>
-                                                <div className="linebylineInput valid-input " >
-                                                    <Dropdown title='siteRequest' data={this.state.MaterialRequest} name='selectedMaterialRequest'
-                                                        selectedValue={this.state.selectedMaterialRequest} onChange={setFieldValue}
-                                                        handleChange={e => this.setState({ selectedMaterialRequest: e })}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedMaterialRequest}
-                                                        touched={touched.selectedMaterialRequest}
-                                                        value={values.selectedMaterialRequest} />
-                                                </div>
+                                                <Dropdown className="fullWidthWrapper textLeft" title='Projects' data={this.state.ProjectsData} name='selectedProject'
+                                                    selectedValue={this.state.selectedProject} onChange={setFieldValue}
+                                                    handleChange={e => this.setState({ selectedProject: e })}
+                                                    onBlur={setFieldTouched}
+                                                    error={errors.selectedProject}
+                                                    touched={touched.selectedProject}
+                                                    value={values.selectedProject} />
                                             </div>
 
                                             <div className="fullWidthWrapper ">
@@ -257,11 +225,62 @@ class SiteRequestReleasedQnt extends Component {
 
                             </div>
                             <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
+                                {this.state.rows ?
+                                    <table className="attachmentTable">
+                                        <thead>
+                                            <tr>
+                                                {this.state.rows.map(i => {
+                                                    return (
+                                                        <th>
+                                                            <div className="headCell">
+                                                                {i.header}
+                                                            </div>
+                                                        </th>
+                                                    )
+                                                })}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                {this.state.rows.map(i => {
+                                                    return (
+                                                        <td>
+                                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
+                                                                {i.totalIn}
+                                                            </div>
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+                                            <tr>
+                                                {this.state.rows.map(i => {
+                                                    return (
+                                                        <td>
+                                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
+                                                                {i.totalOut}
+                                                            </div>
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+                                            <tr>
+                                                {this.state.rows.map(i => {
+                                                    return (
+                                                        <td>
+                                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
+                                                                {i.variance}
+                                                            </div>
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+
+                                        </tbody>
+                                    </table> : null}
+                                {/* {dataGrid} */}
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {Chart}
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -271,4 +290,4 @@ class SiteRequestReleasedQnt extends Component {
     }
 
 }
-export default withRouter(SiteRequestReleasedQnt)
+export default withRouter(CashFlowReport)

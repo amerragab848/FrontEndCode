@@ -152,8 +152,17 @@ var routes = [
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3681, order: 6 }
   // },
+  
+  // {
+  //   route: "materialStatusReport",
+  //   moduleId: "reports/materialStatusReport",
+  //   title: "materialStatusReport",
+  //   nav: true,
+  //   hash: "#materialStatusReport",
+  //   settings: { ProjectReports: true, permission: 3688, order: 13 }
+  // },
   {
-    route: "CashFlow",
+    route: "CashFlowReport",
     moduleId: "reportCenter/cashFlow",
     title: "cashFlow",
     nav: true,
@@ -2260,50 +2269,50 @@ var routes = [
     nav: true,
     settings: { HumanResources: true, permission: 3716, order: 10 }
   },
-  {
-    route: "expnesesUserRequests",
-    moduleId: "reportCenter/expnesesUserRequests",
-    title: "expnesesUserRequests",
-    nav: true,
-    settings: { OtherReports: true, permission: 3719, order: 1 }
-  },
-  {
-    route: "expensesStatus",
-    moduleId: "reportCenter/expensesStatus",
-    title: "expensesStatus",
-    nav: true,
-    settings: { OtherReports: true, permission: 3759, order: 11 }
-  },
-  {
-    route: "wokFlowDistrbutionAccountsReport",
+  // {
+  //   route: "expnesesUserRequests",
+  //   moduleId: "reportCenter/expnesesUserRequests",
+  //   title: "expnesesUserRequests",
+  //   nav: true,
+  //   settings: { OtherReports: true, permission: 3719, order: 1 }
+  // },
+  // {
+  //   route: "expensesStatus",
+  //   moduleId: "reportCenter/expensesStatus",
+  //   title: "expensesStatus",
+  //   nav: true,
+  //   settings: { OtherReports: true, permission: 3759, order: 11 }
+  // },
+   {
+    route: "WFDistributionAccountReport",
     moduleId: "reports/wokFlowDistrbutionAccountsReport",
     title: "wokFlowDistrbutionAccountsReport",
     nav: true,
     settings: { OtherReports: true, permission: 3720, order: 2 }
   },
+  // {
+  //   route: "budgetCashFlowAll",
+  //   moduleId: "reports/budgetCashFlowAll",
+  //   title: "budgetCashFlowAll",
+  //   nav: true,
+  //   settings: { OtherReports: true, permission: 3721, order: 3 }
+  // },
+  // {
+  //   route: "usersAccountsReport",
+  //   moduleId: "reportCenter/accountsReports/usersAccountsReport",
+  //   title: "usersAccountsReport",
+  //   nav: true,
+  //   settings: { OtherReports: true, permission: 3722, order: 4 }
+  // },
   {
-    route: "budgetCashFlowAll",
-    moduleId: "reports/budgetCashFlowAll",
-    title: "budgetCashFlowAll",
-    nav: true,
-    settings: { OtherReports: true, permission: 3721, order: 3 }
-  },
-  {
-    route: "usersAccountsReport",
-    moduleId: "reportCenter/accountsReports/usersAccountsReport",
-    title: "usersAccountsReport",
-    nav: true,
-    settings: { OtherReports: true, permission: 3722, order: 4 }
-  },
-  {
-    route: "workFlowActivity",
+    route: "WFActivityReport",
     moduleId: "reportCenter/workFlowActivity",
     title: "workFlowActivity",
     nav: true,
     settings: { OtherReports: true, permission: 4017, order: 5 }
   },
   {
-    route: "workFlowUsageReport",
+    route: "WFUsageReport",
     moduleId: "reportCenter/workFlowUsageReport",
     title: "workFlowUsageReport",
     nav: true,
@@ -2317,7 +2326,7 @@ var routes = [
     settings: { OtherReports: true, permission: 3758, order: 9 }
   },
   {
-    route: "followUpsUsageReport",
+    route: "FollowUpUsageReport",
     moduleId: "reportCenter/followUpsUsageReport",
     title: "followUpsUsageReport",
     nav: true,
@@ -2709,14 +2718,6 @@ var routes = [
     settings: { customLogs: true, permission: 3472, order: 7 }
   },
   {
-    route: "materialStatusReport",
-    moduleId: "reports/materialStatusReport",
-    title: "materialStatusReport",
-    nav: true,
-    hash: "#materialStatusReport",
-    settings: { ProjectReports: true, permission: 3688, order: 13 }
-  },
-  {
     route: "deliveredQuantitieReport",
     moduleId: "reports/deliveredQuantitieReport",
     title: "deliveredMaterial",
@@ -2851,13 +2852,13 @@ var routes = [
     nav: true,
     settings: { inventory: true, permission: 3729, order: 7 }
   },
-  {
-    route: "documentTpesReport",
-    moduleId: "reports/documentTypesReport",
-    title: "WorkFlowWithDocumentTypeDetails",
-    nav: true,
-    settings: { OtherReports: true, permission: 3743, order: 6 }
-  },
+  // {
+  //   route: "documentTpesReport",
+  //   moduleId: "reports/documentTypesReport",
+  //   title: "WorkFlowWithDocumentTypeDetails",
+  //   nav: true,
+  //   settings: { OtherReports: true, permission: 3743, order: 6 }
+  // },
   {
     route: "transmittalReport",
     moduleId: "reports/transmittalReport",
@@ -2866,7 +2867,7 @@ var routes = [
     settings: { OtherReports: true, permission: 4018, order: 7 }
   },
   {
-    route: "technicalOfficeDocument",
+    route: "TechnicalOfficeReport",
     moduleId: "reports/technicalOfficeDocument",
     title: "technicalOfficeDocument",
     nav: true,
@@ -2880,7 +2881,7 @@ var routes = [
     settings: { technicalOffice: true, permission: 3761, order: 2 }
   },
   {
-    route: "OnProgressDocuments",
+    route: "ProgressDocuments",
     moduleId: "reports/OnProgressDocuments",
     title: "onProgressDocuments",
     nav: true,

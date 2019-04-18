@@ -19,9 +19,9 @@ export default function (state = initialState.app.communication, action) {
             console.log('exporting...',action)
             return {
                 ...state,
-                fields: action.fields,
-                columns: action.columns ? action.columns : [] ,
-                fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
+                // fields: action.fields,
+                // columns: action.columns ? action.columns : [] ,
+                // fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
                 items: action.items ? action.items: []
             }
 
@@ -31,6 +31,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 document: action.document,
                 docId: action.docId,
+                docTypeId: action.docTypeId,
                 changeStatus: true,
                 showLeftMenu: true,
                 showSelectProject: false

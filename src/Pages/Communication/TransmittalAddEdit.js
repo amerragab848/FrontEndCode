@@ -142,63 +142,23 @@ class TransmittalAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document && nextProps.document.id) { 
 
-            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
-            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+            let serverInspectionRequest = { ...nextProps.document };
+            serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
+            serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY'); 
 
             this.setState({
-                document: nextProps.document,
+                document: serverInspectionRequest,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: RichTextEditor.createValueFromString(nextProps.document.description, 'html')
+                message: RichTextEditor.createValueFromString(serverInspectionRequest.description, 'html')
             });
 
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
             this.checkDocumentIsView();
-            this.Export_Document();
         }
     };
 
-    Export_Document() {
-        let document = { ...this.state.document };
-
-        let fields = [
-            { name: Resources.subject[currentLanguage], value: document.subject },
-            { name: Resources.status[currentLanguage], value: document.statusName },
-            { name: Resources.refDoc[currentLanguage], value: document.refDoc },
-            { name: Resources.docDate[currentLanguage], value: document.docDate },
-            { name: Resources.requiredDate[currentLanguage], value: document.requiredDate },
-            { name: Resources.sendingMethod[currentLanguage], value: document.sendingMethodName },
-            { name: Resources.submittedFor[currentLanguage], value: document.submittedForName },
-            { name: Resources.description[currentLanguage], value: document.description },
-            { name: Resources.discipline[currentLanguage], value: document.discipline },
-            { name: Resources.area[currentLanguage], value: document.area },
-            { name: Resources.buildingNumber[currentLanguage], value: document.building },
-            { name: Resources.apartmentNumber[currentLanguage], value: document.apartment },
-            { name: Resources.fromCompany[currentLanguage], value: document.fromCompanyName },
-            { name: Resources.fromContact[currentLanguage], value: document.fromContactName },
-            { name: Resources.toCompany[currentLanguage], value: document.toCompanyName },
-            { name: Resources.attention[currentLanguage], value: document.toContactName },
-            { name: Resources.projectName[currentLanguage], value: projectName }
-        ]; 
-
-        let friendlyNames = [
-              Resources.arrange[currentLanguage]
-            , Resources.subject[currentLanguage]
-            , Resources.status[currentLanguage]
-            , Resources.CompanyName[currentLanguage]
-            , Resources.ContactName[currentLanguage]
-            , Resources.docDate[currentLanguage]
-            , Resources.approvalStatus[currentLanguage]
-            , Resources.progressPercent[currentLanguage]
-            , Resources.answer[currentLanguage]
-        ];
-        let fieldsItems = [];
-        let items = [];
-        let data = { fields: fields, columnsItems: friendlyNames, fieldsItems: fieldsItems, items: items };
-
-        this.props.actions.ExportingData(data);
-    }
     
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
@@ -233,7 +193,7 @@ class TransmittalAddEdit extends Component {
 
             let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
 
-            this.props.actions.documentForEdit(url).catch(ex => toast.error(Resources["failError"][currentLanguage]));;
+            this.props.actions.documentForEdit(url,this.state.docTypeId).catch(ex => toast.error(Resources["failError"][currentLanguage]));;
         } else {
             const transmittalDocument = {
                 //field

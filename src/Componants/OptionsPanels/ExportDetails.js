@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react'
-
-import Signature from '../../Styles/images/mySignature.png';
-import Moment from 'moment';
+import moment from "moment";
 import Resources from '../../resources.json';
 
+import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -26,6 +25,8 @@ class ExportDetails extends Component {
     }
 
     tableToExcel(Fields, items, name) {
+        // this.props.document
+
         var uri = 'data:application/vnd.ms-excel;base64,'
             , template = '<html xmlns: o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
                 + '<head> '
@@ -86,27 +87,31 @@ class ExportDetails extends Component {
     }
 
     drawFiled() {
+        let fields = DED[this.props.docTypeId]
+        let data = this.props.document
         console.log(this.props.fields);
-        let rows = this.props.fields.map((field, index) => {
+        let rows = fields.fields.map((field, index) => {
+            let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
+
             let nextIndex = (index + 1);
-            console.log(nextIndex)
             if ((index % 2) === 0) {
                 return (<tr>
                     <td style={{ backgroundColor: '#f3f6f9' }}>
                         <h4 className="ui image header">
-                            <div className="content">{field.name} :</div>
+                            <div className="content">{Resources[field.name][currentLanguage]} :</div>
                         </h4>
                     </td>
 
-                    <td><span>{field.value}</span></td>
-                    {nextIndex < this.props.fields.length ?
+                    <td><span>{formatData}</span></td>
+                    {nextIndex < fields.fields.length ?
+
                         <Fragment>
                             <td style={{ backgroundColor: '#f3f6f9' }}>
                                 <h4 className="ui image header">
-                                    <div className="content">{this.props.fields[nextIndex].name} :</div>
+                                    <div className="content">{Resources[fields.fields[nextIndex].name][currentLanguage]} :</div>
                                 </h4>
                             </td>
-                            <td><span>{this.props.fields[nextIndex].value}</span></td>
+                            <td><span>{fields.fields[nextIndex]["type"] == "D" ? moment(data[fields.fields[nextIndex]["value"]]).format("DD/MM/YYYY") : data[fields.fields[nextIndex]["value"]]}</span></td>
                         </Fragment>
                         : null
                     }
@@ -124,11 +129,12 @@ class ExportDetails extends Component {
         )
     }
     drawItems() {
+        let fieldsItems = DED[this.props.docTypeId].columnsItems
         let rows = this.props.items.length > 0 ?
             (this.props.items.map(row => {
                 return (
                     <tr>
-                        {this.props.fieldsItems.map(field => {
+                        {fieldsItems.map(field => {
                             return (<td>{row[field]}</td>)
                         })}
                     </tr>
@@ -136,15 +142,15 @@ class ExportDetails extends Component {
             })
             )
             : null
-
-        if (this.props.fieldsItems.length > 0) {
+        let fieldsName = DED[this.props.docTypeId].friendlyNames
+        if (fieldsName.length > 0) {
             return (
                 <table id="items" style={{ border: 'double' }}>
                     <thead valign="top">
                         <tr style={{ border: '4px' }}>
-                            {this.props.fieldsItems.map(column => {
+                            {fieldsName.map(column => {
                                 return (
-                                    <th style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column}</th>
+                                    <th style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {Resources[column][currentLanguage]}</th>
                                 )
                             })}
                         </tr>
@@ -268,7 +274,7 @@ class ExportDetails extends Component {
                         <Fragment >
                             <tr rowSpan="2">
                                 <td colSpan={levels.length}>
-                                    <span> {this.props.workFlowCycles[0].subject} at Level: {this.props.workFlowCycles[0].currentLevel} - Sent in: {Moment(this.props.workFlowCycles[0].creationDate).format('DD-MM-YYYY')} </span>
+                                    <span> {this.props.workFlowCycles[0].subject} at Level: {this.props.workFlowCycles[0].currentLevel} - Sent in: {moment(this.props.workFlowCycles[0].creationDate).format('DD-MM-YYYY')} </span>
                                 </td>
                             </tr>
                             <tr className="workflowPrint">
@@ -280,7 +286,7 @@ class ExportDetails extends Component {
                                                 <h3 style={{ margin: '0' }}>{cycle.contactName}</h3>
                                                 <p style={{ textAlign: 'center', margin: '0' }}>{cycle.arrange}</p>
                                                 <span className=" statueName">{cycle.status} - </span>
-                                                <span style={{ display: 'block' }} className="statueDate">{Moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
+                                                <span style={{ display: 'block' }} className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
                                                 <br />
                                                 <span>{cycle.companyName}</span>
                                             </div>
@@ -359,7 +365,8 @@ function mapStateToProps(state, ownProps) {
         items: state.communication.items,
         fields: state.communication.fields,
         fieldsItems: state.communication.fieldsItems,
-        attachDocuments: state.communication.attachDocuments
+        attachDocuments: state.communication.attachDocuments,
+        docTypeId: state.communication.docTypeId
     }
 }
 

@@ -114,9 +114,11 @@ import SiteRequestReleasedQnt from './Pages/ReportsCenter/ContractsPOReports/Sit
 import InvoicesLogReport from './Pages/ReportsCenter/ContractsPOReports/InvoicesLogReport';
 import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocument';
 import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
+import ProjectsList from './Pages/ReportsCenter/ProjectReports/ProjectsList';
+import CashFlowReport from './Pages/ReportsCenter/ProjectReports/CashFlowReport';
+import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 
- 
- 
+
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -206,9 +208,7 @@ let originalRoutes = [
     , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
     , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
     , <Route path="/EpsPermission" component={EpsPermission} />
-    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
-    // , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
-    // , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
+    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} /> 
     , <Route path="/Projects" component={Projects} />
     , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
     , <Route path="/EpsPermission" component={EpsPermission} /> 
@@ -242,7 +242,9 @@ let originalRoutes = [
     , <Route path="/CollectedPaymentRequisition" component={CollectedPaymentRequisition} />
     , <Route path="/SiteRequestReleasedQnt" component={SiteRequestReleasedQnt} />
     , <Route path="/InvoicesLogReport" component={InvoicesLogReport} />
-    
+    , <Route path="/ProjectsList" component={ProjectsList} />
+    , <Route path="/CashFlowReport" component={CashFlowReport} />
+    , <Route path="/ProjectBalanceReport" component={ProjectBalanceReport} />
     
     , <Route path="/approvalDocument" component={approvalDocument} />
     , <Route path="/contractorsPerformance" component={contractorsPerformance} />
