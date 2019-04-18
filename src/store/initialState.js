@@ -2,6 +2,7 @@ export default {
 	app: {
 		communication: {
 			document: {},
+			documentTitle:'',
 			files: [],
 			workFlowCycles: [],
 			changeStatus: false,

@@ -186,7 +186,7 @@ class LettersAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId);
+            this.props.actions.documentForEdit(url, this.state.docTypeId,'lettertitle');
 
         } else {
             let letter = {

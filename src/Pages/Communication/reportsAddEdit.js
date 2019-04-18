@@ -79,7 +79,7 @@ class reportsAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 19,
+            docTypeId: 20,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -121,7 +121,6 @@ class reportsAddEdit extends Component {
         }
     }
     componentWillReceiveProps(nextProps, prevProps) {
-        console.log('props', nextProps)
         if (nextProps.document && nextProps.document.id) {
             this.setState({
                 document: { ...nextProps.document },
@@ -172,7 +171,7 @@ class reportsAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url).then(() => {
+            this.props.actions.documentForEdit(url,this.state.docTypeId,'Reports').then(() => {
                 this.setState({ isLoading: false })
             })
 

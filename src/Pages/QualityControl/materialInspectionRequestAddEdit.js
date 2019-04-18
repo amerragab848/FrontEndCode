@@ -280,14 +280,15 @@ class materialInspectionRequestAddEdit extends Component {
                 this.setState({
                     IRCycles: [...result]
                 })
-                let data = { items: result };
-                this.props.actions.ExportingData(data);
+               
             })
 
             dataservice.GetDataGrid("GetMaterialRequestLastCycle?id=" + this.state.docId).then(result => {
                 this.setState({
                     documentCycle: { ...result }
                 });
+                let data = { items: result };
+                this.props.actions.ExportingData(data);
             });
 
         } else {

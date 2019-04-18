@@ -193,7 +193,7 @@ class TransmittalAddEdit extends Component {
 
             let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
 
-            this.props.actions.documentForEdit(url,this.state.docTypeId).catch(ex => toast.error(Resources["failError"][currentLanguage]));;
+            this.props.actions.documentForEdit(url,this.state.docTypeId,'transmittal').catch(ex => toast.error(Resources["failError"][currentLanguage]));;
         } else {
             const transmittalDocument = {
                 //field

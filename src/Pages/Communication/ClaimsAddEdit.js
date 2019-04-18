@@ -57,9 +57,7 @@ let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
 class ClaimsAddEdit extends Component {
-
     constructor(props) {
-
         super(props);
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
@@ -67,7 +65,6 @@ class ClaimsAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
@@ -81,7 +78,6 @@ class ClaimsAddEdit extends Component {
             }
             index++;
         }
-
         this.state = {
             currentTitle: "sendToWorkFlow",
             showModal: false,
@@ -89,7 +85,7 @@ class ClaimsAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 19,
+            docTypeId: 109,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -111,7 +107,6 @@ class ClaimsAddEdit extends Component {
             selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue()
         }
-
         if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
@@ -143,13 +138,11 @@ class ClaimsAddEdit extends Component {
             this.checkDocumentIsView();
         }
     };
-
     componentWillUnmount() {
         this.setState({
             docId: 0
         });
     }
-
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
@@ -160,7 +153,6 @@ class ClaimsAddEdit extends Component {
             this.setState({ showModal: this.props.showModal });  
         } 
     }
-
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(49))) {
@@ -186,7 +178,7 @@ class ClaimsAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId,'claims');
 
         } else {
             let letter = {

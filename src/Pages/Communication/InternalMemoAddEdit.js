@@ -124,18 +124,18 @@ class InternalMemoAddEdit extends Component {
 
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id) {
-            
-            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
-            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+            let serverInspectionRequest = { ...nextProps.document };
+            serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
+            serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY');
 
             this.setState({
-                document: nextProps.document,
+                document: serverInspectionRequest,
                 hasWorkflow: nextProps.hasWorkflow,
-                message:RichTextEditor.createValueFromString(nextProps.document.message, 'html'),
-                answer:RichTextEditor.createValueFromString(nextProps.document.answer, 'html')
+                message:RichTextEditor.createValueFromString(serverInspectionRequest.message, 'html'),
+                answer:RichTextEditor.createValueFromString(serverInspectionRequest.answer, 'html')
             });
 
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
     };
@@ -171,7 +171,7 @@ class InternalMemoAddEdit extends Component {
     componentWillMount() {
       if (this.state.docId > 0) {
         let url = "GetCommunicationInternalMemoForEdit?id=" + this.state.docId;
-        this.props.actions.documentForEdit(url).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        this.props.actions.documentForEdit(url,this.state.docTypeId,'communicationInternalMemo').catch(ex => toast.error(Resources["failError"][currentLanguage]));
    
       } else {
         const internalMemoDocument = {
