@@ -165,7 +165,7 @@ class TransmittalAddEdit extends Component {
             this.checkDocumentIsView();
         }
     }
-
+ 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(85))) {

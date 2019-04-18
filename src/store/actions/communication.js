@@ -242,7 +242,8 @@ export function RouteToTemplate() {
         dispatch({
             type: types.RouteToTemplate,
             showLeftMenu: false,
-            showSelectProject: false
+            showSelectProject: false,
+            showLeftReportMenu:false
         });
     }
 }
@@ -252,6 +253,7 @@ export function RouteToDashboardProject(event) {
             type: types.RouteToDashboardProject,
             showLeftMenu: true,
             showSelectProject: false,
+            showLeftReportMenu: false,
             projectId: event.value,
             projectName: event.label
         });
@@ -263,6 +265,7 @@ export function RouteToMainDashboard(event) {
             type: types.RouteToDashboardProject,
             showLeftMenu: false,
             showSelectProject: true,
+            showLeftReportMenu: false,
             projectId: 0,
             projectName: "Select Project"
         });
@@ -274,6 +277,7 @@ export function AboveSelectProject(event) {
             type: types.RouteToDashboardProject,
             showLeftMenu: true,
             showSelectProject: false,
+            showLeftReportMenu: false,
             projectId: event.value,
             projectName: event.label
         });
@@ -285,9 +289,23 @@ export function LeftMenuClick(event, moduleName) {
             type: types.LeftMenuClick,
             showLeftMenu: true,
             showSelectProject: false,
+            showLeftReportMenu: false,
             projectId: event.value,
             projectName: event.label,
             moduleName: moduleName
+        });
+    }
+}
+
+export function ReportCenterMenuClick() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.ReportCenterMenu,
+            showLeftMenu: false,
+            showSelectProject: false,
+            showLeftReportMenu: true,
+            // projectId: event.value,
+            // projectName: event.label 
         });
     }
 }
@@ -297,6 +315,7 @@ export function FillGridLeftMenu() {
         dispatch({
             type: types.FillGridLeftMenu,
             showLeftMenu: true,
+            showLeftReportMenu: false,
             showSelectProject: false
         });
     }

@@ -153,6 +153,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
+                showLeftReportMenu: action.showLeftReportMenu,
                 projectId: action.projectId,
                 projectName: action.projectName
             };
@@ -161,6 +162,7 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
+                showLeftReportMenu: action.showLeftReportMenu,
                 showSelectProject: action.showSelectProject
             };
         case types.RouteToMainDashboard:
@@ -169,6 +171,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
+                showLeftReportMenu: action.showLeftReportMenu,
                 projectId: action.projectId,
                 projectName: action.projectName
             };
@@ -180,6 +183,7 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
                 projectId: action.projectId,
+                showLeftReportMenu: action.showLeftReportMenu,
                 projectName: action.projectName
             };
 
@@ -189,6 +193,19 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
+                showLeftReportMenu: action.showLeftReportMenu,
+                projectId: action.projectId,
+                projectName: action.projectName,
+                moduleName: action.moduleName
+            };
+
+        case types.ReportCenterMenu:
+
+            return {
+                ...state,
+                showLeftMenu: action.showLeftMenu,
+                showSelectProject: action.showSelectProject,
+                showLeftReportMenu: action.showLeftReportMenu,
                 projectId: action.projectId,
                 projectName: action.projectName,
                 moduleName: action.moduleName
@@ -200,6 +217,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
+                showLeftReportMenu: action.showLeftReportMenu,
                 projectId: localStorage.getItem('lastSelectedProject'),
                 projectName: localStorage.getItem('lastSelectedprojectName')
             };
