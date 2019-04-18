@@ -53,10 +53,7 @@ export function documentForAdding(doc) {
 export function ExportingData(data) {
     return (dispatch, getState) => {
         dispatch({ 
-            type: types.Export_Document,
-            fields: data.fields,
-            columns:  data.columnsItems,
-            fieldsItems:  data.fieldsItems,
+            type: types.Export_Document, 
             items:  data.items
         });
     }

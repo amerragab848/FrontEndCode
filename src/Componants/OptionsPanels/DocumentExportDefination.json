@@ -124,7 +124,7 @@
             },
             {
                 "name": "fromContact",
-                "value": "fromContactName ",
+                "value": "fromContactName",
                 "type": "S"
             },
             {
@@ -139,7 +139,7 @@
             },
             {
                 "name": "projectName",
-                "value": "projectName ",
+                "value": "projectName",
                 "type": "S"
             }
         ],
@@ -300,6 +300,6 @@
             }
         ],
         "columnsItems" :["arrange", "subject", "statusName", "flowCompanyName", "flowContactName", "docDate", "approvalStatusName", "progressPercent", "cycleComment"],
-        "friendlyNames":["arrange","subject","status","CompanyName","ContactName","docDate","approvalStatus","progressPercent","answer"]
+        "friendlyNames":["numberAbb","subject","status","CompanyName","ContactName","docDate","approvalStatus","progressPercent","answer"]
     }
 }

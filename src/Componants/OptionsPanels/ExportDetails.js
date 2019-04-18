@@ -91,7 +91,7 @@ class ExportDetails extends Component {
         let data = this.props.document
         console.log(this.props.fields);
         let rows = fields.fields.map((field, index) => {
-            let formatData = field.type == "D" ? moment(data[field.value]).format("DD/MM/YYYY") : data[field.value]
+            let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
 
             let nextIndex = (index + 1);
             if ((index % 2) === 0) {
@@ -150,7 +150,7 @@ class ExportDetails extends Component {
                         <tr style={{ border: '4px' }}>
                             {fieldsName.map(column => {
                                 return (
-                                    <th style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {Resources.column[currentLanguage]}</th>
+                                    <th style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {Resources[column][currentLanguage]}</th>
                                 )
                             })}
                         </tr>

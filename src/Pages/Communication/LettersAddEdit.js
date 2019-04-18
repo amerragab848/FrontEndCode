@@ -139,25 +139,6 @@ class LettersAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow,
                 message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
             });
-
-            // let fields = [
-            //     { name: Resources.subject[currentLanguage], value: nextProps.document.subject},
-            //     { name: Resources.numberAbb[currentLanguage], value: nextProps.document.arrange},
-            //     { name: Resources.status[currentLanguage], value: nextProps.document.statusName},
-            //     { name: Resources.docDate[currentLanguage], value: moment(nextProps.document.docDate).format("DD/MM/YYYY")},
-            //     { name: Resources.refDoc[currentLanguage], value: nextProps.document.refDoc},
-            //     { name: Resources.fromCompany[currentLanguage], value: nextProps.document.fromCompanyName},
-            //     { name: Resources.fromContact[currentLanguage], value: nextProps.document.fromContactName},
-            //     { name: Resources.toCompany[currentLanguage], value: nextProps.document.toCompanyName},
-            //     { name: Resources.attention[currentLanguage], value: nextProps.document.toContactName},
-            //     { name: Resources.projectName[currentLanguage], value: nextProps.document.projectName }
-            // ];
-
-            // let data={fields: fields,columnsItems :[]};
-            // let data={fields: DED['Letters'].fields,columnsItems :DED['Letters'].columnsItems}
-
-            // this.props.actions.ExportingData(data);
-
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
