@@ -137,7 +137,7 @@
   position: relative;
 }
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div >div{
-  z-index: 13;
+  z-index: 14;
 }
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate >div::after{
   content: '';
@@ -613,8 +613,8 @@ table edition
   overflow-x: hidden;
   box-shadow: 0px 5px 12px #888888;
 }
-.EastWestProject  ul {
-  max-height: 1150px;
+.EastWestProject ul {
+  max-height: inherit;
   transition: all 0.2s ease-in-out;
   overflow: hidden;
 }
@@ -1048,6 +1048,8 @@ table edition
 }
 .grid-container {
   min-height: 350px;
+  padding-bottom: 20px;
+  position: relative;
 }
 /**/
 /* .customD_Menu .css-vj8t7z {
@@ -2053,9 +2055,9 @@ button.companies_icon {
     min-width: 130px;
   }
 }
-.one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+/* .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
   width: 100%;
-}
+} */
 .noTabs__document.one__tab.one_step .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width: 100%;
 }
@@ -2329,7 +2331,7 @@ button.companies_icon {
   margin-bottom: 30px;
 }
 
-.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z {
+.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z, .document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
   background: #fff;
 }
 .summerisItem__number {
@@ -2694,6 +2696,8 @@ button.companies_icon {
   position: absolute;
   left: 18%;
   top: 12px;
+  cursor: pointer;
+  display: block;
 }
 .dashboard__selectMenu .css-10nd86i {
   max-width: 204px;
@@ -3035,11 +3039,9 @@ button.companies_icon {
 #top__scroll::-webkit-scrollbar, .react-grid-Canvas::-webkit-scrollbar {
   height: 7px;
 }
-.grid-container {
-  position: relative;
-}
+
 #empty__div--scroll {
-  width: 2800px;
+  /* width: 2800px; */
   height: 1px;
 }
 
@@ -3376,6 +3378,19 @@ color: #4382f9 !important;
   stroke: transparent;
   fill: #07bc0cbb
 }
+.charts__row .highcharts-color-6, .charts__row .highcharts-color-6 .highcharts-point {
+  stroke: transparent;
+  fill: #080;
+}
+.charts__row .highcharts-color-7, .charts__row .highcharts-color-7 .highcharts-point {
+  stroke: transparent;
+}
+.charts__row .highcharts-color-8, .charts__row .highcharts-color-8 .highcharts-point {
+  stroke: transparent;
+}
+.charts__row .highcharts-color-9, .charts__row .highcharts-color-9 .highcharts-point {
+  stroke: transparent;
+}
 .charts__row .highcharts-legend-item.highcharts-pie-series.highcharts-legend-item-hidden .highcharts-point{
   fill: rgb(204, 204, 204) !important;
 }
@@ -3404,6 +3419,18 @@ color: #4382f9 !important;
 }
 .charts__row .highcharts-title tspan {
   font-size: 20px;
+}
+.highcharts-halo {
+  fill-opacity: 1;
+}
+
+path.highcharts-label-box.highcharts-tooltip-box {
+  fill: rgba(0,0,0,0.3);
+  stroke: rgba(0,0,0,0.3);
+}
+path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-box.highcharts-tooltip-box + text tspan{
+  color: #fff !important;
+  fill: #fff !important;
 }
 
 .epsTitle {
@@ -3548,7 +3575,18 @@ color: #4382f9 !important;
       margin-right: 30px;
   }
 }
-
+.tableSelctedBTNs button:nth-child(2){
+  margin-right:16px;
+}
+.document__action--menu .skylight-dialog .customD_Menu .css-xp4uvy {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-align: left;
+}
+.noTabs__document .doc-container .step-content .document-fields .skylight-dialog  .proForm.datepickerContainer {
+  flex-flow: column;
+}
 /*
 .highcharts-color-6 {
   stroke: transparent;
@@ -3562,8 +3600,56 @@ color: #4382f9 !important;
   stroke: transparent;
   fill: 
 } */
+
+.drop-item .remove {
+  cursor: pointer;
+}
 .skylight-dialog .letterFullWidth {
   margin-bottom: 10px;
+}
+.react-grid-HeaderCell .react-grid-HeaderCell-sortable {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* @media screen and (min-width: 1440px) {
+  .one__tab.one_step .doc-container .step-content, .noTabs__document .doc-container .step-content {
+    width: 70%;
+  }
+} */
+
+/* .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
+  width: 100%;
+}
+.one__tab.one_step .doc-container .step-content {
+  padding: 0 70px 0 170px;
+  width: unset;
+}
+.linebylineInput .customD_Menu {
+  width: 100%;
+}
+.customDatepicker.fillter-status.fillter-item-c {
+  max-width: 200px;
+} */
+.documents-stepper .doc-container .docstepper-levels .step-content-foot, .one__tab.one_step .doc-container .docstepper-levels {
+  position: sticky;
+  top: 72px;
+}
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
+  position: sticky;
+  top: 144px;
+}
+
+.react-grid-checkbox:checked+.react-grid-checkbox-label:before {
+  content: url(../../images/checkmark.svg);
+  background: #4382F9 !important;
+  box-shadow: none !important;
+  border-color: transparent;
+  border-radius: 0.21428571rem;
+}
+.-padRow .rt-td {
+  border-bottom: none !important;
 }
 /* .whiteBackground {
   background: #fff;
