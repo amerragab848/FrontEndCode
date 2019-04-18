@@ -148,11 +148,6 @@ class CashFlowReport extends Component {
     render() {
 
 
-
-        const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
-
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
             : null
@@ -162,9 +157,9 @@ class CashFlowReport extends Component {
             <div className='mainContainer main__fulldash'>
 
                 <div className="documents-stepper noTabs__document">
-
+                    {this.state.isLoading ? <LoadingSection /> : null}
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['projectInvoices'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['cashFlow'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -251,7 +246,7 @@ class CashFlowReport extends Component {
                                                 {this.state.rows.map(i => {
                                                     return (
                                                         <td>
-                                                            <div className="contentCell" style={{width:'100%' , justifyContent: 'center'}}>
+                                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
                                                                 {i.totalIn}
                                                             </div>
                                                         </td>
@@ -262,7 +257,7 @@ class CashFlowReport extends Component {
                                                 {this.state.rows.map(i => {
                                                     return (
                                                         <td>
-                                                            <div className="contentCell" style={{width:'100%' , justifyContent: 'center'}}>
+                                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
                                                                 {i.totalOut}
                                                             </div>
                                                         </td>
@@ -273,7 +268,7 @@ class CashFlowReport extends Component {
                                                 {this.state.rows.map(i => {
                                                     return (
                                                         <td>
-                                                            <div className="contentCell" style={{width:'100%' , justifyContent: 'center'}}>
+                                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
                                                                 {i.variance}
                                                             </div>
                                                         </td>

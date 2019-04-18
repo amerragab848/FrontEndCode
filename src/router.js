@@ -113,8 +113,9 @@ import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocu
 import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
 import ProjectsList from './Pages/ReportsCenter/ProjectReports/ProjectsList';
 import CashFlowReport from './Pages/ReportsCenter/ProjectReports/CashFlowReport';
+import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 
- 
+
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -242,6 +243,7 @@ let originalRoutes = [
     , <Route path="/InvoicesLogReport" component={InvoicesLogReport} />
     , <Route path="/ProjectsList" component={ProjectsList} />
     , <Route path="/CashFlowReport" component={CashFlowReport} />
+    , <Route path="/ProjectBalanceReport" component={ProjectBalanceReport} />
     
     , <Route path="/approvalDocument" component={approvalDocument} />
     , <Route path="/contractorsPerformance" component={contractorsPerformance} />
