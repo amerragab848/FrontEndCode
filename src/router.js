@@ -36,7 +36,10 @@ import EditAccount from './Componants/GeneralSetting/Accounts/EditAccount';
 import UserProjects from './Componants/GeneralSetting/Accounts/UserProjects';
 import TaskAdmin from './Componants/GeneralSetting/Accounts/TaskAdmin';
 import AccountsEPSPermissions from './Componants/GeneralSetting/Accounts/AccountsEPSPermissions';
-import TemplatesSettings from './Componants/GeneralSetting/TemplatesSettings';
+import TemplatesSettings from './Componants/GeneralSetting/TemplatesSettings'; 
+
+import ReportsMenu from './Pages/ReportsCenter/ReportsMenu'; 
+
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
 import FollowUpsSummaryDetails from "./Componants/DashBoardDetails/FollowUpsSummaryDetails";
 import GeneralList from './Componants/GeneralSetting/MenuDefaultData/GeneralList';
@@ -170,7 +173,7 @@ let originalRoutes = [
     , <Route path="/GeneralList" component={GeneralList} />
     , <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />
     , <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />
-    , <Route path="/TemplatesSettings" component={TemplatesSettings} />
+    , <Route path="/ReportsMenu" component={ReportsMenu} />
     , <Route path="/GeneralList" component={GeneralList} />
     , <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />
     , <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />

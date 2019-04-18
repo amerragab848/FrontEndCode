@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import LeftMenu from "./LeftMenu";
+import LeftReportMenu from "./LeftReportMenu";
 import HeaderMenu from "./HeaderMenu";
 import config from "../../Services/Config";
  
@@ -40,6 +41,8 @@ class Menu extends Component {
       <div>
         {this.state.contactName ? <HeaderMenu contactName={this.state.contactName} profilePath={this.state.profilePath} /> : null}
          <LeftMenu appComponants={this.state.appComponants} /> 
+         <LeftReportMenu />
+         
       </div>
     );
   }
