@@ -214,14 +214,11 @@ class meetingAgendaAddEdit extends Component {
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
     }
-
     checkDocumentIsView() {
-
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(453)) {
                 this.setState({ isViewMode: true });
             }
-
             if (this.state.isApproveMode != true && Config.IsAllow(453)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(453)) {
                     if (this.props.document.status !== false && Config.IsAllow(453)) {
@@ -237,8 +234,6 @@ class meetingAgendaAddEdit extends Component {
         else {
             this.setState({ isViewMode: false });
         }
-
-
     }
 
     fillDropDowns(isEdit) {
@@ -274,7 +269,7 @@ class meetingAgendaAddEdit extends Component {
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })
-            this.props.actions.documentForEdit('GetCommunicationMeetingAgendaForEdit?id=' + this.state.docId).then(() => {
+            this.props.actions.documentForEdit('GetCommunicationMeetingAgendaForEdit?id=' + this.state.docId,this.state.docTypeId,'meetingAganda').then(() => {
                 this.setState({ agendaId: this.state.docId, isLoading: false, showForm: true })
                 this.checkDocumentIsView();
                 this.getTabelData()
@@ -330,10 +325,13 @@ class meetingAgendaAddEdit extends Component {
             this.setState({ attendees: attendeesTable })
             setTimeout(() => { this.setState({ isLoading: false }) }, 500)
         })
-
         let topicstable = []
         this.setState({ isLoading: true })
         this.props.actions.GetTopicsTable('GetCommunicationMeetingAgendaTopics?agendaId=' + this.state.agendaId).then(res => {
+          
+            let data = { items: this.props.topics };
+            this.props.actions.ExportingData(data);
+
             this.props.topics.forEach((element, index) => {
                 topicstable.push({
                     id: element.Id, no: index + 1, description: element.description, decision: element.decisions, action: element.action, comment: element.comment
