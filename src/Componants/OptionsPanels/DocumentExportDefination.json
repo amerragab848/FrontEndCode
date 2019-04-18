@@ -1,0 +1,305 @@
+{
+    "19": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName ",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :[],
+        "friendlyNames":[]
+    },
+    "28": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "requiredDate",
+                "value": "requiredDate",
+                "type": "D"
+            },
+            {
+                "name": "sendingMethod",
+                "value": "sendingMethodName",
+                "type": "S"
+            },
+            {
+                "name": "submittedFor",
+                "value": "submittedForName",
+                "type": "S"
+            },
+            {
+                "name": "description",
+                "value": "description",
+                "type": "S"
+            },
+            {
+                "name": "discipline",
+                "value": "discipline",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "area ",
+                "type": "S"
+            },
+            {
+                "name": "buildingNumber",
+                "value": "building",
+                "type": "S"
+            },
+            {
+                "name": "apartmentNumber",
+                "value": "apartment",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName ",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName ",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :[],
+        "friendlyNames":[]
+    },
+    "25": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "refrences",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "requiredDate",
+                "value": "requiredDate",
+                "type": "D"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName ",
+                "type": "S"
+            },
+            {
+                "name": "ToContact",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "actionByCompany",
+                "value": "bicCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "actionByContact",
+                "value": "bicContactName",
+                "type": "S"
+            },
+            {
+                "name": "contractPo",
+                "value": "orderType ",
+                "type": "S"
+            },
+            {
+                "name": "discipline",
+                "value": "disciplineName",
+                "type": "S"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "reasonForIssue",
+                "value": "reasonForIssueName ",
+                "type": "S"
+            },
+            {
+                "name": "fileNumber",
+                "value": "fileNumberName",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "areaName",
+                "type": "S"
+            },
+            {
+                "name": "Building",
+                "value": "buildingNoName ",
+                "type": "S"
+            },
+            {
+                "name": "apartmentNumber",
+                "value": "apartmentNoName",
+                "type": "S"
+            },
+            {
+                "name": "answer",
+                "value": "rfi",
+                "type": "S"
+            },
+            {
+                "name": "message",
+                "value": "answer ",
+                "type": "S"
+            },
+            {
+                "name": "CycleDetails",
+                "value": " ",
+                "type": "L"
+            },
+            {
+                "name": "cycleSubject",
+                "value": "cycleSubject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "cycleStatusName ",
+                "type": "S"
+            },
+            {
+                "name": "cycleDate",
+                "value": "cycleDocDate",
+                "type": "D"
+            },
+            {
+                "name": "approvalStatus",
+                "value": "cycleApprovalStatusName",
+                "type": "S"
+            },
+            {
+                "name": "progressPercent",
+                "value": "cycleProgressPercent ",
+                "type": "S"
+            },
+            {
+                "name": "resultDate",
+                "value": "resultDate ",
+                "type": "D"
+            }
+        ],
+        "columnsItems" :["arrange", "subject", "statusName", "flowCompanyName", "flowContactName", "docDate", "approvalStatusName", "progressPercent", "cycleComment"],
+        "friendlyNames":["arrange","subject","status","CompanyName","ContactName","docDate","approvalStatus","progressPercent","answer"]
+    }
+}

@@ -9,7 +9,6 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-
 import { withRouter } from "react-router-dom";
 
 import RichTextEditor from 'react-rte';
@@ -141,22 +140,23 @@ class LettersAddEdit extends Component {
                 message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
             });
 
-            let fields = [
-                { name: Resources.subject[currentLanguage], value: nextProps.document.subject},
-                { name: Resources.numberAbb[currentLanguage], value: nextProps.document.arrange},
-                { name: Resources.status[currentLanguage], value: nextProps.document.statusName},
-                { name: Resources.docDate[currentLanguage], value: moment(nextProps.document.docDate).format("DD/MM/YYYY")},
-                { name: Resources.refDoc[currentLanguage], value: nextProps.document.refDoc},
-                { name: Resources.fromCompany[currentLanguage], value: nextProps.document.fromCompanyName},
-                { name: Resources.fromContact[currentLanguage], value: nextProps.document.fromContactName},
-                { name: Resources.toCompany[currentLanguage], value: nextProps.document.toCompanyName},
-                { name: Resources.attention[currentLanguage], value: nextProps.document.toContactName},
-                { name: Resources.projectName[currentLanguage], value: nextProps.document.projectName }
-            ];
-            
-            let data={fields: fields,columnsItems :[]};
+            // let fields = [
+            //     { name: Resources.subject[currentLanguage], value: nextProps.document.subject},
+            //     { name: Resources.numberAbb[currentLanguage], value: nextProps.document.arrange},
+            //     { name: Resources.status[currentLanguage], value: nextProps.document.statusName},
+            //     { name: Resources.docDate[currentLanguage], value: moment(nextProps.document.docDate).format("DD/MM/YYYY")},
+            //     { name: Resources.refDoc[currentLanguage], value: nextProps.document.refDoc},
+            //     { name: Resources.fromCompany[currentLanguage], value: nextProps.document.fromCompanyName},
+            //     { name: Resources.fromContact[currentLanguage], value: nextProps.document.fromContactName},
+            //     { name: Resources.toCompany[currentLanguage], value: nextProps.document.toCompanyName},
+            //     { name: Resources.attention[currentLanguage], value: nextProps.document.toContactName},
+            //     { name: Resources.projectName[currentLanguage], value: nextProps.document.projectName }
+            // ];
 
-            this.props.actions.ExportingData(data);
+            // let data={fields: fields,columnsItems :[]};
+            // let data={fields: DED['Letters'].fields,columnsItems :DED['Letters'].columnsItems}
+
+            // this.props.actions.ExportingData(data);
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -205,7 +205,7 @@ class LettersAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId);
 
         } else {
             let letter = {

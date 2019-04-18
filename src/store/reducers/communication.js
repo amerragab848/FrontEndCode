@@ -31,6 +31,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 document: action.document,
                 docId: action.docId,
+                docTypeId: action.docTypeId,
                 changeStatus: true,
                 showLeftMenu: true,
                 showSelectProject: false

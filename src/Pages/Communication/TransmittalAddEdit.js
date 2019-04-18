@@ -162,42 +162,42 @@ class TransmittalAddEdit extends Component {
     Export_Document() {
         let document = { ...this.state.document };
 
-        let fields = [
-            { name: Resources.subject[currentLanguage], value: document.subject },
-            { name: Resources.status[currentLanguage], value: document.statusName },
-            { name: Resources.refDoc[currentLanguage], value: document.refDoc },
-            { name: Resources.docDate[currentLanguage], value: document.docDate },
-            { name: Resources.requiredDate[currentLanguage], value: document.requiredDate },
-            { name: Resources.sendingMethod[currentLanguage], value: document.sendingMethodName },
-            { name: Resources.submittedFor[currentLanguage], value: document.submittedForName },
-            { name: Resources.description[currentLanguage], value: document.description },
-            { name: Resources.discipline[currentLanguage], value: document.discipline },
-            { name: Resources.area[currentLanguage], value: document.area },
-            { name: Resources.buildingNumber[currentLanguage], value: document.building },
-            { name: Resources.apartmentNumber[currentLanguage], value: document.apartment },
-            { name: Resources.fromCompany[currentLanguage], value: document.fromCompanyName },
-            { name: Resources.fromContact[currentLanguage], value: document.fromContactName },
-            { name: Resources.toCompany[currentLanguage], value: document.toCompanyName },
-            { name: Resources.attention[currentLanguage], value: document.toContactName },
-            { name: Resources.projectName[currentLanguage], value: projectName }
-        ]; 
+        // let fields = [
+        //     { name: Resources.subject[currentLanguage], value: document.subject },
+        //     { name: Resources.status[currentLanguage], value: document.statusName },
+        //     { name: Resources.refDoc[currentLanguage], value: document.refDoc },
+        //     { name: Resources.docDate[currentLanguage], value: document.docDate },
+        //     { name: Resources.requiredDate[currentLanguage], value: document.requiredDate },
+        //     { name: Resources.sendingMethod[currentLanguage], value: document.sendingMethodName },
+        //     { name: Resources.submittedFor[currentLanguage], value: document.submittedForName },
+        //     { name: Resources.description[currentLanguage], value: document.description },
+        //     { name: Resources.discipline[currentLanguage], value: document.discipline },
+        //     { name: Resources.area[currentLanguage], value: document.area },
+        //     { name: Resources.buildingNumber[currentLanguage], value: document.building },
+        //     { name: Resources.apartmentNumber[currentLanguage], value: document.apartment },
+        //     { name: Resources.fromCompany[currentLanguage], value: document.fromCompanyName },
+        //     { name: Resources.fromContact[currentLanguage], value: document.fromContactName },
+        //     { name: Resources.toCompany[currentLanguage], value: document.toCompanyName },
+        //     { name: Resources.attention[currentLanguage], value: document.toContactName },
+        //     { name: Resources.projectName[currentLanguage], value: projectName }
+        // ]; 
 
-        let friendlyNames = [
-              Resources.arrange[currentLanguage]
-            , Resources.subject[currentLanguage]
-            , Resources.status[currentLanguage]
-            , Resources.CompanyName[currentLanguage]
-            , Resources.ContactName[currentLanguage]
-            , Resources.docDate[currentLanguage]
-            , Resources.approvalStatus[currentLanguage]
-            , Resources.progressPercent[currentLanguage]
-            , Resources.answer[currentLanguage]
-        ];
-        let fieldsItems = [];
-        let items = [];
-        let data = { fields: fields, columnsItems: friendlyNames, fieldsItems: fieldsItems, items: items };
+        // let friendlyNames = [
+        //       Resources.arrange[currentLanguage]
+        //     , Resources.subject[currentLanguage]
+        //     , Resources.status[currentLanguage]
+        //     , Resources.CompanyName[currentLanguage]
+        //     , Resources.ContactName[currentLanguage]
+        //     , Resources.docDate[currentLanguage]
+        //     , Resources.approvalStatus[currentLanguage]
+        //     , Resources.progressPercent[currentLanguage]
+        //     , Resources.answer[currentLanguage]
+        // ];
+        // let fieldsItems = [];
+        // let items = [];
+        // let data = { fields: fields, columnsItems: friendlyNames, fieldsItems: fieldsItems, items: items };
 
-        this.props.actions.ExportingData(data);
+        // this.props.actions.ExportingData(data);
     }
     
     componentDidUpdate(prevProps) {
@@ -233,7 +233,7 @@ class TransmittalAddEdit extends Component {
 
             let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
 
-            this.props.actions.documentForEdit(url).catch(ex => toast.error(Resources["failError"][currentLanguage]));;
+            this.props.actions.documentForEdit(url,this.state.docTypeId).catch(ex => toast.error(Resources["failError"][currentLanguage]));;
         } else {
             const transmittalDocument = {
                 //field
