@@ -3,7 +3,7 @@ import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
-
+import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -27,6 +27,7 @@ class GridSetup extends Component {
       selectedIndexes: [],
       selectedRows: [],
       selectedRow: [],
+      copmleteRows: [],
       expandedRows: {}
     };
 
@@ -136,7 +137,6 @@ class GridSetup extends Component {
   };
 
   onRowsSelected = rows => {
-
     if (this.props.IsActiv !== undefined) {
       let Id = '';
       Id = rows.map(r => r.row.id);
@@ -149,6 +149,7 @@ class GridSetup extends Component {
     }
     let prevRows = this.state.selectedIndexes;
     let prevRowsId = this.state.selectedRows;
+    let copmleteRows = this.state.copmleteRows;
 
 
     if (this.props.single == true) {
@@ -163,10 +164,21 @@ class GridSetup extends Component {
       prevRows = rows.map(r => r.rowIdx);
       prevRowsId = rows.map(r => r.row.id);
     } else {
+
       let exist = prevRows.indexOf(rows[0].rowIdx) === -1 ? false : true;
       if (exist === false) {
-        prevRows.push(rows[0].rowIdx);
-        prevRowsId.push(rows[0].row.id);
+        if (this.props.selectedCopmleteRow != undefined) {
+          if (rows[0].row.type !== "Distribution List") {
+            prevRows.push(rows[0].rowIdx);
+            prevRowsId.push(rows[0].row.id);
+          }
+          else
+            toast.warn("Can't Send Distrbution Only Work Flow ...")
+        }
+        else {
+          prevRows.push(rows[0].rowIdx);
+          prevRowsId.push(rows[0].row.id);
+        }
       }
     }
 
@@ -178,6 +190,7 @@ class GridSetup extends Component {
     if (this.props.selectedRows != undefined) {
       this.props.selectedRows(this.state.selectedRows);
     }
+    
   };
 
   onRowsDeselected = rows => {
@@ -298,7 +311,7 @@ class GridSetup extends Component {
   render() {
     const { rows, groupBy } = this.state;
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-    console.log("groupedRows....", groupedRows.length);
+    //    console.log("groupedRows....", groupedRows.length);
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
@@ -323,16 +336,22 @@ class GridSetup extends Component {
                 <span>Selected</span>
               </div>
               <div className="tableSelctedBTNs">
-                <button
+                {this.props.addLevel ? null : <button
                   className="defaultBtn btn smallBtn"
                   onClick={this.clickHandlerDeleteRows}
                 >{this.props.NoShowDeletedBar === undefined ?
                   'DELETE' : 'Currency'}
-                </button>
+                </button>}
                 {this.props.assign ? <button
                   className="primaryBtn-1 btn smallBtn"
                   onClick={() => this.props.assignFn()} >
                   <i className="fa fa-retweet"></i>
+                </button> : null}
+
+                {this.props.addLevel ? <button
+                  className="primaryBtn-1 btn smallBtn"
+                  onClick={() => this.props.addLevel()} >
+                  <i className="fa fa-paper-plane"></i>
                 </button> : null}
 
                 {this.props.Panels !== undefined ?
@@ -366,11 +385,11 @@ class GridSetup extends Component {
 
             <ReactDataGrid
               rowKey="id"
-              minHeight={groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 650)}
+              minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 650)) : 1}
               height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
               columns={this.state.columns}
-              rowGetter={i => groupedRows[i]}
-              rowsCount={groupedRows.length}
+              rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
+              rowsCount={groupedRows != undefined ? groupedRows.length : 1}
               enableCellSelect={true}
               onGridRowsUpdated={this.onGridRowsUpdated}
               onCellSelected={this.onCellSelected}

@@ -602,7 +602,7 @@ class drawingListAddEdit extends Component {
                 res => {
                     this.setState({
                         rows: res,
-                        isLoading: false ,
+                        isLoading: false,
                         showPopUp: false,
                     })
                     this.GetMaxArrangeItem()
@@ -1003,16 +1003,14 @@ class drawingListAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <Dropdown title="projectType" data={this.state.ProjectDropData} name="projectTypeId"
-                                                                    selectedValue={this.state.selectProject}
-                                                                    onChange={setFieldValue}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'projectTypeId', false, '', '', '', 'selectProject')}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.projectTypeId}
-                                                                    touched={touched.projectTypeId}
-                                                                    value={values.projectTypeId} />
-                                                            </div>
+                                                            <Dropdown title="projectType" data={this.state.ProjectDropData} name="projectTypeId"
+                                                                selectedValue={this.state.selectProject}
+                                                                onChange={setFieldValue}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'projectTypeId', false, '', '', '', 'selectProject')}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.projectTypeId}
+                                                                touched={touched.projectTypeId}
+                                                                value={values.projectTypeId} />
                                                         </div>
 
                                                     </div>
@@ -1026,15 +1024,15 @@ class drawingListAddEdit extends Component {
 
                                                                 {this.state.isApproveMode === true ?
                                                                     <div >
-                                                                        <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                        <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                        <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                                                     </div>
                                                                     : null
                                                                 }
-                                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                 <span className="border"></span>
                                                                 <div className="document__action--menu">
                                                                     <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

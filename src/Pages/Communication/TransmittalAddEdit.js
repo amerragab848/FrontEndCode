@@ -142,22 +142,24 @@ class TransmittalAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document && nextProps.document.id) { 
 
-            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
-            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+            let serverInspectionRequest = { ...nextProps.document };
+            serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
+            serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY'); 
 
             this.setState({
-                document: nextProps.document,
+                document: serverInspectionRequest,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: RichTextEditor.createValueFromString(nextProps.document.description, 'html')
+                message: RichTextEditor.createValueFromString(serverInspectionRequest.description, 'html')
             });
 
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
     };
 
+    
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
@@ -191,7 +193,7 @@ class TransmittalAddEdit extends Component {
 
             let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
 
-            this.props.actions.documentForEdit(url).catch(ex => toast.error(Resources["failError"][currentLanguage]));;
+            this.props.actions.documentForEdit(url,this.state.docTypeId).catch(ex => toast.error(Resources["failError"][currentLanguage]));;
         } else {
             const transmittalDocument = {
                 //field
@@ -241,7 +243,7 @@ class TransmittalAddEdit extends Component {
                     [subDatasource]: result
                 });
             }
-        }); 
+        });
     }
 
     fillDropDowns(isEdit) {
@@ -273,7 +275,7 @@ class TransmittalAddEdit extends Component {
             this.setState({
                 companies: [...result]
             });
-        }) 
+        })
 
         //discplines
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
@@ -293,7 +295,7 @@ class TransmittalAddEdit extends Component {
             this.setState({
                 discplines: [...result]
             });
-        }) ;
+        });
 
         //area
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
@@ -843,17 +845,17 @@ class TransmittalAddEdit extends Component {
                                                     </div>
                                                     {
                                                         this.props.changeStatus === true ?
-                                                            <div className="approveDocument"> 
+                                                            <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
-                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit'>{Resources.save[currentLanguage]}</button>
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit'>{Resources.save[currentLanguage]}</button>
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
-                                                                            <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                                                         </div> : null
                                                                     }
-                                                                    <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                    <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                     <span className="border"></span>
                                                                     <div className="document__action--menu">
                                                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -879,7 +881,7 @@ class TransmittalAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                    
+
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>

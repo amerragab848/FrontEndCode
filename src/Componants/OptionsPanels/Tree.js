@@ -1,16 +1,11 @@
 import React, { Component, Fragment } from "react";
 
-import Api from '../../api'
+
 import dataservice from "../../Dataservice";
-import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
-
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
 
 class Tree extends Component {
 

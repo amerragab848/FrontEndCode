@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
-import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
 import Tree from "../../Componants/OptionsPanels/Tree";
@@ -13,7 +13,10 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 class rptCostCodingTree extends Component {
   constructor(props) {
     super(props);
-
+    if (!Config.IsAllow(400)) {
+      toast.warn(Resources['missingPermissions'][currentLanguage])
+      this.props.history.goBack()
+    }
     this.state = {
       projectId: '',
       NodeData: {}
@@ -48,8 +51,8 @@ class rptCostCodingTree extends Component {
 
     return (
       <div className="mainContainer">
-    
-       <div className="documents-stepper noTabs__document">
+
+        <div className="documents-stepper noTabs__document">
           <div className="submittalHead">
             <h2 className="zero">  {Resources.costCodingTreeReport[currentLanguage]} </h2>
             <div className="SubmittalHeadClose">

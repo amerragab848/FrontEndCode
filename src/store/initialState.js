@@ -23,7 +23,10 @@ export default {
 			documentCycle:{},
 			moduleName:"",
 			items:[],
-			attachDocuments:[]
+			attachDocuments:[],
+			fields:[],
+			columns:[],
+			fieldsItems:[]
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},

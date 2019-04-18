@@ -89,18 +89,15 @@ class BarChartComp extends Component {
     }
 
     componentDidMount = () => {
-
         let _catag = []
         let _data = []
         Api.get(this.props.api).then(results => {
-
             if (this.props.multiSeries === 'no') {
                 results.map((item) => {
                     _data.push(item[this.props.y])
                     _catag.push(item[this.props.catagName]);
                     return null;
                 });
-
                 this.setState({ options: { series: { name: this.props.title, data: _data }, xAxis: { categories: _catag } } });
             }
             else {

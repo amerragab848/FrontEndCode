@@ -477,7 +477,12 @@ table edition
     flex-flow: column;
     justify-content: center;
     position: relative;
-    z-index: 1; }
+    z-index: 1; 
+    overflow: visible !important;
+  }
+  .ReactTable .rt-table {
+    overflow: visible !important;
+  }
   .uploadForm.dragHover {
     border-color: #83B4FC;
     background: #E8F4FC; }
@@ -577,13 +582,19 @@ table edition
         color: #26344c;
         font-size: 26px;
       }
-      .textarea-group textarea {
+      .textarea-group textarea{
         overflow: auto;
         width: 100%;
         min-height: 100px;
         border-radius: 4px;
         border: 1px solid #DADEE6;
         padding: 10px;
+      }
+      .textarea-group .ui.input.inputDev {
+        width: 100%;
+      }
+      .textarea-group .ui.input.inputDev.has-error textarea{
+        border: 1px solid #e74c3c;
       }
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
@@ -1577,11 +1588,12 @@ tfoot tr td p{
 .noTabs__document .doc-container {
   background: #fff;
   flex-flow: column; }
-  .noTabs__document .doc-container .main__header {
+  .noTabs__document .doc-container .main__header, .main__header {
     width: 100%;
     padding: 0;
-    border-bottom: 1px solid #e9ecf0; }
-    .noTabs__document .doc-container .main__header .main__header--div {
+    border-bottom: 1px solid #e9ecf0; 
+  }
+    .noTabs__document .doc-container .main__header .main__header--div,.main__header .main__header--div {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -1595,6 +1607,9 @@ tfoot tr td p{
       margin: 0 auto;
       height: 72px;
     }
+    .main__header .main__header--div {
+      width: auto;
+    }
 @media screen and (max-width: 1250px) {
   .noTabs__document .doc-container .step-content, .noTabs__document .doc-container .main__header .main__header--div {
     padding-left: 20px ;
@@ -1602,13 +1617,13 @@ tfoot tr td p{
   }
 }
 
-    .noTabs__document .doc-container .main__header h2 {
+    .noTabs__document .doc-container .main__header h2, .main__header h2 {
       font-family: font-b;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
       color: #252833; }
-    .noTabs__document .doc-container .main__header p {
+    .noTabs__document .doc-container .main__header p, .main__header p {
       font-family: font-opens;
       font-size: 12px;
       line-height: 1.33;
@@ -2784,6 +2799,7 @@ button.companies_icon {
 }
 .ReactTable {
   overflow-x: scroll;
+  overflow-y: visible
 }
 .ReactTable .-pagination .-previous, .ReactTable .-pagination .-next {
   -webkit-flex: 0.5 1 !important;
@@ -2999,6 +3015,10 @@ button.companies_icon {
 }
 .control-label {
   display: block;
+  letter-spacing: -0.2px;
+  color: #26344c;
+  font-family: font-opensb;
+  margin-bottom: 4px;
 }
 .dropWrapper .proForm {
   margin-top: 0;
@@ -3274,6 +3294,7 @@ button.companies_icon {
 .ReactTable .rt-tbody .rt-td {
   display: flex;
   align-items: center !important;
+  overflow: visible;
 }
 .ReactTable .rt-tbody .rt-tr-group .fillter-status.fillter-item-c {
   margin-bottom: 0;
@@ -3629,4 +3650,71 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
 }
 .-padRow .rt-td {
   border-bottom: none !important;
+}
+/* .whiteBackground {
+  background: #fff;
+  padding: 40px;
+} */
+
+.doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell , .doc-pre-cycle.has__table .attachmentTable thead tr .headCell{
+  width: 100%;
+  max-width: inherit;
+  min-width: auto;
+  height: 100%;
+  position: relative;
+  justify-content: center;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr td:first-child .contentCell , .doc-pre-cycle.has__table .attachmentTable thead tr th:first-child .headCell{
+  justify-content: flex-start;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell p {
+  z-index: 1;
+  position: relative;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell span.percentage__color{
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+}
+.doc-pre-cycle.has__table {
+  display: flex;
+}
+.doc-pre-cycle.has__table .attachmentTable{
+  margin: 0;
+}
+
+.doc-pre-cycle.has__table .attachmentTable tbody tr td, .doc-pre-cycle.has__table .attachmentTable thead tr th {
+  border-right: 1px solid #e9ecf0;
+}
+
+.doc-pre-cycle.has__table .table__scroll{
+  overflow: auto;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr td:first-child .contentCell {
+  width: 140px;
+  max-width: inherit;
+}
+.doc-pre-cycle.has__table .attachmentTable tbody tr td:nth-child(2) {
+  width: 100px;
+}
+.table__figure {
+  max-width: 110px;
+  margin-left: 15px;
+}
+.table__figure .table__figure--item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.table__figure .table__figure--item span{
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+.table__figure .table__figure--item p{
+  font-family: font-r
 }

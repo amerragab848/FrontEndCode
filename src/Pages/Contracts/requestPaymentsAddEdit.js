@@ -164,8 +164,8 @@ class requestPaymentsAddEdit extends Component {
 
         }
 
-        if (!Config.IsAllow(159) || !Config.IsAllow(158) || !Config.IsAllow(160)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(184) || !Config.IsAllow(187) || !Config.IsAllow(185)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
@@ -431,14 +431,14 @@ class requestPaymentsAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(158)) {
+            if (!Config.IsAllow(187)) {
                 this.setState({ isViewMode: true });
             }
 
-            if (this.state.isApproveMode != true && Config.IsAllow(158)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(158)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(187)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
                     //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(158)) {
+                    if (this.props.document.status !== false && Config.IsAllow(187)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -2049,13 +2049,13 @@ class requestPaymentsAddEdit extends Component {
 
                                         {this.state.isApproveMode === true ?
                                             <div >
-                                                <button className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                             </div>
                                             : null
                                         }
-                                        <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                       <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
