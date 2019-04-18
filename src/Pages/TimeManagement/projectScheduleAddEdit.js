@@ -994,7 +994,7 @@ class drawingListAddEdit extends Component {
                                                 {Resources.arrange[currentLanguage]}
                                             </label>
                                             <div className={"ui input inputDev"}>
-                                                <input type="text" readOnly className="form-control" value='3' name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                                <input type="text" readOnly className="form-control" value={this.state.rows.length + 1} name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                                     onBlur={e => { handleChange(e); handleBlur(e); }}
                                                     onChange={e => this.handleChangeItemsAdd(e, "arrange")} />
                                             </div>
@@ -1281,6 +1281,7 @@ class drawingListAddEdit extends Component {
                                                 <ReactTable data={this.state.scheduleItemData}
                                                     columns={columnsSchedule}
                                                     defaultPageSize={5}
+                                                    minRows={2}
                                                     noDataText={Resources["noData"][currentLanguage]}
                                                     className="-striped -highlight" />
                                             </div>
