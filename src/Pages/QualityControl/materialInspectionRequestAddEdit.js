@@ -274,13 +274,15 @@ class materialInspectionRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetMaterialInspectionRequestForEdit?id=" + this.state.docId);
-
+           let url="GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'projectTaskGroups');
             dataservice.GetDataGrid("GetMaterialInspectionRequestCycles?materialInspectionId=" + this.state.docId).then(result => {
                 this.setState({
                     IRCycles: [...result]
-                });
-            });
+                })
+                let data = { items: result };
+                this.props.actions.ExportingData(data);
+            })
 
             dataservice.GetDataGrid("GetMaterialRequestLastCycle?id=" + this.state.docId).then(result => {
                 this.setState({

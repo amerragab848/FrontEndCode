@@ -213,6 +213,7 @@ class inspectionRequestAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
+
             serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
             serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY');
             serverInspectionRequest.resultDate = moment(serverInspectionRequest.resultDate).format('DD/MM/YYYY');
@@ -227,7 +228,7 @@ class inspectionRequestAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
             
-        this.Export_Document();
+      
         }
     };
 
@@ -237,62 +238,7 @@ class inspectionRequestAddEdit extends Component {
         }
     }
 
-    Export_Document() {
-        let document = { ...this.state.document };
-
-        let fields = [
-
-            { name: Resources.subject[currentLanguage], value: document.subject },
-            { name: Resources.projectName[currentLanguage], value: document.projectName },
-            { name: Resources.status[currentLanguage], value: document.statusName },
-            { name: Resources.docDate[currentLanguage], value: moment(document.docDate).format("DD/MM/YYYY") },
-            { name: Resources.arrange[currentLanguage], value: document.arrange },
-            { name: Resources.refrences[currentLanguage], value: document.refDoc },
-            { name: Resources.requiredDate[currentLanguage], value: moment(document.requiredDate).format("DD/MM/YYYY") },
-            { name: Resources.fromCompany[currentLanguage], value: document.fromCompanyName },
-            { name: Resources.fromContact[currentLanguage], value: document.fromContactName },
-            { name: Resources.toCompany[currentLanguage], value: document.toCompanyName },
-            { name: Resources.ToContact[currentLanguage], value: document.toContactName },
-            { name: Resources.actionByCompany[currentLanguage], value: document.bicCompanyName },
-            { name: Resources.actionByContact[currentLanguage], value: document.bicContactName },
-            { name: Resources.contractPo[currentLanguage], value: document.orderType },
-            { name: Resources.discipline[currentLanguage], value: document.disciplineName },
-            { name: Resources.specsSection[currentLanguage], value: document.specsSectionName },
-            { name: Resources.reasonForIssue[currentLanguage], value: document.reasonForIssueName },
-            { name: Resources.fileNumber[currentLanguage], value: document.fileNumberName },
-            { name: Resources.area[currentLanguage], value: document.areaName },
-            { name: Resources.Building[currentLanguage], value: document.buildingNoName },
-            { name: Resources.apartmentNumber[currentLanguage], value: document.apartmentNoName },
-            { name: Resources.answer[currentLanguage], value: document.rfi != null ? document.rfi : "" },
-            { name: Resources.message[currentLanguage], value: document.answer != null ? document.answer : "" },
-            // { name: '', value: '' },
-            { name: Resources.CycleDetails[currentLanguage], value: "    " },
-            // { name: '', value: '' },
-            { name: Resources.cycleSubject[currentLanguage], value: document.cycleSubject },
-            { name: Resources.status[currentLanguage], value: document.cycleStatusName },
-            { name: Resources.cycleDate[currentLanguage], value: moment(document.cycleDocDate).format("DD/MM/YYYY") },
-            { name: Resources.approvalStatus[currentLanguage], value: document.cycleApprovalStatusName },
-            { name: Resources.progressPercent[currentLanguage], value: document.cycleProgressPercent },
-            { name: Resources.resultDate[currentLanguage], value: moment(document.resultDate).format("DD/MM/YYYY") },
-        ];
-
-        let friendlyNames = [
-            Resources.arrange[currentLanguage]
-            , Resources.subject[currentLanguage]
-            , Resources.status[currentLanguage]
-            , Resources.CompanyName[currentLanguage]
-            , Resources.ContactName[currentLanguage]
-            , Resources.docDate[currentLanguage]
-            , Resources.approvalStatus[currentLanguage]
-            , Resources.progressPercent[currentLanguage]
-            , Resources.answer[currentLanguage]
-        ];
-        let fieldsItems = ['arrange', 'subject', 'statusName', 'flowCompanyName', 'flowContactName', 'docDate', 'approvalStatusName', 'progressPercent', 'cycleComment'];
-        let items = this.state.IRCycles;
-        let data = { fields: fields, columnsItems: friendlyNames, fieldsItems: fieldsItems, items: items };
-
-        this.props.actions.ExportingData(data);
-    }
+    
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -320,12 +266,14 @@ class inspectionRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId);
+            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId,this.state.docTypeId);
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
                 this.setState({
                     IRCycles: [...result]
                 });
+                let data = { items: result };
+                this.props.actions.ExportingData(data);
             });
 
             dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {

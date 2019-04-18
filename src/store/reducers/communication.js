@@ -19,9 +19,9 @@ export default function (state = initialState.app.communication, action) {
             console.log('exporting...',action)
             return {
                 ...state,
-                fields: action.fields,
-                columns: action.columns ? action.columns : [] ,
-                fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
+                // fields: action.fields,
+                // columns: action.columns ? action.columns : [] ,
+                // fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
                 items: action.items ? action.items: []
             }
 
