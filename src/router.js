@@ -118,6 +118,8 @@ import ProjectsList from './Pages/ReportsCenter/ProjectReports/ProjectsList';
 import CashFlowReport from './Pages/ReportsCenter/ProjectReports/CashFlowReport';
 import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 
+import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
+ 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
@@ -225,6 +227,8 @@ let originalRoutes = [
     , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
     , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
+
+    , <Route path="/projectScheduleAddEdit" component={projectScheduleAddEdit} />
     , <Route path="/WFActivityReport" component={WFActivityReport} />
     , <Route path="/boqStructure" component={boqStructure} />
     , <Route path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />

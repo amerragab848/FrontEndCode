@@ -303,18 +303,18 @@ class drawingListAddEdit extends Component {
             ///Is Add Mode
             dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then
                 (
-                    res => {
-                        let Doc = {
-                            id: undefined, status: true, subject: '',
-                            arrange: res, projectTypeId: '',
-                            docDate: moment(), projectId: projectId,
+                res => {
+                    let Doc = {
+                        id: undefined, status: true, subject: '',
+                        arrange: res, projectTypeId: '',
+                        docDate: moment(), projectId: projectId,
 
-                        }
-                        this.setState({
-                            document: Doc,
-
-                        })
                     }
+                    this.setState({
+                        document: Doc,
+
+                    })
+                }
                 )
 
 
@@ -602,7 +602,8 @@ class drawingListAddEdit extends Component {
                 res => {
                     this.setState({
                         rows: res,
-                        isLoading: false
+                        isLoading: false,
+                        showPopUp: false,
                     })
                     this.GetMaxArrangeItem()
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -617,12 +618,12 @@ class drawingListAddEdit extends Component {
         dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId + '').then(
             res => {
                 let ObjItem =
-                {
-                    id: undefined, disciplineId: this.state.selectDescipline.value,
-                    arrange: res, details: '',
-                    scale: '', paper: '', estimatedTime: '',
-                    drawingListId: this.state.docId
-                }
+                    {
+                        id: undefined, disciplineId: this.state.selectDescipline.value,
+                        arrange: res, details: '',
+                        scale: '', paper: '', estimatedTime: '',
+                        drawingListId: this.state.docId
+                    }
                 this.setState({
                     arrangeItems: res,
                     ItemForEdit: ObjItem
@@ -713,9 +714,10 @@ class drawingListAddEdit extends Component {
                                     <Dropdown title='descipline' data={this.state.DesciplineDropData}
                                         selectedValue={this.state.selectDescipline}
                                         handleChange={(e) => this.handleChangeDisciplineDrop(e)} />
+                                </div>
+                                <div className='ui input inputDev linebylineInput '>
                                     {this.state.ShowAddItem ? <button className="primaryBtn-1 btn meduimBtn" onClick={this.ShowPopUpForAdd}>Add</button> : null}
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -757,11 +759,10 @@ class drawingListAddEdit extends Component {
                             <Form onSubmit={handleSubmit}>
 
 
-                                <div className='document-fields'>
-                                    <div className="proForm datepickerContainer">
+                                <div className='dropWrapper'>
+                                    <div className="proForm customProform">
 
-
-                                        <div className="linebylineInput valid-input">
+                                        <div className="fullWidthWrapper textLeft">
                                             <label className="control-label">{Resources['details'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.details && touched.details ? 'has-error' : null) + ' '}>
                                                 <input autoComplete="off" value={this.state.ItemForEdit.details} className="form-control" name="details"
@@ -774,7 +775,7 @@ class drawingListAddEdit extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className="fillter-status fillter-item-c">
                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                             <div className="ui input inputDev"  >
                                                 <input type="text" className="form-control" id="arrangeItems" readOnly
@@ -787,7 +788,7 @@ class drawingListAddEdit extends Component {
                                         </div>
 
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className="fillter-status fillter-item-c">
                                             <label className="control-label">{Resources['scale'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.scale && touched.scale ? 'has-error' : null) + ' '}>
                                                 <input autoComplete="off" value={this.state.ItemForEdit.scale} className="form-control" name="scale"
@@ -802,7 +803,7 @@ class drawingListAddEdit extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className="fillter-status fillter-item-c">
                                             <label className="control-label">{Resources['paper'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.papers && touched.papers ? 'has-error' : null) + ' '}>
                                                 <input autoComplete="off" value={this.state.ItemForEdit.paper} className="form-control" name="papers"
@@ -816,7 +817,7 @@ class drawingListAddEdit extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className="fillter-status fillter-item-c">
                                             <label className="control-label">{Resources['estimateTime'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.estimateTime && touched.estimateTime ? 'has-error' : null) + ' '}>
                                                 <input autoComplete="off" value={this.state.ItemForEdit.estimatedTime} className="form-control" name="estimateTime"
@@ -831,7 +832,7 @@ class drawingListAddEdit extends Component {
                                         </div>
 
                                     </div>
-                                    <div className="slider-Btns">
+                                    <div className="slider-Btns fullWidthWrapper">
                                         <button className="primaryBtn-1 btn meduimBtn" type='submit' >ADD</button>
                                     </div>
                                 </div>
@@ -907,7 +908,7 @@ class drawingListAddEdit extends Component {
                 </div>
 
 
-                {this.state.isLoading ? <LoadingSection /> : null}
+                {/* {this.state.isLoading ? <LoadingSection /> : null} */}
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
@@ -1002,16 +1003,14 @@ class drawingListAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <Dropdown title="projectType" data={this.state.ProjectDropData} name="projectTypeId"
-                                                                    selectedValue={this.state.selectProject}
-                                                                    onChange={setFieldValue}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'projectTypeId', false, '', '', '', 'selectProject')}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.projectTypeId}
-                                                                    touched={touched.projectTypeId}
-                                                                    value={values.projectTypeId} />
-                                                            </div>
+                                                            <Dropdown title="projectType" data={this.state.ProjectDropData} name="projectTypeId"
+                                                                selectedValue={this.state.selectProject}
+                                                                onChange={setFieldValue}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'projectTypeId', false, '', '', '', 'selectProject')}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.projectTypeId}
+                                                                touched={touched.projectTypeId}
+                                                                value={values.projectTypeId} />
                                                         </div>
 
                                                     </div>
@@ -1025,15 +1024,15 @@ class drawingListAddEdit extends Component {
 
                                                                 {this.state.isApproveMode === true ?
                                                                     <div >
-                                                                        <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                        <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                        <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                        <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                                                     </div>
                                                                     : null
                                                                 }
                                                                 <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                               <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                 <span className="border"></span>
                                                                 <div className="document__action--menu">
                                                                     <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -1076,7 +1075,7 @@ class drawingListAddEdit extends Component {
                             {/* Next & Previous */}
                             <div className="step-content-foot">
                                 <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources['previous'][currentLanguage]}</span>
 
                                 <span onClick={this.NextStep} className={this.state.IsEditMode ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>

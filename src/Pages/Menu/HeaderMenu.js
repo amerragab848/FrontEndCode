@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link, withRouter, NavLink } from "react-router-dom";
-
-// import "../../Styles/css/rodal.css";
-// import "react-table/react-table.css"; 
+ 
 import Notif from "../../Styles/images/notif-icon.png";
 import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
@@ -16,7 +14,7 @@ import dataservice from "../../Dataservice";
 import Select from 'react-select';
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-
+import Logo from '../../Styles/images/logo.svg'
 import { connect } from 'react-redux';
 import {
   bindActionCreators
@@ -88,16 +86,16 @@ class HeaderMenu extends Component {
     this.setState({ logOut: false });
   };
 
-  handleChangeSelectProject(e) {  
-    
+  handleChangeSelectProject(e) {
+
     this.props.actions.RouteToDashboardProject(e);
 
     this.props.history.push({
       pathname: "/DashboardProject"
     });
   }
-  
-  handleChangeTemplate(e) { 
+
+  handleChangeTemplate(e) {
     this.props.actions.RouteToTemplate();
   }
 
@@ -137,12 +135,20 @@ class HeaderMenu extends Component {
                     </li>
                     <li className="titleproject2">
                       {this.props.projectName}
-                 </li>
+                    </li>
                   </Fragment>
                   : null
                 }
               </ul>
               <ul className="nav-right">
+                {this.props.showSelectProject === true ?
+                  <li class="procoor__logo">
+                    <NavLink to="/">
+                      <img src={Logo} alt="logo" />
+                    </NavLink>
+                  </li>
+                  : null
+                }
                 <li>
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
                     <img alt="" title="" src={Chart} />
@@ -153,7 +159,7 @@ class HeaderMenu extends Component {
                   <NavLink to='/TemplatesSettings' onClick={this.handleChangeTemplate} >
                     <img alt="" title="" src={Setting} /> 
                   </NavLink>
-               
+
                 </li>
                 <li className="notifi-icon">
                   <a>

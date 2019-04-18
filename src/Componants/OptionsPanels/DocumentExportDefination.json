@@ -301,5 +301,462 @@
         ],
         "columnsItems" :["arrange", "subject", "statusName", "flowCompanyName", "flowContactName", "docDate", "approvalStatusName", "progressPercent", "cycleComment"],
         "friendlyNames":["numberAbb","subject","status","CompanyName","ContactName","docDate","approvalStatus","progressPercent","answer"]
+    },  
+    "109": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName ",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :[],
+        "friendlyNames":[]
+    },
+    "30": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "requiredDate",
+                "value": "requiredDate",
+                "type": "D"
+            },
+            {
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompanyName",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "toContactName",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :[],
+        "friendlyNames":[]
+    },
+    "35": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            }, 
+            {
+                "name": "handouts",
+                "value": "handOuts",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "calledByContact",
+                "value": "calledByContactName",
+                "type": "S"
+            },
+            {
+                "name": "facilitatorContact",
+                "value": "facilitatorContactName",
+                "type": "S"
+            },
+            {
+                "name": "calledByCompany",
+                "value": "calledByCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "facilitatorCompany",
+                "value": "facilitatorContactName",
+                "type": "S"
+            },
+            {
+                "name": "noteTakerCompany",
+                "value": "noteTakerCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "noteTakerContact",
+                "value": "noteTakerContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :["arrange","description","decisions","action"],
+        "friendlyNames":["numberAbb","description","decisions","action"]
+    },
+    "33": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            }, 
+            {
+                "name": "handouts",
+                "value": "handOuts",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "calledByContact",
+                "value": "calledByContactName",
+                "type": "S"
+            },
+            {
+                "name": "facilitatorContact",
+                "value": "facilitatorContactName",
+                "type": "S"
+            },
+            {
+                "name": "calledByCompany",
+                "value": "calledByCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "facilitatorCompany",
+                "value": "facilitatorContactName",
+                "type": "S"
+            },
+            {
+                "name": "noteTakerCompany",
+                "value": "noteTakerCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "noteTakerContact",
+                "value": "noteTakerContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :["description","calledByCompany","calledByContact","decisions","action"],
+        "friendlyNames":["description","calledByCompany","calledByContact","decisions","action"]
+    },
+    "29": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            }, 
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            }, 
+              {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "enteredBy",
+                "value": "enteredby",
+                "type": "S"
+            },
+            {
+                "name": "callTime",
+                "value": "callTime",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :[ ],
+        "friendlyNames":[ ]
+    },
+    "20": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            }, 
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            }, 
+              {
+                "name": "reportType",
+                "value": "reportTypeName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :[ ],
+        "friendlyNames":[ ]
+    },
+    "23": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            }, 
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            }, 
+              {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "requiredDate",
+                "value": "requiredDate",
+                "type": "D"
+            },
+            {
+                "name": "discipline",
+                "value": "discipline",
+                "type": "S"
+            },
+            {
+                "name": "location",
+                "value": "location",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "area",
+                "type": "S"
+            },
+            {
+                "name": "Building",
+                "value": "building",
+                "type": "S"
+            },
+            {
+                "name": "apartmentNumber",
+                "value": "apartment",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "message",
+                "value": "rfi",
+                "type": "S"
+            },
+            {
+                "name": "answer",
+                "value": "answer",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems" :[ ],
+        "friendlyNames":[ ]
     }
 }

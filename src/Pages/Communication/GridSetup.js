@@ -356,14 +356,12 @@ class GridSetup extends Component {
 
                 {this.props.Panels !== undefined ?
                   <Fragment>
-                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} >
-                      T.G
-                  {/* <i className="fa fa-retweet"></i> */}
+                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTaskGroups'][currentLanguage]} >
+                      <i class="fa fa-users" aria-hidden="true"></i>
                     </button>
 
-                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} >
-                      P.T
-                  {/* <i className="fa fa-retweet"></i> */}
+                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTask'][currentLanguage]} >
+                      <i class="fa fa-tasks" aria-hidden="true"></i>
                     </button>
                   </Fragment>
                   : null}
