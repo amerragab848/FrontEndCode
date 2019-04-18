@@ -89,7 +89,6 @@ class ExportDetails extends Component {
     drawFiled() {
         let fields = DED[this.props.docTypeId]
         let data = this.props.document
-        console.log(this.props.fields);
         let rows = fields.fields.map((field, index) => {
             let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
 
@@ -265,7 +264,6 @@ class ExportDetails extends Component {
     }
 
     drawWorkFlow() {
-        console.log('this.props.workFlowCycles', this.props.workFlowCycles)
         let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
         return (
             <table id="workflowCycles" className="printWrapper printSecondPage" style={{ marginTob: '10px' }} >
