@@ -437,7 +437,8 @@ class TaskGroupsAddEdit extends Component {
 
     componentDidMount = () => {
         if (docId > 0) {
-            this.props.actions.documentForEdit('GetProjectTaskGroupsForEdit?taskId=' + docId)
+            let url = 'GetProjectTaskGroupsForEdit?taskId=' + docId+''
+            this.props.actions.documentForEdit(url, this.state.docTypeId);
             this.checkDocumentIsView();
         }
         else {

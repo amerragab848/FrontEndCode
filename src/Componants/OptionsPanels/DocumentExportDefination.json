@@ -52,8 +52,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[],
-        "friendlyNames":[]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "28": {
         "fields": [
@@ -143,8 +143,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[],
-        "friendlyNames":[]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "25": {
         "fields": [
@@ -299,7 +299,56 @@
                 "type": "D"
             }
         ],
-        "columnsItems" :["arrange", "subject", "statusName", "flowCompanyName", "flowContactName", "docDate", "approvalStatusName", "progressPercent", "cycleComment"],
-        "friendlyNames":["arrange","subject","status","CompanyName","ContactName","docDate","approvalStatus","progressPercent","answer"]
+        "columnsItems": [
+            "arrange",
+            "subject",
+            "statusName",
+            "flowCompanyName",
+            "flowContactName",
+            "docDate",
+            "approvalStatusName",
+            "progressPercent",
+            "cycleComment"
+        ],
+        "friendlyNames": [
+            "arrange",
+            "subject",
+            "status",
+            "CompanyName",
+            "ContactName",
+            "docDate",
+            "approvalStatus",
+            "progressPercent",
+            "answer"
+        ]
+    },
+    "99": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "companyName",
+            "contactName"
+        ],
+        "friendlyNames": [
+            "numberAbb",
+            "CompanyName",
+            "ContactName"
+        ]
     }
 }
