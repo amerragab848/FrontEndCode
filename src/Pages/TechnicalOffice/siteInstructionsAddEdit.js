@@ -188,7 +188,7 @@ class siteInstructionsAddEdit extends Component {
             this.setState({ loadingPage: true })
             let url = "GetLogsSiteInstructionsForEdit?id=" + this.state.docId
             this.setState({ loadingPage: true })
-            this.props.actions.documentForEdit(url).then(() => {
+            this.props.actions.documentForEdit(url ,this.state.docTypeId ,'siteInstructions').then(() => {
                 this.checkDocumentIsView()
                 setTimeout(() => {
                     this.setState({ loadingPage: false })

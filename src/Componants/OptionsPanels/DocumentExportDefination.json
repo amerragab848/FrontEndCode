@@ -1286,7 +1286,8 @@
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
-            },{
+            },
+            {
                 "name": "docDate",
                 "value": "docDate",
                 "type": "D"
@@ -1296,21 +1297,20 @@
                 "value": "statusName",
                 "type": "S"
             },
-            
             {
                 "name": "openDate",
                 "value": "openDate",
-                "type": "D"
+                "type": ""
             },
             {
-                "name": "description",
-                "value": "description",
+                "name": "CompanyName",
+                "value": "companyName",
                 "type": "S"
             },
             {
-                "name": "dueDate",
-                "value": "dueDate",
-                "type": "D"
+                "name": "disciplineTitle",
+                "value": "disciplineTitle",
+                "type": "S"
             },
             {
                 "name": "projectName",
@@ -1320,5 +1320,494 @@
         ],
         "columnsItems": [],
         "friendlyNames": []
+    },
+    "106": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "approvalStatus",
+                "value": "approvalStatusName",
+                "type": "S"
+            },
+            {
+                "name": "contractSubject",
+                "value": "contractName",
+                "type": "S"
+            },
+            {
+                "name": "total",
+                "value": "total",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "areaName",
+                "type": "S"
+            },
+            {
+                "name": "location",
+                "value": "location",
+                "type": "S"
+            },
+            {
+                "name": "Building",
+                "value": "building",
+                "type": "S"
+            },
+            {
+                "name": "apartmentNumber",
+                "value": "apartmentNumber",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "ToContact",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "answer",
+                "value": "answer",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "107": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "approvalStatus",
+                "value": "approvalStatusName",
+                "type": "S"
+            },
+            {
+                "name": "contractSubject",
+                "value": "contractName",
+                "type": "S"
+            },
+            {
+                "name": "total",
+                "value": "total",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "areaName",
+                "type": "S"
+            },
+            {
+                "name": "location",
+                "value": "location",
+                "type": "S"
+            },
+            {
+                "name": "Building",
+                "value": "building",
+                "type": "S"
+            },
+            {
+                "name": "apartmentNumber",
+                "value": "apartmentNumber",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "ToContact",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "answer",
+                "value": "answer",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "2": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "description",
+                "value": "description",
+                "type": "S"
+            },
+            {
+                "name": "picDate",
+                "value": "picDate",
+                "type": "D"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "90": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "requiredDateLog",
+                "value": "requiredDate",
+                "type": "D"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "ToContact",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "contractPo",
+                "value": "orderType",
+                "type": "S"
+            },
+            {
+                "name": "details",
+                "value": "message",
+                "type": "S"
+            },
+            {
+                "name": "receivedFor",
+                "value": "receivedFor",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "42": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "forwardToDate",
+                "value": "forwardToDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "area",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "fileNumber",
+                "value": "fileNumber",
+                "type": "S"
+            },
+            {
+                "name": "reasonForIssue",
+                "value": "reasonForIssueName",
+                "type": "S"
+            },
+            {
+                "name": "discipline",
+                "value": "disciplineName",
+                "type": "S"
+            },
+            {
+                "name": "refNo",
+                "value": "refNo",
+                "type": "S"
+            },
+            {
+                "name": "location",
+                "value": "location",
+                "type": "S"
+            },
+            {
+                "name": "Building",
+                "value": "building",
+                "type": "S"
+            },
+            {
+                "name": "apartmentNumber",
+                "value": "apartment",
+                "type": "S"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "CompanyName",
+                "value": "bicCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "ContactName",
+                "value": "bicContactName",
+                "type": "S"
+            },
+            {
+                "name": "submittalType",
+                "value": "submittalType",
+                "type": "S"
+            },
+            {
+                "name": "SubmittalDetails",
+                "value": " ",
+                "type": "S"
+            },
+            {
+                "name": "recievedFrom",
+                "value": "receivedFromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "receivedStatus",
+                "value": "receivedStatusName",
+                "type": "S"
+            },
+            {
+                "name": "receivedDate",
+                "value": "receivedDate",
+                "type": "D"
+            },
+            {
+                "name": "sendTo",
+                "value": "sentToCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "sentStatus",
+                "value": "sentStatusName",
+                "type": "S"
+            },
+            {
+                "name": "sendDate",
+                "value": "sentDate",
+                "type": "D"
+            },
+            {
+                "name": "returnedBy",
+                "value": "returnedByCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "returnStatus",
+                "value": "returnedByStatusName",
+                "type": "S"
+            },
+            {
+                "name": "returnedByDate",
+                "value": "returnedByDate",
+                "type": "D"
+            },
+            {
+                "name": "forwardedTo",
+                "value": "forwardToCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "forwardStatus",
+                "value": "forwardToStatusName",
+                "type": "S"
+            },
+            {
+                "name": "CycleDetails",
+                "value": " ",
+                "type": "S"
+            },
+            {
+                "name": "cycleSubject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "cycleDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "approvalStatus",
+                "value": "approvalStatusName",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "subject",
+            "docDate",
+            "statusName",
+            "flowCompanyName",
+            "flowContactName"
+        ],
+        "friendlyNames": [
+            "numberAbb",
+            "subject",
+            "docDate",
+            "status",
+            "CompanyName",
+            "ContactName"
+        ]
     }
 }

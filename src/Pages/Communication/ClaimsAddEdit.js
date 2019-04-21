@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -29,6 +29,7 @@ import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -36,14 +37,10 @@ import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-
     refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
-
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
-
     toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
 
@@ -85,7 +82,7 @@ class ClaimsAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 109,
+            docTypeId: 115,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -148,10 +145,10 @@ class ClaimsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-        
+
         if (prevProps.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });  
-        } 
+            this.setState({ showModal: this.props.showModal });
+        }
     }
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -177,8 +174,8 @@ class ClaimsAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetLettersById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId,'claims');
+            let url = "GetClaimsById?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'claims');
 
         } else {
             let letter = {
@@ -190,7 +187,6 @@ class ClaimsAddEdit extends Component {
                 fromContactId: '',
                 toCompanyId: '',
                 toContactId: '',
-                replayId: '',
                 docDate: moment(),
                 status: 'false',
                 disciplineId: '',
@@ -259,22 +255,6 @@ class ClaimsAddEdit extends Component {
             }
             this.setState({
                 discplines: [...result]
-            });
-        });
-
-        dataservice.GetDataList("GetLettersByProjectId?projectId=" + this.state.projectId + "&pageNumber=0&pageSize=100", 'subject', 'id').then(result => {
-            if (isEdit) {
-                let replyId = this.props.document.replyId;
-                let replyLetter = {};
-                if (replyId) {
-                    replyLetter = _.find(result, function (i) { return i.value == replyId; });
-                    this.setState({
-                        [replyLetter]: replyLetter
-                    });
-                }
-            }
-            this.setState({
-                letters: [...result]
             });
         });
     }
@@ -372,7 +352,7 @@ class ClaimsAddEdit extends Component {
             isLoading: true
         });
 
-        dataservice.addObject('EditLetterById', this.state.document).then(result => {
+        dataservice.addObject('EditClaimById', this.state.document).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -390,7 +370,7 @@ class ClaimsAddEdit extends Component {
 
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
-        dataservice.addObject('AddLetters', saveDocument).then(result => {
+        dataservice.addObject('AddClaims', saveDocument).then(result => {
             this.setState({
                 docId: result
             });
@@ -399,10 +379,8 @@ class ClaimsAddEdit extends Component {
     }
 
     saveAndExit(event) {
-        // let letter = { ...this.state.document };
-
         this.props.history.push({
-            pathname: "/Letters/" + this.state.projectId
+            pathname: "/claims/" + this.state.projectId
         });
     }
 
@@ -459,29 +437,8 @@ class ClaimsAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                    <div className="submittalHead">
-                        <h2 className="zero">{Resources.claims[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · {Resources['communication'][currentLanguage]}</span>
-                        </h2>
-                        <div className="SubmittalHeadClose">
-                            <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                    <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                        <g id="Group-2">
-                                            <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                                <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                                                    <g id="Group">
-                                                        <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                        <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fillRule="nonzero"></path>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
+                    <HeaderDocument projectName={projectName} docTitle={Resources.claims[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                     
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -728,15 +685,15 @@ class ClaimsAddEdit extends Component {
 
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
-                                                                            <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                                                         </div>
                                                                         : null
                                                                     }
                                                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                   <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                     <span className="border"></span>
                                                                     <div className="document__action--menu">
                                                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -788,7 +745,7 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId, showModal:  state.communication.showModal 
+        projectId: state.communication.projectId, showModal: state.communication.showModal
     }
 }
 

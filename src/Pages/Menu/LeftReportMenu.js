@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../../Styles/images/logo.svg";
 import Router from "../../URLRoutes";
-import Resources from "../../resources.json";
-import General from '../ProjectSetup/ProjectSetupRoutes';
+import Resources from "../../resources.json"; 
 import Config from "../../Services/Config";
 
 import { connect } from 'react-redux';

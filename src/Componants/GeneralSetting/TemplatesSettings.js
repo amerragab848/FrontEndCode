@@ -9,6 +9,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
 import Resources from "../../resources.json";
 import { connect } from 'react-redux'
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class TemplatesSettings extends Component {

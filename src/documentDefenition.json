@@ -18875,7 +18875,7 @@
   },
   "claims": {
     "documentTitle": "claims",
-    "docTyp": 109,
+    "docTyp": 115,
     "documentAddEditLink": "ClaimsAddEdit/",
     "documentAddEditPopUp": "",
     "documentAddPermission": 48,
@@ -18884,9 +18884,9 @@
     "documentViewPermission": 51,
     "documentPermission": 52,
     "documentApi": {
-      "get": "GetLettersByProjectId",
-      "getCustom": "GetLettersByProjectIdCustom",
-      "delete": "DeletMultipleLettersById"
+      "get": "GetClaimsByProjectId",
+      "getCustom": "GetClaimsByProjectIdCustom",
+      "delete": "DeletMultipleClaimsById"
     },
     "documentColumns": [
       {
@@ -19044,19 +19044,7 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "d"
-      },
-      {
-        "field": "replyDate",
-        "friendlyName": "replyDate",
-        "minWidth": 85,
-        "width": "15%",
-        "dataType": "date",
-        "isDate": true,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": false,
-        "exportDataType": "d"
-      },
+      }, 
       {
         "field": "refDoc",
         "friendlyName": "refDoc",
@@ -19118,7 +19106,7 @@
         "exportDataType": "s"
       }
     ],
-    "filterApi": "LettersFilters",
+    "filterApi": "ClaimsFilters",
     "filters": [
       {
         "name": "numberAbb",
@@ -19139,13 +19127,7 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-      },
-      {
-        "name": "fromCompany",
-        "field": "fromCompanyName",
-        "type": "string",
-        "isCustom": true
-      },
+      }, 
       {
         "name": "fromContact",
         "field": "fromContactName",

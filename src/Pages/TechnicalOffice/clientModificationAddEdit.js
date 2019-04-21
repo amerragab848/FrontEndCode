@@ -188,7 +188,7 @@ class clientModificationAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsClientModificationsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'clientModificationLog');
 
         } else {
             let clientSelection = {
