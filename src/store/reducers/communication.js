@@ -13,15 +13,9 @@ export default function (state = initialState.app.communication, action) {
                 ...state
             }
 
-        case types.Export_Document:
-            // state.fields = action.data.fields
-            // state.columns = action.data.columnsItems
-            console.log('exporting...',action)
+        case types.Export_Document: 
             return {
-                ...state,
-                // fields: action.fields,
-                // columns: action.columns ? action.columns : [] ,
-                // fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
+                ...state, 
                 items: action.items ? action.items: []
             }
 
@@ -34,7 +28,8 @@ export default function (state = initialState.app.communication, action) {
                 docTypeId: action.docTypeId,
                 changeStatus: true,
                 showLeftMenu: true,
-                showSelectProject: false
+                showSelectProject: false,
+                showLeftReportMenu: false
             };
 
         case types.Document_Adding:
@@ -47,16 +42,7 @@ export default function (state = initialState.app.communication, action) {
                 items: [],
                 projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId
             };
-
-        case types.Document_Add:
-            return {
-                ...state,
-                document: action.document,
-                changeStatus: false,
-                showLeftMenu: true,
-                showSelectProject: false
-            };
-
+ 
         case types.File_Upload:
             return {
                 ...state,

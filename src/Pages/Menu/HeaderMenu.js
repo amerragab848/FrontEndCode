@@ -142,7 +142,7 @@ class HeaderMenu extends Component {
               </ul>
               <ul className="nav-right">
                 {this.props.showSelectProject === true ?
-                  <li class="procoor__logo">
+                  <li className="procoor__logo">
                     <NavLink to="/">
                       <img src={Logo} alt="logo" />
                     </NavLink>
