@@ -164,7 +164,7 @@ class ProjectIssuesAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsProjectIssuesForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url,this.state.docTypeId,'projectIssuesLog');
         } else {
             const projectIssuesDocument = {
                 id: 0,

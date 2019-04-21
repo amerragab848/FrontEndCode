@@ -218,7 +218,7 @@ class QsAddEdit extends Component {
     if (this.state.docId > 0) {
       let url = "GetContractsQsForEdit?id=" + this.state.docId;
 
-      this.props.actions.documentForEdit(url);
+      this.props.actions.documentForEdit(url,this.state.docTypeId,'contractsQs');
 
       
      dataservice.GetDataGrid("GetContractsQsItems?qsId=" + docId).then(result => {
