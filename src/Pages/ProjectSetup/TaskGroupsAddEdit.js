@@ -171,11 +171,13 @@ class TaskGroupsAddEdit extends Component {
     FillContactsList = () => {
         Api.get('GetProjectTaskGroupItemsByTaskId?taskId=' + docId + '').then(
             res => {
-                console.log(res)
+
                 this.setState({
                     rows: res,
                     isLoading: false
                 })
+                let data = { items: res };
+                this.props.actions.ExportingData(data);
             }
         )
     }
@@ -295,10 +297,14 @@ class TaskGroupsAddEdit extends Component {
         if (this.state.DeleteFromLog) {
             NewData = Data.filter(s => s.id !== IdRow)
             this.setState({ rows: NewData })
+            let data = { items: NewData };
+            this.props.actions.ExportingData(data);
         }
         else {
             Data.splice(this.state.index, 1);
             this.setState({ rows: Data });
+            let data = { items: Data };
+            this.props.actions.ExportingData(data);
         }
 
         Api.post("ProjectTaskGroupsItemDelete?id=" + this.state.rowId).then(
@@ -350,6 +356,8 @@ class TaskGroupsAddEdit extends Component {
                     rows: NewRows,
                     isLoading: false
                 })
+                let data = { items: NewRows };
+                this.props.actions.ExportingData(data);
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
         ).catch(ex => {
@@ -437,7 +445,8 @@ class TaskGroupsAddEdit extends Component {
 
     componentDidMount = () => {
         if (docId > 0) {
-            this.props.actions.documentForEdit('GetProjectTaskGroupsForEdit?taskId=' + docId)
+            let url = 'GetProjectTaskGroupsForEdit?taskId=' + docId + ''
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'projectTaskGroups');
             this.checkDocumentIsView();
         }
         else {
@@ -591,7 +600,7 @@ class TaskGroupsAddEdit extends Component {
                 </Fragment>
             )
         }
-        
+
         return (
             <div className="mainContainer" >
                 <div className="documents-stepper noTabs__document one__tab one_step">
@@ -834,13 +843,13 @@ class TaskGroupsAddEdit extends Component {
                                 <div className="approveDocumentBTNS">
                                     {this.state.isApproveMode === true ?
                                         <div >
-                                            <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                            <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                         </div>
                                         : null
                                     }
                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                   <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                     <span className="border"></span>
                                     <div className="document__action--menu">
                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

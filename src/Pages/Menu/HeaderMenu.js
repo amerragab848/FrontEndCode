@@ -1,15 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { Link, withRouter, NavLink } from "react-router-dom";
-
-import "../../Styles/css/rodal.css";
-import "react-table/react-table.css";
+ 
 import Notif from "../../Styles/images/notif-icon.png";
 import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
 import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
 import config from "../../Services/Config";
-import "../../Styles/css/font-awesome.min.css";
+// import "../../Styles/css/font-awesome.min.css";
 
 import dataservice from "../../Dataservice";
 import Select from 'react-select';
@@ -44,6 +42,7 @@ class HeaderMenu extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
     this.handleChangeSelectProject = this.handleChangeSelectProject.bind(this);
+    this.ReportCenterMenu = this.ReportCenterMenu.bind(this);
   }
 
   componentWillMount = () => {
@@ -99,6 +98,15 @@ class HeaderMenu extends Component {
     this.props.actions.RouteToTemplate();
   }
 
+  ReportCenterMenu(e) { 
+    this.props.actions.ReportCenterMenuClick();
+    
+    // this.props.history.push({
+    //   pathname: "/ReportsMenu"
+    // });
+    
+  }
+
   render() {
     return (
       <div>
@@ -141,15 +149,14 @@ class HeaderMenu extends Component {
                   : null
                 }
                 <li>
-                  <a data-modal="modal1" className="notfiUI">
+                  <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
                     <img alt="" title="" src={Chart} />
                   </a>
+                  
                 </li>
                 <li>
                   <NavLink to='/TemplatesSettings' onClick={this.handleChangeTemplate} >
-                    <img alt="" title="" src={Setting} />
-
-
+                    <img alt="" title="" src={Setting} /> 
                   </NavLink>
 
                 </li>
@@ -248,7 +255,8 @@ function mapStateToProps(state, ownProps) {
     showSelectProject: state.communication.showSelectProject,
     projectId: state.communication.projectId,
     projectName: state.communication.projectName,
-    moduleName: state.communication.moduleName
+    moduleName: state.communication.moduleName,
+    showLeftReportMenu: state.communication.showLeftReportMenu
   }
 }
 

@@ -436,8 +436,7 @@ class LeftMenu extends Component {
     }
   };
 
-  render() {
-    console.log('render', this.props.showLeftMenu)
+  render() { 
     return (
       <div>
         {this.props.showLeftMenu === true ?

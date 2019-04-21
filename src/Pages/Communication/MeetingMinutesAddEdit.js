@@ -204,7 +204,7 @@ class MeetingMinutesAddEdit extends Component {
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })
-            this.props.actions.documentForEdit('GetCommunicationMeetingMinutesForEdit?id=' + this.state.docId).then(() => {
+            this.props.actions.documentForEdit('GetCommunicationMeetingMinutesForEdit?id=' + this.state.docId,this.state.docTypeId,'meetingMinutes').then(() => {
                 this.setState({ meetingId: this.state.docId, isLoading: false })
                 this.getTabelData()
                 this.checkDocumentIsView();
@@ -259,6 +259,9 @@ class MeetingMinutesAddEdit extends Component {
         })
         let topicstable = []
         this.props.actions.GetTopicsTable('GetCommunicationMeetingMinutesTopics?meetingId=' + this.state.docId).then(res => {
+            let data = { items: this.props.topics };
+            this.props.actions.ExportingData(data);
+            
             this.props.topics.forEach((element, index) => {
                 topicstable.push(
                     < tr id={'top_' + index} >

@@ -2,6 +2,7 @@ export default {
 	app: {
 		communication: {
 			document: {},
+			documentTitle:'',
 			files: [],
 			workFlowCycles: [],
 			changeStatus: false,
@@ -13,10 +14,7 @@ export default {
 			isLoadingFiles: false,
 			file: {},
 			arrange: 0,
-			showModal: false,
-			showLeftMenu: false, 
-			projectName:"",
-			showSelectProject:true,
+			showModal: false, 
 			attendees:[],
 			topics:[],
 			viewModel:false,
@@ -26,7 +24,11 @@ export default {
 			attachDocuments:[],
 			fields:[],
 			columns:[],
-			fieldsItems:[]
+			fieldsItems:[],
+			showLeftMenu: false, 
+			projectName:"",
+			showSelectProject:true,
+			showLeftReportMenu: false
 		}, 
 		expensesWorkFlow: {
 			expensesWorkFlowData:{},

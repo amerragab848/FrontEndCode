@@ -15,9 +15,6 @@ import BarChartComp from '../TechnicalOffice/BarChartComp'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 
 const ValidtionSchema = Yup.object().shape({
     selectedStatus: Yup.string()

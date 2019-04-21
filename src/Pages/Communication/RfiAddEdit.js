@@ -179,7 +179,7 @@ class RfiAddEdit extends Component {
     componentWillMount() {
       if (this.state.docId > 0) {
         let url = "GetCommunicationRfiForEdit?id=" + this.state.docId;
-        this.props.actions.documentForEdit(url);
+        this.props.actions.documentForEdit(url,this.state.docTypeId,'RFI');
   
         if (Config.IsAllow(75) || Config.IsAllow(76) || Config.IsAllow(78)) {
         }

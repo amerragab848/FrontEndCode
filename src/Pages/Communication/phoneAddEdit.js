@@ -215,7 +215,7 @@ class phoneAddEdit extends Component {
 
     componentDidMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId)
+            this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId,this.state.docTypeId,"phoneTitle")
             this.checkDocumentIsView();
 
         } else {
