@@ -118,6 +118,9 @@ import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/Contra
 import ProjectsList from './Pages/ReportsCenter/ProjectReports/ProjectsList';
 import CashFlowReport from './Pages/ReportsCenter/ProjectReports/CashFlowReport';
 import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
+import ProjectBackLog from './Pages/ReportsCenter/ProjectReports/projectBackLog';
+import ProjectsAchievements from './Pages/ReportsCenter/ProjectReports/projectsAchievements';
+import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/projectInvoicesCollected';
 
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
  
@@ -250,7 +253,10 @@ let originalRoutes = [
     , <Route path="/ProjectsList" component={ProjectsList} />
     , <Route path="/CashFlowReport" component={CashFlowReport} />
     , <Route path="/ProjectBalanceReport" component={ProjectBalanceReport} />
-    
+, <Route path="/projectBackLog" component={ProjectBackLog} />
+, <Route path="/projectsAchievements" component={ProjectsAchievements} />
+, <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
+
     , <Route path="/approvalDocument" component={approvalDocument} />
     , <Route path="/contractorsPerformance" component={contractorsPerformance} />
 
