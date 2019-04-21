@@ -155,7 +155,7 @@ class projectPicturesAddEdit extends Component {
     componentWillMount() {
         if (docId > 0) {
             let url = "GetProjectPictureForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'projectPictures');
             this.setState({
                 IsEditMode: true
             })
