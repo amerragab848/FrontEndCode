@@ -94,7 +94,7 @@ class VariationRequestAdd extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 19,
+            docTypeId: 108,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -185,7 +185,7 @@ class VariationRequestAdd extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsVariationRequestForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url,this.state.docTypeId,'cvr');
 
         } else {
             let Variation = {

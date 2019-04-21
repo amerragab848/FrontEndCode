@@ -280,9 +280,11 @@ class pcoAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetContractsPcoForEdit?id=" + this.state.docId);
+            this.props.actions.documentForEdit("GetContractsPcoForEdit?id=" + this.state.docId,this.state.docTypeId,'pco');
 
             dataservice.GetDataGrid("GetContractsPcoItemsByProposalId?proposalId=" + this.state.docId).then(result => {
+                let data = { items:result};
+            this.props.actions.ExportingData(data);
                 this.setState({
                     voItems: result
                 });

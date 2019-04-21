@@ -401,7 +401,7 @@ class bogAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true })
-            this.props.actions.documentForEdit('GetBoqForEdit?id=' + this.state.docId).then(() => {
+            this.props.actions.documentForEdit('GetBoqForEdit?id=' + this.state.docId,this.state.docTypeId,'boq').then(() => {
                 this.setState({ isLoading: false, showForm: true, btnTxt: 'next', LoadingPage: false })
                 this.checkDocumentIsView();
                 this.getTabelData()
@@ -436,6 +436,9 @@ class bogAddEdit extends Component {
         let Table = []
         this.setState({ isLoading: true, LoadingPage: true })
         Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=0&pageSize=1000').then(res => {
+            let data = { items:res};
+            this.props.actions.ExportingData(data);
+
             res.forEach((element, index) => {
                 Table.push({
                     id: element.id,
@@ -483,9 +486,9 @@ class bogAddEdit extends Component {
     }
 
     componentWillReceiveProps(props, state) {
-        console.log('befotprops', props)
         if (props.document && props.document.id > 0) {
             let docDate = moment(props.document.documentDate)
+            props.document.statusName= props.document.status?'Opened':'Closed'
             let document = Object.assign(props.document, { documentDate: docDate })
             this.setState({ document });
 

@@ -760,7 +760,7 @@ class requestPaymentsAddEdit extends Component {
             })
             if (this.props.changeStatus === true) {
                 if (this.props.items.length == 0) {
-                    this.fillVoItems();
+                 //   this.fillVoItems();
                 }
             }
 

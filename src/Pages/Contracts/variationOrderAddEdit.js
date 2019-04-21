@@ -244,6 +244,8 @@ class variationOrderAddEdit extends Component {
     fillVoItems() {
 
         dataservice.GetDataGrid("GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId).then(result => {
+            let data = { items:result};
+            this.props.actions.ExportingData(data);
             this.setState({
                 voItems: [...result]
             });
@@ -252,7 +254,7 @@ class variationOrderAddEdit extends Component {
     }
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId);
+            this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId,this.state.docTypeId,'changeOrder');
         } else {
             let changeOrder = {
                 subject: '',
