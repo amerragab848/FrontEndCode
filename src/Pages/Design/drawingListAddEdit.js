@@ -26,6 +26,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
@@ -911,6 +912,7 @@ class drawingListAddEdit extends Component {
                 {/* {this.state.isLoading ? <LoadingSection /> : null} */}
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+                <HeaderDocument projectName={projectName} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
 
                     <div className="submittalHead">
                         <h2 className="zero">{Resources.drawingList[currentLanguage]}

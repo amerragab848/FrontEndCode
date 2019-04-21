@@ -18,14 +18,14 @@ import * as communicationActions from '../../store/actions/communication';
 //import Recycle from '../../Styles/images/attacheRecycle.png'
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
-
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetup from "../Communication/GridSetup";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import IPConfig from '../../IP_Configrations'
 import SkyLight from 'react-skylight';
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 
