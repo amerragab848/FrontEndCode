@@ -33,7 +33,9 @@ class BarChartComp extends Component {
                     text: this.props.title
                 },
                 xAxis: {
-                    categories: []
+                 //   categories: [],
+                    type: this.props.xAxisType?this.props.xAxisType:'',
+               
                 },
                 yAxis: {
                     min: 0,
@@ -92,6 +94,7 @@ class BarChartComp extends Component {
             this.setState({ isLoading: true, noClicks: props.noClicks })
             let options = { ...this.state.options };
             options.series = props.series
+            if(props.xAxisType==undefined)
             options.xAxis = props.xAxis
             this.setState({ options }, function () { this.setState({ isLoading: false }) });
         }
