@@ -167,6 +167,8 @@ class DrawingSetsAddEdit extends Component {
           document: this.props.document,
           hasWorkflow: this.props.hasWorkflow
         });
+        let data = { items: result };
+                this.props.actions.ExportingData(data);
 
         this.fillDropDowns(nextProps.document.id > 0 ? true : false);
       });
@@ -231,7 +233,7 @@ class DrawingSetsAddEdit extends Component {
 
       let url = "GetLogsDrawingsSetsForEdit?id=" + this.state.docId;
 
-      this.props.actions.documentForEdit(url);
+      this.props.actions.documentForEdit(url, this.state.docTypeId ,'drawingSets');
 
     } else {
       //field

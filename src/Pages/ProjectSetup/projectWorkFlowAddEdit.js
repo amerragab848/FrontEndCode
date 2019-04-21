@@ -309,7 +309,7 @@ class projectWorkFlowAddEdit extends Component {
 
         if (docId > 0) {
             let url = "GetWorkFlowForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'workFlow');
 
             this.setState({
                 IsEditMode: true,
@@ -323,7 +323,10 @@ class projectWorkFlowAddEdit extends Component {
                         rows: res,
                         isLoading: false
                     })
+                    let data = { items: res };
+                    this.props.actions.ExportingData(data);
                 }
+
             )
 
 
@@ -612,6 +615,8 @@ class projectWorkFlowAddEdit extends Component {
                         rows: res,
                         isLoading: false,
                     })
+                    let data = { items: res };
+                    this.props.actions.ExportingData(data);
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                     values.Company = ''
                     values.ContactName = ''
@@ -761,6 +766,8 @@ class projectWorkFlowAddEdit extends Component {
                 this.state.selectedRows.map(i => {
                     originalRows = originalRows.filter(r => r.id !== i);
                 })
+                let data = { items: originalRows };
+                this.props.actions.ExportingData(data);
                 this.setState({
                     rows: originalRows,
                     showDeleteModal: false,
@@ -809,6 +816,8 @@ class projectWorkFlowAddEdit extends Component {
                         isLoading: false,
                         showPopUp: false,
                     })
+                    let Data = { items: data };
+                    this.props.actions.ExportingData(Data);
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                 }
             )

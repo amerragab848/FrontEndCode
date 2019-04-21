@@ -285,7 +285,7 @@ class drawingListAddEdit extends Component {
         if (docId > 0) {
 
             let url = "GetDesignDrawingListForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'drawingList');
             this.setState({
                 IsEditMode: true
             })

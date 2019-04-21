@@ -194,6 +194,8 @@ class TaskGroupsAddEdit extends Component {
                     rows: res,
                     isLoading: false
                 })
+                let data = { items: res };
+                this.props.actions.ExportingData(data);
             }
         )
     }
@@ -315,6 +317,8 @@ class TaskGroupsAddEdit extends Component {
                     isLoading: false,
                     DeleteFromLog: false
                 })
+                let data = { items: originalRows };
+                this.props.actions.ExportingData(data);
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
 
@@ -355,6 +359,8 @@ class TaskGroupsAddEdit extends Component {
                     rows: NewRows,
                     isLoading: false
                 })
+                let data = { items: NewRows };
+                this.props.actions.ExportingData(data);
                 this.MaxArrangeContacts()
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
@@ -437,7 +443,8 @@ class TaskGroupsAddEdit extends Component {
 
     componentDidMount = () => {
         if (docId > 0) {
-            this.props.actions.documentForEdit('GetProjectDistributionListForEdit?id=' + docId)
+            let url = 'GetProjectDistributionListForEdit?id=' + docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'distributionList');
             this.checkDocumentIsView();
         }
         else {
