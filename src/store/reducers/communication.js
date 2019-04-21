@@ -13,10 +13,10 @@ export default function (state = initialState.app.communication, action) {
                 ...state
             }
 
-        case types.Export_Document: 
+        case types.Export_Document:
             return {
-                ...state, 
-                items: action.items ? action.items: []
+                ...state,
+                items: action.items ? action.items : []
             }
 
 
@@ -42,7 +42,7 @@ export default function (state = initialState.app.communication, action) {
                 items: [],
                 projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId
             };
- 
+
         case types.File_Upload:
             return {
                 ...state,
@@ -140,8 +140,8 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
                 showLeftReportMenu: action.showLeftReportMenu,
-                projectId: action.projectId,
-                projectName: action.projectName
+                projectId: action.projectId == 0 ? localStorage.getItem('lastSelectedProject') : action.projectId,
+                projectName: action.projectName == "" ? localStorage.getItem('lastSelectedprojectName') : action.projectName
             };
         case types.RouteToTemplate:
 
@@ -239,7 +239,7 @@ export default function (state = initialState.app.communication, action) {
                     action: element.action,
                     comment: element.comment,
                     Id: element.id,
-                    arrange:element.arrange,
+                    arrange: element.arrange,
                     requiredDate: element.requiredDate
 
                 })
