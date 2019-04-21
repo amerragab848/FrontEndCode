@@ -1,4 +1,7 @@
 import React, { Component } from "react"; 
+import "./Styles/css/font-awesome.min.css";
+import "react-toastify/dist/ReactToastify.css";
+import "./Styles/css/rodal.css";
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css"; 
 import Menu from "./Pages/Menu/Menu";  
@@ -11,8 +14,6 @@ import {
 
 import configureStore from './store/configureStore'; 
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./Styles/css/rodal.css";
 const store = configureStore();
  
 const IsAuthorize = api.IsAuthorized()

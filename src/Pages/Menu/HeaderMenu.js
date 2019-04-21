@@ -6,7 +6,6 @@ import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
 import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
-
 import config from "../../Services/Config";
 // import "../../Styles/css/font-awesome.min.css";
 
