@@ -46,6 +46,7 @@ import GeneralList from './Componants/GeneralSetting/MenuDefaultData/GeneralList
 import ExpensesWorkFlowLog from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog';
 import ExpensesWorkFlowAddEdit from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
+import DashBoardProjectCounterLog from './Componants/DashBoardDetails/DashBoardProjectCounterLog';
 import RfiAddEdit from "./Pages/Communication/RfiAddEdit";
 import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
@@ -183,7 +184,7 @@ let originalRoutes = [
     , <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />
     , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
     , <Route path="/RfiAddEdit" component={RfiAddEdit} />
-    , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
+    , <Route path="/DashBoardProjectCounterLog" component={DashBoardProjectCounterLog} />
     , <Route path="/phoneAddEdit" component={phoneAddEdit} />
     , <Route path="/reportsAddEdit" component={reportsAddEdit} />
     , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />

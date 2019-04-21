@@ -17,7 +17,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetTotalPoForProjectId?projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
           action: "action",
@@ -35,7 +35,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetMaterialRequestCountingForProject?projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
           action: "action",
@@ -53,7 +53,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetTotalPaymentForProject?projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
           action: "action",
@@ -81,7 +81,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetApprocalStatusCount?status=true&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total-0",
           total: "total-1",
           action: "action",
@@ -99,7 +99,7 @@ var DashBoardWidgets = [
         props: {
           api: "getOpenedDocumentsCount?docType=42&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
           action: "action",
@@ -117,7 +117,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetApprocalStatusCount?status=false&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total-0",
           total: "total-1",
           action: "action",
@@ -145,7 +145,7 @@ var DashBoardWidgets = [
         props: {
           api: "getOpenedDocumentsCount?docType=19&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
           action: "action",
@@ -163,7 +163,7 @@ var DashBoardWidgets = [
         props: {
           api: "getOpenedDocumentsCount?docType=25&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
           action: "action",
@@ -181,7 +181,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetRfiOpenCount?projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total-0",
           total: "total-1",
           action: "action",
@@ -199,7 +199,7 @@ var DashBoardWidgets = [
         props: {
           api: "getOpenedDocumentsCount?docType=28&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
           action: "action",
@@ -227,7 +227,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetCountinspectionForProject?status=null&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
           action: "action",
@@ -245,7 +245,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetCountinspectionForProject?status=false&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
           action: "action",
@@ -263,7 +263,7 @@ var DashBoardWidgets = [
         props: {
           api: "GetCountinspectionForProject?status=true&projectId=",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
           action: "action",

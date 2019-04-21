@@ -4,11 +4,7 @@ import CryptoJS from 'crypto-js';
 
 import "react-tabs/style/react-tabs.css";
 
-import { Widgets, WidgetsWithText } from "./Componants/CounterWidget";
-//import { ChartWidgetsData, BarChartComp, PieChartComp } from "./Componants/ChartsWidgets";
-
-import { ThreeWidgetsData, ApprovedWidget } from "./Componants/ThreeWidgets";
-
+import { Widgets, WidgetsWithText } from "./Componants/CounterWidget"; 
 import DashBoardWidgets from "./Componants/WidgetsDashBoradProject";
 import DashBoard from "./Componants/DashBoardProject";
 import _ from "lodash";
@@ -33,8 +29,7 @@ class DashboardProject extends Component {
       dashBoardIndex: 0,
       value: 0,
       counterData: [],
-      counterDataDetails: [],
-      threeWidgets: ThreeWidgetsData,
+      counterDataDetails: [], 
       viewDashBoard: false,
       viewSub: false,
       viewMenu: 0,
@@ -94,10 +89,8 @@ class DashboardProject extends Component {
                         let api = panel.props.api + this.state.projectId
                         panel.props.api = api
 
-                        if (panel.checked === true) {
-                          if (panel.type === "threeWidget") {
-                            return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
-                          } else if (panel.type === "twoWidget") {
+                        if (panel.checked === true) { 
+                          if (panel.type === "twoWidget") {
                             return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
                           } else {
                             return (<Widgets key={panel.key} title={panel.title} {...panel} />);
@@ -133,11 +126,7 @@ class DashboardProject extends Component {
 
                         let api = panel.props.api + this.state.projectId
                         panel.props.api = api
-
-                        if (panel.type === "threeWidget") {
-                          return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
-                        }
-                        else if (panel.type === "twoWidget") {
+                        if (panel.type === "twoWidget") {
                           return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
                         }
                         else {
@@ -172,11 +161,7 @@ class DashboardProject extends Component {
 
                       let api = panel.props.api + this.state.projectId
                       panel.props.api = api
-
-                      if (panel.type === "threeWidget") {
-                        return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
-                      }
-                      else if (panel.type === "twoWidget") {
+                      if (panel.type === "twoWidget") {
                         return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
                       }
                       else {
