@@ -186,9 +186,13 @@ class addEditModificationDrawing extends Component {
             });
 
             dataservice.GetRowById("getLogsDrawingsCyclesForEdit?id=" + nextProps.document.id).then(result => {
+                let data = { items: result };
+                this.props.actions.ExportingData(data);
                 this.setState({
                     drawingCycle: { ...result }
                 });
+
+
 
                 this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             });
@@ -266,7 +270,8 @@ class addEditModificationDrawing extends Component {
 
         if (this.state.docId > 0) {
             let url = "GetLogsDrawingsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url); 
+            let PageName = isModification === true ? 'drawing' : 'drawingModification'
+            this.props.actions.documentForEdit(url, this.state.docTypeId, PageName);
         } else {
             let drawing = {
                 subject: '',
@@ -593,7 +598,7 @@ class addEditModificationDrawing extends Component {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
             btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
-        }  
+        }
         return btn;
     }
 
@@ -988,7 +993,7 @@ class addEditModificationDrawing extends Component {
                                                                     data={this.state.approvalstatusList}
                                                                     selectedValue={this.state.selectedApprovalStatusId}
                                                                     handleChange={(e) => this.handleChangeDropDownCycle(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
-                                                                    
+
                                                                     onChange={setFieldValue}
                                                                     onBlur={setFieldTouched}
                                                                     error={errors.approvalStatusId}
@@ -1018,9 +1023,9 @@ class addEditModificationDrawing extends Component {
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
-                                                        {this.props.changeStatus=== true ? 
-                                                          <button type='submit'  className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
-                                                        : null
+                                                        {this.props.changeStatus === true ?
+                                                            <button type='submit' className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
+                                                            : null
                                                         }
                                                     </div>
 
@@ -1054,15 +1059,15 @@ class addEditModificationDrawing extends Component {
 
                                         {this.state.isApproveMode === true ?
                                             <div >
-                                                <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                             </div>
                                             : null
                                         }
                                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                       <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
