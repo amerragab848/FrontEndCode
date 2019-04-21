@@ -24,7 +24,7 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Recycle from '../../Styles/images/attacheRecycle.png'
-
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require('lodash')
@@ -60,7 +60,7 @@ class TaskGroupsAddEdit extends Component {
 
     constructor(props) {
         super(props)
-        
+
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
@@ -168,17 +168,17 @@ class TaskGroupsAddEdit extends Component {
             }
         )
     }
-     
+
     componentWillUnmount() {
         this.setState({
             docId: 0
         });
     }
 
-    MaxArrangeContacts=()=>{
-    
-        Api.get('GetNextArrangeItems?docId='+docId+'&docType=89').then(
-            res=>{
+    MaxArrangeContacts = () => {
+
+        Api.get('GetNextArrangeItems?docId=' + docId + '&docType=89').then(
+            res => {
                 this.setState({
                     MaxArrangeContact: res
                 })
@@ -444,7 +444,7 @@ class TaskGroupsAddEdit extends Component {
     componentDidMount = () => {
         if (docId > 0) {
             let url = 'GetProjectDistributionListForEdit?id=' + docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId ,'distributionList');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'distributionList');
             this.checkDocumentIsView();
         }
         else {
@@ -603,32 +603,8 @@ class TaskGroupsAddEdit extends Component {
             <div className="mainContainer" >
                 <div className="documents-stepper noTabs__document one__tab one_step">
                     {/* Header */}
-                    <div className="submittalHead">
-                        <h2 className="zero">{Resources['distributionList'][currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · {Resources['generalCoordination'][currentLanguage]}</span>
-                        </h2>
-                        {/* <h2 className="zero">{CurrProjectName + ' - ' + Resources['projectTaskGroups'][currentLanguage]}</h2> */}
-                        <div className="SubmittalHeadClose">
-                            <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                    <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                        <g id="Group-2">
-                                            <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                                <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                                                    <g id="Group">
-                                                        <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                        <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z"
-                                                            id="Combined-Shape" fill="#858D9E" fillRule="nonzero"></path>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-
+                    <HeaderDocument projectName={projectName} docTitle={Resources.distributionList[currentLanguage]}
+                        moduleTitle={Resources['generalCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
                             {this.state.FirstStep ?
@@ -838,13 +814,13 @@ class TaskGroupsAddEdit extends Component {
                                     {/* <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editPhone(e)}>{Resources.save[currentLanguage]}</button> */}
                                     {this.state.isApproveMode === true ?
                                         <div >
-                                            <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                            <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                         </div>
                                         : null
                                     }
                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                   <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                     <span className="border"></span>
                                     <div className="document__action--menu">
                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
