@@ -52,8 +52,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[],
-        "friendlyNames":[]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "28": {
         "fields": [
@@ -143,8 +143,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[],
-        "friendlyNames":[]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "25": {
         "fields": [
@@ -299,9 +299,29 @@
                 "type": "D"
             }
         ],
-        "columnsItems" :["arrange", "subject", "statusName", "flowCompanyName", "flowContactName", "docDate", "approvalStatusName", "progressPercent", "cycleComment"],
-        "friendlyNames":["numberAbb","subject","status","CompanyName","ContactName","docDate","approvalStatus","progressPercent","answer"]
-    },  
+        "columnsItems": [
+            "arrange",
+            "subject",
+            "statusName",
+            "flowCompanyName",
+            "flowContactName",
+            "docDate",
+            "approvalStatusName",
+            "progressPercent",
+            "cycleComment"
+        ],
+        "friendlyNames": [
+            "numberAbb",
+            "subject",
+            "status",
+            "CompanyName",
+            "ContactName",
+            "docDate",
+            "approvalStatus",
+            "progressPercent",
+            "answer"
+        ]
+    },
     "109": {
         "fields": [
             {
@@ -355,8 +375,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[],
-        "friendlyNames":[]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "30": {
         "fields": [
@@ -416,8 +436,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[],
-        "friendlyNames":[]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "35": {
         "fields": [
@@ -425,7 +445,7 @@
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
-            }, 
+            },
             {
                 "name": "handouts",
                 "value": "handOuts",
@@ -482,8 +502,18 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :["arrange","description","decisions","action"],
-        "friendlyNames":["numberAbb","description","decisions","action"]
+        "columnsItems": [
+            "arrange",
+            "description",
+            "decisions",
+            "action"
+        ],
+        "friendlyNames": [
+            "numberAbb",
+            "description",
+            "decisions",
+            "action"
+        ]
     },
     "33": {
         "fields": [
@@ -491,7 +521,7 @@
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
-            }, 
+            },
             {
                 "name": "handouts",
                 "value": "handOuts",
@@ -548,8 +578,20 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :["description","calledByCompany","calledByContact","decisions","action"],
-        "friendlyNames":["description","calledByCompany","calledByContact","decisions","action"]
+        "columnsItems": [
+            "description",
+            "calledByCompany",
+            "calledByContact",
+            "decisions",
+            "action"
+        ],
+        "friendlyNames": [
+            "description",
+            "calledByCompany",
+            "calledByContact",
+            "decisions",
+            "action"
+        ]
     },
     "29": {
         "fields": [
@@ -557,13 +599,13 @@
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
-            }, 
+            },
             {
                 "name": "status",
                 "value": "statusName",
                 "type": "S"
-            }, 
-              {
+            },
+            {
                 "name": "docDate",
                 "value": "docDate",
                 "type": "D"
@@ -609,8 +651,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[ ],
-        "friendlyNames":[ ]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "20": {
         "fields": [
@@ -618,13 +660,13 @@
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
-            }, 
+            },
             {
                 "name": "status",
                 "value": "statusName",
                 "type": "S"
-            }, 
-              {
+            },
+            {
                 "name": "reportType",
                 "value": "reportTypeName",
                 "type": "S"
@@ -665,8 +707,8 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[ ],
-        "friendlyNames":[ ]
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "23": {
         "fields": [
@@ -674,13 +716,13 @@
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
-            }, 
+            },
             {
                 "name": "status",
                 "value": "statusName",
                 "type": "S"
-            }, 
-              {
+            },
+            {
                 "name": "refDoc",
                 "value": "refDoc",
                 "type": "S"
@@ -756,9 +798,10 @@
                 "type": "S"
             }
         ],
-        "columnsItems" :[ ],
-        "friendlyNames":[ ]
-    } ,"99": {
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "99": {
         "fields": [
             {
                 "name": "subject",
@@ -787,8 +830,7 @@
             "ContactName"
         ]
     },
-
-  "103": {
+    "103": {
         "fields": [
             {
                 "name": "subject",
@@ -934,16 +976,184 @@
                 "name": "projectName",
                 "value": "projectName",
                 "type": "S"
-            } ,
+            },
             {
                 "name": "docDate",
                 "value": "cycleDocDate",
                 "type": "S"
             }
-
         ],
-        "columnsItems": ["subject","docTypeName","docDate"],
-        "friendlyNames": ["subject","docType","docDate"]
+        "columnsItems": [
+            "subject",
+            "docTypeName",
+            "docDate"
+        ],
+        "friendlyNames": [
+            "subject",
+            "docType",
+            "docDate"
+        ]
+    },
+    "101": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "reviewResult",
+                "value": "reviewResultName",
+                "type": "S"
+            },
+            {
+                "name": "inspectionRequest",
+                "value": "inspectionRequestName",
+                "type": "S"
+            },
+            {
+                "name": "fileNumber",
+                "value": "fileNumberName",
+                "type": "S"
+            },
+            {
+                "name": "Building",
+                "value": "buildingNoName",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "refNo",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "requiredDate",
+                "value": "requiredDate",
+                "type": "D"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "discipline",
+                "value": "discipline",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "areaName",
+                "type": "S"
+            },
+            {
+                "name": "apartmentNumber",
+                "value": "apartmentNoName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "61": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "actionByCompany",
+                "value": "bicCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "contractPo",
+                "value": "orderType",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "discipline",
+                "value": "disciplineName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "actionByContact",
+                "value": "bicContactName",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "areaName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
     }
-
 }

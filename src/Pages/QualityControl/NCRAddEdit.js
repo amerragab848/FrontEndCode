@@ -204,7 +204,7 @@ class NCRAddEdit extends Component {
     componentWillMount() {
         if (docId > 0) {
             let url = "GetCommunicationNCRsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'NCRLog');
             this.setState({
                 IsEditMode: true
             })
