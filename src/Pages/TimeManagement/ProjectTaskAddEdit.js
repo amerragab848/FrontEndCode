@@ -20,6 +20,7 @@ import * as communicationActions from "../../store/actions/communication";
 import Distribution from "../../Componants/OptionsPanels/DistributionList";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 import { toast } from "react-toastify";
 
