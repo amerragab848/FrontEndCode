@@ -6,8 +6,7 @@ import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
 import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
-import config from "../../Services/Config";
-// import "../../Styles/css/font-awesome.min.css";
+import config from "../../Services/Config"; 
 
 import dataservice from "../../Dataservice";
 import Select from 'react-select';
@@ -141,7 +140,7 @@ class HeaderMenu extends Component {
               </ul>
               <ul className="nav-right">
                 {this.props.showSelectProject === true ?
-                  <li class="procoor__logo">
+                  <li className="procoor__logo">
                     <NavLink to="/">
                       <img src={Logo} alt="logo" />
                     </NavLink>

@@ -11,7 +11,8 @@ export function documentForEdit(urlAction,docTypeId) {
                 type: types.Document_for_Edit,
                 document: resp,
                 docId: resp.id,
-                docTypeId: docTypeId
+                docTypeId: docTypeId,
+                showLeftReportMenu: false 
             });
 
         }).catch((ex) => {
@@ -242,7 +243,7 @@ export function RouteToTemplate() {
         dispatch({
             type: types.RouteToTemplate,
             showLeftMenu: false,
-            showSelectProject: false,
+            showSelectProject: true,
             showLeftReportMenu:false
         });
     }
@@ -302,10 +303,8 @@ export function ReportCenterMenuClick() {
         dispatch({
             type: types.ReportCenterMenu,
             showLeftMenu: false,
-            showSelectProject: false,
-            showLeftReportMenu: true,
-            // projectId: event.value,
-            // projectName: event.label 
+            showSelectProject: true,
+            showLeftReportMenu: true 
         });
     }
 }
