@@ -128,7 +128,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
-            
+
             SecondStepComplate: false,
             ThirdStepComplate: false,
             rows: [],
@@ -682,28 +682,24 @@ class ExpensesWorkFlowAddEdit extends Component {
 
 
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
-                                                    selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "Company")}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.Company}
-                                                    touched={touched.Company}
-                                                    value={values.Company} isClear={true} />
-                                            </div>
+                                            <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
+                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "Company")}
+                                                onBlur={setFieldTouched}
+                                                error={errors.Company}
+                                                touched={touched.Company}
+                                                value={values.Company} isClear={true} />
                                         </div>
 
 
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
-                                                    selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContact : values.ContactName} onChange={setFieldValue}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.ContactName}
-                                                    touched={touched.ContactName}
-                                                    value={values.ContactName} />
-                                            </div>
+                                            <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
+                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContact : values.ContactName} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
+                                                onBlur={setFieldTouched}
+                                                error={errors.ContactName}
+                                                touched={touched.ContactName}
+                                                value={values.ContactName} />
                                         </div>
 
                                         <div className="linebylineInput valid-input">
@@ -929,24 +925,20 @@ class ExpensesWorkFlowAddEdit extends Component {
 
                                                     <div className="proForm datepickerContainer">
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <DropdownMelcous title="projectName" data={this.state.ProjectList} name="ProjectName"
-                                                                    selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                                                    handleChange={(e) => this.handleChangeDrops(e, "ProjectName")}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.ProjectName}
-                                                                    touched={touched.ProjectName}
-                                                                    value={values.ProjectName} isClear={true} />
-                                                            </div>
+                                                            <DropdownMelcous title="projectName" data={this.state.ProjectList} name="ProjectName"
+                                                                selectedValue={this.state.selectedProject} onChange={setFieldValue}
+                                                                handleChange={(e) => this.handleChangeDrops(e, "ProjectName")}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.ProjectName}
+                                                                touched={touched.ProjectName}
+                                                                value={values.ProjectName} isClear={true} />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <DatePicker title='docDate' handleChange={this.DocumentDatehandleChange}
-                                                                    startDate={this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.creationDate === null ?
-                                                                        this.state.DocumentDate : this.state.ExpensesWorkFlowDataForEdit.creationDate
-                                                                        : this.state.DocumentDate} />
-                                                            </div>
+                                                            <DatePicker title='docDate' handleChange={this.DocumentDatehandleChange}
+                                                                startDate={this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.creationDate === null ?
+                                                                    this.state.DocumentDate : this.state.ExpensesWorkFlowDataForEdit.creationDate
+                                                                    : this.state.DocumentDate} />
                                                         </div>
 
 

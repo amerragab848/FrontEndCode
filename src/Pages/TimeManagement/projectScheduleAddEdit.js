@@ -225,7 +225,8 @@ class drawingListAddEdit extends Component {
                 description: '',
                 taskId: '',
                 projectId: projectId,
-                scheduleId: docId
+                scheduleId: docId,
+                arrange: arrange
             },
             documentItemEdit: {
                 taskId: '',
@@ -242,10 +243,10 @@ class drawingListAddEdit extends Component {
             ToContacts: [],
             fromContacts: [],
             ToCompany: [],
-            selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
-            selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+            selectedToContactEdit: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+            selectedToCompanyEdit: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
         }
     }
 
@@ -410,9 +411,25 @@ class drawingListAddEdit extends Component {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
-                let toSubField = this.state.document[subField];
+                let toSubField = this.state.documentItem[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value === toSubField; });
-                console.log(targetFieldSelected);
+
+                this.setState({
+                    [subSelectedValue]: targetFieldSelected,
+                    [subDatasource]: result,
+                    isLoading: false
+                });
+            }
+        });
+    }
+
+    fillSubDropDownInEditPopup(url, param, value, subField, subSelectedValue, subDatasource) {
+        let action = url + "?" + param + "=" + value
+        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            if (this.props.changeStatus === true) {
+                let toSubField = this.state.documentItemEdit[subField];
+                let targetFieldSelected = _.find(result, function (i) { return i.value === toSubField; });
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result,
@@ -524,7 +541,7 @@ class drawingListAddEdit extends Component {
         updated_document[field] = event.value;
 
         this.setState({
-            document: updated_document,
+            documentItem: updated_document,
             [selectedValue]: event
         });
 
@@ -538,6 +555,25 @@ class drawingListAddEdit extends Component {
         }
     }
 
+    handleChangeDropDownEdit(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+        if (event == null) return;
+        let updated_document = this.state.documentItemEdit
+        updated_document[field] = event.value;
+
+        this.setState({
+            documentItemEdit: updated_document,
+            [selectedValue]: event
+        });
+
+        if (isSubscrib) {
+            let action = url + "?" + param + "=" + event.value
+            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                this.setState({
+                    [targetState]: result
+                });
+            });
+        }
+    }
     viewAttachments() {
         return (
             this.state.docId !== 0 ? (
@@ -617,10 +653,21 @@ class drawingListAddEdit extends Component {
 
     ShowPopUpForEdit = (obj) => {
 
-        dataservice.GetRowById('GetProjectScheduleItemsById?id=' + obj.id + '').then(
+        dataservice.GetRowById('GetProjectScheduleItemsById?id=' + obj.id).then(
             res => {
-                if (obj) {
+                if (res) {
+                    //fill selectedValue contact & company
+                    let bicCompanyId = res.bicCompanyId;
+                    let bicCompany = _.find(this.state.companies, function (i) { return i.value === bicCompanyId; });
+
+                    this.fillSubDropDownInEditPopup('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedToContactEdit', 'ToContacts');
+
+                    res.finishDate = moment(res.finishDate).format('DD/MM/YYYY');
+                    res.startDate = moment(res.startDate).format('DD/MM/YYYY');
+
                     this.setState({
+                        selectedToCompanyEdit: bicCompany,
+
                         IsEditModeItem: true,
                         documentItemEdit: res,
                         showPopUp: true,
@@ -628,7 +675,6 @@ class drawingListAddEdit extends Component {
                     })
                 }
             }
-
         )
     }
 
@@ -654,6 +700,22 @@ class drawingListAddEdit extends Component {
         }).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
+        dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then
+            (res => {
+                let DocItem = {
+                    projectId: this.state.projectId,
+                    arrange: res,
+                    bicContactId: "",
+                    bicCompanyId: "",
+                    startDate: moment(),
+                    finishDate: moment(),
+                    description: '',
+                    taskId: '',
+                    scheduleId: docId
+                };
+
+                this.setState({ documentItem: DocItem });
+            })
     }
 
     AddItems = (values) => {
@@ -671,39 +733,14 @@ class drawingListAddEdit extends Component {
                 rows: res,
                 isLoading: false,
             })
-            //this.GetMaxArrangeItem()
-            this.fillDropDowns(false);
+            // //this.GetMaxArrangeItem()
+            // this.fillDropDowns(false);
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
     }
-    /*
-        // GetMaxArrangeItem = () => {
-    
-        //     dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId + '').then(
-        //         res => {
-        //             // let DocItem = {
-        //             //     arrange: res,
-        //             //     bicContactId: "",
-        //             //     bicCompanyId: "",
-        //             //     startDate: moment(),
-        //             //     finishDate: moment(),
-        //             //     status: true,
-        //             // }
-        //             this.setState({
-        //                 arrange: res,
-        //                 documentItem: DocItem
-        //             })
-        //         }
-        //     )
-        // }
-    
-        // ShowPopUpForAdd = () => {
-        //     this.setState({ showPopUp: true, IsEditModeItem: false })
-        //     this.GetMaxArrangeItem()
-        // }
-    */
+
     onCloseModal = () => {
         this.setState({ showDeleteModal: false, IsEditModeItem: false });
     }
@@ -816,7 +853,6 @@ class drawingListAddEdit extends Component {
                     showCheckbox={this.state.showCheckbox} minHeight={350}
                     onRowClick={this.ShowPopUpForEdit}
                     clickHandlerDeleteRows={this.DeleteItem}
-                    // Panels={true} TaskGroupFun={this.TaskGroupFun} ProjectTaskFun={this.ProjectTaskFun}
                     single={false}
                 />
             ) : <LoadingSection />
@@ -825,7 +861,6 @@ class drawingListAddEdit extends Component {
             return (
                 <div className="dropWrapper">
                     <Formik
-                        // initialValues={{ ...this.state.documentItem }}
                         initialValues={{ ...this.state.documentItemEdit }}
                         enableReinitialize={true}
                         validationSchema={validationItemsForAddEdit}
@@ -841,7 +876,7 @@ class drawingListAddEdit extends Component {
                                         {Resources.arrange[currentLanguage]}
                                     </label>
                                     <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "")} >
-                                        <input type="text" readOnly className="form-control" value={this.state.documentItemEdit.arrange} name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                        <input type="text" className="form-control" value={this.state.documentItemEdit.arrange} name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                             onBlur={e => { handleChange(e); handleBlur(e); }}
                                             onChange={e => this.handleChangeItems(e, "arrange")} />
                                         {errors.arrange && touched.arrange ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
@@ -911,34 +946,34 @@ class drawingListAddEdit extends Component {
                                             <Dropdown
                                                 isMulti={false}
                                                 data={this.state.ToContacts}
-                                                selectedValue={this.state.selectedToContact}
-                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
-
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.bicContactId}
-                                                touched={touched.bicContactId}
-
-                                                index="letter-bicContactId"
-                                                name="bicContactId"
-                                                id="bicContactId" />
-                                        </div>
-                                        <div className="super_company">
-                                            <Dropdown
-                                                isMulti={false}
-                                                data={this.state.companies}
-                                                selectedValue={this.state.selectedToCompany}
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                selectedValue={this.state.selectedToContactEdit}
+                                                handleChange={event => this.handleChangeDropDownEdit(event, 'toContactId', false, '', '', '', 'selectedToContactEdit')}
 
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.bicCompanyId}
                                                 touched={touched.bicCompanyId}
 
-                                                index="letter-bicCompanyId"
-                                                name="bicCompanyId"
-                                                id="bicCompanyId" />
+                                                index="letter-toContactId"
+                                                name="toContactId"
+                                                id="toContactId" />
+                                        </div>
+                                        <div className="super_company">
+                                            <Dropdown
+                                                isMulti={false}
+                                                data={this.state.companies}
+                                                selectedValue={this.state.selectedToCompanyEdit}
+                                                handleChange={event =>
+                                                    this.handleChangeDropDownEdit(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompanyEdit', 'selectedToContactEdit')}
+
+                                                onChange={setFieldValue}
+                                                onBlur={setFieldTouched}
+                                                error={errors.bicCompanyId}
+                                                touched={touched.bicCompanyId}
+
+                                                index="letter-toCompany"
+                                                name="toCompanyId"
+                                                id="toCompanyId" />
                                         </div>
                                     </div>
                                 </div>
@@ -994,7 +1029,7 @@ class drawingListAddEdit extends Component {
                                                 {Resources.arrange[currentLanguage]}
                                             </label>
                                             <div className={"ui input inputDev"}>
-                                                <input type="text" readOnly className="form-control" value={this.state.rows.length + 1} name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                                <input type="text" className="form-control" value={this.state.documentItem.arrange} name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                                     onBlur={e => { handleChange(e); handleBlur(e); }}
                                                     onChange={e => this.handleChangeItemsAdd(e, "arrange")} />
                                             </div>
@@ -1140,7 +1175,6 @@ class drawingListAddEdit extends Component {
                 title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
-
         ]
 
         return (
@@ -1303,7 +1337,9 @@ class drawingListAddEdit extends Component {
                                         </div>
                                     </div>
                                     {this.state.docId > 0 ?
-                                        <button className="primaryBtn-1 btn mediumBtn" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
+                                        <div className="slider-Btns">
+                                            <button className="primaryBtn-1 btn mediumBtn" onClick={this.NextStep}>{Resources.next[currentLanguage]}</button>
+                                        </div>
                                         : null}
                                 </div>
                                 :
@@ -1314,7 +1350,7 @@ class drawingListAddEdit extends Component {
 
                             <div className="skyLight__form">
                                 <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false, IsEditModeItem: false, })}
-                                    title={this.state.IsEditModeItem ? Resources['editTitle'][currentLanguage] : Resources['goAdd'][currentLanguage]}
+                                    title={Resources['editTitle'][currentLanguage]}
                                     onCloseClicked={() => this.setState({ showPopUp: false, IsEditModeItem: false, })} isVisible={this.state.showPopUp}>
                                     {AddEditProjectScheduleItems()}
                                 </SkyLightStateless>
@@ -1339,7 +1375,7 @@ class drawingListAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources['drawingList'][currentLanguage]}</h6>
+                                            <h6>{Resources["schedule"][currentLanguage]}</h6>
                                         </div>
                                     </div>
 
@@ -1348,7 +1384,7 @@ class drawingListAddEdit extends Component {
                                             <span>2</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6 >{Resources['addDrawingListItems'][currentLanguage]}</h6>
+                                            <h6 >{Resources["items"][currentLanguage]}</h6>
                                         </div>
                                     </div>
 

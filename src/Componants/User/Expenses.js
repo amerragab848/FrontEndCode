@@ -298,7 +298,8 @@ class Expenses extends Component {
             columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
 
         return (
-            <div className="mainContainer">
+            <div className="mainContainer main__fulldash--container">
+                
                 <div className="resetPassword">
 
                     <div className="submittalFilter">
