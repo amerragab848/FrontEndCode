@@ -1,5 +1,8 @@
 import config from "./IP_Configrations.json";
-let currentLanguage = localStorage.getItem('lang');
+import CryptoJS from 'crypto-js';
+import { toast } from "react-toastify";
+
+//let currentLanguage = localStorage.getItem('lang');
 let Authorization = localStorage.getItem('userToken');
 
 const Domain = config.static
@@ -17,8 +20,8 @@ export default class Api {
         }
     }
 
-    static get(route) {
-        return this.xhr(route, null, 'GET');
+    static get(route, params) {
+        return this.xhr(route, params === null ? null : params, 'GET');
     }
     static post(route, params) {
         return this.xhr(route, params, 'POST');
@@ -37,27 +40,24 @@ export default class Api {
 
         options.headers = Api.headers();
 
-        // if(signal) {
-        //     options.signal = signal;
-        // }
-        
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-             
+
                 json = resp.json();
-                if(json===undefined)
-                return null;
+                if (json === undefined)
+                    return null;
                 return json;
             }
             else if (resp.status === 500) {
                 json = null;
+                toast.error('Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!');
 
                 return json;
             }
             else if (resp.status === 401) {
                 localStorage.removeItem('userToken')
                 json = "";
-
+                window.location.reload();
                 return json;
             }
             else if (resp.status === 409) {
@@ -112,7 +112,7 @@ export default class Api {
     }
 
     static GetPayload() {
-        var payload = []; //CryptoJS.enc.Base64.parse(storage.getItem("claims")).toString(CryptoJS.enc.Utf8);
+        var payload = [];
 
         return JSON.parse(payload);
     }
@@ -121,7 +121,7 @@ export default class Api {
         let userPermissions = [];
         let isCompany = true;
         if (localStorage.getItem("permissions")) {
-            let perms = [3198, 3515, 3514];// JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
+            let perms = JSON.parse(CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
             userPermissions = perms;
         }
 
@@ -165,6 +165,7 @@ export default class Api {
             }
             else if (resp.status === 500) {
                 json = null;
+                toast.error('Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!');
 
                 return json;
             }
@@ -175,7 +176,7 @@ export default class Api {
 
         });//.then(res=>{return json});
 
-    } 
+    }
     static getPassword(route, password) {
 
         const host = Domain + '/api/Procoor/';
@@ -246,6 +247,8 @@ export default class Api {
             else if (resp.status === 401) {
 
                 localStorage.removeItem('userToken')
+
+                window.location.reload();
             }
             return json.then(err => {
                 throw err
@@ -253,13 +256,13 @@ export default class Api {
         }).then(json => (json.result ? json.result : json));
     }
 
-    static authorizationApi(route, params,method) {
+    static authorizationApi(route, params, method) {
         const host = config.loginServer + '/api/'
         const url = `${host}${route}`;
         let json = null;
 
         let options = Object.assign({
-            method: method === null ? 'PUT':method
+            method: method === null ? 'PUT' : method
         }, params ? {
             body: JSON.stringify(params)
         } : null);
@@ -287,15 +290,12 @@ export default class Api {
 
         }).then(json => (json.result ? json.result : json));
     }
-
-
-
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem('userToken')) {
             authorize = true;
         }
-         
+
         return authorize;
     }
 }

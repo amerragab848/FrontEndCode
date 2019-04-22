@@ -2,21 +2,20 @@ import React, { Component } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js';
 import { SortablePane, Pane } from "react-sortable-pane";
-import Rodal from "../Styles/js/rodal";
+ import Rodal from "../Styles/js/rodal";
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
-import widgets from "./WidgetsDashBorad";
+import widgets from "./WidgetsDashBoradProject";
 import Resources from "../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require('lodash');
 
-class DashBoard extends Component {
+class DashBoardProject extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      dashBoardIndex: 0,
+      dashBoardIndex: 1,
       viewDashBoard: false,
       checked_parent_widgets: {},
       checked_child_widgets: {},
@@ -28,14 +27,14 @@ class DashBoard extends Component {
   }
 
   componentWillMount() {
-
+   
     let original_widgets = [...widgets];
 
     var refrence = original_widgets.filter(function (i) {
       return i.refrence === 0;
     });
 
-    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
 
@@ -83,14 +82,14 @@ class DashBoard extends Component {
   }
 
   onClickTabItem(tabIndex) {
-
+ 
     let original_widgets = [...this.state.widgets];
 
     var refrence = original_widgets.filter(function (i) {
       return i.refrence === tabIndex;
     });
 
-    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
 
@@ -137,7 +136,7 @@ class DashBoard extends Component {
 
   viewCurrentMenu(event, key) {
 
-    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
 
@@ -222,7 +221,7 @@ class DashBoard extends Component {
 
   toggleParentCheck(event, id, index) {
 
-    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
 
@@ -254,7 +253,7 @@ class DashBoard extends Component {
         let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(widgets_Order));
         let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+        this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
         this.setState({
           refrence: widgets_Order[refrenceValue]
@@ -334,7 +333,7 @@ class DashBoard extends Component {
         let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
         let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+        this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
         this.setState({
           refrence: obj[refrenceValue]
@@ -413,7 +412,7 @@ class DashBoard extends Component {
       let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
       let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+      this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
       this.setState({
         refrence: setOrder
@@ -422,8 +421,8 @@ class DashBoard extends Component {
   }
  
   parentChageOrder(order) {
-
-    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+     
+    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
 
@@ -454,7 +453,7 @@ class DashBoard extends Component {
         let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(widgets_Order));
         let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+        this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
       } else {
         // if key not Exists  
@@ -524,7 +523,7 @@ class DashBoard extends Component {
         let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
         let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+        this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
       }
     } else {
@@ -593,7 +592,7 @@ class DashBoard extends Component {
       let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
       let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+      this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
     }
 
     this.setState({
@@ -611,7 +610,7 @@ class DashBoard extends Component {
 
     let original_widgets = [...this.state.widgets];
 
-    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
 
@@ -645,7 +644,7 @@ class DashBoard extends Component {
       let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(widgets_Order));
       let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+      this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
       this.setState({
         childRef: widgets_Order[parentKey][parentIndex].widgets
@@ -761,7 +760,7 @@ class DashBoard extends Component {
       let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
       let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+      this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
       this.setState({
         childRef: objChild[parentKey][getIndexx].widgets
@@ -775,7 +774,7 @@ class DashBoard extends Component {
 
     let getKey = getparent[0] + "-" + getparent[1];
 
-    let Widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+    let Widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     Widgets_Order = Widgets_Order != "" ? JSON.parse(Widgets_Order) : {};
 
@@ -813,7 +812,7 @@ class DashBoard extends Component {
       let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(Widgets_Order));
       let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+      this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
 
     } else {
       // فى حالة ان المستخدم بدا ترتيب child قبل  parent
@@ -915,7 +914,7 @@ class DashBoard extends Component {
         let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(objChild));
         let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+        this.saveToLS("Widgets_Project_Order", encodedsetLocalStorage);
       }
     }
 
@@ -947,8 +946,7 @@ class DashBoard extends Component {
 
     var paneChild = "";
 
-    if (this.state.viewChild) {
-      console.log('in this.state.childRef ', this.state.childRef);
+    if (this.state.viewChild) { 
       paneChild = this.state.childRef.map((widget, index) => {
         return (
           <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
@@ -973,28 +971,19 @@ class DashBoard extends Component {
           <div className="dashboard__modal">
             <div className="dashboard__container">
               <div className="modalTitle">
-                <h2>Dashboard center</h2>
+                <h2>Dashboard Project</h2>
               </div>
               <Tabs className="dashboard__Project" selectedIndex={this.state.dashBoardIndex} onSelect={dashBoardIndex => this.onClickTabItem(dashBoardIndex)}>
                 <div className="project__tabs subitTabs">
                   <TabList className="zero dashDragCustom">
                     <Tab>
                       <span className="subUlTitle">
-                        {Resources["general"][currentLanguage]}
-                      </span>
-                    </Tab>
-                    <Tab>
-                      <span className="subUlTitle">
                         {Resources["counters"][currentLanguage]}
                       </span>
                     </Tab>
-                    <Tab>
-                      <span className="subUlTitle">
-                        {Resources["projectsLogs"][currentLanguage]}
-                      </span>
-                    </Tab>
+                
                   </TabList>
-                </div>
+                </div> 
                 <TabPanel>
                   <div className="dash__content ui tab active">
                     <div className="project__content">
@@ -1010,39 +999,7 @@ class DashBoard extends Component {
                       ) : null}
                     </div>
                   </div>
-                </TabPanel>
-                <TabPanel>
-                  <div className="dash__content ui tab active">
-                    <div className="project__content">
-                      <SortablePane direction="vertical" order={this.state.parent_widgets_order} onOrderChange={order => this.parentChageOrder(order)}>
-                        {pane}
-                      </SortablePane>
-                    </div>
-                    <div className="project__content">
-                      {this.state.viewChild ? (
-                        <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
-                          {paneChild}
-                        </SortablePane>
-                      ) : null}
-                    </div>
-                  </div>
-                </TabPanel>
-                <TabPanel>
-                  <div className="dash__content ui tab active">
-                    <div className="project__content">
-                      <SortablePane direction="vertical" order={this.state.parent_widgets_order} onOrderChange={order => this.parentChageOrder(order)}>
-                        {pane}
-                      </SortablePane>
-                    </div>
-                    <div className="project__content">
-                      {this.state.viewChild ? (
-                        <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
-                          {paneChild}
-                        </SortablePane>
-                      ) : null}
-                    </div>
-                  </div>
-                </TabPanel>
+                </TabPanel> 
               </Tabs>
             </div>
           </div>
@@ -1052,4 +1009,4 @@ class DashBoard extends Component {
   }
 }
 
-export default DashBoard;
+export default DashBoardProject;

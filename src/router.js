@@ -46,6 +46,7 @@ import GeneralList from './Componants/GeneralSetting/MenuDefaultData/GeneralList
 import ExpensesWorkFlowLog from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog';
 import ExpensesWorkFlowAddEdit from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowAddEdit';
 import DashBoardCounterLog from './Componants/DashBoardDetails/DashBoardCounterLog';
+import DashBoardProjectCounterLog from './Componants/DashBoardDetails/DashBoardProjectCounterLog';
 import RfiAddEdit from "./Pages/Communication/RfiAddEdit";
 import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
@@ -116,6 +117,10 @@ import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocu
 import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
 import ProjectsList from './Pages/ReportsCenter/ProjectReports/ProjectsList';
 import CashFlowReport from './Pages/ReportsCenter/ProjectReports/CashFlowReport';
+
+import ProjectBackLog from './Pages/ReportsCenter/ProjectReports/projectBackLog';
+import ProjectsAchievements from './Pages/ReportsCenter/ProjectReports/projectsAchievements';
+import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/projectInvoicesCollected';
 
 import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
@@ -190,7 +195,7 @@ let originalRoutes = [
     , <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />
     , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
     , <Route path="/RfiAddEdit" component={RfiAddEdit} />
-    , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
+    , <Route path="/DashBoardProjectCounterLog" component={DashBoardProjectCounterLog} />
     , <Route path="/phoneAddEdit" component={phoneAddEdit} />
     , <Route path="/reportsAddEdit" component={reportsAddEdit} />
     , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
@@ -267,6 +272,9 @@ let originalRoutes = [
 
 
 
+    , <Route path="/projectBackLog" component={ProjectBackLog} />
+    , <Route path="/projectsAchievements" component={ProjectsAchievements} />
+    , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
 
     , <Route path="/approvalDocument" component={approvalDocument} />
     , <Route path="/contractorsPerformance" component={contractorsPerformance} />

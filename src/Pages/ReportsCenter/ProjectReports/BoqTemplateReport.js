@@ -227,7 +227,7 @@ class BoqTemplateReport extends Component {
                 columns={this.columns} onRowClick={this.OnRowClick} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'invoicesReport'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'boqTemplateReport'} />
             : null
 
         return (

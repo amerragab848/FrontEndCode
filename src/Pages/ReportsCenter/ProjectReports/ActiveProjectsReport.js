@@ -8,15 +8,12 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
-import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import Dataservice from '../../../Dataservice';
+
+import PieChartComp from '../PieChartComp'
 import Api from '../../../api';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 
 const StatusDropData = [
     { label: Resources.selectAll[currentLanguage], value: '' },
@@ -34,9 +31,13 @@ class ActiveProjectsReport extends Component {
             rows: [],
             finishDate: moment(),
             startDate: moment(),
+            showChart: true,
+            series: [],
+            xAxis: { type: 'pie' },
+            noClicks: 0,
         }
 
-        if (!Config.IsAllow(3677)) {
+        if (!Config.IsAllow(3686)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -93,11 +94,31 @@ class ActiveProjectsReport extends Component {
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-        Api.get('ActiveProjectReport?status='+this.state.selectedStatus.value+'').then(
+        let noClicks = this.state.noClicks;
+        Api.get('ActiveProjectReport?status=' + this.state.selectedStatus.value + '').then(
             res => {
+
+                let hold = 0
+                let unhold = 0
+                res.map(i => {
+
+                    if (i.statusName === 'UnHold')
+                        unhold = unhold + 1
+
+                    if (i.statusName === 'Hold')
+                        hold = hold + 1
+                })
+
+                let series = [{
+                    name: Resources['activeProjectsReport'][currentLanguage],
+                    data: [{ y: hold, name: Resources['holded'][currentLanguage] },
+                    { y: unhold, name: Resources['unHolded'][currentLanguage] },],
+                    type: "pie"
+                }]
+
                 this.setState({
-                    rows: res,
-                    isLoading: false
+                    series, noClicks: noClicks + 1,
+                    rows: res, isLoading: false
                 })
             }
         ).catch(() => {
@@ -107,12 +128,18 @@ class ActiveProjectsReport extends Component {
 
     render() {
 
+        let Chart =
+            <PieChartComp
+                noClicks={this.state.noClicks}
+                series={this.state.series}
+                title='activeProjectsReport' />
+
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectsList'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'activeProjectsReport'} />
             : null
 
         return (
@@ -151,29 +178,26 @@ class ActiveProjectsReport extends Component {
                                 </div>
 
                                 <div className="proForm datepickerContainer">
-
-
-                                  
-                                        <Dropdown className="fullWidthWrapper textLeft" title='status'
-                                            data={StatusDropData}
-                                            selectedValue={this.state.selectedStatus}
-                                            handleChange={e => this.setState({ selectedStatus: e })} />
-                                  
-
+                                    <Dropdown className="fullWidthWrapper textLeft" title='status'
+                                        data={StatusDropData}
+                                        selectedValue={this.state.selectedStatus}
+                                        handleChange={e => this.setState({ selectedStatus: e })} />
                                 </div>
-
-
 
                                 <div className="fullWidthWrapper ">
                                     <button className="primaryBtn-1 btn mediumBtn" onClick={this.getGridRows}>{Resources['search'][currentLanguage]}</button>
                                 </div>
 
-
-
                             </div>
+
+                            <div className="doc-pre-cycle letterFullWidth">
+                                {Chart}
+                            </div>
+
                             <div className="doc-pre-cycle letterFullWidth">
                                 {dataGrid}
                             </div>
+
 
                         </div>
                     </div>
