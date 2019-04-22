@@ -49,6 +49,15 @@ export default class DashBoardCounterLog extends Component {
     }
   }
 
+
+  componentWillMount = () => {
+
+    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
+
+    var e = { label: this.props.projectName, value: projectId };
+    this.props.actions.RouteToDashboardProject(e);
+  };
+
   componentDidMount() {
     if (this.state.apiDetails) {
       let spliteData = this.state.apiDetails.split("-");
