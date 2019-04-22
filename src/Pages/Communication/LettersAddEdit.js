@@ -33,6 +33,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -407,9 +408,7 @@ class LettersAddEdit extends Component {
         });
     }
 
-    saveAndExit(event) {
-        // let letter = { ...this.state.document };
-
+    saveAndExit(event) { 
         this.props.history.push({
             pathname: "/Letters/" + this.state.projectId
         });
