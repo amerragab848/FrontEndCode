@@ -11,12 +11,10 @@ import Dataservice from '../../../Dataservice';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 
 
-class InvoicesLogReport extends Component {
+
+class MaterialStatusReport extends Component {
 
     constructor(props) {
         super(props)
@@ -27,7 +25,7 @@ class InvoicesLogReport extends Component {
             rows: []
         }
 
-        if (!Config.IsAllow(194)) {
+        if (!Config.IsAllow(3688)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -36,9 +34,9 @@ class InvoicesLogReport extends Component {
 
         this.columns = [
             {
-                key: "projectCode",
-                name: Resources["projectCode"][currentLanguage],
-                width: 100,
+                key: "projectName",
+                name: Resources["projectName"][currentLanguage],
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -46,9 +44,9 @@ class InvoicesLogReport extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
+                key: "resourceCode",
+                name: Resources["resourceCode"][currentLanguage],
+                width: 180,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -56,38 +54,17 @@ class InvoicesLogReport extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 50,
+                key: "description",
+                name: Resources["description"][currentLanguage],
+                width: 180,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "balance",
-                name: Resources["balanceToFinish"][currentLanguage],
+                key: "unitPrice",
+                name: Resources["unitPrice"][currentLanguage],
                 width: 140,
                 draggable: true,
                 sortable: true,
@@ -96,25 +73,15 @@ class InvoicesLogReport extends Component {
                 sortDescendingFirst: true,
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
+                key: "quantity",
+                name: Resources["quantity"][currentLanguage],
                 width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            },
-            {
-                key: "lastEditBy",
-                name: Resources["lastEdit"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
+            }
         ];
 
     }
@@ -124,7 +91,7 @@ class InvoicesLogReport extends Component {
 
     componentWillMount() {
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('GetContractsInvoicesForPo').then(
+        Dataservice.GetDataGrid('GetMaterialStatus').then(
             res => {
                 this.setState({
                     rows: res,
@@ -136,18 +103,13 @@ class InvoicesLogReport extends Component {
         })
     }
 
-    OnRowClick = (obj) => {
-        // this.props.history.push({
-        //     pathname: "/"
-        // })
-        alert(obj.id)
-    }
+  
 
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
-                columns={this.columns} onRowClick={this.OnRowClick} />) : <LoadingSection />
+                columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'invoicesReport'} />
@@ -160,7 +122,7 @@ class InvoicesLogReport extends Component {
                 <div className="documents-stepper noTabs__document">
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['invoicesReport'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['materialStatusReport'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -202,4 +164,4 @@ class InvoicesLogReport extends Component {
     }
 
 }
-export default withRouter(InvoicesLogReport)
+export default withRouter(MaterialStatusReport)
