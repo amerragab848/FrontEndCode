@@ -8,7 +8,6 @@ import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
-import * as Yup from 'yup';
 import Api from '../../../api';
 import BarChartComp from '../TechnicalOffice/BarChartComp'
 import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
@@ -19,11 +18,7 @@ const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 }
 
-const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
-});
+
 
 class projectBackLog extends Component {
 

@@ -1554,7 +1554,7 @@ tfoot tr td p{
   background-color: #e9ecf0;
   margin: 0 24px;
 }
-.dropdownMulti .customD_Menu .css-1hwfws3 {
+.dropdownMulti .customD_Menu .css-1hwfws3, .multiChoice .customD_Menu  .css-1hwfws3{
   max-height: inherit;
 }
 .dropdownMulti .fillter-status.fillter-item-c {

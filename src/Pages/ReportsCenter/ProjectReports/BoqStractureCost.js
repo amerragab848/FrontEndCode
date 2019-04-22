@@ -4,30 +4,36 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import Api from '../../../api.js';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 
+const ValidtionSchema = Yup.object().shape({
+    selectedBoq: Yup.string()
+        .required(Resources['boqType'][currentLanguage])
+        .nullable(true),
+});
 
-class InvoicesLogReport extends Component {
+class BoqStractureCost extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            ProjectsData: [],
-            selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
+            BoqTypeData: [],
+            selectedBoq: [{ label: Resources.boqType[currentLanguage], value: "0" }],
             rows: []
         }
 
-        if (!Config.IsAllow(194)) {
+        if (!Config.IsAllow(4019)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -36,9 +42,9 @@ class InvoicesLogReport extends Component {
 
         this.columns = [
             {
-                key: "projectCode",
-                name: Resources["projectCode"][currentLanguage],
-                width: 100,
+                key: "building",
+                name: Resources["Building"][currentLanguage],
+                width: 300,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -46,69 +52,28 @@ class InvoicesLogReport extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "balance",
-                name: Resources["balanceToFinish"][currentLanguage],
-                width: 140,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            },
-            {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
+                key: "code",
+                name: Resources["code"][currentLanguage],
                 width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
+            }, {
+                key: "exists",
+                name: Resources["exists"][currentLanguage],
+                width: 150,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
             },
             {
-                key: "lastEditBy",
-                name: Resources["lastEdit"][currentLanguage],
-                width: 120,
+                key: "rowTotal",
+                name: Resources["rowTotal"][currentLanguage],
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -123,34 +88,48 @@ class InvoicesLogReport extends Component {
     }
 
     componentWillMount() {
+        Dataservice.GetDataList('GetBoqStracture', 'title', 'id').then(
+            result => {
+                this.setState({
+                    BoqTypeData: result
+                })
+            }).catch(() => {
+                toast.error('somthing wrong')
+            })
+    }
+
+
+    getGridRows = () => {
+        console.log(this.state.selectedBoq)
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('GetContractsInvoicesForPo').then(
+
+        let selectedBoqLsit = []
+        this.state.selectedBoq.map(s => {
+            selectedBoqLsit.push(s.value)
+        })
+        console.log(selectedBoqLsit)
+
+        Api.post('GetTotalBOQParentFromChild', selectedBoqLsit).then(
             res => {
                 this.setState({
-                    rows: res,
+                    rows: res.data,
                     isLoading: false
                 })
+                console.log(res)
             }
         ).catch(() => {
             this.setState({ isLoading: false })
         })
     }
 
-    OnRowClick = (obj) => {
-        // this.props.history.push({
-        //     pathname: "/"
-        // })
-        alert(obj.id)
-    }
-
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
-                columns={this.columns} onRowClick={this.OnRowClick} />) : <LoadingSection />
+                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'invoicesReport'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'boqStractureCost'} />
             : null
 
         return (
@@ -160,7 +139,7 @@ class InvoicesLogReport extends Component {
                 <div className="documents-stepper noTabs__document">
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['invoicesReport'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['boqStractureCost'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -181,18 +160,55 @@ class InvoicesLogReport extends Component {
                     </div>
 
                     <div className="doc-container">
+                        <div className="mainContainer dropdownMulti">
+                            <div className="step-content">
+                                <div className="document-fields">
+                                    <div className=" fullWidthWrapper textRight">
+                                        {btnExport}
+                                    </div>
 
-                        <div className="step-content">
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
+                                    <Formik
+
+                                        initialValues={{
+                                            selectedBoq: '',
+                                        }}
+
+                                        enableReinitialize={true}
+
+                                        validationSchema={ValidtionSchema}
+
+                                        onSubmit={(values, actions) => {
+
+                                            this.getGridRows()
+                                        }}>
+
+                                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                                            <Form onSubmit={handleSubmit}>
+
+                                                <Dropdown className="fullWidthWrapper textLeft" title='boqType' data={this.state.BoqTypeData} name='selectedBoq'
+                                                    isMulti={true} value={this.state.selectedBoq} onChange={setFieldValue}
+                                                    handleChange={e => this.setState({ selectedBoq: e })}
+                                                    onBlur={setFieldTouched}
+                                                    error={errors.selectedBoq}
+                                                    touched={touched.selectedBoq}
+                                                    value={values.selectedBoq} />
+
+
+                                                <div className="fullWidthWrapper ">
+                                                    <button className="primaryBtn-1 btn mediumBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                                                </div>
+
+                                            </Form>
+                                        )}
+                                    </Formik>
+
+
+                                </div>
+                                <div className="doc-pre-cycle letterFullWidth">
+                                    {dataGrid}
                                 </div>
 
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -202,4 +218,4 @@ class InvoicesLogReport extends Component {
     }
 
 }
-export default withRouter(InvoicesLogReport)
+export default withRouter(BoqStractureCost)
