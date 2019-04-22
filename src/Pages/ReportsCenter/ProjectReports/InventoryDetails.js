@@ -209,13 +209,13 @@ class InventoryDetails extends Component {
                 getCellActions={this.GetCellActions} cellClick={this.cellClick}
                 columns={this.columns} />) : <LoadingSection />
 
-                let Exportcolumns = this.state.columns.filter(s => s.key !== 'BtnActions')
+        let Exportcolumns = this.columns.filter(s => s.key !== 'BtnActions')
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.RowsParent : []} columns={this.Exportcolumns} fileName={'inventoryDetails'} />
+            <Export rows={this.state.isLoading === false ? this.state.RowsParent : []} columns={Exportcolumns} fileName={'inventoryDetails'} />
             : null
 
         const btnExportChild = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.RowsChilds : []} columns={this.Exportcolumns} fileName={'inventoryDetails'} />
+            <Export rows={this.state.isLoading === false ? this.state.RowsChilds : []} columns={Exportcolumns} fileName={'inventoryDetails'} />
             : null
 
         return (
