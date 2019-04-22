@@ -19,11 +19,7 @@ const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 }
 
-const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
-});
+
 
 class projectBackLog extends Component {
 
