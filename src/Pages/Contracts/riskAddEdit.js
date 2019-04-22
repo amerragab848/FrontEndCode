@@ -113,7 +113,7 @@ class riskAddEdit extends Component {
         }
 
         if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
 
             this.props.history.push("/Risk/" + this.state.projectId);
         }

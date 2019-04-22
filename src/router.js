@@ -253,9 +253,9 @@ let originalRoutes = [
     , <Route path="/ProjectsList" component={ProjectsList} />
     , <Route path="/CashFlowReport" component={CashFlowReport} />
     , <Route path="/ProjectBalanceReport" component={ProjectBalanceReport} />
-, <Route path="/projectBackLog" component={ProjectBackLog} />
-, <Route path="/projectsAchievements" component={ProjectsAchievements} />
-, <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
+    , <Route path="/projectBackLog" component={ProjectBackLog} />
+    , <Route path="/projectsAchievements" component={ProjectsAchievements} />
+    , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
 
     , <Route path="/approvalDocument" component={approvalDocument} />
     , <Route path="/contractorsPerformance" component={contractorsPerformance} />

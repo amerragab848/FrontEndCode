@@ -91,7 +91,11 @@ class DashBoardProjectCounterLog extends Component {
 
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />) : (<LoadingSection />);
+      this.state.isLoading === false ? (
+        <GridSetup rows={this.state.rows}
+          columns={this.state.columns}
+          showCheckbox={false} />)
+           : (<LoadingSection />);
 
     const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources[this.state.pageTitle][currentLanguage]} />
     ) : (<LoadingSection />);
