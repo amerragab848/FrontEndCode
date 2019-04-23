@@ -82,6 +82,8 @@ class ProjectSetup extends Component {
 
     componentWillMount = () => {
         PathName = this.props.location.pathname.split('/')
+        
+        this.props.actions.FillGridLeftMenu();
         this.renderComponent()
     }
 
@@ -185,8 +187,6 @@ class ProjectSetup extends Component {
 
     componentDidMount = () => {
         this.componentDidMountRender()
-        this.props.actions.FillGridLeftMenu();
-
     }
 
     onCloseModal = () => {

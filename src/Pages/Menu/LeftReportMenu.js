@@ -10,10 +10,7 @@ import {
 
 import * as dashboardComponantActions from '../../store/actions/communication';
 
-
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-var viewModules = true;
 
 class LeftReportMenu extends Component {
   constructor(props) {
@@ -55,6 +52,7 @@ class LeftReportMenu extends Component {
         }
       }
     });
+
     this.moduleNameData = [
       Resources.projectReports[currentLanguage],
       Resources.contractsPurchaseOrders[currentLanguage],
@@ -63,19 +61,21 @@ class LeftReportMenu extends Component {
       Resources.otherReports[currentLanguage],
       Resources.inventoryRpt[currentLanguage],
       Resources.technicalOffice[currentLanguage]];
+
     this.reportData = [
-        { data: ProjectReports },
-        { data: contractPoMenu },
-        { data: [] },
-        { data: [] },
-        { data: OtherReports },
-        { data: inventory },
-        { data: technicalOffice }];
-      this.state = {
-        selectedReport: { label: Resources.selectReport[currentLanguage], value: '0' },
-        subReports: ProjectReports,
-        moduleName:Resources.projectReports[currentLanguage]
-      };
+      { data: ProjectReports },
+      { data: contractPoMenu },
+      { data: [] },
+      { data: [] },
+      { data: OtherReports },
+      { data: inventory },
+      { data: technicalOffice }];
+
+    this.state = {
+      selectedReport: { label: Resources.selectReport[currentLanguage], value: '0' },
+      subReports: ProjectReports,
+      moduleName: Resources.projectReports[currentLanguage]
+    };
   }
 
   activeLi = (index) => {
@@ -88,16 +88,21 @@ class LeftReportMenu extends Component {
     let subReports = this.reportData[index - 1].data
     let moduleName = this.moduleNameData[index - 1]
     this.setState({ subReports, moduleName })
+    this.setState({ selectedReport: { label: Resources.selectReport[currentLanguage], value: '0' } })
   }
-  getComponent = () => {
 
-
-  }
   getReport = (event) => {
     this.setState({ selectedReport: event })
-    let route = "../../Pages/ReportsCenter/" + event.value;
-    import(`../../Pages/ReportsCenter/${event.value}`).then(module => this.setState({ module: module.default }));
+    //let route = "../../Pages/ReportsCenter/" + event.value;
+    if (event.value) {
+      import(`../../Pages/ReportsCenter/${event.value}`).then(module => this.setState({ module: module.default }));
+    }
   }
+
+  componentWillMount() {
+    this.props.actions.ReportCenterMenuClick();
+  }
+
   render() {
     let Component = this.state.module
     return (
@@ -143,9 +148,11 @@ class LeftReportMenu extends Component {
                     id="drop" />
                 </div>
               </div>
-              <div className="reports__content" id='ren'>
-                {Component != null ? <Component /> : null}
-              </div>
+              <ErrorHandler >
+                <div className="reports__content" id='ren'>
+                  {Component != null ? <Component /> : null}
+                </div>
+              </ErrorHandler >
             </div>
           </React.Fragment>
 
@@ -155,12 +162,48 @@ class LeftReportMenu extends Component {
   }
 }
 
+class ErrorHandler extends React.Component {
+  constructor(props) {
+    super(props);
+    // Add some default error states
+    this.state = {
+      error: false,
+      info: null,
+    };
+  }
+
+  componentDidCatch(error, info) {
+    // Something happened to one of my children.
+    // Add error to state
+    this.setState({
+      error: error,
+      info: info,
+    });
+    //  logErrorToMyService(error, info);
+
+  }
+
+  render() {
+    if (this.state.error) {
+      // Some error was thrown. Let's display something helpful to the user
+      return (
+        <div>
+          <h5>Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!</h5>
+          <details style={{ whiteSpace: 'pre-wrap' }}>
+            {this.state.info.componentStack}
+          </details>
+        </div>
+      );
+    }
+    // No errors were thrown. As you were.
+    return this.props.children;
+  }
+}
+
 function mapStateToProps(state, ownProps) {
   return {
     showLeftMenu: state.communication.showLeftMenu,
-    showLeftReportMenu: state.communication.showLeftReportMenu,
-    projectId: state.communication.projectId,
-    projectName: state.communication.projectName
+    showLeftReportMenu: state.communication.showLeftReportMenu
   }
 }
 
