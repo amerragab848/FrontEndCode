@@ -25,8 +25,7 @@ class ExportDetails extends Component {
     }
 
     tableToExcel(Fields, items, name) {
-        // this.props.document
-
+        
         var uri = 'data:application/vnd.ms-excel;base64,'
             , template = '<html xmlns: o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
                 + '<head> '
@@ -64,7 +63,7 @@ class ExportDetails extends Component {
         }
 
         var blob = new Blob([format(template, ctx)]);
-        var blobURL = window.URL.createObjectURL(blob);
+        //var blobURL = window.URL.createObjectURL(blob);
 
         if (this.ifIE()) {
             //csvData = table.innerHTML;
@@ -89,9 +88,9 @@ class ExportDetails extends Component {
     drawFiled() {
         let fields = DED[this.props.docTypeId]
         let data = this.props.document
+    
         let rows = fields.fields.map((field, index) => {
             let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
-
             let nextIndex = (index + 1);
             if ((index % 2) === 0) {
                 return (<tr>
@@ -313,7 +312,7 @@ class ExportDetails extends Component {
         return (
             <Fragment>
                 <div className="dropWrapper">
-                    <div className="proForm datepickerContainer fullWidthWrapper textLeft">
+                    <div className="proForm customProform">
 
                         <div className="fillter-status fillter-item-c undefined valid-input">
                             <label className="control-label">{Resources.export[currentLanguage]}</label>

@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js'; 
+
 import "react-tabs/style/react-tabs.css";
+
 import {  Widgets, WidgetsWithText } from "./CounterWidget";
 import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
@@ -11,8 +13,7 @@ import _ from "lodash";
 import language from "../resources.json";
 import Api from "../api";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Index extends Component {
   constructor(props) {

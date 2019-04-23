@@ -2,15 +2,8 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import Api from "../../api";
-
-import Modal from "react-responsive-modal";
-
-var hoverPointer = {
-  cursor: "Pointer"
-};
-
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+  
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Widgets extends Component {
   constructor(props) {
@@ -23,6 +16,8 @@ class Widgets extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.props.api);
+
     Api.get(this.props.props.api).then(result => {
       this.setState({
         value: result != null ? result : 0
@@ -31,8 +26,7 @@ class Widgets extends Component {
   }
 
   onOpenModal = () => {
-    if(this.state.value > 0){
-      //alert(this.props.props.route);
+    if(this.state.value > 0){ 
       let arr =this.props.props.route.split('action');
       if(arr.length > 1 ){ 
         this.props.history.push( 

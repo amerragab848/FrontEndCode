@@ -14,15 +14,9 @@ export default function (state = initialState.app.communication, action) {
             }
 
         case types.Export_Document:
-            // state.fields = action.data.fields
-            // state.columns = action.data.columnsItems
-            console.log('exporting...',action)
             return {
                 ...state,
-                // fields: action.fields,
-                // columns: action.columns ? action.columns : [] ,
-                // fieldsItems: action.fieldsItems ? action.fieldsItems: [] ,
-                items: action.items ? action.items: []
+                items: action.items ? action.items : []
             }
 
 
@@ -34,7 +28,8 @@ export default function (state = initialState.app.communication, action) {
                 docTypeId: action.docTypeId,
                 changeStatus: true,
                 showLeftMenu: true,
-                showSelectProject: false
+                showSelectProject: false,
+                showLeftReportMenu: false
             };
 
         case types.Document_Adding:
@@ -46,15 +41,6 @@ export default function (state = initialState.app.communication, action) {
                 changeStatus: false,
                 items: [],
                 projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId
-            };
-
-        case types.Document_Add:
-            return {
-                ...state,
-                document: action.document,
-                changeStatus: false,
-                showLeftMenu: true,
-                showSelectProject: false
             };
 
         case types.File_Upload:
@@ -154,8 +140,8 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: action.showLeftMenu,
                 showSelectProject: action.showSelectProject,
                 showLeftReportMenu: action.showLeftReportMenu,
-                projectId: action.projectId,
-                projectName: action.projectName
+                projectId: action.projectId == 0 ? localStorage.getItem('lastSelectedProject') : action.projectId,
+                projectName: action.projectName == "" ? localStorage.getItem('lastSelectedprojectName') : action.projectName
             };
         case types.RouteToTemplate:
 
@@ -253,7 +239,7 @@ export default function (state = initialState.app.communication, action) {
                     action: element.action,
                     comment: element.comment,
                     Id: element.id,
-                    arrange:element.arrange,
+                    arrange: element.arrange,
                     requiredDate: element.requiredDate
 
                 })

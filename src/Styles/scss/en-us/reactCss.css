@@ -3730,24 +3730,22 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
   right: 0 !important;
   margin-top: 0 !important;
   margin-left: 0 !important;
-  background-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: transparent !important;
   border-radius: 2px;
   z-index: 100;
-  padding: 15px;
-  box-shadow: rgba(0, 0, 0, 0.14) 0px 0px 4px, rgba(0, 0, 0, 0.28) 0px 4px 8px;
+  padding: 35px;
+  box-shadow: none !important;
   max-height: inherit;
   min-height: 280px !important;
-  overflow-y: unset;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
+  overflow: auto;
+  display: block;
 }
 .skylight-dialog >* {
   width: 850px;
   background: #fff;
-  margin: 0 !important;
+  margin: auto !important;
   padding: 20px !important;
+  opacity: 1 !important;
 }
 .skylight-close-button {
   width: auto;

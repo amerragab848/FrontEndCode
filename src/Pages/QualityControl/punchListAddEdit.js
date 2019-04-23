@@ -300,7 +300,7 @@ class punchListAddEdit extends Component {
     componentWillMount() {
         if (docId > 0) {
             let url = "GetLogsPunchListsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'punchList');
             dataservice.GetDataGrid('GetLogsPunchListDetailsByPunchListId?projectId=' + this.state.docId + '').then(
                 res => {
                     this.setState({

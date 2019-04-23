@@ -20,46 +20,47 @@ import * as communicationActions from "../../store/actions/communication";
 import Distribution from "../../Componants/OptionsPanels/DistributionList";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
-  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]), 
+  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
   fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
   bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
 });
 
 const validationSchemaForCycle = Yup.object().shape({
-  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),  
+  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
   bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
 });
 
 const cycleDocument = {
   // fieldCycle
-      projectId: projectId,
-      parentId: "",
-      arrange: "1",
-      fromCompanyId: null,
-      fromContactId: null,
-      bicCompanyId: null,
-      bicContactId: null,
-      subject: "",
-      description: null,
-      docDate: moment(),
-      startDate: moment(),
-      finishDate: moment(),
-      priorityId: null,
-      status: "true",
-      estimatedTime: "1",
-      originalEstimatedTime: "",
-      parentEstimateTime: null,
-      suspeneded: "true",
-      isTransfer: "false",
-      taskId: null,
-      id: 0
-  }
+  projectId: projectId,
+  parentId: "",
+  arrange: "1",
+  fromCompanyId: null,
+  fromContactId: null,
+  bicCompanyId: null,
+  bicContactId: null,
+  subject: "",
+  description: null,
+  docDate: moment(),
+  startDate: moment(),
+  finishDate: moment(),
+  priorityId: null,
+  status: "true",
+  estimatedTime: "1",
+  originalEstimatedTime: "",
+  parentEstimateTime: null,
+  suspeneded: "true",
+  isTransfer: "false",
+  taskId: null,
+  id: 0
+}
 
 let docId = 0;
 let projectId = 0;
@@ -72,7 +73,7 @@ const _ = require("lodash");
 
 class ProjectTaskAddEdit extends Component {
   constructor(props) {
-    
+
     super(props);
 
     const query = new URLSearchParams(this.props.location.search);
@@ -108,7 +109,7 @@ class ProjectTaskAddEdit extends Component {
       projectId: projectId,
       docApprovalId: docApprovalId,
       arrange: arrange,
-      document: this.props.document? Object.assign({}, this.props.document): {},
+      document: this.props.document ? Object.assign({}, this.props.document) : {},
       cycleDocument: null,
       companies: [],
       ToContacts: [],
@@ -124,16 +125,16 @@ class ProjectTaskAddEdit extends Component {
         { name: "viewAttachments", code: 3292 },
         { name: "deleteAttachments", code: 868 }
       ],
-      selectedFromCompany: {label: Resources.fromCompanyRequired[currentLanguage],value: "0"},
-      selectedBicCompany: {label: Resources.toCompanyRequired[currentLanguage],value: "0"},
-      selectedFromContact: {label: Resources.fromContactRequired[currentLanguage],value: "0"},
-      selectedToContact: {label: Resources.toContactRequired[currentLanguage],value: "0"},
-      selectedPriority: {label: Resources.prioritySelect[currentLanguage],value: "0"},
-      selectedBicCompanyCycle: {label: Resources.toCompanyRequired[currentLanguage],value: "0"},
-      selectedToContactCycle: {label: Resources.toContactRequired[currentLanguage],value: "0"},
-      selectedPriorityCycle: {label: Resources.prioritySelect[currentLanguage],value: "0"},
+      selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+      selectedBicCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+      selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+      selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+      selectedPriority: { label: Resources.prioritySelect[currentLanguage], value: "0" },
+      selectedBicCompanyCycle: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+      selectedToContactCycle: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+      selectedPriorityCycle: { label: Resources.prioritySelect[currentLanguage], value: "0" },
       viewModal: false,
-      isLoading:false
+      isLoading: false
     };
 
     if (!Config.IsAllow(357) || !Config.IsAllow(358) || !Config.IsAllow(360)) {
@@ -202,15 +203,15 @@ class ProjectTaskAddEdit extends Component {
   }
 
   componentWillMount() {
-   
+
     if (this.state.docId > 0) {
-      
-        let url = "GetTaskForEdit?id=" + this.state.docId;
-      
+
+      let url = "GetTaskForEdit?id=" + this.state.docId;
+
       this.props.actions.documentForEdit(url);
- 
+
       this.setState({
-        cycleDocument:cycleDocument
+        cycleDocument: cycleDocument
       });
 
     } else {
@@ -245,17 +246,17 @@ class ProjectTaskAddEdit extends Component {
     this.props.actions.documentForAdding();
   }
 
-  fillSubDropDownInEdit(url,param,value,subField,subSelectedValue,subDatasource) {
-    
+  fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
+
     let action = url + "?" + param + "=" + value;
 
     dataservice.GetDataList(action, "contactName", "id").then(result => {
-    
-        if (this.props.changeStatus === true) {
-    
+
+      if (this.props.changeStatus === true) {
+
         let toSubField = this.state.document[subField];
 
-        let targetFieldSelected = _.find(result, function(i) {
+        let targetFieldSelected = _.find(result, function (i) {
           return i.value == toSubField;
         });
 
@@ -269,71 +270,71 @@ class ProjectTaskAddEdit extends Component {
 
   fillDropDowns(isEdit) {
     //maxArrange
-    dataservice.GetNextArrangeMainDocument("GetNextArrangeMainDoc?projectId=" +this.state.projectId +"&docType=" +this.state.docTypeId +"&companyId=undefined&contactId=undefined").then(res => {
-        if (!isEdit) {
+    dataservice.GetNextArrangeMainDocument("GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined").then(res => {
+      if (!isEdit) {
 
-            let updated_document = this.state.document;
+        let updated_document = this.state.document;
 
-          updated_document.arrange = res;
+        updated_document.arrange = res;
 
-          this.setState({
-            document: updated_document
-          });
-        }
-      });
+        this.setState({
+          document: updated_document
+        });
+      }
+    });
 
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId,"companyName","companyId").then(result => {
-        if (isEdit) {
+    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+      if (isEdit) {
 
-          let companyId = this.props.document.fromCompanyId;
+        let companyId = this.props.document.fromCompanyId;
 
-          if (companyId) {
-            this.setState({
-              selectedFromCompany: {label: this.props.document.fromCompanyName,value: companyId}
-            });
-            this.fillSubDropDownInEdit("GetContactsByCompanyId","companyId",companyId,"fromContactId","selectedFromContact","fromContacts");
-          }
-
-          let bicCompanyId = this.props.document.bicCompanyId;
-
-          if (bicCompanyId) {
-            this.setState({
-              selectedBicCompany: {label: this.props.document.bicCompanyName,value: bicCompanyId}
-            });
-
-            this.fillSubDropDownInEdit("GetContactsByCompanyId","companyId",bicCompanyId,"bicContactId","selectedToContact","ToContacts");
-          }
+        if (companyId) {
+          this.setState({
+            selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
+          });
+          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
         }
-        this.setState({
-          companies: [...result]
-        });
+
+        let bicCompanyId = this.props.document.bicCompanyId;
+
+        if (bicCompanyId) {
+          this.setState({
+            selectedBicCompany: { label: this.props.document.bicCompanyName, value: bicCompanyId }
+          });
+
+          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", bicCompanyId, "bicContactId", "selectedToContact", "ToContacts");
+        }
+      }
+      this.setState({
+        companies: [...result]
       });
+    });
 
     //Priority
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority","title","id").then(result => {
-        
-        if (isEdit) {
+    dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
 
-          let priority = this.props.document.priorityId;
+      if (isEdit) {
 
-          if (priority) {
-        
-            let priorityName = result.find(i => i.value === parseInt(priority));
+        let priority = this.props.document.priorityId;
 
-            this.setState({
-              selectedPriority: {label: priorityName.label,value: this.props.document.priorityId}
-            });
-          }
+        if (priority) {
+
+          let priorityName = result.find(i => i.value === parseInt(priority));
+
+          this.setState({
+            selectedPriority: { label: priorityName.label, value: this.props.document.priorityId }
+          });
         }
-        this.setState({
-          priority: [...result]
-        });
+      }
+      this.setState({
+        priority: [...result]
       });
+    });
   }
 
   handleChange(e, field) {
- 
+
     let original_document = { ...this.state.document };
 
     if (field === "estimatedTime") {
@@ -348,7 +349,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   handleChangeCycle(e, field) {
- 
+
     let original_document = { ...this.state.cycleDocument };
 
     if (field === "estimatedTime") {
@@ -363,7 +364,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   handleChangeDate(e, field) {
-    
+
     let original_document = { ...this.state.document };
 
     let updated_document = {};
@@ -378,7 +379,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   handleChangeDateCycle(e, field) {
-    
+
     let original_document = { ...this.state.cycleDocument };
 
     let updated_document = {};
@@ -392,16 +393,16 @@ class ProjectTaskAddEdit extends Component {
     });
   }
 
-  handleChangeDropDown(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
-    
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+
     if (event == null) return;
-    
+
     let original_document = { ...this.state.document };
-    
+
     let updated_document = {};
-    
+
     updated_document[field] = event.value;
-    
+
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
@@ -419,16 +420,16 @@ class ProjectTaskAddEdit extends Component {
     }
   }
 
-  handleChangeDropDownCycle(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
-    
+  handleChangeDropDownCycle(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+
     if (event == null) return;
-    
+
     let original_document = { ...this.state.cycleDocument };
-    
+
     let updated_document = {};
-    
+
     updated_document[field] = event.value;
-    
+
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
@@ -447,7 +448,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   editTask(event) {
-  
+
     this.setState({
       isLoading: true
     });
@@ -456,9 +457,9 @@ class ProjectTaskAddEdit extends Component {
 
     saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.startDate = moment(saveDocument.startDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    
-    saveDocument.finishDate = moment(saveDocument.finishDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.startDate = moment(saveDocument.startDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+
+    saveDocument.finishDate = moment(saveDocument.finishDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditTask", saveDocument).then(result => {
       this.setState({
@@ -471,31 +472,31 @@ class ProjectTaskAddEdit extends Component {
     });
   }
 
-  saveTask(event) { 
-    
+  saveTask(event) {
+
     let saveDocument = { ...this.state.document };
 
     saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.startDate = moment(saveDocument.startDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    
-    saveDocument.finishDate = moment(saveDocument.finishDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.startDate = moment(saveDocument.startDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+
+    saveDocument.finishDate = moment(saveDocument.finishDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     if (saveDocument.finishDate >= saveDocument.startDate) {
-      
-        dataservice.addObject("addTask", saveDocument).then(result => {
-          this.setState({
-            docId: result
-          });
-      
-          toast.success(Resources["operationSuccess"][currentLanguage]);
-      
-        }).catch(ex => {
-          this.setState({
-            isLoading: false
-          });
-          toast.warning(Resources["failError"][currentLanguage]);
+
+      dataservice.addObject("addTask", saveDocument).then(result => {
+        this.setState({
+          docId: result
         });
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
+      }).catch(ex => {
+        this.setState({
+          isLoading: false
+        });
+        toast.warning(Resources["failError"][currentLanguage]);
+      });
     } else {
       toast.warning("Finish Date Must Be Greater Than Start Date");
     }
@@ -506,26 +507,26 @@ class ProjectTaskAddEdit extends Component {
   }
 
   showBtnsSaving() {
-  
+
     let btn = null;
 
     if (this.state.docId === 0) {
       btn = (<button className="primaryBtn-1 btn meduimBtn" type="submit">
-          {Resources.save[currentLanguage]}
-        </button>);
+        {Resources.save[currentLanguage]}
+      </button>);
     } else if (this.state.docId > 0 && this.props.changeStatus === false) {
       btn = (<button className="primaryBtn-1 btn mediumBtn" type="submit">
-          {Resources.saveAndExit[currentLanguage]}
-        </button>);
+        {Resources.saveAndExit[currentLanguage]}
+      </button>);
     }
-    
+
     return btn;
   }
 
   viewAttachments() {
     return this.state.docId > 0 ? (
       Config.IsAllow(3292) === true ? (
-        <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={868}/>
+        <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={868} />
       ) : null
     ) : null;
   }
@@ -546,77 +547,77 @@ class ProjectTaskAddEdit extends Component {
   viewCycle() {
 
     //maxArrange
-    dataservice.GetNextArrangeMainDocument("GetNextArrangeMainDoc?projectId=" +this.state.projectId +"&docType=" +this.state.docTypeId +"&companyId=undefined&contactId=undefined").then(res => {
-     
-        let updated_document = cycleDocument;
+    dataservice.GetNextArrangeMainDocument("GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined").then(res => {
 
-        updated_document.arrange = res;
-  
-        this.setState({
-          cycleDocument: updated_document,
-          viewModal: true,
-          showModal: false,
-          selectedBicCompanyCycle: {label: Resources.toCompanyRequired[currentLanguage],value: "0"},
-          selectedToContactCycle: {label: Resources.toContactRequired[currentLanguage],value: "0"},
-          selectedPriorityCycle: {label: Resources.prioritySelect[currentLanguage],value: "0"}
-        });
+      let updated_document = cycleDocument;
 
-        this.simpleDialog.show(); 
-    }); 
+      updated_document.arrange = res;
+
+      this.setState({
+        cycleDocument: updated_document,
+        viewModal: true,
+        showModal: false,
+        selectedBicCompanyCycle: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+        selectedToContactCycle: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+        selectedPriorityCycle: { label: Resources.prioritySelect[currentLanguage], value: "0" }
+      });
+
+      this.simpleDialog.show();
+    });
   }
 
-  addNewCycle(event){ 
+  addNewCycle(event) {
 
     let saveDocument = { ...this.state.cycleDocument };
 
     saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.startDate = moment(saveDocument.startDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    
-    saveDocument.finishDate = moment(saveDocument.finishDate,"DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.startDate = moment(saveDocument.startDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-        if (saveDocument.finishDate >= saveDocument.startDate) {
-          
-          this.setState({
-            isLoading:true
-          });
+    saveDocument.finishDate = moment(saveDocument.finishDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-            dataservice.addObject("AddTaskCycles", saveDocument).then(result => {
-              this.setState({
-                viewModal: false,
-                isLoading:false
-              });
-          
-              toast.success(Resources["operationSuccess"][currentLanguage]);
-          
-            }).catch(ex => {
-              this.setState({
-                isLoading: false,
-                viewModal:false
-              });
-              toast.warning(Resources["failError"][currentLanguage]);
-            });
-        } else {
-          toast.warning("Finish Date Must Be Greater Than Start Date");
-        } 
+    if (saveDocument.finishDate >= saveDocument.startDate) {
+
+      this.setState({
+        isLoading: true
+      });
+
+      dataservice.addObject("AddTaskCycles", saveDocument).then(result => {
+        this.setState({
+          viewModal: false,
+          isLoading: false
+        });
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
+      }).catch(ex => {
+        this.setState({
+          isLoading: false,
+          viewModal: false
+        });
+        toast.warning(Resources["failError"][currentLanguage]);
+      });
+    } else {
+      toast.warning("Finish Date Must Be Greater Than Start Date");
+    }
   }
 
   componentWillUnmount() {
     this.setState({
-        docId: 0
+      docId: 0
     });
-}
+  }
 
   render() {
     let actions = [
       {
         title: "distributionList",
-        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>),
+        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
         label: Resources["distributionList"][currentLanguage]
       },
       {
         title: "sendToWorkFlow",
-        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>),
+        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
         label: Resources["sendToWorkFlow"][currentLanguage]
       },
       {
@@ -633,61 +634,12 @@ class ProjectTaskAddEdit extends Component {
 
     return (
       <div className="mainContainer">
-        <div className={ this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-          <div className="submittalHead">
-            <h2 className="zero">
-              {Resources.projectTask[currentLanguage]}
-              <span>{projectName.replace(/_/gi, " ")} · Communication</span>
-            </h2>
-            <div className="SubmittalHeadClose">
-              <svg
-                width="56px"
-                height="56px"
-                viewBox="0 0 56 56"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-              >
-                <g
-                  id="Symbols"
-                  stroke="none"
-                  strokeWidth="1"
-                  fill="none"
-                  fillRule="evenodd"
-                >
-                  <g
-                    id="Components/Sections/Doc-page/Title/Base"
-                    transform="translate(-1286.000000, -24.000000)"
-                  >
-                    <g id="Group-2">
-                      <g
-                        id="Action-icons/Close/Circulated/56px/Light-grey_Normal"
-                        transform="translate(1286.000000, 24.000000)"
-                      >
-                        <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                          <g id="Group">
-                            <circle
-                              id="Oval"
-                              fill="#E9ECF0"
-                              cx="28"
-                              cy="28"
-                              r="28"
-                            />
-                            <path
-                              d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z"
-                              id="Combined-Shape"
-                              fill="#858D9E"
-                              fillRule="nonzero"
-                            />
-                          </g>
-                        </g>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-          </div>
+        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
+          <HeaderDocument projectName={projectName} docTitle={Resources.projectTask[currentLanguage]}
+            moduleTitle={Resources['timeCoordination'][currentLanguage]} />
+
+
+
           <div className="doc-container">
             {this.props.changeStatus == true ? (
               <header className="main__header">
@@ -709,25 +661,25 @@ class ProjectTaskAddEdit extends Component {
                   <div className="document-fields">
                     <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema}
                       onSubmit={values => {
-                        if ( this.props.changeStatus === true && this.state.docId > 0 ) {
+                        if (this.props.changeStatus === true && this.state.docId > 0) {
                           this.editTask();
-                        } else if ( this.props.changeStatus === false && this.state.docId === 0 ) {
+                        } else if (this.props.changeStatus === false && this.state.docId === 0) {
                           this.saveTask();
                         } else {
                           this.saveAndExit();
                         }
                       }}>
-                      {({ errors,touched,handleBlur,handleChange,values,handleSubmit,setFieldValue,setFieldTouched}) => (
+                      {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldValue, setFieldTouched }) => (
                         <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                           <div className="proForm first-proform">
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.subject[currentLanguage]}
                               </label>
-                              <div className={ "inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ") }>
-                                <input name="subject" className="form-control fsadfsadsa" id="subject" placeholder={ Resources.subject[currentLanguage]}
+                              <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
+                                <input name="subject" className="form-control fsadfsadsa" id="subject" placeholder={Resources.subject[currentLanguage]}
                                   autoComplete="off" value={this.state.document.subject} onBlur={e => { handleBlur(e); handleChange(e); }}
-                                  onChange={e => this.handleChange(e, "subject")}/>
+                                  onChange={e => this.handleChange(e, "subject")} />
                                 {errors.subject && touched.subject ? (
                                   <Fragment>
                                     <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
@@ -743,14 +695,14 @@ class ProjectTaskAddEdit extends Component {
                                 {Resources.status[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="status" defaultChecked={ this.state.document.status === false ? null : "checked"} value="true"
-                                  onChange={e => this.handleChange(e, "status")}/>
+                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : "checked"} value="true"
+                                  onChange={e => this.handleChange(e, "status")} />
                                 <label>
                                   {Resources.oppened[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="status" defaultChecked={ this.state.document.status === false ? "checked" : null} value="false"
+                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? "checked" : null} value="false"
                                   onChange={e => this.handleChange(e, "status")} />
                                 <label>
                                   {Resources.closed[currentLanguage]}
@@ -769,7 +721,7 @@ class ProjectTaskAddEdit extends Component {
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
                                         <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
-                                                          onChange={e => this.handleChangeDate(e, "docDate") } placeholder={"Select a date"}/>
+                                          onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
                                       </div>
                                     </div>
                                   </div>
@@ -780,11 +732,11 @@ class ProjectTaskAddEdit extends Component {
                               <label className="control-label">
                                 {Resources.arrange[currentLanguage]}
                               </label>
-                              <div className={ "ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ") }>
-                                <input type="text" className="form-control" id="arrange" readOnly value={this.state.document.arrange} name="arrange" 
-                                       placeholder={ Resources.arrange[currentLanguage] }
-                                       onBlur={e => { handleChange(e); handleBlur(e); }}
-                                       onChange={e => this.handleChange(e, "arrange") }/>
+                              <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ")}>
+                                <input type="text" className="form-control" id="arrange" readOnly value={this.state.document.arrange} name="arrange"
+                                  placeholder={Resources.arrange[currentLanguage]}
+                                  onBlur={e => { handleChange(e); handleBlur(e); }}
+                                  onChange={e => this.handleChange(e, "arrange")} />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input mix_dropdown">
@@ -794,19 +746,19 @@ class ProjectTaskAddEdit extends Component {
                               <div className="supervisor__company">
                                 <div className="super_name">
                                   <Dropdown isMulti={false} data={this.state.fromContacts}
-                                            selectedValue={ this.state.selectedFromContact}
-                                            handleChange={event => this.handleChangeDropDown( event, "fromContactId", false, "", "", "", "selectedFromContact")}
-                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromContactId} touched={touched.fromContactId}
-                                            name="fromContactId" id="fromContactId"
+                                    selectedValue={this.state.selectedFromContact}
+                                    handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
+                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromContactId} touched={touched.fromContactId}
+                                    name="fromContactId" id="fromContactId"
                                   />
                                 </div>
                                 <div className="super_company">
                                   <Dropdown data={this.state.companies} isMulti={false}
-                                            selectedValue={ this.state.selectedFromCompany}
-                                            handleChange={event => { this.handleChangeDropDown( event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");}}
-                                            onChange={setFieldValue} onBlur={setFieldTouched}
-                                            error={errors.fromCompanyId} touched={touched.fromCompanyId}
-                                            name="fromCompanyId" id="fromCompanyId" />
+                                    selectedValue={this.state.selectedFromCompany}
+                                    handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
+                                    onChange={setFieldValue} onBlur={setFieldTouched}
+                                    error={errors.fromCompanyId} touched={touched.fromCompanyId}
+                                    name="fromCompanyId" id="fromCompanyId" />
                                 </div>
                               </div>
                             </div>
@@ -819,12 +771,12 @@ class ProjectTaskAddEdit extends Component {
                                   <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
                                     handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
-                                    name="bicContactId" id="bicContactId"/>
+                                    name="bicContactId" id="bicContactId" />
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.companies}
-                                    selectedValue={ this.state.selectedBicCompany}
-                                    handleChange={event => this.handleChangeDropDown( event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact" )}
+                                    selectedValue={this.state.selectedBicCompany}
+                                    handleChange={event => this.handleChangeDropDown(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                     touched={touched.bicCompanyId} name="bicCompanyId" id="bicCompanyId" />
                                 </div>
@@ -840,7 +792,7 @@ class ProjectTaskAddEdit extends Component {
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
                                         <ModernDatepicker date={this.state.document.startDate} format={"DD/MM/YYYY"}
-                                          showBorder onChange={e => this.handleChangeDate( e, "startDate" )}
+                                          showBorder onChange={e => this.handleChangeDate(e, "startDate")}
                                           placeholder={"Select a date"}
                                         />
                                       </div>
@@ -859,7 +811,7 @@ class ProjectTaskAddEdit extends Component {
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
                                         <ModernDatepicker date={this.state.document.finishDate} format={"DD/MM/YYYY"}
-                                          showBorder onChange={e => this.handleChangeDate( e, "finishDate")}
+                                          showBorder onChange={e => this.handleChangeDate(e, "finishDate")}
                                           placeholder={"Select a date"} />
                                       </div>
                                     </div>
@@ -873,16 +825,16 @@ class ProjectTaskAddEdit extends Component {
                               </label>
                               <div className="inputDev ui input">
                                 <input name="estimateTime" className="form-control fsadfsadsa" id="estimateTime"
-                                  placeholder={ Resources.estimateTime[currentLanguage]}
+                                  placeholder={Resources.estimateTime[currentLanguage]}
                                   autoComplete="off"
                                   value={this.state.document.estimatedTime}
                                   onBlur={e => { handleBlur(e); handleChange(e); }}
-                                  onChange={e => this.handleChange(e, "estimatedTime")}/>
+                                  onChange={e => this.handleChange(e, "estimatedTime")} />
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
                               <Dropdown title="priority" data={this.state.priority} selectedValue={this.state.selectedPriority}
-                                handleChange={event => this.handleChangeDropDown( event, "priorityId", false, "", "", "", "selectedPriority")}/>
+                                handleChange={event => this.handleChangeDropDown(event, "priorityId", false, "", "", "", "selectedPriority")} />
                             </div>
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
@@ -894,7 +846,7 @@ class ProjectTaskAddEdit extends Component {
                                     onChange={e => this.handleChange(e, "description")}
                                     value={this.state.document.description}
                                     name="description"
-                                    placeholder={ Resources.description[currentLanguage]}/>
+                                    placeholder={Resources.description[currentLanguage]} />
                                 </div>
                               </div>
                             </div>
@@ -903,15 +855,15 @@ class ProjectTaskAddEdit extends Component {
                                 {Resources.taskActivity[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={ this.state.document.suspeneded === false ? null : "checked"}
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? null : "checked"}
                                   value="true" onChange={e => this.handleChange(e, "status")} />
                                 <label>
                                   {Resources.suspeneded[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={ this.state.document.suspeneded === false ? "checked" : null}
-                                  value="false" onChange={e => this.handleChange(e, "status")}/>
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? "checked" : null}
+                                  value="false" onChange={e => this.handleChange(e, "status")} />
                                 <label>
                                   {Resources.resumed[currentLanguage]}
                                 </label>
@@ -921,41 +873,41 @@ class ProjectTaskAddEdit extends Component {
                           <div className="slider-Btns">
                             {this.showBtnsSaving()}
                             {this.props.changeStatus === true ? (
-                              <button className={ this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}
-                                      type="button" onClick={this.viewCycle.bind(this)}>
+                              <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}
+                                type="button" onClick={this.viewCycle.bind(this)}>
                                 {Resources.addNewCycle[currentLanguage]}
                               </button>
                             ) : null}
                           </div>
                           {this.props.changeStatus === true ? (
-              <div className="approveDocument">
-                <div className="approveDocumentBTNS">
-                  <button className={ this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
-                    {Resources.save[currentLanguage]}
-                  </button>
-                  {this.state.isApproveMode === true ? (
-                    <div>
-                      <button className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
-                        {Resources.approvalModalApprove[currentLanguage]}
-                      </button>
-                      <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
-                        {Resources.approvalModalReject[currentLanguage]}
-                      </button>
-                    </div>
-                  ) : null}
-                  <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[1])}>
-                    {Resources.sendToWorkFlow[currentLanguage]}
-                  </button>
-                  <button className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
-                    {Resources.distributionList[currentLanguage]}
-                  </button>
-                  <span className="border" />
-                  <div className="document__action--menu">
-                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
-                  </div>
-                </div>
-              </div>
-            ) : null}
+                            <div className="approveDocument">
+                              <div className="approveDocumentBTNS">
+                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                  {Resources.save[currentLanguage]}
+                                </button>
+                                {this.state.isApproveMode === true ? (
+                                  <div>
+                                    <button className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
+                                      {Resources.approvalModalApprove[currentLanguage]}
+                                    </button>
+                                    <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
+                                      {Resources.approvalModalReject[currentLanguage]}
+                                    </button>
+                                  </div>
+                                ) : null}
+                                <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[1])}>
+                                  {Resources.sendToWorkFlow[currentLanguage]}
+                                </button>
+                                <button className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
+                                  {Resources.distributionList[currentLanguage]}
+                                </button>
+                                <span className="border" />
+                                <div className="document__action--menu">
+                                  <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                </div>
+                              </div>
+                            </div>
+                          ) : null}
                         </Form>
                       )}
                     </Formik>
@@ -967,14 +919,14 @@ class ProjectTaskAddEdit extends Component {
                       ) : null}
                       {this.viewAttachments()}
                       {this.props.changeStatus === true ? (
-                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
+                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                       ) : null}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          
+
           </div>
         </div>
         <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
@@ -985,51 +937,53 @@ class ProjectTaskAddEdit extends Component {
         {this.state.viewModal === true ? (
           <div className="largePopup largeModal " style={{ display: this.state.viewModal ? "block" : "none" }}>
             <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources["addNewCycle"][currentLanguage]}>
-            <Formik initialValues={{ ...this.state.cycleDocument }} validationSchema={validationSchemaForCycle} onSubmit={values => {this.addNewCycle();}}>
-                  {({ errors,touched,handleBlur,handleChange,values,handleSubmit,setFieldValue,setFieldTouched}) => (
+              <Formik initialValues={{ ...this.state.cycleDocument }} validationSchema={validationSchemaForCycle} onSubmit={values => { this.addNewCycle(); }}>
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldValue, setFieldTouched }) => (
                   <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                     <div className="dropWrapper">
-                    <form id="signupForm1" className="proForm customProform ">
-                      <div className="fillter-status fillter-item-c">  
-                              <label className="control-label">
-                                  {Resources.subject[currentLanguage]}
-                              </label>
-                       <div className={ "inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ") }>
-                            <input name="subject"  className="form-control" id="subject" placeholder={ Resources.subject[currentLanguage]}
+                      <form id="signupForm1" className="proForm customProform ">
+                        <div className="fillter-status fillter-item-c">
+                          <label className="control-label">
+                            {Resources.subject[currentLanguage]}
+                          </label>
+                          <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
+                            <input name="subject" className="form-control" id="subject" placeholder={Resources.subject[currentLanguage]}
                               autoComplete="off" value={this.state.cycleDocument.subject}
-                              onBlur={e => { handleBlur(e);  }}
-                              onChange={e => {handleChange(e); 
-                              this.handleChangeCycle(e, "subject")}}/>   
+                              onBlur={e => { handleBlur(e); }}
+                              onChange={e => {
+                                handleChange(e);
+                                this.handleChangeCycle(e, "subject")
+                              }} />
                             {errors.subject && touched.subject ? (
-                            <Fragment>
-                              <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                              <em className="pError">{errors.subject}</em>
-                            </Fragment>
-                          ) : values.subject !== "" ? (
-                            <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                          ) : null}      
-                       </div>
-                      </div> 
+                              <Fragment>
+                                <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                                <em className="pError">{errors.subject}</em>
+                              </Fragment>
+                            ) : values.subject !== "" ? (
+                              <span className="glyphicon form-control-feedback glyphicon-ok"></span>
+                            ) : null}
+                          </div>
+                        </div>
                         <div className="fillter-status fillter-item-c linebylineInput valid-input">
                           <label className="control-label">
-                          {Resources.status[currentLanguage]}
+                            {Resources.status[currentLanguage]}
                           </label>
                           <div className="ui checkbox radio radioBoxBlue">
-                          <input type="radio" name="cycleStatus" defaultChecked={ this.state.cycleDocument.status === false ? null : "checked"} value="true"
-                            onChange={e => this.handleChangeCycle(e, "status")}/>
+                            <input type="radio" name="cycleStatus" defaultChecked={this.state.cycleDocument.status === false ? null : "checked"} value="true"
+                              onChange={e => this.handleChangeCycle(e, "status")} />
                             <label>
                               {Resources.oppened[currentLanguage]}
                             </label>
-                            </div>
+                          </div>
                           <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio" name="cycleStatus" defaultChecked={ this.state.cycleDocument.status === false ? "checked" : null} value="false"
+                            <input type="radio" name="cycleStatus" defaultChecked={this.state.cycleDocument.status === false ? "checked" : null} value="false"
                               onChange={e => this.handleChangeCycle(e, "status")} />
                             <label>
                               {Resources.closed[currentLanguage]}
                             </label>
                           </div>
-                      </div>
-                      <div className="customDatepicker fillter-status fillter-item-c ">
+                        </div>
+                        <div className="customDatepicker fillter-status fillter-item-c ">
                           <div className="proForm datepickerContainer">
                             <label className="control-label">
                               {Resources.docDate[currentLanguage]}
@@ -1037,7 +991,7 @@ class ProjectTaskAddEdit extends Component {
                             <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
                                 <ModernDatepicker date={this.state.cycleDocument.docDate} format={"DD/MM/YYYY"}
-                                  showBorder onChange={e => this.handleChangeDateCycle( e, "docDate" )}
+                                  showBorder onChange={e => this.handleChangeDateCycle(e, "docDate")}
                                   placeholder={"Select a date"}
                                 />
                               </div>
@@ -1046,38 +1000,38 @@ class ProjectTaskAddEdit extends Component {
                         </div>
                         <div className="valid-input fillter-status fillter-item-c">
                           <label className="control-label">
-                          {Resources.arrange[currentLanguage]}
+                            {Resources.arrange[currentLanguage]}
                           </label>
                           <div className="ui input inputDev">
-                          <input type="text" className="form-control" id="arrange" readOnly value={this.state.cycleDocument.arrange} 
-                                  name="arrange" 
-                                  placeholder={ Resources.arrange[currentLanguage] }
-                                  onBlur={e => { handleBlur(e); }}
-                                  onChange={e => { handleChange(e); this.handleChangeCycle(e, "arrange")} }/>
+                            <input type="text" className="form-control" id="arrange" readOnly value={this.state.cycleDocument.arrange}
+                              name="arrange"
+                              placeholder={Resources.arrange[currentLanguage]}
+                              onBlur={e => { handleBlur(e); }}
+                              onChange={e => { handleChange(e); this.handleChangeCycle(e, "arrange") }} />
                           </div>
-                      </div>
-                      <div className="valid-input mix_dropdown">
+                        </div>
+                        <div className="valid-input mix_dropdown">
                           <label className="control-label">
                             {Resources.ContactName[currentLanguage]}
                           </label>
                           <div className="supervisor__company">
                             <div className="super_name">
                               <Dropdown isMulti={false} data={this.state.ToContacts}
-                                        selectedValue={ this.state.selectedToContactCycle}
-                                        handleChange={event => this.handleChangeDropDownCycle( event, "bicContactId", false, "", "", "", "selectedToContactCycle")}
-                                        onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId}
-                                        touched={touched.bicContactId}
-                                        name="bicContactId" id="bicContactId"
+                                selectedValue={this.state.selectedToContactCycle}
+                                handleChange={event => this.handleChangeDropDownCycle(event, "bicContactId", false, "", "", "", "selectedToContactCycle")}
+                                onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId}
+                                touched={touched.bicContactId}
+                                name="bicContactId" id="bicContactId"
                               />
                             </div>
                             <div className="super_company">
                               <Dropdown data={this.state.companies} isMulti={false}
-                                        selectedValue={ this.state.selectedBicCompanyCycle}
-                                        handleChange={event => { this.handleChangeDropDownCycle( event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact");}}
-                                        name="bicCompanyId" id="bicCompanyId" />
+                                selectedValue={this.state.selectedBicCompanyCycle}
+                                handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact"); }}
+                                name="bicCompanyId" id="bicCompanyId" />
                             </div>
                           </div>
-                        </div> 
+                        </div>
                         <div className="customDatepicker fillter-status fillter-item-c">
                           <div className="proForm datepickerContainer">
                             <label className="control-label">
@@ -1086,7 +1040,7 @@ class ProjectTaskAddEdit extends Component {
                             <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
                                 <ModernDatepicker date={this.state.cycleDocument.startDate} format={"DD/MM/YYYY"}
-                                  showBorder onChange={e => this.handleChangeDateCycle( e, "startDate" )}
+                                  showBorder onChange={e => this.handleChangeDateCycle(e, "startDate")}
                                   placeholder={"Select a date"}
                                 />
                               </div>
@@ -1101,79 +1055,79 @@ class ProjectTaskAddEdit extends Component {
                             <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
                                 <ModernDatepicker date={this.state.cycleDocument.finishDate} format={"DD/MM/YYYY"}
-                                  showBorder onChange={e => this.handleChangeDateCycle( e, "finishDate")}
+                                  showBorder onChange={e => this.handleChangeDateCycle(e, "finishDate")}
                                   placeholder={"Select a date"} />
                               </div>
                             </div>
                           </div>
                         </div>
-                            <div className="valid-input fillter-status fillter-item-c">
-                              <label className="control-label">
-                                {Resources.estimateTime[currentLanguage]}
-                              </label>
-                              <div className="inputDev ui input">
-                                <input name="estimateTime" className="form-control fsadfsadsa" id="estimateTime"
-                                       placeholder={ Resources.estimateTime[currentLanguage]}
-                                       autoComplete="off"
-                                       value={this.state.cycleDocument.estimatedTime} 
-                                       onChange={e => this.handleChangeCycle(e, "estimatedTime")}/>
-                              </div>
+                        <div className="valid-input fillter-status fillter-item-c">
+                          <label className="control-label">
+                            {Resources.estimateTime[currentLanguage]}
+                          </label>
+                          <div className="inputDev ui input">
+                            <input name="estimateTime" className="form-control fsadfsadsa" id="estimateTime"
+                              placeholder={Resources.estimateTime[currentLanguage]}
+                              autoComplete="off"
+                              value={this.state.cycleDocument.estimatedTime}
+                              onChange={e => this.handleChangeCycle(e, "estimatedTime")} />
+                          </div>
+                        </div>
+                        <div className="valid-input fillter-status fillter-item-c">
+                          <Dropdown title="priority" data={this.state.priority} selectedValue={this.state.selectedPriorityCycle}
+                            handleChange={event => this.handleChangeDropDownCycle(event, "priorityId", false, "", "", "", "selectedPriorityCycle", "")} />
+                        </div>
+                        <div className="valid-input fillter-status fillter-item-c">
+                          <label className="control-label">
+                            {Resources.description[currentLanguage]}
+                          </label>
+                          <div className="shareLinks">
+                            <div className="inputDev ui input">
+                              <input type="text" className="form-control" id="description"
+                                onChange={e => this.handleChangeCycle(e, "description")}
+                                value={this.state.cycleDocument.description}
+                                name="description"
+                                placeholder={Resources.description[currentLanguage]} />
                             </div>
-                            <div className="valid-input fillter-status fillter-item-c">
-                                    <Dropdown title="priority" data={this.state.priority} selectedValue={this.state.selectedPriorityCycle}
-                                      handleChange={event => this.handleChangeDropDownCycle( event, "priorityId", false, "", "", "", "selectedPriorityCycle","")}/>
-                            </div>
-                            <div className="valid-input fillter-status fillter-item-c">
-                              <label className="control-label">
-                                {Resources.description[currentLanguage]}
-                              </label>
-                              <div className="shareLinks">
-                                <div className="inputDev ui input">
-                                  <input type="text" className="form-control" id="description"
-                                    onChange={e => this.handleChangeCycle(e, "description")}
-                                    value={this.state.cycleDocument.description}
-                                    name="description"
-                                    placeholder={ Resources.description[currentLanguage]}/>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="valid-input fillter-status fillter-item-c">
-                              <label className="control-label">
-                                {Resources.taskActivity[currentLanguage]}
-                              </label>
-                              <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={ this.state.cycleDocument.suspeneded === false ? null : "checked"}
-                                       value="true" onChange={e => this.handleChangeCycle(e, "suspeneded")} />
-                                <label>
-                                  {Resources.suspeneded[currentLanguage]}
-                                </label>
-                              </div>
-                              <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={ this.state.cycleDocument.suspeneded === false ? "checked" : null}
-                                       value="false" onChange={e => this.handleChangeCycle(e, "suspeneded")}/>
-                                <label>
-                                  {Resources.resumed[currentLanguage]}
-                                </label>
-                              </div>
-                            </div>
+                          </div>
+                        </div>
+                        <div className="valid-input fillter-status fillter-item-c">
+                          <label className="control-label">
+                            {Resources.taskActivity[currentLanguage]}
+                          </label>
+                          <div className="ui checkbox radio radioBoxBlue">
+                            <input type="radio" name="taskActivity" defaultChecked={this.state.cycleDocument.suspeneded === false ? null : "checked"}
+                              value="true" onChange={e => this.handleChangeCycle(e, "suspeneded")} />
+                            <label>
+                              {Resources.suspeneded[currentLanguage]}
+                            </label>
+                          </div>
+                          <div className="ui checkbox radio radioBoxBlue">
+                            <input type="radio" name="taskActivity" defaultChecked={this.state.cycleDocument.suspeneded === false ? "checked" : null}
+                              value="false" onChange={e => this.handleChangeCycle(e, "suspeneded")} />
+                            <label>
+                              {Resources.resumed[currentLanguage]}
+                            </label>
+                          </div>
+                        </div>
                         <div className="fullWidthWrapper">
-                            {
-                              this.state.isLoading ===false?
-                                (<button className="primaryBtn-1 btn meduimBtn">Save</button>) :
-                                ( <button className="primaryBtn-1 btn largeBtn disabled" disabled="disabled">
-                                  <div className="spinner">
-                                      <div className="bounce1" />
-                                      <div className="bounce2" />
-                                      <div className="bounce3" />
-                                  </div>
-                                </button>)
-                            }
-                      </div>
+                          {
+                            this.state.isLoading === false ?
+                              (<button className="primaryBtn-1 btn meduimBtn">Save</button>) :
+                              (<button className="primaryBtn-1 btn largeBtn disabled" disabled="disabled">
+                                <div className="spinner">
+                                  <div className="bounce1" />
+                                  <div className="bounce2" />
+                                  <div className="bounce3" />
+                                </div>
+                              </button>)
+                          }
+                        </div>
                       </form>
                     </div>
                   </Form>
                 )}
-             </Formik>
+              </Formik>
             </SkyLight>
           </div>
         ) : null}

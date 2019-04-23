@@ -27,7 +27,7 @@ import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import { __esModule } from 'react-data-export/dist/ExcelPlugin/components/ExcelFile';
-
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
 let projectId = 0;
@@ -309,7 +309,7 @@ class projectWorkFlowAddEdit extends Component {
 
         if (docId > 0) {
             let url = "GetWorkFlowForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url);
+            this.props.actions.documentForEdit(url, this.state.docTypeId ,'workFlow');
 
             this.setState({
                 IsEditMode: true,
@@ -323,7 +323,10 @@ class projectWorkFlowAddEdit extends Component {
                         rows: res,
                         isLoading: false
                     })
+                    let data = { items: res };
+                    this.props.actions.ExportingData(data);
                 }
+
             )
 
 
@@ -612,6 +615,8 @@ class projectWorkFlowAddEdit extends Component {
                         rows: res,
                         isLoading: false,
                     })
+                    let data = { items: res };
+                    this.props.actions.ExportingData(data);
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                     values.Company = ''
                     values.ContactName = ''
@@ -761,6 +766,8 @@ class projectWorkFlowAddEdit extends Component {
                 this.state.selectedRows.map(i => {
                     originalRows = originalRows.filter(r => r.id !== i);
                 })
+                let data = { items: originalRows };
+                this.props.actions.ExportingData(data);
                 this.setState({
                     rows: originalRows,
                     showDeleteModal: false,
@@ -809,6 +816,8 @@ class projectWorkFlowAddEdit extends Component {
                         isLoading: false,
                         showPopUp: false,
                     })
+                    let Data = { items: data };
+                    this.props.actions.ExportingData(Data);
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                 }
             )
@@ -1718,29 +1727,9 @@ class projectWorkFlowAddEdit extends Component {
                 }
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <div className="submittalHead">
-                        <h2 className="zero">{Resources.workFlow[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · {Resources['generalCoordination'][currentLanguage]}</span>
-                        </h2>
-                        <div className="SubmittalHeadClose">
-                            <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                    <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                        <g id="Group-2">
-                                            <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                                <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                                                    <g id="Group">
-                                                        <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                        <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fillRule="nonzero"></path>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
+
+                <HeaderDocument projectName={projectName} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
+
 
                     <div className="doc-container">
 
