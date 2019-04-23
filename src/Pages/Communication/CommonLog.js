@@ -109,7 +109,6 @@ class CommonLog extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
   }
@@ -126,7 +125,7 @@ class CommonLog extends Component {
   addRecord() {
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
 
-      let addView = this.state.routeAddEdit;//.split("/")[0];
+      let addView = this.state.routeAddEdit;
 
       let obj = {
         docId: 0,
@@ -147,16 +146,7 @@ class CommonLog extends Component {
       this.props.history.push({
         pathname: "/" + addView,
         search: "?id=" + encodedPaylod
-      });
-
-      // this.props.history.push({
-      //   pathname: `/v4/Document/${this.state.documentName}/Action/Add`,
-      //   state: {
-      //     data: {
-      //       'src': `${window.location.origin}/old_app/#${addView}0/${this.state.projectId}/undefined/undefined/undefined/${this.state.projectName}`
-      //     }
-      //   }
-      // });
+      }); 
     }
   }
   editHandler(row) {
@@ -183,15 +173,7 @@ class CommonLog extends Component {
       pathname: "/" + editView,
       search: "?id=" + encodedPaylod
     });
-
-    // this.props.history.push({
-    //   pathname: `/v4/Document/${this.state.documentName}/Action/Edit`,
-    //   state: {
-    //     data: {
-    //       'src': `${window.location.origin}/old_app/#${editView}${row.id}/${row.projectId}/undefined/undefined/undefined/${row.projectName}`
-    //     }
-    //   }
-    // });
+ 
   }
 
   GetPrevoiusData() {
@@ -322,8 +304,7 @@ class CommonLog extends Component {
 
   clickHandlerDeleteRowsMain = selectedRows => {
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
-
-      console.log("clickHandlerDeleteRowsMain...");
+ 
       this.setState({
         showDeleteModal: true,
         selectedRows: selectedRows
