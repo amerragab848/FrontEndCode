@@ -1,15 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js';
-
 import "react-tabs/style/react-tabs.css";
 
-import { Widgets, WidgetsWithText } from "./Componants/CounterWidget"; 
+import { Widgets, WidgetsWithText } from "./Componants/CounterWidget";
 import DashBoardWidgets from "./Componants/WidgetsDashBoradProject";
 import DashBoard from "./Componants/DashBoardProject";
 import _ from "lodash";
 import language from "./resources.json";
-
 import { connect } from 'react-redux';
 import {
   bindActionCreators
@@ -29,7 +27,7 @@ class DashboardProject extends Component {
       dashBoardIndex: 0,
       value: 0,
       counterData: [],
-      counterDataDetails: [], 
+      counterDataDetails: [],
       viewDashBoard: false,
       viewSub: false,
       viewMenu: 0,
@@ -87,13 +85,14 @@ class DashboardProject extends Component {
                       {widget.widgets.length > 0 ? widget.widgets.map(panel => {
 
                         let api = panel.props.api + this.state.projectId
-                        panel.props.api = api
-
-                        if (panel.checked === true) { 
+                        //panel.props.api = api
+                        let panelData = panel;
+                        panelData.props.api = api;
+                        if (panel.checked === true) {
                           if (panel.type === "twoWidget") {
-                            return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
+                            return (<WidgetsWithText key={panel.key} title={panel.title} {...panelData} />);
                           } else {
-                            return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                            return (<Widgets key={panel.key} title={panel.title} {...panelData} />);
                           }
                         }
                       })
@@ -125,12 +124,15 @@ class DashboardProject extends Component {
                       widget.widgets.map(panel => {
 
                         let api = panel.props.api + this.state.projectId
-                        panel.props.api = api
+                         //panel.props.api = api
+                        let panelData = panel
+                        panelData.props.api = api
+
                         if (panel.type === "twoWidget") {
-                          return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
+                          return (<WidgetsWithText key={panel.key} title={panel.title} {...panelData} />);
                         }
                         else {
-                          return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                          return (<Widgets key={panel.key} title={panel.title} {...panelData} />);
                         }
                       }) : null}
                   </div>
@@ -160,12 +162,15 @@ class DashboardProject extends Component {
                     widget.widgets.map(panel => {
 
                       let api = panel.props.api + this.state.projectId
-                      panel.props.api = api
+                      //panel.props.api = api
+                     let panelData = panel
+                     panelData.props.api = api
+
                       if (panel.type === "twoWidget") {
-                        return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
+                        return (<WidgetsWithText key={panel.key} title={panel.title} {...panelData} />);
                       }
                       else {
-                        return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                        return (<Widgets key={panel.key} title={panel.title} {...panelData} />);
                       }
                     }) : null}
                 </div>

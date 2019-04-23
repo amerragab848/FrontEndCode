@@ -66,6 +66,11 @@ class Export extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.isExport !== this.state.isExport) {  
+            this.tableToExcel(this.props.fileName);}
+    }
+
     ifIE() {
         var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
         var isIE11orLess = isIE11 || navigator.appVersion.indexOf("MSIE") != -1;
@@ -113,7 +118,6 @@ class Export extends Component {
     }
 
     render() {
-        // const style= { fill: { patternType: "solid", fgColor: {rgb: "FFCCEEFF"}},font: {sz: "7.5", bold: true}} ;
 
         return (
             <Fragment>
