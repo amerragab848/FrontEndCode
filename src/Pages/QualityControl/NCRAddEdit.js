@@ -19,7 +19,7 @@ import {
     bindActionCreators
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
@@ -101,6 +101,7 @@ class NCRAddEdit extends Component {
         }
 
         this.state = {
+            isLoading: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -158,7 +159,8 @@ class NCRAddEdit extends Component {
             showPopUp: false,
             Status: true,
             SelectedApprovalStatusCycle: '',
-            IsAddModel: false
+            IsAddModel: false,
+            Loading: true
         }
 
     }
@@ -204,7 +206,7 @@ class NCRAddEdit extends Component {
     componentWillMount() {
         if (docId > 0) {
             let url = "GetCommunicationNCRsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId ,'NCRLog');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'NCRLog');
             this.setState({
                 IsEditMode: true
             })
@@ -214,6 +216,7 @@ class NCRAddEdit extends Component {
                     this.setState({
                         NCRCycle: res
                     })
+                    this.FillDropDowns()
                 }
             )
 
@@ -262,13 +265,15 @@ class NCRAddEdit extends Component {
                     this.setState({
                         document: NCRDoc
                     })
+                    this.FillDropDowns()
                 }
             )
         }
+
     }
 
     componentDidMount = () => {
-        this.FillDropDowns()
+
     }
 
     componentWillUnmount() {
@@ -328,6 +333,7 @@ class NCRAddEdit extends Component {
                                         this.setState({
                                             [company.DropDataContactName]: res,
                                             [company.SelectedValueContact]: SelectedValueContact,
+                                            Loading: false
                                         })
                                     }
                                 )
@@ -432,8 +438,6 @@ class NCRAddEdit extends Component {
 
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" onClick={this.saveAndExit} >{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -545,7 +549,7 @@ class NCRAddEdit extends Component {
                 this.setState({
                     NCRCycle: res,
                     showPopUp: false,
-                    isLoading: true
+                    isLoading: false
                 })
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(ex => {
@@ -726,31 +730,11 @@ class NCRAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-                {this.state.isLoading ? <LoadingSection /> : null}
+                {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <div className="submittalHead">
-                        <h2 className="zero">{Resources.NCRLog[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · {Resources.qualityControl[currentLanguage]}</span>
-                        </h2>
-                        <div className="SubmittalHeadClose">
-                            <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                    <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                        <g id="Group-2">
-                                            <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                                <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                                                    <g id="Group">
-                                                        <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                        <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fillRule="nonzero"></path>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
+
+                    <HeaderDocument projectName={projectName} docTitle={Resources.NCRLog[currentLanguage]}
+                        moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
                         <div className="step-content">
@@ -1017,7 +1001,16 @@ class NCRAddEdit extends Component {
 
                                                 </div>
                                                 <div className="slider-Btns">
-                                                    {this.showBtnsSaving()}
+                                                    {this.state.isLoading ?
+                                                        <button className="primaryBtn-1 btn disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button>
+                                                        : this.showBtnsSaving()}
+
                                                 </div>
                                             </Form>
                                         )}
@@ -1031,7 +1024,7 @@ class NCRAddEdit extends Component {
                                         }
                                         {this.viewAttachments()}
 
-                                        {this.props.changeStatus === true && docId !== 0 ?
+                                        {this.state.docId !== 0 ?
                                             <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null
                                         }
@@ -1071,30 +1064,29 @@ class NCRAddEdit extends Component {
                                 : null}
                         </div>
 
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
+                        {this.state.IsEditMode ?
+                            <div className="approveDocument">
+                                <div className="approveDocumentBTNS">
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
 
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                    {this.state.isApproveMode === true ?
+                                        <div >
+                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
-                                            </div>
-                                            : null
-                                        }
-                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                       <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                         </div>
+                                        : null
+                                    }
+                                    <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                    <span className="border"></span>
+                                    <div className="document__action--menu">
+                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                     </div>
                                 </div>
-                                : null
+                            </div>
+                            : null
                         }
                     </div>
                 </div>
