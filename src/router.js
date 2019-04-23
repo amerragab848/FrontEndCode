@@ -122,6 +122,8 @@ import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/proje
 
 import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
+import budgetCashFlow from './Pages/CostControl/budgetCashFlow';
+ 
 import LeftReportMenu from './Pages/Menu/LeftReportMenu';
 import ActiveProjectsReport from './Pages/ReportsCenter/ProjectReports/ActiveProjectsReport';
 import NewprojectList from './Pages/ReportsCenter/ProjectReports/NewprojectList';
@@ -275,6 +277,7 @@ let originalRoutes = [
     , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
     , <Route path="/approvalDocument" component={approvalDocument} />
     , <Route path="/contractorsPerformance" component={contractorsPerformance} />
+    , <Route path="/budgetCashFlow" component={budgetCashFlow} />
     , <Route path="/paymentRequisition" component={paymentRequisition} />
     , <Route path="/executiveSummary" component={executiveSummary} />
     , <Route path="/compareApprovedQuantity" component={compareApprovedQuantity} />

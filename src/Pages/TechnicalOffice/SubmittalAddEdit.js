@@ -356,6 +356,7 @@ class SubmittalAddEdit extends Component {
       this.fillDropDowns(false);
     }
     this.props.actions.documentForAdding();
+
   }
 
   fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {

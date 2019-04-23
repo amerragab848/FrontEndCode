@@ -172,7 +172,7 @@ class AddEditCompany extends Component {
 
     render() {
         return (
-            <div className="mainContainer">
+            <div className="mainContainer main__fulldash">
                 <div className="documents-stepper cutome__inputs noTabs__document">
                     <div className="submittalHead">
                         <h2 className="zero">{this.state.companyID == 0 ? Resources['addComapny'][currentLanguage] : Resources['editCompany'][currentLanguage]}</h2>
