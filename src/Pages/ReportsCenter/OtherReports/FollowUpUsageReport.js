@@ -131,7 +131,7 @@ class WFUsageReport extends Component {
             Api.post('GetFollowUpsUsageChilds?code=' + this.state.selectedWF.value).then((res) => {
                 this.setState({ rows: res, isLoading: false })
             }).catch(() => {
-                this.setState({ isLoading: false })
+                this.setState({ isLoading: false ,rows:[]})
             })
 
 
