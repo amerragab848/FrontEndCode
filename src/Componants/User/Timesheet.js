@@ -221,7 +221,7 @@ const dateFormate = ({ value }) => {
 
         return (
 
-            <div className="mainContainer">
+            <div className="mainContainer main__fulldash--container">
                 <div className="resetPassword">
                     <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
 

@@ -14,7 +14,7 @@ class Index extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       tabIndex: 0
     };
@@ -22,30 +22,34 @@ class Index extends Component {
 
   render() {
     return (
-      <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
-         <TabList>
-          <Tab> {Resources["profile"][currentLanguage]}</Tab>
-          <Tab> {Resources["expenses"][currentLanguage]}</Tab>
-          <Tab> {Resources["peetyCash"][currentLanguage]}</Tab>
-          <Tab> {Resources["timeSheet"][currentLanguage]}</Tab>
-          <Tab> {Resources["docEmailNotificationSettings"][currentLanguage]}</Tab>
-        </TabList>
-        <TabPanel>
-          <Profile />
-        </TabPanel>
-        <TabPanel>
-          <Expenses />
-        </TabPanel>
-        <TabPanel>
-          <Profile />
-        </TabPanel>
-        <TabPanel>
-          <Timesheet />
-        </TabPanel>
-        <TabPanel>
-          <DocumentEmailNotification />
-        </TabPanel>
-      </Tabs>
+      <div className="mainContainer main__fulldash">
+        <div className="customeTabs">
+          <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+            <TabList>
+              <Tab> {Resources["profile"][currentLanguage]}</Tab>
+              <Tab> {Resources["expenses"][currentLanguage]}</Tab>
+              <Tab> {Resources["peetyCash"][currentLanguage]}</Tab>
+              <Tab> {Resources["timeSheet"][currentLanguage]}</Tab>
+              <Tab> {Resources["docEmailNotificationSettings"][currentLanguage]}</Tab>
+            </TabList>
+            <TabPanel>
+              <Profile />
+            </TabPanel>
+            <TabPanel>
+              <Expenses />
+            </TabPanel>
+            <TabPanel>
+              <Profile />
+            </TabPanel>
+            <TabPanel>
+              <Timesheet />
+            </TabPanel>
+            <TabPanel>
+              <DocumentEmailNotification />
+            </TabPanel>
+          </Tabs>
+        </div>
+      </div>
     );
   }
 }

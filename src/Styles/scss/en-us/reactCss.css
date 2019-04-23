@@ -1357,6 +1357,12 @@ tfoot tr td p{
 .documents-stepper .doc-container .step-content.fullWidthContent {
   width: 100%;
 }
+.documents-stepper {
+  background: #fff;
+}
+.documents-stepper .doc-container {
+  min-height: 71vh;
+}
 .submittalActions__add {
   background-color: transparent;
   align-items: center;
@@ -1541,6 +1547,7 @@ tfoot tr td p{
 }
 .settings-container .settings-tabs-items {
   height: auto;
+  width: 256px;
 }
 .dropBtn {
   margin-top: 20px;
@@ -2309,11 +2316,7 @@ button.companies_icon {
 }
 .settings-container .setting-tabs-contant {
   padding: 0 40px;
-}
-@media screen and (max-width: 1300px) {
-  .settings-container .setting-tabs-contant {
-    padding-right: 0;
-  }
+  width: calc(100% - 256px);
 }
 @media screen and (max-width: 1200px) {
   .settings-container .setting-tabs-contant .submittalFilter {
@@ -2525,6 +2528,7 @@ button.companies_icon {
 }
 .letterFullWidth {
   width: 100%;
+  margin-bottom: 16px;
 }
 .three__daysCheck--flex .three__daysCheck .ui.checkbox label {
   text-align: left;
@@ -2888,9 +2892,6 @@ button.companies_icon {
   line-height: 1.43;
   letter-spacing: -0.2px;
   color: #a8b0bf;
-  /* height: 47px; */
-  display: flex;
-  align-items: center;
   background: #f9fafb;
   border-bottom: 1px solid rgba(34,36,38,.1)
 }
@@ -2915,10 +2916,9 @@ button.companies_icon {
   letter-spacing: -0.2px;
   color: #3e4352;
   min-height: 50px;
-  display: flex;
-  align-items: center;
   background: #fff;
-  border-bottom: 1px solid rgba(34,36,38,.1)
+  border-bottom: 1px solid rgba(34,36,38,.1);
+  padding-left: 10px;
 }
 .precycle-grid .ReactTable .rt-tbody .rt-td .btn{
   padding: 0 5px;
@@ -3056,6 +3056,7 @@ button.companies_icon {
   font-family: font-opensb;
   display: block;
 }
+
 .company__total {
   display: flex;
   align-items: flex-end;
@@ -3087,15 +3088,6 @@ button.companies_icon {
 .company__total .ui.basic.label.greyLabel {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-}
-.total_money {
-  position: absolute;
-  left: 190px;
-  top: -24px;
-  letter-spacing: -0.2px;
-  color: #26344c;
-  font-family: font-opensb;
-  display: block;
 }
 
 .data__tabs {
@@ -3718,6 +3710,52 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
 .table__figure .table__figure--item p{
   font-family: font-r
 }
+.main__fulldash--container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+
+
+
+
+
+.skylight-dialog {
+  width: 100% !important;
+  min-height: 400px;
+  position: fixed;
+  top: 0 !important;
+  left: auto !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+  background-color: transparent !important;
+  border-radius: 2px;
+  z-index: 100;
+  padding: 35px;
+  box-shadow: none !important;
+  max-height: inherit;
+  min-height: 280px !important;
+  overflow: auto;
+  display: block;
+}
+.skylight-dialog >* {
+  width: 850px;
+  background: #fff;
+  margin: auto !important;
+  padding: 20px !important;
+  opacity: 1 !important;
+}
+.skylight-close-button {
+  width: auto;
+  background: transparent;
+  color: #fff;
+  font-size: 40px !important;
+}
+.skylight-close-button:hover {
+  color: #fff;
+}
 
 
 .settings-container {
@@ -3994,7 +4032,7 @@ width: calc(100% - 256px);
           width: 192px;
           margin-bottom: 16px 
       }
-      .settings-container .setting-tabs-contant .reports__proForm .linebylineInput .linebylineInput {
+      .settings-container .setting-tabs-contant .reports__proForm .linebylineInput .linebylineInput, .reports__proForm .linebylineInput button {
           margin-bottom: 0
       }
       .reports__proForm .linebylineInput .fillter-status.fillter-item-c {

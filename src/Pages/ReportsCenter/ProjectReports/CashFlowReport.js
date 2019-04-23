@@ -84,7 +84,7 @@ class CashFlowReport extends Component {
                     onSubmit={(values, actions) => {
                         this.getGridRows()
                     }}>
-                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                    {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
                             <div className="linebylineInput valid-input">
                                 <Dropdown  title='Projects' data={this.state.ProjectsData} name='selectedProject'
