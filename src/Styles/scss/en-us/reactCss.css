@@ -3994,7 +3994,7 @@ width: calc(100% - 256px);
           width: 192px;
           margin-bottom: 16px 
       }
-      .settings-container .setting-tabs-contant .reports__proForm .linebylineInput .linebylineInput {
+      .settings-container .setting-tabs-contant .reports__proForm .linebylineInput .linebylineInput, .reports__proForm .linebylineInput button {
           margin-bottom: 0
       }
       .reports__proForm .linebylineInput .fillter-status.fillter-item-c {

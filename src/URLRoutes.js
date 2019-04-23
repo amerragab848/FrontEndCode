@@ -102,13 +102,13 @@ var routes = [
     nav: true,
     settings: { Reports: true, permission: 686, order: 6 }
   },
-  // {
-  //   route: "inventoryDetails",
-  //   moduleId: "ProjectReports/inventoryDetails",
-  //   title: "inventoryDetails",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3689, order: 14 }
-  // },
+  {
+    route: "inventoryDetails",
+    moduleId: "ProjectReports/InventoryDetails",
+    title: "inventoryDetails",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3689, order: 14 }
+  },
   // {
   //   route: "DocChart",
   //   moduleId: "reportCenter/DocTypeChart",
@@ -116,20 +116,20 @@ var routes = [
   //   nav: true,
   //   settings: { technicalOffice: true, permission: 4016, order: 6 }
   // },
-  // {
-  //   route: "boqTemplateReport",
-  //   moduleId: "ProjectReports/boqTemplateReport",
-  //   title: "boqTemplateReport",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3690, order: 15 }
-  // },
-  // {
-  //   route: "boqStractureCost",
-  //   moduleId: "ProjectReports/boqStractureCost",
-  //   title: "boqStractureCost",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 4019, order: 16 }
-  // },
+  {
+    route: "boqTemplateReport",
+    moduleId: "ProjectReports/BoqTemplateReport",
+    title: "boqTemplateReport",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3690, order: 15 }
+  },
+  {
+    route: "boqStractureCost",
+    moduleId: "ProjectReports/BoqStractureCost",
+    title: "boqStractureCost",
+    nav: true,
+    settings: { ProjectReports: true, permission: 4019, order: 16 }
+  },
   
   {
     route: "projectBackLog",
@@ -153,14 +153,14 @@ var routes = [
     settings: { ProjectReports: true, permission: 3681, order: 6 }
   },
   
-  // {
-  //   route: "materialStatusReport",
-  //   moduleId: "ProjectReports/materialStatusReport",
-  //   title: "materialStatusReport",
-  //   nav: true,
-  //   hash: "#materialStatusReport",
-  //   settings: { ProjectReports: true, permission: 3688, order: 13 }
-  // },
+  {
+    route: "materialStatusReport",
+    moduleId: "ProjectReports/MaterialStatusReport",
+    title: "materialStatusReport",
+    nav: true,
+    hash: "#materialStatusReport",
+    settings: { ProjectReports: true, permission: 3688, order: 13 }
+  },
   {
     route: "CashFlowReport",
     moduleId: "ProjectReports/CashFlowReport",
@@ -203,20 +203,20 @@ var routes = [
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3685, order: 10 }
   // },
-  // {
-  //   route: "activeProjectsReport",
-  //   moduleId: "ProjectReports/activeProjectsReport",
-  //   title: "activeProjectsReport",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3686, order: 11 }
-  // },
-  // {
-  //   route: "newprojectList",
-  //   moduleId: "ProjectReports/newprojectList",
-  //   title: "newprojectList",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3687, order: 12 }
-  // },
+  {
+    route: "activeProjectsReport",
+    moduleId: "ProjectReports/ActiveProjectsReport",
+    title: "activeProjectsReport",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3686, order: 11 }
+  },
+  {
+    route: "newprojectList",
+    moduleId: "ProjectReports/NewprojectList",
+    title: "newprojectList",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3687, order: 12 }
+  },
   // {
   //   route: "allocationOfProjectsOnCompanies",
   //   moduleId: "ProjectReports/allocationOfProjectsOnCompanies",
@@ -2869,35 +2869,35 @@ var routes = [
   },
   {
     route: "TechnicalOfficeReport",
-    moduleId: "reports/technicalOfficeDocument",
+    moduleId: "TechnicalOffice/TechnicalOfficeReport",
     title: "technicalOfficeDocument",
     nav: true,
     settings: { technicalOffice: true, permission: 3760, order: 1 }
   },
   {
     route: "submittalsPerNeighBorhood",
-    moduleId: "reports/submittalsPerNeighBorhood",
+    moduleId: "TechnicalOffice/SubmittalsPerNeighBorhood",
     title: "submittalsPerNeighBorhood",
     nav: true,
     settings: { technicalOffice: true, permission: 3761, order: 2 }
   },
   {
     route: "ProgressDocuments",
-    moduleId: "reports/OnProgressDocuments",
+    moduleId: "TechnicalOffice/ProgressDocuments",
     title: "onProgressDocuments",
     nav: true,
     settings: { technicalOffice: true, permission: 3762, order: 3 }
   },
   {
     route: "approvalDocument",
-    moduleId: "reports/approvalDocument",
+    moduleId: "TechnicalOffice/approvalDocument",
     title: "approvalDocument",
     nav: true,
     settings: { technicalOffice: true, permission: 3763, order: 4 }
   },
   {
     route: "contractorsPerformance",
-    moduleId: "reportCenter/contractorsPerformance",
+    moduleId: "TechnicalOffice/ContractorsPerformance",
     title: "contractorsPerformance",
     nav: true,
     settings: { technicalOffice: true, permission: 3764, order: 5 }
