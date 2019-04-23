@@ -2285,7 +2285,7 @@ var routes = [
   // },
    {
     route: "WFDistributionAccountReport",
-    moduleId: "reports/wokFlowDistrbutionAccountsReport",
+    moduleId: "OtherReports/WFDistributionAccountReport",
     title: "wokFlowDistrbutionAccountsReport",
     nav: true,
     settings: { OtherReports: true, permission: 3720, order: 2 }
@@ -2306,28 +2306,28 @@ var routes = [
   // },
   {
     route: "WFActivityReport",
-    moduleId: "reportCenter/workFlowActivity",
+    moduleId: "OtherReports/WFActivityReport",
     title: "workFlowActivity",
     nav: true,
     settings: { OtherReports: true, permission: 4017, order: 5 }
   },
   {
     route: "WFUsageReport",
-    moduleId: "reportCenter/workFlowUsageReport",
+    moduleId: "OtherReports/WFUsageReport",
     title: "workFlowUsageReport",
     nav: true,
     settings: { OtherReports: true, permission: 3749, order: 8 }
   },
   {
-    route: "paymentReqStatusReport",
-    moduleId: "reportCenter/paymentReqStatusReport",
+    route: "PaymentReqStatusReport",
+    moduleId: "OtherReports/PaymentReqStatusReport",
     title: "paymentReqStatusReport",
     nav: true,
     settings: { OtherReports: true, permission: 3758, order: 9 }
   },
   {
     route: "FollowUpUsageReport",
-    moduleId: "reportCenter/followUpsUsageReport",
+    moduleId: "OtherReports/FollowUpUsageReport",
     title: "followUpsUsageReport",
     nav: true,
     settings: { OtherReports: true, permission: 3750, order: 10 }
@@ -2861,8 +2861,8 @@ var routes = [
   //   settings: { OtherReports: true, permission: 3743, order: 6 }
   // },
   {
-    route: "transmittalReport",
-    moduleId: "reports/transmittalReport",
+    route: "TransmittalReport",
+    moduleId: "OtherReports/TransmittalReport",
     title: "transmittalReport",
     nav: true,
     settings: { OtherReports: true, permission: 4018, order: 7 }
