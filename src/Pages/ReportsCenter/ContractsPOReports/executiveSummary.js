@@ -17,7 +17,6 @@ const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 }
 class executiveSummary extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -276,65 +275,53 @@ class executiveSummary extends Component {
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'executiveSummary'} />
             : null
         return (
-            <div className='mainContainer main__fulldash' style={{ paddingLeft: '40px', paddingRight: '40px' }}>
-                <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={''} docTitle={Resources.executiveSummary[currentLanguage]} moduleTitle={Resources['contractsPurchaseOrders'][currentLanguage]} />
-                    <div className="doc-container">
-                        <div className="step-content">
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input ">
-                                        <Dropdown
-                                            title="Projects"
-                                            data={this.state.projectList}
-                                            selectedValue={this.state.project}
-                                            handleChange={event => { this.setState({ project: event }); }}
-                                            name="projects"
-                                            index="projects"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input alternativeDate">
-                                        <DatePicker title='startDate'
-                                            startDate={this.state.startDate}
-                                            handleChange={e => this.handleChange('startDate', e)} />
-                                    </div>
-                                    <div className="linebylineInput valid-input alternativeDate">
-                                        <DatePicker title='finishDate'
-                                            startDate={this.state.finishDate}
-                                            handleChange={e => this.handleChange('finishDate', e)} />
-                                    </div>
-                                    <div className="fullWidthWrapper ">
-                                        <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.getGridtData()}>{Resources['search'][currentLanguage]}</button>
-                                    </div>
-                                    <div className="linebylineInput even ">
-                                        <label className="control-label">{Resources.originalContractSum[currentLanguage]}</label>
-                                        <div className="inputDev ui input">
-                                            <input type="text" name="contractSum" value={this.state.ContractSum} />
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput even">
-                                        <label className="control-label">{Resources.countContract[currentLanguage]}</label>
-                                        <div className="inputDev ui input">
-                                            <input type="text" name="countContract" value={this.state.countContract}  />
-                                        </div>
-                                    </div>
-                                </div>
+            <div className="reports__content">
+                <header>
+                    <h2 className="zero">{Resources.executiveSummary[currentLanguage]}</h2>
+                    {btnExport}
+                </header>
+                <div className='proForm reports__proForm'>
+                    <div className="linebylineInput valid-input">
+                        <Dropdown
+                            title="Projects"
+                            data={this.state.projectList}
+                            selectedValue={this.state.project}
+                            handleChange={event => { this.setState({ project: event }); }}
+                            name="projects"
+                            index="projects"
+                        />
+                    </div>
+                    <div className="linebylineInput valid-input alternativeDate">
+                        <DatePicker title='startDate'
+                            startDate={this.state.startDate}
+                            handleChange={e => this.handleChange('startDate', e)} />
+                    </div>
+                    <div className="linebylineInput valid-input alternativeDate">
+                        <DatePicker title='finishDate'
+                            startDate={this.state.finishDate}
+                            handleChange={e => this.handleChange('finishDate', e)} />
+                    </div>
+
+                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridtData()}>{Resources['search'][currentLanguage]}</button>
+                    <div className="fullWidthWrapper textLeft reports__proForm" style={{marginBottom:'0'}}>
+                        <div className="linebylineInput even ">
+                            <label className="control-label">{Resources.originalContractSum[currentLanguage]}</label>
+                            <div className="inputDev ui input">
+                                <input type="text" name="contractSum" value={this.state.ContractSum} />
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
+                        </div>
+                        <div className="linebylineInput even">
+                            <label className="control-label">{Resources.countContract[currentLanguage]}</label>
+                            <div className="inputDev ui input">
+                                <input type="text" name="countContract" value={this.state.countContract} />
                             </div>
                         </div>
                     </div>
                 </div>
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
+                </div>
             </div>
-
-
-
         )
     }
 

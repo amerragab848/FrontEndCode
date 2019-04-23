@@ -4013,3 +4013,16 @@ width: calc(100% - 256px);
         display: block;
         padding: 0
       }
+
+      .reports__multiDrop .reports__proForm {
+        justify-content: space-between;
+      }
+      .settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .linebylineInput {
+        width: 45%;
+        margin-right: 0;
+      }
+      .settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .btn__multi {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end
+      }

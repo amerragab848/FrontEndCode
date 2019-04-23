@@ -7,16 +7,11 @@ import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
-import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import BarChartComp from '../TechnicalOffice/BarChartComp'
-
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-
-
-
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
         .required(Resources['projectSelection'][currentLanguage])
@@ -38,7 +33,7 @@ class SiteRequestReleasedQnt extends Component {
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
             selectedMaterialRequest: { label: Resources.siteRequestSelection[currentLanguage], value: "0" },
             rows: [],
-            showChart: true,
+            showChart: false,
             series: [],
             xAxis: { type: 'category' }
         }
@@ -49,7 +44,6 @@ class SiteRequestReleasedQnt extends Component {
                 pathname: "/"
             })
         }
-
         this.columns = [
 
             {
@@ -82,10 +76,6 @@ class SiteRequestReleasedQnt extends Component {
                 sortDescendingFirst: true,
             }
         ];
-
-    }
-
-    componentDidMount() {
     }
 
     componentWillMount() {
@@ -102,7 +92,6 @@ class SiteRequestReleasedQnt extends Component {
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-
         let noClicks = this.state.noClicks;
         Dataservice.GetDataGrid('GetSiteRequestItemsForReport?RequestId=' + this.state.selectedMaterialRequest.value + '').then(
             res => {
@@ -118,11 +107,6 @@ class SiteRequestReleasedQnt extends Component {
                     totalRequested += element['requestedQuantity']
                     totalReleased += element['releasedQuantity']
                 });
-
-            
-
-
-
                 let seriesData = [{ name: Resources['requestedQuantity'][currentLanguage], y: totalRequested }
                     , { name: Resources['releasedQuantity'][currentLanguage], y: totalReleased }]
 
@@ -133,7 +117,8 @@ class SiteRequestReleasedQnt extends Component {
                     series,
                     rows: res,
                     noClicks: noClicks + 1,
-                    isLoading: false
+                    isLoading: false,
+                    showChart:true
                 })
             }
         ).catch(() => {
@@ -155,7 +140,6 @@ class SiteRequestReleasedQnt extends Component {
     }
 
     render() {
-
         let Chart =
             <BarChartComp
                 noClicks={this.state.noClicks}
@@ -174,99 +158,57 @@ class SiteRequestReleasedQnt extends Component {
 
         return (
 
-            <div className='mainContainer main__fulldash'>
 
-                <div className="documents-stepper noTabs__document">
-
-                    <div className="submittalHead">
-                        <h2 className="zero">{Resources['siteRequestReleasedQntReport'][currentLanguage]}</h2>
-                        <div className="SubmittalHeadClose">
-                            <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                        <g id="Group-2">
-                                            <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                                <g id="Action-icons/Close/Circulated/20pt/Grey_Normal"><g id="Group"><circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                    <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fill-rule="nonzero">
-                                                    </path>
-                                                </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <div className="doc-container">
-
-                        <div className="step-content">
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
-                                </div>
-
-                                <Formik
-
-                                    initialValues={{
-                                        selectedProject: '',
-                                        selectedMaterialRequest: ''
-                                    }}
-
-                                    enableReinitialize={true}
-
-                                    validationSchema={ValidtionSchema}
-
-                                    onSubmit={(values, actions) => {
-
-                                        this.getGridRows()
-                                    }}>
-
-                                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                        <Form onSubmit={handleSubmit}>
-                                            <div className="proForm datepickerContainer">
-                                                <div className="linebylineInput valid-input">
-                                                    <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
-                                                        selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                                        handleChange={e => this.HandleChangeProject(e)}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedProject}
-                                                        touched={touched.selectedProject}
-                                                        value={values.selectedProject} />
-                                                </div>
-                                                <div className="linebylineInput valid-input " >
-                                                    <Dropdown title='siteRequest' data={this.state.MaterialRequest} name='selectedMaterialRequest'
-                                                        selectedValue={this.state.selectedMaterialRequest} onChange={setFieldValue}
-                                                        handleChange={e => this.setState({ selectedMaterialRequest: e })}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedMaterialRequest}
-                                                        touched={touched.selectedMaterialRequest}
-                                                        value={values.selectedMaterialRequest} />
-                                                </div>
-                                            </div>
-
-                                            <div className="fullWidthWrapper ">
-                                                <button className="primaryBtn-1 btn mediumBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
-                                            </div>
-
-                                        </Form>
-                                    )}
-                                </Formik>
-
-
+            <div className="reports__content">
+                <header>
+                    <h2 className="zero">{Resources.collectedPaymentRequisition[currentLanguage]}</h2>
+                    {btnExport}
+                </header>
+                <Formik
+                    initialValues={{
+                        selectedProject: '',
+                        selectedMaterialRequest: ''
+                    }}
+                    enableReinitialize={true}
+                    validationSchema={ValidtionSchema}
+                    onSubmit={(values, actions) => {
+                        this.getGridRows()
+                    }}>
+                    {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
+                                    selectedValue={this.state.selectedProject} onChange={setFieldValue}
+                                    handleChange={e => this.HandleChangeProject(e)}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectedProject}
+                                    touched={touched.selectedProject}
+                                    value={values.selectedProject} />
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
+                            <div className="linebylineInput valid-input " >
+                                <Dropdown title='siteRequest' data={this.state.MaterialRequest} name='selectedMaterialRequest'
+                                    selectedValue={this.state.selectedMaterialRequest} onChange={setFieldValue}
+                                    handleChange={e => this.setState({ selectedMaterialRequest: e })}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectedMaterialRequest}
+                                    touched={touched.selectedMaterialRequest}
+                                    value={values.selectedMaterialRequest} />
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {Chart}
-                            </div>
-                        </div>
-                    </div>
+
+                            <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                        </Form>
+                    )}
+                </Formik>
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
                 </div>
+                {this.state.showChart == true ?
+                    <div className="doc-pre-cycle letterFullWidth">
+                        {Chart}
+                    </div> : null}
+            </div>
 
-            </div >
+
         )
     }
 

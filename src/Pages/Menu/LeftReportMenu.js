@@ -27,22 +27,22 @@ class LeftReportMenu extends Component {
       if (route.settings) {
         if (route.settings.OtherReports === true) {
           if (Config.IsAllow(route.settings.permission)) {
-            OtherReports.push({ label: route.title, value: route.moduleId });
+            OtherReports.push({ label: Resources[route.title][currentLanguage], value: route.moduleId });
           }
         }
         else if (route.settings.technicalOffice === true) {
           if (Config.IsAllow(route.settings.permission)) {
-            technicalOffice.push({ label: route.title, value: route.moduleId });
+            technicalOffice.push({ label: Resources[route.title][currentLanguage], value: route.moduleId });
           }
         }
         else if (route.settings.ContractsPo === true) {
           if (Config.IsAllow(route.settings.permission)) {
-            contractPoMenu.push({ label: route.title, value: route.moduleId });
+            contractPoMenu.push({ label: Resources[route.title][currentLanguage], value: route.moduleId });
           }
         }
         else if (route.settings.inventory === true) {
           if (Config.IsAllow(route.settings.permission)) {
-            inventory.push({ label: route.title, value: route.moduleId });
+            inventory.push({ label: Resources[route.title][currentLanguage], value: route.moduleId });
           }
         }
         else if (route.settings.ProjectReports === true) {
@@ -93,7 +93,6 @@ class LeftReportMenu extends Component {
 
   getReport = (event) => {
     this.setState({ selectedReport: event })
-    //let route = "../../Pages/ReportsCenter/" + event.value;
     if (event.value) {
       import(`../../Pages/ReportsCenter/${event.value}`).then(module => this.setState({ module: module.default }));
     }
@@ -149,9 +148,10 @@ class LeftReportMenu extends Component {
                 </div>
               </div>
               <ErrorHandler >
-                <div className="reports__content" id='ren'>
-                  {Component != null ? <Component /> : null}
-                </div>
+                {this.state.selectedReport.value == '0' ? null :
+                  <div className="reports__content" id='ren'>
+                    {Component != null ? <Component /> : null}
+                  </div>}
               </ErrorHandler >
             </div>
           </React.Fragment>

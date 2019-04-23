@@ -15,9 +15,6 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
         .required(Resources['projectSelection'][currentLanguage])
@@ -39,7 +36,7 @@ class compareApprovedQuantity extends Component {
             startDate: moment(),
             ContractSum: 0,
             countContract: 0,
-            columns :[
+            columns: [
                 {
                     key: "details",
                     name: Resources["details"][currentLanguage],
@@ -107,7 +104,6 @@ class compareApprovedQuantity extends Component {
 
     }
     getGridtData = () => {
-
         this.setState({ currentComponent: null })
         let reportobj = {
             projectId: this.state.selectedProject.value,
@@ -115,7 +111,6 @@ class compareApprovedQuantity extends Component {
             startDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             finishDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
-
         this.setState({ isLoading: true })
         Api.post('ComapareApprovedQuantity', reportobj).then(rows => {
             let columns = []
@@ -134,7 +129,7 @@ class compareApprovedQuantity extends Component {
                     })
                 }
             }
-            this.setState({ rows, isLoading: false ,columns})
+            this.setState({ rows, isLoading: false, columns })
         }).catch(() => {
             this.setState({ isLoading: false })
             toast.error(Resources.operationCanceled[currentLanguage])
@@ -148,7 +143,7 @@ class compareApprovedQuantity extends Component {
     projectChange = (e) => {
         this.setState({ isLoading: true })
         dataService.GetDataList('GetContractByProjectId?projectId=' + e.value, 'subject', 'id').then(res => {
-            this.setState({ contractsData: res, isLoading: false })
+            this.setState({ contractsData: res, isLoading: false, selectedProject: e })
         })
     }
     render() {
@@ -159,86 +154,64 @@ class compareApprovedQuantity extends Component {
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'compareApprovedQuantity'} />
             : null
         return (
-            <div className='mainContainer main__fulldash' style={{ paddingLeft: '40px', paddingRight: '40px' }}>
-                <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={''} docTitle={Resources.compareApprovedQuantity[currentLanguage]} moduleTitle={Resources['contractsPurchaseOrders'][currentLanguage]} />
-                    <div className="doc-container">
-                        <div className="step-content">
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
-                                </div>
 
-                                <Formik
-                                    initialValues={{
-                                        selectedProject: '',
-                                        selectContract: ''
-                                    }}
-                                    enableReinitialize={true}
-                                    validationSchema={ValidtionSchema}
-                                    onSubmit={(values, actions) => {
-                                        this.getGridtData()
-                                    }}>
-                                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                        <Form onSubmit={handleSubmit}>
-                                            <div className="proForm datepickerContainer">
-                                                <div className="linebylineInput ">
-                                                    <Dropdown title='Projects' data={this.state.projectList}
-                                                        name='selectedProject'
-                                                        selectedValue={this.state.selectedProject}
-                                                        onChange={setFieldValue}
-                                                        handleChange={e => this.projectChange(e)}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedProject}
-                                                        touched={touched.selectedProject}
-                                                    />
-                                                </div>
-                                                <div className="linebylineInput " >
-                                                    <Dropdown title='contract' data={this.state.contractsData}
-                                                        name='selectContract'
-                                                        selectedValue={this.state.selectContract}
-                                                        onChange={setFieldValue}
-                                                        handleChange={e => this.setState({ selectContract: e })}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectContract}
-                                                        touched={touched.selectContract}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="proForm datepickerContainer">
-                                                <div className="linebylineInput valid-input alternativeDate">
-                                                    <DatePicker title='startDate'
-                                                        startDate={this.state.startDate}
-                                                        handleChange={e => this.handleChange('startDate', e)} />
-                                                </div>
-                                                <div className="linebylineInput valid-input alternativeDate">
-                                                    <DatePicker title='finishDate'
-                                                        startDate={this.state.finishDate}
-                                                        handleChange={e => this.handleChange('finishDate', e)} />
-                                                </div>
-                                            </div>
-
-                                            <div className="fullWidthWrapper ">
-                                                <button className="primaryBtn-1 btn mediumBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
-                                            </div>
-
-                                        </Form>
-                                    )}
-                                </Formik>
-
-
-
+            <div className="reports__content">
+                <header>
+                    <h2 className="zero">{Resources.compareApprovedQuantity[currentLanguage]}</h2>
+                    {btnExport}
+                </header>
+                <Formik
+                    initialValues={{
+                        selectedProject: '',
+                        selectContract: ''
+                    }}
+                    enableReinitialize={true}
+                    validationSchema={ValidtionSchema}
+                    onSubmit={() => {
+                        this.getGridtData()
+                    }}>
+                    {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm' >
+                            <div className="linebylineInput valid-input ">
+                                <Dropdown title='Projects' data={this.state.projectList}
+                                    name='selectedProject'
+                                    selectedValue={this.state.selectedProject}
+                                    onChange={setFieldValue}
+                                    handleChange={e => this.projectChange(e)}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectedProject}
+                                    touched={touched.selectedProject}
+                                />
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
+                            <div className="linebylineInput valid-input " >
+                                <Dropdown title='contract' data={this.state.contractsData}
+                                    name='selectContract'
+                                    selectedValue={this.state.selectContract}
+                                    onChange={setFieldValue}
+                                    handleChange={e => this.setState({ selectContract: e })}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectContract}
+                                    touched={touched.selectContract}
+                                />
                             </div>
-                        </div>
-                    </div>
+                            <div className="linebylineInput valid-input alternativeDate">
+                                <DatePicker title='startDate'
+                                    startDate={this.state.startDate}
+                                    handleChange={e => this.handleChange('startDate', e)} />
+                            </div>
+                            <div className="linebylineInput valid-input alternativeDate">
+                                <DatePicker title='finishDate'
+                                    startDate={this.state.finishDate}
+                                    handleChange={e => this.handleChange('finishDate', e)} />
+                            </div>
+                            <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                        </Form>
+                    )}
+                </Formik>
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
                 </div>
             </div>
-
-
-
         )
     }
 

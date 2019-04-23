@@ -2740,49 +2740,50 @@ var routes = [
     nav: true
   },
   {
-    route: "InvoicesLogReport", 
+    route: "InvoicesLogReport",
+    moduleId: "ContractsPOReports/InvoicesLogReport", 
     title: "invoicesReport",
     nav: true,
     settings: { ContractsPo: true, permission: 3694, order: 4 }
   },
   {
     route: "siteRequestReleasedQnt",
-    moduleId: "reports/siteRequestReleasedQntReport",
+    moduleId: "ContractsPOReports/SiteRequestReleasedQnt",
     title: "siteRequestReleasedQntReport",
     nav: true,
     settings: { ContractsPo: true, permission: 3693, order: 3 }
   },
   {
     route: "collectedPaymentRequisition",
-    moduleId: "reportCenter/collectedPaymentRequisition",
+    moduleId: "ContractsPOReports/CollectedPaymentRequisition",
     title: "collectedPaymentRequisition",
     nav: true,
     settings: { ContractsPo: true, permission: 3692, order: 2 }
   },
   {
     route: "ProjectInvoices",
-    moduleId: "reportCenter/projectInvoices",
+    moduleId: "ContractsPOReports/ProjectInvoices",
     title: "projectInvoices",
     nav: true,
     settings: { ContractsPo: true, permission: 3691, order: 1 }
   },
   {
     route: "executiveSummary",
-    moduleId: "reportCenter/executiveSummary",
+    moduleId: "ContractsPOReports/executiveSummary",
     title: "executiveSummary",
     nav: true,
     settings: { ContractsPo: true, permission: 3697, order: 7 }
   },
   {
     route: "compareApprovedQuantity",
-    moduleId: "reportCenter/compareApprovedQuantity",
+    moduleId: "ContractsPOReports/compareApprovedQuantity",
     title: "compareApprovedQuantity",
     nav: true,
     settings: { ContractsPo: true, permission: 3769, order: 8 }
   },
   {
     route: "paymentRequisition",
-    moduleId: "reportCenter/paymentRequisition",
+    moduleId: "ContractsPOReports/paymentRequisition",
     title: "paymentRequisition",
     nav: true,
     settings: { ContractsPo: true, permission: 3696, order: 6 }

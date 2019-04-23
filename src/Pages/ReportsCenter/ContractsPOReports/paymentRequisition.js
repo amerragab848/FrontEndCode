@@ -31,7 +31,7 @@ class paymentRequisition extends Component {
         this.state = {
             isLoading: false,
             ProjectsData: [],
-            projectIds:[],
+            projectIds: [],
             contractorsData: [],
             contractors: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
@@ -47,7 +47,6 @@ class paymentRequisition extends Component {
         }
 
         this.columns = [
-
             {
                 key: "projectName",
                 name: Resources["projectName"][currentLanguage],
@@ -118,9 +117,6 @@ class paymentRequisition extends Component {
 
     }
 
-    componentDidMount() {
-    }
-
     componentWillMount() {
         Dataservice.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(
             result => {
@@ -132,11 +128,10 @@ class paymentRequisition extends Component {
             })
     }
 
-
     getGridRows = () => {
         this.setState({ isLoading: true })
-        let paymentObj={projectIds: this.state.projectIds, contractors:this.state.contractors}
-        Api.post('GetPaymentContractors',paymentObj).then(
+        let paymentObj = { projectIds: this.state.projectIds, contractors: this.state.contractors }
+        Api.post('GetPaymentContractors', paymentObj).then(
             res => {
                 this.setState({
                     rows: res,
@@ -153,29 +148,27 @@ class paymentRequisition extends Component {
         e.forEach(project => {
             projectIds.push(project.value)
         })
-        this.setState({projectIds})
-        Api.post('GetProjectCompanyForList', {projectIds:projectIds}).then(
+        this.setState({ projectIds })
+        Api.post('GetProjectCompanyForList', { projectIds: projectIds }).then(
             res => {
                 let contractors = []
                 res.forEach(item => {
                     contractors.push({ label: item.companyName, value: item.companyId })
                 })
-                this.setState({  contractorsData : contractors  })
+                this.setState({ contractorsData: contractors })
             }).catch((e) => {
                 toast.error('somthing wrong')
             })
     }
-    HandleChangeContractor(e){
+    HandleChangeContractor(e) {
         let contractors = []
         e.forEach(contractor => {
             contractors.push(contractor.value)
         })
-        this.setState({contractors})
+        this.setState({ contractors })
     }
 
     render() {
-
-
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
@@ -185,67 +178,56 @@ class paymentRequisition extends Component {
             : null
 
         return (
-            <div className='mainContainer main__fulldash'>
-                <div className="documents-stepper noTabs__document">
-                <HeaderDocument projectName={''} docTitle={Resources.paymentRequisition[currentLanguage]} moduleTitle={Resources['contractsPurchaseOrders'][currentLanguage]} />
-                    <div className="doc-container">
-                        <div className="step-content">
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
-                                </div>
-                                <Formik
-                                    initialValues={{
-                                        selectedProject: '',
-                                        selectContractor: ''
-                                    }}
-                                    enableReinitialize={true}
-                                    validationSchema={ValidtionSchema}
-                                    onSubmit={(values, actions) => {
-                                        this.getGridRows()
-                                    }}>
-                                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                        <Form onSubmit={handleSubmit}>
-                                            <div className="proForm datepickerContainer">
-                                                <div className="linebylineInput multiChoice">
-                                                    <Dropdown title='Projects' data={this.state.ProjectsData}
-                                                        name='selectedProject'
-                                                        selectedValue={this.state.selectedProject}
-                                                        onChange={setFieldValue}
-                                                        handleChange={e => this.HandleChangeProject(e)}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectedProject}
-                                                        touched={touched.selectedProject}
-                                                        value={values.selectedProject}
-                                                        isMulti={true} />
-                                                </div>
-                                                <div className="linebylineInput multiChoice" >
-                                                    <Dropdown title='siteRequest' data={this.state.contractorsData} name='selectContractor'
-                                                        selectedValue={this.state.selectContractor} onChange={setFieldValue}
-                                                        handleChange={e => this.HandleChangeContractor(e)}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.selectContractor}
-                                                        touched={touched.selectContractor}
-                                                        value={values.selectContractor}
-                                                        isMulti={true} />
-                                                </div>
-                                            </div>
+            <div className="reports__content reports__multiDrop">
+                <header>
+                    <h2 className="zero">{Resources.paymentRequisition[currentLanguage]}</h2>
+                    {btnExport}
+                </header>
+                <Formik
+                    initialValues={{
+                        selectedProject: '',
+                        selectContractor: ''
+                    }}
+                    enableReinitialize={true}
+                    validationSchema={ValidtionSchema}
+                    onSubmit={(values, actions) => {
+                        this.getGridRows()
+                    }}>
+                    {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
 
-                                            <div className="fullWidthWrapper ">
-                                                <button className="primaryBtn-1 btn mediumBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
-                                            </div>
-
-                                        </Form>
-                                    )}
-                                </Formik>
+                            <div className="linebylineInput multiChoice">
+                                <Dropdown title='Projects' data={this.state.ProjectsData}
+                                    name='selectedProject'
+                                    selectedValue={this.state.selectedProject}
+                                    onChange={setFieldValue}
+                                    handleChange={e => this.HandleChangeProject(e)}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectedProject}
+                                    touched={touched.selectedProject}
+                                    value={values.selectedProject}
+                                    isMulti={true} />
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
+                            <div className="linebylineInput multiChoice" >
+                                <Dropdown title='siteRequest' data={this.state.contractorsData} name='selectContractor'
+                                    selectedValue={this.state.selectContractor} onChange={setFieldValue}
+                                    handleChange={e => this.HandleChangeContractor(e)}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectContractor}
+                                    touched={touched.selectContractor}
+                                    value={values.selectContractor}
+                                    isMulti={true} />
                             </div>
-                        </div>
-                    </div>
+                            <div className="btn__multi">
+                                <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
                 </div>
-            </div >
+            </div>
         )
     }
 
