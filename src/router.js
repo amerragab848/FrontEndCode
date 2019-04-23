@@ -50,7 +50,7 @@ import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 import ProjectSetup from './Pages/ProjectSetup/ProjectSetup'
 import reportsAddEdit from './Pages/Communication/reportsAddEdit';
-import OldAppNavigation from './OldAppNavigation';
+//import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 import meetingMinutesAddEdit from "../src/Pages/Communication/MeetingMinutesAddEdit";

@@ -129,6 +129,7 @@ class LeftMenu extends Component {
     });
 
     if (this.state.ActivePanal != 0) {
+
       if (this.state.ActivePanal === 1) {
         this.setState(state => {
           return {
@@ -137,9 +138,11 @@ class LeftMenu extends Component {
             viewProjects: false
           };
         });
+
         viewEps = true;
         viewModules = false;
         viewProjects = false;
+
       } else {
         this.setState(state => {
           return {
@@ -148,15 +151,18 @@ class LeftMenu extends Component {
             viewProjects: false
           };
         });
+
         viewEps = false;
         viewModules = true;
         viewProjects = false;
       }
+
     }
   };
 
   ProjectHandler = () => {
     if (this.state.viewProjects === false) {
+
       this.setState(state => {
         return {
           viewEps: false,
@@ -164,12 +170,17 @@ class LeftMenu extends Component {
           viewProjects: true
         };
       });
+
       viewEps = false;
       viewModules = false;
       viewProjects = true;
+
     } else {
+
       if (this.state.ActivePanal != 0) {
+
         if (this.state.ActivePanal === 1) {
+
           this.setState(state => {
             return {
               viewEps: true,
@@ -177,9 +188,11 @@ class LeftMenu extends Component {
               viewProjects: false
             };
           });
+
           viewEps = true;
           viewModules = false;
           viewProjects = false;
+
         } else {
           this.setState(state => {
             return {
@@ -204,11 +217,13 @@ class LeftMenu extends Component {
         viewEps = true;
       }
     }
+
     this.setState(state => {
       return {
         projectId: state.projectId
       };
     });
+
   };
 
   EpsHandler = (id, index) => {
@@ -456,7 +471,7 @@ class LeftMenu extends Component {
             <div className="sidebar__inner">
               <aside className="mainSideNav">
                 <div className={this.state.hover ? "mainSidenavContent hover" : "mainSidenavContent"} >
-                  <div className="sidenavinner"> 
+                  <div className="sidenavinner">
                     <div className={(viewEps) ? "MainProjectsMenu active " : "MainProjectsMenu hidden"} >
                       <div className="backToModules" onClick={this.ModuleHandler}>
                         {this.state.projectId ? (
