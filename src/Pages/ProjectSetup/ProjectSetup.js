@@ -16,6 +16,12 @@ import Filter from "../../Componants/FilterComponent/filterComponent";
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
 import { SkyLightStateless } from 'react-skylight';
 
+import { connect } from 'react-redux';
+import {
+  bindActionCreators
+} from 'redux';
+import * as communicationActions from '../../store/actions/communication';
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedProject')
 const _ = require('lodash') 
@@ -30,7 +36,7 @@ const ValidtionSchema = Yup.object().shape({
         .required(Resources['isRequiredField'][currentLanguage])
         .nullable(true),
 });
-
+ 
 const ValidtionSchemaForArea = Yup.object().shape({
     ArabicTitle: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage]),
@@ -76,6 +82,8 @@ class ProjectSetup extends Component {
 
     componentWillMount = () => {
         PathName = this.props.location.pathname.split('/')
+        
+        this.props.actions.FillGridLeftMenu();
         this.renderComponent()
     }
 
@@ -581,4 +589,23 @@ class ProjectSetup extends Component {
         )
     }
 }
-export default withRouter(ProjectSetup)
+
+function mapStateToProps(state, ownProps) {
+    return {
+      projectId: state.communication.projectId,
+      showLeftMenu: state.communication.showLeftMenu,
+      showSelectProject: state.communication.showSelectProject,
+      projectName: state.communication.projectName
+    }
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      actions: bindActionCreators(communicationActions, dispatch)
+    };
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )( withRouter(ProjectSetup))

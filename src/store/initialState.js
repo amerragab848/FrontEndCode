@@ -2,7 +2,7 @@ export default {
 	app: {
 		communication: {
 			document: {},
-			documentTitle:'',
+			documentTitle: '',
 			files: [],
 			workFlowCycles: [],
 			changeStatus: false,
@@ -14,36 +14,36 @@ export default {
 			isLoadingFiles: false,
 			file: {},
 			arrange: 0,
-			showModal: false, 
-			attendees:[],
-			topics:[],
-			viewModel:false,
-			documentCycle:{},
-			moduleName:"",
-			items:[],
-			attachDocuments:[],
-			fields:[],
-			columns:[],
-			fieldsItems:[],
-			showLeftMenu: false, 
-			projectName:"",
-			showSelectProject:true,
+			showModal: false,
+			attendees: [],
+			topics: [],
+			viewModel: false,
+			documentCycle: {},
+			items: [],
+			attachDocuments: [],
+			fields: [],
+			columns: [],
+			fieldsItems: [],
+			showLeftMenu: false,
+			projectName: "",
+			moduleName: "",
+			showSelectProject: true,
 			showLeftReportMenu: false
-		}, 
-		expensesWorkFlow: {
-			expensesWorkFlowData:{},
-			contactData:[],
-			newContactElement:{},
-			multiApproval:[],
-			
 		},
-		adminstration:{
-			popUp:false,
-			notifyMessage:'',
-			companyContact:[],
+		expensesWorkFlow: {
+			expensesWorkFlowData: {},
+			contactData: [],
+			newContactElement: {},
+			multiApproval: [],
+
+		},
+		adminstration: {
+			popUp: false,
+			notifyMessage: '',
+			companyContact: [],
 			getingData: false,
-			companyList:[],
-			tabIndex:0
-		} 
+			companyList: [],
+			tabIndex: 0
+		}
 	}
 }

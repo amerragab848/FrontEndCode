@@ -37,7 +37,8 @@ class projectsAchievements extends Component {
             ProjectsData: [],
             selectedYear: { label: Resources['selectYear'][currentLanguage], value: "0" },
             rows: [],
-            yearList:[
+            showChart:false,
+            yearList: [
                 { label: '2010', value: "2010" },
                 { label: '2011', value: "2011" },
                 { label: '2012', value: "2012" },
@@ -87,16 +88,16 @@ class projectsAchievements extends Component {
     }
     getData = () => {
         this.setState({ isLoading: true })
-   
+
         let noClicks = this.state.noClicks;
-        Api.get('ProjectsAchievementsRpt?year='+this.state.selectedYear.value).then(
+        Api.get('ProjectsAchievementsRpt?year=' + this.state.selectedYear.value).then(
             res => {
                 this.setState({
                     rows: res,
-                    isLoading: false
+                    isLoading: false,showChart:true
                 })
                 let _data = []
-                let _catag=[]
+                let _catag = []
                 res.map((item, index) => {
                     _data.push(item.total)
                     _catag.push(item.quarter)
@@ -104,7 +105,7 @@ class projectsAchievements extends Component {
                 let series = []
                 let xAxis = { categories: _catag }
                 series.push({ name: Resources['total'][currentLanguage], data: _data })
-                this.setState({ series,xAxis, noClicks: noClicks + 1 });
+                this.setState({ series, xAxis, noClicks: noClicks + 1 });
             }
         ).catch(() => {
             this.setState({ isLoading: false })
@@ -134,59 +135,52 @@ class projectsAchievements extends Component {
 
         return (
 
-            <div className='mainContainer main__fulldash'>
-                <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={''} docTitle={Resources.projectsAchievments[currentLanguage]} moduleTitle={Resources['projectReports'][currentLanguage]} />
-                    <div className='doc-container'>
-                        <div className='step-content'>
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
-                                </div>
-                            <Formik
-                                initialValues={{
-                                    selectedYear:this.state.selectedYear.value=='0'?'':this.state.selectedYear.value,
-                                }}
-                                enableReinitialize={true}
-                                validationSchema={ValidtionSchema}
-                                onSubmit={(values, actions) => {
-                                    this.getData()
-                                }}>
-                                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                    <Form onSubmit={handleSubmit}>
-                                <div className="proForm datepickerContainer">
-                                    <Dropdown className='fullWidthWrapper textLeft' 
-                                            title="year"
-                                            data={this.state.yearList}
-                                            selectedValue={this.state.selectedYear}
-                                            handleChange={event => this.setState({ selectedYear: event })}
-                                            onBlur={setFieldTouched}
-                                            error={errors.selectedYear}
-                                            touched={touched.selectedYear}
-                                            value={values.selectedYear}
-                                            onChange={setFieldValue}
-                                            name="selectedYear"
-                                            index="selectedYear"
-                                        />
-                                </div>
-                                <div className="fullWidthWrapper ">
-                                    <button className="primaryBtn-1 btn mediumBtn" type='submit'>{Resources['search'][currentLanguage]} </button>
-                                </div>
-                                </Form>
-                                    )}
-                            </Formik>
 
+            <div className="reports__content">
+                <header>
+                    <h2 className="zero">{Resources.projectsAchievments[currentLanguage]}</h2>
+                    {btnExport}
+                </header>
+
+                <Formik
+                    initialValues={{
+                        selectedYear: this.state.selectedYear.value == '0' ? '' : this.state.selectedYear.value,
+                    }}
+                    enableReinitialize={true}
+                    validationSchema={ValidtionSchema}
+                    onSubmit={(values, actions) => {
+                        this.getData()
+                    }}>
+                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                        <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="year"
+                                    data={this.state.yearList}
+                                    selectedValue={this.state.selectedYear}
+                                    handleChange={event => this.setState({ selectedYear: event })}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectedYear}
+                                    touched={touched.selectedYear}
+                                    value={values.selectedYear}
+                                    onChange={setFieldValue}
+                                    name="selectedYear"
+                                    index="selectedYear"
+                                />
                             </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {Chart}
-                            </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
-                            </div>
-                        </div>
-                    </div>
+                            <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]} </button>
+                        </Form>
+                    )}
+                </Formik>
+                {this.state.showChart == true ?
+                    <div className="doc-pre-cycle letterFullWidth">
+                        {Chart}
+                    </div> : null}
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
                 </div>
             </div>
+
         )
     }
 

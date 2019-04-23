@@ -61,10 +61,13 @@ class BarChartComp extends Component {
                     borderWidth: 1,
                     shadow: false
                 },
-                tooltip: {
+                tooltip: this.props.tooltip?this.props.tooltip:
+                 {
+                  
                     headerFormat: '<b>{point.x}</b><br/>',
                     pointFormat: ' <span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
                 },
+          
                 plotOptions: {
                     column: {
                         stacking: this.props.stack ? this.props.stack : '',

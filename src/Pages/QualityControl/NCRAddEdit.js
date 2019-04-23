@@ -190,9 +190,11 @@ class NCRAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
             let NCRDoc = nextProps.document
+            //moment(serverInspectionRequest.docDate).format('DD/MM/YYYY')
             NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
             NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD/MM/YYYY')
             NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD/MM/YYYY')
+
             this.setState({
                 document: NCRDoc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -221,9 +223,7 @@ class NCRAddEdit extends Component {
             )
 
         } else {
-            ///Is Add Mode
-
-
+            ///Is Add Mode 
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
             Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=101&companyId=' + cmi + '&contactId=' + cni + '').then(
@@ -467,6 +467,7 @@ class NCRAddEdit extends Component {
                 isLoading: true
             })
             let NCRDoc = { ...this.state.document }
+
             NCRDoc.docDate = moment(NCRDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
             NCRDoc.requiredDate = moment(NCRDoc.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
             NCRDoc.resultDate = moment(NCRDoc.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
@@ -478,10 +479,15 @@ class NCRAddEdit extends Component {
                             isLoading: false
                         })
                         toast.success(Resources["operationSuccess"][currentLanguage]);
+                        
+                        this.saveAndExit();
+
                     }).catch(ex => {
+                        this.setState({
+                            isLoading: false
+                        })
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
-
             }
             else {
                 dataservice.addObject('AddCommunicationNCRs', NCRDoc).then(
@@ -492,6 +498,9 @@ class NCRAddEdit extends Component {
                         })
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                     }).catch(ex => {
+                        this.setState({
+                            isLoading: false
+                        })
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
             }
@@ -553,6 +562,9 @@ class NCRAddEdit extends Component {
                 })
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(ex => {
+                this.setState({
+                    isLoading: false
+                })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             });
     }

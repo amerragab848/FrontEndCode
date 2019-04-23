@@ -18,8 +18,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 items: action.items ? action.items : []
             }
-
-
+ 
         case types.Document_for_Edit:
             return {
                 ...state,
@@ -40,7 +39,8 @@ export default function (state = initialState.app.communication, action) {
                 showSelectProject: false,
                 changeStatus: false,
                 items: [],
-                projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId
+                projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId,
+                projectName: state.projectName == "" ? localStorage.getItem('lastSelectedprojectName') : state.projectName
             };
 
         case types.File_Upload:
@@ -78,6 +78,7 @@ export default function (state = initialState.app.communication, action) {
                 originalData.splice(getIndex, 1);
 
             });
+
         case types.delete_items:
             return {
                 ...state,
@@ -205,7 +206,8 @@ export default function (state = initialState.app.communication, action) {
                 showSelectProject: action.showSelectProject,
                 showLeftReportMenu: action.showLeftReportMenu,
                 projectId: localStorage.getItem('lastSelectedProject'),
-                projectName: localStorage.getItem('lastSelectedprojectName')
+                projectName: localStorage.getItem('lastSelectedprojectName'),
+                moduleName: localStorage.getItem('moduleName')
             };
 
         case types.Get_Attendees_Table:

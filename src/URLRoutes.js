@@ -104,7 +104,7 @@ var routes = [
   },
   // {
   //   route: "inventoryDetails",
-  //   moduleId: "reports/inventoryDetails",
+  //   moduleId: "ProjectReports/inventoryDetails",
   //   title: "inventoryDetails",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3689, order: 14 }
@@ -118,44 +118,44 @@ var routes = [
   // },
   // {
   //   route: "boqTemplateReport",
-  //   moduleId: "reportCenter/boqTemplateReport",
+  //   moduleId: "ProjectReports/boqTemplateReport",
   //   title: "boqTemplateReport",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3690, order: 15 }
   // },
   // {
   //   route: "boqStractureCost",
-  //   moduleId: "reportCenter/boqStractureCost",
+  //   moduleId: "ProjectReports/boqStractureCost",
   //   title: "boqStractureCost",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 4019, order: 16 }
   // },
   
-  // {
-  //   route: "projectBackLog",
-  //   moduleId: "reportCenter/projectBackLog",
-  //   title: "projectsBackLog",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3679, order: 4 }
-  // },
-  // {
-  //   route: "projectsAchievements",
-  //   moduleId: "reportCenter/projectsAchievements",
-  //   title: "projectsAchievments",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3680, order: 5 }
-  // },
-  // {
-  //   route: "projectInvoicesCollected",
-  //   moduleId: "reportCenter/projectInvoicesCollected",
-  //   title: "projectedInvoicedCollecetd",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3681, order: 6 }
-  // },
+  {
+    route: "projectBackLog",
+    moduleId: "ProjectReports/projectBackLog",
+    title: "projectsBackLog",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3679, order: 4 }
+  },
+  {
+    route: "projectsAchievements",
+    moduleId: "ProjectReports/projectsAchievements",
+    title: "projectsAchievments",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3680, order: 5 }
+  },
+  {
+    route: "projectInvoicesCollected",
+    moduleId: "ProjectReports/projectInvoicesCollected",
+    title: "projectedInvoicedCollecetd",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3681, order: 6 }
+  },
   
   // {
   //   route: "materialStatusReport",
-  //   moduleId: "reports/materialStatusReport",
+  //   moduleId: "ProjectReports/materialStatusReport",
   //   title: "materialStatusReport",
   //   nav: true,
   //   hash: "#materialStatusReport",
@@ -163,63 +163,63 @@ var routes = [
   // },
   {
     route: "CashFlowReport",
-    moduleId: "reportCenter/cashFlow",
+    moduleId: "ProjectReports/CashFlowReport",
     title: "cashFlow",
     nav: true,
     settings: { ProjectReports: true, permission: 3678, order: 3 }
   },
   {
     route: "ProjectBalanceReport",
-    moduleId: "reportCenter/projectBalanceReport",
+    moduleId: "ProjectReports/ProjectBalanceReport",
     title: "projectBalanceReport",
     nav: true,
     settings: { ProjectReports: true, permission: 3676, order: 1 }
   },
   {
     route: "ProjectsList",
-    moduleId: "reportCenter/projectsList",
+    moduleId: "ProjectReports/ProjectsList",
     title: "projectsList",
     nav: true,
     settings: { ProjectReports: true, permission: 3677, order: 2 }
   },
   // {
   //   route: "allocationOfUsersOnProjects",
-  //   moduleId: "reportCenter/allocationOfUsersOnProjects",
+  //   moduleId: "ProjectReports/allocationOfUsersOnProjects",
   //   title: "userAllocationOnProjects",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3683, order: 8 }
   // },
   // {
   //   route: "budgetVarianceReport",
-  //   moduleId: "reportCenter/budgetVarianceReport",
+  //   moduleId: "ProjectReports/budgetVarianceReport",
   //   title: "budgetVarianceReport",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3684, order: 9 }
   // },
   // {
   //   route: "expensesDetailsOnProjectsReport",
-  //   moduleId: "reportCenter/expensesDetailsOnProjectsReport",
+  //   moduleId: "ProjectReports/expensesDetailsOnProjectsReport",
   //   title: "expensesDetailsOnProjectsReport",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3685, order: 10 }
   // },
   // {
   //   route: "activeProjectsReport",
-  //   moduleId: "reportCenter/activeProjectsReport",
+  //   moduleId: "ProjectReports/activeProjectsReport",
   //   title: "activeProjectsReport",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3686, order: 11 }
   // },
   // {
   //   route: "newprojectList",
-  //   moduleId: "reportCenter/newprojectList",
+  //   moduleId: "ProjectReports/newprojectList",
   //   title: "newprojectList",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3687, order: 12 }
   // },
   // {
   //   route: "allocationOfProjectsOnCompanies",
-  //   moduleId: "reportCenter/allocationOfProjectsOnCompanies",
+  //   moduleId: "ProjectReports/allocationOfProjectsOnCompanies",
   //   title: "projectsAllocationOnCompanies",
   //   nav: true,
   //   settings: { ProjectReports: true, permission: 3682, order: 7 }
@@ -2766,27 +2766,27 @@ var routes = [
     nav: true,
     settings: { ContractsPo: true, permission: 3691, order: 1 }
   },
-  // {
-  //   route: "executiveSummary",
-  //   moduleId: "reportCenter/executiveSummary",
-  //   title: "executiveSummary",
-  //   nav: true,
-  //   settings: { ContractsPo: true, permission: 3697, order: 7 }
-  // },
-  // {
-  //   route: "compareApprovedQuantity",
-  //   moduleId: "reportCenter/compareApprovedQuantity",
-  //   title: "compareApprovedQuantity",
-  //   nav: true,
-  //   settings: { ContractsPo: true, permission: 3769, order: 8 }
-  // },
-  // {
-  //   route: "paymentRequisition",
-  //   moduleId: "reportCenter/paymentRequisition",
-  //   title: "paymentRequisition",
-  //   nav: true,
-  //   settings: { ContractsPo: true, permission: 3696, order: 6 }
-  // },
+  {
+    route: "executiveSummary",
+    moduleId: "reportCenter/executiveSummary",
+    title: "executiveSummary",
+    nav: true,
+    settings: { ContractsPo: true, permission: 3697, order: 7 }
+  },
+  {
+    route: "compareApprovedQuantity",
+    moduleId: "reportCenter/compareApprovedQuantity",
+    title: "compareApprovedQuantity",
+    nav: true,
+    settings: { ContractsPo: true, permission: 3769, order: 8 }
+  },
+  {
+    route: "paymentRequisition",
+    moduleId: "reportCenter/paymentRequisition",
+    title: "paymentRequisition",
+    nav: true,
+    settings: { ContractsPo: true, permission: 3696, order: 6 }
+  },
   // {
   //   route: "purchaseOrderReport",
   //   moduleId: "reportCenter/purchaseOrderReport",

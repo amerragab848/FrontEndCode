@@ -50,7 +50,7 @@ import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 import ProjectSetup from './Pages/ProjectSetup/ProjectSetup'
 import reportsAddEdit from './Pages/Communication/reportsAddEdit';
-import OldAppNavigation from './OldAppNavigation';
+//import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 import meetingMinutesAddEdit from "../src/Pages/Communication/MeetingMinutesAddEdit";
@@ -122,6 +122,7 @@ import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/proje
 
 import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
+import LeftReportMenu from './Pages/Menu/LeftReportMenu';
 import ActiveProjectsReport from './Pages/ReportsCenter/ProjectReports/ActiveProjectsReport';
 import NewprojectList from './Pages/ReportsCenter/ProjectReports/NewprojectList';
 import MaterialStatusReport from './Pages/ReportsCenter/ProjectReports/MaterialStatusReport';
@@ -277,6 +278,7 @@ let originalRoutes = [
     , <Route path="/paymentRequisition" component={paymentRequisition} />
     , <Route path="/executiveSummary" component={executiveSummary} />
     , <Route path="/compareApprovedQuantity" component={compareApprovedQuantity} />
+    , <Route path="/LeftReportMenu" component={LeftReportMenu} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
