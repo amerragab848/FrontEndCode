@@ -125,7 +125,7 @@ class compareApprovedQuantity extends Component {
                     columns.push({
                         key: objLength[i],
                         name: objLength[i],
-                        width: 65,
+                        width: 80,
                         draggable: true,
                         sortable: true,
                         resizable: true,

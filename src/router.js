@@ -120,6 +120,7 @@ import ProjectBackLog from './Pages/ReportsCenter/ProjectReports/projectBackLog'
 import ProjectsAchievements from './Pages/ReportsCenter/ProjectReports/projectsAchievements';
 import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/projectInvoicesCollected';
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
+import LeftReportMenu from './Pages/Menu/LeftReportMenu';
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -256,6 +257,7 @@ let originalRoutes = [
     , <Route path="/paymentRequisition" component={paymentRequisition} />
     , <Route path="/executiveSummary" component={executiveSummary} />
     , <Route path="/compareApprovedQuantity" component={compareApprovedQuantity} />
+    , <Route path="/LeftReportMenu" component={LeftReportMenu} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
@@ -8,21 +8,14 @@ import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
-import * as Yup from 'yup';
+import Highcharts from 'highcharts';
 import Api from '../../../api';
 import BarChartComp from '../TechnicalOffice/BarChartComp'
-import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
-
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 }
-
-
-
 class projectBackLog extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -33,30 +26,19 @@ class projectBackLog extends Component {
             rows: [],
             finishDate: moment(),
             startDate: moment(),
+            showChart:false
         }
-
         if (!Config.IsAllow(3679)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             })
         }
-
         this.columns = [
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
             {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
-                width: 160,
+                width: 300,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -64,11 +46,19 @@ class projectBackLog extends Component {
                 sortDescendingFirst: true,
                 formatter: dateFormate
             },
+            {
+                key: "total",
+                name: Resources["total"][currentLanguage],
+                width: 300,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }
         ];
 
     }
-
-  
     getData = () => {
         this.setState({ isLoading: true })
         let reportobj = {
@@ -80,14 +70,17 @@ class projectBackLog extends Component {
             res => {
                 this.setState({
                     rows: res,
-                    isLoading: false
+                    isLoading: false,showChart:true
                 })
-                let _data = []
-                res.map((item, index) => {
-                    _data.push(item.total)
+                let categoriesData = []
+                res.map(item => {
+                    var docDate = new Date(item.docDate);
+                    docDate = Date.UTC(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
+                    var categoryData = [docDate, item.total];
+                    categoriesData.push(categoryData)
                 })
                 let series = []
-                series.push({ name: Resources['total'][currentLanguage], data: _data })
+                series.push({ name: Resources['total'][currentLanguage], data: categoriesData })
                 this.setState({ series, noClicks: noClicks + 1 });
             }
         ).catch(() => {
@@ -95,20 +88,27 @@ class projectBackLog extends Component {
         })
 
     }
-
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
-
     render() {
+        let tooltip = {
+            shared: true,
+            crosshairs: true,
+            formatter: function () {
+                var s = Highcharts.dateFormat('%A, %b %e, %Y', this.x) + '<br/> ' +
+                    '<b style="color: #7cb5ec">●</b> Total: ' + this.y;
+                return s;
+            }
+        }
         const Chart =
             <BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
+                tooltip={tooltip}
                 xAxis={null}
                 xAxisType='datetime'
                 title={Resources['projectsBackLog'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
-
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
@@ -118,40 +118,31 @@ class projectBackLog extends Component {
             : null
 
         return (
-
-            <div className='mainContainer main__fulldash'>
-                <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={''} docTitle={Resources.projectsBackLog[currentLanguage]} moduleTitle={Resources['projectReports'][currentLanguage]} />
-                    <div className='doc-container'>
-                        <div className='step-content'>
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input alternativeDate">
-                                        <DatePicker title='startDate'
-                                            startDate={this.state.startDate}
-                                            handleChange={e => this.handleChange('startDate', e)} />
-                                    </div>
-                                    <div className="linebylineInput valid-input alternativeDate">
-                                        <DatePicker title='finishDate'
-                                            startDate={this.state.finishDate}
-                                            handleChange={e => this.handleChange('finishDate', e)} />
-                                    </div>
-                                </div>
-                                <div className="fullWidthWrapper ">
-                                    <button className="primaryBtn-1 btn mediumBtn" type='submit' onClick={e => this.getData()}>{Resources['search'][currentLanguage]} </button>
-                                </div>
-                            </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {Chart}
-                            </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
-                            </div>
-                        </div>
+            <div className="reports__content">
+                <header>
+                    <h2 className="zero">{Resources.projectsBackLog[currentLanguage]}</h2>
+                    {btnExport}
+                </header>
+                <div className="proForm reports__proForm">
+                    <div className="linebylineInput valid-input alternativeDate">
+                        <DatePicker title='startDate'
+                            startDate={this.state.startDate}
+                            handleChange={e => this.handleChange('startDate', e)} />
                     </div>
+                    <div className="linebylineInput valid-input alternativeDate">
+                        <DatePicker title='finishDate'
+                            startDate={this.state.finishDate}
+                            handleChange={e => this.handleChange('finishDate', e)} />
+                    </div>
+                    <button className="primaryBtn-1 btn smallBtn" type='submit' onClick={e => this.getData()}>{Resources['search'][currentLanguage]} </button>
+
+                </div>
+                {this.state.showChart==true? 
+                <div className="doc-pre-cycle letterFullWidth">
+                    {Chart}
+                </div>:null}
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
                 </div>
             </div>
         )

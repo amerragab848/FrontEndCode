@@ -11,27 +11,19 @@ import Api from '../../../api';
 import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-
-
-
-
-
 class projectInvoicesCollected extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
             rows: []
         }
-
         if (!Config.IsAllow(3681)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             })
         }
-
         this.columns = [
             {
                 key: "projectName",
@@ -87,7 +79,6 @@ class projectInvoicesCollected extends Component {
             this.setState({ rows: res, isLoading: false })
         }).catch(() => { this.setState({ isLoading: false }) })
     }
-
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
@@ -98,21 +89,14 @@ class projectInvoicesCollected extends Component {
             : null
 
         return (
-
-            <div className='mainContainer main__fulldash'>
-                <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={''} docTitle={Resources.projectedInvoicedCollecetd[currentLanguage]} moduleTitle={Resources['projectReports'][currentLanguage]} />
-                    <div className='doc-container'>
-                        <div className='step-content'>
-                            <div className="document-fields">
-                                <div className=" fullWidthWrapper textRight">
-                                    {btnExport}
-                                </div>
-                            </div>
-                            <div className="doc-pre-cycle letterFullWidth">
-                                {dataGrid}
-                            </div>
-                        </div>
+            <div className="reports__content">
+                <header>
+                    <h2 className="zero">{Resources.projectedInvoicedCollecetd[currentLanguage]}</h2>
+                    {btnExport}
+                </header>
+                <div className='proForm reports__proForm'>
+                    <div className="doc-pre-cycle letterFullWidth">
+                        {dataGrid}
                     </div>
                 </div>
             </div>

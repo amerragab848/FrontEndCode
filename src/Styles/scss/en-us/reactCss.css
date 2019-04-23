@@ -3718,3 +3718,298 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
 .table__figure .table__figure--item p{
   font-family: font-r
 }
+
+
+.settings-container {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex; }
+.settings-container .settings-tabs-items {
+width: 256px;
+background-color: #FAFBFC;
+position: relative;
+z-index: 1;
+height: calc(100vh - 72px);
+border-right: 1px solid #E9ECF0; }
+.settings-container .settings-tabs-items h3 {
+  height: 72px;
+  padding-left: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  text-align: center;
+  color: #252833;
+  font-family: font-b;
+  font-size: 20px;
+  border-bottom: 1px solid #E9ECF0; }
+.settings-container .settings-tabs-items ul li {
+  padding-left: 40px;
+  height: 64px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-flow: column;
+  flex-flow: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative; }
+  .settings-container .settings-tabs-items ul li.title {
+    cursor: inherit;
+    padding-left: 0; }
+    .settings-container .settings-tabs-items ul li.title h4 {
+      margin: 25px 0;
+      padding-left: 40px;
+      font-family: font-xb;
+      font-size: 12px;
+      color: #a8b0bf;
+      line-height: 1.33;
+      letter-spacing: 1px;
+      text-transform: uppercase; }
+    .settings-container .settings-tabs-items ul li.title::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 84%;
+      height: 1px;
+      background-color: #E9ECF0;
+      left: 24px; }
+  .settings-container .settings-tabs-items ul li .subUlTitle {
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #252833;
+    font-size: 16px;
+    font-family: font-b; }
+  .settings-container .settings-tabs-items ul li .subUlsubT {
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    color: #A8B0BF;
+    font-size: 12px; }
+  .settings-container .settings-tabs-items ul li .activeArrow {
+    position: absolute;
+    right: 15px;
+    display: none;
+    top: 40%; }
+  .settings-container .settings-tabs-items ul li.active {
+    background-color: #cce6ff;
+    border-top-right-radius: 86px;
+    border-bottom-right-radius: 86px; }
+    .settings-container .settings-tabs-items ul li.active .subUlTitle {
+      color: #2557cc; }
+.settings-container .setting-tabs-contant {
+width: calc(100% - 256px); 
+}
+.settings-container .setting-tabs-contant .tab .minisettings-header {
+  height: 72px;
+  border-bottom: 1px solid #E9ECF0;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 46px 0 64px; }
+  .settings-container .setting-tabs-contant .tab .minisettings-header .title {
+    flex: 1; }
+    .settings-container .setting-tabs-contant .tab .minisettings-header .title h2 {
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833;
+      font-family: font-b;
+      font-size: 20px; }
+  .settings-container .setting-tabs-contant .tab .minisettings-header .action {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; }
+.settings-container .setting-tabs-contant .tab .has-tabs-in {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: calc(100vh - 144px);
+  background-color: #ffffff; }
+  .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs {
+    flex: 1.51;
+    border-right: 1px solid #E9ECF0;
+    min-width: 320px;
+    overflow: auto; }
+    .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs::-webkit-scrollbar {
+      width: 0px; }
+    .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li {
+      padding: 0px 40px;
+      cursor: pointer; }
+      .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li.active {
+        background-color: #f2f5f7; }
+      .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div {
+        display: flex;
+        position: relative;
+        border-bottom: 1px solid #E9ECF0;
+        padding: 11px 0; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-image {
+          width: 40px;
+          height: 40px;
+          margin-right: 16px; }
+          .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .name {
+          line-height: 1.5;
+          letter-spacing: -0.2px;
+          color: #252833;
+          font-family: font-b;
+          font-size: 16px; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .job-title {
+          line-height: 1.43;
+          letter-spacing: -0.2px;
+          color: #858d9e;
+          font-size: 14px;
+          font-family: font-r;
+          margin-bottom: 4px; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .status {
+          line-height: 1.33;
+          letter-spacing: -0.2px;
+          color: #3e4352;
+          font-family: font-opens;
+          font-size: 12px; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .date {
+          line-height: 1.33;
+          letter-spacing: -0.2px;
+          color: #858d9e;
+          position: absolute;
+          right: 0;
+          bottom: 12px; }
+  .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content {
+    flex: 2; }
+    .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab {
+      padding: 30px 46px 30px 56px; }
+      .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content {
+        display: flex;
+        position: relative;
+        align-items: center;
+        margin-bottom: 40px; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-image {
+          width: 112px;
+          height: 112px;
+          margin-right: 16px; }
+          .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .name {
+          line-height: 1.5;
+          letter-spacing: -0.2px;
+          color: #252833;
+          font-family: font-b;
+          font-size: 20px; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .job-title {
+          line-height: 1.43;
+          letter-spacing: -0.2px;
+          color: #858d9e;
+          font-size: 14px;
+          font-family: font-r;
+          margin-bottom: 9px; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .status {
+          line-height: 1.33;
+          letter-spacing: -0.2px;
+          color: #3e4352;
+          font-family: font-opens;
+          font-size: 12px; }
+        .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .date {
+          line-height: 1.33;
+          letter-spacing: -0.2px;
+          color: #858d9e;
+          position: absolute;
+          right: 0;
+          bottom: 12px; }
+      .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .bottom-content {
+        padding-top: 40px; }
+
+
+        .reports__menu {
+          height: 72px;
+          display: flex;
+          align-items: center;
+          border-bottom: 2px solid #e9ecf0;
+          padding: 0 30px;
+      }
+
+      .reports__menu label {
+          margin-right: 24px;
+          font-family: font-b;
+          font-size: 20px;
+          line-height: 1.4;
+          letter-spacing: -0.2px;
+          color: #252833;
+      }
+
+      .reposrts__menu--dropdown {
+          width: 248px;
+      }
+.reportsContainer {
+  background: #fff
+}
+      .reports__content {
+          padding-left: 32px;
+          padding-right: 40px;
+          padding-top: 35px;
+      }
+
+      .reports__content header {
+          display: flex;
+          align-items: center;
+          padding-bottom: 18px;
+          border-bottom: 1px solid #e9ecf0;
+      }
+
+      .reports__content header h2 {
+          margin-right: 24px;
+          font-family: font-r;
+          font-size: 24px;
+          line-height: 1.17;
+          letter-spacing: -0.5px;
+          color: #252833;
+      }
+
+      .reports__proForm {
+          display: flex;
+          flex-wrap: wrap;
+          margin: 44px 0;
+          align-items: flex-end;
+      }
+      .reports__proForm button {
+        margin-bottom: 16px;
+      }
+
+      .settings-container .setting-tabs-contant  .reports__proForm .linebylineInput {
+          display: flex;
+          flex-flow: column;
+          align-items: flex-start;
+          margin-right: 16px;
+          width: 192px;
+          margin-bottom: 16px 
+      }
+      .settings-container .setting-tabs-contant .reports__proForm .linebylineInput .linebylineInput {
+          margin-bottom: 0
+      }
+      .reports__proForm .linebylineInput .fillter-status.fillter-item-c {
+          width: 100%;
+      }
+
+      .reports__proForm .linebylineInput .inputDev.ui.input {
+          padding: 0;
+          margin-top: 4px;
+      }
+
+      .reports__proForm .linebylineInput .inputDev.ui.input input {
+          width: 192px;
+      }
+      .reports__content .charts__row {
+        display: block;
+        padding: 0
+      }
