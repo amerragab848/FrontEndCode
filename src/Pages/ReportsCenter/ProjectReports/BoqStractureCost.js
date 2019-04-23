@@ -7,41 +7,40 @@ import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
-import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import Api from '../../../api.js';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
+    selectedBoq: Yup.string()
+        .required(Resources['boqType'][currentLanguage])
         .nullable(true),
 });
-class ProjectInvoices extends Component {
+
+class BoqStractureCost extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            ProjectsData: [],
-            selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
+            BoqTypeData: [],
+            selectedBoq: [{ label: Resources.boqType[currentLanguage], value: "0" }],
             rows: []
         }
 
-        if (!Config.IsAllow(3691)) {
+        if (!Config.IsAllow(4019)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             })
         }
+
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 80,
+                key: "building",
+                name: Resources["Building"][currentLanguage],
+                width: 300,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -49,58 +48,28 @@ class ProjectInvoices extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            }, {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 50,
+                key: "code",
+                name: Resources["code"][currentLanguage],
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "balance",
-                name: Resources["balanceToFinish"][currentLanguage],
-                width: 140,
+                key: "exists",
+                name: Resources["exists"][currentLanguage],
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-            }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "createdBy",
-                name: Resources["createdBy"][currentLanguage],
-                width: 100,
+                key: "rowTotal",
+                name: Resources["rowTotal"][currentLanguage],
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -108,27 +77,34 @@ class ProjectInvoices extends Component {
                 sortDescendingFirst: true
             },
         ];
+
     }
 
     componentWillMount() {
-        Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
+        Dataservice.GetDataList('GetBoqStracture', 'title', 'id').then(
             result => {
                 this.setState({
-                    ProjectsData: result
+                    BoqTypeData: result
                 })
             }).catch(() => {
                 toast.error('somthing wrong')
             })
     }
 
+
     getGridRows = () => {
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('GetContractsInvoicesForPoByProjectIdWithOutPaging?projectId=' + this.state.selectedProject.value + '').then(
+        let selectedBoqLsit = []
+        this.state.selectedBoq.map(s => {
+            selectedBoqLsit.push(s.value)
+        })
+        Api.post('GetTotalBOQParentFromChild', selectedBoqLsit).then(
             res => {
                 this.setState({
                     rows: res.data,
                     isLoading: false
                 })
+                console.log(res)
             }
         ).catch(() => {
             this.setState({ isLoading: false })
@@ -136,44 +112,44 @@ class ProjectInvoices extends Component {
     }
 
     render() {
-
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'boqStractureCost'} />
             : null
 
         return (
-            <div className="reports__content">
+            <div className="reports__content reports__multiDrop">
                 <header>
-                    <h2 className="zero">{Resources.projectInvoices[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.boqStractureCost[currentLanguage]}</h2>
                     {btnExport}
                 </header>
                 <Formik
                     initialValues={{
-                        selectedProject: '',
+                        selectedBoq: '',
                     }}
                     enableReinitialize={true}
                     validationSchema={ValidtionSchema}
                     onSubmit={(values, actions) => {
-
                         this.getGridRows()
                     }}>
-                    >
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
-                            <div className="linebylineInput valid-input">
-                                <Dropdown className="fullWidthWrapper textLeft" title='Projects' data={this.state.ProjectsData} name='selectedProject'
-                                    selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedProject: e })}
+                        <Form onSubmit={handleSubmit} className="proForm reports__proForm">
+                            <div className="linebylineInput multiChoice">
+                                <Dropdown title='boqType' data={this.state.BoqTypeData} name='selectedBoq'
+                                    isMulti={true} value={this.state.selectedBoq} onChange={setFieldValue}
+                                    handleChange={e => this.setState({ selectedBoq: e })}
                                     onBlur={setFieldTouched}
-                                    error={errors.selectedProject}
-                                    touched={touched.selectedProject}
-                                    value={values.selectedProject} />
+                                    error={errors.selectedBoq}
+                                    touched={touched.selectedBoq}
+                                    value={values.selectedBoq} />
                             </div>
-                            <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                            <div className="linebylineInput ">
+
+                                <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                            </div>
                         </Form>
                     )}
                 </Formik>
@@ -181,9 +157,8 @@ class ProjectInvoices extends Component {
                     {dataGrid}
                 </div>
             </div>
-
         )
     }
 
 }
-export default withRouter(ProjectInvoices)
+export default withRouter(BoqStractureCost)

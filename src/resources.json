@@ -7373,7 +7373,7 @@
     "ar": "صرف المواد "
   },
   "executiveSummary": {
-    "en": "Executive ",
+    "en": "Executive Summary ",
     "ar": "ملخص المشاريع التنفيذية "
   },
   "countContract": {
@@ -7807,5 +7807,9 @@
   "mergeProjects": {
     "en": "Merge Projects",
     "ar": "دمج مشاريع"
+  },
+  "selectReport": {
+    "en": "-- Please Select Report --",
+    "ar": "-- برجاء إختيار تقرير --"
   }
 }

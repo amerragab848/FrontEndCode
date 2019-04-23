@@ -14,7 +14,7 @@ class WidgetsWithText extends Component {
       total: 0,
       open: false,
       detailsData: []
-    }; 
+    };
   }
 
   componentDidMount() {
@@ -23,13 +23,16 @@ class WidgetsWithText extends Component {
     let signal = this.abortController.signal;
 
     Api.get(this.props.props.api, signal).then(data => {
-      let _value = this.props.props.value.split("-");
-      let _total = this.props.props.total.split("-");
+       if (data) { 
+        let _value = this.props.props.value.split("-");
+        let _total = this.props.props.total.split("-");
 
-      this.setState({
-        count: data[_value[1]][_value[0]] != null ? data[_value[1]][_value[0]] : 0,
-        total: data[_total[1]][_total[0]] != null ? data[_total[1]][_total[0]] : 0
-      });
+        this.setState({
+          count: data[_value[1]][_value[0]] != null ? data[_value[1]][_value[0]] : 0,
+          total: data[_total[1]][_total[0]] != null ? data[_total[1]][_total[0]] : 0
+        });
+
+      }
     });
   }
 
@@ -37,16 +40,16 @@ class WidgetsWithText extends Component {
     this.abortController.abort();
   }
 
-  onOpenModal(){
-    if(this.state.count > 0){
-        this.props.history.push({
-          pathname: this.props.props.route,
-          search: "?key=" + this.props.props.key
-        });
-      }
+  onOpenModal() {
+    if (this.state.count > 0) {
+      this.props.history.push({
+        pathname: this.props.props.route,
+        search: "?key=" + this.props.props.key
+      });
+    }
   }
-  
-  render() { 
+
+  render() {
     return (
       <div>
         <div className="summerisItem">

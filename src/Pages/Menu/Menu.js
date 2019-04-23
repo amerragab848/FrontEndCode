@@ -41,7 +41,7 @@ class Menu extends Component {
       <div>
         {this.state.contactName ? <HeaderMenu contactName={this.state.contactName} profilePath={this.state.profilePath} /> : null}
          <LeftMenu appComponants={this.state.appComponants} /> 
-         <LeftReportMenu />
+         {/* <LeftReportMenu /> */}
          
       </div>
     );

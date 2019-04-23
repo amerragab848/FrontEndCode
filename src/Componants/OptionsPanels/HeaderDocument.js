@@ -9,7 +9,7 @@ class HeaderDocument extends Component {
         return (
             <div className="submittalHead">
                 <h2 className="zero">{this.props.docTitle}
-                    <span>{this.props.projectName.replace(/_/gi, ' ')} · {this.props.moduleTitle}</span>
+                    <span>{this.props.projectName} · {this.props.moduleTitle}</span>
                 </h2>
                 <div className="SubmittalHeadClose">
                     <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">

@@ -98,11 +98,11 @@ class HeaderMenu extends Component {
   }
 
   ReportCenterMenu(e) { 
-    this.props.actions.ReportCenterMenuClick();
+ //   this.props.actions.ReportCenterMenuClick();
     
-    // this.props.history.push({
-    //   pathname: "/ReportsMenu"
-    // });
+    this.props.history.push({
+      pathname: "/LeftReportMenu"
+    });
     
   }
 

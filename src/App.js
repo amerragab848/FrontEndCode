@@ -30,18 +30,18 @@ class App extends Component {
       : <Login />
     return (
       <Provider store={store}>
-        <Shield>
+        <ErrorHandler >
           <div>
             {showComp}
             <ToastContainer autoClose={3000} />
           </div>
-        </Shield>
+        </ErrorHandler >
       </Provider>
 
     );
   }
 }
-class Shield extends React.Component {
+class ErrorHandler  extends React.Component {
   constructor(props) {
     super(props);
     // Add some default error states
@@ -58,6 +58,8 @@ class Shield extends React.Component {
       error: error,
       info: info,
     }); 
+  //  logErrorToMyService(error, info);
+
   }
 
   render() {

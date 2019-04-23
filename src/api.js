@@ -20,8 +20,8 @@ export default class Api {
         }
     }
 
-    static get(route) {
-        return this.xhr(route, null, 'GET');
+    static get(route, params) {
+        return this.xhr(route, params === null ? null : params, 'GET');
     }
     static post(route, params) {
         return this.xhr(route, params, 'POST');
@@ -39,17 +39,17 @@ export default class Api {
         } : null);
 
         options.headers = Api.headers();
- 
+
         return fetch(url, options).then(resp => {
             if (resp.status === 200) {
-             
+
                 json = resp.json();
-                if(json===undefined)
-                return null;
+                if (json === undefined)
+                    return null;
                 return json;
             }
             else if (resp.status === 500) {
-                json = null; 
+                json = null;
                 toast.error('Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!');
 
                 return json;
@@ -112,7 +112,7 @@ export default class Api {
     }
 
     static GetPayload() {
-        var payload = []; 
+        var payload = [];
 
         return JSON.parse(payload);
     }
@@ -121,7 +121,7 @@ export default class Api {
         let userPermissions = [];
         let isCompany = true;
         if (localStorage.getItem("permissions")) {
-            let perms =  JSON.parse( CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
+            let perms = JSON.parse(CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
             userPermissions = perms;
         }
 
@@ -176,7 +176,7 @@ export default class Api {
 
         });//.then(res=>{return json});
 
-    } 
+    }
     static getPassword(route, password) {
 
         const host = Domain + '/api/Procoor/';
@@ -247,7 +247,7 @@ export default class Api {
             else if (resp.status === 401) {
 
                 localStorage.removeItem('userToken')
-                
+
                 window.location.reload();
             }
             return json.then(err => {
@@ -256,13 +256,13 @@ export default class Api {
         }).then(json => (json.result ? json.result : json));
     }
 
-    static authorizationApi(route, params,method) {
+    static authorizationApi(route, params, method) {
         const host = config.loginServer + '/api/'
         const url = `${host}${route}`;
         let json = null;
 
         let options = Object.assign({
-            method: method === null ? 'PUT':method
+            method: method === null ? 'PUT' : method
         }, params ? {
             body: JSON.stringify(params)
         } : null);
@@ -289,13 +289,13 @@ export default class Api {
             });
 
         }).then(json => (json.result ? json.result : json));
-    } 
+    }
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem('userToken')) {
             authorize = true;
         }
-         
+
         return authorize;
     }
 }

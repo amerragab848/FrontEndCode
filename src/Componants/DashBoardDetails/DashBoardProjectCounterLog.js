@@ -54,6 +54,14 @@ class DashBoardProjectCounterLog extends Component {
       };
     }
   }
+ 
+  componentWillMount = () => {
+
+    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
+
+    var e = { label: this.props.projectName, value: projectId };
+    this.props.actions.RouteToDashboardProject(e);
+  };
 
   componentDidMount() {
     if (this.state.apiDetails) {

@@ -1,44 +1,68 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
-import Highcharts from 'highcharts';
+import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
+import Dataservice from '../../../Dataservice';
 import Api from '../../../api';
-import BarChartComp from '../TechnicalOffice/BarChartComp'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
+
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 }
-class projectBackLog extends Component {
+
+class NewprojectList extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            noClicks: 0,
             ProjectsData: [],
-            selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
+            selectedProject: { label: Resources.projectSelection[currentLanguage], value: '' },
             rows: [],
             finishDate: moment(),
             startDate: moment(),
-            showChart:false
         }
-        if (!Config.IsAllow(3679)) {
+
+        if (!Config.IsAllow(3687)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             })
         }
+
         this.columns = [
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 300,
+                key: "projectName",
+                name: Resources["projectName"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "job",
+                name: Resources["projectCode"][currentLanguage],
+                width: 200,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "projectOpenDate",
+                name: Resources["openDate"][currentLanguage],
+                width: 170,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -47,100 +71,94 @@ class projectBackLog extends Component {
                 formatter: dateFormate
             },
             {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 300,
+                key: "projectCloseDate",
+                name: Resources["docClosedate"][currentLanguage],
+                width: 170,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
-            }
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            },
         ];
 
     }
-    getData = () => {
+
+
+    handleChange = (name, value) => {
+        this.setState({ [name]: value })
+    }
+
+    componentWillMount() {
+        Dataservice.GetDataList('SelectListType', 'title', 'id').then(
+            result => {
+                this.setState({
+                    ProjectsData: result
+                })
+            }).catch(() => {
+                toast.error('somthing wrong')
+            })
+    }
+
+
+    getGridRows = () => {
         this.setState({ isLoading: true })
         let reportobj = {
+            projectTypeId: this.state.selectedProject.value === '' ? '' : this.state.selectedProject.value,
             startDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finishDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            finishDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         }
-        let noClicks = this.state.noClicks;
-        Api.post('ProjectBackLogRpt', reportobj).then(
+        Api.post('NewProjectList', reportobj).then(
             res => {
                 this.setState({
                     rows: res,
-                    isLoading: false,showChart:true
+                    isLoading: false
                 })
-                let categoriesData = []
-                res.map(item => {
-                    var docDate = new Date(item.docDate);
-                    docDate = Date.UTC(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
-                    var categoryData = [docDate, item.total];
-                    categoriesData.push(categoryData)
-                })
-                let series = []
-                series.push({ name: Resources['total'][currentLanguage], data: categoriesData })
-                this.setState({ series, noClicks: noClicks + 1 });
             }
         ).catch(() => {
             this.setState({ isLoading: false })
         })
+    }
 
-    }
-    handleChange = (name, value) => {
-        this.setState({ [name]: value })
-    }
     render() {
-        let tooltip = {
-            shared: true,
-            crosshairs: true,
-            formatter: function () {
-                var s = Highcharts.dateFormat('%A, %b %e, %Y', this.x) + '<br/> ' +
-                    '<b style="color: #7cb5ec">●</b> Total: ' + this.y;
-                return s;
-            }
-        }
-        const Chart =
-            <BarChartComp
-                noClicks={this.state.noClicks}
-                series={this.state.series}
-                tooltip={tooltip}
-                xAxis={null}
-                xAxisType='datetime'
-                title={Resources['projectsBackLog'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
+
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectsBackLog'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'newprojectList'} />
             : null
 
         return (
+
+
             <div className="reports__content">
                 <header>
-                    <h2 className="zero">{Resources.projectsBackLog[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.newprojectList[currentLanguage]}</h2>
                     {btnExport}
                 </header>
                 <div className="proForm reports__proForm">
+                    <div className="linebylineInput valid-input">
+                        <Dropdown title='Projects'
+                            data={this.state.ProjectsData}
+                            selectedValue={this.state.selectedProject}
+                            handleChange={e => this.setState({ selectedProject: e })} />
+                    </div>
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}
                             handleChange={e => this.handleChange('startDate', e)} />
                     </div>
+
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='finishDate'
                             startDate={this.state.finishDate}
                             handleChange={e => this.handleChange('finishDate', e)} />
                     </div>
-                    <button className="primaryBtn-1 btn smallBtn" type='submit' onClick={e => this.getData()}>{Resources['search'][currentLanguage]} </button>
-
+                    <button className="primaryBtn-1 btn smallBtn" onClick={this.getGridRows}>{Resources['search'][currentLanguage]}</button>
                 </div>
-                {this.state.showChart==true? 
-                <div className="doc-pre-cycle letterFullWidth">
-                    {Chart}
-                </div>:null}
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
                 </div>
@@ -149,4 +167,4 @@ class projectBackLog extends Component {
     }
 
 }
-export default withRouter(projectBackLog)
+export default withRouter(NewprojectList)
