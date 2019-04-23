@@ -208,7 +208,7 @@ class inspectionRequestAddEdit extends Component {
             }
         } 
 
-    };
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document && nextProps.document.id) {
@@ -230,15 +230,13 @@ class inspectionRequestAddEdit extends Component {
             
       
         }
-    };
+    }
 
     componentDidUpdate(prevProps) {
          if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
-    }
-
-    
+    } 
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -322,7 +320,7 @@ class inspectionRequestAddEdit extends Component {
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
-    };
+    }
 
     GetNExtArrange() {
         let original_document = { ...this.state.document };
@@ -524,7 +522,7 @@ class inspectionRequestAddEdit extends Component {
                 });
             }
         }
-    };
+    }
 
     handleChange(e, field) {
 
@@ -952,6 +950,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     render() {
+       
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -962,8 +961,8 @@ class inspectionRequestAddEdit extends Component {
                 title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
-
-        ];
+        ]
+       
         return (
             <div className="mainContainer">
 
