@@ -306,7 +306,7 @@ class LeftMenu extends Component {
     }
 
     var e = { label: this.state.titleProject, value: this.state.projectId };
-
+    localStorage.setItem('moduleName', moduleName)
     this.props.actions.LeftMenuClick(e, moduleName);
 
   };

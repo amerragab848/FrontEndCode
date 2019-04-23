@@ -23,6 +23,10 @@ const StatusDropData = [
     { label: Resources.positive[currentLanguage], value: 1 },
     { label: Resources.negative[currentLanguage], value: 2 },
 ]
+
+const FixedNumber = ({ value }) => {
+    return value ? value.toFixed(2)  : '';
+}
 class ProjectBalanceReport extends Component {
     constructor(props) {
         super(props)
@@ -47,7 +51,7 @@ class ProjectBalanceReport extends Component {
             {
                 key: "projectName",
                 name: Resources["projectName"][currentLanguage],
-                width: 230,
+                width: 250,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -57,7 +61,7 @@ class ProjectBalanceReport extends Component {
             {
                 key: "referenceCode",
                 name: Resources["referenceCode"][currentLanguage],
-                width: 170,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -67,31 +71,34 @@ class ProjectBalanceReport extends Component {
             {
                 key: "totalExpenses",
                 name: Resources["expensesTotal"][currentLanguage],
-                width: 150,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true ,
+                formatter:FixedNumber
             }, {
                 key: "totalBudgeted",
                 name: Resources["totalBudgeted"][currentLanguage],
-                width: 150,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
+                formatter:FixedNumber
             },
             {
                 key: "balance",
                 name: Resources["balance"][currentLanguage],
-                width: 120,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter:FixedNumber
             },
         ];
 

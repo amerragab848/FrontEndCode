@@ -638,7 +638,7 @@ function mapStateToProps(state, ownProps) {
     showLeftMenu: state.communication.showLeftMenu,
     showSelectProject: state.communication.showSelectProject,
     projectName: state.communication.projectName,
-    moduleName: state.communication.moduleName,
+    moduleName: state.communication.moduleName
   }
 }
 
