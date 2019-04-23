@@ -122,9 +122,7 @@ import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/proje
 
 import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
-<<<<<<< HEAD
 import LeftReportMenu from './Pages/Menu/LeftReportMenu';
-=======
 import ActiveProjectsReport from './Pages/ReportsCenter/ProjectReports/ActiveProjectsReport';
 import NewprojectList from './Pages/ReportsCenter/ProjectReports/NewprojectList';
 import MaterialStatusReport from './Pages/ReportsCenter/ProjectReports/MaterialStatusReport';
@@ -133,7 +131,6 @@ import BoqTemplateReport from './Pages/ReportsCenter/ProjectReports/BoqTemplateR
 import InventoryDetails from './Pages/ReportsCenter/ProjectReports/InventoryDetails';
 import BoqStractureCost from './Pages/ReportsCenter/ProjectReports/BoqStractureCost';
 
->>>>>>> 61be99dcf06618422886d7db64ef2e68cbb5c32c
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
