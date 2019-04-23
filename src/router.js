@@ -50,7 +50,7 @@ import phoneAddEdit from './Pages/Communication/phoneAddEdit';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 import ProjectSetup from './Pages/ProjectSetup/ProjectSetup'
 import reportsAddEdit from './Pages/Communication/reportsAddEdit';
-import OldAppNavigation from './OldAppNavigation';
+//import OldAppNavigation from './OldAppNavigation';
 import DashboardProject from './DashboardProject';
 import TransmittalAddEdit from "../src/Pages/Communication/TransmittalAddEdit";
 import meetingMinutesAddEdit from "../src/Pages/Communication/MeetingMinutesAddEdit";
@@ -115,12 +115,25 @@ import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocu
 import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
 import ProjectsList from './Pages/ReportsCenter/ProjectReports/ProjectsList';
 import CashFlowReport from './Pages/ReportsCenter/ProjectReports/CashFlowReport';
-import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
+
 import ProjectBackLog from './Pages/ReportsCenter/ProjectReports/projectBackLog';
 import ProjectsAchievements from './Pages/ReportsCenter/ProjectReports/projectsAchievements';
 import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/projectInvoicesCollected';
+
+import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
+<<<<<<< HEAD
 import LeftReportMenu from './Pages/Menu/LeftReportMenu';
+=======
+import ActiveProjectsReport from './Pages/ReportsCenter/ProjectReports/ActiveProjectsReport';
+import NewprojectList from './Pages/ReportsCenter/ProjectReports/NewprojectList';
+import MaterialStatusReport from './Pages/ReportsCenter/ProjectReports/MaterialStatusReport';
+import BoqTemplateReport from './Pages/ReportsCenter/ProjectReports/BoqTemplateReport';
+
+import InventoryDetails from './Pages/ReportsCenter/ProjectReports/InventoryDetails';
+import BoqStractureCost from './Pages/ReportsCenter/ProjectReports/BoqStractureCost';
+
+>>>>>>> 61be99dcf06618422886d7db64ef2e68cbb5c32c
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -249,6 +262,17 @@ let originalRoutes = [
     , <Route path="/ProjectsList" component={ProjectsList} />
     , <Route path="/CashFlowReport" component={CashFlowReport} />
     , <Route path="/ProjectBalanceReport" component={ProjectBalanceReport} />
+    , <Route path="/ActiveProjectsReport" component={ActiveProjectsReport} />
+    , <Route path="/NewprojectList" component={NewprojectList} />
+    , <Route path="/MaterialStatusReport" component={MaterialStatusReport} />
+    , <Route path="/BoqTemplateReport" component={BoqTemplateReport} />
+    , <Route path="/BoqStractureCost" component={BoqStractureCost} />
+    , <Route path="/InventoryDetails" component={InventoryDetails} />
+    
+
+
+
+
     , <Route path="/projectBackLog" component={ProjectBackLog} />
     , <Route path="/projectsAchievements" component={ProjectsAchievements} />
     , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />

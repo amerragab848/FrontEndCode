@@ -16,7 +16,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetTotalPoForProjectId?projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -34,7 +33,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetMaterialRequestCountingForProject?projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -52,7 +50,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetTotalPaymentForProject?projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -80,7 +77,6 @@ var DashBoardWidgets = [
         type:"twoWidget",
         props: {
           api: "GetApprocalStatusCount?status=true&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total-0",
           total: "total-1",
@@ -98,7 +94,6 @@ var DashBoardWidgets = [
         type:"twoWidget",
         props: {
           api: "getOpenedDocumentsCount?docType=42&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
@@ -116,7 +111,6 @@ var DashBoardWidgets = [
         type:"twoWidget",
         props: {
           api: "GetApprocalStatusCount?status=false&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total-0",
           total: "total-1",
@@ -144,7 +138,6 @@ var DashBoardWidgets = [
         type:"twoWidget",
         props: {
           api: "getOpenedDocumentsCount?docType=19&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
@@ -162,7 +155,6 @@ var DashBoardWidgets = [
         type:"twoWidget",
         props: {
           api: "getOpenedDocumentsCount?docType=25&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
@@ -180,7 +172,6 @@ var DashBoardWidgets = [
         type:"twoWidget",
         props: {
           api: "GetRfiOpenCount?projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total-0",
           total: "total-1",
@@ -198,7 +189,6 @@ var DashBoardWidgets = [
         type:"twoWidget",
         props: {
           api: "getOpenedDocumentsCount?docType=28&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
@@ -226,7 +216,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetCountinspectionForProject?status=null&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -244,7 +233,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetCountinspectionForProject?status=false&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -262,7 +250,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetCountinspectionForProject?status=true&projectId=",
-          apiDetails: "",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -290,7 +277,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetAvgTimeRespond?isMonthly=false&docType=19&projectId=",
-          apiDetails: "",
           route: "",
           value: "total",
           listType: "item",
@@ -307,7 +293,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetAvgTimeRespond?isMonthly=false&docType=28&projectId=",
-          apiDetails: "",
           route: "",
           value: "total",
           listType: "item",
@@ -325,7 +310,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetAvgTimeRespond?isMonthly=false&docType=25&projectId=",
-          apiDetails: "",
           route: "",
           value: "total",
           listType: "item",
@@ -343,7 +327,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetAvgTimeRespond?isMonthly=false&docType=103&projectId=",
-          apiDetails: "",
           route: "",
           value: "total",
           listType: "item",
@@ -361,7 +344,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetAvgTimeRespond?isMonthly=false&docType=23&projectId=",
-          apiDetails: "",
           route: "",
           value: "total",
           listType: "item",
@@ -379,7 +361,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetAvgTimeRespond?isMonthly=false&docType=42&projectId=",
-          apiDetails: "",
           route: "",
           value: "total",
           listType: "item",
@@ -397,7 +378,6 @@ var DashBoardWidgets = [
         type:"oneWidget",
         props: {
           api: "GetAvgTimeRespond?isMonthly=false&docType=70&projectId=",
-          apiDetails: "",
           route: "",
           value: "total",
           listType: "item",

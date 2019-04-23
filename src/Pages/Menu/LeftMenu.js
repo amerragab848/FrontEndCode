@@ -19,8 +19,8 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 let currentProjectId = localStorage.getItem("lastSelectedProject") == null ? 0 : localStorage.getItem("lastSelectedProject");
 let currentProjectName = localStorage.getItem("lastSelectedprojectName") == null ? null : localStorage.getItem("lastSelectedprojectName");
 
-var viewModules = false;
-var viewEps = true;
+var viewModules = true;
+var viewEps = false;
 var viewProjects = false;
 var accordion = true;
 var viewSubMenu = false;
@@ -129,6 +129,7 @@ class LeftMenu extends Component {
     });
 
     if (this.state.ActivePanal != 0) {
+
       if (this.state.ActivePanal === 1) {
         this.setState(state => {
           return {
@@ -137,9 +138,11 @@ class LeftMenu extends Component {
             viewProjects: false
           };
         });
+
         viewEps = true;
         viewModules = false;
         viewProjects = false;
+
       } else {
         this.setState(state => {
           return {
@@ -148,15 +151,18 @@ class LeftMenu extends Component {
             viewProjects: false
           };
         });
+
         viewEps = false;
         viewModules = true;
         viewProjects = false;
       }
+
     }
   };
 
   ProjectHandler = () => {
     if (this.state.viewProjects === false) {
+
       this.setState(state => {
         return {
           viewEps: false,
@@ -164,12 +170,17 @@ class LeftMenu extends Component {
           viewProjects: true
         };
       });
+
       viewEps = false;
       viewModules = false;
       viewProjects = true;
+
     } else {
+
       if (this.state.ActivePanal != 0) {
+
         if (this.state.ActivePanal === 1) {
+
           this.setState(state => {
             return {
               viewEps: true,
@@ -177,9 +188,11 @@ class LeftMenu extends Component {
               viewProjects: false
             };
           });
+
           viewEps = true;
           viewModules = false;
           viewProjects = false;
+
         } else {
           this.setState(state => {
             return {
@@ -204,11 +217,13 @@ class LeftMenu extends Component {
         viewEps = true;
       }
     }
+
     this.setState(state => {
       return {
         projectId: state.projectId
       };
     });
+
   };
 
   EpsHandler = (id, index) => {
@@ -329,7 +344,7 @@ class LeftMenu extends Component {
 
     var e = { label: titleProject, value: projectId };
     let moduleName = this.state.moduleName;
-     
+
     this.props.actions.LeftMenuClick(e, moduleName);
     localStorage.setItem("lastSelectedProject", projectId);
     localStorage.setItem("lastSelectedprojectName", titleProject);
@@ -436,7 +451,7 @@ class LeftMenu extends Component {
     }
   };
 
-  render() { 
+  render() {
     return (
       <div>
         {this.props.showLeftMenu === true ?
@@ -457,10 +472,6 @@ class LeftMenu extends Component {
               <aside className="mainSideNav">
                 <div className={this.state.hover ? "mainSidenavContent hover" : "mainSidenavContent"} >
                   <div className="sidenavinner">
-                    <div className={viewProjects ? "ProjectsUlList active" : "ProjectsUlList hidden"}>
-                      <ul className="zero">{this.ComponentName()}</ul>
-                    </div>
-
                     <div className={(viewEps) ? "MainProjectsMenu active " : "MainProjectsMenu hidden"} >
                       <div className="backToModules" onClick={this.ModuleHandler}>
                         {this.state.projectId ? (
@@ -675,54 +686,17 @@ class LeftMenu extends Component {
                         <li className={this.state.rowIndex === 4 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 4 ? "title active" : "title"} onClick={() => this.OpenSubMenu(4, Resources["technicalOffice"][currentLanguage])}>
                             <span className="ULimg">
-                              <svg
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                              >
-                                <g
-                                  id="Symbols"
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <g
-                                    id="Components/Nav/Side-left/Closed/Base"
-                                    transform="translate(-32.000000, -451.000000)"
-                                  >
+                              <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"                              >
+                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                                  <g id="Components/Nav/Side-left/Closed/Base" transform="translate(-32.000000, -451.000000)">
                                     <g id="Group-3">
-                                      <g
-                                        id="Group-2"
-                                        transform="translate(0.000000, 160.000000)"
-                                      >
-                                        <g
-                                          id="Group-14"
-                                          transform="translate(0.000000, 272.000000)"
-                                        >
-                                          <g
-                                            id="Action-icons/Navigation/Technical-office/Line/36px/Grey_base"
-                                            transform="translate(26.000000, 13.000000)"
-                                          >
+                                      <g id="Group-2" transform="translate(0.000000, 160.000000)">
+                                        <g id="Group-14" transform="translate(0.000000, 272.000000)">
+                                          <g id="Action-icons/Navigation/Technical-office/Line/36px/Grey_base" transform="translate(26.000000, 13.000000)"                                          >
                                             <g id="tcncl-ofc">
-                                              <rect
-                                                id="bg"
-                                                fill="#80CBC4"
-                                                opacity="0"
-                                                x="0"
-                                                y="0"
-                                                width="36"
-                                                height="36"
-                                              />
-                                              <path
-                                                d="M20.8386058,14.4397103 L20.8386058,16.8715936 L20.8285105,16.8715936 L20.8285105,27.5681292 L25.7294128,27.5681292 L25.7294128,17.218559 C25.7294128,17.0271398 25.5702444,16.8715936 25.3743677,16.8715936 L22.1820198,16.8715936 L22.1820198,14.4397103 L25.3743677,14.4397103 C26.1281491,14.4397103 26.8516805,14.7327173 27.3848896,15.2537842 C27.9181045,15.7748568 28.2179273,16.4819019 28.2179273,17.218559 L28.2179273,27.5681268 L28.7557427,27.5681167 C29.4432151,27.5681167 30,28.1122308 30,28.7840583 C30,29.4558877 29.4432228,30 28.7557427,30 L7.24425727,30 C6.55678492,30 6,29.4558859 6,28.7840583 C6,28.112229 6.55677724,27.5681167 7.24425727,27.5681167 L7.78458734,27.5681167 L7.78458734,10.6543371 C7.78458734,9.98275009 8.34236314,9.43839542 9.0288446,9.43839542 L9.86368046,9.43839542 L9.86368046,8.46626726 C9.86368046,7.10456322 10.9939656,6 12.3873796,6 L16.2257054,6 C17.6199969,6 18.7494046,7.10420142 18.7494046,8.46626726 L18.7494046,9.43839542 L19.5842404,9.43839542 C19.91444,9.43839542 20.2306554,9.56652382 20.4640269,9.79458448 C20.6973962,10.022643 20.8285105,10.3316739 20.8285105,10.6543496 L20.8285105,14.4397103 L20.8386058,14.4397103 Z M10.2731147,11.8702912 L10.2731147,27.5681292 L18.339996,27.5681292 L18.339996,11.8702912 L10.2731147,11.8702912 Z M16.2609156,9.43842042 L16.2609156,8.46629226 C16.2609156,8.45712656 16.2572966,8.44859676 16.2505612,8.44201463 C16.2438302,8.43543688 16.2350909,8.43189581 16.2257182,8.43189581 L12.3873924,8.43189581 C12.3683038,8.43189581 12.3522078,8.44760411 12.3522078,8.46627976 L12.3522078,9.43842042 L16.2609156,9.43842042 Z M11.3003658,14.4678302 L17.2113876,14.4678302 L17.2113876,16.5683772 L11.3003658,16.5683772 L11.3003658,14.4678302 Z M11.3003658,17.7499349 L17.2113876,17.7499349 L17.2113876,19.8504819 L11.3003658,19.8504819 L11.3003658,17.7499349 Z M11.3003658,21.0320396 L17.2113876,21.0320396 L17.2113876,23.1325866 L11.3003658,23.1325866 L11.3003658,21.0320396 Z"
-                                                id="Combined-Shape"
-                                                fill="#858D9E"
-                                                fillRule="nonzero"
-                                              />
+                                              <rect id="bg" fill="#80CBC4" opacity="0" x="0" y="0" width="36" height="36" />
+                                              <path d="M20.8386058,14.4397103 L20.8386058,16.8715936 L20.8285105,16.8715936 L20.8285105,27.5681292 L25.7294128,27.5681292 L25.7294128,17.218559 C25.7294128,17.0271398 25.5702444,16.8715936 25.3743677,16.8715936 L22.1820198,16.8715936 L22.1820198,14.4397103 L25.3743677,14.4397103 C26.1281491,14.4397103 26.8516805,14.7327173 27.3848896,15.2537842 C27.9181045,15.7748568 28.2179273,16.4819019 28.2179273,17.218559 L28.2179273,27.5681268 L28.7557427,27.5681167 C29.4432151,27.5681167 30,28.1122308 30,28.7840583 C30,29.4558877 29.4432228,30 28.7557427,30 L7.24425727,30 C6.55678492,30 6,29.4558859 6,28.7840583 C6,28.112229 6.55677724,27.5681167 7.24425727,27.5681167 L7.78458734,27.5681167 L7.78458734,10.6543371 C7.78458734,9.98275009 8.34236314,9.43839542 9.0288446,9.43839542 L9.86368046,9.43839542 L9.86368046,8.46626726 C9.86368046,7.10456322 10.9939656,6 12.3873796,6 L16.2257054,6 C17.6199969,6 18.7494046,7.10420142 18.7494046,8.46626726 L18.7494046,9.43839542 L19.5842404,9.43839542 C19.91444,9.43839542 20.2306554,9.56652382 20.4640269,9.79458448 C20.6973962,10.022643 20.8285105,10.3316739 20.8285105,10.6543496 L20.8285105,14.4397103 L20.8386058,14.4397103 Z M10.2731147,11.8702912 L10.2731147,27.5681292 L18.339996,27.5681292 L18.339996,11.8702912 L10.2731147,11.8702912 Z M16.2609156,9.43842042 L16.2609156,8.46629226 C16.2609156,8.45712656 16.2572966,8.44859676 16.2505612,8.44201463 C16.2438302,8.43543688 16.2350909,8.43189581 16.2257182,8.43189581 L12.3873924,8.43189581 C12.3683038,8.43189581 12.3522078,8.44760411 12.3522078,8.46627976 L12.3522078,9.43842042 L16.2609156,9.43842042 Z M11.3003658,14.4678302 L17.2113876,14.4678302 L17.2113876,16.5683772 L11.3003658,16.5683772 L11.3003658,14.4678302 Z M11.3003658,17.7499349 L17.2113876,17.7499349 L17.2113876,19.8504819 L11.3003658,19.8504819 L11.3003658,17.7499349 Z M11.3003658,21.0320396 L17.2113876,21.0320396 L17.2113876,23.1325866 L11.3003658,23.1325866 L11.3003658,21.0320396 Z"
+                                                id="Combined-Shape" fill="#858D9E" fillRule="nonzero" />
                                             </g>
                                           </g>
                                         </g>
@@ -909,43 +883,18 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
 
-                        <li className={this.state.rowIndex === 8 ? "ActiveSubLi" : ""}>
+                        {/* <li className={this.state.rowIndex === 8 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 8 ? "title active" : "title"} onClick={() => this.OpenSubMenu(8, Resources["projectEstimation"][currentLanguage])}>
                             <span className="ULimg">
-                              <svg
-                                width="36px"
-                                height="36px"
-                                viewBox="0 0 36 36"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                              >
-                                <g
-                                  id="Symbols"
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
+                              <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlnsXlink="http://www.w3.org/1999/xlink"                              >
+                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                                   <g id="Action-icons/Navigation/Estimation/Line/36px/Grey_base">
                                     <g id="estimation">
-                                      <rect
-                                        id="bg"
-                                        fill="#80CBC4"
-                                        opacity="0"
-                                        x="0"
-                                        y="0"
-                                        width="36"
-                                        height="36"
-                                      />
+                                      <rect id="bg" fill="#80CBC4" opacity="0" x="0" y="0" width="36" height="36" />
                                       <path
                                         d="M29.9184939,10.147091 C30.0992128,10.8750576 29.9771806,11.6277153 29.5745841,12.2661402 C29.1717713,12.9049347 28.5358195,13.3538753 27.7849055,13.5291977 C27.5605611,13.5807146 27.3331227,13.6071804 27.1086045,13.6071804 C27.0111617,13.6071804 26.9134705,13.6020045 26.8149257,13.5918368 L22.3296801,21.7803001 C22.623118,22.2256714 22.7826384,22.7423044 22.7826384,23.2809556 C22.7826384,24.8266646 21.4864069,26.0841007 19.8930084,26.0841007 C18.2996099,26.0841007 17.0033784,24.8266646 17.0033784,23.2809556 C17.0033784,22.9250131 17.0740383,22.5769872 17.2087962,22.2489689 L14.0446267,18.3093319 C13.8087932,18.3690416 13.5659728,18.3996666 13.3194379,18.3996666 C13.2467559,18.3996666 13.1735725,18.3964686 13.0980625,18.3902143 L10.900511,23.1881149 C11.4567002,23.7117817 11.77926,24.4295027 11.77926,25.1968549 C11.77926,26.7425639 10.4830285,28 8.88963,28 C7.29623152,28 6,26.7425639 6,25.1968549 C6,23.7262525 7.1756206,22.5139591 8.66912882,22.4040133 L11.0142706,17.2847089 C10.6380935,16.8015964 10.4298079,16.2146159 10.4298079,15.5976054 C10.4298079,14.0518963 11.7260394,12.7944603 13.3194379,12.7944603 C14.9128363,12.7944603 16.2090679,14.0518963 16.2090679,15.5976054 C16.2090679,16.0458591 16.0982628,16.4792552 15.890122,16.87186 L18.9188497,20.6439085 C19.2301289,20.5354779 19.5584009,20.4789017 19.8930387,20.4789017 C20.0434556,20.4789017 20.1935677,20.4909505 20.3434375,20.5144412 L24.7644033,12.4418715 C24.5461436,12.1472897 24.3879419,11.8156647 24.2994298,11.4587947 C24.1198596,10.73066 24.2421469,9.97816402 24.6446152,9.33994254 C25.0479934,8.70129306 25.6844565,8.25199087 26.4331595,8.07822515 C26.6549672,8.02625194 26.882822,8 27.1105056,8 C28.4494523,8 29.6046392,8.88347111 29.9184939,10.147091 Z M19.891977,24.2447665 C20.4406038,24.2447665 20.8856531,23.8130372 20.8856531,23.2808305 C20.8856531,22.7495802 20.4396179,22.3168946 19.891977,22.3168946 C19.3443361,22.3168946 18.8983009,22.7495802 18.8983009,23.2808305 C18.8983009,23.8120808 19.3443361,24.2447665 19.891977,24.2447665 Z M27.9568932,11.3062541 C28.0955463,11.0862706 28.1376744,10.826576 28.0746089,10.5756252 C27.9674106,10.1422183 27.5705262,9.83817013 27.1103286,9.83817013 C27.030814,9.83817013 26.95152,9.84738783 26.8745294,9.8660591 C26.6180489,9.9273145 26.3995118,10.0813809 26.261793,10.2998787 C26.1235243,10.5192555 26.0809466,10.7796288 26.1429556,11.0290124 C26.2708326,11.5416703 26.8101786,11.8642362 27.3419301,11.7405864 C27.5995091,11.6803209 27.8187149,11.5254534 27.9568932,11.3062541 Z"
-                                        id="Shape"
-                                        stroke="#A8B0BF"
-                                        strokeWidth="0.2"
-                                        fill="#A8B0BF"
-                                        fillRule="nonzero"
-                                      />
+                                        id="Shape" stroke="#A8B0BF" strokeWidth="0.2" fill="#A8B0BF" fillRule="nonzero" />
                                     </g>
                                   </g>
                                 </g>
@@ -964,7 +913,7 @@ class LeftMenu extends Component {
                               );
                             })}
                           </ul>
-                        </li>
+                        </li> */}
                         <li className={this.state.rowIndex === 9 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 9 ? "title active" : "title"} onClick={() => this.OpenSubMenu(9, Resources["qualityControlList"][currentLanguage])}>
                             <span className="ULimg">
@@ -1093,7 +1042,7 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
-                        <li className={this.state.rowIndex === 11 ? "ActiveSubLi" : ""}>
+                        {/* <li className={this.state.rowIndex === 11 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 11 ? "title active" : "title"} onClick={() => this.OpenSubMenu(11, Resources["reportsCenter"][currentLanguage])}>
                             <span className="ULimg">
                               <svg
@@ -1146,7 +1095,7 @@ class LeftMenu extends Component {
                               );
                             })}
                           </ul>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   </div>

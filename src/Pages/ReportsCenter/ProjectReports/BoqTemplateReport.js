@@ -16,18 +16,16 @@ const dateFormate = ({ value }) => {
 }
 
 
-class InvoicesLogReport extends Component {
+class BoqTemplateReport extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            ProjectsData: [],
-            selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
             rows: []
         }
 
-        if (!Config.IsAllow(194)) {
+        if (!Config.IsAllow(3690)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -36,8 +34,17 @@ class InvoicesLogReport extends Component {
 
         this.columns = [
             {
-                key: "projectCode",
-                name: Resources["projectCode"][currentLanguage],
+                key: "arrange",
+                name: Resources["numberAbb"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "textStatus",
+                name: Resources["status"][currentLanguage],
                 width: 100,
                 draggable: true,
                 sortable: true,
@@ -56,15 +63,23 @@ class InvoicesLogReport extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
+                key: "projectName",
+                name: Resources["projectName"][currentLanguage],
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                sortDescendingFirst: true
+            }, {
+                key: "companyName",
+                name: Resources["CompanyName"][currentLanguage],
+                width: 200,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
             }, {
                 key: "docCloseDate",
                 name: Resources["docClosedate"][currentLanguage],
@@ -75,30 +90,41 @@ class InvoicesLogReport extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: dateFormate
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "balance",
-                name: Resources["balanceToFinish"][currentLanguage],
-                width: 140,
+                key: "docDate",
+                name: Resources["docDate"][currentLanguage],
+                width: 160,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: 150,
+                key: "disciplineName",
+                name: Resources["disciplineName"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "openedBy",
+                name: Resources["openedBy"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "closedBy",
+                name: Resources["closedBy"][currentLanguage],
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -108,13 +134,64 @@ class InvoicesLogReport extends Component {
             {
                 key: "lastEditBy",
                 name: Resources["lastEdit"][currentLanguage],
-                width: 120,
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "lastEditDate",
+                name: Resources["lastEditDate"][currentLanguage],
+                width: 160,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            }, {
+                key: "lastSendTime",
+                name: Resources["lastSendTime"][currentLanguage],
+                width: 160,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
             },
+            {
+                key: "lastSendDate",
+                name: Resources["lastSendDate"][currentLanguage],
+                width: 160,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            },
+            {
+                key: "lastApproveTime",
+                name: Resources["lastApprovedTime"][currentLanguage],
+                width: 160,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "lastApproveDate",
+                name: Resources["lastApproveDate"][currentLanguage],
+                width: 160,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: dateFormate
+            }
         ];
 
     }
@@ -124,7 +201,7 @@ class InvoicesLogReport extends Component {
 
     componentWillMount() {
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('GetContractsInvoicesForPo').then(
+        Dataservice.GetDataGrid('GetBoqIsTemplate?pageNumber=0&pageSize=200').then(
             res => {
                 this.setState({
                     rows: res,
@@ -150,7 +227,7 @@ class InvoicesLogReport extends Component {
                 columns={this.columns} onRowClick={this.OnRowClick} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'invoicesReport'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'boqTemplateReport'} />
             : null
 
         return (
@@ -160,7 +237,7 @@ class InvoicesLogReport extends Component {
                 <div className="documents-stepper noTabs__document">
 
                     <div className="submittalHead">
-                        <h2 className="zero">{Resources['invoicesReport'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['boqTemplateReport'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose">
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -202,4 +279,4 @@ class InvoicesLogReport extends Component {
     }
 
 }
-export default withRouter(InvoicesLogReport)
+export default withRouter(BoqTemplateReport)
