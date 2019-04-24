@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import 'react-table/react-table.css'
+import React, { Component } from 'react' 
 import pdf from '../../Styles/images/pdfAttache.png'
 import xlsx from '../../Styles/images/attatcheXLS.png'
 import doc from '../../Styles/images/attatcheDOC.png'

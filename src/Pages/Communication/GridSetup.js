@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
-import { ToolsPanel, Data, Filters, Draggable } from "react-data-grid-addons";
+import { ToolsPanel, Data, Draggable, Filters } from "react-data-grid-addons";
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
@@ -40,6 +39,7 @@ class GridSetup extends Component {
   componentDidMount() {
     this.scrolllll();
   }
+
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
 
@@ -87,13 +87,11 @@ class GridSetup extends Component {
     } else {
       delete newFilters[filter.column.key];
     }
-    //console.log(newFilters);
     return newFilters;
   };
 
   getValidFilterValues = (rows, columnId) => {
-    let ar = rows
-      .map(r => r[columnId])
+    rows.map(r => r[columnId])
       .filter((item, i, a) => {
         return i === a.indexOf(item);
       });
@@ -190,7 +188,7 @@ class GridSetup extends Component {
     if (this.props.selectedRows != undefined) {
       this.props.selectedRows(this.state.selectedRows);
     }
-    
+
   };
 
   onRowsDeselected = rows => {
@@ -271,28 +269,12 @@ class GridSetup extends Component {
   onselectRowEven = ({ selectedRows }) => {
     if (this.props.onselectRowEven)
       this.props.onselectRowEven(selectedRows)
-    console.log('onselectRowEven', selectedRows)
   };
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    // if (fromRow === toRow) {
     if (this.props.onGridRowsUpdated != undefined) {
       this.props.onGridRowsUpdated({ fromRow, toRow, updated })
-      console.log(fromRow, toRow, updated)
-    } //else {
-    // alert('in elses');
-    // this.setState(state => {
-    //   const rows = state.rows.slice();
-    //   for (let i = fromRow; i <= toRow; i++) {
-    //     rows[i] = { ...rows[i], ...updated };
-    //   }
-    //   return { rows };
-    // });
-    //  }
-    // }else{
-    //   console.log('else....',fromRow,toRow,updated)
-
-    // }
+    }
   };
 
   scrolllll() {
@@ -309,31 +291,33 @@ class GridSetup extends Component {
   }
 
   render() {
-    const { rows, groupBy } = this.state;
-    const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-    //    console.log("groupedRows....", groupedRows.length);
+    const { rows, groupBy, filters } = this.state;
+    const groupedRows = Data.Selectors.getRows({ rows, groupBy, filters });
+
+    //const groupedRows = Data.Selectors.getRows({ rows, filters });
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
       groupBy,
       onColumnGroupAdded,
-      onColumnGroupDeleted
+      onColumnGroupDeleted,
+      onAddFilter,
+      onClearFilters
     }) => {
       return (
-        <Toolbar>
+        <Toolbar >
           <GroupedColumnsPanel
             groupBy={groupBy}
             onColumnGroupAdded={onColumnGroupAdded}
             onColumnGroupDeleted={onColumnGroupDeleted}
+            onAddFilter={onAddFilter}
+            onClearFilters={onClearFilters}
             noColumnsSelectedMessage={drag}
           />
           {this.state.selectedRows.length > 0 ? (
             <div className="gridSystemSelected active">
               <div className="tableselcted-items">
-                <span id="count-checked-checkboxes">
-                  {this.state.selectedRows.length}{" "}
-                </span>
-                <span>Selected</span>
+                <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
               </div>
               <div className="tableSelctedBTNs">
                 {this.props.addLevel ? null : <button
@@ -372,8 +356,6 @@ class GridSetup extends Component {
         </Toolbar>
       );
     };
-
-
     return (
       <div className="grid-container">
         <div id="top__scroll">
@@ -388,15 +370,15 @@ class GridSetup extends Component {
               minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 650)) : 1}
               height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
               columns={this.state.columns}
+
               rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
               rowsCount={groupedRows != undefined ? groupedRows.length : 1}
+
               enableCellSelect={true}
               onGridRowsUpdated={this.onGridRowsUpdated}
               onCellSelected={this.onCellSelected}
-
               onColumnResize={(idx, width, event) => {
                 this.scrolllll();
-
                 //console.log(this.state.columns[idx-1]);
                 // console.log(`Column ${idx} has been resized to ${width}`);
               }}
@@ -406,8 +388,9 @@ class GridSetup extends Component {
                 })
               }
               enableDragAndDrop={true}
+              enableFilter={true}
               toolbar={
-                <CustomToolbar
+                <CustomToolbar  
                   groupBy={this.state.groupBy}
                   onColumnGroupAdded={columnKey =>
                     this.setState({ groupBy: this.groupColumn(columnKey) })
@@ -415,8 +398,15 @@ class GridSetup extends Component {
                   onColumnGroupDeleted={columnKey =>
                     this.setState({ groupBy: this.ungroupColumn(columnKey) })
                   }
+                  onAddFilter={filter =>
+                    this.setState({ setFilters: this.handleFilterChange(filter) })
+                  }
+                  onClearFilters={() =>
+                    this.setState({ setFilters: {} })
+                  }
+    
                 />
-              }
+              } 
               rowSelection={{
                 showCheckbox: this.props.showCheckbox,
                 defaultChecked: false,
@@ -430,13 +420,18 @@ class GridSetup extends Component {
               }}
 
               onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
-              onAddFilter={filter =>
-                this.setState({ setFilters: this.handleFilterChange(filter) })
-              }
-              onClearFilters={() => this.setState({ setFilters: {} })}
-              getValidFilterValues={columnKey =>
-                this.getValidFilterValues(this.state.rows, columnKey)
-              }
+
+              // onAddFilter={filter =>
+              //   this.setState({ setFilters: this.handleFilterChange(filter) })
+              // }
+              // onClearFilters={() =>
+              //   this.setState({ setFilters: {} })
+              // }
+
+              // getValidFilterValues={columnKey =>
+              //   this.getValidFilterValues(this.state.rows, columnKey)
+              // }
+
               getCellActions={this.props.getCellActions}
             />
           </DraggableContainer >
