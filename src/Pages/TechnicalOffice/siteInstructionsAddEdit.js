@@ -110,7 +110,7 @@ class siteInstructionsAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedContract: { label: Resources.selectContract[currentLanguage], value: "0" },
-            selecetedinspectionRequest: { label: Resources.location[currentLanguage], value: "0" },
+            selecetedinspectionRequest: { label: Resources.inspectionRequest[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue(),
         }
 
@@ -219,12 +219,8 @@ class siteInstructionsAddEdit extends Component {
                 orderId: 0,
                 orderType: ''
             };
-            this.setState({ document: siteInstruction });
-            // , function () {
-            //     this.GetNExtArrange();
-            // }
-            this.fillDropDowns(false);
-            //  this.checkDocumentIsView();
+            this.setState({ document: siteInstruction }); 
+            this.fillDropDowns(false); 
             this.props.actions.documentForAdding()
         }
     };
@@ -683,8 +679,8 @@ class siteInstructionsAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input">
-                                                                <Dropdown
-                                                                    title="areaName"
+                                                                <Dropdown 
+                                                                    title="inspectionRequest"
                                                                     isMulti={false}
                                                                     data={this.state.inspectionRequests}
                                                                     selectedValue={this.state.selecetedinspectionRequest}

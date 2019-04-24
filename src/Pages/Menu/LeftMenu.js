@@ -305,7 +305,7 @@ class LeftMenu extends Component {
       this.setState({ rowIndex: 0, moduleName: moduleName });
     }
 
-    var e = { label: this.state.titleProject, value: this.state.projectId };
+    var e = { label: this.state.titleProject, value: this.props.projectId };
     localStorage.setItem('moduleName', moduleName)
     this.props.actions.LeftMenuClick(e, moduleName);
 
@@ -444,7 +444,7 @@ class LeftMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.projectId != this.state.projectId) {
+    if (nextProps.projectId != this.props.projectId) {
       this.setState({ projectId: nextProps.projectId, titleProject: nextProps.projectName, moduleName: nextProps.moduleName });
       viewModules = true;
       viewEps = false;
@@ -563,7 +563,7 @@ class LeftMenu extends Component {
                             {this.state.generalMenu.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 1) ? "active" : " "} onClick={() => this.activeLi(index, this.state.generalMenu.length)} >
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -621,7 +621,7 @@ class LeftMenu extends Component {
                             {this.state.communication.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 2) ? "active" : " "} onClick={() => this.activeLi(index, this.state.communication.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} >
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -629,60 +629,7 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
-                        {/* <li className={this.state.rowIndex === 3 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 3 ? "title active" : "title"} onClick={() => this.OpenSubMenu(3, Resources["procurement"][currentLanguage])}>
-                            <span className="ULimg">
-                              <svg
-                                width="36px"
-                                height="36px"
-                                viewBox="0 0 36 36"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                              >
-                                <g
-                                  id="Symbols"
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <g id="Action-icons/Navigation/Procurement/Line/36px/Grey_base">
-                                    <g id="purchase-orders">
-                                      <rect
-                                        id="bg"
-                                        fill="#80CBC4"
-                                        opacity="0"
-                                        x="0"
-                                        y="0"
-                                        width="36"
-                                        height="36"
-                                      />
-                                      <path
-                                        d="M20.8700419,14.960578 C21.7857271,14.9597904 22.6643482,14.618204 23.3110523,14.0115674 C23.9578027,13.4049681 24.3202275,12.5830496 24.3185411,11.7261668 C24.3176994,10.8695059 23.9526423,10.0484711 23.3034815,9.44347368 C22.6548831,8.83892299 21.7762045,8.49996951 20.8614689,8.50154554 C19.9442438,8.50391001 19.0673915,8.84569508 18.4210096,9.45281659 C17.7748214,10.0605272 17.4134316,10.8825569 17.4159618,11.7409294 L17.4159618,25.7362925 L20.8854433,22.490219 C21.4068035,22.0010021 22.254767,22.0010021 22.7756176,22.4897415 C23.297909,22.9784014 23.297909,23.7704942 22.7758198,24.2575375 L17.0394266,29.6307341 C16.9784711,29.6891917 16.9109051,29.7409766 16.7986943,29.8101643 L16.7367183,29.8423769 C16.6881629,29.8676443 16.6530714,29.8847616 16.5647479,29.9181801 L16.4595711,29.9493584 L16.3563505,29.9748211 C16.1791971,30.0094107 15.9962001,30.0094107 15.7884951,29.9682916 L15.692954,29.9434255 L15.5336187,29.8887825 L15.436845,29.84172 L15.3420742,29.790732 C15.2686954,29.7449629 15.2011282,29.6931755 15.1388461,29.6349038 L9.39159096,24.2614197 C8.86938466,23.7728393 8.86938466,22.9811146 9.39210126,22.4920575 C9.91427542,22.0049335 10.7600965,22.0049335 11.2816445,22.4928984 L14.7485335,25.7437886 L14.7485382,11.7039319 C14.7558595,10.1849088 15.4082235,8.73048192 16.5618694,7.65996411 C17.7157021,6.59127222 19.2759942,5.99415871 20.8996412,6.00004308 C22.5240218,6.00689642 24.0782419,6.61598338 25.2225968,7.69450715 C26.3660346,8.7731779 27.0052084,10.2321506 26.999968,11.7520423 C26.9936911,13.2716687 26.3430547,14.7266835 25.1911304,15.7975542 C24.03911,16.8685142 22.4795576,17.4674805 20.8556407,17.4625791 C20.4507887,17.4616044 20.0445471,17.4238166 19.6401828,17.349523 C18.9169301,17.2110138 18.4499556,16.5512519 18.5966791,15.8734444 C18.7446576,15.1970531 19.4492868,14.7602324 20.172415,14.8967674 C20.3989685,14.9387881 20.632654,14.9599598 20.8700419,14.960578 Z"
-                                        id="Shape"
-                                        fill="#A8B0BF"
-                                        fillRule="nonzero"
-                                      />
-                                    </g>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                            <span className="UlName"> {Resources["procurement"][currentLanguage]} </span>
-                          </a>
-                          <ul className={this.state.rowIndex === 3 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
-                            {this.state.procurementMenu.map((r, index) => {
-                              return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 3) ? "active" : " "} onClick={() => this.activeLi(index, this.state.procurementMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
-                                    {Resources[r.title][currentLanguage]}
-                                  </NavLink>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </li> */}
+                         
                         <li className={this.state.rowIndex === 4 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 4 ? "title active" : "title"} onClick={() => this.OpenSubMenu(4, Resources["technicalOffice"][currentLanguage])}>
                             <span className="ULimg">
@@ -712,7 +659,7 @@ class LeftMenu extends Component {
                             {this.state.siteMenu.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 4) ? "active" : " "} onClick={() => this.activeLi(index, this.state.siteMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -766,7 +713,7 @@ class LeftMenu extends Component {
                             {this.state.contractMenu.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 5) ? "active" : " "} onClick={() => this.activeLi(index, this.state.contractMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -820,7 +767,7 @@ class LeftMenu extends Component {
                             {this.state.timeMenu.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 6) ? "active" : " "} onClick={() => this.activeLi(index, this.state.timeMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -874,7 +821,7 @@ class LeftMenu extends Component {
                             {this.state.costControlMenu.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 7) ? "active" : " "} onClick={() => this.activeLi(index, this.state.costControlMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -883,37 +830,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
 
-                        {/* <li className={this.state.rowIndex === 8 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 8 ? "title active" : "title"} onClick={() => this.OpenSubMenu(8, Resources["projectEstimation"][currentLanguage])}>
-                            <span className="ULimg">
-                              <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                xmlnsXlink="http://www.w3.org/1999/xlink"                              >
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                  <g id="Action-icons/Navigation/Estimation/Line/36px/Grey_base">
-                                    <g id="estimation">
-                                      <rect id="bg" fill="#80CBC4" opacity="0" x="0" y="0" width="36" height="36" />
-                                      <path
-                                        d="M29.9184939,10.147091 C30.0992128,10.8750576 29.9771806,11.6277153 29.5745841,12.2661402 C29.1717713,12.9049347 28.5358195,13.3538753 27.7849055,13.5291977 C27.5605611,13.5807146 27.3331227,13.6071804 27.1086045,13.6071804 C27.0111617,13.6071804 26.9134705,13.6020045 26.8149257,13.5918368 L22.3296801,21.7803001 C22.623118,22.2256714 22.7826384,22.7423044 22.7826384,23.2809556 C22.7826384,24.8266646 21.4864069,26.0841007 19.8930084,26.0841007 C18.2996099,26.0841007 17.0033784,24.8266646 17.0033784,23.2809556 C17.0033784,22.9250131 17.0740383,22.5769872 17.2087962,22.2489689 L14.0446267,18.3093319 C13.8087932,18.3690416 13.5659728,18.3996666 13.3194379,18.3996666 C13.2467559,18.3996666 13.1735725,18.3964686 13.0980625,18.3902143 L10.900511,23.1881149 C11.4567002,23.7117817 11.77926,24.4295027 11.77926,25.1968549 C11.77926,26.7425639 10.4830285,28 8.88963,28 C7.29623152,28 6,26.7425639 6,25.1968549 C6,23.7262525 7.1756206,22.5139591 8.66912882,22.4040133 L11.0142706,17.2847089 C10.6380935,16.8015964 10.4298079,16.2146159 10.4298079,15.5976054 C10.4298079,14.0518963 11.7260394,12.7944603 13.3194379,12.7944603 C14.9128363,12.7944603 16.2090679,14.0518963 16.2090679,15.5976054 C16.2090679,16.0458591 16.0982628,16.4792552 15.890122,16.87186 L18.9188497,20.6439085 C19.2301289,20.5354779 19.5584009,20.4789017 19.8930387,20.4789017 C20.0434556,20.4789017 20.1935677,20.4909505 20.3434375,20.5144412 L24.7644033,12.4418715 C24.5461436,12.1472897 24.3879419,11.8156647 24.2994298,11.4587947 C24.1198596,10.73066 24.2421469,9.97816402 24.6446152,9.33994254 C25.0479934,8.70129306 25.6844565,8.25199087 26.4331595,8.07822515 C26.6549672,8.02625194 26.882822,8 27.1105056,8 C28.4494523,8 29.6046392,8.88347111 29.9184939,10.147091 Z M19.891977,24.2447665 C20.4406038,24.2447665 20.8856531,23.8130372 20.8856531,23.2808305 C20.8856531,22.7495802 20.4396179,22.3168946 19.891977,22.3168946 C19.3443361,22.3168946 18.8983009,22.7495802 18.8983009,23.2808305 C18.8983009,23.8120808 19.3443361,24.2447665 19.891977,24.2447665 Z M27.9568932,11.3062541 C28.0955463,11.0862706 28.1376744,10.826576 28.0746089,10.5756252 C27.9674106,10.1422183 27.5705262,9.83817013 27.1103286,9.83817013 C27.030814,9.83817013 26.95152,9.84738783 26.8745294,9.8660591 C26.6180489,9.9273145 26.3995118,10.0813809 26.261793,10.2998787 C26.1235243,10.5192555 26.0809466,10.7796288 26.1429556,11.0290124 C26.2708326,11.5416703 26.8101786,11.8642362 27.3419301,11.7405864 C27.5995091,11.6803209 27.8187149,11.5254534 27.9568932,11.3062541 Z"
-                                        id="Shape" stroke="#A8B0BF" strokeWidth="0.2" fill="#A8B0BF" fillRule="nonzero" />
-                                    </g>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                            <span className="UlName">{Resources["projectEstimation"][currentLanguage]} </span>
-                          </a>
-                          <ul className={this.state.rowIndex === 8 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
-                            {this.state.estimationMenu.map((r, index) => {
-                              return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 8) ? "active" : " "} onClick={() => this.activeLi(index, this.state.estimationMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active">
-                                    {Resources[r.title][currentLanguage]}
-                                  </NavLink>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </li> */}
+                        
                         <li className={this.state.rowIndex === 9 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 9 ? "title active" : "title"} onClick={() => this.OpenSubMenu(9, Resources["qualityControlList"][currentLanguage])}>
                             <span className="ULimg">
@@ -960,7 +877,7 @@ class LeftMenu extends Component {
                             {this.state.qualityControlMenu.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 9) ? "active" : " "} onClick={() => this.activeLi(index, this.state.qualityControlMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -1034,7 +951,7 @@ class LeftMenu extends Component {
                             {this.state.designMenu.map((r, index) => {
                               return (
                                 <li key={index} className={(this.state[index] === true && this.state.rowIndex === 10) ? "active" : " "} onClick={() => this.activeLi(index, this.state.designMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
                                 </li>
@@ -1042,60 +959,7 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
-                        {/* <li className={this.state.rowIndex === 11 ? "ActiveSubLi" : ""}>
-                          <a className={this.state.rowIndex === 11 ? "title active" : "title"} onClick={() => this.OpenSubMenu(11, Resources["reportsCenter"][currentLanguage])}>
-                            <span className="ULimg">
-                              <svg
-                                width="36px"
-                                height="36px"
-                                viewBox="0 0 36 36"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                              >
-                                <g
-                                  id="Symbols"
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <g id="Action-icons/Navigation/Reports-center/Line/36px/Grey_base">
-                                    <g id="rprts-cntr">
-                                      <rect
-                                        id="bg"
-                                        fill="#80CBC4"
-                                        opacity="0"
-                                        x="0"
-                                        y="0"
-                                        width="36"
-                                        height="36"
-                                      />
-                                      <path
-                                        d="M15.9149956,9.00045801 L20.0661139,9.00082766 C20.1172758,8.99945983 20.1172758,8.99945983 20.2019742,9.00337206 C20.7787962,9.06804477 21.2152889,9.5917809 21.2123597,10.2120593 L21.2123597,26.7883987 C21.2123597,27.4574011 20.7073528,28 20.0846999,28 L15.9149956,28 C15.2923427,28 14.7873358,27.4574011 14.7873358,26.7883987 L14.7873358,10.2120593 C14.7873358,9.54305693 15.2923427,9.00045801 15.9149956,9.00045801 Z M17.0426553,25.5767974 L18.9570402,25.5767974 L18.9570402,11.4236606 L17.0426553,11.4236606 L17.0426553,25.5767974 Z M23.5853745,13.4834624 L23.6188983,13.4809194 C23.6700601,13.4795516 23.6700601,13.4795516 23.7026359,13.4805497 L27.8723402,13.4805497 C28.4949931,13.4805497 29,14.0231487 29,14.692151 L29,26.7883987 C29,27.4574011 28.4949931,28 27.8723402,28 L23.7026359,28 C23.079983,28 22.5749761,27.4574011 22.5749761,26.7883987 L22.5749826,14.6948787 C22.5720514,14.0718659 23.0085473,13.5481195 23.5853745,13.4834624 Z M24.8302956,25.5767974 L26.7446805,25.5767974 L26.7446805,15.9037523 L24.8302956,15.9037523 L24.8302956,25.5767974 Z M8.01040666,17.9635541 L8.04393038,17.9610111 C8.09509219,17.9596433 8.09509219,17.9596433 8.12766801,17.9606415 L12.2973724,17.9606415 C12.9200252,17.9606415 13.4250321,18.5032404 13.4250321,19.1722428 L13.4250321,26.7883987 C13.4250321,27.4574011 12.9200252,28 12.2973724,28 L8.12766801,28 C7.50501513,28 7.00000826,27.4574011 7.00000826,26.7883987 L7.00001468,19.1749704 C6.99708349,18.5519576 7.43357936,18.0282112 8.01040666,17.9635541 Z M9.25532776,25.5767974 L11.1697126,25.5767974 L11.1697126,20.383844 L9.25532776,20.383844 L9.25532776,25.5767974 Z"
-                                        id="Shape"
-                                        fill="#A8B0BF"
-                                        fillRule="nonzero"
-                                      />
-                                    </g>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                            <span className="UlName">{Resources["reportsCenter"][currentLanguage]}</span>
-                          </a>
-                          <ul className={this.state.rowIndex === 11 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
-                            {this.state.reportsMenu.map((r, index) => {
-                              return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 11) ? "active" : " "} onClick={() => this.activeLi(index, this.state.reportsMenu.length)}>
-                                  <NavLink to={"/" + r.route + "/" + this.state.projectId} activeClassName="active" >
-                                    {Resources[r.title][currentLanguage]}
-                                  </NavLink>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </li> */}
+                        
                       </ul>
                     </div>
                   </div>

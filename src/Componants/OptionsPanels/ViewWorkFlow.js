@@ -4,10 +4,10 @@
 // missing and not complated
 //create step Number on top of work flow  "when work flow is in multi level" 
 
-import React, { Component, Fragment } from 'react' 
+import React, { Component, Fragment } from 'react'
 import Moment from 'moment';
 import Signature from '../../Styles/images/mySignature.png';
-import Avatar from "../../Styles/images/24176695_10215314500400869_7164682088117484142_n.jpg"
+import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 
 import { connect } from 'react-redux';
 import {
@@ -33,7 +33,7 @@ class ViewWorkFlow extends Component {
 
     componentWillMount() {
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.state.docId + '&docType=' + this.state.docType + '&projectId=' + this.state.projectId;
-        
+
         if (this.props.workFlowCycles.length === 0 && this.props.changeStatus === true) { //
             this.props.actions.GetWorkFlowCycles(url);
         }
@@ -82,9 +82,11 @@ class ViewWorkFlow extends Component {
                                             <p>{level.companyName}</p>
                                         </div>
                                     </div>
-                                    {level.statusVal != null ? <div className="card-signature">
-                                        <img src={level.signature != null ? level.signature : Signature} alt="..." />
-                                    </div> : null}
+                                    {level.statusVal != null ?
+                                        <div className="card-signature">
+                                            <img src={level.signature != null ? level.signature : Signature} alt="..." />
+                                        </div>
+                                        : null}
                                     <div className="box-statue">
                                         <h5>{level.status}</h5>
                                         <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>

@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Link, withRouter, NavLink } from "react-router-dom";
- 
+
 import Notif from "../../Styles/images/notif-icon.png";
 import Img from "../../Styles/images/avatar.png";
 import Chart from "../../Styles/images/icons/chart-nav.svg";
 import Setting from "../../Styles/images/icons/setting-nav.svg";
 import Message from "../../Styles/images/icons/message-nav.svg";
-import config from "../../Services/Config"; 
+import config from "../../Services/Config";
 
 import dataservice from "../../Dataservice";
 import Select from 'react-select';
@@ -86,8 +86,10 @@ class HeaderMenu extends Component {
 
   handleChangeSelectProject(e) {
 
-    this.props.actions.RouteToDashboardProject(e);
 
+    localStorage.setItem("lastSelectedProject", e.value);
+    localStorage.setItem("lastSelectedprojectName", e.label);
+    this.props.actions.RouteToDashboardProject(e);
     this.props.history.push({
       pathname: "/DashboardProject"
     });
@@ -97,13 +99,12 @@ class HeaderMenu extends Component {
     this.props.actions.RouteToTemplate();
   }
 
-  ReportCenterMenu(e) { 
- //   this.props.actions.ReportCenterMenuClick();
-    
+  ReportCenterMenu(e) {
+
     this.props.history.push({
       pathname: "/LeftReportMenu"
     });
-    
+
   }
 
   render() {
@@ -151,11 +152,11 @@ class HeaderMenu extends Component {
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
                     <img alt="" title="" src={Chart} />
                   </a>
-                  
+
                 </li>
                 <li>
                   <NavLink to='/TemplatesSettings' onClick={this.handleChangeTemplate} >
-                    <img alt="" title="" src={Setting} /> 
+                    <img alt="" title="" src={Setting} />
                   </NavLink>
 
                 </li>
