@@ -3,6 +3,9 @@ import 'react-table/react-table.css'
 import pdf from '../../Styles/images/pdfAttache.png'
 import xlsx from '../../Styles/images/attatcheXLS.png'
 import doc from '../../Styles/images/attatcheDOC.png'
+import png from '../../Styles/images/ex.png'
+import jpeg from '../../Styles/images/ex.png'
+import jpg from '../../Styles/images/ex.png'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
@@ -16,6 +19,7 @@ import moment from "moment";
 
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
+import _ from "lodash";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -46,29 +50,46 @@ class ViewAttachmments extends Component {
     componentDidMount() {
         this.getData()
     }
+    has_ar(str) {
+        var x = /[\u0600-\u06FF]+/;
+        return x.test(str);
+    }
 
     getData() {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        if (this.props.files.length === 0 && this.props.changeStatus === true) {//
+        if (this.props.files.length === 0) {//&& this.props.changeStatus === true)
             this.props.actions.GetUploadedFiles(url);
         }
     }
     render() {
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
-            let extension = item['fileName'].split(".")[1] === 'xlsx' ? xlsx : (item['fileName'].split(".")[1] === 'pdf' ? pdf : doc)
+            let ext = item['fileName'].split(".")[1].toLowerCase();
+            let extension=(ext=='xlsx'?xlsx:ext=='pdf'?pdf:ext=='jpeg'?jpeg:ext=='png'?png:ext=='jpg'?jpg:doc)
             let createdDate = moment(item['createdDate']).format('DD/MM/YYYY');
+            if (item.fileName) {
+                item.fileNameDisplay = item.fileName.replace(/%23/g, '#');
+                item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
+                item.fileNameDisplay = item.fileNameDisplay.replace(/%2C/g, ",");
+
+                if (!this.has_ar(item.fileNameDisplay)) {
+                    item.fileNameDisplay = decodeURI(item.fileNameDisplay);
+                };
+            } else {
+                item.fileNameDisplay = "";
+            }
+
             return (
                 <tr key={Index}>
                     <td>
                         <div className="contentCell tableCell-1">
                             <span>
-                                <img src={extension} alt="pdf" width="100%" height="100%" />
+                                <img src={extension} alt={extension} width="100%" height="100%" />
                             </span>
                         </div>
                     </td>
                     <td>
                         <div className="contentCell tableCell-2">
-                            <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item['fileName']}</a>
+                            <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item.fileNameDisplay}</a>
                         </div>
                     </td>
                     <td>
