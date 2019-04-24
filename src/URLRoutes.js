@@ -182,13 +182,13 @@ var routes = [
     nav: true,
     settings: { ProjectReports: true, permission: 3677, order: 2 }
   },
-  // {
-  //   route: "allocationOfUsersOnProjects",
-  //   moduleId: "ProjectReports/allocationOfUsersOnProjects",
-  //   title: "userAllocationOnProjects",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3683, order: 8 }
-  // },
+  {
+    route: "allocationOfUsersOnProjects",
+    moduleId: "ProjectReports/allocationOfUsersOnProjects",
+    title: "userAllocationOnProjects",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3683, order: 8 }
+  },
   // {
   //   route: "budgetVarianceReport",
   //   moduleId: "ProjectReports/budgetVarianceReport",
@@ -217,13 +217,13 @@ var routes = [
     nav: true,
     settings: { ProjectReports: true, permission: 3687, order: 12 }
   },
-  // {
-  //   route: "allocationOfProjectsOnCompanies",
-  //   moduleId: "ProjectReports/allocationOfProjectsOnCompanies",
-  //   title: "projectsAllocationOnCompanies",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3682, order: 7 }
-  // },
+  {
+    route: "allocationOfProjectsOnCompanies",
+    moduleId: "ProjectReports/allocationOfProjectsOnCompanies",
+    title: "projectsAllocationOnCompanies",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3682, order: 7 }
+  },
   {
     route: "estimationBoqComparison",
     moduleId: "reports/estimationBoqComparison",
