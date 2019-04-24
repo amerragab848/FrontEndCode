@@ -454,8 +454,8 @@ class TaskGroupsAddEdit extends Component {
                 res => {
                     MaxArrange = res
                     this.setState({ DocumentDate: moment().format("DD:MM:YYYY") })
-                }
-            )
+                })
+            this.props.actions.documentForAdding();
         }
     }
 

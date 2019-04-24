@@ -187,9 +187,6 @@ class PaymentReqStatusReport extends Component {
 
         return (
 
-
-
-
             <div className="reports__content">
                 <header>
                     <h2 className="zero">{Resources.paymentReqStatusReport[currentLanguage]}</h2>

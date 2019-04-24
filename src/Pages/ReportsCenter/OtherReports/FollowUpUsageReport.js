@@ -122,9 +122,10 @@ class WFUsageReport extends Component {
         if (this.state.selectedWF.value != '0') {
             this.setState({ isLoading: true })
             Api.post('GetFollowUpsUsageChilds?code=' + this.state.selectedWF.value).then((res) => {
-                this.setState({ rows: res, isLoading: false })
+                let data=res!=null?res:[]
+                this.setState({ rows: data, isLoading: false })
             }).catch(() => {
-                this.setState({ isLoading: false })
+                this.setState({ isLoading: false ,rows:[]})
             })
         }
     }
