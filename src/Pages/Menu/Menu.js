@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import LeftMenu from "./LeftMenu";
-import LeftReportMenu from "./LeftReportMenu";
+import LeftMenu from "./LeftMenu"; 
 import HeaderMenu from "./HeaderMenu";
 import config from "../../Services/Config";
  
@@ -19,6 +18,7 @@ class Menu extends Component {
   componentDidMount = () => {
     Api.get("GetDefaultData?token=").then(result => {
       config.contactName = result.contactName;
+      localStorage.setItem('contactName', result.contactName)
       this.setState({
         contactName: result.contactName,
         profilePath: config.getPublicConfiguartion().downloads + "/" + result.profilePath,
@@ -41,8 +41,7 @@ class Menu extends Component {
       <div>
         {this.state.contactName ? <HeaderMenu contactName={this.state.contactName} profilePath={this.state.profilePath} /> : null}
          <LeftMenu appComponants={this.state.appComponants} /> 
-         {/* <LeftReportMenu /> */}
-         
+        
       </div>
     );
   }

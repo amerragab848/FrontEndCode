@@ -92,8 +92,8 @@ class ProjectIssuesAddEdit extends Component {
             { name: 'deleteAttachments', code: 3783 }]
         }
 
-        if (!Config.IsAllow(3770) || !Config.IsAllow(3771) || !Config.IsAllow(3773)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(3770) && !Config.IsAllow(3771) && !Config.IsAllow(3773)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/projectIssues/" + this.state.projectId);
         }
     }

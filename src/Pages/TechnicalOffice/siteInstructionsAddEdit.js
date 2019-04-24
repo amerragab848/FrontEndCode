@@ -114,7 +114,7 @@ class siteInstructionsAddEdit extends Component {
             message: RichTextEditor.createEmptyValue(),
         }
 
-        if (!Config.IsAllow(635) || !Config.IsAllow(636) || !Config.IsAllow(638)) {
+        if (!Config.IsAllow(635) && !Config.IsAllow(636) && !Config.IsAllow(638)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/siteInstructions/" + projectId

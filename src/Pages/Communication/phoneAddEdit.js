@@ -92,7 +92,7 @@ class phoneAddEdit extends Component {
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
             phone: {}
         }
-        if (!Config.IsAllow(89) || !Config.IsAllow(90) || !Config.IsAllow(92)) {
+        if (!Config.IsAllow(89) && !Config.IsAllow(90) && !Config.IsAllow(92)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/Phone/" + projectId });
         }

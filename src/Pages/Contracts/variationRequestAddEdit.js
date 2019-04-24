@@ -114,8 +114,8 @@ class VariationRequestAdd extends Component {
             selectedContractSubject: { label: Resources.contractSubject[currentLanguage], value: "0" },
         }
 
-        if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/variationRequest/" + projectId
             });

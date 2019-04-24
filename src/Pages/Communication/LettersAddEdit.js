@@ -113,8 +113,8 @@ class LettersAddEdit extends Component {
             message: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/Letters/" + projectId
             });
