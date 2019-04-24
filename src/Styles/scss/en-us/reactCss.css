@@ -3393,7 +3393,7 @@ color: #4382f9 !important;
   fill: rgba(219, 251, 220, 0.6);
 }
 .charts__row .barChart__container .highcharts-graph {
-  stroke: #47cc4a;
+  /* stroke: #47cc4a; */
   stroke-width: 3px;
 }
 .charts__row .barChart__container .highcharts-color-0, .charts__row .barChart__container .highcharts-color-0 .highcharts-point{
@@ -4032,6 +4032,9 @@ width: calc(100% - 256px);
           width: 192px;
           margin-bottom: 16px 
       }
+      .settings-container .setting-tabs-contant  .reports__proForm .linebylineInput .proForm{
+          margin-top: 0 
+      }
       .settings-container .setting-tabs-contant .reports__proForm .linebylineInput .linebylineInput, .reports__proForm .linebylineInput button {
           margin-bottom: 0
       }
@@ -4058,6 +4061,9 @@ width: calc(100% - 256px);
       .settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .linebylineInput {
         width: 45%;
         margin-right: 0;
+      }
+      .reports__proForm .reports__multiDrop {
+        margin: 0;
       }
       .settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .btn__multi {
         width: 100%;
