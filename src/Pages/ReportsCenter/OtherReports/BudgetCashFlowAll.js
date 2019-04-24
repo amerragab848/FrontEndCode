@@ -13,7 +13,7 @@ import Api from '../../../api.js';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-
+const _ = require('lodash')
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
