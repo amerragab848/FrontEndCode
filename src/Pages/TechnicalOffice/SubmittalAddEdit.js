@@ -41,7 +41,6 @@ const validationSchema = Yup.object().shape({
   bicContactId: Yup.string().required(Resources["actionByContactRequired"][currentLanguage]).nullable(true),
   disciplineId: Yup.string().required(Resources["disciplineRequired"][currentLanguage]).nullable(true),
   contractId: Yup.string().required(Resources["contractPoSelection"][currentLanguage]),
-  // approvalStatus: Yup.string().required(Resources["approvalStatusSelection"][currentLanguage]).nullable(true)
 });
 
 const validationCycleSubmital = Yup.object().shape({
@@ -183,11 +182,11 @@ class SubmittalAddEdit extends Component {
       type: ""
     };
 
-    if (!Config.IsAllow(220) || !Config.IsAllow(221) || !Config.IsAllow(223)) {
-      toast.success(Resources["missingPermissions"][currentLanguage]);
-
+    if ((!Config.IsAllow(220)) && (!Config.IsAllow(221)) && !Config.IsAllow(223)) {
+      toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/submittal/" + this.state.projectId);
     }
+
   }
 
   componentDidMount() {
@@ -206,7 +205,6 @@ class SubmittalAddEdit extends Component {
 
   componentWillReceiveProps(nextProps, prevProps) {
     if (nextProps.document && nextProps.document.id) {
-
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
       nextProps.document.forwardToDate = nextProps.document.forwardToDate != null ? moment(nextProps.document.forwardToDate).format("DD/MM/YYYY") : moment();
 
@@ -217,8 +215,7 @@ class SubmittalAddEdit extends Component {
       });
 
       dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + nextProps.document.id).then(result => {
-        if (result) {
-
+        if (result) { 
           result.docDate = result.docDate != null ? moment(result.docDate).format("DD/MM/YYYY") : moment();
           result.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format("DD/MM/YYYY") : moment();
 
@@ -354,8 +351,8 @@ class SubmittalAddEdit extends Component {
       });
 
       this.fillDropDowns(false);
+      this.props.actions.documentForAdding();
     }
-    this.props.actions.documentForAdding();
 
   }
 
@@ -1326,7 +1323,7 @@ class SubmittalAddEdit extends Component {
         isLoading: false,
         selectedReviewResult: { label: Resources.selectResult[currentLanguage], value: "0" }
       });
-     
+
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(ex => {
@@ -1568,14 +1565,14 @@ class SubmittalAddEdit extends Component {
     ];
 
     return (
-      <div className="mainContainer">
-        <div className="documents-stepper noTabs__document one__tab one_step">
-        
-        <HeaderDocument projectName={projectName} docTitle={Resources.Submittal[currentLanguage]}
-                        moduleTitle={Resources['technicalOffice'][currentLanguage]} />
+      <div className="mainContainer"> 
+        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
+
+          <HeaderDocument projectName={projectName} docTitle={Resources.Submittal[currentLanguage]}
+            moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
           <div className="doc-container">
-            {/* Right Menu */}
+            
             <div className="step-content">
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">

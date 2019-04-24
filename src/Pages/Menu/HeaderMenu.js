@@ -45,7 +45,7 @@ class HeaderMenu extends Component {
   }
 
   componentWillMount = () => {
-    dataservice.GetDataList("GetAccountsProjectsByIdForList", 'projectName', 'id').then(result => {
+    dataservice.GetDataList("GetAccountsProjectsByIdForList", 'projectName', 'projectId').then(result => {
       this.setState({
         projects: result
       });
