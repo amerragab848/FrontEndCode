@@ -130,7 +130,7 @@ var routes = [
     nav: true,
     settings: { ProjectReports: true, permission: 4019, order: 16 }
   },
-  
+
   {
     route: "projectBackLog",
     moduleId: "ProjectReports/projectBackLog",
@@ -152,7 +152,7 @@ var routes = [
     nav: true,
     settings: { ProjectReports: true, permission: 3681, order: 6 }
   },
-  
+
   {
     route: "materialStatusReport",
     moduleId: "ProjectReports/MaterialStatusReport",
@@ -1540,7 +1540,7 @@ var routes = [
     }
   },
   {
-    route:"costCodingTreeAddEdit",
+    route: "costCodingTreeAddEdit",
     moduleId: "contracts/costCodingTreeAddEdit",
     title: "costCodingTree",
     nav: true,
@@ -2269,41 +2269,41 @@ var routes = [
     nav: true,
     settings: { HumanResources: true, permission: 3716, order: 10 }
   },
-  // {
-  //   route: "expnesesUserRequests",
-  //   moduleId: "reportCenter/expnesesUserRequests",
-  //   title: "expnesesUserRequests",
-  //   nav: true,
-  //   settings: { OtherReports: true, permission: 3719, order: 1 }
-  // },
-  // {
-  //   route: "expensesStatus",
-  //   moduleId: "reportCenter/expensesStatus",
-  //   title: "expensesStatus",
-  //   nav: true,
-  //   settings: { OtherReports: true, permission: 3759, order: 11 }
-  // },
-   {
+  {
+    route: "ExpnesesUserRequests",
+    moduleId: "OtherReports/ExpnesesUserRequests",
+    title: "expnesesUserRequests",
+    nav: true,
+    settings: { OtherReports: true, permission: 3719, order: 1 }
+  },
+  {
+    route: "ExpensesStatus",
+    moduleId: "OtherReports/ExpensesStatus",
+    title: "expensesStatus",
+    nav: true,
+    settings: { OtherReports: true, permission: 3759, order: 11 }
+  },
+  {
     route: "WFDistributionAccountReport",
     moduleId: "OtherReports/WFDistributionAccountReport",
     title: "wokFlowDistrbutionAccountsReport",
     nav: true,
     settings: { OtherReports: true, permission: 3720, order: 2 }
   },
-  // {
-  //   route: "budgetCashFlowAll",
-  //   moduleId: "reports/budgetCashFlowAll",
-  //   title: "budgetCashFlowAll",
-  //   nav: true,
-  //   settings: { OtherReports: true, permission: 3721, order: 3 }
-  // },
-  // {
-  //   route: "usersAccountsReport",
-  //   moduleId: "reportCenter/accountsReports/usersAccountsReport",
-  //   title: "usersAccountsReport",
-  //   nav: true,
-  //   settings: { OtherReports: true, permission: 3722, order: 4 }
-  // },
+  {
+    route: "BudgetCashFlowAll",
+    moduleId: "OtherReports/BudgetCashFlowAll",
+    title: "budgetCashFlowAll",
+    nav: true,
+    settings: { OtherReports: true, permission: 3721, order: 3 }
+  },
+  {
+    route: "UsersAccountsReport",
+    moduleId: "OtherReports/UsersAccountsReport",
+    title: "usersAccountsReport",
+    nav: true,
+    settings: { OtherReports: true, permission: 3722, order: 4 }
+  },
   {
     route: "WFActivityReport",
     moduleId: "OtherReports/WFActivityReport",
@@ -2741,7 +2741,7 @@ var routes = [
   },
   {
     route: "InvoicesLogReport",
-    moduleId: "ContractsPOReports/InvoicesLogReport", 
+    moduleId: "ContractsPOReports/InvoicesLogReport",
     title: "invoicesReport",
     nav: true,
     settings: { ContractsPo: true, permission: 3694, order: 4 }
@@ -2845,7 +2845,7 @@ var routes = [
     title: "totalsOfStockReport",
     nav: true,
     settings: { inventory: true, permission: 3728, order: 6 }
-  },,
+  }, ,
   {
     route: "releaseReport",
     moduleId: "reportCenter/releaseReport",
