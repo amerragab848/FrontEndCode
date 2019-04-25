@@ -305,7 +305,7 @@ class projectEstimateAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let ProjectEstiDoc = nextProps.document
             ProjectEstiDoc.docDate = moment(ProjectEstiDoc.docDate).format('DD/MM/YYYY')
             ProjectEstiDoc.dueDate = moment(ProjectEstiDoc.dueDate).format('DD/MM/YYYY')
@@ -480,7 +480,7 @@ class projectEstimateAddEdit extends Component {
         )
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

@@ -112,14 +112,14 @@ class ProjectIssuesAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('DD/MM/YYYY') : moment();
             nextProps.document.openDate = nextProps.document.openDate != null ? moment(nextProps.document.openDate).format('DD/MM/YYYY') : moment();
             nextProps.document.dueDate = nextProps.document.dueDate != null ? moment(nextProps.document.dueDate).format('DD/MM/YYYY') : moment();

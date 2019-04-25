@@ -363,7 +363,7 @@ class meetingAgendaAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
 

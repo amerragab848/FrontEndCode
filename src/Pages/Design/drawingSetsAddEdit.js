@@ -156,7 +156,7 @@ class DrawingSetsAddEdit extends Component {
 
   componentWillReceiveProps(nextProps, prevProps) {
 
-    if (nextProps.document && nextProps.document.id) {
+    if (nextProps.document.id) {
 
       nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
 
@@ -679,7 +679,7 @@ class DrawingSetsAddEdit extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {   this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });

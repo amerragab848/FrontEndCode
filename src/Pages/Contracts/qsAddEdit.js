@@ -154,7 +154,7 @@ class QsAddEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps, prevProps) {
-    if (nextProps.document && nextProps.document.id) {
+    if (nextProps.document.id) {
 
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
 
@@ -661,7 +661,7 @@ class QsAddEdit extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {   this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });

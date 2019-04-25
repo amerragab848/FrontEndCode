@@ -198,12 +198,10 @@ class MeetingMinutesAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
-        this.props.action.documentForAdding()
-    }
-    componentWillUnmount() {
-        this.props.actions.documentForAdding()
-    }
+    componentWillUnmount() {   
+        this.props.actions.clearCashDocument();
+    } 
+
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })

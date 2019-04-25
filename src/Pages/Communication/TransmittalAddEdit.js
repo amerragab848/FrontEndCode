@@ -135,14 +135,14 @@ class TransmittalAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) { 
+        if (nextProps.document.id) { 
 
             let serverInspectionRequest = { ...nextProps.document };
             serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');

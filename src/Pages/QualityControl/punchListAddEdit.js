@@ -272,7 +272,7 @@ class punchListAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let SnagListDoc = nextProps.document
             SnagListDoc.docDate = moment(SnagListDoc.docDate).format("DD/MM/YYYY")
             this.setState({
@@ -285,7 +285,7 @@ class punchListAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

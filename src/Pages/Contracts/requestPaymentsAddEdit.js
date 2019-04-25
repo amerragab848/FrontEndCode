@@ -398,7 +398,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
             serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
@@ -538,7 +538,7 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

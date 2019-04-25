@@ -138,8 +138,7 @@ class ProjectTaskAddEdit extends Component {
     };
 
     if (!Config.IsAllow(357) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
-      toast.warn(Resources["missingPermissions"][currentLanguage]);
-
+      toast.warn(Resources["missingPermissions"][currentLanguage]); 
       this.props.history.push("/ProjectTasks/" + this.state.projectId);
     }
   }
@@ -158,7 +157,7 @@ class ProjectTaskAddEdit extends Component {
 
   componentWillReceiveProps(nextProps, prevProps) {
 
-    if (nextProps.document && nextProps.document.id) {
+    if (nextProps.document.id) {
 
       nextProps.document.docDate = moment(nextProps.document.docDate).format("DD/MM/YYYY");
       nextProps.document.startDate = moment(nextProps.document.startDate).format("DD/MM/YYYY");
@@ -602,7 +601,7 @@ class ProjectTaskAddEdit extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {   this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });

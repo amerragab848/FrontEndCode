@@ -87,7 +87,7 @@ class projectsAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             this.setState({
                 document: { ...nextProps.document }
             });

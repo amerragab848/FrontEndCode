@@ -222,7 +222,7 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -283,7 +283,7 @@ class projectWorkFlowAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let WorkFlowDoc = nextProps.document
             WorkFlowDoc.docDate = moment(WorkFlowDoc.docDate).format("DD/MM/YYYY")
 
