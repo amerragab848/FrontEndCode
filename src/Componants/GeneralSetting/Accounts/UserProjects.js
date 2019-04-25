@@ -9,6 +9,7 @@ import Recycle from '../../../Styles/images/attacheRecycle.png'
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import { withRouter } from "react-router-dom";
+import HeaderDocument from '../../OptionsPanels/HeaderDocument'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let id = null;
 
@@ -36,26 +37,25 @@ class UserProjects extends Component {
     };
 
     componentDidMount() {
-        if (config.IsAllow(1001104)) 
-        {
-        const query = new URLSearchParams(this.props.location.search);
-        for (let param of query.entries()) {
-            id = param[1];
-        }
-
-        this.GetData("GetProjectsNotAccountsProjects?accountId=" + id, "projectName", "id", "ProjectsData")
-
-        Api.get("GetAccountsProjectsById?accountId=" + id).then(
-            res =>
-                this.setState({
-                    ProjectsDataList: res,
-                    LoadingTable: true,
-                    rowId: '',
-                    index: ''
-                })
-        )
-        this.setState({ LoadingTable: false })
+        if (config.IsAllow(1001104)) {
+            const query = new URLSearchParams(this.props.location.search);
+            for (let param of query.entries()) {
+                id = param[1];
             }
+
+            this.GetData("GetProjectsNotAccountsProjects?accountId=" + id, "projectName", "id", "ProjectsData")
+
+            Api.get("GetAccountsProjectsById?accountId=" + id).then(
+                res =>
+                    this.setState({
+                        ProjectsDataList: res,
+                        LoadingTable: true,
+                        rowId: '',
+                        index: ''
+                    })
+            )
+            this.setState({ LoadingTable: false })
+        }
         else {
             alert('You Don`t Have Permissions')
             this.props.history.goBack()
@@ -100,10 +100,10 @@ class UserProjects extends Component {
         })
         console.log(Ids)
         Api.post("AddAccountsProjectsList?accountId=" + id, Ids)
-       
+
     }
 
-    goBack=()=>{
+    goBack = () => {
         this.props.history.goBack()
     }
 
@@ -119,45 +119,73 @@ class UserProjects extends Component {
                             </span>
                         </div>
                     </td>
-                    <td>{item.projectName}</td>
+                    <td colSpan="6">
+                        <div className="contentCell tableCell-3">
+                            {item.projectName}
+                        </div>
+                    </td>
                 </tr>
             )
         })
 
         return (
-            <div className="mainContainer dropdownMulti">
-                <h3> {Resources['userProjects'][currentLanguage]}</h3>
-                <DropdownMelcous title='selectProjects' data={this.state.ProjectsData}
-                    handleChange={this.ProjectshandleChange} placeholder='selectProjects' isMulti={true} />
-              
+            <div className="mainContainer main__fulldash">
 
-                    <div className="dropBtn">
-                    <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
-                            <span className="border" ></span>
-                        <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveProjects}>
-                            {Resources['save'][currentLanguage]}</button>
-                 
+                <div className="documents-stepper cutome__inputs noTabs__document">
+                    <HeaderDocument docTitle={Resources.userProjects[currentLanguage]} />
+                    <div className="doc-container">
+                        <div className="step-content noBtn__footer">
+                            <div className="subiTabsContent">
+                                <div className="document-fields userProject">
+                                    <div className="proForm datepickerContainer">
+                                        <div className="dropdownMulti letterFullWidth">
+                                            <DropdownMelcous title='selectProjects' data={this.state.ProjectsData}
+                                                handleChange={this.ProjectshandleChange} placeholder='selectProjects' isMulti={true} />
+                                        </div>
+                                        <div className="dropBtn fullWidthWrapper">
+                                            <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
+                                            <span className="border" ></span>
+                                            <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveProjects}>
+                                                {Resources['save'][currentLanguage]}</button>
+                                        </div>
+                                    </div>
+
+                                    <div className="precycle-grid">
+
+                                        <table className="attachmentTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div className="headCell tableCell-1">
+                                                            {Resources['delete'][currentLanguage]}
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell tableCell-1">
+                                                            {Resources['projectName'][currentLanguage]}
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.LoadingTable ? RenderTable : <LoadingSection />}
+                                            </tbody>
+                                        </table>
+                                        {this.state.showDeleteModal == true ? (
+                                            <ConfirmationModal
+                                                title={Resources['smartDeleteMessage'][currentLanguage].content}
+                                                closed={this.onCloseModal}
+                                                showDeleteModal={this.state.showDeleteModal}
+                                                clickHandlerCancel={this.clickHandlerCancelMain}
+                                                buttonName='delete' clickHandlerContinue={this.ConfirmationDelete}
+                                            />
+                                        ) : null}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <table className="taskAdminTable">
-                    <thead>
-                        <tr>
-                            <th>{Resources['delete'][currentLanguage]}</th>
-                            <th>{Resources['projectName'][currentLanguage]}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.LoadingTable ? RenderTable : <LoadingSection />}
-                    </tbody>
-                </table>
-                {this.state.showDeleteModal == true ? (
-                    <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
-                        closed={this.onCloseModal}
-                        showDeleteModal={this.state.showDeleteModal}
-                        clickHandlerCancel={this.clickHandlerCancelMain}
-                        buttonName='delete' clickHandlerContinue={this.ConfirmationDelete}
-                    />
-                ) : null}
             </div>
         )
     }

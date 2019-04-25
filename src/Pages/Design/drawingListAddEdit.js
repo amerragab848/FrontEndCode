@@ -914,7 +914,7 @@ class drawingListAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                 <HeaderDocument projectName={projectName} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
 
-                    <div className="submittalHead">
+                    {/* <div className="submittalHead">
                         <h2 className="zero">{Resources.drawingList[currentLanguage]}
                             <span>{projectName.replace(/_/gi, ' ')} · {Resources.designCoordination[currentLanguage]}</span>
                         </h2>
@@ -936,7 +936,7 @@ class drawingListAddEdit extends Component {
                                 </g>
                             </svg>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="doc-container">
 

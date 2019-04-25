@@ -594,10 +594,11 @@ class drawingListAddEdit extends Component {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>;
-        } //else if (this.state.docId > 0) {
-        //     btn = <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button>
-        // }
+            btn =
+                <div className="slider-Btns">
+                    <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>
+                </div>;
+        }
         return btn;
     }
 
@@ -1276,9 +1277,7 @@ class drawingListAddEdit extends Component {
 
                                                     </div>
 
-                                                    <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}
-                                                    </div>
+                                                    {this.showBtnsSaving()}
 
                                                     {this.state.IsEditMode === true && docId !== 0 ?
                                                         <div className="approveDocument">

@@ -803,28 +803,24 @@ class ExpensesWorkFlowAddEdit extends Component {
                                                     <div className="proForm datepickerContainer">
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <DropdownMelcous title="company" data={this.state.CompanyData} name="CompanyForEdit"
-                                                                    selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompanyForEdit : values.CompanyForEdit} onChange={setFieldValue}
-                                                                    handleChange={(e) => this.handleChangeDropsForEdit(e, "CompanyForEdit")}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.CompanyForEdit}
-                                                                    touched={touched.CompanyForEdit}
-                                                                    value={values.CompanyForEdit} isClear={true} />
-                                                            </div>
+                                                            <DropdownMelcous title="company" data={this.state.CompanyData} name="CompanyForEdit"
+                                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompanyForEdit : values.CompanyForEdit} onChange={setFieldValue}
+                                                                handleChange={(e) => this.handleChangeDropsForEdit(e, "CompanyForEdit")}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.CompanyForEdit}
+                                                                touched={touched.CompanyForEdit}
+                                                                value={values.CompanyForEdit} isClear={true} />
                                                         </div>
 
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactNameForEdit"
-                                                                    selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContactForEdit : values.ContactNameForEdit} onChange={setFieldValue}
-                                                                    handleChange={(e) => this.handleChangeDropsForEdit(e, "ContactNameForEdit")}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.ContactNameForEdit}
-                                                                    touched={touched.ContactNameForEdit}
-                                                                    value={values.ContactNameForEdit} />
-                                                            </div>
+                                                            <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactNameForEdit"
+                                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContactForEdit : values.ContactNameForEdit} onChange={setFieldValue}
+                                                                handleChange={(e) => this.handleChangeDropsForEdit(e, "ContactNameForEdit")}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.ContactNameForEdit}
+                                                                touched={touched.ContactNameForEdit}
+                                                                value={values.ContactNameForEdit} />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
@@ -1043,7 +1039,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + ( this.state.SecondStepComplate? "active" : 'current__step' )} >
+                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -1052,7 +1048,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : ""   )} >
+                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>

@@ -454,27 +454,23 @@ class ActionByAlerts extends Component {
                                                 {!this.state.IsEditModel ?
                                                     <Fragment>
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <DropdownMelcous title='selectModule' data={this.state.ModuleDropData} name='ModuleDrop'
-                                                                    selectedValue={this.state.IsEditModel ? this.state.SelectedModuleDrop : values.ModuleDrop} onChange={setFieldValue}
-                                                                    handleChange={(e) => this.handleChangeDropsForEdit(e, "ModuleDrop")}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.ModuleDrop}
-                                                                    touched={touched.ModuleDrop}
-                                                                    value={values.ModuleDrop} />
-                                                            </div>
+                                                            <DropdownMelcous title='selectModule' data={this.state.ModuleDropData} name='ModuleDrop'
+                                                                selectedValue={this.state.IsEditModel ? this.state.SelectedModuleDrop : values.ModuleDrop} onChange={setFieldValue}
+                                                                handleChange={(e) => this.handleChangeDropsForEdit(e, "ModuleDrop")}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.ModuleDrop}
+                                                                touched={touched.ModuleDrop}
+                                                                value={values.ModuleDrop} />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <DropdownMelcous title='docType' data={this.state.DocumentTypeDropData} name='DocumentTypeDrop'
-                                                                    selectedValue={this.state.IsEditModel ? this.state.SelectedDocumentTypeDrop : values.DocumentTypeDrop} onChange={setFieldValue}
-                                                                    handleChange={(e) => this.handleChangeDropsForEdit(e, "DocumentTypeDrop")}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.DocumentTypeDrop}
-                                                                    touched={touched.DocumentTypeDrop}
-                                                                    value={values.DocumentTypeDrop} />
-                                                            </div>
+                                                            <DropdownMelcous title='docType' data={this.state.DocumentTypeDropData} name='DocumentTypeDrop'
+                                                                selectedValue={this.state.IsEditModel ? this.state.SelectedDocumentTypeDrop : values.DocumentTypeDrop} onChange={setFieldValue}
+                                                                handleChange={(e) => this.handleChangeDropsForEdit(e, "DocumentTypeDrop")}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.DocumentTypeDrop}
+                                                                touched={touched.DocumentTypeDrop}
+                                                                value={values.DocumentTypeDrop} />
                                                         </div>
                                                     </Fragment>
                                                     : null}

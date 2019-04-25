@@ -1326,7 +1326,7 @@ class SubmittalAddEdit extends Component {
         isLoading: false,
         selectedReviewResult: { label: Resources.selectResult[currentLanguage], value: "0" }
       });
-     
+
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(ex => {
@@ -1570,9 +1570,9 @@ class SubmittalAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
-        
-        <HeaderDocument projectName={projectName} docTitle={Resources.Submittal[currentLanguage]}
-                        moduleTitle={Resources['technicalOffice'][currentLanguage]} />
+
+          <HeaderDocument projectName={projectName} docTitle={Resources.Submittal[currentLanguage]}
+            moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
           <div className="doc-container">
             {/* Right Menu */}
@@ -2070,14 +2070,12 @@ class SubmittalAddEdit extends Component {
                                         </div>
                                       </div>
                                       <div className="linebylineInput valid-input">
-                                        <div className="inputDev ui input">
-                                          <Dropdown isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
-                                            onChange={setFieldValue} onBlur={setFieldTouched}
-                                            error={errors.reviewResult}
-                                            touched={touched.reviewResult}
-                                            name="reviewResult" id="reviewResult"
-                                            handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")} />
-                                        </div>
+                                        <Dropdown isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                                          onChange={setFieldValue} onBlur={setFieldTouched}
+                                          error={errors.reviewResult}
+                                          touched={touched.reviewResult}
+                                          name="reviewResult" id="reviewResult"
+                                          handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")} />
                                       </div>
                                       <div className="linebylineInput valid-input">
                                         <div className="inputDev ui input input-group date NormalInputDate">
@@ -2239,7 +2237,7 @@ class SubmittalAddEdit extends Component {
               {/* Next & Previous */}
               <div className="step-content-foot">
                 <span onClick={this.PreviousStep.bind(this)} className={this.state.Stepes !== 1 ? "step-content-btn-prev " :
-                  "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
+                  "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources['previous'][currentLanguage]}</span>
                 <span onClick={this.NextStep.bind(this)} className={this.state.docId !== 0 ? "step-content-btn-prev "
                   : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
                 </span>
@@ -2309,12 +2307,10 @@ class SubmittalAddEdit extends Component {
                             </div>
                           </div>
                           <div className="fillter-status fillter-item-c">
-                            <div className="inputDev ui input">
-                              <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
-                                handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
-                                onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
-                                touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
-                            </div>
+                            <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                              handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
+                              onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
+                              touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
                           </div>
                           <div className="fillter-status fillter-item-c">
                             <div className="inputDev ui input input-group date NormalInputDate">
