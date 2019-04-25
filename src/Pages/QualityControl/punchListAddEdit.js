@@ -414,6 +414,7 @@ class punchListAddEdit extends Component {
                 result => {
                     this.setState({
                         [element.DropDataName]: result,
+                        Loading:false
                     })
 
                     if (this.state.IsEditMode && docId > 0) {
@@ -444,6 +445,7 @@ class punchListAddEdit extends Component {
                             let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
                             this.setState({
                                 [element.selectedValue]: SelectedValue,
+                                Loading:false
                             });
                         }
                     }

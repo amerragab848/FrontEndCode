@@ -313,7 +313,9 @@ class NCRAddEdit extends Component {
             return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
                 result => {
                     this.setState({
-                        [element.DropDataName]: result
+                        [element.DropDataName]: result,
+                        Loading: false
+
                     })
 
                     if (docId > 0) {

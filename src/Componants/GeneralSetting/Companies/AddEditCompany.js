@@ -109,11 +109,11 @@ class AddEditCompany extends Component {
             this.GetData('GetaccountsDefaultListForList?listType=contacttitle', 'title', 'id', 'TitleData')
             let id = TokenStore.getItem('projectIdForaddCompany')
             this.setState({ projectId: (id ? id : 0) })
-            
+
         } else {
             this.GetData('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'disciplineData')
             this.GetData('GetaccountsDefaultListForList?listType=companyrole', 'title', 'id', 'CompanyRoleData')
-            
+
             Api.get('GetProjectCompaniesForEdit?id=' + this.state.companyID).then(res => {
                 this.setState({
                     companyData: res,
@@ -505,7 +505,7 @@ class AddEditCompany extends Component {
 
     GetData = (url, label, value, currState) => {
         Dataservice.GetDataList(url, label, value).then(res => {
-            console.log('res',res)
+            console.log('res', res)
             this.setState({
                 [currState]: [...res],
                 sectionLoading: false
