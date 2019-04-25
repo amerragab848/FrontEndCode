@@ -39,6 +39,7 @@ import AccountsEPSPermissions from './Componants/GeneralSetting/Accounts/Account
 import TemplatesSettings from './Componants/GeneralSetting/TemplatesSettings';
 import ReportsMenu from './Pages/ReportsCenter/ReportsMenu';
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
+import corrRecievedSent from "./Pages/Communication/corrRecievedSent";
 import FollowUpsSummaryDetails from "./Componants/DashBoardDetails/FollowUpsSummaryDetails";
 import GeneralList from './Componants/GeneralSetting/MenuDefaultData/GeneralList';
 import ExpensesWorkFlowLog from './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog';
@@ -290,6 +291,7 @@ let originalRoutes = [
     , <Route path="/LeftReportMenu" component={LeftReportMenu} />
     , <Route path="/budgetVarianceReport" component={budgetVarianceReport} />
     , <Route path="/expensesDetailsOnProjectsReport" component={expensesDetailsOnProjectsReport} />
+    , <Route path="/corrRecievedSent" component={corrRecievedSent} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]
