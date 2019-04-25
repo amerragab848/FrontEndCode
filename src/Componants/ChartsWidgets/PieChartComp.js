@@ -77,7 +77,7 @@ class PieChartComp extends Component {
          }); 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {    
         this.abortController.abort();
     }
 

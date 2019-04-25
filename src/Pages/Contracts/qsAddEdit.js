@@ -131,10 +131,9 @@ class QsAddEdit extends Component {
       selectedContract: { label: Resources.specsSectionSelection[currentLanguage], value: "0" }
     };
 
-    if (!Config.IsAllow(765) || !Config.IsAllow(766) || !Config.IsAllow(768)) {
+    if (!Config.IsAllow(765) && !Config.IsAllow(766) && !Config.IsAllow(768)) {
 
-      toast.success(Resources["missingPermissions"][currentLanguage]);
-
+      toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/qs/" + this.state.projectId);
     }
   }
@@ -155,7 +154,7 @@ class QsAddEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps, prevProps) {
-    if (nextProps.document && nextProps.document.id) {
+    if (nextProps.document.id) {
 
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
 
@@ -662,7 +661,7 @@ class QsAddEdit extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {   this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });

@@ -188,7 +188,7 @@ class NCRAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let NCRDoc = nextProps.document
             //moment(serverInspectionRequest.docDate).format('DD/MM/YYYY')
             NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
@@ -276,7 +276,7 @@ class NCRAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

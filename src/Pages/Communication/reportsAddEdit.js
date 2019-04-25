@@ -103,7 +103,7 @@ class reportsAddEdit extends Component {
             message: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(423) || !Config.IsAllow(424) || !Config.IsAllow(426)) {
+        if (!Config.IsAllow(423) && !Config.IsAllow(424) && !Config.IsAllow(426)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/Reports/" + projectId
@@ -124,7 +124,7 @@ class reportsAddEdit extends Component {
         }
     }
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             this.setState({
                 document: { ...nextProps.document },
                 hasWorkflow: nextProps.hasWorkflow,
@@ -168,7 +168,7 @@ class reportsAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
     componentWillMount() {

@@ -117,8 +117,8 @@ class clientSelectionAddEdit extends Component {
             answer: RichTextEditor.createEmptyValue(),
         }
 
-        if (!Config.IsAllow(3147) || !Config.IsAllow(3148) || !Config.IsAllow(3150)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(3147) && !Config.IsAllow(3148) && !Config.IsAllow(3150)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/clientSelection/" + projectId
             });
@@ -138,14 +138,14 @@ class clientSelectionAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,

@@ -105,7 +105,7 @@ class InternalMemoAddEdit extends Component {
         }
 
         if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/InternalMemo/" + this.state.projectId);
         }  
     }
@@ -124,7 +124,7 @@ class InternalMemoAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
             serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
             serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY');
@@ -411,7 +411,7 @@ class InternalMemoAddEdit extends Component {
     }
 
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

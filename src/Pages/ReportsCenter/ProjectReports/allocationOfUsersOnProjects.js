@@ -34,7 +34,7 @@ class allocationOfUsersOnProjects extends Component {
         this.projectColumns = [
             {
                 key: 'projectName',
-                name: Resources['Projects'][currentLanguage],
+                name: Resources['projectName'][currentLanguage],
                 width: 300,
                 draggable: true,
                 sortable: true,
@@ -42,7 +42,7 @@ class allocationOfUsersOnProjects extends Component {
                 filterable: true,
                 sortDescendingFirst: true
             },  {
-                key: 'projectName',
+                key: 'referenceCode',
                 name: Resources['referenceCode'][currentLanguage],
                 width: 300,
                 draggable: true,
@@ -53,9 +53,18 @@ class allocationOfUsersOnProjects extends Component {
             }];
         this.companyColumns = [
             {
+                key: 'contactName',
+                name: Resources['ContactName'][currentLanguage],
+                width: 300,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },{
                 key: 'companyName',
-                name: Resources['Companies'][currentLanguage],
-                width: 500,
+                name: Resources['CompanyName'][currentLanguage],
+                width: 300,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -77,7 +86,7 @@ class allocationOfUsersOnProjects extends Component {
             status: true
         }
 
-        if (!Config.IsAllow(4018)) {
+        if (!Config.IsAllow(3683)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -107,13 +116,13 @@ class allocationOfUsersOnProjects extends Component {
     getGridRows = () => {
         this.setState({ isLoading: true })
         if (this.state.current == 0) {
-            Api.get('GetProjectProjectsCompaniesByCompanyId?companyId=' + this.state.selectedCompany.value).then((res) => {
+            Api.get('GetAccountsProjectsById?accountId=' + this.state.selectedContact.value).then((res) => {
                 this.setState({ rows: res, isLoading: false,showGrid:true })
             }).catch(() => {
                 this.setState({ isLoading: false })
             })
         } else {
-            Api.get('SelectAllByProjectIdName?projectId=' + this.state.selectedProject.value).then((res) => {
+            Api.get('GetAccountsProjectsByProjectIdName?projectId=' + this.state.selectedProject.value).then((res) => {
                 this.setState({ rows: res, isLoading: false,showGrid:true })
             }).catch(() => {
                 this.setState({ isLoading: false })
@@ -123,9 +132,10 @@ class allocationOfUsersOnProjects extends Component {
 
     }
     handleChange = (e) => {
-        dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId='+e.value, 'contactName', 'id').then(result => {
+        dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId='+e.value, 'contactName', 'accountId').then(result => {
             this.setState({
-                contactsList: result
+                contactsList: result,
+            selectedContact: { label: Resources.selectContact[currentLanguage], value: "0" }
             });
         }).catch(() => {
             toast.error('somthing wrong')

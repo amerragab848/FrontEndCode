@@ -131,7 +131,7 @@ class MeetingMinutesAddEdit extends Component {
             attendence: {},
             topics: [],
         }
-        if (!Config.IsAllow(504) || !Config.IsAllow(505) || !Config.IsAllow(507)) {
+        if (!Config.IsAllow(504) && !Config.IsAllow(505) && !Config.IsAllow(507)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
@@ -198,12 +198,10 @@ class MeetingMinutesAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
-        this.props.action.documentForAdding()
-    }
-    componentWillUnmount() {
-        this.props.actions.documentForAdding()
-    }
+    componentWillUnmount() {   
+        this.props.actions.clearCashDocument();
+    } 
+
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })

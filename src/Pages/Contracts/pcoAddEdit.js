@@ -208,8 +208,8 @@ class pcoAddEdit extends Component {
             CurrentStep: 1
         }
 
-        if (!Config.IsAllow(366) || !Config.IsAllow(367) || !Config.IsAllow(369)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/pco/" + projectId
             });
@@ -229,7 +229,7 @@ class pcoAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
             serverChangeOrder.dateApproved = moment(serverChangeOrder.resultDate).format('DD/MM/YYYY');
@@ -404,7 +404,7 @@ class pcoAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

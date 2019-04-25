@@ -104,7 +104,7 @@ class ClaimsAddEdit extends Component {
             selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue()
         }
-        if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
+        if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/claims/" + projectId
@@ -125,7 +125,7 @@ class ClaimsAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -135,7 +135,7 @@ class ClaimsAddEdit extends Component {
             this.checkDocumentIsView();
         }
     };
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

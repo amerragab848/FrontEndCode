@@ -213,7 +213,7 @@ class drawingListAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let Doc = nextProps.document
             Doc.docDate = moment(Doc.docDate).format('DD/MM/YYYY')
 
@@ -344,7 +344,7 @@ class drawingListAddEdit extends Component {
         )
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

@@ -135,6 +135,8 @@ import BoqStractureCost from './Pages/ReportsCenter/ProjectReports/BoqStractureC
 import allocationOfProjectsOnCompanies from './Pages/ReportsCenter/ProjectReports/allocationOfProjectsOnCompanies';
 import allocationOfUsersOnProjects from './Pages/ReportsCenter/ProjectReports/allocationOfUsersOnProjects';
 import ProjectCompanies from "./Pages/Communication/ProjectCompanies";
+import budgetVarianceReport from './Pages/ReportsCenter/ProjectReports/budgetVarianceReport';
+import expensesDetailsOnProjectsReport from './Pages/ReportsCenter/ProjectReports/expensesDetailsOnProjectsReport';
 
 
 
@@ -288,6 +290,8 @@ let originalRoutes = [
     , <Route path="/executiveSummary" component={executiveSummary} />
     , <Route path="/compareApprovedQuantity" component={compareApprovedQuantity} />
     , <Route path="/LeftReportMenu" component={LeftReportMenu} />
+    , <Route path="/budgetVarianceReport" component={budgetVarianceReport} />
+    , <Route path="/expensesDetailsOnProjectsReport" component={expensesDetailsOnProjectsReport} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

@@ -109,9 +109,8 @@ class RfiAddEdit extends Component {
             replyMessage: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(75) || !Config.IsAllow(76) || !Config.IsAllow(78)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
-
+        if (!Config.IsAllow(75) && !Config.IsAllow(76) && !Config.IsAllow(78)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/Rfi/" + this.state.projectId);
         } 
 
@@ -132,7 +131,7 @@ class RfiAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
           
           nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
           nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
@@ -362,7 +361,7 @@ class RfiAddEdit extends Component {
         });
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

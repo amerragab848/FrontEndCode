@@ -62,7 +62,7 @@ class projectPicturesAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                    docId = obj.docId;
+                    docId = obj.docId; 
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -100,6 +100,7 @@ class projectPicturesAddEdit extends Component {
             IsAddModel: false,
             isLoading: false
         }
+
     }
 
     checkDocumentIsView() {
@@ -125,7 +126,7 @@ class projectPicturesAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let ProjectPicDoc = nextProps.document
             ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate).format('DD/MM/YYYY')
             ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate).format('DD/MM/YYYY')
@@ -221,16 +222,13 @@ class projectPicturesAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
+        this.props.actions.clearCashDocument();
     }
-
-    componentDidMount = () => {
-        //    this.FillDropDowns()
-    }
-
+ 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
@@ -532,9 +530,7 @@ function mapStateToProps(state) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
-        changeStatus: state.communication.changeStatus,
-        file: state.communication.file,
-        files: state.communication.files,
+        changeStatus: state.communication.changeStatus, 
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId
     }

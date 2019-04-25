@@ -209,7 +209,7 @@ class meetingAgendaAddEdit extends Component {
             { name: 'viewAttachments', code: 3324 }, { name: 'deleteAttachments', code: 838 }],
             document: {},
         }
-        if (!Config.IsAllow(452) || !Config.IsAllow(453) || !Config.IsAllow(455)) {
+        if (!Config.IsAllow(452) && !Config.IsAllow(453) && !Config.IsAllow(455)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
@@ -363,7 +363,7 @@ class meetingAgendaAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
 

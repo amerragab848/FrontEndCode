@@ -3393,7 +3393,7 @@ color: #4382f9 !important;
   fill: rgba(219, 251, 220, 0.6);
 }
 .charts__row .barChart__container .highcharts-graph {
-  stroke: #47cc4a;
+  /* stroke: #47cc4a; */
   stroke-width: 3px;
 }
 .charts__row .barChart__container .highcharts-color-0, .charts__row .barChart__container .highcharts-color-0 .highcharts-point{
@@ -4032,6 +4032,9 @@ width: calc(100% - 256px);
           width: 192px;
           margin-bottom: 16px 
       }
+      .settings-container .setting-tabs-contant  .reports__proForm .linebylineInput .proForm{
+          margin-top: 0 
+      }
       .settings-container .setting-tabs-contant .reports__proForm .linebylineInput .linebylineInput, .reports__proForm .linebylineInput button {
           margin-bottom: 0
       }
@@ -4059,8 +4062,58 @@ width: calc(100% - 256px);
         width: 45%;
         margin-right: 0;
       }
+      .reports__proForm .reports__multiDrop {
+        margin: 0;
+      }
       .settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .btn__multi {
         width: 100%;
         display: flex;
         justify-content: flex-end
       }
+
+      .screen-error {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 999999999999;
+        background-color: rgba(0, 0, 0, 0.95);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .screen-error.active {
+        display: flex;
+    }
+
+    .screen-error-text {
+        display: flex;
+        padding: 0 30px;
+        flex-flow: column;
+        border-radius: 10px;
+        min-height: 260px;
+        align-items: flex-start;
+        justify-content: space-around;
+        padding-top: 50px;
+        background-color: #e74c3c7d;
+    }
+
+    .screen-error .screen-error-text p:first-child {
+        font-size: 25px;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .screen-error .screen-error-text .goBack {
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .screen-error .screen-error-text p:last-of-type{
+        font-size: 15px;
+        color: #A8B0BF;
+    }

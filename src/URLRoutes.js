@@ -189,20 +189,20 @@ var routes = [
     nav: true,
     settings: { ProjectReports: true, permission: 3683, order: 8 }
   },
-  // {
-  //   route: "budgetVarianceReport",
-  //   moduleId: "ProjectReports/budgetVarianceReport",
-  //   title: "budgetVarianceReport",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3684, order: 9 }
-  // },
-  // {
-  //   route: "expensesDetailsOnProjectsReport",
-  //   moduleId: "ProjectReports/expensesDetailsOnProjectsReport",
-  //   title: "expensesDetailsOnProjectsReport",
-  //   nav: true,
-  //   settings: { ProjectReports: true, permission: 3685, order: 10 }
-  // },
+  {
+    route: "budgetVarianceReport",
+    moduleId: "ProjectReports/budgetVarianceReport",
+    title: "budgetVarianceReport",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3684, order: 9 }
+  },
+  {
+    route: "expensesDetailsOnProjectsReport",
+    moduleId: "ProjectReports/expensesDetailsOnProjectsReport",
+    title: "expensesDetailsOnProjectsReport",
+    nav: true,
+    settings: { ProjectReports: true, permission: 3685, order: 10 }
+  },
   {
     route: "activeProjectsReport",
     moduleId: "ProjectReports/ActiveProjectsReport",
@@ -824,19 +824,19 @@ var routes = [
     nav: false,
     settings: { Communication: false }
   },
-  {
-    route: "Email",
-    moduleId: "commonLogs",
-    title: "communicationEmails",
-    nav: true,
-    hash: "#Email",
-    settings: {
-      Communication: true,
-      permission: 395,
-      caption: "procoor-icon-email-records",
-      order: 8
-    }
-  },
+  // {
+  //   route: "Email",
+  //   moduleId: "commonLogs",
+  //   title: "communicationEmails",
+  //   nav: true,
+  //   hash: "#Email",
+  //   settings: {
+  //     Communication: true,
+  //     permission: 395,
+  //     caption: "procoor-icon-email-records",
+  //     order: 8
+  //   }
+  // },
   // {
   //   route: "corrRecievedSent",
   //   moduleId: "communication/corrRecievedSent",

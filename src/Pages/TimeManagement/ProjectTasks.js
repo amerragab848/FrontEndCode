@@ -489,9 +489,11 @@ class ProjectTasks extends Component {
       selectedRows: [],
       minimizeClick: false,
     };
+    
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {   
+    this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });
@@ -634,22 +636,7 @@ class ProjectTasks extends Component {
         });
       });
   };
-
-
-  //   cellClick = (rowID, colID) => {
-  //     let id = this.state.rows[rowID]['id']
-  //     if (colID == 1)
-  //         this.viewContact(id)
-  //     else if (!Config.IsAllow(1257)) {
-  //         toast.warning("you don't have permission");
-  //     }
-  //     else if (colID != 0 && ) {
-  //         this.props.history.push({
-  //             pathname: "/AddEditCompany/" + id,
-  //         });
-  //     }
-  // }
-
+ 
   addRecord() {
     if (Config.IsAllow(357)) {
 

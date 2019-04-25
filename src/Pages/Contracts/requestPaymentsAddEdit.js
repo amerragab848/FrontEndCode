@@ -164,14 +164,13 @@ class requestPaymentsAddEdit extends Component {
 
         }
 
-        if (!Config.IsAllow(184) || !Config.IsAllow(187) || !Config.IsAllow(185)) {
+        if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
         }
-        this.editRowsClick = this.editRowsClick.bind(this);
-
+        this.editRowsClick = this.editRowsClick.bind(this); 
         this.GetCellActions = this.GetCellActions.bind(this);
     }
 
@@ -399,7 +398,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
             serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
@@ -539,7 +538,7 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

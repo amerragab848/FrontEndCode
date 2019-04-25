@@ -188,8 +188,8 @@ class inspectionRequestAddEdit extends Component {
             DocLoading: false
         }
 
-        if (!Config.IsAllow(366) || !Config.IsAllow(367) || !Config.IsAllow(369)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/inspectionRequest/" + projectId
             });
@@ -214,7 +214,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
 
             serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
@@ -499,7 +499,7 @@ class inspectionRequestAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
