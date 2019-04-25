@@ -3,9 +3,7 @@ import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
-import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
-
+ 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
@@ -27,7 +25,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "docSubject",
         name: Resources["docSubject"][currentLanguage],
-        width: 100,
+        width: 250,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -38,7 +36,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "description",
         name: Resources["description"][currentLanguage],
-        width: 150,
+        width: 250,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -60,7 +58,7 @@ class AlertingQuantitySummaryDetails extends Component {
       {
         key: "originalQnty",
         name: Resources["originalQuantity"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
