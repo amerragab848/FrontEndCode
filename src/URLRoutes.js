@@ -824,19 +824,19 @@ var routes = [
       order: 8
     }
   },
-  // {
-  //   route: "corrRecievedSent",
-  //   moduleId: "communication/corrRecievedSent",
-  //   title: "correspondence",
-  //   nav: true,
-  //   hash: "#corrRecievedSent",
-  //   settings: {
-  //     Communication: true,
-  //     permission: 42,
-  //     caption: "procoor-icon-email-records",
-  //     order: 13
-  //   }
-  // },
+  {
+    route: "corrRecievedSent",
+    moduleId: "communication/corrRecievedSent",
+    title: "correspondence",
+    nav: true,
+    hash: "#corrRecievedSent",
+    settings: {
+      Communication: true,
+      permission: 42,
+      caption: "procoor-icon-email-records",
+      order: 13
+    }
+  },
   {
     route: "correspondenceSentAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "communication/correspondenceSentAddEdit",

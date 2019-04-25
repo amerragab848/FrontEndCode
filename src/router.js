@@ -291,7 +291,7 @@ let originalRoutes = [
     , <Route path="/LeftReportMenu" component={LeftReportMenu} />
     , <Route path="/budgetVarianceReport" component={budgetVarianceReport} />
     , <Route path="/expensesDetailsOnProjectsReport" component={expensesDetailsOnProjectsReport} />
-    , <Route path="/corrRecievedSent" component={corrRecievedSent} />
+    , <Route path="/corrRecievedSent/:projectId" component={corrRecievedSent} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

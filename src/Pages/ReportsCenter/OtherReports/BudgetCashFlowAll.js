@@ -218,7 +218,7 @@ class BudgetCashFlowAll extends Component {
                 type={'spline'}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
-                title={Resources['budgetVariance'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
+                title={Resources['budgetCashFlowReport'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
 
         const columnsCycles = [
             {
