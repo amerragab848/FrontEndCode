@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
@@ -8,7 +9,6 @@ import Menu from "./Pages/Menu/Menu";
 import Login from './Componants/Layouts/Login'
 import Route from './router';
 import api from './api';
-//import Shield from './Shield';
 import {
   Provider
 } from 'react-redux';
@@ -41,7 +41,7 @@ class App extends Component {
     );
   }
 }
-class ErrorHandler  extends React.Component {
+class ErrorHandler extends React.Component {
   constructor(props) {
     super(props);
     // Add some default error states
@@ -57,20 +57,30 @@ class ErrorHandler  extends React.Component {
     this.setState({
       error: error,
       info: info,
-    }); 
-  //  logErrorToMyService(error, info);
-
+    });
+    //  logErrorToMyService(error, info);
   }
 
   render() {
-    if(this.state.error) {
+    if (this.state.error) {
       // Some error was thrown. Let's display something helpful to the user
-      return (
-        <div>
-          <h5>Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!</h5>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
-            {this.state.info.componentStack}
-          </details>
+      return ( 
+        <div className="screen-error active">
+          <div className="screen-error-text">
+            <div>
+              <p>
+                <span>Sorry</span> Something went Wrong
+              </p>
+              <p>
+                A team of highly trained developers has been dispatched to deal with this situation!
+              </p>
+            </div>
+            <NavLink to="/" >
+              <span className="goBack">
+                <i className="fa fa-angle-double-left" aria-hidden="true"></i>Back to Dashboard
+            </span>
+            </NavLink> 
+          </div>
         </div>
       );
     }

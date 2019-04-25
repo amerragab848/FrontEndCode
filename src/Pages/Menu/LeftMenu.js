@@ -305,7 +305,7 @@ class LeftMenu extends Component {
       this.setState({ rowIndex: 0, moduleName: moduleName });
     }
 
-    var e = { label: this.state.titleProject, value: this.props.projectId };
+    var e = { label: this.props.projectName, value: this.props.projectId };
     localStorage.setItem('moduleName', moduleName)
     this.props.actions.LeftMenuClick(e, moduleName);
 
@@ -344,10 +344,11 @@ class LeftMenu extends Component {
 
     var e = { label: titleProject, value: projectId };
     let moduleName = this.state.moduleName;
-
-    this.props.actions.LeftMenuClick(e, moduleName);
     localStorage.setItem("lastSelectedProject", projectId);
     localStorage.setItem("lastSelectedprojectName", titleProject);
+
+    this.props.actions.LeftMenuClick(e, moduleName);
+    
 
   };
 

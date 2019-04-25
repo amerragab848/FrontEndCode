@@ -117,8 +117,8 @@ class clientSelectionAddEdit extends Component {
             answer: RichTextEditor.createEmptyValue(),
         }
 
-        if (!Config.IsAllow(3147) || !Config.IsAllow(3148) || !Config.IsAllow(3150)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(3147) && !Config.IsAllow(3148) && !Config.IsAllow(3150)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/clientSelection/" + projectId
             });

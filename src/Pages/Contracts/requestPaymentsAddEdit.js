@@ -164,14 +164,13 @@ class requestPaymentsAddEdit extends Component {
 
         }
 
-        if (!Config.IsAllow(184) || !Config.IsAllow(187) || !Config.IsAllow(185)) {
+        if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
         }
-        this.editRowsClick = this.editRowsClick.bind(this);
-
+        this.editRowsClick = this.editRowsClick.bind(this); 
         this.GetCellActions = this.GetCellActions.bind(this);
     }
 

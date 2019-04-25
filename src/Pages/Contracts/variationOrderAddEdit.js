@@ -48,22 +48,7 @@ const validationSchema = Yup.object().shape({
     timeExtension: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
-
-// const documentItemValidationSchema = Yup.object().shape({
-//     description: Yup.string()
-//         .required(Resources['subjectRequired'][currentLanguage]),
-//     resourceCode: Yup.string()
-//         .required(Resources['resourceCode'][currentLanguage]),
-//     itemCode: Yup.string()
-//         .required(Resources['itemCode'][currentLanguage]),
-//     unitPrice: Yup.string()
-//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-//     days: Yup.string()
-//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-//     quantity: Yup.string()
-//         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
-// })
-
+ 
 let columns = [
     {
         Header: 'arrange',
@@ -171,8 +156,8 @@ class variationOrderAddEdit extends Component {
             CurrentStep: 1
         }
 
-        if (!Config.IsAllow(159) || !Config.IsAllow(158) || !Config.IsAllow(160)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(159) && !Config.IsAllow(158) && !Config.IsAllow(160)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/changeOrder/" + projectId
             });

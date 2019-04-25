@@ -99,6 +99,7 @@ class projectPicturesAddEdit extends Component {
             showPopUp: false,
             IsAddModel: false
         }
+        
     }
 
     checkDocumentIsView() {

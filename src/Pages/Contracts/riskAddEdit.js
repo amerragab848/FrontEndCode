@@ -112,7 +112,7 @@ class riskAddEdit extends Component {
             message: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(84) || !Config.IsAllow(85) || !Config.IsAllow(87)) {
+        if (!Config.IsAllow(84) && !Config.IsAllow(85) && !Config.IsAllow(87)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
 
             this.props.history.push("/Risk/" + this.state.projectId);

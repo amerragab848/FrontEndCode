@@ -109,9 +109,8 @@ class RfiAddEdit extends Component {
             replyMessage: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(75) || !Config.IsAllow(76) || !Config.IsAllow(78)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
-
+        if (!Config.IsAllow(75) && !Config.IsAllow(76) && !Config.IsAllow(78)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/Rfi/" + this.state.projectId);
         } 
 

@@ -105,7 +105,7 @@ class InternalMemoAddEdit extends Component {
         }
 
         if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/InternalMemo/" + this.state.projectId);
         }  
     }

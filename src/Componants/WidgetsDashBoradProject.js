@@ -201,7 +201,7 @@ var DashBoardWidgets = [
   },
   { 
     widgetCategory: "inspectionRequest",
-    refrence: 1,
+    refrence: 0,
     key: "0-4",
     canView: false,
     checked:false,
@@ -262,7 +262,7 @@ var DashBoardWidgets = [
   },
   { 
     widgetCategory: "respondTime",
-    refrence: 1,
+    refrence: 0,
     key: "0-5",
     canView: false,
     checked:false,
