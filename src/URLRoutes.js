@@ -781,6 +781,19 @@ var routes = [
       order: 1
     }
   },
+  // {
+  //   route: "ProjectCompanies",
+  //   moduleId: "ProjectCompanies",
+  //   title: "Companies",
+  //   nav: true,
+  //   hash: "#ProjectCompanies",
+  //   settings: {
+  //     Communication: true,
+  //     permission: 52,
+  //     caption: "procoor-icon-letters",
+  //     order: 1
+  //   }
+  // },
   {
     route:
       "internalMemoAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -944,8 +957,8 @@ var routes = [
     settings: { Site: false }
   },
   {
-    route: "projectProjectsCompanies",
-    moduleId: "projects/projectProjectsCompanies",
+    route: "ProjectCompanies",
+    moduleId: "ProjectCompanies",
     title: "Companies",
     nav: true,
     settings: {

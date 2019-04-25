@@ -97,7 +97,8 @@ class projectPicturesAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             IsEditMode: false,
             showPopUp: false,
-            IsAddModel: false
+            IsAddModel: false,
+            isLoading: false
         }
     }
 
@@ -154,12 +155,18 @@ class projectPicturesAddEdit extends Component {
 
     componentWillMount() {
         if (docId > 0) {
-            let url = "GetProjectPictureForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectPictures');
             this.setState({
-                IsEditMode: true
+                IsEditMode: true,
+                isLoading: true
             })
-            this.FillDrowDowns()
+            let url = "GetProjectPictureForEdit?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectPictures').then(
+                res => {
+
+                    this.FillDrowDowns()
+                }
+            )
+
 
         } else {
             ///Is Add Mode
@@ -183,24 +190,28 @@ class projectPicturesAddEdit extends Component {
     }
 
     FillDrowDowns = () => {
+
         dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId').then(
             res => {
                 this.setState({
                     companies: res
                 })
 
-                if (this.state.docId !== 0) {
+                if (docId !== 0) {
+
                     let elementID = this.state.document.fromCompanyId;
                     let SelectedValue = _.find(res, function (i) { return i.value == elementID; });
                     this.setState({
                         selectedFromCompany: SelectedValue,
+
                     })
                     dataservice.GetDataList('GetContactsByCompanyId?companyId=' + this.state.document.fromCompanyId + '', 'contactName', 'id').then(result => {
                         let elementIDContact = this.state.document.fromContactId;
                         let SelectedValueContact = _.find(result, function (i) { return i.value == elementIDContact });
                         this.setState({
                             fromContacts: result,
-                            selectedFromContact: SelectedValueContact
+                            selectedFromContact: SelectedValueContact,
+                            isLoading: false
                         });
                     });
                 }
