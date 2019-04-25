@@ -24,7 +24,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-//import Recycle from '../../Styles/images/attacheRecycle.png'
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
@@ -32,7 +31,6 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetup from "../Communication/GridSetup";
-//import { func } from 'prop-types';
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import IPConfig from '../../IP_Configrations'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -103,7 +101,7 @@ class bogAddEdit extends Component {
         }
 
         let editUnitPrice = ({ value, row }) => {
-            let subject = "";
+
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.unitPrice}</span></a>;
             }
@@ -304,13 +302,13 @@ class bogAddEdit extends Component {
             document: {},
         }
 
-        if (!Config.IsAllow(616) || !Config.IsAllow(617) || !Config.IsAllow(619)) {
+        if (!Config.IsAllow(616) && !Config.IsAllow(617) && !Config.IsAllow(619)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
     }
     customButton = () => {
-        return <button className="companies_icon"  style={{cursor:'pointer'}}><i class="fa fa-folder-open" ></i></button>;
+        return <button className="companies_icon" style={{ cursor: 'pointer' }}><i class="fa fa-folder-open" ></i></button>;
     };
 
     itemization = (value) => {
@@ -318,7 +316,7 @@ class bogAddEdit extends Component {
             id: value.id,
             boqId: value.boqId,
             projectId: this.state.projectId,
-            projectName : this.state.projectName
+            projectName: this.state.projectName
         };
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
@@ -402,7 +400,7 @@ class bogAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true })
-            this.props.actions.documentForEdit('GetBoqForEdit?id=' + this.state.docId,this.state.docTypeId,'boq').then(() => {
+            this.props.actions.documentForEdit('GetBoqForEdit?id=' + this.state.docId, this.state.docTypeId, 'boq').then(() => {
                 this.setState({ isLoading: false, showForm: true, btnTxt: 'next', LoadingPage: false })
                 this.checkDocumentIsView();
                 this.getTabelData()
@@ -437,7 +435,7 @@ class bogAddEdit extends Component {
         let Table = []
         this.setState({ isLoading: true, LoadingPage: true })
         Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=0&pageSize=1000').then(res => {
-            let data = { items:res};
+            let data = { items: res };
             this.props.actions.ExportingData(data);
 
             res.forEach((element, index) => {
@@ -489,7 +487,7 @@ class bogAddEdit extends Component {
     componentWillReceiveProps(props, state) {
         if (props.document && props.document.id > 0) {
             let docDate = moment(props.document.documentDate)
-            props.document.statusName= props.document.status?'Opened':'Closed'
+            props.document.statusName = props.document.status ? 'Opened' : 'Closed'
             let document = Object.assign(props.document, { documentDate: docDate })
             this.setState({ document });
 
@@ -1616,8 +1614,10 @@ class bogAddEdit extends Component {
         return (
             <React.Fragment>
                 <div className="mainContainer">
-                    <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
+                        : "documents-stepper noTabs__document one__tab one_step"}>
+
+                        <HeaderDocument projectName={projectName} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> :
@@ -1698,7 +1698,7 @@ class bogAddEdit extends Component {
 
                         </div>
                     </div>
-                   
+
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
                             title={Resources['smartDeleteMessage'][currentLanguage].content}

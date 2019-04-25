@@ -116,6 +116,9 @@ class Login extends Component {
                         if (primeData.appComponants) {
                             tokenStore.setItem('appComponants', JSON.stringify(primeData.appComponants))
                         }
+                        if (primeData.contactName) {
+                            tokenStore.setItem('contactName', primeData.contactName)
+                        }
                         
                     window.location.reload();
                     })

@@ -489,6 +489,7 @@ class ProjectTasks extends Component {
       selectedRows: [],
       minimizeClick: false,
     };
+    
   }
 
   componentWillUnmount() {

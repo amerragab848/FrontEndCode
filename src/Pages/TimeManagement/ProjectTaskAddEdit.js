@@ -137,8 +137,8 @@ class ProjectTaskAddEdit extends Component {
       isLoading: false
     };
 
-    if (!Config.IsAllow(357) || !Config.IsAllow(358) || !Config.IsAllow(360)) {
-      toast.success(Resources["missingPermissions"][currentLanguage]);
+    if (!Config.IsAllow(357) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
+      toast.warn(Resources["missingPermissions"][currentLanguage]);
 
       this.props.history.push("/ProjectTasks/" + this.state.projectId);
     }

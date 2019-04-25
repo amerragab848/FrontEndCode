@@ -92,7 +92,7 @@ class phoneAddEdit extends Component {
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
             phone: {}
         }
-        if (!Config.IsAllow(89) || !Config.IsAllow(90) || !Config.IsAllow(92)) {
+        if (!Config.IsAllow(89) && !Config.IsAllow(90) && !Config.IsAllow(92)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/Phone/" + projectId });
         }
@@ -214,7 +214,7 @@ class phoneAddEdit extends Component {
 
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId,this.state.docTypeId,"phoneTitle")
             this.checkDocumentIsView();
@@ -254,7 +254,7 @@ class phoneAddEdit extends Component {
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow ||  this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -561,6 +561,7 @@ class phoneAddEdit extends Component {
                                             <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null
                                         }
+
                                         {this.viewAttachments()}
 
                                         {this.props.changeStatus === true ?

@@ -132,6 +132,10 @@ import BoqTemplateReport from './Pages/ReportsCenter/ProjectReports/BoqTemplateR
 
 import InventoryDetails from './Pages/ReportsCenter/ProjectReports/InventoryDetails';
 import BoqStractureCost from './Pages/ReportsCenter/ProjectReports/BoqStractureCost';
+import allocationOfProjectsOnCompanies from './Pages/ReportsCenter/ProjectReports/allocationOfProjectsOnCompanies';
+import allocationOfUsersOnProjects from './Pages/ReportsCenter/ProjectReports/allocationOfUsersOnProjects';
+import budgetVarianceReport from './Pages/ReportsCenter/ProjectReports/budgetVarianceReport';
+import expensesDetailsOnProjectsReport from './Pages/ReportsCenter/ProjectReports/expensesDetailsOnProjectsReport';
 
 
 
@@ -267,6 +271,8 @@ let originalRoutes = [
     , <Route path="/BoqTemplateReport" component={BoqTemplateReport} />
     , <Route path="/BoqStractureCost" component={BoqStractureCost} />
     , <Route path="/InventoryDetails" component={InventoryDetails} />
+    , <Route path="/allocationOfProjectsOnCompanies" component={allocationOfProjectsOnCompanies} />
+    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
     
 
 
@@ -282,6 +288,8 @@ let originalRoutes = [
     , <Route path="/executiveSummary" component={executiveSummary} />
     , <Route path="/compareApprovedQuantity" component={compareApprovedQuantity} />
     , <Route path="/LeftReportMenu" component={LeftReportMenu} />
+    , <Route path="/budgetVarianceReport" component={budgetVarianceReport} />
+    , <Route path="/expensesDetailsOnProjectsReport" component={expensesDetailsOnProjectsReport} />
 
 ];
 originalRoutes = [...originalRoutes, ...setupRoutes]

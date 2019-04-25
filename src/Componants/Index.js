@@ -1,19 +1,20 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CryptoJS from 'crypto-js'; 
+import CryptoJS from 'crypto-js';
 
-import "react-tabs/style/react-tabs.css";
+// import "react-tabs/style/react-tabs.css";
 
-import {  Widgets, WidgetsWithText } from "./CounterWidget";
+import { Widgets, WidgetsWithText } from "./CounterWidget";
 import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
 import DashBoardWidgets from "./WidgetsDashBorad";
 import DashBoard from "./DashBoard";
 import _ from "lodash";
 import language from "../resources.json";
+//import Config from "../Services/Config";
 import Api from "../api";
 
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Index extends Component {
   constructor(props) {
@@ -123,17 +124,15 @@ class Index extends Component {
 
     let renderWidgets = "";
 
-    try { 
+    try {
       let Widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
- 
+
       Widgets_Order = Widgets_Order != "" ? JSON.parse(Widgets_Order) : {};
- 
+
       let selectedCategoriesLocalStoarge = Object.keys(Widgets_Order);
 
       if (selectedCategoriesLocalStoarge.length > 0) {
-
-        //console.log('Widgets_Order...selectedWidgetinLocalStoarge...');
-
+ 
         let bulkWidgets = "";
 
         bulkWidgets = Widgets_Order[index];
@@ -173,7 +172,7 @@ class Index extends Component {
             </div>
           );
         }
-      } else { 
+      } else {
         var refrence = DashBoardWidgets.filter(function (i) {
           return i.refrence === index;
         });
@@ -210,7 +209,7 @@ class Index extends Component {
       }
     }
     catch (err) {
- 
+
       localStorage.removeItem("Widgets_Order");
 
       var refrence = DashBoardWidgets.filter(function (i) {
@@ -271,6 +270,7 @@ class Index extends Component {
   }
 
   render() {
+    let contactName = localStorage.getItem("contactName") !== null ? localStorage.getItem('contactName') : 'Procoor User'//Config.getPayload().acn;
     return (
       <div className="customeTabs">
         <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.onClickTabItem(tabIndex)}>
@@ -293,7 +293,7 @@ class Index extends Component {
           </TabList>
           <div className="dashboard__name">
             <h3 className="welcome-title">
-              {language["titleDashboard"][currentLanguage]} , Hady
+              {language["titleDashboard"][currentLanguage]} , {contactName}
             </h3>
             <button className="primaryBtn-2 btn mediumBtn" onClick={this.viewDashBoardHandler.bind(this)}>
               Customize

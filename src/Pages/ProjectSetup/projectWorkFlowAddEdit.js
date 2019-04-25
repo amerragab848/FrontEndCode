@@ -309,7 +309,7 @@ class projectWorkFlowAddEdit extends Component {
 
         if (docId > 0) {
             let url = "GetWorkFlowForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId ,'workFlow');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'workFlow');
 
             this.setState({
                 IsEditMode: true,
@@ -327,10 +327,7 @@ class projectWorkFlowAddEdit extends Component {
                     this.props.actions.ExportingData(data);
                 }
 
-            )
-
-
-
+            ) 
             dataservice.GetDataGrid('getFollowingUpsByWorkFlowId?workFlow=' + this.state.docId + '').then(
                 res => {
                     this.setState({
@@ -1326,21 +1323,21 @@ class projectWorkFlowAddEdit extends Component {
                                     <div className="proForm datepickerContainer">
 
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <Dropdown title="company" data={this.state.CompanyData} name="Company"
-                                                    selectedValue={values.Company} onChange={setFieldValue}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "Company")} touched={touched.Company}
-                                                    onBlur={setFieldTouched} error={errors.Company} value={values.Company} />
-                                            </div>
+
+                                            <Dropdown title="company" data={this.state.CompanyData} name="Company"
+                                                selectedValue={values.Company} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "Company")} touched={touched.Company}
+                                                onBlur={setFieldTouched} error={errors.Company} value={values.Company} />
+
                                         </div>
 
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <Dropdown title="ContactName" data={this.state.ContactData} name="ContactName"
-                                                    selectedValue={values.ContactName} onChange={setFieldValue} value={values.ContactName}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
-                                                    onBlur={setFieldTouched} error={errors.ContactName} touched={touched.ContactName} />
-                                            </div>
+
+                                            <Dropdown title="ContactName" data={this.state.ContactData} name="ContactName"
+                                                selectedValue={values.ContactName} onChange={setFieldValue} value={values.ContactName}
+                                                handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
+                                                onBlur={setFieldTouched} error={errors.ContactName} touched={touched.ContactName} />
+
                                         </div>
 
                                         <div className="linebylineInput valid-input">
@@ -1728,7 +1725,7 @@ class projectWorkFlowAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
 
-                <HeaderDocument projectName={projectName} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
 
 
                     <div className="doc-container">
@@ -1857,15 +1854,15 @@ class projectWorkFlowAddEdit extends Component {
                                     <div className="approveDocumentBTNS">
                                         {this.state.isApproveMode === true ?
                                             <div >
-                                                <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                             </div>
                                             : null
                                         }
                                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                       <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

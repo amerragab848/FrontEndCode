@@ -18,28 +18,29 @@ const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
         .required(Resources['projectSelection'][currentLanguage])
         .nullable(true),
-    selectContract: Yup.string()
-        .required(Resources['contractRequired'][currentLanguage])
-        .nullable(true),
 });
-class compareApprovedQuantity extends Component {
+const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+class expensesDetailsOnProjectsReport extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            projectList: [],
+            projectsList: [],
+            companiesList: [],
+            usersList: [],
             rows: [],
-            selectedProject: { label: Resources.projectSelection[currentLanguage], value: "-1" },
-            selectContract: { label: Resources.contract[currentLanguage], value: "-1" },
+            projectIds: [],
+            selectedCompany: { label: Resources.selectCompany[currentLanguage], value: "-1" },
+            selectedUser: { label: Resources.users[currentLanguage], value: "-1" },
             finishDate: moment(),
             startDate: moment(),
-            ContractSum: 0,
-            countContract: 0,
             columns: [
                 {
-                    key: "details",
-                    name: Resources["details"][currentLanguage],
-                    width: 80,
+                    key: "projectName",
+                    name: Resources["projectName"][currentLanguage],
+                    width: 180,
                     draggable: true,
                     sortable: true,
                     resizable: true,
@@ -47,47 +48,39 @@ class compareApprovedQuantity extends Component {
                     sortDescendingFirst: true
                 },
                 {
-                    key: "unit",
-                    name: Resources["unit"][currentLanguage],
-                    width: 80,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "unitPrice",
-                    name: Resources["unitPrice"][currentLanguage],
-                    width: 80,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "quantity",
-                    name: Resources["quantity"][currentLanguage],
-                    width: 80,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "revised Quantity",
-                    name: Resources["revQuantity"][currentLanguage],
-                    width: 80,
+                    key: "docDate",
+                    name: Resources["docDate"][currentLanguage],
+                    width: 180,
                     draggable: true,
                     sortable: true,
                     resizable: true,
                     filterable: true,
                     sortDescendingFirst: true,
+                    formatter: dateFormate
+                }, {
+                    key: "expenseValue",
+                    name: Resources["expenseValue"][currentLanguage],
+                    width: 180,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true
+                }, {
+                    key: "expenseTypeName",
+                    name: Resources["expenseTypeName"][currentLanguage],
+                    width: 180,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true
                 }
             ]
 
         }
 
-        if (!Config.IsAllow(3769)) {
+        if (!Config.IsAllow(3685)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -98,39 +91,30 @@ class compareApprovedQuantity extends Component {
     componentWillMount() {
         this.setState({ isLoading: true })
         dataService.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(res => {
-            this.setState({ projectList: res, isLoading: false })
+            this.setState({ projectsList: res, isLoading: false })
         })
+        this.setState({ isLoading: true })
+        dataService.GetDataList('SelectAllCompany', 'companyName', 'id').then(res => {
+            this.setState({ companiesList: res, isLoading: false })
+        })
+
 
     }
     getGridtData = () => {
         this.setState({ currentComponent: null })
         let reportobj = {
-            projectId: this.state.selectedProject.value,
-            contractId: this.state.selectContract.value,
-            startDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finishDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            projectIds: this.state.projectIds,
+            companyId: this.state.selectedCompany.value == -1 ? undefined : this.state.selectedCompany.value,
+            contactId: this.state.selectedUser.value == -1 ? undefined : this.state.selectedUser.value,
+            start: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            finish: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
         this.setState({ isLoading: true })
-        Api.post('ComapareApprovedQuantity', reportobj).then(rows => {
-            let columns = []
-            if (rows[0]) {
-                let objLength = Object.getOwnPropertyNames(rows[0])
-                for (var i = 0; i < objLength.length; i++) {
-                    columns.push({
-                        key: objLength[i],
-                        name: objLength[i],
-                        width: 80,
-                        draggable: true,
-                        sortable: true,
-                        resizable: true,
-                        filterable: true,
-                        sortDescendingFirst: true
-                    })
-                }
-            }
-            this.setState({ rows, isLoading: false, columns })
+        Api.post('ExpensesDetailsOnProjectReport', reportobj).then(res => {
+            let rows = res == null ? [] : res;
+            this.setState({ rows, isLoading: false })
         }).catch(() => {
-            this.setState({ isLoading: false })
+            this.setState({ isLoading: false,rows:[] })
             toast.error(Resources.operationCanceled[currentLanguage])
         })
 
@@ -139,30 +123,37 @@ class compareApprovedQuantity extends Component {
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
-    projectChange = (e) => {
-        this.setState({ isLoading: true })
-        dataService.GetDataList('GetContractByProjectId?projectId=' + e.value, 'subject', 'id').then(res => {
-            this.setState({ contractsData: res, isLoading: false, selectedProject: e })
+    companyChange = (e) => {
+        this.setState({ isLoading: true, selectedCompany: e })
+        dataService.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + e.value, 'contactName', 'id').then(res => {
+            let usersData = res != null ? res : []
+            this.setState({ usersData, isLoading: false, selectedUser: { label: Resources.users[currentLanguage], value: "-1" } })
         })
+    }
+    HandleChangeProject = (e) => {
+        let projectIds = []
+        e.forEach(project => {
+            projectIds.push(project.value)
+        })
+        this.setState({ projectIds })
     }
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.state.columns} />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'compareApprovedQuantity'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'expensesDetailsOnProjectsReport'} />
             : null
         return (
 
             <div className="reports__content">
                 <header>
-                    <h2 className="zero">{Resources.compareApprovedQuantity[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.expensesDetailsOnProjectsReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
                 <Formik
                     initialValues={{
-                        selectedProject: '',
-                        selectContract: ''
+                        selectedProject: ''
                     }}
                     enableReinitialize={true}
                     validationSchema={ValidtionSchema}
@@ -171,26 +162,33 @@ class compareApprovedQuantity extends Component {
                     }}>
                     {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className='proForm reports__proForm' >
+                            <div className="reports__multiDrop letterFullWidth">
+                                <div className="reports__proForm " style={{ margin: '0' }}>
+                                    <div className="linebylineInput multiChoice">
+                                        <Dropdown title='Projects' data={this.state.projectsList}
+                                            name='selectedProject'
+                                            onChange={setFieldValue}
+                                            isMulti={true}
+                                            handleChange={e => this.HandleChangeProject(e)}
+                                            onBlur={setFieldTouched}
+                                            error={errors.selectedProject}
+                                            touched={touched.selectedProject}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <div className="linebylineInput valid-input ">
-                                <Dropdown title='Projects' data={this.state.projectList}
-                                    name='selectedProject'
-                                    selectedValue={this.state.selectedProject}
-                                    onChange={setFieldValue}
-                                    handleChange={e => this.projectChange(e)}
-                                    onBlur={setFieldTouched}
-                                    error={errors.selectedProject}
-                                    touched={touched.selectedProject}
+                                <Dropdown title='CompanyName' data={this.state.companiesList}
+                                    name='selectedCompany'
+                                    selectedValue={this.state.selectedCompany}
+                                    handleChange={e => this.companyChange(e)}
                                 />
                             </div>
                             <div className="linebylineInput valid-input " >
-                                <Dropdown title='contract' data={this.state.contractsData}
-                                    name='selectContract'
-                                    selectedValue={this.state.selectContract}
-                                    onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectContract: e })}
-                                    onBlur={setFieldTouched}
-                                    error={errors.selectContract}
-                                    touched={touched.selectContract}
+                                <Dropdown title='users' data={this.state.usersData}
+                                    name='selectUser'
+                                    selectedValue={this.state.selectedUser}
+                                    handleChange={e => this.setState({ selectedUser: e })}
                                 />
                             </div>
                             <div className="linebylineInput valid-input alternativeDate">
@@ -217,4 +215,4 @@ class compareApprovedQuantity extends Component {
 }
 
 
-export default compareApprovedQuantity
+export default expensesDetailsOnProjectsReport

@@ -103,7 +103,7 @@ class reportsAddEdit extends Component {
             message: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(423) || !Config.IsAllow(424) || !Config.IsAllow(426)) {
+        if (!Config.IsAllow(423) && !Config.IsAllow(424) && !Config.IsAllow(426)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/Reports/" + projectId

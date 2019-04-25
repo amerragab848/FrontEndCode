@@ -129,7 +129,7 @@ class CommonLog extends Component {
 
       let obj = {
         docId: 0,
-        projectId: this.state.projectId,
+        projectId: this.props.projectId,
         projectName: this.state.projectName,
         arrange: 0,
         docApprovalId: 0,

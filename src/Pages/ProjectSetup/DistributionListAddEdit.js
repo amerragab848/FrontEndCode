@@ -454,6 +454,8 @@ class TaskGroupsAddEdit extends Component {
                     this.setState({ DocumentDate: moment().format("DD:MM:YYYY") })
                 }
             )
+            this.props.actions.documentForAdding()
+
         }
     }
 

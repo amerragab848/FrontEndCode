@@ -72,6 +72,8 @@ class LeftReportMenu extends Component {
       { data: technicalOffice }];
 
     this.state = {
+      1:true,
+      menuLength:7,
       selectedReport: { label: Resources.selectReport[currentLanguage], value: '0' },
       subReports: ProjectReports,
       moduleName: Resources.projectReports[currentLanguage]

@@ -104,7 +104,7 @@ class ClaimsAddEdit extends Component {
             selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue()
         }
-        if (!Config.IsAllow(48) || !Config.IsAllow(49) || !Config.IsAllow(51)) {
+        if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/claims/" + projectId

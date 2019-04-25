@@ -3,22 +3,22 @@ import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export"; 
-import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
+// import "../../Styles/css/semantic.min.css";
+// import "../../Styles/scss/en-us/layout.css";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import {  Filters } from "react-data-grid-addons";
+// import {  Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
+// const {
+//   NumericFilter,
+//   AutoCompleteFilter,
+//   MultiSelectFilter,
+//   SingleSelectFilter
+// } = Filters;
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -76,7 +76,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
+        //filterRenderer: SingleSelectFilter,
         formatter:statusButton
       },
       {
@@ -88,7 +88,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
+        //filterRenderer: SingleSelectFilter,
         formatter:subjectLink
       },
       {
@@ -100,7 +100,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
+       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -112,7 +112,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        //filterRenderer: SingleSelectFilter
       },
       {
         key: "arrange",
@@ -123,7 +123,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+       // filterRenderer: SingleSelectFilter
       },
       {
         key: "actionBy",
@@ -134,7 +134,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+       // filterRenderer: SingleSelectFilter
       },
       {
         key: "openedBy",
@@ -145,7 +145,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+      //  filterRenderer: SingleSelectFilter
       },
       {
         key: "description",
@@ -156,7 +156,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        //filterRenderer: SingleSelectFilter
       },
       {
         key: "projectName",
@@ -167,7 +167,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        //filterRenderer: SingleSelectFilter
       },
       {
         key: "docType",
@@ -178,7 +178,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        //filterRenderer: SingleSelectFilter
       },
       {
         key: "refDoc",
@@ -189,7 +189,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        //filterRenderer: SingleSelectFilter
       },
       {
         key: "lastApproveDate",
@@ -200,7 +200,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
+       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -212,7 +212,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
+       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -224,7 +224,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
+        //filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -236,7 +236,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
+       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -248,7 +248,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+       // filterRenderer: SingleSelectFilter
       },
       {
         key: "lastApproveTime",
@@ -259,7 +259,7 @@ class DocApprovalDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+      //  filterRenderer: SingleSelectFilter
       }
     ];
 
@@ -430,7 +430,9 @@ class DocApprovalDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+        <GridSetup rows={this.state.rows} 
+        columns={this.state.columns} 
+        showCheckbox={false}/>
       ) : <LoadingSection/>;
 
       const btnExport = this.state.isLoading === false ? 

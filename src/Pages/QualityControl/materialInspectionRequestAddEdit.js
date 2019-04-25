@@ -188,8 +188,8 @@ class materialInspectionRequestAddEdit extends Component {
             DocLoading: false
         }
 
-        if (!Config.IsAllow(366) || !Config.IsAllow(367) || !Config.IsAllow(369)) {
-            toast.success(Resources["missingPermissions"][currentLanguage]);
+        if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/inspectionRequest/" + projectId
             });

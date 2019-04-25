@@ -8747,7 +8747,9 @@ ul {
       .card-status .card-box .signature-h .smallAvatarSize {
         width: 28px;
         height: 28px;
-        margin: 0; }
+        margin: 0; 
+        flex-shrink: 0;
+      }
       .card-status .card-box .signature-h .avatarName {
         margin-left: 10px; }
         .card-status .card-box .signature-h .avatarName h6 {
