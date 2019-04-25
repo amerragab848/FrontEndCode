@@ -459,7 +459,6 @@ class corrRecievedSent extends Component {
                 "field": "refDoc",
                 "type": "string"
             }]
-
         this.state = {
             projectId: this.props.match.params.projectId,
             tabIndex: 0,
