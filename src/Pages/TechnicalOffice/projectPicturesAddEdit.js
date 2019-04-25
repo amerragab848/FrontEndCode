@@ -62,7 +62,7 @@ class projectPicturesAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                    docId = obj.docId;
+                    docId = obj.docId; 
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -97,9 +97,10 @@ class projectPicturesAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             IsEditMode: false,
             showPopUp: false,
-            IsAddModel: false
+            IsAddModel: false,
+            isLoading: false
         }
-        
+
     }
 
     checkDocumentIsView() {
@@ -125,7 +126,7 @@ class projectPicturesAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let ProjectPicDoc = nextProps.document
             ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate).format('DD/MM/YYYY')
             ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate).format('DD/MM/YYYY')
@@ -155,12 +156,18 @@ class projectPicturesAddEdit extends Component {
 
     componentWillMount() {
         if (docId > 0) {
-            let url = "GetProjectPictureForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectPictures');
             this.setState({
-                IsEditMode: true
+                IsEditMode: true,
+                isLoading: true
             })
-            this.FillDrowDowns()
+            let url = "GetProjectPictureForEdit?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectPictures').then(
+                res => {
+
+                    this.FillDrowDowns()
+                }
+            )
+
 
         } else {
             ///Is Add Mode
@@ -184,24 +191,28 @@ class projectPicturesAddEdit extends Component {
     }
 
     FillDrowDowns = () => {
+
         dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId').then(
             res => {
                 this.setState({
                     companies: res
                 })
 
-                if (this.state.docId !== 0) {
+                if (docId !== 0) {
+
                     let elementID = this.state.document.fromCompanyId;
                     let SelectedValue = _.find(res, function (i) { return i.value == elementID; });
                     this.setState({
                         selectedFromCompany: SelectedValue,
+
                     })
                     dataservice.GetDataList('GetContactsByCompanyId?companyId=' + this.state.document.fromCompanyId + '', 'contactName', 'id').then(result => {
                         let elementIDContact = this.state.document.fromContactId;
                         let SelectedValueContact = _.find(result, function (i) { return i.value == elementIDContact });
                         this.setState({
                             fromContacts: result,
-                            selectedFromContact: SelectedValueContact
+                            selectedFromContact: SelectedValueContact,
+                            isLoading: false
                         });
                     });
                 }
@@ -211,16 +222,13 @@ class projectPicturesAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
+        this.props.actions.clearCashDocument();
     }
-
-    componentDidMount = () => {
-        //    this.FillDropDowns()
-    }
-
+ 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
@@ -522,9 +530,7 @@ function mapStateToProps(state) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
-        changeStatus: state.communication.changeStatus,
-        file: state.communication.file,
-        files: state.communication.files,
+        changeStatus: state.communication.changeStatus, 
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId
     }

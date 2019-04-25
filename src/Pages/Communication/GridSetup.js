@@ -367,7 +367,7 @@ class GridSetup extends Component {
 
             <ReactDataGrid
               rowKey="id"
-              minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 650)) : 1}
+              minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
               height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
               columns={this.state.columns}
 

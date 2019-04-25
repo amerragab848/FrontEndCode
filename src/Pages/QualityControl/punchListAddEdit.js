@@ -272,7 +272,7 @@ class punchListAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let SnagListDoc = nextProps.document
             SnagListDoc.docDate = moment(SnagListDoc.docDate).format("DD/MM/YYYY")
             this.setState({
@@ -285,7 +285,7 @@ class punchListAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -414,6 +414,7 @@ class punchListAddEdit extends Component {
                 result => {
                     this.setState({
                         [element.DropDataName]: result,
+                        Loading:false
                     })
 
                     if (this.state.IsEditMode && docId > 0) {
@@ -444,6 +445,7 @@ class punchListAddEdit extends Component {
                             let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
                             this.setState({
                                 [element.selectedValue]: SelectedValue,
+                                Loading:false
                             });
                         }
                     }

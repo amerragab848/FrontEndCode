@@ -72,7 +72,7 @@ class CommonLog extends Component {
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {   this.props.actions.clearCashDocument();
 
     this.setState({
       isLoading: true,
@@ -605,9 +605,9 @@ class CommonLog extends Component {
               <div className="H-tableSize" onClick={this.handleMinimize}>
                 {this.state.minimizeClick ? <img src={MinimizeVBlue} alt="" /> : <img src={MinimizeV} alt="" />}
               </div>
-              <div className="V-tableSize">
+                 {/* <div className="V-tableSize">
                 <img src={MinimizeH} alt="" />
-              </div>
+              </div> */}
             </div>
             <div className={"grid-container " + (this.state.rows.length === 0 ? "griddata__load" : " ")}>
               {dataGrid}

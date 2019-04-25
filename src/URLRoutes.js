@@ -781,6 +781,19 @@ var routes = [
       order: 1
     }
   },
+  // {
+  //   route: "ProjectCompanies",
+  //   moduleId: "ProjectCompanies",
+  //   title: "Companies",
+  //   nav: true,
+  //   hash: "#ProjectCompanies",
+  //   settings: {
+  //     Communication: true,
+  //     permission: 52,
+  //     caption: "procoor-icon-letters",
+  //     order: 1
+  //   }
+  // },
   {
     route:
       "internalMemoAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -837,6 +850,32 @@ var routes = [
       order: 13
     }
   },
+  // {
+  //   route: "Email",
+  //   moduleId: "commonLogs",
+  //   title: "communicationEmails",
+  //   nav: true,
+  //   hash: "#Email",
+  //   settings: {
+  //     Communication: true,
+  //     permission: 395,
+  //     caption: "procoor-icon-email-records",
+  //     order: 8
+  //   }
+  // },
+  // {
+  //   route: "corrRecievedSent",
+  //   moduleId: "communication/corrRecievedSent",
+  //   title: "correspondence",
+  //   nav: true,
+  //   hash: "#corrRecievedSent",
+  //   settings: {
+  //     Communication: true,
+  //     permission: 42,
+  //     caption: "procoor-icon-email-records",
+  //     order: 13
+  //   }
+  // },
   {
     route: "correspondenceSentAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "communication/correspondenceSentAddEdit",
@@ -944,8 +983,8 @@ var routes = [
     settings: { Site: false }
   },
   {
-    route: "projectProjectsCompanies",
-    moduleId: "projects/projectProjectsCompanies",
+    route: "ProjectCompanies",
+    moduleId: "ProjectCompanies",
     title: "Companies",
     nav: true,
     settings: {

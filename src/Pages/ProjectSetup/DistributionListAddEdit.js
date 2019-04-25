@@ -169,7 +169,7 @@ class TaskGroupsAddEdit extends Component {
         )
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

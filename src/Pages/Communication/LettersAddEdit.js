@@ -18,8 +18,7 @@ import {
     bindActionCreators
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-
+ 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -38,10 +37,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
 
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-
-    refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
-
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
@@ -135,21 +131,23 @@ class LettersAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
+            this.checkDocumentIsView(); 
         }
     };
 
-    componentWillUnmount() {
+    componentWillUnmount() {   
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
+         
     }
 
     componentDidUpdate(prevProps) {
@@ -188,7 +186,7 @@ class LettersAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId,'lettertitle');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'lettertitle');
 
         } else {
             let letter = {
@@ -408,7 +406,7 @@ class LettersAddEdit extends Component {
         });
     }
 
-    saveAndExit(event) { 
+    saveAndExit(event) {
         this.props.history.push({
             pathname: "/Letters/" + this.state.projectId
         });
@@ -467,8 +465,8 @@ class LettersAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                <HeaderDocument projectName={projectName} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
- 
+                    <HeaderDocument projectName={projectName} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -562,18 +560,12 @@ class LettersAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
+                                                            <div className="ui input inputDev"  >
                                                                 <input type="text" className="form-control" id="refDoc"
                                                                     value={this.state.document.refDoc}
                                                                     name="refDoc"
                                                                     placeholder={Resources.refDoc[currentLanguage]}
-                                                                    onBlur={(e) => {
-                                                                        handleChange(e)
-                                                                        handleBlur(e)
-                                                                    }}
                                                                     onChange={(e) => this.handleChange(e, 'refDoc')} />
-                                                                {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
-
                                                             </div>
                                                         </div>
 
@@ -588,7 +580,6 @@ class LettersAddEdit extends Component {
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
-
                                                             </div>
                                                         </div>
 
@@ -771,11 +762,10 @@ function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
-        changeStatus: state.communication.changeStatus,
-        file: state.communication.file,
-        files: state.communication.files,
+        changeStatus: state.communication.changeStatus, 
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId, showModal: state.communication.showModal
+        projectId: state.communication.projectId, 
+        showModal: state.communication.showModal
     }
 }
 

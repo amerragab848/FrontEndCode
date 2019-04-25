@@ -2,6 +2,7 @@
 import * as types from '../../store/actions/types';
 
 import initialState from '../initialState';
+import { parse } from 'url';
 
 export default function (state = initialState.app.communication, action) {
 
@@ -18,10 +19,11 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 items: action.items ? action.items : []
             }
- 
+
         case types.Document_for_Edit:
+            console.log('Document_for_Edit...' , state.files, state.docId, state.changeStatus)
             return {
-                ...state,
+                ...state, 
                 document: action.document,
                 docId: action.docId,
                 docTypeId: action.docTypeId,
@@ -29,6 +31,15 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 showLeftReportMenu: false
+            }; 
+
+        case types.Clear_Cash_Document: 
+            console.log('Clear_Cash_Document...' , state.files, state.docId, state.changeStatus)
+
+            return {
+                ...state,
+                files: [],
+                items: []
             };
 
         case types.Document_Adding:

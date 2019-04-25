@@ -135,6 +135,7 @@ import InventoryDetails from './Pages/ReportsCenter/ProjectReports/InventoryDeta
 import BoqStractureCost from './Pages/ReportsCenter/ProjectReports/BoqStractureCost';
 import allocationOfProjectsOnCompanies from './Pages/ReportsCenter/ProjectReports/allocationOfProjectsOnCompanies';
 import allocationOfUsersOnProjects from './Pages/ReportsCenter/ProjectReports/allocationOfUsersOnProjects';
+import ProjectCompanies from "./Pages/Communication/ProjectCompanies";
 import budgetVarianceReport from './Pages/ReportsCenter/ProjectReports/budgetVarianceReport';
 import expensesDetailsOnProjectsReport from './Pages/ReportsCenter/ProjectReports/expensesDetailsOnProjectsReport';
 
@@ -274,6 +275,7 @@ let originalRoutes = [
     , <Route path="/InventoryDetails" component={InventoryDetails} />
     , <Route path="/allocationOfProjectsOnCompanies" component={allocationOfProjectsOnCompanies} />
     , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
+    , <Route path="/ProjectCompanies" component={ProjectCompanies} />
     
 
 

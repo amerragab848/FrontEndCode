@@ -160,7 +160,7 @@ class addEditModificationDrawing extends Component {
         })
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -180,7 +180,7 @@ class addEditModificationDrawing extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow

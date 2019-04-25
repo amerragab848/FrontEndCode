@@ -3,7 +3,7 @@ import Api from '../../api';
 
 const _ = require('lodash')
 
-export function documentForEdit(urlAction,docTypeId) {
+export function documentForEdit(urlAction, docTypeId) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
 
@@ -12,7 +12,7 @@ export function documentForEdit(urlAction,docTypeId) {
                 document: resp,
                 docId: resp.id,
                 docTypeId: docTypeId,
-                showLeftReportMenu: false 
+                showLeftReportMenu: false
             });
 
         }).catch((ex) => {
@@ -24,6 +24,14 @@ export function documentForEdit(urlAction,docTypeId) {
         });
     }
 }
+export function clearCashDocument() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Clear_Cash_Document
+        });
+    }
+}
+
 
 export function GetDocumentCycle(urlAction) {
     return (dispatch, getState) => {
@@ -53,23 +61,20 @@ export function documentForAdding(doc) {
 
 export function ExportingData(data) {
     return (dispatch, getState) => {
-        dispatch({ 
-            type: types.Export_Document, 
-            items:  data.items
+        dispatch({
+            type: types.Export_Document,
+            items: data.items
         });
     }
 }
 
 export function GetUploadedFiles(urlAction) {
     return (dispatch, getState) => {
-
         return Api.get(urlAction).then(resp => {
-
             dispatch({
                 type: types.Get_Files,
                 files: resp
             });
-
         }).catch((ex) => {
             dispatch({
                 type: types.Get_Files,
@@ -244,7 +249,7 @@ export function RouteToTemplate() {
             type: types.RouteToTemplate,
             showLeftMenu: false,
             showSelectProject: true,
-            showLeftReportMenu:false
+            showLeftReportMenu: false
         });
     }
 }
@@ -304,7 +309,7 @@ export function ReportCenterMenuClick() {
             type: types.ReportCenterMenu,
             showLeftMenu: false,
             showSelectProject: true,
-            showLeftReportMenu: true 
+            showLeftReportMenu: true
         });
     }
 }
