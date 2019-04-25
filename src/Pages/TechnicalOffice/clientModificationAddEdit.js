@@ -38,7 +38,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
- 
+
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
@@ -121,12 +121,12 @@ class clientModificationAddEdit extends Component {
         if (!Config.IsAllow(3133) && !Config.IsAllow(3134) && !Config.IsAllow(3136)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: "/clientSelection/" + projectId
+                pathname: "/clientModification/" + projectId
             });
         }
     }
-    
-    componentWillUnmount() {
+
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -146,7 +146,7 @@ class clientModificationAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -188,7 +188,7 @@ class clientModificationAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsClientModificationsForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId ,'clientModificationLog');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'clientModificationLog');
 
         } else {
             let clientSelection = {
@@ -224,11 +224,11 @@ class clientModificationAddEdit extends Component {
             };
 
             this.setState({ document: clientSelection });
-            this.fillDropDowns(false); 
+            this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
     };
- 
+
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
@@ -299,7 +299,7 @@ class clientModificationAddEdit extends Component {
                 let area = {};
                 if (areaId) {
                     area = _.find(result, function (i) { return i.value == areaId; });
- 
+
                     this.setState({
                         selecetedArea: area
                     });
@@ -471,7 +471,7 @@ class clientModificationAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.props.history.push({
-                pathname: "/clientSelection/" + this.state.projectId
+                pathname: "/clientModification/" + this.state.projectId
             });
         });
     }
@@ -493,7 +493,7 @@ class clientModificationAddEdit extends Component {
     saveAndExit(event) {
 
         this.props.history.push({
-            pathname: "/clientSelection/" + this.state.projectId
+            pathname: "/clientModification/" + this.state.projectId
         });
     }
 
@@ -552,10 +552,10 @@ class clientModificationAddEdit extends Component {
 
 
 
-                <HeaderDocument projectName={projectName} docTitle={Resources.clientModificationLog[currentLanguage]}
- moduleTitle={Resources['technicalOffice'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} docTitle={Resources.clientModificationLog[currentLanguage]}
+                        moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
-                    
+
 
                     <div className="doc-container">
                         {
@@ -762,7 +762,7 @@ class clientModificationAddEdit extends Component {
                                                                 isMulti={false}
                                                                 data={this.state.approvalstatusList}
                                                                 selectedValue={this.state.selectedApprovalStatusId}
-                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId",false, '', '', '', 'selectedApprovalStatusId')}
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
 
                                                                 onChange={setFieldValue}
                                                                 onBlur={setFieldTouched}
@@ -871,15 +871,15 @@ class clientModificationAddEdit extends Component {
 
                                         {this.state.isApproveMode === true ?
                                             <div >
-                                                <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                             </div>
                                             : null
                                         }
                                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                       <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

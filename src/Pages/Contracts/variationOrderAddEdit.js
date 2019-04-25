@@ -177,7 +177,7 @@ class variationOrderAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
             serverChangeOrder.dateApproved = moment(serverChangeOrder.resultDate).format('DD/MM/YYYY');
@@ -300,7 +300,7 @@ class variationOrderAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

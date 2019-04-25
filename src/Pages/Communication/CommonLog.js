@@ -72,7 +72,7 @@ class CommonLog extends Component {
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {   this.props.actions.clearCashDocument();
 
     this.setState({
       isLoading: true,

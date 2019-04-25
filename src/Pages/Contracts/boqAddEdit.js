@@ -348,7 +348,7 @@ class bogAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
     fillDropDowns(isEdit) {

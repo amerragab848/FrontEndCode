@@ -214,7 +214,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
 
             serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
@@ -499,7 +499,7 @@ class inspectionRequestAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });

@@ -36,7 +36,7 @@ class WidgetsWithText extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {    
     this.abortController.abort();
   }
 

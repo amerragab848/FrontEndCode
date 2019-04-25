@@ -165,13 +165,7 @@ class Itemize extends Component {
     customButton = () => {
         return <button className="companies_icon" style={{ cursor: 'pointer' }} ><i class="fa fa-folder-open"></i></button>;
     };
-
-    componentWillUnmount() {
-    }
-
-    componentDidMount() {
-
-    }
+ 
     componentWillMount() {
         this.getTabelData(this.state.parentId)
     }
@@ -249,7 +243,7 @@ class Itemize extends Component {
             index++;
         }
     }
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.props.actions.deleteItemsDescription()
     }
     componentWillReceiveProps(props, state) {

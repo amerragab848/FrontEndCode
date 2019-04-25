@@ -133,14 +133,14 @@ class riskAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {
+    componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id) {
+        if (nextProps.document.id) {
 
             nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
             nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');

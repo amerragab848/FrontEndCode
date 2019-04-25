@@ -38,7 +38,7 @@ export default class uploadSignture extends React.Component {
             sign: {}, signName: '', signPreview: {}
         })
     }
-    componentWillUnmount() {
+    componentWillUnmount() {   
         URL.revokeObjectURL(this.state.signPreview)
         URL.revokeObjectURL(this.state.profilePreview)
     }
