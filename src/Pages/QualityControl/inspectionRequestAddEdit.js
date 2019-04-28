@@ -917,22 +917,20 @@ class inspectionRequestAddEdit extends Component {
                                 </div>
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
-                                        <div className="inputDev ui input">
-                                            <Dropdown title="approvalStatus"
-                                                isMulti={false}
-                                                data={this.state.approvalstatusList}
-                                                selectedValue={this.state.selectedApprovalStatusId}
-                                                handleChange={(e) => this.handleChangeCycleDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
+                                        <Dropdown title="approvalStatus"
+                                            isMulti={false}
+                                            data={this.state.approvalstatusList}
+                                            selectedValue={this.state.selectedApprovalStatusId}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
 
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.approvalStatusId}
-                                                touched={touched.approvalStatusId}
-                                                isClear={false}
-                                                index="IR-approvalStatusId"
-                                                name="approvalStatusId"
-                                                id="approvalStatusId" />
-                                        </div>
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.approvalStatusId}
+                                            touched={touched.approvalStatusId}
+                                            isClear={false}
+                                            index="IR-approvalStatusId"
+                                            name="approvalStatusId"
+                                            id="approvalStatusId" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">

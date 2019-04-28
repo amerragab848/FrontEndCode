@@ -578,28 +578,24 @@ class TaskGroupsAddEdit extends Component {
 
 
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
-                                                    selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "Company")}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.Company}
-                                                    touched={touched.Company}
-                                                    value={values.Company} isClear={true} />
-                                            </div>
+                                            <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
+                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "Company")}
+                                                onBlur={setFieldTouched}
+                                                error={errors.Company}
+                                                touched={touched.Company}
+                                                value={values.Company} isClear={true} />
                                         </div>
 
 
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
-                                                    selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContact : values.ContactName} onChange={setFieldValue}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.ContactName}
-                                                    touched={touched.ContactName}
-                                                    value={values.ContactName} />
-                                            </div>
+                                            <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
+                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContact : values.ContactName} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
+                                                onBlur={setFieldTouched}
+                                                error={errors.ContactName}
+                                                touched={touched.ContactName}
+                                                value={values.ContactName} />
                                         </div>
 
                                         <div className="linebylineInput valid-input">

@@ -297,7 +297,8 @@ class Index extends Component {
     }
 
     render() {
-        const companiesList = <React.Fragment>
+        const companiesList =
+         <div className="dropWrapper">
             <DropdownMelcous title="CompanyName" data={this.props.Adminstration.companyList}
                 value={this.props.Adminstration.companyList[0]}
                 handleChange={(e) => this.setState({ transferCompany: e.value })} />
@@ -309,7 +310,7 @@ class Index extends Component {
                 >  {Resources['save'][currentLanguage]}
                 </button>
             </div>
-        </React.Fragment>
+        </div>
 
         const dataGrid = this.props.Adminstration.getingData === false ? (
             <GridSetup rows={this.props.Adminstration.companyContact}

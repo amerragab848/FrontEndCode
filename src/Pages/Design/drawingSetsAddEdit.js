@@ -169,7 +169,7 @@ class DrawingSetsAddEdit extends Component {
           hasWorkflow: this.props.hasWorkflow
         });
         let data = { items: result };
-                this.props.actions.ExportingData(data);
+        this.props.actions.ExportingData(data);
 
         this.fillDropDowns(nextProps.document.id > 0 ? true : false);
       });
@@ -208,25 +208,25 @@ class DrawingSetsAddEdit extends Component {
 
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
-        if (!(Config.IsAllow(212))) {
+      if (!(Config.IsAllow(212))) {
+        this.setState({ isViewMode: true });
+      }
+      if (this.state.isApproveMode != true && Config.IsAllow(212)) {
+        if (this.props.hasWorkflow == false && Config.IsAllow(212)) {
+          if (this.props.document.status !== false && Config.IsAllow(212)) {
+            this.setState({ isViewMode: false });
+          } else {
             this.setState({ isViewMode: true });
+          }
+        } else {
+          this.setState({ isViewMode: true });
         }
-        if (this.state.isApproveMode != true && Config.IsAllow(212)) {
-            if (this.props.hasWorkflow == false && Config.IsAllow(212)) {
-                if (this.props.document.status !== false && Config.IsAllow(212)) {
-                    this.setState({ isViewMode: false });
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            } else {
-                this.setState({ isViewMode: true });
-            }
-        }
+      }
     }
     else {
-        this.setState({ isViewMode: false });
+      this.setState({ isViewMode: false });
     }
-}
+  }
 
   componentWillMount() {
 
@@ -234,7 +234,7 @@ class DrawingSetsAddEdit extends Component {
 
       let url = "GetLogsDrawingsSetsForEdit?id=" + this.state.docId;
 
-      this.props.actions.documentForEdit(url, this.state.docTypeId ,'drawingSets');
+      this.props.actions.documentForEdit(url, this.state.docTypeId, 'drawingSets');
 
     } else {
       //field
@@ -762,7 +762,7 @@ class DrawingSetsAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
-        <HeaderDocument projectName={projectName} docTitle={Resources.drawingSets[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+          <HeaderDocument projectName={projectName} docTitle={Resources.drawingSets[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
 
           <div className="doc-container">
             {/* Right Menu */}
@@ -988,14 +988,12 @@ class DrawingSetsAddEdit extends Component {
                               <Form onSubmit={handleSubmit}>
                                 <div className="proForm datepickerContainer">
                                   <div className="linebylineInput valid-input">
-                                    <div className="inputDev ui input">
-                                      <Dropdown isMulti={false} title="drawing" data={this.state.drawing}
-                                        selectedValue={this.state.selectedDrawing}
-                                        onChange={setFieldValue} onBlur={setFieldTouched}
-                                        error={errors.drawing} touched={touched.drawing}
-                                        name="drawing" id="drawing"
-                                        handleChange={event => this.handleChangeDropDownItems(event, "drawingId", false, "", "", "", "selectedDrawing")} />
-                                    </div>
+                                    <Dropdown isMulti={false} title="drawing" data={this.state.drawing}
+                                      selectedValue={this.state.selectedDrawing}
+                                      onChange={setFieldValue} onBlur={setFieldTouched}
+                                      error={errors.drawing} touched={touched.drawing}
+                                      name="drawing" id="drawing"
+                                      handleChange={event => this.handleChangeDropDownItems(event, "drawingId", false, "", "", "", "selectedDrawing")} />
                                   </div>
                                 </div>
                                 <div className="slider-Btns">

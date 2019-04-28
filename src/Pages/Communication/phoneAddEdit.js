@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
 import Api from '../../api'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import moment from 'moment'
 import Resources from '../../resources.json';
 import _ from "lodash";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
@@ -92,6 +92,7 @@ class phoneAddEdit extends Component {
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
             phone: {}
         }
+        
         if (!Config.IsAllow(89) && !Config.IsAllow(90) && !Config.IsAllow(92)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/Phone/" + projectId });

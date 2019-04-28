@@ -93,7 +93,7 @@ class ExportDetails extends Component {
             let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
             let nextIndex = (index + 1);
             if ((index % 2) === 0) {
-                return (<tr>
+                return (<tr key={index}>
                     <td style={{ backgroundColor: '#f3f6f9' }}>
                         <h4 className="ui image header">
                             <div className="content">{Resources[field.name][currentLanguage]} :</div>
@@ -322,7 +322,7 @@ class ExportDetails extends Component {
                             </div>
                             <div className="ui checkbox radio radioBoxBlue">
                                 <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'isExcel')} />
-                                <label>{Resources.no[currentLanguage]}</label>
+                                <label>{Resources.pdf[currentLanguage]}</label>
                             </div>
                         </div>
                         <div className="fillter-status fillter-item-c undefined valid-input">
