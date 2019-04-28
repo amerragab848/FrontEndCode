@@ -6,12 +6,14 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Export from "../../../Componants/OptionsPanels/Export";
+import BarChartComp from '../TechnicalOffice/BarChartComp'
 import GridSetup from "../../Communication/GridSetup"
 import { SkyLightStateless } from 'react-skylight';
 import moment from 'moment';
 import Api from '../../../api.js';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import { charts } from 'highcharts';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 const _ = require('lodash')
 const dateFormate = ({ value }) => {
@@ -26,6 +28,8 @@ class BudgetCashFlowAll extends Component {
 
         this.state = {
             isLoading: false,
+            showChart: false,
+            noClicks: 0,
             rows: [],
             RowsDetails: [],
             startDate: moment(),
@@ -110,6 +114,29 @@ class BudgetCashFlowAll extends Component {
         }
         Api.post('GetBudgetCashFlowAll', obj).then(res => {
 
+            let categories = []
+            let estimatedIn = []
+            let estimatedOut = []
+            let actualIn = []
+            let actualOut = []
+            res.forEach(element => {
+                categories.push(moment(element.date).format("DD/MM/YYYY"));
+                estimatedIn.push(element.estimatedCashIn);
+                estimatedOut.push(element.estimatedCashOut);
+                actualIn.push(element.totalIn);
+                actualOut.push(element.totalOut);
+            })
+            let series = [];
+
+            series.push({ name: 'Actual', data: actualIn, color: '#90ED7D' });
+            series.push({ name: 'Actual', data: actualOut, color: '#f45b4f' });
+            series.push({ name: 'Estimate', data: estimatedIn, color: '#95ceff' });
+            series.push({ name: 'Estimate', data: estimatedOut, color: '#90000f' });
+
+            let xAxis = { categories: categories }
+            let noClicks = this.state.noClicks
+            this.setState({ series, xAxis, noClicks: noClicks + 1, showChart: true });
+
             //Lables Count
             let totalsEstimatedIn = []
             let totalsEstimatedOut = []
@@ -185,6 +212,13 @@ class BudgetCashFlowAll extends Component {
     }
 
     render() {
+        const Chart =
+            <BarChartComp
+                noClicks={this.state.noClicks}
+                type={'spline'}
+                series={this.state.series}
+                xAxis={this.state.xAxis}
+                title={Resources['budgetCashFlowReport'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
 
         const columnsCycles = [
             {
@@ -286,7 +320,7 @@ class BudgetCashFlowAll extends Component {
                         </div>
 
                     </div>
-
+                    {Chart}
                     {dataGrid}
                 </div>
 
