@@ -6,6 +6,7 @@ import CreateTransmittal from "./CreateTransmittal";
 import ExportDetails from "./ExportDetails";
 import SendToInbox from './SendToInbox'
 import SendByEmails from './SendByEmails'
+import CopyTo from './CopyTo'
 
 import Resources from '../../resources.json';
 import Config from '../../Services/Config';
@@ -32,12 +33,12 @@ class OptionContainer extends React.Component {
             showModal: false,
             defualtValue: { label: Resources["otherActions"][currentLanguage], value: '0' },
             data: [
+                { title: "export", value: <ExportDetails />, label: Resources["export"][currentLanguage] },
+                { title: "copyTo", value: <CopyTo docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["copyTo"][currentLanguage] },
                 { title: "sendByEmail", value: <SendByEmails docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["sendByEmail"][currentLanguage] },
                 { title: "sendByInbox", value: <SendToInbox docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["sendByInbox"][currentLanguage] },
                 { title: "sendTask", value: <SendTask docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["sendTask"][currentLanguage] },
                 { title: "createTransmittal", value: <CreateTransmittal docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["createTransmittal"][currentLanguage] },
-                { title: "export", value: <ExportDetails />, label: Resources["export"][currentLanguage] },
-                // { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />,label: Resources["sendToWorkFlow"][currentLanguage] }
             ]
         }
     }
@@ -67,9 +68,8 @@ class OptionContainer extends React.Component {
     componentDidMount = () => {
         let allowPanel = _.filter(this.state.data, (item) => {
             if (item.value != '0') {
-                if (item.title != 'export') {
+                if (item.title != 'export' && item.title != 'copyTo') {
                     return this.IsAllow(item.title)
-
                 } else {
                   return  item
                 }

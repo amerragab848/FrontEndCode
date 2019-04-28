@@ -138,7 +138,7 @@ class ProjectTaskAddEdit extends Component {
     };
 
     if (!Config.IsAllow(357) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
-      toast.warn(Resources["missingPermissions"][currentLanguage]); 
+      toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/ProjectTasks/" + this.state.projectId);
     }
   }
@@ -601,7 +601,8 @@ class ProjectTaskAddEdit extends Component {
     }
   }
 
-  componentWillUnmount() {   this.props.actions.clearCashDocument();
+  componentWillUnmount() {
+    this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });
@@ -740,44 +741,44 @@ class ProjectTaskAddEdit extends Component {
                             </div>
                             <div className="linebylineInput valid-input mix_dropdown">
                               <label className="control-label">
-                                {Resources.ContactName[currentLanguage]}
+                                {Resources.fromCompany[currentLanguage]}
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                  <Dropdown isMulti={false} data={this.state.fromContacts}
-                                    selectedValue={this.state.selectedFromContact}
-                                    handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
-                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromContactId} touched={touched.fromContactId}
-                                    name="fromContactId" id="fromContactId"
-                                  />
-                                </div>
-                                <div className="super_company">
-                                  <Dropdown data={this.state.companies} isMulti={false}
+                                     <Dropdown data={this.state.companies} isMulti={false}
                                     selectedValue={this.state.selectedFromCompany}
                                     handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                     onChange={setFieldValue} onBlur={setFieldTouched}
                                     error={errors.fromCompanyId} touched={touched.fromCompanyId}
                                     name="fromCompanyId" id="fromCompanyId" />
                                 </div>
+                                <div className="super_company">
+                                <Dropdown isMulti={false} data={this.state.fromContacts}
+                                    selectedValue={this.state.selectedFromContact}
+                                    handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
+                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromContactId} touched={touched.fromContactId}
+                                    name="fromContactId" id="fromContactId"
+                                  />
+                                </div>
                               </div>
                             </div>
                             <div className="linebylineInput valid-input mix_dropdown">
                               <label className="control-label">
-                                {Resources.ContactName[currentLanguage]}
+                                {Resources.toCompany[currentLanguage]}
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                  <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                    handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedToContact")}
-                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
-                                    name="bicContactId" id="bicContactId" />
-                                </div>
-                                <div className="super_company">
-                                  <Dropdown isMulti={false} data={this.state.companies}
+                                <Dropdown isMulti={false} data={this.state.companies}
                                     selectedValue={this.state.selectedBicCompany}
                                     handleChange={event => this.handleChangeDropDown(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                     touched={touched.bicCompanyId} name="bicCompanyId" id="bicCompanyId" />
+                                </div>
+                                <div className="super_company">
+                                  <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                    handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedToContact")}
+                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
+                                    name="bicContactId" id="bicContactId" />
                                 </div>
                               </div>
                             </div>
@@ -1009,13 +1010,20 @@ class ProjectTaskAddEdit extends Component {
                               onChange={e => { handleChange(e); this.handleChangeCycle(e, "arrange") }} />
                           </div>
                         </div>
+
                         <div className="valid-input mix_dropdown">
                           <label className="control-label">
                             {Resources.ContactName[currentLanguage]}
                           </label>
                           <div className="supervisor__company">
                             <div className="super_name">
-                              <Dropdown isMulti={false} data={this.state.ToContacts}
+                           <Dropdown data={this.state.companies} isMulti={false}
+                                selectedValue={this.state.selectedBicCompanyCycle}
+                                handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact"); }}
+                                name="bicCompanyId" id="bicCompanyId" />
+                            </div>
+                            <div className="super_company">
+                            <Dropdown isMulti={false} data={this.state.ToContacts}
                                 selectedValue={this.state.selectedToContactCycle}
                                 handleChange={event => this.handleChangeDropDownCycle(event, "bicContactId", false, "", "", "", "selectedToContactCycle")}
                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId}
@@ -1023,14 +1031,9 @@ class ProjectTaskAddEdit extends Component {
                                 name="bicContactId" id="bicContactId"
                               />
                             </div>
-                            <div className="super_company">
-                              <Dropdown data={this.state.companies} isMulti={false}
-                                selectedValue={this.state.selectedBicCompanyCycle}
-                                handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact"); }}
-                                name="bicCompanyId" id="bicCompanyId" />
-                            </div>
                           </div>
                         </div>
+
                         <div className="customDatepicker fillter-status fillter-item-c">
                           <div className="proForm datepickerContainer">
                             <label className="control-label">

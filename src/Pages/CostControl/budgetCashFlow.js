@@ -1,16 +1,16 @@
 import React, { Component, Fragment } from 'react'
 import Api from '../../api';
 import Resources from '../../resources.json';
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import Filter from '../../Componants/FilterComponent/filterComponent'
-// import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup"
 import { SkyLightStateless } from 'react-skylight';
 // import config from "../../Services/Config";
 // import CryptoJS from 'crypto-js';
 import { withRouter } from "react-router-dom";
-// import Export from '../../Componants/OptionsPanels/Export';
+import Export from '../../Componants/OptionsPanels/Export';
 import dataservice from "../../Dataservice";
 import * as communicationActions from '../../store/actions/communication';
 import { connect } from 'react-redux';
@@ -32,12 +32,6 @@ class budgetCashFlow extends Component {
         super(props)
 
         const columnsGrid = [
-            {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
-            },
             {
                 key: "projectName",
                 name: Resources.projectName[currentLanguage],
@@ -130,15 +124,11 @@ class budgetCashFlow extends Component {
             showDeleteModal: false,
             NewPassword: '',
             showResetPasswordModal: false,
-            showCheckbox: false,
+            showCheckbox: true,
             startDate: moment(),
             finishDate: moment(),
             showTable: false,
             cashFlowTable: [],
-            monthDataState: {
-                cashIn: 0,
-                cashOut: 0
-            }
         }
 
     }
@@ -147,7 +137,7 @@ class budgetCashFlow extends Component {
         this.setState({
             isLoading: true
         })
-        dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.state.projectId + '').then(res => {
+        dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.props.projectId + '').then(res => {
             this.setState({
                 rows: res,
                 totalRows: res.length,
@@ -230,7 +220,7 @@ class budgetCashFlow extends Component {
 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false, showResetPasswordModal: false });
-    };
+    }
 
     showPopupAdd = () => {
         this.setState({
@@ -274,6 +264,48 @@ class budgetCashFlow extends Component {
         })
     }
 
+    filterMethodMain = (event, query, apiFilter) => {
+        var stringifiedQuery = JSON.stringify(query);
+        this.setState({
+            isLoading: true,
+            query: stringifiedQuery
+        });
+        if (stringifiedQuery !== '{"isCustom":true}') {
+            this.setState({ isLoading: true, search: true })
+            let _query = stringifiedQuery.split(',"isCustom"')
+            let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
+            Api.get(url).then(result => {
+                this.setState({
+                    rows: result,
+                    isLoading: false,
+                    pageNumber: 1,
+                    totalRows: result.length
+                });
+            })
+        }
+        else {
+            this.setState({ isLoading: true })
+            let pageNumber = this.state.pageNumber + 1
+            Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                this.setState({
+                    rows: result,
+                    isLoading: false,
+                    pageNumber: pageNumber,
+                    totalRows: result.length,
+                    search: false
+                });
+            });
+        }
+
+    };
+
+    DeleteItem = (selectedRows) => {
+
+        this.setState({
+            showDeleteModal: true,
+            selectedRows
+        })
+    }
 
     hideFilter(value) {
         this.setState({ viewfilter: !this.state.viewfilter });
@@ -290,8 +322,8 @@ class budgetCashFlow extends Component {
 
     cashFlowDiff = (obj, e) => {
 
-        var finishDate1 = moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        var startDate1 = moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        var finishDate1 = moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        var startDate1 = moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
         var end = finishDate1;
 
         var start = startDate1;
@@ -307,36 +339,54 @@ class budgetCashFlow extends Component {
             var set = moment(start).set('month', get + i);
 
             let monthData = {
-                date: moment(set.calendar()).format('YYYY-MM-DD'),
+                date: moment(set).format('YYYY-MM-DD'),
                 cashIn: 0,
                 cashOut: 0,
             }
 
             cashFlowTable2.push(monthData)
-
         }
-        console.log(cashFlowTable2)
+        this.setState({
+            cashFlowTable: cashFlowTable2
+        })
+        cashFlowTable2 = []
+    }
 
+    cashFlowAdd = () => {
+        this.setState({
+            isLoading: true,
+            showPopup: false
+        })
+        let cashAdd = this.state.cashFlowTable
+        dataservice.addObject('AddCashFlow?projectId=' + this.props.projectId + '', cashAdd).then(result => {
+            this.setState({
+                rows: result,
+                totalRows: result.length,
+                isLoading: false,
+            })
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(ex => {
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        })
     }
 
     generateDateFun = () => {
-        // startDate: moment(this.state.startDate).format('DD/MM/YYYY')
-        // finishDate: moment(this.state.finishDate).format('DD/MM/YYYY')
         this.setState({ showTable: true });
         this.cashFlowDiff()
 
     }
 
-    handleChange(e, field) {
-
-        let original_document = { ...this.state.monthDataState };
-        let updated_document = {};
-        updated_document[field] = e.target.value;
-        updated_document = Object.assign(original_document, updated_document);
-
-
+    handleChange(e, field, index) {
+        let or_Data = []
+        or_Data = this.state.cashFlowTable
+        if (field === 'cashIn') {
+            or_Data[index].cashIn = parseInt(e.target.value)
+        }
+        else if (field === 'cashOut') {
+            or_Data[index].cashOut = parseInt(e.target.value)
+        }
         this.setState({
-            monthDataState: updated_document
+            cashFlowTable: or_Data
         })
     }
 
@@ -350,9 +400,9 @@ class budgetCashFlow extends Component {
                     single={false}
                 />
             ) : <LoadingSection />
-        // const btnExport = this.state.isLoading === false ?
-        //     <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'workFlowActivity'} />
-        //     : null;
+        const btnExport = this.state.isLoading === false ?
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'workFlowActivity'} />
+            : null;
 
         const ComponantFilter = this.state.isLoading === false ?
             <Filter
@@ -409,9 +459,9 @@ class budgetCashFlow extends Component {
                         </div>
 
                         <div className="filterBTNS">
-                            {/* {this.state.IsActiveShow ?
+                            {this.state.IsActiveShow ?
                                 <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
-                            {btnExport}  */}
+                            {btnExport}
                             <button className="primaryBtn-1 btn mediumBtn" onClick={this.showPopupAdd.bind(this)}>NEW</button>
                         </div>
 
@@ -446,7 +496,7 @@ class budgetCashFlow extends Component {
                         {dataGrid}
                     </div>
 
-                    {/* {this.state.showDeleteModal == true ? (
+                    {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
                             title={Resources['smartDeleteMessage'][currentLanguage].content}
                             closed={this.onCloseModal}
@@ -454,7 +504,7 @@ class budgetCashFlow extends Component {
                             clickHandlerCancel={this.clickHandlerCancelMain}
                             buttonName='delete' clickHandlerContinue={this.ConfirmDeleteAccount}
                         />
-                    ) : null} */}
+                    ) : null}
 
 
                     <SkyLightStateless onOverlayClicked={() => this.setState({ showPopup: false })}
@@ -504,7 +554,7 @@ class budgetCashFlow extends Component {
                                             {this.state.showTable === true ?
                                                 <Fragment>
                                                     {
-                                                        cashFlowTable2.map((i, index) => {
+                                                        this.state.cashFlowTable.map((i, index) => {
                                                             return (
                                                                 <tr key={index}>
                                                                     <td>
@@ -514,16 +564,13 @@ class budgetCashFlow extends Component {
                                                                     </td>
                                                                     <td>
                                                                         <div className="contentCell tableCell-3">
-                                                                            <div class="form-group">
-                                                                                <div class="ui left labeled input">
+                                                                            <div className="form-group">
+                                                                                <div className="ui left labeled input">
                                                                                     <input
-                                                                                        type="text"
-                                                                                        // value={i.cashIn}
-                                                                                        value={this.state.monthDataState.cashIn}
-                                                                                        onChange={(e) => this.handleChange(e, 'CashIn')}
-                                                                                    // onBlur={(e) => {
-                                                                                    //     handleChange(e)
-                                                                                    // }}
+                                                                                        type="number"
+                                                                                        defaultValue={i.cashIn}
+                                                                                        onChange={(e) => this.handleChange(e, 'cashIn', index)}
+                                                                                        onBlur={e => { this.handleChange(e, 'cashIn', index) }}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -531,14 +578,14 @@ class budgetCashFlow extends Component {
                                                                     </td>
                                                                     <td>
                                                                         <div className="contentCell tableCell-4">
-                                                                            <div class="form-group">
-                                                                                <div class="ui left labeled input">
+                                                                            <div className="form-group">
+                                                                                <div className="ui left labeled input">
                                                                                     <input autoComplete="off"
-                                                                                        type="text"
+                                                                                        type="number"
                                                                                         placeholder="Enter CashIn.."
-                                                                                        // value={i.cashOut}
-                                                                                        value={this.state.monthDataState.cashOut}
-                                                                                        onChange={(e) => this.handleChange(e, 'CashOut')}
+                                                                                        defaultValue={i.cashOut}
+                                                                                        onChange={(e) => this.handleChange(e, 'cashOut', index)}
+                                                                                        onBlur={e => { this.handleChange(e, 'cashOut', index) }}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -555,7 +602,7 @@ class budgetCashFlow extends Component {
                                 </div>
 
                                 <div className="fullWidthWrapper">
-                                    <button className="primaryBtn-1 btn mediumBtn">{Resources.save[currentLanguage]}</button>
+                                    <button className="primaryBtn-1 btn mediumBtn" onClick={this.cashFlowAdd}>{Resources.save[currentLanguage]}</button>
                                 </div>
                             </div>
                         </div>
@@ -576,10 +623,10 @@ function mapStateToProps(state) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
-        // changeStatus: state.communication.changeStatus,
-        // file: state.communication.file,
-        // files: state.communication.files,
-        // hasWorkflow: state.communication.hasWorkflow,
+        changeStatus: state.communication.changeStatus,
+        file: state.communication.file,
+        files: state.communication.files,
+        hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId
     }
 }

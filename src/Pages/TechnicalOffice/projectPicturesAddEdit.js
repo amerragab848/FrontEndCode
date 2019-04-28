@@ -62,7 +62,7 @@ class projectPicturesAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                    docId = obj.docId; 
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -99,6 +99,13 @@ class projectPicturesAddEdit extends Component {
             showPopUp: false,
             IsAddModel: false,
             isLoading: false
+        }
+
+        if (!Config.IsAllow(550) && !Config.IsAllow(551) && !Config.IsAllow(553)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: '/projectPictures/' + projectId + '',
+            });
         }
 
     }
@@ -222,13 +229,14 @@ class projectPicturesAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
         this.props.actions.clearCashDocument();
     }
- 
+
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
@@ -447,20 +455,20 @@ class projectPicturesAddEdit extends Component {
                                                         <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
+                                                                <Dropdown data={this.state.companies} name="fromCompanyId"
+                                                                    selectedValue={this.state.selectedFromCompany}
+                                                                    handleChange={event => {
+                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                    }} />
+                                                            </div>
+
+                                                            <div className="super_company">
                                                                 <Dropdown data={this.state.fromContacts} onChange={setFieldValue} name="fromContactId"
                                                                     onBlur={setFieldTouched} error={errors.fromContactId} id="fromContactId"
                                                                     touched={touched.fromContactId} index="IR-fromContactId"
                                                                     selectedValue={this.state.selectedFromContact}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
                                                                 />
-                                                            </div>
-
-                                                            <div className="super_company">
-                                                                <Dropdown data={this.state.companies} name="fromCompanyId"
-                                                                    selectedValue={this.state.selectedFromCompany}
-                                                                    handleChange={event => {
-                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                    }} />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -530,7 +538,7 @@ function mapStateToProps(state) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
-        changeStatus: state.communication.changeStatus, 
+        changeStatus: state.communication.changeStatus,
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId
     }

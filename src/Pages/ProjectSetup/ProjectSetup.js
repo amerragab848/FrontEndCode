@@ -18,13 +18,13 @@ import { SkyLightStateless } from 'react-skylight';
 
 import { connect } from 'react-redux';
 import {
-  bindActionCreators
+    bindActionCreators
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedProject')
-const _ = require('lodash') 
+const _ = require('lodash')
 let PathName = '';
 let ProjectEps = ''
 const ValidtionSchema = Yup.object().shape({
@@ -36,7 +36,7 @@ const ValidtionSchema = Yup.object().shape({
         .required(Resources['isRequiredField'][currentLanguage])
         .nullable(true),
 });
- 
+
 const ValidtionSchemaForArea = Yup.object().shape({
     ArabicTitle: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage]),
@@ -82,7 +82,7 @@ class ProjectSetup extends Component {
 
     componentWillMount = () => {
         PathName = this.props.location.pathname.split('/')
-        
+
         this.props.actions.FillGridLeftMenu();
         this.renderComponent()
     }
@@ -530,15 +530,13 @@ class ProjectSetup extends Component {
 
                                                     {this.state.title === 'Area' ? null
                                                         : <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input">
-                                                                <DropdownMelcous title={this.state.DropName} data={this.state.DropData} name='DropName'
-                                                                    selectedValue={this.state.IsEditModel ? this.state.SelectDropData : values.DropName} onChange={setFieldValue}
-                                                                    handleChange={(e) => this.handleChangeDropsForEdit(e, "DropName")}
-                                                                    onBlur={setFieldTouched}
-                                                                    error={errors.DropName}
-                                                                    touched={touched.DropName}
-                                                                    value={values.DropName} />
-                                                            </div>
+                                                            <DropdownMelcous title={this.state.DropName} data={this.state.DropData} name='DropName'
+                                                                selectedValue={this.state.IsEditModel ? this.state.SelectDropData : values.DropName} onChange={setFieldValue}
+                                                                handleChange={(e) => this.handleChangeDropsForEdit(e, "DropName")}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.DropName}
+                                                                touched={touched.DropName}
+                                                                value={values.DropName} />
                                                         </div>}
 
 
@@ -592,20 +590,20 @@ class ProjectSetup extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-      projectId: state.communication.projectId,
-      showLeftMenu: state.communication.showLeftMenu,
-      showSelectProject: state.communication.showSelectProject,
-      projectName: state.communication.projectName
+        projectId: state.communication.projectId,
+        showLeftMenu: state.communication.showLeftMenu,
+        showSelectProject: state.communication.showSelectProject,
+        projectName: state.communication.projectName
     }
-  }
-  
-  function mapDispatchToProps(dispatch) {
+}
+
+function mapDispatchToProps(dispatch) {
     return {
-      actions: bindActionCreators(communicationActions, dispatch)
+        actions: bindActionCreators(communicationActions, dispatch)
     };
-  }
-  
-  export default connect(
+}
+
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )( withRouter(ProjectSetup))
+)(withRouter(ProjectSetup))
