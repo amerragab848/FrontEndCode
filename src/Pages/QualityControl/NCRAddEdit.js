@@ -1024,7 +1024,8 @@ class NCRAddEdit extends Component {
                                                     </div>
 
                                                 </div>
-                                                <div className="slider-Btns">
+                                            
+                                               <div className="slider-Btns">
                                                     {this.state.isLoading ?
                                                         this.state.IsEditMode === false ?
                                                             <button className="primaryBtn-1 btn disabled">
