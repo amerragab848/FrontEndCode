@@ -199,7 +199,7 @@ class punchListAddEdit extends Component {
         }
 
         this.state = {
-            Loading:true,
+            Loading: true,
             IsAddModel: false,
             FirstStep: true,
             SecondStep: false,
@@ -269,6 +269,13 @@ class punchListAddEdit extends Component {
             // selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
 
         }
+
+        if (!Config.IsAllow(274) && !Config.IsAllow(275) && !Config.IsAllow(277)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: '/punchList/' + projectId + '',
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -285,7 +292,8 @@ class punchListAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -375,7 +383,7 @@ class punchListAddEdit extends Component {
         if (this.state.CurrStep === 2) {
             this.saveAndExit()
         }
-      
+
 
     }
 
@@ -414,7 +422,7 @@ class punchListAddEdit extends Component {
                 result => {
                     this.setState({
                         [element.DropDataName]: result,
-                        Loading:false
+                        Loading: false
                     })
 
                     if (this.state.IsEditMode && docId > 0) {
@@ -433,7 +441,7 @@ class punchListAddEdit extends Component {
                                             this.setState({
                                                 [company.DropDataContactName]: res,
                                                 [company.SelectedValueContact]: SelectedValueContact,
-                                                Loading:false
+                                                Loading: false
                                             })
                                         }
                                     )
@@ -445,7 +453,7 @@ class punchListAddEdit extends Component {
                             let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
                             this.setState({
                                 [element.selectedValue]: SelectedValue,
-                                Loading:false
+                                Loading: false
                             });
                         }
                     }
@@ -572,6 +580,28 @@ class punchListAddEdit extends Component {
 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
+    }
+
+    StepOneLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                CurrStep: 1,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrStep: 2,
+            })
+        }
     }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
@@ -1235,20 +1265,20 @@ class punchListAddEdit extends Component {
                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                     <div className="supervisor__company">
                                         <div className="super_name">
-                                            <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
-                                                onChange={setFieldValue} onBlur={setFieldTouched}
-                                                error={errors.bicContactId} touched={touched.bicContactId}
-                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" />
-                                        </div>
-
-                                        <div className="super_company">
                                             <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
                                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                                 touched={touched.bicCompanyId} name="bicCompanyId"
                                                 handleChange={event =>
                                                     this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
                                             />
+                                        </div>
+
+                                        <div className="super_company">
+                                            <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
+                                                onChange={setFieldValue} onBlur={setFieldTouched}
+                                                error={errors.bicContactId} touched={touched.bicContactId}
+                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" />
                                         </div>
                                     </div>
                                 </div>
@@ -1268,7 +1298,7 @@ class punchListAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-        {this.state.Loading?<LoadingSection/>:null}
+                {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
                     <HeaderDocument projectName={projectName} docTitle={Resources.punchList[currentLanguage]}
@@ -1318,16 +1348,16 @@ class punchListAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources['punchList'][currentLanguage]}</h6>
+                                            <h6 >{Resources['punchList'][currentLanguage]}</h6>
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>

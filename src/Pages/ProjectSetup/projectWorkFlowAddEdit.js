@@ -220,6 +220,12 @@ class projectWorkFlowAddEdit extends Component {
             { name: 'createTransmittal', code: 3035 }, { name: 'sendToWorkFlow', code: 702 }],
             IsAddModel: false
         }
+        if (!Config.IsAllow(600) && !Config.IsAllow(601) && !Config.IsAllow(603)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: '/WorkFlow/' + projectId + '',
+            });
+        }
     }
 
     componentWillUnmount() {   this.props.actions.clearCashDocument();
@@ -1029,6 +1035,89 @@ class projectWorkFlowAddEdit extends Component {
 
     }
 
+    StepOneLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                CurrStep: 1,
+                ThirdStepComplate:false,
+                FourthStepComplate:false,
+                FivethStepComplate:false,
+                FivethStep: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrStep: 2,
+                ThirdStepComplate:false,
+                FourthStepComplate:false,
+                FivethStepComplate:false,
+                FivethStep: false,
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                ThirdStep: true,
+                SecondStepComplate:true,
+                ThirdStepComplate: true,
+                CurrStep: 3,
+                FourthStepComplate:false,
+                FivethStepComplate:false,
+                FourthStep:false ,
+                FivethStep:false ,
+                FirstStep:false,
+                SecondStep:false,
+            })
+        }
+    }
+
+    StepFourLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FourthStep: true,
+                ThirdStep: false,
+                FirstStep:false,
+                SecondStep:false,
+                FourthStepComplate: true,
+                CurrStep: 4,
+                FivethStepComplate:false,
+                FivethStep: false,
+                ThirdStepComplate:true , 
+                SecondStepComplate:true
+            })
+        }
+    }
+    StepFiveLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FourthStep: false,
+                FivethStep: true,
+                FivethStepComplate: true,
+                CurrStep: 5,
+                FivethStepComplate:true,
+                FivethStep: true,
+                ThirdStepComplate:true , 
+                SecondStepComplate:true,
+                FourthStepComplate:true,
+                SecondStep:false,
+                ThirdStep:false,
+                FirstStep:false
+            })
+        }
+    }
+
+
     render() {
 
         let actions = [
@@ -1764,7 +1853,7 @@ class projectWorkFlowAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -1773,7 +1862,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
@@ -1782,7 +1871,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepThreeLink} data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>
@@ -1791,7 +1880,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step4" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepFourLink} data-id="step4" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>4</span>
                                         </div>
@@ -1800,7 +1889,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step5" className={this.state.FivethStep ? "step-slider-item  current__step" : "step-slider-item"} >
+                                    <div onClick={this.StepFiveLink} data-id="step5" className={this.state.FivethStep ? "step-slider-item  current__step" : "step-slider-item"} >
                                         <div className="steps-timeline">
                                             <span>5</span>
                                         </div>

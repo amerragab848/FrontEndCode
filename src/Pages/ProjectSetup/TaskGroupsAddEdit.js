@@ -156,6 +156,12 @@ class TaskGroupsAddEdit extends Component {
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 951 },
             { name: 'createTransmittal', code: 3037 }, { name: 'sendToWorkFlow', code: 783 }]
         }
+        if (!Config.IsAllow(774) && !Config.IsAllow(775) && !Config.IsAllow(777)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: '/TaskGroups/' + projectId + '',
+            });
+        }
     }
 
     FillCompanyDrop = () => {
@@ -476,6 +482,28 @@ class TaskGroupsAddEdit extends Component {
         }
     }
 
+    StepOneLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                CurrStep: 1,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrStep: 2,
+            })
+        }
+    }
+    
     render() {
 
         let actions = [
@@ -781,7 +809,7 @@ class TaskGroupsAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.PreviousStep} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -790,7 +818,7 @@ class TaskGroupsAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>

@@ -163,6 +163,13 @@ class NCRAddEdit extends Component {
             Loading: true
         }
 
+        if (!Config.IsAllow(917) && !Config.IsAllow(918) && !Config.IsAllow(920)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: '/Ncr/' + projectId + '',
+            });
+        }
+
     }
 
     checkDocumentIsView() {
@@ -276,7 +283,8 @@ class NCRAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -314,8 +322,6 @@ class NCRAddEdit extends Component {
                 result => {
                     this.setState({
                         [element.DropDataName]: result,
-                        Loading: false
-
                     })
 
                     if (docId > 0) {
@@ -347,8 +353,15 @@ class NCRAddEdit extends Component {
                             let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
                             this.setState({
                                 [element.selectedValue]: SelectedValue,
+
                             });
                         }
+
+                    }
+                    else {
+                        this.setState({
+                            Loading: false
+                        })
 
                     }
                 }
@@ -481,7 +494,7 @@ class NCRAddEdit extends Component {
                             isLoading: false
                         })
                         toast.success(Resources["operationSuccess"][currentLanguage]);
-                        
+
                         this.saveAndExit();
 
                     }).catch(ex => {
@@ -849,40 +862,38 @@ class NCRAddEdit extends Component {
                                                         <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.fromContacts} name="fromContactId"
-                                                                    selectedValue={this.state.selectedFromContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-                                                                />
-                                                            </div>
-
-                                                            <div className="super_company">
                                                                 <Dropdown data={this.state.companies} name="fromCompanyId"
                                                                     selectedValue={this.state.selectedFromCompany}
                                                                     handleChange={event => {
                                                                         this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
                                                                     }} />
                                                             </div>
+
+                                                            <div className="super_company">
+                                                                <Dropdown data={this.state.fromContacts} name="fromContactId"
+                                                                    selectedValue={this.state.selectedFromContact}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
-
-
 
                                                     <div className="linebylineInput valid-input mix_dropdown">
                                                         <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
+                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
+                                                                    selectedValue={this.state.selectedActionByCompanyId}
+                                                                    handleChange={event =>
+                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
+                                                                />
+                                                            </div>
+                                                            <div className="super_company">
                                                                 <Dropdown data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
                                                                     onBlur={setFieldTouched} error={errors.bicContactId} id="bicContactId"
                                                                     touched={touched.bicContactId} index="IR-bicContactId"
                                                                     selectedValue={this.state.selectedActionByContactId}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
-                                                                />
-                                                            </div>
-                                                            <div className="super_company">
-                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
-                                                                    selectedValue={this.state.selectedActionByCompanyId}
-                                                                    handleChange={event =>
-                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
                                                                 />
                                                             </div>
                                                         </div>
@@ -892,20 +903,20 @@ class NCRAddEdit extends Component {
                                                         <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-                                                                    onChange={setFieldValue} onBlur={setFieldTouched}
-                                                                    error={errors.toContactId} touched={touched.toContactId}
-                                                                    index="IR-toContactId" name="toContactId" id="toContactId" />
-                                                            </div>
-
-                                                            <div className="super_company">
                                                                 <Dropdown data={this.state.companies} selectedValue={this.state.selectedToCompany}
                                                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toCompanyId}
                                                                     touched={touched.toCompanyId} name="toCompanyId"
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                                 />
+                                                            </div>
+
+                                                            <div className="super_company">
+                                                                <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                    onChange={setFieldValue} onBlur={setFieldTouched}
+                                                                    error={errors.toContactId} touched={touched.toContactId}
+                                                                    index="IR-toContactId" name="toContactId" id="toContactId" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1012,19 +1023,18 @@ class NCRAddEdit extends Component {
                                                         </div>
                                                     </div>
 
-
                                                 </div>
                                                 <div className="slider-Btns">
                                                     {this.state.isLoading ?
-                                                        <button className="primaryBtn-1 btn disabled">
-                                                            <div className="spinner">
-                                                                <div className="bounce1" />
-                                                                <div className="bounce2" />
-                                                                <div className="bounce3" />
-                                                            </div>
-                                                        </button>
+                                                        this.state.IsEditMode === false ?
+                                                            <button className="primaryBtn-1 btn disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button> : null
                                                         : this.showBtnsSaving()}
-
                                                 </div>
                                             </Form>
                                         )}
