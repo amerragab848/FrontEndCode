@@ -218,6 +218,9 @@ table edition
 .ReactTable .rt-tr-group {
   width: 100%;
 }
+.ReactTable.-striped .rt-tr.-odd {
+  background: #fff;
+}
 .attachmentPage {
   width: 100%;
 }
@@ -937,7 +940,8 @@ table edition
 .dashboardLoading span {
     width: 64px;
     height: 64px;
-    border: 3px solid #A8B0BF;
+    /* border: 3px solid #A8B0BF; */
+    border: solid 6px #4382f9;
     border-bottom-color: transparent;
     border-radius: 50%;
     animation: rotate 1s linear infinite;
@@ -1907,9 +1911,24 @@ button.companies_icon {
 /* 2022 to 2076 */
 
 .one__tab.one_step .doc-container .step-content {
-  width: 786px;
-  padding: 0 40px;
+  width: calc(100% - 232px);
+  padding: 0;
+  padding-left: 78px;
+  padding-right: 40px;
  }
+ .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform , 
+ .one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
+  width: 786px;
+ }
+@media screen and (max-width: 1200px) {
+  .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform,
+  .one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
+    width: 550px;
+  }
+  .one__tab.one_step .doc-container .step-content {
+    padding: 0 40px;
+  }
+}
 .one__tab.one_step  .doc-container .docstepper-levels {
   /* width: 250px; */
   position: relative;
@@ -1943,9 +1962,6 @@ button.companies_icon {
   width: 46%;
 }
 @media screen and (max-width: 1200px) {
-  .one__tab.one_step .doc-container .step-content {
-    width: calc(100% - 290px);
-  }
   .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input, .noTabs__document .doc-container .step-content .linebylineInput .inputDev.ui.input ,.noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
     max-width: 100%;
   }
@@ -1998,9 +2014,6 @@ button.companies_icon {
     flex: 0.1 1;
     font-size: 13px;
   }
-}
-.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
-  padding-top: 0;
 }
   .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
     -webkit-pointer-events: none;
@@ -2403,7 +2416,7 @@ button.companies_icon {
 .supervisor__company {
   display: flex;
 }
-.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu {
+.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu, .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu {
   width: 271px !important;
 }
 .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy{
@@ -2413,7 +2426,7 @@ button.companies_icon {
   letter-spacing: -0.2px;
   color: #3e4352;
 }
- .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before{
+ .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before{
   content: '';
   position: absolute;
   left: -20px;
@@ -2427,7 +2440,7 @@ button.companies_icon {
   left: 27px;
   overflow: visible;
 }
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
+.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before, .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
   content: '';
   position: absolute;
   left: -20px;
@@ -2437,11 +2450,10 @@ button.companies_icon {
   background-repeat: no-repeat;
   top: 2px;
 }
+
+
 .fillter-status.fillter-item-c .customD_Menu .css-1492t68:empty::before, .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy:empty::before {
   display: none;
-}
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu {
-  width: 184px !important;
 }
 .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
   font-family: font-b;
@@ -2747,7 +2759,7 @@ button.companies_icon {
 .removeTr div .pdfImage img {
   height: 20px;
 }
-.precycle-grid .ReactTable .rt-thead .rt-resizable-header {
+.ReactTable .rt-thead .rt-resizable-header {
   font-family: font-b;
   font-size: 14px;
   line-height: 1.43;
@@ -2769,7 +2781,7 @@ button.companies_icon {
 .gridSystemSelected {
   min-width: auto !important;
 }
-.precycle-grid .ReactTable .rt-tbody .rt-td {
+.ReactTable .rt-tbody .rt-td {
   border-right: 1px solid rgba(0,0,0,0.02);
   font-family: font-opens;
   font-size: 14px;
@@ -2781,11 +2793,11 @@ button.companies_icon {
   border-bottom: 1px solid rgba(34,36,38,.1);
   padding-left: 10px;
 }
-.precycle-grid .ReactTable .rt-tbody .rt-td .btn{
+.ReactTable .rt-tbody .rt-td .btn{
   padding: 0 5px;
   margin-left: 0 !important;
 }
-.precycle-grid .ReactTable .rt-thead {
+.ReactTable .rt-thead {
   height: 58px;
 }
 .reactTableActions {
@@ -2803,7 +2815,7 @@ button.companies_icon {
   overflow: auto;
   min-height: 350px;
 }
-.precycle-grid .ReactTable .btn, .precycle-grid .ReactTable .button {
+.ReactTable .btn,.ReactTable .button {
   box-shadow: none;
 }
 .doc-pre-cycle {
@@ -3407,6 +3419,7 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
   right: 0;
   background-repeat: no-repeat;
   transform: translateY(-30px);
+  background-size: contain;
 }
 .eps__actions a.editIcon::after {
   background-image: url(../../images/epsActions/editHover.png);
@@ -3416,6 +3429,9 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
 }
 .eps__actions a.deleteIcon::after {
   background-image: url(../../images/epsActions/deleteHover.png);
+}
+.eps__actions a.copyTo::after {
+  background-image: url(../../images/epsActions/copyToHover.png);
 }
 .eps__actions a:hover img {
   transform: translateY(30px)
@@ -3485,14 +3501,6 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
 .customDatepicker.fillter-status.fillter-item-c {
   max-width: 200px;
 } */
-.documents-stepper .doc-container .docstepper-levels .step-content-foot, .one__tab.one_step .doc-container .docstepper-levels {
-  position: sticky;
-  top: 72px;
-}
-.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
-  position: sticky;
-  top: 144px;
-}
 
 .react-grid-checkbox:checked+.react-grid-checkbox-label:before {
   content: url(../../images/checkmark.svg);
@@ -3977,65 +3985,87 @@ width: calc(100% - 256px);
 .SummeriesContainer.mainContainer {
   padding-top: 0;
 }
-      .reports__multiDrop .reports__proForm {
-        justify-content: space-between;
-      }
-      .settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .linebylineInput {
-        width: 45%;
-        margin-right: 0;
-      }
-      .reports__proForm .reports__multiDrop {
-        margin: 0;
-      }
-      .settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .btn__multi {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end
-      }
+.reports__multiDrop .reports__proForm {
+  justify-content: space-between;
+}
+.settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .linebylineInput {
+  width: 45%;
+  margin-right: 0;
+}
+.reports__proForm .reports__multiDrop {
+  margin: 0;
+}
+.settings-container .setting-tabs-contant .reports__multiDrop .reports__proForm .btn__multi {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end
+}
 
-      .screen-error {
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        z-index: 999999999999;
-        background-color: rgba(0, 0, 0, 0.95);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
+.screen-error {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 999999999999;
+  background-color: rgba(0, 0, 0, 0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 
-    .screen-error.active {
-        display: flex;
-    }
+.screen-error.active {
+  display: flex;
+}
 
-    .screen-error-text {
-        display: flex;
-        padding: 0 30px;
-        flex-flow: column;
-        border-radius: 10px;
-        min-height: 260px;
-        align-items: flex-start;
-        justify-content: space-around;
-        padding-top: 50px;
-        background-color: #e74c3c7d;
-    }
+.screen-error-text {
+    display: flex;
+    padding: 0 30px;
+    flex-flow: column;
+    border-radius: 10px;
+    min-height: 260px;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: 50px;
+    background-color: #e74c3c7d;
+}
 
-    .screen-error .screen-error-text p:first-child {
-        font-size: 25px;
-        color: #fff;
-        margin-bottom: 10px;
-    }
+.screen-error .screen-error-text p:first-child {
+    font-size: 25px;
+    color: #fff;
+    margin-bottom: 10px;
+}
 
-    .screen-error .screen-error-text .goBack {
-        color: #fff;
-        cursor: pointer;
-    }
+.screen-error .screen-error-text .goBack {
+    color: #fff;
+    cursor: pointer;
+}
 
-    .screen-error .screen-error-text p:last-of-type{
-        font-size: 15px;
-        color: #A8B0BF;
-    }
+.screen-error .screen-error-text p:last-of-type{
+    font-size: 15px;
+    color: #A8B0BF;
+}
+.documents-stepper .doc-container .docstepper-levels .step-content-foot, .one__tab.one_step .doc-container .docstepper-levels {
+  background: #fafbfc;
+  border-left-color: transparent;
+  width: 232px;
+  position: sticky;
+  top: 72px;
+}
+.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
+  margin-left: -25px;
+  position: sticky;
+  top: 144px; 
+  padding-top: 0;
+}
+.login__page .login__page--form .proForm .ui.input.inputDev .inputsideNote.togglePW {
+  cursor: pointer;
+}
+.proForm .togglePW.active-pw .hide {
+  display: block;
+}
+.proForm .togglePW.active-pw .show {
+  display: none;
+}

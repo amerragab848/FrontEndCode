@@ -7811,5 +7811,9 @@
   "selectReport": {
     "en": "-- Please Select Report --",
     "ar": "-- برجاء إختيار تقرير --"
+  },
+  "loginToAccount": {
+    "en": "Login to your account",
+    "ar": "تسجيل الدخول لحسابك"
   }
 }
