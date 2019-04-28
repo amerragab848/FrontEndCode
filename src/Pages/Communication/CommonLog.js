@@ -72,7 +72,8 @@ class CommonLog extends Component {
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
   }
 
-  componentWillUnmount() {   this.props.actions.clearCashDocument();
+  componentWillUnmount() {
+    this.props.actions.clearCashDocument();
 
     this.setState({
       isLoading: true,
@@ -146,11 +147,15 @@ class CommonLog extends Component {
       this.props.history.push({
         pathname: "/" + addView,
         search: "?id=" + encodedPaylod
-      }); 
+      });
+    } else {
+      toast.warn(Resources["missingPermissions"][currentLanguage]);
     }
   }
   editHandler(row) {
 
+
+    if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
     let editView = this.state.routeAddEdit;
 
     let obj = {
@@ -169,11 +174,13 @@ class CommonLog extends Component {
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
 
-    this.props.history.push({
-      pathname: "/" + editView,
-      search: "?id=" + encodedPaylod
-    });
- 
+      this.props.history.push({
+        pathname: "/" + editView,
+        search: "?id=" + encodedPaylod
+      });
+    } else {
+      toast.warn(Resources["missingPermissions"][currentLanguage]);
+    }
   }
 
   GetPrevoiusData() {
@@ -304,7 +311,7 @@ class CommonLog extends Component {
 
   clickHandlerDeleteRowsMain = selectedRows => {
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
- 
+
       this.setState({
         showDeleteModal: true,
         selectedRows: selectedRows
@@ -409,18 +416,18 @@ class CommonLog extends Component {
   }
 
   GetLogData(url) {
- 
-      Api.get(url).then(result => {
-        this.setState({
-          rows: result.data,
-          totalRows: result.total,
-          isLoading: false
-        });
-  
-      }).catch(ex => {
-        this.setState({ isLoading: false });
+
+    Api.get(url).then(result => {
+      this.setState({
+        rows: result.data,
+        totalRows: result.total,
+        isLoading: false
       });
-    
+
+    }).catch(ex => {
+      this.setState({ isLoading: false });
+    });
+
   };
 
   handleMinimize = () => {
@@ -454,7 +461,7 @@ class CommonLog extends Component {
             docApprovalId: 0,
             isApproveMode: false
           };
-          
+
           if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
             obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
           }
@@ -605,9 +612,9 @@ class CommonLog extends Component {
               <div className="H-tableSize" onClick={this.handleMinimize}>
                 {this.state.minimizeClick ? <img src={MinimizeVBlue} alt="" /> : <img src={MinimizeV} alt="" />}
               </div>
-              <div className="V-tableSize">
+              {/* <div className="V-tableSize">
                 <img src={MinimizeH} alt="" />
-              </div>
+              </div> */}
             </div>
             <div className={"grid-container " + (this.state.rows.length === 0 ? "griddata__load" : " ")}>
               {dataGrid}
