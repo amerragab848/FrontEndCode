@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import Accounts from './Accounts/Accounts'
 import Companies from './Companies/Index';
+import PermissionsGroups from './Administrations/GroupsPermission/permissionsGroups';
 import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
 import GeneralConfiguration from './Project/GeneralConfiguration'
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
@@ -46,6 +47,9 @@ class TemplatesSettings extends Component {
                                 <span className="subUlTitle">{Resources['titleAccounts'][currentLanguage]}</span>
                             </Tab>
                             <Tab>
+                                <span className="subUlTitle">{Resources['groupsPermissions'][currentLanguage]}</span>
+                            </Tab>
+                            <Tab>
                                 <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
                             </Tab>
 
@@ -83,6 +87,11 @@ class TemplatesSettings extends Component {
                             </TabPanel>
                             : null}
 
+                        {(config.IsAllow(794)) ?
+                            <TabPanel>
+                                <PermissionsGroups />
+                            </TabPanel>
+                            : null}
                         {(config.IsAllow(1001105)) ?
                             <TabPanel>
                                 <Companies />
@@ -95,7 +104,7 @@ class TemplatesSettings extends Component {
                                 <ExpensesWorkFlowLog />
                             </TabPanel>
                             : null}
-                                  {(config.IsAllow(388)) ?
+                        {(config.IsAllow(388)) ?
                             <TabPanel>
                                 <GeneralConfiguration />
                             </TabPanel>
