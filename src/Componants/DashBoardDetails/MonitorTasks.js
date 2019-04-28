@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
 import Api from "../../api";
 import Resources from "../../resources.json";
@@ -25,8 +25,7 @@ export default class MonitorTasks extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        sortDescendingFirst: true 
       },
       {
         key: "subject",
@@ -35,8 +34,7 @@ export default class MonitorTasks extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        sortDescendingFirst: true 
       },
       {
         key: "projectName",
@@ -148,8 +146,7 @@ export default class MonitorTasks extends Component {
         isCustom: true
       } 
     ];
-
-
+ 
     this.state = {
       columns: columnsGrid,
       rows: [],
@@ -159,6 +156,7 @@ export default class MonitorTasks extends Component {
       viewfilter: false,
       filtersColumns: filtersColumns
     };
+
   }
 
   componentDidMount = () => {
@@ -172,8 +170,7 @@ export default class MonitorTasks extends Component {
   };
 
   filterMethodMain = (event, query, apiFilter) => {
-    var stringifiedQuery = JSON.stringify(query);
-
+    
     this.setState({
       isLoading: true 
     });
