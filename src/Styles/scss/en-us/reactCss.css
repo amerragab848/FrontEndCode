@@ -1896,6 +1896,9 @@ button.companies_icon {
       color: #252833;
       opacity: 0.3;
       font-family: font-b; }
+      .one__tab .approveDocument {
+        width: auto !important
+      }
     .one__tab .approveDocument .approveDocumentBTNS {
       flex: 1.5;
       display: flex;

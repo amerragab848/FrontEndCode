@@ -220,9 +220,16 @@ class projectWorkFlowAddEdit extends Component {
             { name: 'createTransmittal', code: 3035 }, { name: 'sendToWorkFlow', code: 702 }],
             IsAddModel: false
         }
+        if (!Config.IsAllow(600) && !Config.IsAllow(601) && !Config.IsAllow(603)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: '/WorkFlow/' + projectId + '',
+            });
+        }
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -297,9 +304,7 @@ class projectWorkFlowAddEdit extends Component {
     }
 
     componentDidMount = () => {
-        this.setState({
-            isLoading: false
-        })
+
     }
 
     componentWillMount() {
@@ -309,7 +314,13 @@ class projectWorkFlowAddEdit extends Component {
 
         if (docId > 0) {
             let url = "GetWorkFlowForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'workFlow');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'workFlow').then(
+                res => {
+                    this.setState({
+                        isLoading: false
+                    })
+                }
+            )
 
             this.setState({
                 IsEditMode: true,
@@ -327,7 +338,7 @@ class projectWorkFlowAddEdit extends Component {
                     this.props.actions.ExportingData(data);
                 }
 
-            ) 
+            )
             dataservice.GetDataGrid('getFollowingUpsByWorkFlowId?workFlow=' + this.state.docId + '').then(
                 res => {
                     this.setState({
@@ -348,7 +359,8 @@ class projectWorkFlowAddEdit extends Component {
             dataservice.GetDataGrid('GetWorkFlowDocumentsByWorkFlowId?workFlow=' + this.state.docId + '').then(
                 res => {
                     this.setState({
-                        WorkFlowDocumentData: res
+                        WorkFlowDocumentData: res,
+                        isLoading: false
                     })
                 }
             )
@@ -489,16 +501,9 @@ class projectWorkFlowAddEdit extends Component {
     }
 
     handleChange(e, field) {
-        console.log(field, e);
-
-        let original_document = { ...this.state.document };
-
-        let updated_document = {};
-
+        //console.log(field, e.target.value);
+        let updated_document = this.state.document
         updated_document[field] = e.target.value;
-
-        updated_document = Object.assign(original_document, updated_document);
-
         this.setState({
             document: updated_document
         });
@@ -1029,6 +1034,89 @@ class projectWorkFlowAddEdit extends Component {
 
     }
 
+    StepOneLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                CurrStep: 1,
+                ThirdStepComplate: false,
+                FourthStepComplate: false,
+                FivethStepComplate: false,
+                FivethStep: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrStep: 2,
+                ThirdStepComplate: false,
+                FourthStepComplate: false,
+                FivethStepComplate: false,
+                FivethStep: false,
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                ThirdStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: true,
+                CurrStep: 3,
+                FourthStepComplate: false,
+                FivethStepComplate: false,
+                FourthStep: false,
+                FivethStep: false,
+                FirstStep: false,
+                SecondStep: false,
+            })
+        }
+    }
+
+    StepFourLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FourthStep: true,
+                ThirdStep: false,
+                FirstStep: false,
+                SecondStep: false,
+                FourthStepComplate: true,
+                CurrStep: 4,
+                FivethStepComplate: false,
+                FivethStep: false,
+                ThirdStepComplate: true,
+                SecondStepComplate: true
+            })
+        }
+    }
+
+    StepFiveLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FourthStep: false,
+                FivethStep: true,
+                FivethStepComplate: true,
+                CurrStep: 5,
+                FivethStepComplate: true,
+                FivethStep: true,
+                ThirdStepComplate: true,
+                SecondStepComplate: true,
+                FourthStepComplate: true,
+                SecondStep: false,
+                ThirdStep: false,
+                FirstStep: false
+            })
+        }
+    }
+
     render() {
 
         let actions = [
@@ -1150,15 +1238,16 @@ class projectWorkFlowAddEdit extends Component {
                                         <label className="control-label">{Resources.status[currentLanguage]}</label>
                                         <div className="ui checkbox radio radioBoxBlue">
                                             <input type="radio" name="status"
+                                                onBlur={e => this.handleChange(e, 'status')}
                                                 defaultChecked={this.state.document.status === false ? null : 'checked'}
                                                 value="true" onChange={e => this.handleChange(e, 'status')} />
-                                            <label>{Resources.yes[currentLanguage]}</label>
+                                            <label>{Resources.oppened[currentLanguage]}</label>
                                         </div>
                                         <div className="ui checkbox radio radioBoxBlue">
                                             <input type="radio" name="status"
                                                 defaultChecked={this.state.document.status === false ? 'checked' : null}
-                                                value="false" onChange={e => this.handleChange(e, 'status')} />
-                                            <label>{Resources.no[currentLanguage]}</label>
+                                                onBlur={e => this.handleChange(e, 'status')} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                            <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
                                     </div>
 
@@ -1239,13 +1328,13 @@ class projectWorkFlowAddEdit extends Component {
                                         <label className="control-label">{Resources.closeAfterApproval[currentLanguage]}</label>
                                         <div className="ui checkbox radio radioBoxBlue">
                                             <input type="radio" name="closeAfterApproval"
-                                                defaultChecked={this.state.document.closeAfterApproval === false ? null : 'checked'}
+                                                onBlur={e => this.handleChange(e, 'closeAfterApproval')} defaultChecked={this.state.document.closeAfterApproval === false ? null : 'checked'}
                                                 value="true" onChange={e => this.handleChange(e, 'closeAfterApproval')} />
                                             <label>{Resources.yes[currentLanguage]}</label>
                                         </div>
                                         <div className="ui checkbox radio radioBoxBlue">
                                             <input type="radio" name="closeAfterApproval"
-                                                defaultChecked={this.state.document.closeAfterApproval === false ? 'checked' : null}
+                                                onBlur={e => this.handleChange(e, 'closeAfterApproval')} defaultChecked={this.state.document.closeAfterApproval === false ? 'checked' : null}
                                                 value="false" onChange={e => this.handleChange(e, 'closeAfterApproval')} />
                                             <label>{Resources.no[currentLanguage]}</label>
                                         </div>
@@ -1254,19 +1343,14 @@ class projectWorkFlowAddEdit extends Component {
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.useSelection[currentLanguage]}</label>
                                         <div className="ui checkbox radio radioBoxBlue">
-                                            <input type="radio" name="useSelection"
-                                                defaultChecked={this.state.document.useSelection === false ? null : 'checked'}
-                                                value="true" onChange={e => this.handleChange(e, 'useSelection')} />
+                                            <input type="radio" name="useSelection" onBlur={e => this.handleChange(e, 'useSelection')} defaultChecked={this.state.document.useSelection === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'useSelection')} />
                                             <label>{Resources.yes[currentLanguage]}</label>
                                         </div>
                                         <div className="ui checkbox radio radioBoxBlue">
-                                            <input type="radio" name="useSelection"
-                                                defaultChecked={this.state.document.useSelection === false ? 'checked' : null}
-                                                value="false" onChange={e => this.handleChange(e, 'useSelection')} />
+                                            <input type="radio" name="useSelection" onBlur={e => this.handleChange(e, 'useSelection')} defaultChecked={this.state.document.useSelection === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'useSelection')} />
                                             <label>{Resources.no[currentLanguage]}</label>
                                         </div>
                                     </div>
-
 
                                 </div>
 
@@ -1764,7 +1848,7 @@ class projectWorkFlowAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -1773,7 +1857,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
@@ -1782,7 +1866,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepThreeLink} data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>
@@ -1791,7 +1875,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step4" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepFourLink} data-id="step4" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>4</span>
                                         </div>
@@ -1800,7 +1884,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step5" className={this.state.FivethStep ? "step-slider-item  current__step" : "step-slider-item"} >
+                                    <div onClick={this.StepFiveLink} data-id="step5" className={this.state.FivethStep ? "step-slider-item  current__step" : "step-slider-item"} >
                                         <div className="steps-timeline">
                                             <span>5</span>
                                         </div>
