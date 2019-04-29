@@ -418,6 +418,9 @@ class InternalMemoAddEdit extends Component {
         });
     }
     
+
+
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },

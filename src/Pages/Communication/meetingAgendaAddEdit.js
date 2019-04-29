@@ -55,6 +55,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 class meetingAgendaAddEdit extends Component {
+  
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -214,6 +215,7 @@ class meetingAgendaAddEdit extends Component {
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
     }
+
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(453)) {
@@ -376,6 +378,7 @@ class meetingAgendaAddEdit extends Component {
                 : null
         )
     }
+
     addMeetingAgenda = () => {
         this.setState({ isLoading: true })
         let documentObj = { ...this.state.document };
@@ -394,6 +397,7 @@ class meetingAgendaAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
         })
     }
+    
     editMeeting = () => {
         this.setState({
             isLoading: true,
@@ -409,6 +413,7 @@ class meetingAgendaAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     }
+
     addEditTopics = (edit) => {
         this.setState({ isLoading: true })
         let topic = {
@@ -452,6 +457,7 @@ class meetingAgendaAddEdit extends Component {
             });
         })
     }
+
     addEditAttendees = () => {
         this.setState({ isLoading: true })
         let attendees = {
@@ -495,6 +501,7 @@ class meetingAgendaAddEdit extends Component {
             });
         })
     }
+
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
@@ -570,14 +577,12 @@ class meetingAgendaAddEdit extends Component {
     handleChange = (key, value) => {
         this.setState({ document: { ...this.state.document, [key]: value } })
     }
+
     NextStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
-                if (this.props.changeStatus == true) {
-                    this.editMeeting();
-                }
-                else if (this.state.docId > 0) {
+              if (this.state.docId > 0) {
                     let CurrStep = this.state.CurrStep + 1
                     this.setState({ firstComplete: true, CurrStep })
                 }
@@ -602,6 +607,7 @@ class meetingAgendaAddEdit extends Component {
                 break;
         }
     }
+  
     PreviousStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
@@ -661,12 +667,14 @@ class meetingAgendaAddEdit extends Component {
             this.simpleDialog1.show()
         }
     }
+
     clickHandlerDeleteRowsMain = selectedRows => {
         this.setState({
             showDeleteModal: true,
             selectedRow: selectedRows
         });
     };
+
     _executeBeforeModalClose = () => {
         this.setState({
             showPopUp: false, btnText: 'add', topic: { requiredDate: moment() },
@@ -674,6 +682,7 @@ class meetingAgendaAddEdit extends Component {
             selectedActionByCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" }
         })
     }
+
     showBtnsSaving() {
         let btn = null;
         if (this.state.docId === 0) {
@@ -683,6 +692,41 @@ class meetingAgendaAddEdit extends Component {
         }
         return btn;
     }
+
+    StepOneLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1,
+                thirdComplete: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2,
+                thirdComplete: false,
+
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                thirdComplete: true,
+                CurrStep: 3,
+                firstComplete: true,
+                secondComplete: true,
+            })
+        }
+    }
+
     render() {
         const dataGridTopic = this.state.isLoading === false ? (
             <GridSetup rows={this.state.topics}
@@ -1148,13 +1192,13 @@ class meetingAgendaAddEdit extends Component {
                                     <div className="step-content-foot">
                                         <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
                                             "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                        <span onClick={this.NextStep} className={this.state.CurrStep < 3 && this.state.docId > 0 ? "step-content-btn-prev "
+                                        <span onClick={this.NextStep} className={ this.state.docId > 0 ? "step-content-btn-prev "
                                             : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                         </span>
                                     </div>
                                     <div className="workflow-sliderSteps">
                                         <div className="step-slider">
-                                            <div data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                            <div onClick={this.StepOneLink}  data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>1</span>
                                                 </div>
@@ -1162,7 +1206,7 @@ class meetingAgendaAddEdit extends Component {
                                                     <h6>{Resources.addMeetingMinutes[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                            <div onClick={this.StepTwoLink}  data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>2</span>
                                                 </div>
@@ -1170,7 +1214,7 @@ class meetingAgendaAddEdit extends Component {
                                                     <h6 >{Resources.attendenceAdttion[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
+                                            <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
                                                 <div className="steps-timeline">
                                                     <span>3</span>
                                                 </div>
