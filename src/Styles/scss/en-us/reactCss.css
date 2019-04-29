@@ -1814,33 +1814,27 @@ tfoot tr td p {
   padding-top: 55px;
   padding-left: 0;
 }
-.noTabs__document .approveDocument {
-  position: fixed;
-  bottom: 0;
-  right: 40px;
-  left: 130px;
-  z-index: 19;
-  height: 72px;
-  border-radius: 3px;
-  box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  padding: 0 40px;
-  display: -webkit-box;
-  display: -ms-flexbox;
+.main__header .main__header--div {
+  width: auto;
+}
+
+.main__header .main__header--div, .noTabs__document .doc-container .main__header .main__header--div {
+  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   width: 835px;
   margin: 0 auto;
   height: 72px;
 }
-.main__header .main__header--div {
-  width: auto;
+.main__header, .noTabs__document .doc-container .main__header {
+  width: 100%;
+  padding: 0;
+  border-bottom: 1px solid #e9ecf0;
 }
+
 @media screen and (max-width: 1250px) {
   .noTabs__document .doc-container .step-content,
   .noTabs__document .doc-container .main__header .main__header--div {
@@ -2168,7 +2162,7 @@ button.companies_icon {
     width: 78%;
   }
 }
-.one__tab .doc-container .subiTabContainer .main__header {
+.one__tab .doc-container .subiTabContainer .main__header, .noTabs__document .doc-container .main__header {
   height: 72px;
   display: flex;
   align-items: center;
@@ -2300,7 +2294,7 @@ button.companies_icon {
       @media screen and (max-width: 1200px) {
         .one__tab .doc-container .subiTabContainer {
           width: 78%; } }
-      .one__tab .doc-container .subiTabContainer .main__header {
+      .one__tab .doc-container .main__header {
         height: 72px;
         display: flex;
         align-items: center;
