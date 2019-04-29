@@ -10046,59 +10046,6 @@ ul {
   animation: rotate 1s linear infinite;
   border-radius: 50%; }
 
-/* grid show more filter */
-.showMore__btn {
-  text-align: right; }
-
-.showMore__btn button {
-  background: transparent;
-  border: none;
-  cursor: pointer; }
-
-.showMore__btn button span {
-  background: transparent;
-  border: none;
-  font-family: font-b;
-  font-size: 12px;
-  line-height: 1.67;
-  letter-spacing: 0.2px;
-  color: #858d9e;
-  text-transform: uppercase; }
-
-.showMore__btn .moreOn .less {
-  display: none; }
-
-.showMore__btn .moreOn.lessOn .less {
-  display: inline-block; }
-
-.showMore__btn .moreOn.lessOn .more {
-  display: none; }
-
-.showMore__btn button img {
-  margin-left: 8px; }
-
-.gridfillter-container {
-  display: block; }
-
-.gridfillter-container .fillter-status-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap; }
-
-.gridfillter-container .fillter-status-container.onelineFilter {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  max-height: 85px;
-  overflow: hidden; }
-
-.filter__showmore {
-  display: flex;
-  align-items: flex-start; }
-
-/* grid show more filter */
 .add__widget {
   display: flex;
   align-items: center;
