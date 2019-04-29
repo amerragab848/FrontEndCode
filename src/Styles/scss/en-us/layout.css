@@ -4936,60 +4936,6 @@ ul {
           padding-left: 35px;
           padding-right: 20px; } }
 
-.readOnly_inputs .doc-container .step-content .document-fields .proForm.datepickerContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between; }
-.readOnly_inputs .doc-container .step-content .document-fields .proForm.first-proform {
-  display: flex;
-  justify-content: space-between;
-  padding-right: 0;
-  flex-wrap: wrap;
-  align-items: center; }
-  .readOnly_inputs .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:last-of-type {
-    flex-flow: row;
-    margin-bottom: 0; }
-.readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput {
-  margin-bottom: 16px;
-  width: 43%;
-  margin-right: 50px;
-  flex-shrink: 0;
-  flex-flow: row;
-  align-items: center; }
-  .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput label {
-    width: 130px;
-    position: relative;
-    flex-shrink: 0;
-    font-family: font-openb;
-    text-align: right; }
-    @media screen and (max-width: 1200px) {
-      .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput label {
-        width: 86px;
-        position: relative;
-        flex-shrink: 0;
-        font-family: font-openb;
-        font-size: 12px; } }
-    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput label::after {
-      content: ' : ';
-      position: absolute;
-      right: -20px;
-      font-size: 14px; }
-  .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
-    background: transparent;
-    border-color: transparent;
-    -webkit-pointer-events: none;
-    -moz-pointer-events: none;
-    -ms-pointer-events: none;
-    pointer-events: none;
-    padding: 0; }
-    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input:hover {
-      border-color: transparent; }
-    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input:focus {
-      border-color: transparent; }
-  @media screen and (max-width: 1200px) {
-    .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput.even {
-      margin-right: 0; } }
-
 .dashboard-container {
   padding-top: 90px; }
   .dashboard-container .welcome-title {
