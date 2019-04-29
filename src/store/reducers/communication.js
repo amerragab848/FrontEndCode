@@ -21,9 +21,9 @@ export default function (state = initialState.app.communication, action) {
             }
 
         case types.Document_for_Edit:
-            console.log('Document_for_Edit...' , state.files, state.docId, state.changeStatus)
+            console.log('Document_for_Edit...', state.files, state.docId, state.changeStatus)
             return {
-                ...state, 
+                ...state,
                 document: action.document,
                 docId: action.docId,
                 docTypeId: action.docTypeId,
@@ -31,16 +31,19 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 showLeftReportMenu: false
-            }; 
+            };
 
-        case types.Clear_Cash_Document: 
-            console.log('Clear_Cash_Document...' , state.files, state.docId, state.changeStatus)
+        case types.Clear_Cash_Document:
+            console.log('Clear_Cash_Document...', state.files, state.docId, state.changeStatus)
 
             return {
                 ...state,
+                document: {},
+                changeStatus: false,
+                hasWorkflow: false,
                 files: [],
                 items: [],
-                workFlowCycles:[]
+                workFlowCycles: []
             };
 
         case types.Document_Adding:

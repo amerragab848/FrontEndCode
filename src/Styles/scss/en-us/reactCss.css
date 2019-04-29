@@ -4168,3 +4168,27 @@ width: calc(100% - 256px);
   font-size: 10px !important;
   padding: 0 6px !important;
 }
+
+
+.document__sign {
+  top: 28px;
+  position: absolute;
+  left: 40px;
+  transform: rotate(-4deg);
+}
+
+
+.document__sign .ui.label.labelWithArrowRedS {
+  height: 51px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 125px;
+}
+
+.document__sign .ui.label.labelWithArrowRedS span {
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-size: 16px;
+}

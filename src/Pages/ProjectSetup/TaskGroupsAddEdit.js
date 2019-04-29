@@ -655,7 +655,7 @@ class TaskGroupsAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     {/* Header */}
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.projectTaskGroups[currentLanguage]}
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectTaskGroups[currentLanguage]}
                         moduleTitle={Resources['generalCoordination'][currentLanguage]} />
 
 

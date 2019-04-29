@@ -1618,7 +1618,7 @@ class bogAddEdit extends Component {
                     <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
                         : "documents-stepper noTabs__document one__tab one_step"}>
 
-                        <HeaderDocument projectName={projectName} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                        <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> :
