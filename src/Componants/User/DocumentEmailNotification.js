@@ -13,6 +13,7 @@ export default class DocumentEmailNotification extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading:false,
             DocumentData: [],
             ChooseOk: false,
             TableData: [],
@@ -37,14 +38,14 @@ export default class DocumentEmailNotification extends Component {
     }
     addDoc = (item) => {
         let url = 'AddAccountsEmailAlert?docTypeId=' + this.state.SelectedDoc.value
+        this.setState({isLoading:true})
         api.post(url).then(result => {
-
-            this.setState({ TableData: result,SelectedDoc:'',ChooseOk:false })
+            this.setState({ TableData: result, SelectedDoc: '', ChooseOk: false ,isLoading:false})
         })
     }
     deleteDoc = (id) => {
         let url = 'DeleteAccountDocType?id=' + id
-        api.post(url).then(res=> {
+        api.post(url).then(res => {
             api.get('GetAccountsEmailAlert').then(result => {
                 this.setState({ TableData: result })
             })
@@ -77,13 +78,24 @@ export default class DocumentEmailNotification extends Component {
         ]
 
         return (
-            <div  className="mainContainer main__fulldash--container">
+            <div className="mainContainer main__fulldash--container">
                 <Dropdown title="docAlerts" data={this.state.DocumentData} handleChange={this.DocumentAlertChange}
                     index='DocumentAlert' name="DocumentAlert" selectedValue={this.state.SelectedDoc} />
 
                 <div className="fullWidthWrapper">
-                    <button className={this.state.ChooseOk ? "primaryBtn-1 btn smallBtn" : "primaryBtn-1 ui disabled button"}
-                     onClick={this.addDoc} disabled={this.state.ChooseOk ?'':'disabled'}>{resources['save'][currentLanguage]}</button>
+                    {this.state.isLoading === false ? (
+                        <button className={this.state.ChooseOk ? "primaryBtn-1 btn smallBtn" : "primaryBtn-1 ui disabled button"}
+                            onClick={this.addDoc} disabled={this.state.ChooseOk ? '' : 'disabled'}>{resources['save'][currentLanguage]}</button>
+                    ) :
+                        (
+                            <button className="primaryBtn-1 btn mediumBtn disabled" disabled="disabled">
+                                <div className="spinner">
+                                    <div className="bounce1" />
+                                    <div className="bounce2" />
+                                    <div className="bounce3" />
+                                </div>
+                            </button>
+                        )}
                 </div>
 
 

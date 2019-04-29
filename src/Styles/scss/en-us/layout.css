@@ -4749,24 +4749,6 @@ ul {
       .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-left: 0; }
-.noTabs__document .approveDocument {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  width: 100%;
-  z-index: 19;
-  height: 72px;
-  border-radius: 3px;
-  box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  padding: 0 40px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center; }
   .noTabs__document .approveDocument h2 {
     flex: 0.5;
     line-height: 1.17;
@@ -4863,7 +4845,6 @@ ul {
     bottom: 0;
     right: 0;
     left: 0;
-    width: 100%;
     z-index: 19;
     height: 72px;
     border-radius: 3px;

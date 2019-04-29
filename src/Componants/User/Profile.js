@@ -17,11 +17,11 @@ export default class uploadSignture extends React.Component {
             sign: {},
             signPreview: {},
             signShowRemoveBtn: false, signName: '',
-            signIamge: config.getPublicConfiguartion().downloads + signiturePath,
+            signIamge:  signiturePath,
             profile: {},
             profilePreview: {},
             profileShowRemoveBtn: false, profileName: '',
-            profileIamge: config.getPublicConfiguartion().downloads + profilePath
+            profileIamge:  profilePath
         };
     }
     //signture Methods
@@ -48,7 +48,7 @@ export default class uploadSignture extends React.Component {
             let formData = new FormData();
             formData.append("file", this.state.sign)
             api.postFile('UploadSignature', formData).then(res => {
-                this.setState({ signIamge: config.getPublicConfiguartion().downloads + signiturePath })
+                this.setState({ signIamge:   signiturePath })
                 toast.success(resources["operationSuccess"][currentLanguage]);
             }).catch(ex => {
                 toast.error(resources["operationCanceled"][currentLanguage]);
@@ -76,7 +76,7 @@ export default class uploadSignture extends React.Component {
             let formData = new FormData();
             formData.append("file", this.state.profile)
             api.postFile('UploadPhoto', formData).then(res => {
-                this.setState({ profileIamge: config.getPublicConfiguartion().downloads + profilePath })
+                this.setState({ profileIamge:  profilePath })
                 toast.success(resources["operationSuccess"][currentLanguage]);
             }).catch(ex => {
                 toast.error(resources["operationCanceled"][currentLanguage]);
