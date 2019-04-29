@@ -501,16 +501,9 @@ class projectWorkFlowAddEdit extends Component {
     }
 
     handleChange(e, field) {
-        console.log(field, e.target.value);
-
+        //console.log(field, e.target.value);
         let updated_document = this.state.document
-
-        //let updated_document = {};
-
         updated_document[field] = e.target.value;
-
-        //updated_document = Object.assign(original_document, updated_document);
-
         this.setState({
             document: updated_document
         });
@@ -1122,15 +1115,6 @@ class projectWorkFlowAddEdit extends Component {
                 FirstStep: false
             })
         }
-    }
-    handleChangeqq = (e, q) => {
-        // let a = this.state.document
-        // a.useSelection=e.target.value
-        // this.setState({
-        //     document:a
-        // })
-
-        console.log(e.target.value, q)
     }
 
     render() {
