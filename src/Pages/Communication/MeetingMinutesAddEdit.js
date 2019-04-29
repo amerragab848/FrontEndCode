@@ -500,14 +500,12 @@ class MeetingMinutesAddEdit extends Component {
     handleChange = (key, value) => {
         this.setState({ document: { ...this.state.document, [key]: value } })
     }
+   
     NextStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
-                if (this.props.changeStatus == true) {
-                    this.editMeeting();
-                }
-                else if (this.state.docId > 0) {
+                if (this.state.docId > 0) {
                     let CurrStep = this.state.CurrStep + 1
                     this.setState({ firstComplete: true, CurrStep })
                 }
@@ -528,6 +526,7 @@ class MeetingMinutesAddEdit extends Component {
                 break;
         }
     }
+
     PreviousStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
@@ -564,6 +563,41 @@ class MeetingMinutesAddEdit extends Component {
             this.simpleDialog.show()
         }
     }
+
+    StepOneLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1,
+                thirdComplete: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2,
+                thirdComplete: false,
+
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                thirdComplete: true,
+                CurrStep: 3,
+                firstComplete: true,
+                secondComplete: true,
+            })
+        }
+    }
+
 
     render() {
         let actions = [
@@ -1033,13 +1067,13 @@ class MeetingMinutesAddEdit extends Component {
                                     <div className="step-content-foot">
                                         <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
                                             "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                        <span onClick={this.NextStep} className={this.state.CurrStep < 3 && this.state.meetingId > 0 ? "step-content-btn-prev "
+                                        <span onClick={this.NextStep} className={this.state.meetingId > 0 ? "step-content-btn-prev "
                                             : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                         </span>
                                     </div>
                                     <div className="workflow-sliderSteps">
                                         <div className="step-slider">
-                                            <div data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                            <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>1</span>
                                                 </div>
@@ -1047,7 +1081,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     <h6>{Resources.addMeetingMinutes[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                            <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>2</span>
                                                 </div>
@@ -1055,7 +1089,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     <h6 >{Resources.attendenceAdttion[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
+                                            <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
                                                 <div className="steps-timeline">
                                                     <span>3</span>
                                                 </div>
