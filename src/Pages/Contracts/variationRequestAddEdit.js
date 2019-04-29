@@ -423,20 +423,20 @@ class VariationRequestAdd extends Component {
         )
     }
 
-    // handleShowAction = (item) => { 
+    handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-    //     console.log(item);
-    //     if (item.value != "0") {
+ 
+        if (item.value != "0") {
 
-    //         this.setState({
-    //             currentComponent: item.value,
-    //             currentTitle: item.title,
-    //             showModal: true
-    //         })
+            this.setState({
+                currentComponent: item.value,
+                currentTitle: item.title,
+                showModal: true
+            })
 
-    //         this.simpleDialog.show()
-    //     }
-    // }
+            this.simpleDialog.show()
+        }
+    }
 
     render() {
 
