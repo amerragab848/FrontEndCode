@@ -3,6 +3,7 @@ export const Document_Add = 'Document_Add';
 export const Document_Adding = 'Document_Adding';
 export const File_Upload = 'File_Upload';
 export const Send_WorkFlow = 'Send_WorkFlow';
+export const Sending_WorkFlow = 'Sending_WorkFlow';
 export const Cycles_WorkFlow = 'Cycles_WorkFlow';
 export const Get_Files = 'Get_Files';
 export const Get_Attendees_Table = 'Get_Attendees_Table';

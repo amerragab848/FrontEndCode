@@ -471,7 +471,8 @@ class TaskGroupsAddEdit extends Component {
         })
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
                 currentComponent: item.value,

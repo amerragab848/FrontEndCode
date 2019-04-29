@@ -18,7 +18,7 @@ import {
     bindActionCreators
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
- 
+
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -37,7 +37,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
 
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
@@ -138,16 +138,21 @@ class LettersAddEdit extends Component {
                 message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView(); 
+            this.checkDocumentIsView();
+        }
+        console.log('componentWillReceiveProps', nextProps.showModal);
+
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
-    componentWillUnmount() {   
+    componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
-         
+
     }
 
     componentDidUpdate(prevProps) {
@@ -156,7 +161,7 @@ class LettersAddEdit extends Component {
             this.checkDocumentIsView();
         }
 
-        if (prevProps.showModal != this.props.showModal) {
+        if (this.state.showModal != this.props.showModal) {
             this.setState({ showModal: this.props.showModal });
         }
     }
@@ -433,16 +438,14 @@ class LettersAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
-        console.log(item);
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }  
         if (item.value != "0") {
-
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
                 showModal: true
             })
-
             this.simpleDialog.show()
         }
     }
@@ -762,9 +765,9 @@ function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,
         isLoading: state.communication.isLoading,
-        changeStatus: state.communication.changeStatus, 
+        changeStatus: state.communication.changeStatus,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId, 
+        projectId: state.communication.projectId,
         showModal: state.communication.showModal
     }
 }

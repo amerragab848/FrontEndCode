@@ -31,6 +31,7 @@ class wfApproval extends Component {
       }
     };
   }
+  
   toggle = () => {
     const currentType = this.state.type;
     this.setState({ type: !currentType });
@@ -51,7 +52,7 @@ class wfApproval extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    alert(nextProps.approvalStatus);
+    
     if (nextProps.approvalStatus != this.props.approvalStatus) {
 
       let original_updateWorkFlow = { ...this.state.updateWorkFlow };
@@ -61,6 +62,7 @@ class wfApproval extends Component {
       this.setState({
         updateWorkFlow: updateWorkFlow_new
       });
+
       this.fillContacts(this.props.docApprovalId, nextProps.approvalStatus);
     }
   };

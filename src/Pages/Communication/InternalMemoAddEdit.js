@@ -398,6 +398,7 @@ class InternalMemoAddEdit extends Component {
     }
 
     handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }  
 
         if (item.value != "0") { 
             this.setState({

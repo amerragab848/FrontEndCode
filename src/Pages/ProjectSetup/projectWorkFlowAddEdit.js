@@ -264,7 +264,8 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -1450,7 +1451,7 @@ class projectWorkFlowAddEdit extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                             <div className="inputDev ui input">
                                                 <input autoComplete="off" className="form-control" value={values.Description} name="Description"
