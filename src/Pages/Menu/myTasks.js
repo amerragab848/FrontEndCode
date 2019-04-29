@@ -3,6 +3,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import moment from "moment";
+import SkyLight from "react-skylight";
 import { toast } from "react-toastify";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -13,7 +14,19 @@ class MyTasks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      taskData: []
+      taskData: [],
+      originalData: [],
+      currentId: 0,
+      showModal: false,
+      status: true,
+      docDate: "",
+      bicCompanyName: "",
+      bicContactName: "",
+      subject: "",
+      startDate: "",
+      finishDate: "",
+      estimatedTime: "",
+      description: ""
     };
   }
 
@@ -23,20 +36,63 @@ class MyTasks extends Component {
         .groupBy(x => x.priorityName)
         .map((value, key) => ({ Group: key, GroupData: value }))
         .value();
-
       this.setState({
+        originalData: data,
         taskData: result
       });
     });
   };
 
-  editStatus(id) {}
+  editStatus(e, id) {
+    e.preventDefault();
+    dataservice.GetDataGrid("GetTaskForEdit?id=" + id).then(data => {
+      this.setState({
+        currentId: id,
+        showModal: true,
+        docDate: data.docDate,
+        bicCompanyName: data.bicCompanyName,
+        bicContactName: data.bicContactName,
+        subject: data.subject,
+        startDate: moment(data.startDate).format("DD/MM/YYYY"),
+        finishDate: moment(data.finishDate).format("DD/MM/YYYY"),
+        estimatedTime: data.estimateTimeComplete,
+        description: data.description
+      });
+      this.simpleDialog.show();
+    });
+  }
 
   editRow() {
-    // let obj = {};
-    // obj.id = id;
+    this.setState({
+      showModal: false
+    });
 
-    dataservice.addObject("EditTaskStatus").then(result => {});
+    toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    let obj = {};
+
+    obj.id = this.state.currentId;
+    obj.docDate = this.state.docDate;
+    obj.bicCompanyName = this.state.bicCompanyName;
+    obj.bicContactName = this.state.bicContactName;
+    obj.subject = this.state.subject;
+
+    dataservice.addObject("EditTaskStatus", obj).then(result => {
+      this.state.originalData.forEach(item => {
+        if (this.state.currentId === item.id) {
+          item.status = result["status"];
+          item.statusName = result["statusName"];
+        }
+      });
+
+      let data = _(this.state.originalData)
+        .groupBy(x => x.priorityName)
+        .map((value, key) => ({ Group: key, GroupData: value }))
+        .value();
+      this.setState({
+        taskData: data
+      });
+    });
   }
 
   render() {
@@ -64,7 +120,7 @@ class MyTasks extends Component {
                             key={item.id}
                           >
                             <header>
-                              <h3 class="zero">{item.Group}</h3>
+                              <h3 className="zero">{item.Group}</h3>
                             </header>
                             <table className="attachmentTable tableReports">
                               <thead>
@@ -174,11 +230,11 @@ class MyTasks extends Component {
                                         <td>
                                           <div className="contentCell tableCell-1">
                                             <button
-                                              className="primaryBtn-2 btn smallBtn gridBtn"
-                                              disabled={!data.status}
-                                              onClick={() =>
-                                                this.editStatus(item.id)
+                                              className={!data.status ?"primaryBtn-2 btn smallBtn gridBtn disabled" :"primaryBtn-2 btn smallBtn gridBtn"}
+                                              onClick={e =>
+                                                this.editStatus(e, data.id)
                                               }
+                                              disabled={!data.status}
                                             >
                                               Edit
                                             </button>
@@ -256,281 +312,201 @@ class MyTasks extends Component {
             className="largePopup largeModal "
             style={{ display: this.state.showModal ? "block" : "none" }}
           >
-        
-            {/* <SkyLight
+            <SkyLight
               hideOnOverlayClicked
               ref={ref => (this.simpleDialog = ref)}
-              title={Resources[this.state.currentTitle][currentLanguage]}
+              title={Resources["goEdit"][currentLanguage]}
             >
-              <div className="mainContainer">
-                <div
-                  className={
-                    this.state.isViewMode === true
-                      ? "documents-stepper noTabs__document readOnly_inputs"
-                      : "documents-stepper noTabs__document"
-                  }
-                >
-                  <HeaderDocument
-                    docTitle={Resources.taskDetails[currentLanguage]}
-                  />
-                  <div className="doc-container">
-                    <div className="step-content">
-                      <div id="step1" className="step-content-body">
-                        <div className="subiTabsContent">
-                          <div className="document-fields">
-                            <form className="proForm datepickerContainer">
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.subject[currentLanguage]}
-                                </label>
-                                <div className="ui input inputDev">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    id="subject"
-                                    value={this.state.subject}
-                                    name="subject"
-                                    placeholder={
-                                      Resources.subject[currentLanguage]
-                                    }
-                                    disabled
-                                  />
-                                </div>
-                              </div>
+              <div className="dropWrapper">
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.status[currentLanguage]}
+                    </label>
+                    <div className="ui checkbox radio radioBoxBlue">
+                      <input
+                        type="radio"
+                        name="letter-status"
+                        value="true"
+                        defaultChecked={
+                          this.state.status === false ? null : "checked"
+                        }
+                        onChange={e =>
+                          this.setState({ status: e.target.value })
+                        }
+                      />
+                      <label>{Resources.oppened[currentLanguage]}</label>
+                    </div>
+                    <div className="ui checkbox radio radioBoxBlue">
+                      <input
+                        type="radio"
+                        name="letter-status"
+                        value="false"
+                        defaultChecked={
+                          this.state.status === false ? "checked" : null
+                        }
+                        onChange={e =>
+                          this.setState({ status: e.target.value })
+                        }
+                      />
+                      <label>{Resources.closed[currentLanguage]}</label>
+                    </div>
+                  </div>
 
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.arrange[currentLanguage]}
-                                </label>
-                                <div className="shareLinks">
-                                  <div className="inputDev ui input">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="arrange"
-                                      value={this.state.arrange}
-                                      name="arrange"
-                                      placeholder={
-                                        Resources.arrange[currentLanguage]
-                                      }
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.fromCompany[currentLanguage]}
-                                </label>
-                                <div className="ui input inputDev">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    id="fromCompany"
-                                    value={this.state.fromCompanyName}
-                                    name="refDoc"
-                                    placeholder={
-                                      Resources.fromCompany[currentLanguage]
-                                    }
-                                    disabled
-                                  />
-                                </div>
-                              </div>
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.fromContact[currentLanguage]}
-                                </label>
-                                <div className="shareLinks">
-                                  <div className="inputDev ui input">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="fromContact"
-                                      value={this.state.fromContactName}
-                                      name="fromContact"
-                                      placeholder={
-                                        Resources.fromContact[currentLanguage]
-                                      }
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.actionByCompany[currentLanguage]}
-                                </label>
-                                <div className="ui input inputDev">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    id="actionByCompany"
-                                    value={this.state.actionCompanyBy}
-                                    name="actionByCompany"
-                                    placeholder={
-                                      Resources.actionByCompany[currentLanguage]
-                                    }
-                                    disabled
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.actionByContact[currentLanguage]}
-                                </label>
-                                <div className="shareLinks">
-                                  <div className="inputDev ui input">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="actionByContact"
-                                      value={this.state.actionBy}
-                                      name="actionByContact"
-                                      placeholder={
-                                        Resources.actionByContact[
-                                          currentLanguage
-                                        ]
-                                      }
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.docDate[currentLanguage]}
-                                </label>
-                                <div className="ui input inputDev">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    id="refDoc"
-                                    value={this.state.docDate}
-                                    name="docDate"
-                                    placeholder={
-                                      Resources.docDate[currentLanguage]
-                                    }
-                                    disabled
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.startDate[currentLanguage]}
-                                </label>
-                                <div className="shareLinks">
-                                  <div className="inputDev ui input">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="startDate"
-                                      value={this.state.startDate}
-                                      name="startDate"
-                                      placeholder={
-                                        Resources.startDate[currentLanguage]
-                                      }
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.finishDate[currentLanguage]}
-                                </label>
-                                <div className="ui input inputDev">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    id="finishDate"
-                                    value={this.state.finishDate}
-                                    name="finishDate"
-                                    placeholder={
-                                      Resources.finishDate[currentLanguage]
-                                    }
-                                    disabled
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.estimatedHours[currentLanguage]}
-                                </label>
-                                <div className="shareLinks">
-                                  <div className="inputDev ui input">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="estimatedHours"
-                                      value={this.state.estimatedTime}
-                                      name="estimatedHours"
-                                      placeholder={
-                                        Resources.estimatedHours[
-                                          currentLanguage
-                                        ]
-                                      }
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.delay[currentLanguage]}
-                                </label>
-                                <div className="ui input inputDev">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    id="delay"
-                                    value={this.state.docDelay}
-                                    name="delay"
-                                    placeholder={
-                                      Resources.delay[currentLanguage]
-                                    }
-                                    disabled
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="linebylineInput valid-input fullInputWidth">
-                                <label className="control-label">
-                                  {Resources.actualTotal[currentLanguage]}
-                                </label>
-                                <div className="shareLinks">
-                                  <div className="inputDev ui input">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="actualTotal"
-                                      value={this.state.actualTotal}
-                                      name="actualTotal"
-                                      placeholder={
-                                        Resources.actualTotal[currentLanguage]
-                                      }
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.docDate[currentLanguage]}
+                    </label>
+                    <div className="shareLinks">
+                      <div className="inputDev ui input">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="docDate"
+                          value={moment(this.state.docDate).format(
+                            "DD/MM/YYYY"
+                          )}
+                          name="docDate"
+                          placeholder={Resources.docDate[currentLanguage]}
+                          disabled
+                        />
                       </div>
                     </div>
                   </div>
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.toCompany[currentLanguage]}
+                    </label>
+                    <div className="ui input inputDev">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="fromCompany"
+                        value={this.state.bicCompanyName}
+                        name="bicCompanyName"
+                        placeholder={Resources.toCompany[currentLanguage]}
+                        disabled
+                      />
+                    </div>
+                  </div>
+
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.ContactName[currentLanguage]}
+                    </label>
+                    <div className="shareLinks">
+                      <div className="inputDev ui input">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="ContactName"
+                          value={this.state.bicContactName}
+                          name="ContactName"
+                          placeholder={Resources.ContactName[currentLanguage]}
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.subject[currentLanguage]}
+                    </label>
+                    <div className="ui input inputDev">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="subject"
+                        value={this.state.subject}
+                        name="subject"
+                        placeholder={Resources.subject[currentLanguage]}
+                        disabled
+                      />
+                    </div>
+                  </div>
+
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.startDate[currentLanguage]}
+                    </label>
+                    <div className="shareLinks">
+                      <div className="inputDev ui input">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="startDate"
+                          value={this.state.startDate}
+                          name="startDate"
+                          placeholder={Resources.startDate[currentLanguage]}
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.finishDate[currentLanguage]}
+                    </label>
+                    <div className="ui input inputDev">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="finishDate"
+                        value={this.state.finishDate}
+                        name="finishDate"
+                        placeholder={Resources.finishDate[currentLanguage]}
+                        disabled
+                      />
+                    </div>
+                  </div>
+
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.estimateTime[currentLanguage]}
+                    </label>
+                    <div className="shareLinks">
+                      <div className="inputDev ui input">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="estimateTime"
+                          value={this.state.estimatedTime}
+                          name="estimateTime"
+                          placeholder={Resources.estimateTime[currentLanguage]}
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="fillter-status fillter-item-c fullInputWidth">
+                    <label className="control-label">
+                      {Resources.description[currentLanguage]}
+                    </label>
+                    <div className="ui input inputDev">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="description"
+                        value={this.state.description}
+                        name="description"
+                        placeholder={Resources.description[currentLanguage]}
+                        disabled
+                      />
+                    </div>
+                  </div>
+                  <div class="slider-Btns fullWidthWrapper">
+                    <button
+                      class="primaryBtn-1 btn meduimBtn"
+                      onClick={this.editRow.bind(this)}
+                      type="button"
+                    >
+                      Save
+                    </button>
+                  </div>
                 </div>
-              </div>
             </SkyLight>
-         */}
           </div>
         </div>
       </div>
