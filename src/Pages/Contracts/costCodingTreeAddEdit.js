@@ -316,7 +316,10 @@ class CostCodingTreeAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document">
-        <HeaderDocument projectName={''} docTitle={Resources.costCodingTree[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+          <div className="tree__header">
+            <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
+          </div>
+          {/* <HeaderDocument projectName={''} docTitle={Resources.costCodingTree[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} /> */}
           <div className="Eps__list">
             {
               this.state.trees.map((item, i) => {

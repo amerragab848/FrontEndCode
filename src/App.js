@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
+import "./Styles/css/semantic.min.css";
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css";
 import Menu from "./Pages/Menu/Menu";

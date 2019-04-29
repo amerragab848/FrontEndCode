@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Api from "../../../api";
-import "../../../Styles/scss/en-us/layout.css";
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import config from "../../../Services/Config";

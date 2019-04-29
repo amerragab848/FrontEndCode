@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import Api from "../../api";
 import { withRouter } from "react-router-dom";
 import Filter from "../FilterComponent/filterComponent";
-import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export"; 
 

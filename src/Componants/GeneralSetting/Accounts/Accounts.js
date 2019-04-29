@@ -5,8 +5,6 @@ import TaskAdmin from './TaskAdmin'
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export";
 import Filter from "../../FilterComponent/filterComponent";
-import "../../../Styles/css/semantic.min.css";
-import "../../../Styles/scss/en-us/layout.css";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import GridSetup from "../../../Pages/Communication/GridSetup";
 import NotifiMsg from '../../publicComponants/NotifiMsg'

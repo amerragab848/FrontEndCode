@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from "react";
 import Api from "../../../api";
-import "../../../Styles/css/semantic.min.css";
-import "../../../Styles/scss/en-us/layout.css";
 import Resources from "../../../resources.json";
 import config from "../../../Services/Config";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
