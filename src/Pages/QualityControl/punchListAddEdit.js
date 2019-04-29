@@ -930,20 +930,20 @@ class punchListAddEdit extends Component {
                                                 <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                 <div className="supervisor__company">
                                                     <div className="super_name">
-                                                        <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
-                                                            onChange={setFieldValue} onBlur={setFieldTouched}
-                                                            error={errors.bicContactId} touched={touched.bicContactId}
-                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" />
-                                                    </div>
-
-                                                    <div className="super_company">
-                                                        <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
+                                                      <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                                             touched={touched.bicCompanyId} name="bicCompanyId"
                                                             handleChange={event =>
                                                                 this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
                                                         />
+                                                    </div>
+
+                                                    <div className="super_company">
+                                                    <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
+                                                            onChange={setFieldValue} onBlur={setFieldTouched}
+                                                            error={errors.bicContactId} touched={touched.bicContactId}
+                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" />
                                                     </div>
                                                 </div>
                                             </div>

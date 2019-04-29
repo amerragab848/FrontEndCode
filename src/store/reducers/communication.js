@@ -39,7 +39,8 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 files: [],
-                items: []
+                items: [],
+                workFlowCycles:[]
             };
 
         case types.Document_Adding:

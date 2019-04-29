@@ -1140,23 +1140,7 @@ class inspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                            <Dropdown
-                                                                                isMulti={false}
-                                                                                data={this.state.fromContacts}
-                                                                                selectedValue={this.state.selectedFromContact}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
-                                                                                onChange={setFieldValue}
-                                                                                onBlur={setFieldTouched}
-                                                                                error={errors.fromContactId}
-                                                                                touched={touched.fromContactId}
-                                                                                isClear={false}
-                                                                                index="IR-fromContactId"
-                                                                                name="fromContactId"
-                                                                                id="fromContactId" />
-                                                                        </div>
-                                                                        <div className="super_company">
-                                                                            <Dropdown
+                                                                       <Dropdown
                                                                                 data={this.state.companies}
                                                                                 isMulti={false}
                                                                                 selectedValue={this.state.selectedFromCompany}
@@ -1172,6 +1156,22 @@ class inspectionRequestAddEdit extends Component {
                                                                                 name="fromCompanyId"
                                                                                 id="fromCompanyId" />
                                                                         </div>
+                                                                        <div className="super_company">
+                                                                        <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.fromContacts}
+                                                                                selectedValue={this.state.selectedFromContact}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.fromContactId}
+                                                                                touched={touched.fromContactId}
+                                                                                isClear={false}
+                                                                                index="IR-fromContactId"
+                                                                                name="fromContactId"
+                                                                                id="fromContactId" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input mix_dropdown">
@@ -1179,7 +1179,20 @@ class inspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                            <Dropdown
+                                                                          <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.companies}
+                                                                                selectedValue={this.state.selectedToCompany}
+                                                                                handleChange={event =>
+                                                                                    this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.toCompanyId}
+                                                                                touched={touched.toCompanyId}
+                                                                                name="toCompanyId" />
+                                                                        </div>
+                                                                        <div className="super_company">
+                                                                        <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.ToContacts}
                                                                                 selectedValue={this.state.selectedToContact}
@@ -1195,19 +1208,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 id="toContactId"
                                                                             />
                                                                         </div>
-                                                                        <div className="super_company">
-                                                                            <Dropdown
-                                                                                isMulti={false}
-                                                                                data={this.state.companies}
-                                                                                selectedValue={this.state.selectedToCompany}
-                                                                                handleChange={event =>
-                                                                                    this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-                                                                                onChange={setFieldValue}
-                                                                                onBlur={setFieldTouched}
-                                                                                error={errors.toCompanyId}
-                                                                                touched={touched.toCompanyId}
-                                                                                name="toCompanyId" />
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input mix_dropdown">
@@ -1215,7 +1215,17 @@ class inspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
+                                                                      
                                                                             <Dropdown
+                                                                                isMulti={false}
+                                                                                data={this.state.companies}
+                                                                                selectedValue={this.state.selectedActionByCompanyId}
+                                                                                handleChange={event =>
+                                                                                    this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
+                                                                                name="bicCompanyId" />
+                                                                        </div>
+                                                                        <div className="super_company">
+                                                                        <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.bicContacts}
                                                                                 selectedValue={this.state.selectedActionByContactId}
@@ -1229,16 +1239,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 index="IR-bicContactId"
                                                                                 name="bicContactId"
                                                                                 id="bicContactId" />
-                                                                        </div>
-                                                                        <div className="super_company">
-
-                                                                            <Dropdown
-                                                                                isMulti={false}
-                                                                                data={this.state.companies}
-                                                                                selectedValue={this.state.selectedActionByCompanyId}
-                                                                                handleChange={event =>
-                                                                                    this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
-                                                                                name="bicCompanyId" />
                                                                         </div>
                                                                     </div>
                                                                 </div>

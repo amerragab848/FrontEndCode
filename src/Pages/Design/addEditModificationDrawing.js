@@ -774,22 +774,6 @@ class addEditModificationDrawing extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.fromContacts}
-                                                                        selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedFromContact')}
-
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.fromContactId}
-                                                                        touched={touched.fromContactId}
-                                                                        isClear={false}
-                                                                        index="clientSelection-fromContactId"
-                                                                        name="fromContactId"
-                                                                        id="fromContactId" />
-                                                                </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -804,6 +788,22 @@ class addEditModificationDrawing extends Component {
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                <Dropdown
+                                                                        isMulti={false}
+                                                                        data={this.state.fromContacts}
+                                                                        selectedValue={this.state.selectedFromContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedFromContact')}
+
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromContactId}
+                                                                        touched={touched.fromContactId}
+                                                                        isClear={false}
+                                                                        index="clientSelection-fromContactId"
+                                                                        name="fromContactId"
+                                                                        id="fromContactId" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -940,18 +940,7 @@ class addEditModificationDrawing extends Component {
                                                                 <label className="control-label">{Resources.CompanyName[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown
-                                                                            isMulti={false}
-                                                                            data={this.state.flowContacts}
-                                                                            selectedValue={this.state.selectedFlowContact}
-                                                                            handleChange={event => this.handleChangeDropDownCycle(event, 'flowContactId', false, '', '', '', 'selectedFlowContact')}
-                                                                            isClear={false}
-                                                                            index="drawing-flowContactId"
-                                                                            name="flowContactId"
-                                                                            id="flowContactId" />
-                                                                    </div>
-                                                                    <div className="super_company">
-                                                                        <Dropdown
+                                                                    <Dropdown
                                                                             data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedFlowCompany}
@@ -961,6 +950,17 @@ class addEditModificationDrawing extends Component {
                                                                             index="flowCompanyId"
                                                                             name="flowCompanyId"
                                                                             id="flowCompanyId" />
+                                                                    </div>
+                                                                    <div className="super_company">
+                                                                    <Dropdown
+                                                                            isMulti={false}
+                                                                            data={this.state.flowContacts}
+                                                                            selectedValue={this.state.selectedFlowContact}
+                                                                            handleChange={event => this.handleChangeDropDownCycle(event, 'flowContactId', false, '', '', '', 'selectedFlowContact')}
+                                                                            isClear={false}
+                                                                            index="drawing-flowContactId"
+                                                                            name="flowContactId"
+                                                                            id="flowContactId" />
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -560,7 +560,17 @@ class reportsAddEdit extends Component {
 
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown
+                                                             <Dropdown
+                                                                        data={this.state.companies}
+                                                                        isMulti={false}
+                                                                        selectedValue={this.state.selectedFromCompany}
+                                                                        handleChange={event => this.handleChange('fromCompany', event)}
+                                                                        index="fromCompanyId"
+                                                                        name="fromCompanyId"
+                                                                        id="fromCompanyId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                <Dropdown
                                                                         name="fromContact"
                                                                         data={this.state.fromContacts}
                                                                         handleChange={e => this.handleChange('fromContact', e)}
@@ -573,16 +583,6 @@ class reportsAddEdit extends Component {
                                                                         index="fromContact"
                                                                         id="fromContact" />
                                                                 </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown
-                                                                        data={this.state.companies}
-                                                                        isMulti={false}
-                                                                        selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={event => this.handleChange('fromCompany', event)}
-                                                                        index="fromCompanyId"
-                                                                        name="fromCompanyId"
-                                                                        id="fromCompanyId" />
-                                                                </div>
                                                             </div>
                                                         </div>
 
@@ -590,7 +590,15 @@ class reportsAddEdit extends Component {
 
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown
+                                                                  <Dropdown
+                                                                        data={this.state.companies}
+                                                                        selectedValue={this.state.selectedToCompany}
+                                                                        handleChange={event => this.handleChange('toCompany', event)}
+                                                                        name="toCompanyId"
+                                                                        id="toCompanyId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                <Dropdown
                                                                         name='toContact'
                                                                         data={this.state.toContacts}
                                                                         handleChange={(e) => this.handleChange("toContact", e)}
@@ -600,14 +608,6 @@ class reportsAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContact}
                                                                         touched={touched.toContact} />
-                                                                </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown
-                                                                        data={this.state.companies}
-                                                                        selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChange('toCompany', event)}
-                                                                        name="toCompanyId"
-                                                                        id="toCompanyId" />
                                                                 </div>
                                                             </div>
                                                         </div>

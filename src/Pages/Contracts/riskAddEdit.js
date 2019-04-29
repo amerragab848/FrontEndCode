@@ -644,18 +644,7 @@ class riskAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown isMulti={false} data={this.state.fromContacts}
-                                                                        selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.fromContactId}
-                                                                        touched={touched.fromContactId}
-                                                                        name="fromContactId"
-                                                                        id="fromContactId" />
-                                                                </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown data={this.state.companies} isMulti={false}
+                                                         <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
                                                                         onChange={setFieldValue}
@@ -665,24 +654,24 @@ class riskAddEdit extends Component {
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
                                                                 </div>
+                                                                <div className="super_company">
+                                                                <Dropdown isMulti={false} data={this.state.fromContacts}
+                                                                        selectedValue={this.state.selectedFromContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromContactId}
+                                                                        touched={touched.fromContactId}
+                                                                        name="fromContactId"
+                                                                        id="fromContactId" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">
                                                             <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown isMulti={false} data={this.state.ToContacts}
-                                                                        selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.toContactId}
-                                                                        touched={touched.toContactId}
-                                                                        name="toContactId"
-                                                                        id="toContactId" />
-                                                                </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown isMulti={false} data={this.state.companies}
+                                                                     <Dropdown isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                                         onChange={setFieldValue}
@@ -691,6 +680,17 @@ class riskAddEdit extends Component {
                                                                         touched={touched.toCompanyId}
                                                                         name="toCompanyId"
                                                                         id="toCompanyId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                        selectedValue={this.state.selectedToContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toContactId}
+                                                                        touched={touched.toContactId}
+                                                                        name="toContactId"
+                                                                        id="toContactId" />
                                                                 </div>
                                                             </div>
                                                         </div>

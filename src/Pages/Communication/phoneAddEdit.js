@@ -449,7 +449,16 @@ class phoneAddEdit extends Component {
                                                     <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <DropdownMelcous
+                                                           <DropdownMelcous
+                                                                name="fromCompany"
+                                                                data={this.state.CompanyData}
+                                                                handleChange={e => this.handleChange('fromCompany', e)}
+                                                                placeholder='fromCompany'
+                                                                selectedValue={this.state.selectedFromCompany}
+                                                            />
+                                                        </div>
+                                                        <div className="super_company">
+                                                        <DropdownMelcous
                                                                 name="fromContact"
                                                                 data={this.state.fromContactNameData}
                                                                 handleChange={e => this.handleChange('fromContact', e)}
@@ -463,22 +472,21 @@ class phoneAddEdit extends Component {
                                                                 id="fromContact"
                                                             />
                                                         </div>
-                                                        <div className="super_company">
-                                                            <DropdownMelcous
-                                                                name="fromCompany"
-                                                                data={this.state.CompanyData}
-                                                                handleChange={e => this.handleChange('fromCompany', e)}
-                                                                placeholder='fromCompany'
-                                                                selectedValue={this.state.selectedFromCompany}
-                                                            />
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input mix_dropdown">
                                                     <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <DropdownMelcous
+                                                                    <DropdownMelcous
+                                                                name='toCompany'
+                                                                data={this.state.CompanyData}
+                                                                handleChange={(e) => this.handleChange("toCompany", e)}
+                                                                placeholder='toCompany'
+                                                                selectedValue={this.state.selectedToCompany} />
+                                                        </div>
+                                                        <div className="super_company">
+                                                        <DropdownMelcous
                                                                 name='toContact'
                                                                 data={this.state.toContactNameData}
                                                                 handleChange={(e) => this.handleChange("toContact", e)}
@@ -488,14 +496,6 @@ class phoneAddEdit extends Component {
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.toContact}
                                                                 touched={touched.toContact} />
-                                                        </div>
-                                                        <div className="super_company">
-                                                            <DropdownMelcous
-                                                                name='toCompany'
-                                                                data={this.state.CompanyData}
-                                                                handleChange={(e) => this.handleChange("toCompany", e)}
-                                                                placeholder='toCompany'
-                                                                selectedValue={this.state.selectedToCompany} />
                                                         </div>
                                                     </div>
                                                 </div>

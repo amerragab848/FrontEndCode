@@ -215,7 +215,7 @@ class SubmittalAddEdit extends Component {
       });
 
       dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + nextProps.document.id).then(result => {
-        if (result) { 
+        if (result) {
           result.docDate = result.docDate != null ? moment(result.docDate).format("DD/MM/YYYY") : moment();
           result.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format("DD/MM/YYYY") : moment();
 
@@ -1400,7 +1400,8 @@ class SubmittalAddEdit extends Component {
     });
   }
 
-  componentWillUnmount() {   this.props.actions.clearCashDocument();
+  componentWillUnmount() {
+    this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });
@@ -1565,14 +1566,14 @@ class SubmittalAddEdit extends Component {
     ];
 
     return (
-      <div className="mainContainer"> 
+      <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
 
           <HeaderDocument projectName={projectName} docTitle={Resources.Submittal[currentLanguage]}
             moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
           <div className="doc-container">
-            
+
             <div className="step-content">
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
@@ -1697,6 +1698,15 @@ class SubmittalAddEdit extends Component {
                                 </label>
                                 <div className="supervisor__company">
                                   <div className="super_name">
+                                    <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                      handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
+                                      // onChange={setFieldValue}
+                                      // onBlur={setFieldTouched}
+                                      // error={errors.fromCompanyId}
+                                      // touched={touched.fromCompanyId}
+                                      name="fromCompanyId" id="fromCompanyId" />
+                                  </div>
+                                  <div className="super_company">
                                     <Dropdown isMulti={false}
                                       data={this.state.fromContacts}
                                       selectedValue={this.state.selectedFromContact}
@@ -1706,15 +1716,6 @@ class SubmittalAddEdit extends Component {
                                       error={errors.bicContactId}
                                       touched={touched.bicContactId}
                                       name="bicContactId" id="bicContactId" />
-                                  </div>
-                                  <div className="super_company">
-                                    <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
-                                      handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
-                                      // onChange={setFieldValue}
-                                      // onBlur={setFieldTouched}
-                                      // error={errors.fromCompanyId}
-                                      // touched={touched.fromCompanyId}
-                                      name="fromCompanyId" id="fromCompanyId" />
                                   </div>
                                 </div>
                               </div>
@@ -1964,6 +1965,12 @@ class SubmittalAddEdit extends Component {
                                         </label>
                                         <div className="supervisor__company">
                                           <div className="super_name">
+
+                                            <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
+                                              handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContact"); }}
+                                              id="fromCompanyIdCycle" />
+                                          </div>
+                                          <div className="super_company">
                                             <Dropdown data={this.state.fromContactsCycles}
                                               selectedValue={this.state.selectedFromContactCycles}
                                               handleChange={event => this.handleChangeDropDownCycles(event, "flowContactId", false, "", "", "", "selectedFromContactCycles")}
@@ -1973,12 +1980,6 @@ class SubmittalAddEdit extends Component {
                                               touched={touched.fromContactId}
                                               name="fromContactId"
                                               id="fromContactId" />
-
-                                          </div>
-                                          <div className="super_company">
-                                            <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
-                                              handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContact"); }}
-                                              id="fromCompanyIdCycle" />
                                           </div>
                                         </div>
                                       </div>
@@ -2462,6 +2463,13 @@ class SubmittalAddEdit extends Component {
                           </label>
                           <div className="supervisor__company">
                             <div className="super_name">
+                              <Dropdown data={this.state.companies}
+                                isMulti={false}
+                                selectedValue={this.state.selectedNewFromCompanyCycles}
+                                handleChange={event => { this.handleChangeDropDownCyclesPopUp(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedNewFromCompanyCycles", "selectedFromContact"); }}
+                                id="fromCompanyIdCycle" />
+                            </div>
+                            <div className="super_company">
                               <Dropdown name="fromContactId"
                                 data={this.state.fromContactsCycles}
                                 handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "flowContactId", false, "", "", "", "selectedNewFromContactCycles")}
@@ -2472,13 +2480,6 @@ class SubmittalAddEdit extends Component {
                                 touched={touched.flowContactId}
                                 id="flowContactId"
                                 name="flowContactId" />
-                            </div>
-                            <div className="super_company">
-                              <Dropdown data={this.state.companies}
-                                isMulti={false}
-                                selectedValue={this.state.selectedNewFromCompanyCycles}
-                                handleChange={event => { this.handleChangeDropDownCyclesPopUp(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedNewFromCompanyCycles", "selectedFromContact"); }}
-                                id="fromCompanyIdCycle" />
                             </div>
                           </div>
                         </div>

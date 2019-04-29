@@ -147,7 +147,8 @@ class VariationRequestAdd extends Component {
         }
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -185,7 +186,7 @@ class VariationRequestAdd extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsVariationRequestForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url,this.state.docTypeId,'cvr');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'cvr');
 
         } else {
             let Variation = {
@@ -456,7 +457,7 @@ class VariationRequestAdd extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                <HeaderDocument projectName={projectName} docTitle={Resources.variationRequest[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} docTitle={Resources.variationRequest[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -582,22 +583,6 @@ class VariationRequestAdd extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.fromContacts}
-                                                                        selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.fromContactId}
-                                                                        touched={touched.fromContactId}
-                                                                        isClear={false}
-                                                                        index="letter-fromContactId"
-                                                                        name="fromContactId"
-                                                                        id="fromContactId" />
-                                                                </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -613,6 +598,22 @@ class VariationRequestAdd extends Component {
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
                                                                 </div>
+                                                                <div className="super_company">
+                                                                    <Dropdown
+                                                                        isMulti={false}
+                                                                        data={this.state.fromContacts}
+                                                                        selectedValue={this.state.selectedFromContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromContactId}
+                                                                        touched={touched.fromContactId}
+                                                                        isClear={false}
+                                                                        index="letter-fromContactId"
+                                                                        name="fromContactId"
+                                                                        id="fromContactId" />
+                                                                </div>
                                                             </div>
                                                         </div>
 
@@ -620,22 +621,6 @@ class VariationRequestAdd extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.ToContacts}
-                                                                        selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.toContactId}
-                                                                        touched={touched.toContactId}
-
-                                                                        index="letter-toContactId"
-                                                                        name="toContactId"
-                                                                        id="toContactId" />
-                                                                </div>
-                                                                <div className="super_company">
                                                                     <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.companies}
@@ -651,6 +636,22 @@ class VariationRequestAdd extends Component {
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
                                                                         id="toCompanyId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                    <Dropdown
+                                                                        isMulti={false}
+                                                                        data={this.state.ToContacts}
+                                                                        selectedValue={this.state.selectedToContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toContactId}
+                                                                        touched={touched.toContactId}
+
+                                                                        index="letter-toContactId"
+                                                                        name="toContactId"
+                                                                        id="toContactId" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -711,15 +712,15 @@ class VariationRequestAdd extends Component {
 
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
-                                                                            <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                                                         </div>
                                                                         : null
                                                                     }
                                                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                   <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                     <span className="border"></span>
                                                                     <div className="document__action--menu">
                                                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
