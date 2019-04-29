@@ -4072,3 +4072,43 @@ width: calc(100% - 256px);
 .proForm .togglePW.active-pw .show {
   display: none;
 }
+.mainSide .header-logo-menu {
+  cursor: pointer;
+  z-index: 99999;
+  width: auto;
+}
+.tree__header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e9ecf0;
+}
+.tree__header h2{
+  font-family: font-b;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
+}
+.main-header .header-content .nav-right li.UserImg {
+  cursor: pointer;
+}
+.proForm.first-proform {
+  flex-wrap: wrap !important;
+  margin-bottom: 33px !important
+}
+.proForm.first-proform div:first-child {
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 33px !important
+}
+.proForm.first-proform div:first-child .inputDev.ui.input, .proForm.first-proform div:first-child .inputDev.ui.input input {
+  width: 100% !important;
+}
+.proForm.first-proform div:first-child {
+  width: 100% !important;
+  flex-shrink: 0 !important
+}
