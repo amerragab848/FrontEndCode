@@ -279,7 +279,7 @@ let originalRoutes = [
     , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
     , <Route path="/ProjectCompanies" component={ProjectCompanies} />
     , <Route path="/permissionsGroups" component={permissionsGroups} />
-    , <Route path="/AccountsGroup" component={AccountsGroup} />
+    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
     
 
 

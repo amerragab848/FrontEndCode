@@ -8,7 +8,7 @@ import "../../../../Styles/scss/en-us/layout.css";
 import { Formik, Form } from 'formik';
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
 import GridSetup from "../../../../Pages/Communication/GridSetup";
-import moment from "moment";
+import CryptoJS from 'crypto-js';
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import { withRouter } from "react-router-dom";
@@ -31,7 +31,7 @@ class permissionsGroups extends Component {
             {
                 key: "groupName",
                 name: Resources["GroupName"][currentLanguage],
-                width: 250,
+                width: 400,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -65,9 +65,7 @@ class permissionsGroups extends Component {
                     {
                         text: Resources['copyTo'][currentLanguage],
                         callback: (e) => {
-                            if (config.IsAllow(1001102)) {
-                                this.copyTo()
-                            }
+                            this.copyTo()
                         }
                     },
                     {
@@ -84,11 +82,9 @@ class permissionsGroups extends Component {
                     {
                         text: Resources['contacts'][currentLanguage],
                         callback: () => {
-                            if (config.IsAllow(1001104)) {
-                                this.props.history.push({
-                                    pathname: '/AccountsGroup/' + row.id,
-                                })
-                            }
+                            this.props.history.push({
+                                pathname: '/AccountsGroup/'+row.id,
+                            })
                         }
                     }
                 ]
@@ -131,7 +127,7 @@ class permissionsGroups extends Component {
 
     ConfirmdeleteGroupName = () => {
         if (this.state.rowId[0] != null) {
-            this.setState({ isLoading: true })
+            this.setState({ isLoading: true, showDeleteModal: false })
             Api.post('AccountsPermissionsGroupsDelete?id=' + this.state.rowId[0]).then(() => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let rows = []
@@ -140,7 +136,7 @@ class permissionsGroups extends Component {
                         rows.push(element)
                     }
                 })
-                this.setState({ rows, isLoading: false, showDeleteModal: false })
+                this.setState({ rows, isLoading: false })
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ isLoading: false })
@@ -172,8 +168,7 @@ class permissionsGroups extends Component {
     onRowClick(value, index, column) {
         this.setState({
             selectedRow: value,
-            selectedgroupName: value.groupName,
-            isLoading: true
+            selectedgroupName: value.groupName
         })
         if (column.key != 'BtnActions' && column.key != 'select-row') {
             this.setState({ showPopUp: true, isLoading: false, currentTitle: 'update' })
@@ -207,11 +202,11 @@ class permissionsGroups extends Component {
             let groupObj = {}
             groupObj.id = 0;
             groupObj.groupName = value.GroupName;
-            this.setState({ isLoading: true })
+            this.setState({ isLoading: true, showPopUp: false })
             Api.post('AccountsPermissionsGroupsAdd', groupObj).then((res) => {
                 let rows = [...this.state.rows]
                 rows.push(res)
-                this.setState({ rows, isLoading: false, showPopUp: false })
+                this.setState({ rows, isLoading: false })
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
