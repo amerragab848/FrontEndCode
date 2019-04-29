@@ -448,7 +448,8 @@ class siteInstructionsAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -598,7 +599,20 @@ class siteInstructionsAddEdit extends Component {
                                                                 <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown
+                                                                     <Dropdown
+                                                                            data={this.state.companies}
+                                                                            isMulti={false}
+                                                                            selectedValue={this.state.selectedFromCompany}
+                                                                            handleChange={event => {
+                                                                                this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact', { label: Resources.fromContactRequired[currentLanguage], value: "0" })
+                                                                            }}
+
+                                                                            index="fromCompanyId"
+                                                                            name="fromCompanyId"
+                                                                            id="fromCompanyId" />
+                                                                    </div>
+                                                                    <div className="super_company">
+                                                                    <Dropdown
                                                                             isMulti={false}
                                                                             data={this.state.fromContacts}
                                                                             selectedValue={this.state.selectedFromContact}
@@ -612,19 +626,6 @@ class siteInstructionsAddEdit extends Component {
                                                                             name="fromContactId"
                                                                             id="fromContactId" />
                                                                     </div>
-                                                                    <div className="super_company">
-                                                                        <Dropdown
-                                                                            data={this.state.companies}
-                                                                            isMulti={false}
-                                                                            selectedValue={this.state.selectedFromCompany}
-                                                                            handleChange={event => {
-                                                                                this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact', { label: Resources.fromContactRequired[currentLanguage], value: "0" })
-                                                                            }}
-
-                                                                            index="fromCompanyId"
-                                                                            name="fromCompanyId"
-                                                                            id="fromCompanyId" />
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input mix_dropdown">
@@ -632,7 +633,16 @@ class siteInstructionsAddEdit extends Component {
                                                                 <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown
+                                                                   <Dropdown
+                                                                            isMulti={false}
+                                                                            data={this.state.companies}
+                                                                            selectedValue={this.state.selectedToCompany}
+                                                                            handleChange={event =>
+                                                                                this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact', { label: Resources.toContactRequired[currentLanguage], value: "0" })}
+                                                                            name="toCompanyId" />
+                                                                    </div>
+                                                                    <div className="super_company">
+                                                                    <Dropdown
                                                                             isMulti={false}
                                                                             data={this.state.ToContacts}
                                                                             selectedValue={this.state.selectedToContact}
@@ -646,15 +656,6 @@ class siteInstructionsAddEdit extends Component {
                                                                             name="toContactId"
                                                                             id="toContactId"
                                                                         />
-                                                                    </div>
-                                                                    <div className="super_company">
-                                                                        <Dropdown
-                                                                            isMulti={false}
-                                                                            data={this.state.companies}
-                                                                            selectedValue={this.state.selectedToCompany}
-                                                                            handleChange={event =>
-                                                                                this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact', { label: Resources.toContactRequired[currentLanguage], value: "0" })}
-                                                                            name="toCompanyId" />
                                                                     </div>
                                                                 </div>
                                                             </div>

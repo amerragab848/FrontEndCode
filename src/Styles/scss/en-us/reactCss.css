@@ -2278,6 +2278,98 @@ button.companies_icon {
 .one__tab .approveDocument .approveDocumentBTNS .middle__btn {
   margin: 0 6px;
 }
+  /* padding-bottom: 90px; } */
+  .one__tab .submittalHead {
+    justify-content: center;
+    padding-left: 0;
+    z-index: 2; }
+  .one__tab .doc-container {
+    background: #fff;
+    flex-flow: row; }
+    .one__tab .doc-container .docstepper-levels {
+      border-left: 1px solid #eef5ff; }
+    .one__tab .doc-container .subiTabsContent > header.main__header {
+      padding: 0; }
+      .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
+        width: 100%;
+        margin: 0 auto;
+        height: 72px; }
+    .one__tab .doc-container .subiTabContainer {
+      width: 70%;
+      flex-flow: column; }
+      @media screen and (max-width: 1200px) {
+        .one__tab .doc-container .subiTabContainer {
+          width: 78%; } }
+      .one__tab .doc-container .subiTabContainer .main__header {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 0 56px; }
+      .one__tab .doc-container .subiTabContainer .step-content {
+        width: 100%;
+        padding: 0 57px; }
+        .one__tab .doc-container .subiTabContainer .step-content.activeTab {
+          display: none; }
+        .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
+          font-family: font-opens;
+          font-size: 12px;
+          line-height: 1.33;
+          letter-spacing: -0.2px;
+          color: #a8b0bf;
+          width: 100%;
+          margin-bottom: 32px; }
+        .one__tab .doc-container .subiTabContainer .step-content .document-fields {
+          padding: 14px 0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .subitTabs {
+            width: 24%;
+            height: 100vh;
+            border-right: 1px solid #e9ecf0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
+            margin-right: 0; }
+            .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+              width: 100%;
+              padding: 0; }
+              .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
+                width: 100%; }
+    .one__tab .doc-container .doc-pre-cycle {
+      padding: 0; }
+      .one__tab .doc-container .doc-pre-cycle header {
+        padding: 40px 0; }
+        .one__tab .doc-container .doc-pre-cycle header h2 {
+          border-bottom: 1px solid #e1e3e8;
+          width: 100%;
+          padding-bottom: 12px;
+          padding-left: 0;
+          font-family: font-r;
+          font-size: 20px;
+          line-height: 1.4;
+          letter-spacing: -0.2px;
+          color: #252833; }
+      .one__tab .doc-container .doc-pre-cycle .slider-Btns {
+        padding-top: 55px;
+        padding-left: 0; }
+    .one__tab .approveDocument h2 {
+      flex: 0.5;
+      line-height: 1.17;
+      letter-spacing: -0.5px;
+      color: #252833;
+      opacity: 0.3;
+      font-family: font-b; }
+      .one__tab .approveDocument {
+        width: auto !important
+      }
+    .one__tab .approveDocument .approveDocumentBTNS {
+      flex: 1.5;
+      display: flex;
+      justify-content: flex-end; }
+      .one__tab .approveDocument .approveDocumentBTNS .border {
+        display: block;
+        width: 1px;
+        height: 40px;
+        background-color: #e9ecf0;
+        margin: 0 24px; }
+      .one__tab .approveDocument .approveDocumentBTNS .middle__btn {
+        margin: 0 6px; }
 /* 2022 to 2076 */
 
 .one__tab.one_step .doc-container .step-content {
@@ -5083,4 +5175,44 @@ path.highcharts-label-box.highcharts-tooltip-box + text tspan {
   height: 24px !important;
   font-size: 10px !important;
   padding: 0 6px !important;
+}
+.mainSide .header-logo-menu {
+  cursor: pointer;
+  z-index: 99999;
+  width: auto;
+}
+.tree__header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e9ecf0;
+}
+.tree__header h2{
+  font-family: font-b;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
+}
+.main-header .header-content .nav-right li.UserImg {
+  cursor: pointer;
+}
+.proForm.first-proform {
+  flex-wrap: wrap !important;
+  margin-bottom: 33px !important
+}
+.proForm.first-proform div:first-child {
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 33px !important
+}
+.proForm.first-proform div:first-child .inputDev.ui.input, .proForm.first-proform div:first-child .inputDev.ui.input input {
+  width: 100% !important;
+}
+.proForm.first-proform div:first-child {
+  width: 100% !important;
+  flex-shrink: 0 !important
 }

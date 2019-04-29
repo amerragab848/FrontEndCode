@@ -33,8 +33,8 @@ class MyTasks extends Component {
   editStatus(id) {}
 
   editRow() {
-    let obj = {};
-    obj.id = id;
+    // let obj = {};
+    // obj.id = id;
 
     dataservice.addObject("EditTaskStatus").then(result => {});
   }
@@ -256,7 +256,8 @@ class MyTasks extends Component {
             className="largePopup largeModal "
             style={{ display: this.state.showModal ? "block" : "none" }}
           >
-            <SkyLight
+        
+            {/* <SkyLight
               hideOnOverlayClicked
               ref={ref => (this.simpleDialog = ref)}
               title={Resources[this.state.currentTitle][currentLanguage]}
@@ -529,6 +530,7 @@ class MyTasks extends Component {
                 </div>
               </div>
             </SkyLight>
+         */}
           </div>
         </div>
       </div>

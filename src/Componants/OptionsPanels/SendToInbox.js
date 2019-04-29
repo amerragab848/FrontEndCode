@@ -210,9 +210,7 @@ class SendToInbox extends Component {
 
         }).catch(ex => {
         });
-    }
-
-
+    } 
 }
 
 export default SendToInbox;

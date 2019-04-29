@@ -151,6 +151,7 @@ export default class Api {
             headers.docType = header.docType
         }
         return fetch(url, {
+
             method: 'POST',
             headers: {
 
@@ -161,6 +162,8 @@ export default class Api {
             if (resp.status === 200) {
 
                 json = resp.json();
+                if (json === undefined)
+                    return null;
                 return json;
             }
             else if (resp.status === 500) {
@@ -169,12 +172,25 @@ export default class Api {
 
                 return json;
             }
+            else if (resp.status === 401) {
+                localStorage.removeItem('userToken')
+                json = "";
+                window.location.reload();
+                return json;
+            }
+            else if (resp.status === 409) {
+                return resp;
+            }
 
             return json.then(err => {
                 throw err
             });
 
-        });//.then(res=>{return json});
+        }).then(json => (json.result ? json.result : json)).catch(reason => {
+            return null;
+            // response is not a valid json string
+        });
+
 
     }
     static getPassword(route, password) {

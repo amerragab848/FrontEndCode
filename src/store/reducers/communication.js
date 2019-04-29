@@ -39,7 +39,8 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 files: [],
-                items: []
+                items: [],
+                workFlowCycles:[]
             };
 
         case types.Document_Adding:
@@ -118,7 +119,8 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 workFlowCycles: action.workFlowCycles,
-                hasWorkflow: action.hasWorkflow
+                hasWorkflow: action.hasWorkflow,
+                showModal: action.showModal
             };
 
 
@@ -126,6 +128,12 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 cycles: action.cycles
+            };
+
+        case types.Sending_WorkFlow:
+            return {
+                ...state,
+                showModal: action.showModal
             };
 
         case types.SendByEmail:

@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
- 
+
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -92,7 +92,7 @@ class phoneAddEdit extends Component {
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
             phone: {}
         }
-        
+
         if (!Config.IsAllow(89) && !Config.IsAllow(90) && !Config.IsAllow(92)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push({ pathname: "/Phone/" + projectId });
@@ -184,7 +184,8 @@ class phoneAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -217,7 +218,7 @@ class phoneAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId,this.state.docTypeId,"phoneTitle")
+            this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId, this.state.docTypeId, "phoneTitle")
             this.checkDocumentIsView();
 
         } else {
@@ -255,7 +256,7 @@ class phoneAddEdit extends Component {
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow ||  this.props.changeStatus !== prevProps.changeStatus) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -314,7 +315,8 @@ class phoneAddEdit extends Component {
         });
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
                 currentComponent: item.value,
@@ -353,8 +355,8 @@ class phoneAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                <HeaderDocument projectName={projectName} docTitle={Resources.phoneTitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
- 
+                    <HeaderDocument projectName={projectName} docTitle={Resources.phoneTitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -449,7 +451,16 @@ class phoneAddEdit extends Component {
                                                     <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <DropdownMelcous
+                                                           <DropdownMelcous
+                                                                name="fromCompany"
+                                                                data={this.state.CompanyData}
+                                                                handleChange={e => this.handleChange('fromCompany', e)}
+                                                                placeholder='fromCompany'
+                                                                selectedValue={this.state.selectedFromCompany}
+                                                            />
+                                                        </div>
+                                                        <div className="super_company">
+                                                        <DropdownMelcous
                                                                 name="fromContact"
                                                                 data={this.state.fromContactNameData}
                                                                 handleChange={e => this.handleChange('fromContact', e)}
@@ -463,22 +474,21 @@ class phoneAddEdit extends Component {
                                                                 id="fromContact"
                                                             />
                                                         </div>
-                                                        <div className="super_company">
-                                                            <DropdownMelcous
-                                                                name="fromCompany"
-                                                                data={this.state.CompanyData}
-                                                                handleChange={e => this.handleChange('fromCompany', e)}
-                                                                placeholder='fromCompany'
-                                                                selectedValue={this.state.selectedFromCompany}
-                                                            />
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input mix_dropdown">
                                                     <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <DropdownMelcous
+                                                                    <DropdownMelcous
+                                                                name='toCompany'
+                                                                data={this.state.CompanyData}
+                                                                handleChange={(e) => this.handleChange("toCompany", e)}
+                                                                placeholder='toCompany'
+                                                                selectedValue={this.state.selectedToCompany} />
+                                                        </div>
+                                                        <div className="super_company">
+                                                        <DropdownMelcous
                                                                 name='toContact'
                                                                 data={this.state.toContactNameData}
                                                                 handleChange={(e) => this.handleChange("toContact", e)}
@@ -488,14 +498,6 @@ class phoneAddEdit extends Component {
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.toContact}
                                                                 touched={touched.toContact} />
-                                                        </div>
-                                                        <div className="super_company">
-                                                            <DropdownMelcous
-                                                                name='toCompany'
-                                                                data={this.state.CompanyData}
-                                                                handleChange={(e) => this.handleChange("toCompany", e)}
-                                                                placeholder='toCompany'
-                                                                selectedValue={this.state.selectedToCompany} />
                                                         </div>
                                                     </div>
                                                 </div>

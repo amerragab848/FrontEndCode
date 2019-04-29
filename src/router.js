@@ -77,6 +77,8 @@ import projectWorkFlowAddEdit from './Pages/ProjectSetup/projectWorkFlowAddEdit'
 import AccountsAlerts from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
+import permissionsGroups from './Componants/GeneralSetting/Administrations/GroupsPermission/permissionsGroups';
+import AccountsGroup from './Componants/GeneralSetting/Administrations/GroupsPermission/AccountsGroup';
 import RequestPaymentsAddEdit from "./Pages/Contracts/requestPaymentsAddEdit";
 import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
 import projectPrimaveraScheduleAddEdit from "./Pages/TimeManagement/projectPrimaveraScheduleAddEdit";
@@ -271,8 +273,10 @@ let originalRoutes = [
     , <Route path="/BoqStractureCost" component={BoqStractureCost} />
     , <Route path="/InventoryDetails" component={InventoryDetails} />
     , <Route path="/allocationOfProjectsOnCompanies" component={allocationOfProjectsOnCompanies} />
-    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
-    , <Route path="/ProjectCompanies" component={ProjectCompanies} /> 
+    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} /> 
+    , <Route path="/ProjectCompanies" component={ProjectCompanies} />
+    , <Route path="/permissionsGroups" component={permissionsGroups} />
+    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} /> 
     , <Route path="/projectBackLog" component={ProjectBackLog} />
     , <Route path="/projectsAchievements" component={ProjectsAchievements} />
     , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />

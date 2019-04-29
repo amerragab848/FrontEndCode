@@ -532,7 +532,8 @@ class NCRAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -1024,7 +1025,8 @@ class NCRAddEdit extends Component {
                                                     </div>
 
                                                 </div>
-                                                <div className="slider-Btns">
+                                            
+                                               <div className="slider-Btns">
                                                     {this.state.isLoading ?
                                                         this.state.IsEditMode === false ?
                                                             <button className="primaryBtn-1 btn disabled">

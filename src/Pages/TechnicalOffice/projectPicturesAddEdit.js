@@ -142,7 +142,7 @@ class projectPicturesAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow,
             });
 
-            this.checkDocumentIsView();
+            this.checkDocumentIsView(); 
         }
     }
 
@@ -170,12 +170,9 @@ class projectPicturesAddEdit extends Component {
             let url = "GetProjectPictureForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectPictures').then(
                 res => {
-
                     this.FillDrowDowns()
                 }
             )
-
-
         } else {
             ///Is Add Mode
             let ProjectPicDoc = {
@@ -192,6 +189,7 @@ class projectPicturesAddEdit extends Component {
                 document: ProjectPicDoc
             })
             this.FillDrowDowns()
+            this.props.actions.documentForAdding();
         }
 
 
@@ -234,13 +232,17 @@ class projectPicturesAddEdit extends Component {
         this.setState({
             docId: 0
         });
-        this.props.actions.clearCashDocument();
+    
     }
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
+        }
+
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });
         }
     }
 
@@ -260,7 +262,8 @@ class projectPicturesAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -358,6 +361,10 @@ class projectPicturesAddEdit extends Component {
         }
     }
 
+    componentDidMount = () => {
+        this.checkDocumentIsView();
+    }
+
     render() {
 
         let actions = [
@@ -377,6 +384,7 @@ class projectPicturesAddEdit extends Component {
 
             <div className="mainContainer">
                 {this.state.isLoading ? <LoadingSection /> : null}
+
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
                     <HeaderDocument projectName={projectName} docTitle={Resources.projectPictures[currentLanguage]}
@@ -540,7 +548,8 @@ function mapStateToProps(state) {
         isLoading: state.communication.isLoading,
         changeStatus: state.communication.changeStatus,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 

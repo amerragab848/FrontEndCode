@@ -9,8 +9,6 @@ import "../../Styles/css/rodal.css";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
 import Approval from "../OptionsPanels/ApprovalRejectDocument";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";

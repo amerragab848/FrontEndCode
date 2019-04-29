@@ -3,10 +3,7 @@ import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
-import moment from "moment"; 
-import "../../Styles/css/semantic.min.css";
-import "../../Styles/scss/en-us/layout.css";
-
+import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import {   Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
