@@ -7,7 +7,7 @@ import resources from '../../resources.json'
 import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const signiturePath = '/downloads/users/sign_s_' + config.getPayload().aci + '.jpg';
-const profilePath = '/downloads/contacts/photo/img_s_' + config.getPayload().aci + '.gif';
+const profilePath = '/downloads/contacts/photo/img_s_' + config.getPayload().cni + '.gif';
 
 export default class uploadSignture extends React.Component {
 
