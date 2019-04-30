@@ -125,10 +125,8 @@ class variationOrderAddEdit extends Component {
         this.state = {
             FirstStep: true,
             SecondStep: false,
-            ThirdStep: false,
-            SecondStepComplate: false,
-            ThirdStepComplate: false,
 
+            SecondStepComplate: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -516,7 +514,6 @@ class variationOrderAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: true,
                 SecondStepComplate: true,
-                ThirdStepComplate: false,
                 CurrentStep: this.state.CurrentStep + 1,
                 ThirdStep: false
             })
@@ -528,15 +525,6 @@ class variationOrderAddEdit extends Component {
         }
         else if (this.state.CurrentStep === 2) {
 
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        } else {
             this.props.history.push({
                 pathname: "/changeOrder/" + projectId
             });
@@ -550,10 +538,8 @@ class variationOrderAddEdit extends Component {
                 window.scrollTo(0, 0)
                 this.setState({
                     FirstStep: false,
-                    SecondStep: true,
-                    ThirdStep: false,
+                    SecondStep: true, 
                     CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: false,
                     SecondStepComplate: true
                 })
             }
@@ -564,7 +550,6 @@ class variationOrderAddEdit extends Component {
                         FirstStep: true,
                         SecondStep: false,
                         SecondStepComplate: false,
-                        ThirdStep: false,
                         CurrentStep: (this.state.CurrentStep - 1)
                     })
                 }
@@ -628,6 +613,29 @@ class variationOrderAddEdit extends Component {
         }
     }
  
+    StepOneLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                CurrentStep: 1,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrentStep: 2,
+            })
+        }
+    }
+
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -927,7 +935,7 @@ class variationOrderAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -936,7 +944,7 @@ class variationOrderAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>

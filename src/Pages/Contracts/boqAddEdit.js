@@ -78,6 +78,7 @@ let arrange = 0;
 
 
 class bogAddEdit extends Component {
+ 
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -307,6 +308,7 @@ class bogAddEdit extends Component {
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
     }
+
     customButton = () => {
         return <button className="companies_icon" style={{ cursor: 'pointer' }}><i class="fa fa-folder-open" ></i></button>;
     };
@@ -348,9 +350,11 @@ class bogAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
+ 
     componentWillUnmount() {   this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
+
     fillDropDowns(isEdit) {
         DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId, 'companyName', 'companyId').then(res => {
             if (isEdit) {
@@ -383,6 +387,7 @@ class bogAddEdit extends Component {
         })
 
     }
+
     fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
         this.setState({ isLoading: true })
         let action = url + "?" + param + "=" + value
@@ -930,6 +935,40 @@ class bogAddEdit extends Component {
             }
         });
     };
+
+    StepOneLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1,
+                thirdComplete: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2,
+                thirdComplete: false,
+
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                thirdComplete: true,
+                CurrStep: 3,
+                firstComplete: true,
+                secondComplete: true,
+            })
+        }
+    }
 
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
@@ -1662,13 +1701,13 @@ class bogAddEdit extends Component {
                                     <div className="step-content-foot">
                                         <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
                                             "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                        <span onClick={this.NextStep} className={this.state.CurrStep < 3 && this.state.docId > 0 ? "step-content-btn-prev "
+                                        <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
                                             : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                         </span>
                                     </div>
                                     <div className="workflow-sliderSteps">
                                         <div className="step-slider">
-                                            <div data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                            <div  onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>1</span>
                                                 </div>
@@ -1676,7 +1715,7 @@ class bogAddEdit extends Component {
                                                     <h6>{Resources.boq[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                            <div  onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>2</span>
                                                 </div>
@@ -1684,7 +1723,7 @@ class bogAddEdit extends Component {
                                                     <h6 >{Resources.items[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
+                                            <div  onClick={this.StepThreeLink}  data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
                                                 <div className="steps-timeline">
                                                     <span>3</span>
                                                 </div>

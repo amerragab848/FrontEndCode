@@ -85,7 +85,10 @@ class DrawingSetsAddEdit extends Component {
     }
 
     this.state = {
-      Stepes: 1,
+      CurrentStep: 1,
+      FirstStep: true,
+      SecondStep: false,
+      SecondStepComplate: false,
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
@@ -502,7 +505,7 @@ class DrawingSetsAddEdit extends Component {
 
       this.setState({
         isLoading: false,
-        Stepes: this.state.Stepes + 1
+        CurrentStep: this.state.CurrentStep + 1
       });
     });
   }
@@ -536,16 +539,16 @@ class DrawingSetsAddEdit extends Component {
       });
     } else {
       this.setState({
-        Stepes: this.state.Stepes + 1
+        CurrentStep: this.state.CurrentStep + 1
       });
     }
   }
 
   saveAndExit(event) {
 
-    if (this.state.Stepes === 1) {
+    if (this.state.CurrentStep === 1) {
       this.setState({
-        Stepes: this.state.Stepes + 1
+        CurrentStep: this.state.CurrentStep + 1
       });
     }
   }
@@ -592,14 +595,17 @@ class DrawingSetsAddEdit extends Component {
 
   NextStep() {
 
-    if (this.state.Stepes === 1) {
+    if (this.state.CurrentStep === 1) {
 
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
 
         this.setState({
 
           itemData: data,
-          Stepes: this.state.Stepes + 1
+          CurrentStep: this.state.CurrentStep + 1,
+          FirstStep: false,
+          SecondStep: true,
+          SecondStepComplate: true,
         });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     } else {
@@ -608,9 +614,12 @@ class DrawingSetsAddEdit extends Component {
   }
 
   PreviousStep() {
-    if (this.state.Stepes === 2) {
+    if (this.state.CurrentStep === 2) {
       this.setState({
-        Stepes: this.state.Stepes - 1
+        CurrentStep: this.state.CurrentStep - 1,
+        FirstStep: true,
+        SecondStep: false,
+        SecondStepComplate: false,
       });
     }
   }
@@ -683,6 +692,26 @@ class DrawingSetsAddEdit extends Component {
     this.setState({
       docId: 0
     });
+  }
+
+  StepOneLink = () => {
+    if (docId !== 0) {
+      this.setState({
+        FirstStep: true,
+        SecondStepComplate: false,
+        CurrentStep: 1,
+      })
+    }
+  }
+
+  StepTwoLink = () => {
+    if (docId !== 0) {
+      this.setState({
+        FirstStep: true,
+        SecondStepComplate: true,
+        CurrentStep: 2,
+      })
+    }
   }
 
   render() {
@@ -769,7 +798,7 @@ class DrawingSetsAddEdit extends Component {
             <div className="step-content">
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
-                  {this.state.Stepes === 1 ? (
+                  {this.state.CurrentStep === 1 ? (
                     <div className="document-fields">
                       <Formik initialValues={this.state.document}
                         validationSchema={validationSchema}
@@ -1026,7 +1055,7 @@ class DrawingSetsAddEdit extends Component {
                       </Fragment>
                     )}
                   <div className="slider-Btns">
-                    {this.state.Stepes === 2 ? (
+                    {this.state.CurrentStep === 2 ? (
                       <button className="primaryBtn-1 btn meduimBtn" onClick={this.finishDocument.bind(this)}>
                         {Resources["finish"][currentLanguage]}
                       </button>
@@ -1034,15 +1063,15 @@ class DrawingSetsAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.Stepes === 1 ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                      {this.state.Stepes === 1 ? this.viewAttachments() : null}
+                      {this.state.docId > 0 && this.state.CurrentStep === 1 ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.CurrentStep === 1 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {this.props.changeStatus === true && this.state.Stepes === 1 ? (
+            {this.props.changeStatus === true && this.state.CurrentStep === 1 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
                   {this.state.isApproveMode === true ? (
@@ -1072,19 +1101,19 @@ class DrawingSetsAddEdit extends Component {
             <div className="docstepper-levels">
               <div className="step-content-foot">
                 <span onClick={this.PreviousStep.bind(this)}
-                  className={this.state.Stepes != 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
+                  className={this.state.CurrentStep != 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
                   <i className="fa fa-caret-left" aria-hidden="true" />
                   Previous
                 </span>
                 <span onClick={this.NextStep.bind(this)}
-                  className={this.state.Stepes != 2 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
+                  className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
                   Next
                   <i className="fa fa-caret-right" aria-hidden="true" />
                 </span>
               </div>
               <div className="workflow-sliderSteps">
                 <div className="step-slider">
-                  <div data-id="step1" className={"step-slider-item " + (this.state.Stepes === 1 ? "active" : "current__step")}>
+                <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                     <div className="steps-timeline">
                       <span>1</span>
                     </div>
@@ -1092,7 +1121,7 @@ class DrawingSetsAddEdit extends Component {
                       <h6>{Resources["Submittal"][currentLanguage]}</h6>
                     </div>
                   </div>
-                  <div data-id="step2 " className={"step-slider-item " + (this.state.Stepes === 2 ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
+                  <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                     <div className="steps-timeline">
                       <span>2</span>
                     </div>

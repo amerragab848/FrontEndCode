@@ -830,7 +830,7 @@ class TaskGroupsAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div onClick={this.PreviousStep} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
