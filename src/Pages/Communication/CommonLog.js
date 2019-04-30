@@ -499,7 +499,7 @@ class CommonLog extends Component {
 
   cellClick = (rowId, colID) => {
     if (colID != 0 && colID != 1) {
-      if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+      if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
         let rowData = this.state.rows[rowId];
 
         let addView = this.state.routeAddEdit;
