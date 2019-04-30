@@ -594,6 +594,24 @@ class pcoAddEdit extends Component {
 
     }
 
+    NextStep = () => {
+        if (this.state.CurrStep === 1) {
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrStep: this.state.CurrStep + 1,
+            })
+        }
+        else if (this.state.CurrStep === 2) {
+            window.scrollTo(0, 0)
+            this.props.history.push({
+                pathname: '/pco/' + projectId + '',
+            })
+        }
+    }
+
     NextTopStep = () => {
 
         if (this.state.CurrentStep === 1) {
@@ -603,27 +621,14 @@ class pcoAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: true,
                 SecondStepComplate: true,
-                ThirdStepComplate: false,
                 CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
             })
         }
         else if (this.state.CurrentStep === 2) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        } else {
             this.props.history.push({
                 pathname: "/pco/" + projectId
             });
         }
-
     }
 
     PreviousStep = () => {
@@ -894,6 +899,28 @@ class pcoAddEdit extends Component {
             </Fragment>
 
         )
+    }
+
+    StepOneLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                CurrentStep: 1,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrentStep: 2,
+            })
+        }
     }
 
     render() {
@@ -1251,7 +1278,7 @@ class pcoAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -1260,7 +1287,7 @@ class pcoAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>

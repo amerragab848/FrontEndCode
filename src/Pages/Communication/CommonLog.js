@@ -12,34 +12,32 @@ import Resources from "../../resources.json";
 
 import { withRouter } from "react-router-dom";
 
-import MinimizeV from '../../Styles/images/table1.png'
-import MinimizeH from '../../Styles/images/table2.png'
+import MinimizeV from "../../Styles/images/table1.png";
+import MinimizeH from "../../Styles/images/table2.png";
 
-import MinimizeVBlue from '../../Styles/images/table1.png'
+import MinimizeVBlue from "../../Styles/images/table1.png";
 
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 
-import { connect } from 'react-redux';
-import {
-  bindActionCreators
-} from 'redux';
-import * as communicationActions from '../../store/actions/communication';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
 
 import Config from "../../Services/Config.js";
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
 class CommonLog extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      projectName: localStorage.getItem('lastSelectedprojectName'),
+      projectName: localStorage.getItem("lastSelectedprojectName"),
       isLoading: true,
       pageTitle: "",
       viewfilter: false,
@@ -64,12 +62,18 @@ class CommonLog extends Component {
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
-    this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
+    this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(
+      this
+    );
   }
 
   componentDidMount() {
     this.props.actions.FillGridLeftMenu();
-    this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
+    this.renderComponent(
+      this.state.documentName,
+      this.props.projectId,
+      !this.state.minimizeClick
+    );
   }
 
   componentWillUnmount() {
@@ -82,9 +86,7 @@ class CommonLog extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     if (nextProps.match !== this.props.match) {
-
       this.setState({
         isLoading: true,
         isCustom: true,
@@ -92,14 +94,27 @@ class CommonLog extends Component {
         projectId: nextProps.projectId
       });
 
-      this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
+      this.renderComponent(
+        nextProps.match.params.document,
+        nextProps.projectId,
+        true
+      );
     }
 
     if (nextProps.projectId !== this.props.projectId) {
       if (!this.state.documentObj.documentApi) {
-        this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
+        this.renderComponent(
+          nextProps.match.params.document,
+          nextProps.projectId,
+          true
+        );
       } else {
-        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, nextProps.projectId);
+        this.GetRecordOfLog(
+          this.state.isCustom === true
+            ? this.state.documentObj.documentApi.getCustom
+            : this.state.documentObj.documentApi.get,
+          nextProps.projectId
+        );
       }
 
       this.setState({
@@ -114,9 +129,7 @@ class CommonLog extends Component {
     return shouldUpdate;
   }
 
-  componentWillUpdate() {
-
-  }
+  componentWillUpdate() {}
 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
@@ -125,7 +138,6 @@ class CommonLog extends Component {
 
   addRecord() {
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
-
       let addView = this.state.routeAddEdit;
 
       let obj = {
@@ -137,49 +149,55 @@ class CommonLog extends Component {
         isApproveMode: false
       };
 
-      if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
-        obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+      if (
+        this.state.documentObj.docTyp === 37 ||
+        this.state.documentObj.docTyp === 114
+      ) {
+        obj.isModification =
+          this.state.documentObj.docTyp === 114 ? true : false;
       }
 
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
       this.props.history.push({
         pathname: "/" + addView,
         search: "?id=" + encodedPaylod
       });
     } else {
-      toast.warn(Resources["missingPermissions"][currentLanguage]);
+      toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   }
   editHandler(row) {
-
-
     if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
-    let editView = this.state.routeAddEdit;
+      let editView = this.state.routeAddEdit;
 
-    let obj = {
-      docId: row.id,
-      projectId: row.projectId,
-      projectName: this.state.projectName,
-      arrange: 0,
-      docApprovalId: 0,
-      isApproveMode: false
-    };
+      let obj = {
+        docId: row.id,
+        projectId: row.projectId,
+        projectName: this.state.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
+      };
 
-    if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
-      obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
-    }
+      if (
+        this.state.documentObj.docTyp === 37 ||
+        this.state.documentObj.docTyp === 114
+      ) {
+        obj.isModification =
+          this.state.documentObj.docTyp === 114 ? true : false;
+      }
 
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
       this.props.history.push({
         pathname: "/" + editView,
         search: "?id=" + encodedPaylod
       });
     } else {
-      toast.warn(Resources["missingPermissions"][currentLanguage]);
+      toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   }
 
@@ -191,25 +209,34 @@ class CommonLog extends Component {
         pageNumber: pageNumber
       });
 
-      let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber +
-        "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
+      let url =
+        (this.state.query == "" ? this.state.api : this.state.apiFilter) +
+        "?projectId=" +
+        this.state.projectId +
+        "&pageNumber=" +
+        pageNumber +
+        "&pageSize=" +
+        this.state.pageSize +
+        (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url).then(result => {
-        let oldRows = [];// this.state.rows;
-        const newRows = [...oldRows, ...result];
+      Api.get(url)
+        .then(result => {
+          let oldRows = []; // this.state.rows;
+          const newRows = [...oldRows, ...result];
 
-        this.setState({
-          rows: newRows,
-          totalRows: newRows.length,
-          isLoading: false
+          this.setState({
+            rows: newRows,
+            totalRows: newRows.length,
+            isLoading: false
+          });
+        })
+        .catch(ex => {
+          let oldRows = this.state.rows;
+          this.setState({
+            rows: oldRows,
+            isLoading: false
+          });
         });
-      }).catch(ex => {
-        let oldRows = this.state.rows;
-        this.setState({
-          rows: oldRows,
-          isLoading: false
-        });
-      });
     }
   }
 
@@ -217,30 +244,39 @@ class CommonLog extends Component {
     let pageNumber = this.state.pageNumber + 1;
     let maxRows = this.state.totalRows;
 
-    if (((this.state.pageSize * this.state.pageNumber)) <= maxRows) {
+    if (this.state.pageSize * this.state.pageNumber <= maxRows) {
       this.setState({
         isLoading: true,
         pageNumber: pageNumber
       });
 
-      let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" +
-        this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
-      Api.get(url).then(result => {
-        let oldRows = [];// this.state.rows;
-        const newRows = [...oldRows, ...result.data]; // arr3 ==> [1,2,3,3,4,5]
+      let url =
+        (this.state.query == "" ? this.state.api : this.state.apiFilter) +
+        "?projectId=" +
+        this.state.projectId +
+        "&pageNumber=" +
+        pageNumber +
+        "&pageSize=" +
+        this.state.pageSize +
+        (this.state.query == "" ? "" : "&query=" + this.state.query);
+      Api.get(url)
+        .then(result => {
+          let oldRows = []; // this.state.rows;
+          const newRows = [...oldRows, ...result.data]; // arr3 ==> [1,2,3,3,4,5]
 
-        this.setState({
-          rows: newRows,
-          totalRows: newRows.length,
-          isLoading: false
+          this.setState({
+            rows: newRows,
+            totalRows: newRows.length,
+            isLoading: false
+          });
+        })
+        .catch(ex => {
+          let oldRows = this.state.rows;
+          this.setState({
+            rows: oldRows,
+            isLoading: false
+          });
         });
-      }).catch(ex => {
-        let oldRows = this.state.rows;
-        this.setState({
-          rows: oldRows,
-          isLoading: false
-        });
-      });
     }
   }
 
@@ -252,24 +288,34 @@ class CommonLog extends Component {
       query: stringifiedQuery
     });
 
-    Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
+    Api.get(
+      apiFilter +
+        "?projectId=" +
+        this.state.projectId +
+        "&pageNumber=" +
+        this.state.pageNumber +
+        "&pageSize=" +
+        this.state.pageSize +
+        "&query=" +
+        stringifiedQuery
+    )
+      .then(result => {
+        this.setState({
+          rows: [...result.data],
+          totalRows: result.total,
+          isLoading: false
+        });
 
-      this.setState({
-        rows: [...result.data],
-        totalRows: result.total,
-        isLoading: false
+        this.setState({
+          isLoading: false
+        });
+      })
+      .catch(ex => {
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
       });
-
-      this.setState({
-        isLoading: false
-      });
-    }).catch(ex => {
-
-      this.setState({
-        rows: [],
-        isLoading: false
-      });
-    });
   };
 
   onCloseModal = () => {
@@ -300,38 +346,31 @@ class CommonLog extends Component {
         });
       })
       .catch(ex => {
-
         this.setState({
           isLoading: false,
           showDeleteModal: false
         });
-
       });
   };
 
   clickHandlerDeleteRowsMain = selectedRows => {
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
-
       this.setState({
         showDeleteModal: true,
         selectedRows: selectedRows
       });
     } else {
-      toast.WARNING(Resources["missingPermissions"][currentLanguage]);
-
+      toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   };
 
   renderComponent(documentName, projectId, isCustom) {
-
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
     let subjectLink = ({ value, row }) => {
-
       let subject = "";
       if (row) {
-
         let obj = {
           docId: row.id,
           projectId: row.projectId,
@@ -341,9 +380,13 @@ class CommonLog extends Component {
           isApproveMode: false
         };
 
-        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-        let doc_view = "/" + documentObj.documentAddEditLink.replace('/', '') + "?id=" + encodedPaylod
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+        let doc_view =
+          "/" +
+          documentObj.documentAddEditLink.replace("/", "") +
+          "?id=" +
+          encodedPaylod;
         subject = row.subject;
 
         return <a href={doc_view}> {subject} </a>;
@@ -358,7 +401,6 @@ class CommonLog extends Component {
     var filtersColumns = [];
 
     documentObj.documentColumns.map((item, index) => {
-
       var obj = {
         key: item.field,
         frozen: index < 2 ? true : false,
@@ -373,19 +415,16 @@ class CommonLog extends Component {
           item.field === "subject"
             ? subjectLink
             : item.dataType === "date"
-              ? dateFormate
-              : ""
+            ? dateFormate
+            : ""
       };
       if (isCustom !== true) {
         cNames.push(obj);
-      }
-      else {
+      } else {
         if (item.isCustom === true) {
           cNames.push(obj);
         }
-
       }
-
     });
 
     filtersColumns = documentObj.filters;
@@ -403,12 +442,25 @@ class CommonLog extends Component {
       projectId: projectId
     });
 
-    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
+    this.GetRecordOfLog(
+      isCustom === true
+        ? documentObj.documentApi.getCustom
+        : documentObj.documentApi.get,
+      projectId
+    );
   }
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
-      let url = api + ((documentObj.docTyp == 33) ? ("projectId=" + projectId) : ("?projectId=" + projectId)) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
+      let url =
+        api +
+        (documentObj.docTyp == 33
+          ? "projectId=" + projectId
+          : "?projectId=" + projectId) +
+        "&pageNumber=" +
+        this.state.pageNumber +
+        "&pageSize=" +
+        this.state.pageSize;
       this.GetLogData(url);
     } else {
       this.setState({ isLoading: false });
@@ -416,19 +468,18 @@ class CommonLog extends Component {
   }
 
   GetLogData(url) {
-
-    Api.get(url).then(result => {
-      this.setState({
-        rows: result.data,
-        totalRows: result.total,
-        isLoading: false
+    Api.get(url)
+      .then(result => {
+        this.setState({
+          rows: result.data,
+          totalRows: result.total,
+          isLoading: false
+        });
+      })
+      .catch(ex => {
+        this.setState({ isLoading: false });
       });
-
-    }).catch(ex => {
-      this.setState({ isLoading: false });
-    });
-
-  };
+  }
 
   handleMinimize = () => {
     const currentClass = this.state.minimizeClick;
@@ -439,15 +490,16 @@ class CommonLog extends Component {
       isCustom: !isCustom,
       isLoading: true
     });
-    this.renderComponent(this.state.documentName, this.state.projectId, !this.state.isCustom);
-  }
+    this.renderComponent(
+      this.state.documentName,
+      this.state.projectId,
+      !this.state.isCustom
+    );
+  };
 
   cellClick = (rowId, colID) => {
-
-    if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
-
-      if (colID != 0 && colID != 1) {
-
+    if (colID != 0 && colID != 1) {
+      if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
         let rowData = this.state.rows[rowId];
 
         let addView = this.state.routeAddEdit;
@@ -462,49 +514,63 @@ class CommonLog extends Component {
             isApproveMode: false
           };
 
-          if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
-            obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+          if (
+            this.state.documentObj.docTyp === 37 ||
+            this.state.documentObj.docTyp === 114
+          ) {
+            obj.isModification =
+              this.state.documentObj.docTyp === 114 ? true : false;
           }
 
-          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
           this.props.history.push({
             pathname: "/" + addView,
             search: "?id=" + encodedPaylod
           });
         }
+      } else {
+        toast.warning(Resources["missingPermissions"][currentLanguage]);
       }
-
-    }
-  }
+    }  
+  };
 
   render() {
-
     const showCheckbox = true;
 
-    const dataGrid = this.state.isLoading === false ? (
-      <GridSetup
-        rows={this.state.rows}
-        clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-        showCheckbox={showCheckbox}
-        pageSize={this.state.pageSize}
+    const dataGrid =
+      this.state.isLoading === false ? (
+        <GridSetup
+          rows={this.state.rows}
+          clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+          showCheckbox={showCheckbox}
+          pageSize={this.state.pageSize}
+          cellClick={this.cellClick}
+          columns={this.state.columns}
+        />
+      ) : (
+        <LoadingSection />
+      );
 
-        cellClick={this.cellClick}
-        columns={this.state.columns}
-      />) : <LoadingSection />;
+    const btnExport =
+      this.state.isLoading === false ? (
+        <Export
+          rows={this.state.isLoading === false ? this.state.rows : []}
+          columns={this.state.columns}
+          fileName={this.state.pageTitle}
+        />
+      ) : null;
 
-    const btnExport = this.state.isLoading === false ?
-      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
-      : null;
-
-    const ComponantFilter = this.state.isLoading === false ?
-      <Filter
-        filtersColumns={this.state.filtersColumns}
-        apiFilter={this.state.apiFilter}
-        filterMethod={this.filterMethodMain}
-        key={this.state.docType}
-      /> : null;
+    const ComponantFilter =
+      this.state.isLoading === false ? (
+        <Filter
+          filtersColumns={this.state.filtersColumns}
+          apiFilter={this.state.apiFilter}
+          filterMethod={this.filterMethodMain}
+          key={this.state.docType}
+        />
+      ) : null;
 
     return (
       <div className="mainContainer">
@@ -563,33 +629,54 @@ class CommonLog extends Component {
                 </svg>
               </span>
 
-              {this.state.viewfilter === false
-                ? (
-                  <span className="text active">
-                    <span className="show-fillter">Show Fillter</span>
-                    <span className="hide-fillter">Hide Fillter</span>
-                  </span>
-                ) : (
-                  <span className="text">
-                    <span className="show-fillter">Show Fillter</span>
-                    <span className="hide-fillter">Hide Fillter</span>
-                  </span>
-                )}
+              {this.state.viewfilter === false ? (
+                <span className="text active">
+                  <span className="show-fillter">Show Fillter</span>
+                  <span className="hide-fillter">Hide Fillter</span>
+                </span>
+              ) : (
+                <span className="text">
+                  <span className="show-fillter">Show Fillter</span>
+                  <span className="hide-fillter">Hide Fillter</span>
+                </span>
+              )}
             </div>
           </div>
           <div className="filterBTNS">
             {btnExport}
-            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
+            <button
+              className="primaryBtn-1 btn mediumBtn"
+              onClick={() => this.addRecord()}
+            >
+              NEW
+            </button>
           </div>
           <div className="rowsPaginations">
             <div className="rowsPagiRange">
-              <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
+              <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}
+              <span>
+                {this.state.pageSize * this.state.pageNumber +
+                  this.state.pageSize}
+              </span>{" "}
+              of
               <span> {this.state.totalRows}</span>
             </div>
-            <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+            <button
+              className={this.state.pageNumber == 0 ? "rowunActive" : ""}
+              onClick={() => this.GetPrevoiusData()}
+            >
               <i className="angle left icon" />
             </button>
-            <button className={this.state.totalRows !== (this.state.pageSize * this.state.pageNumber) + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+            <button
+              className={
+                this.state.totalRows !==
+                this.state.pageSize * this.state.pageNumber +
+                  this.state.pageSize
+                  ? "rowunActive"
+                  : ""
+              }
+              onClick={() => this.GetNextData()}
+            >
               <i className="angle right icon" />
             </button>
           </div>
@@ -601,22 +688,35 @@ class CommonLog extends Component {
             overflow: this.state.viewfilter ? "" : "hidden"
           }}
         >
-          <div className="gridfillter-container">
-            {ComponantFilter}
-          </div>
+          <div className="gridfillter-container">{ComponantFilter}</div>
         </div>
 
         <div>
-          <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+          <div
+            className={
+              this.state.minimizeClick
+                ? "minimizeRelative miniRows"
+                : "minimizeRelative"
+            }
+          >
             <div className="minimizeSpan">
               <div className="H-tableSize" onClick={this.handleMinimize}>
-                {this.state.minimizeClick ? <img src={MinimizeVBlue} alt="" /> : <img src={MinimizeV} alt="" />}
+                {this.state.minimizeClick ? (
+                  <img src={MinimizeVBlue} alt="" />
+                ) : (
+                  <img src={MinimizeV} alt="" />
+                )}
               </div>
               {/* <div className="V-tableSize">
                 <img src={MinimizeH} alt="" />
               </div> */}
             </div>
-            <div className={"grid-container " + (this.state.rows.length === 0 ? "griddata__load" : " ")}>
+            <div
+              className={
+                "grid-container " +
+                (this.state.rows.length === 0 ? "griddata__load" : " ")
+              }
+            >
               {dataGrid}
             </div>
           </div>
@@ -631,8 +731,7 @@ class CommonLog extends Component {
               clickHandlerCancel={this.clickHandlerCancelMain}
               clickHandlerContinue={this.clickHandlerContinueMain}
             />
-          ) : null
-          }
+          ) : null}
         </div>
       </div>
     );
@@ -646,7 +745,7 @@ function mapStateToProps(state, ownProps) {
     showSelectProject: state.communication.showSelectProject,
     projectName: state.communication.projectName,
     moduleName: state.communication.moduleName
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {

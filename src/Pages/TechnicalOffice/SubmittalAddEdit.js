@@ -186,7 +186,6 @@ class SubmittalAddEdit extends Component {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/submittal/" + this.state.projectId);
     }
-
   }
 
   componentDidMount() {
@@ -205,10 +204,14 @@ class SubmittalAddEdit extends Component {
 
   componentWillReceiveProps(nextProps, prevProps) {
     if (nextProps.document.id) {
+      
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
       nextProps.document.forwardToDate = nextProps.document.forwardToDate != null ? moment(nextProps.document.forwardToDate).format("DD/MM/YYYY") : moment();
 
+      let obj = this.state.SubmittalTypes.find(o => o.label === nextProps.document.submittalType);
+
       this.setState({
+        selectedSubmittalType:nextProps.document.submittalType != "" ? { label: obj.label , value: obj.value } :{ label: Resources.submittalType[currentLanguage], value: "0" },
         isEdit: true,
         document: nextProps.document,
         hasWorkflow: nextProps.hasWorkflow
@@ -352,8 +355,7 @@ class SubmittalAddEdit extends Component {
 
       this.fillDropDowns(false);
       this.props.actions.documentForAdding();
-    }
-
+    } 
   }
 
   fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -1567,13 +1569,9 @@ class SubmittalAddEdit extends Component {
 
     return (
       <div className="mainContainer">
-        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
-
-          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.Submittal[currentLanguage]}
-            moduleTitle={Resources['technicalOffice'][currentLanguage]} />
-
+        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one_step one__tab readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
+          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.Submittal[currentLanguage]} moduleTitle={Resources['technicalOffice'][currentLanguage]} />
           <div className="doc-container">
-
             <div className="step-content">
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
@@ -1834,7 +1832,7 @@ class SubmittalAddEdit extends Component {
                               {
                                 this.state.isViewMode === false ?
                                   (this.state.isLoading === false ?
-                                    (<button className="primaryBtn-1 btn meduimBtn" type="submit">
+                                    (<button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}  type="submit">
                                       {this.state.docId > 0
                                         ? Resources["next"][currentLanguage]
                                         : Resources["save"][currentLanguage]}
