@@ -498,7 +498,7 @@ class RfiAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
              
-                <HeaderDocument projectName={projectName} docTitle={Resources.communicationRFI[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.communicationRFI[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                  
                     <div className="doc-container">
                         {

@@ -8,6 +8,18 @@ class HeaderDocument extends Component {
     render() {
         return (
             <div className="submittalHead">
+
+                {this.props.isViewMode === true ?
+
+                    <div className="document__sign">
+
+                        <div className="ui left pointing label labelWithArrowRedS">
+                            <span>Can't Edit!</span>
+                        </div>
+                    </div>
+                    : null
+
+                }
                 <h2 className="zero">{this.props.docTitle}
                     <span>{this.props.projectName} · {this.props.moduleTitle}</span>
                 </h2>

@@ -387,7 +387,7 @@ class projectPicturesAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.projectPictures[currentLanguage]}
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectPictures[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
 

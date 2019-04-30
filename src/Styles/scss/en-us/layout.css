@@ -6498,7 +6498,7 @@ ul {
 .proForm .showPasswordArea .togglePW.active-pw .hide {
   display: block; }
 
-.settings-container {
+/* .settings-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
@@ -6740,7 +6740,7 @@ ul {
           font-size: 14px;
           line-height: 1.71;
           letter-spacing: -0.2px;
-          color: #3e4352; }
+          color: #3e4352; } */
 
 .two__content--style {
   display: flex;

@@ -1302,7 +1302,7 @@ class punchListAddEdit extends Component {
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.punchList[currentLanguage]}
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.punchList[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
