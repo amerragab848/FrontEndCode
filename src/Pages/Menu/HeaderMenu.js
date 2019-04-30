@@ -980,13 +980,6 @@ class HeaderMenu extends Component {
                 ) : null}
               </ul>
               <ul className="nav-right">
-                {/* {this.props.showSelectProject === true ? (
-                  <li className="procoor__logo">
-                    <NavLink to="/">
-                      <img src={Logo} alt="logo" />
-                    </NavLink>
-                  </li>
-                ) : null} */}
                 <li>
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
                     <img alt="" title="" src={Chart} />

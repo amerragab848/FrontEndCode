@@ -1436,6 +1436,7 @@ tfoot tr td p{
 }
 .SummeriesContainer .SummeriesTitle {
   padding-top: 30px;
+  padding-bottom: 59px;
 }
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList .first {
   margin-right: 10px;
