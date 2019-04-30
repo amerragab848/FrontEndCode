@@ -78,6 +78,7 @@ import AccountsAlerts from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
 import permissionsGroups from './Componants/GeneralSetting/Administrations/GroupsPermission/permissionsGroups';
+import PermissionsGroupsPermissions from './Componants/GeneralSetting/Administrations/GroupsPermission/PermissionsGroupsPermissions';
 import AccountsGroup from './Componants/GeneralSetting/Administrations/GroupsPermission/AccountsGroup';
 import RequestPaymentsAddEdit from "./Pages/Contracts/requestPaymentsAddEdit";
 import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
@@ -280,6 +281,7 @@ let originalRoutes = [
     , <Route path="/ProjectCompanies" component={ProjectCompanies} />
     , <Route path="/permissionsGroups" component={permissionsGroups} />
     , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
+    , <Route path="/PermissionsGroupsPermissions/:groupId" component={PermissionsGroupsPermissions} />
     
 
 

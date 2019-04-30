@@ -71,12 +71,10 @@ class permissionsGroups extends Component {
                     {
                         text: Resources['groupsPermissions'][currentLanguage],
                         callback: () => {
-                            if (config.IsAllow(1001103)) {
-                                // this.props.history.push({
-                                //     pathname: '/AccountsGroup',
-                                //     search: "?id=" + row.id
-                                // })
-                            }
+                                this.props.history.push({
+                                    pathname: '/PermissionsGroupsPermissions/'+row.id,
+                                })
+                            
                         }
                     },
                     {
