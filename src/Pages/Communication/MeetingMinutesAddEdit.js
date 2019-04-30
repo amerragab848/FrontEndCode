@@ -1033,7 +1033,7 @@ class MeetingMinutesAddEdit extends Component {
                 <div className="mainContainer">
                     <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper one__tab one_step noTabs__document"}>
                   
-                    <HeaderDocument projectName={projectName} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
  
                         <div className="doc-container">
                             <div className="step-content">

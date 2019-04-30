@@ -655,7 +655,7 @@ class addEditModificationDrawing extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                <HeaderDocument projectName={projectName} docTitle={isModification === true ? Resources.drawing[currentLanguage] : Resources.drawingModification[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
+                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={isModification === true ? Resources.drawing[currentLanguage] : Resources.drawingModification[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?

@@ -1569,7 +1569,7 @@ class SubmittalAddEdit extends Component {
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
 
-          <HeaderDocument projectName={projectName} docTitle={Resources.Submittal[currentLanguage]}
+          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.Submittal[currentLanguage]}
             moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
           <div className="doc-container">

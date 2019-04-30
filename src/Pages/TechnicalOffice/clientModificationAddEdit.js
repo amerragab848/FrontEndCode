@@ -553,7 +553,7 @@ class clientModificationAddEdit extends Component {
 
 
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.clientModificationLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.clientModificationLog[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
 

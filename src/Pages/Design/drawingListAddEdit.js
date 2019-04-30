@@ -935,7 +935,7 @@ class drawingListAddEdit extends Component {
                 {/* {this.state.isLoading ? <LoadingSection /> : null} */}
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                <HeaderDocument projectName={projectName} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
+                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
 
                     {/* <div className="submittalHead">
                         <h2 className="zero">{Resources.drawingList[currentLanguage]}

@@ -4112,3 +4112,83 @@ width: calc(100% - 256px);
   width: 100% !important;
   flex-shrink: 0 !important
 }
+.notifiBar {
+  position: fixed;
+  top: 65px;
+  z-index: 999;
+  right: 108px;
+  width: 345px;
+}
+.notifi__tabs .react-tabs__tab--selected {
+  border: none !important;
+}
+.notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow {
+  display: flex;
+}
+.notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow span {
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: -0.2px;
+  color: #858d9e;
+  font-family: font-r;
+  flex-shrink: 0;
+}
+.notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a {
+  white-space: nowrap;
+  max-width: 240px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  margin-left: 3px;
+}
+.main-header .header-content .nav-right li.notifi-icon {
+  cursor: pointer;
+}
+.notifiBar .smallNotifiBar {
+  overflow-x: hidden;
+}
+.notifiBar .smallNotifiBar .notifi__tabs ul {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 99;
+}
+.tableReports.attachmentTable tbody tr .contentCell {
+  font-family: font-r;
+}
+.tableReports.attachmentTable tbody tr .contentCell.tableCell-4 span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: font-b;
+}
+.gridBtn {
+  min-width: 55px !important;
+  height: 24px !important;
+  font-size: 10px !important;
+  padding: 0 6px !important;
+}
+
+
+.document__sign {
+  top: 28px;
+  position: absolute;
+  left: 40px;
+  transform: rotate(-4deg);
+}
+
+
+.document__sign .ui.label.labelWithArrowRedS {
+  height: 51px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 125px;
+}
+
+.document__sign .ui.label.labelWithArrowRedS span {
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-size: 16px;
+}

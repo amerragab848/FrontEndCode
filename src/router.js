@@ -118,21 +118,17 @@ import approvalDocument from './Pages/ReportsCenter/TechnicalOffice/approvalDocu
 import contractorsPerformance from './Pages/ReportsCenter/TechnicalOffice/ContractorsPerformance';
 import ProjectsList from './Pages/ReportsCenter/ProjectReports/ProjectsList';
 import CashFlowReport from './Pages/ReportsCenter/ProjectReports/CashFlowReport';
-
 import ProjectBackLog from './Pages/ReportsCenter/ProjectReports/projectBackLog';
 import ProjectsAchievements from './Pages/ReportsCenter/ProjectReports/projectsAchievements';
 import projectInvoicesCollected from './Pages/ReportsCenter/ProjectReports/projectInvoicesCollected';
-
 import ProjectBalanceReport from './Pages/ReportsCenter/ProjectReports/ProjectBalanceReport';
 import projectScheduleAddEdit from './Pages/TimeManagement/projectScheduleAddEdit';
 import budgetCashFlow from './Pages/CostControl/budgetCashFlow';
- 
 import LeftReportMenu from './Pages/Menu/LeftReportMenu';
 import ActiveProjectsReport from './Pages/ReportsCenter/ProjectReports/ActiveProjectsReport';
 import NewprojectList from './Pages/ReportsCenter/ProjectReports/NewprojectList';
 import MaterialStatusReport from './Pages/ReportsCenter/ProjectReports/MaterialStatusReport';
 import BoqTemplateReport from './Pages/ReportsCenter/ProjectReports/BoqTemplateReport';
-
 import InventoryDetails from './Pages/ReportsCenter/ProjectReports/InventoryDetails';
 import BoqStractureCost from './Pages/ReportsCenter/ProjectReports/BoqStractureCost';
 import allocationOfProjectsOnCompanies from './Pages/ReportsCenter/ProjectReports/allocationOfProjectsOnCompanies';
@@ -140,15 +136,16 @@ import allocationOfUsersOnProjects from './Pages/ReportsCenter/ProjectReports/al
 import ProjectCompanies from "./Pages/Communication/ProjectCompanies";
 import budgetVarianceReport from './Pages/ReportsCenter/ProjectReports/budgetVarianceReport';
 import expensesDetailsOnProjectsReport from './Pages/ReportsCenter/ProjectReports/expensesDetailsOnProjectsReport';
-
-
+import PostitNotificationsDetail from "./Pages/Menu/postitNotificationsDetail";
+import taskDetails from "./Pages/Menu/taskDetails";
+import myTasks from "./Pages/Menu/myTasks";
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
     return <Route path={path} component={compoenet} />
 })
-
+     
 
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
@@ -276,15 +273,10 @@ let originalRoutes = [
     , <Route path="/BoqStractureCost" component={BoqStractureCost} />
     , <Route path="/InventoryDetails" component={InventoryDetails} />
     , <Route path="/allocationOfProjectsOnCompanies" component={allocationOfProjectsOnCompanies} />
-    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
+    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} /> 
     , <Route path="/ProjectCompanies" component={ProjectCompanies} />
     , <Route path="/permissionsGroups" component={permissionsGroups} />
-    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
-    
-
-
-
-
+    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} /> 
     , <Route path="/projectBackLog" component={ProjectBackLog} />
     , <Route path="/projectsAchievements" component={ProjectsAchievements} />
     , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
@@ -298,9 +290,13 @@ let originalRoutes = [
     , <Route path="/budgetVarianceReport" component={budgetVarianceReport} />
     , <Route path="/expensesDetailsOnProjectsReport" component={expensesDetailsOnProjectsReport} />
     , <Route path="/corrRecievedSent/:projectId" component={corrRecievedSent} />
-
+    , <Route path="/postitNotificationsDetail" component={PostitNotificationsDetail} />
+    , <Route path="/taskDetails" component={taskDetails} />
+    , <Route path="/myTasks" component={myTasks} />
 ];
+    
 originalRoutes = [...originalRoutes, ...setupRoutes]
+
 let routes = (
 
     <Switch >

@@ -496,7 +496,7 @@ class siteInstructionsAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                <HeaderDocument projectName={projectName} docTitle={Resources.siteInstructions[currentLanguage]}
+                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.siteInstructions[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
                     {this.state.loadingPage ? <LoadingSection /> :

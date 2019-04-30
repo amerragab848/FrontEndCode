@@ -791,7 +791,7 @@ class DrawingSetsAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
-          <HeaderDocument projectName={projectName} docTitle={Resources.drawingSets[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.drawingSets[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
 
           <div className="doc-container">
             {/* Right Menu */}
