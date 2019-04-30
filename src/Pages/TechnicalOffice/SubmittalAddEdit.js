@@ -186,7 +186,6 @@ class SubmittalAddEdit extends Component {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/submittal/" + this.state.projectId);
     }
-
   }
 
   componentDidMount() {
@@ -208,7 +207,10 @@ class SubmittalAddEdit extends Component {
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
       nextProps.document.forwardToDate = nextProps.document.forwardToDate != null ? moment(nextProps.document.forwardToDate).format("DD/MM/YYYY") : moment();
 
+      let obj = this.state.SubmittalTypes.find(o => o.label === nextProps.document.submittalType);
+
       this.setState({
+        selectedSubmittalType:nextProps.document.submittalType != "" ? { label: obj.label , value: obj.value } :{ label: Resources.submittalType[currentLanguage], value: "0" },
         isEdit: true,
         document: nextProps.document,
         hasWorkflow: nextProps.hasWorkflow
@@ -352,8 +354,7 @@ class SubmittalAddEdit extends Component {
 
       this.fillDropDowns(false);
       this.props.actions.documentForAdding();
-    }
-
+    } 
   }
 
   fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
