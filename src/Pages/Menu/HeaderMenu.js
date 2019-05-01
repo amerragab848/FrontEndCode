@@ -72,7 +72,33 @@ class HeaderMenu extends Component {
         taskes: result
       });
     });
+    this.windowonload()
   };
+
+  windowonload(e) {
+    //var notiClicked = document.getElementById('notiClicked');
+    // document.onclick = function(e){
+    //    if(e.target.id !== 'notiClicked'){
+    //     console.log('this.state.viewNotification' )
+    //    } else {
+    //     console.log('this.state.notiClicked' )
+
+    //    }
+    // };
+      window.addEventListener('click', function (e) {
+        if (document.getElementById('notiClicked').contains(e.target)) {
+          console.log('this.state.viewNotification')
+        } else {
+          console.log('this.state.notiClicked')
+          
+        }
+      });
+  
+  };
+
+  componentDidMount() {
+    this.windowonload()
+  }
 
   openProfile = () => {
     this.setState({
@@ -991,14 +1017,14 @@ class HeaderMenu extends Component {
                   </NavLink>
                 </li>
                 <li className="notifi-icon">
-                  <a onClick={this.viewNotifications.bind(this)}>
+                  <a id="notiClicked" onClick={this.viewNotifications.bind(this)}>
                     <img alt="" title="" src={Notif} />
                     <div className="inboxNotif smallSquare">
                       {totalNotification}
                     </div>
                   </a>
                   {this.state.viewNotification ? (
-                    <div className="notifiBar">
+                    <div id="notiClosed" className="notifiBar">
                       <div className="smallNotifiBar">
                         <div className="notifi__tabs">
                           <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.onClickTabItem(tabIndex)}>
