@@ -27,11 +27,13 @@ class GridSetupWithFilter extends Component {
             selectedRows: [],
             selectedRow: [],
             copmleteRows: [],
+            filteredRows: this.props.rows,
             expandedRows: {}
         };
 
         this.groupColumn = this.groupColumn.bind(this);
         this.onRowsSelected = this.onRowsSelected.bind(this);
+        this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
     componentWillMount = () => { };
@@ -64,7 +66,7 @@ class GridSetupWithFilter extends Component {
         });
         this.setState(reorderedColumns);
         //console.log(reorderedColumns);
-    };
+    }
 
     sortRows = (initialRows, sortColumn, sortDirection) => {
         const comparer = (a, b) => {
@@ -78,10 +80,7 @@ class GridSetupWithFilter extends Component {
         return sortDirection === "NONE"
             ? initialRows
             : [...this.state.rows].sort(comparer);
-    };
-
-
-
+    }
 
     getValidFilterValues = (rows, columnId) => {
         rows.map(r => r[columnId])
@@ -93,30 +92,30 @@ class GridSetupWithFilter extends Component {
             .filter((item, i, a) => {
                 return i === a.indexOf(item);
             });
-    };
+    }
 
     getRows = (rows, filters) => {
-        console.log( filters)
-        return selectors.getRows({ rows, filters });
-    };
+        let rowsList = selectors.getRows({ rows, filters });
+        this.setState({
+            filteredRows: rowsList
+        })
+        return rowsList;
+    }
 
     getRowsGrouping = (rows, groups) => {
         return Data.Selectors.getRows({ rows, groups });
-    };
+    }
 
     groupColumn = columnKey => {
         const columnGroups = this.state.groupBy.slice(0);
-
         const activeColumn = this.state.columns.find(c => c.key === columnKey);
-
-        const isNotInGroups =
-            columnGroups.find(c => activeColumn.key === c.key) == null;
-
+        const isNotInGroups = columnGroups.find(c => activeColumn.key === c.key) == null;
         if (isNotInGroups) {
             columnGroups.push({ key: activeColumn.key, name: activeColumn.name });
         }
+
         return columnGroups;
-    };
+    }
 
     ungroupColumn = columnKey => {
         let columnGroups = this.state.groupBy
@@ -126,7 +125,7 @@ class GridSetupWithFilter extends Component {
             );
 
         return columnGroups;
-    };
+    }
 
     onRowsSelected = rows => {
         if (this.props.IsActiv !== undefined) {
@@ -284,34 +283,24 @@ class GridSetupWithFilter extends Component {
         });
     }
 
-    handleFilterChange = (filter , filters) => {
-               
-        console.log(filter)
-        //console.log(filters)
-        const newFilters = {...this.state.rows};
-        console.log(newFilters)
+    handleFilterChange = (filter) => {
+
+        const newFilters = this.state.setFilters;
         if (filter.filterTerm) {
             newFilters[filter.column.key] = filter;
         } else {
             delete newFilters[filter.column.key];
         }
-        console.log(newFilters)
+        let rows = [...this.state.rows]
+        this.getRows(rows, newFilters);
+
         return newFilters;
     };
+
     render() {
-     
-    
-        //  let [filters, setFilters] =this.state
-        //  let [filters, setFilters] = useState({});
-        let filters = this.state.filters
-        let setFilters = this.state.setFilters
-        const { rows, groupBy } = this.state;
-        // const groupedRows = Data.Selectors.getRows({ rows, filters });
-        const groupedRows = this.getRows(rows, filters);
 
-        //const groupedRows = Data.Selectors.getRows({ rows, filters });
         const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
-
+        
         const CustomToolbar = ({
             groupBy,
             onColumnGroupAdded,
@@ -322,14 +311,12 @@ class GridSetupWithFilter extends Component {
             return (
                 <Toolbar>
                     <GroupedColumnsPanel
-
                         groupBy={groupBy}
                         onColumnGroupAdded={onColumnGroupAdded}
                         onColumnGroupDeleted={onColumnGroupDeleted}
                         onAddFilter={onAddFilter}
                         onClearFilters={onClearFilters}
                         noColumnsSelectedMessage={drag}
-
                     />
                     {this.state.selectedRows.length > 0 ? (
                         <div className="gridSystemSelected active">
@@ -384,12 +371,12 @@ class GridSetupWithFilter extends Component {
 
                         <ReactDataGrid
                             rowKey="id"
-                            minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
+                            minHeight={this.state.filteredRows != undefined ? (this.state.filteredRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
                             height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
                             columns={this.state.columns}
 
-                            rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
-                            rowsCount={groupedRows != undefined ? groupedRows.length : 1}
+                            rowGetter={i => this.state.filteredRows[i] != null ? this.state.filteredRows[i] : ''}
+                            rowsCount={this.state.filteredRows != undefined ? this.state.filteredRows.length : 1}
 
                             enableCellSelect={true}
                             onGridRowsUpdated={this.onGridRowsUpdated}
@@ -417,13 +404,6 @@ class GridSetupWithFilter extends Component {
                             //   onColumnGroupDeleted={columnKey =>
                             //     this.setState({ groupBy: this.ungroupColumn(columnKey) })
                             //   }
-                            //   onAddFilter={filter =>
-                            //     this.setState({ setFilters: this.handleFilterChange(filter) })
-                            //   }
-                            //   onClearFilters={() =>
-                            //     this.setState({ setFilters: {} })
-                            //   }
-
                             // />
 
                             rowSelection={{
@@ -433,24 +413,14 @@ class GridSetupWithFilter extends Component {
                                 onRowsSelected: this.onRowsSelected,
                                 onRowsDeselected: this.onRowsDeselected,
                                 enableRowSelect: 'single',
-                                selectBy: {
-                                    indexes: this.state.selectedIndexes
-                                }
+                                selectBy: { indexes: this.state.selectedIndexes }
                             }}
 
                             onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
 
+                            onAddFilter={filter => this.setState({ setFilters: this.handleFilterChange(filter) })}
 
-                            onAddFilter={filter => this.setState({ setFilters: this.handleFilterChange(filter) }) }
-                                
-
-                            onClearFilters={() =>
-                                this.setState({ setFilters: {} })
-                            }
-
-                            //    getValidFilterValues={columnKey =>
-                            //      this.getValidFilterValues(this.state.rows, columnKey)
-                            //    }
+                            onClearFilters={() => this.setState({ setFilters: [] })}
 
                             getCellActions={this.props.getCellActions}
                         />
