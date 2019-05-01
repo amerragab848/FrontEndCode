@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import addNoDataModule from 'highcharts/modules/no-data-to-display';
@@ -27,75 +27,75 @@ class BarChartComp extends Component {
         this.state = {
 
             options:
-            {
-                lang: {
-                    noData: language['noData'][currentLanguage],
-                },
-                noData: {
-                    style: {
-                        fontWeight: 'bold',
-                        fontSize: '25px',
-                        color: '#1B4EDB',
+                {
+                    lang: {
+                        noData: language['noData'][currentLanguage],
                     },
-                },
-                chart: {
-                    type: 'line',
-                },
-                title: {
-                    text: this.props.title
-                },
-                xAxis: {
-                    categories: []
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: this.props.yTitle
-                    },
-                    stackLabels: {
-                        enabled: true,
+                    noData: {
                         style: {
                             fontWeight: 'bold',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                        }
-                    }
-                },
-                legend: {
-                    align: 'right',
-                    x: -30,
-                    verticalAlign: 'top',
-                    y: 25,
-                    floating: true,
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                    borderColor: '#CCC',
-                    borderWidth: 1,
-                    shadow: false
-                },
-                tooltip: {
-                    headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: ' <span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
-                },
-                plotOptions: {
-                    column: {
-                        stacking: this.props.stack,
-                        dataLabels: {
+                            fontSize: '25px',
+                            color: '#1B4EDB',
+                        },
+                    },
+                    chart: {
+                        type: 'line',
+                    },
+                    title: {
+                        text: this.props.title
+                    },
+                    xAxis: {
+                        categories: []
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: this.props.yTitle
+                        },
+                        stackLabels: {
                             enabled: true,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black'
+                            style: {
+                                fontWeight: 'bold',
+                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                            }
                         }
+                    },
+                    legend: {
+                        align: 'right',
+                        x: -30,
+                        verticalAlign: 'top',
+                        y: 25,
+                        floating: true,
+                        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                        borderColor: '#CCC',
+                        borderWidth: 1,
+                        shadow: false
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{point.x}</b><br/>',
+                        pointFormat: ' <span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
+                    },
+                    plotOptions: {
+                        column: {
+                            stacking: this.props.stack,
+                            dataLabels: {
+                                enabled: true,
+                                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '',
+                        data: []
+                    }],
+                    credits: {
+                        enabled: false
+
+                    },
+                    exporting: {
+                        enabled: true
                     }
                 },
-                series: [{
-                    name: '',
-                    data: []
-                }],
-                credits: {
-                    enabled: false
-
-                },
-                exporting: {
-                    enabled: true
-                }
-            },
             dataByTopic: {
                 dataByTopic: [
                     {
@@ -123,7 +123,7 @@ class BarChartComp extends Component {
                 });
                 this.setState({ isLoading: false, barData: barData });
             }
-            else { 
+            else {
                 results.map((item) => {
                     _catag.push(item[this.props.catagName]);
                     return null;
@@ -149,28 +149,40 @@ class BarChartComp extends Component {
 
     render() {
         return (
-            <div className="panel barChart__container">
-                <div className="panel-body">
-                    {this.props.multiSeries !== 'no' ?
-                        <HighchartsReact
-                            highcharts={Highcharts}
-                            options={this.state.options}
-                        />
-                        :
-                        this.state.isLoading == false ?
+            <Fragment>
+                {this.props.multiSeries !== 'no' ?
+                    <div className="col-xs-8">
+                        <div className="panel barChart__container">
+                            <div className="panel-body">
+                                <HighchartsReact
+                                    highcharts={Highcharts}
+                                    options={this.state.options}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    this.state.isLoading == false ?
+                        <div className="col-xs-6">
+                            <div className="panel barChart__container">
+                                <div className="panel-body">
+                                    <Bar
+                                        data={this.state.barData}
+                                        width={800}
+                                        isHorizontal={false}
+                                        margin={marginObject}
+                                        colorSchema={["#dfe2e6", "#39bd3d"]}
+                                        labelsSize={20}
+                                        xAxisLabelOffset={5}
+                                    />
+                                </div>
+                            </div >
+                        </div >
+                        : null
+                }
 
-                            <Bar
-                                data={this.state.barData}
-                                width={600}
-                                isHorizontal={false}
-                                margin={marginObject}
-                                colorSchema={["#6aedc7", "#39c2c9", "#ffce00", "#ffa71a", "#f866b9", "#998ce3"]}
-                            />
-                            : null
-                    }
 
-                </div>
-            </div>
+            </Fragment >
         );
     }
 }

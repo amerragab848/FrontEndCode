@@ -986,7 +986,18 @@ table edition
   cursor: pointer;
 }
 .panel {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
+}
+.donut-container {
+  display: flex;
+  justify-content: center;
+}
+.panel h2 {
+  text-align: center;
+}
+.legend-container {
+  display: flex;
+  justify-content: center;
 }
 .App.react-tabs__tab-panel--selected {
   padding-top: 35px;
@@ -4291,4 +4302,9 @@ width: calc(100% - 256px);
 }
 .reportsWithMulti .reports__multiDrop .linebylineInput.multiChoice{
   width: 100%;
+}
+.bar-container text {
+  font-size: 1rem;
+  fill: #666a73;
+  padding: 12px;
 }
