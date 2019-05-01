@@ -8,6 +8,7 @@ import React, { Component, Fragment } from 'react'
 import Moment from 'moment';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
+import CommentImg from "../../Styles/images/flowComment.png"
 
 import { connect } from 'react-redux';
 import {
@@ -87,10 +88,18 @@ class ViewWorkFlow extends Component {
                                             <img src={level.signature != null ? level.signature : Signature} alt="..." />
                                         </div>
                                         : null}
-                                    <div className="box-statue">
-                                        <h5>{level.status}</h5>
-                                        <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+
+                                        <div class="Status__comment">
+                                        {level.statusVal != null ?
+                                        <span>
+                                            <img src={CommentImg} alt="Cooment"/>
+                                        </span> : null}
+                                        <div className="box-statue">
+                                            <h5>{level.status}</h5>
+                                            <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+                                        </div>
                                     </div>
+
                                 </div>
                                 : null
                             )}
@@ -108,7 +117,7 @@ class ViewWorkFlow extends Component {
             return (
                 <div className="workflowWrapper" key={Math.random()} id='wfCycles'>
                     <div className="workflow-header">
-                        <h4>{cycle.subject + " -Currently at Level:" + cycle.currentLevel + " -Sent in:" + Moment(cycle.creationDate).format('DD-MM-YYYY')}</h4>
+                        <h4><p className="zero"><span>{cycle.subject}</span><span>{"Currently at Level:" + cycle.currentLevel}</span></p><span> {"Sent in:" + Moment(cycle.creationDate).format('DD-MM-YYYY')}</span></h4>
                     </div>
                     <div className="card-status">
                         {this.renderLevels(cycle.levels)}
