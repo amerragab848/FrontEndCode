@@ -32,7 +32,7 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
     refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
+    ownerContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
 });
 
 let docId = 0;
@@ -133,7 +133,8 @@ class riskAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -187,7 +188,7 @@ class riskAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
 
-            let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
+            let url = "GetCommunicationRiskForEdit?id=" + this.state.docId;
 
             this.props.actions.documentForEdit(url);
         } else {
@@ -197,9 +198,9 @@ class riskAddEdit extends Component {
                 projectId: projectId,
                 arrange: "1",
                 fromCompanyId: null,
-                toCompanyId: null,
+                ownerCompanyId: null,
                 fromContactId: null,
-                toContactId: null,
+                ownerContactId: null,
                 subject: "",
                 requiredDate: moment(),
                 docDate: moment(),
@@ -257,15 +258,15 @@ class riskAddEdit extends Component {
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
 
-                let toCompanyId = this.props.document.toCompanyId;
+                let ownerCompanyId = this.props.document.ownerCompanyId;
 
-                if (toCompanyId) {
+                if (ownerCompanyId) {
 
                     this.setState({
-                        selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
+                        selectedToCompany: { label: this.props.document.toCompanyName, value: ownerCompanyId }
                     });
 
-                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', ownerCompanyId, 'ownerContactId', 'selectedToContact', 'ToContacts');
                 }
             }
             this.setState({
@@ -420,7 +421,6 @@ class riskAddEdit extends Component {
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
-
                 this.setState({
                     document: updated_document
                 });
@@ -446,7 +446,7 @@ class riskAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('EditCommunicationTransmittal', saveDocument).then(result => {
+        dataservice.addObject('EditCommunicationRisk', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -463,7 +463,7 @@ class riskAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
+        dataservice.addObject('AddCommunicationRisk', saveDocument).then(result => {
 
             this.setState({
                 docId: result.id
@@ -495,7 +495,7 @@ class riskAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
@@ -526,7 +526,7 @@ class riskAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
 
                     <div className="doc-container">
                         {
@@ -645,7 +645,7 @@ class riskAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                         <Dropdown data={this.state.companies} isMulti={false}
+                                                                    <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
                                                                         onChange={setFieldValue}
@@ -656,7 +656,7 @@ class riskAddEdit extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown isMulti={false} data={this.state.fromContacts}
+                                                                    <Dropdown isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
                                                                         onChange={setFieldValue}
@@ -672,26 +672,26 @@ class riskAddEdit extends Component {
                                                             <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                     <Dropdown isMulti={false} data={this.state.companies}
+                                                                    <Dropdown isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'ownerCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
-                                                                        error={errors.toCompanyId}
-                                                                        touched={touched.toCompanyId}
-                                                                        name="toCompanyId"
-                                                                        id="toCompanyId" />
+                                                                        error={errors.ownerCompanyId}
+                                                                        touched={touched.ownerCompanyId}
+                                                                        name="ownerCompanyId"
+                                                                        id="ownerCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                    <Dropdown isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'ownerContactId', false, '', '', '', 'selectedToContact')}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
-                                                                        error={errors.toContactId}
-                                                                        touched={touched.toContactId}
-                                                                        name="toContactId"
-                                                                        id="toContactId" />
+                                                                        error={errors.ownerContactId}
+                                                                        touched={touched.ownerContactId}
+                                                                        name="ownerContactId"
+                                                                        id="ownerContactId" />
                                                                 </div>
                                                             </div>
                                                         </div>
