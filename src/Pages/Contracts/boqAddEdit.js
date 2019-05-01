@@ -78,6 +78,7 @@ let arrange = 0;
 
 
 class bogAddEdit extends Component {
+
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -300,6 +301,7 @@ class bogAddEdit extends Component {
             { name: 'createTransmittal', code: 3057 }, { name: 'sendToWorkFlow', code: 720 },
             { name: 'viewAttachments', code: 3295 }, { name: 'deleteAttachments', code: 862 }],
             document: {},
+            _items:[]
         }
 
         if (!Config.IsAllow(616) && !Config.IsAllow(617) && !Config.IsAllow(619)) {
@@ -307,6 +309,7 @@ class bogAddEdit extends Component {
             this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
         }
     }
+
     customButton = () => {
         return <button className="companies_icon" style={{ cursor: 'pointer' }}><i class="fa fa-folder-open" ></i></button>;
     };
@@ -348,9 +351,13 @@ class bogAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
+       //
         this.props.actions.documentForAdding()
     }
+
     fillDropDowns(isEdit) {
         DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId, 'companyName', 'companyId').then(res => {
             if (isEdit) {
@@ -383,6 +390,7 @@ class bogAddEdit extends Component {
         })
 
     }
+
     fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
         this.setState({ isLoading: true })
         let action = url + "?" + param + "=" + value
@@ -397,6 +405,14 @@ class bogAddEdit extends Component {
     componentDidMount() {
 
     }
+
+    getNextArrange = (event) => {
+        this.setState({ selectedFromCompany: event })
+        Api.get('GetBoqNumber?projectId=' + this.state.projectId + '&companyId=' + event.value).then(res => {
+            this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false})
+        })
+    }
+
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true })
@@ -408,7 +424,7 @@ class bogAddEdit extends Component {
         } else {
             let cmi = Config.getPayload().cmi
             this.setState({ LoadingPage: true })
-            Api.get('GetBoqNumber?projectId=' + + this.state.projectId + '&companyId=' + cmi).then(res => {
+            Api.get('GetBoqNumber?projectId=' + this.state.projectId + '&companyId=' + cmi).then(res => {
                 this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false, LoadingPage: false })
             })
             this.fillDropDowns(false);
@@ -490,14 +506,13 @@ class bogAddEdit extends Component {
             props.document.statusName = props.document.status ? 'Opened' : 'Closed'
             let document = Object.assign(props.document, { documentDate: docDate })
             this.setState({ document });
-
-            let items = props.items
-            if (items) {
-                this.setState({ isLoading: true })
-                this.setState({ items }, () => this.setState({ isLoading: false }));
-            }
             this.fillDropDowns(true);
             this.checkDocumentIsView();
+        }
+        let _items = props.items
+        if (_items) {
+            this.setState({ isLoading: true })
+            this.setState({ _items }, () => this.setState({ isLoading: false }));
         }
 
     }
@@ -526,6 +541,7 @@ class bogAddEdit extends Component {
             showOptimization: values.showOptimization
         };
         DataService.addObject('AddBoq', documentObj).then(result => {
+            this.props.actions.setDocId(result.id)
             this.setState({
                 docId: result.id,
                 isLoading: false,
@@ -724,6 +740,7 @@ class bogAddEdit extends Component {
     }
 
     handleShowAction = (item) => {
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
 
             this.setState({
@@ -930,10 +947,44 @@ class bogAddEdit extends Component {
         });
     };
 
+    StepOneLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1,
+                thirdComplete: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2,
+                thirdComplete: false,
+
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                thirdComplete: true,
+                CurrStep: 3,
+                firstComplete: true,
+                secondComplete: true,
+            })
+        }
+    }
+
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <GridSetup
-                rows={this.state.items}
+                rows={this.state._items}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
                 onRowClick={this.onRowClick}
@@ -1463,9 +1514,7 @@ class bogAddEdit extends Component {
                                                 title="fromCompany"
                                                 data={this.state.Companies}
                                                 selectedValue={this.state.selectedFromCompany}
-                                                handleChange={event => {
-                                                    this.setState({ selectedFromCompany: event })
-                                                }}
+                                                handleChange={event => {this.getNextArrange(event)}}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.fromCompany}
@@ -1523,7 +1572,7 @@ class bogAddEdit extends Component {
                                         <div className={"slider-Btns fullWidthWrapper textLeft "}>
 
                                             {this.state.isLoading === false ? (
-                                                <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources[this.state.btnTxt][currentLanguage]}</button>
+                                                <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isViewMode}  >{Resources[this.state.btnTxt][currentLanguage]}</button>
                                             ) :
                                                 (
                                                     <button className="primaryBtn-1 btn  disabled" disabled="disabled">
@@ -1617,7 +1666,7 @@ class bogAddEdit extends Component {
                     <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
                         : "documents-stepper noTabs__document one__tab one_step"}>
 
-                        <HeaderDocument projectName={projectName} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                        <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> :
@@ -1661,13 +1710,13 @@ class bogAddEdit extends Component {
                                     <div className="step-content-foot">
                                         <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
                                             "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                        <span onClick={this.NextStep} className={this.state.CurrStep < 3 && this.state.docId > 0 ? "step-content-btn-prev "
+                                        <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
                                             : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                         </span>
                                     </div>
                                     <div className="workflow-sliderSteps">
                                         <div className="step-slider">
-                                            <div data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                            <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>1</span>
                                                 </div>
@@ -1675,7 +1724,7 @@ class bogAddEdit extends Component {
                                                     <h6>{Resources.boq[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                            <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>2</span>
                                                 </div>
@@ -1683,7 +1732,7 @@ class bogAddEdit extends Component {
                                                     <h6 >{Resources.items[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
+                                            <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
                                                 <div className="steps-timeline">
                                                     <span>3</span>
                                                 </div>

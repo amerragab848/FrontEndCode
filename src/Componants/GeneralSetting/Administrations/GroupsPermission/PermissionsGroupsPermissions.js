@@ -1,131 +1,176 @@
 import React, { Component } from "react";
 import Api from "../../../../api";
-import SkyLight from 'react-skylight';
 import LoadingSection from "../../../publicComponants/LoadingSection";
 import Export from "../../../OptionsPanels/Export";
 import Dropdown from "../../../OptionsPanels/DropdownMelcous";
 import "../../../../Styles/css/semantic.min.css";
 import "../../../../Styles/scss/en-us/layout.css";
-import { Formik, Form } from 'formik';
-import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../../Pages/Communication/GridSetup";
-import CryptoJS from 'crypto-js';
-import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-import * as Yup from 'yup';
+import { connect } from 'react-redux';
+import config from "../../../../Services/Config";
+import permissions from '../../../../permissions.json'
+import HeaderDocument from '../../../OptionsPanels/HeaderDocument'
+import texture from "material-ui/svg-icons/image/texture";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+//const filePermissions = JSON.parse(permissions).authorization;
 
 class PermissionsGroupsPermissions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: 0
+            options: [],
+            groupId: props.match.params.groupId,
+            selectedDocument: { label: Resources.selectDocType[currentLanguage], value: -1 },
+            checkedAll: false,
+            groupName: '',
+            disabled:true
+        }
+        if (config.getPayload().uty != 'company') {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push({
+                pathname: "/"
+            })
         }
     }
-    changeTab = (activeTab) => {
-        this.setState({ activeTab })
-    }
-    render() {
-        const contractContent = <React.Fragment>
-            <div className="document-fields">
-                <div className="linebylineInput valid-input">
-                    <Dropdown
-                        title="currency"
-                        data={this.state.currency}
-                        selectedValue={this.state.selectedCurrency}
-                        handleChange={event => {
-                            this.setState({ selectedCurrency: event })
-                        }}
-                        name="currency"
-                        index="currency" />
-                </div>
-            </div>
-        </React.Fragment >
 
-        return (
-            <div className="documents-stepper noTabs__document">
-            {/* <!-- Submittal Head --> */}
-            <div className="submittalHead">
-                <h2 className="zero">Groups Permissions
-                    <span>Uptown cairo · Accounts</span>
-                </h2>
-                <div className="SubmittalHeadClose">
-                    <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg"  xlink="http://www.w3.org/1999/xlink">
-                        <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                            <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                <g id="Group-2">
-                                    <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                        <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                                            <g id="Group">
-                                                <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z"
-                                                    id="Combined-Shape" fill="#858D9E" fillRule="nonzero"></path>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </g>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-            {/* <!-- End Submittal Head --> */}
-            <div className="doc-container">
-                {/* <!-- Start Submittal Actions --> */}
-                <div className="step__permission">
-                    <div className="subiTabsContent">
-                        {/* <!--End Header--> */}
-                        <div className="ProForm permission__proForm">
-                            <div className="linebylineInput valid-input odd">
-                                <label className="control-label">Approval status</label>
-                                <div className="ui fluid selection dropdown singleDropDown" tabIndex="0">
-                                    <input type="hidden" name="country" />
-                                    <i className="dropdown icon"></i>
-                                    <div className="default text">
-                                        Select status
-                                    </div>
-                                    <div className="menu transition hidden" tabIndex="-1" style="overflow: hidden; outline: none;">
-                                        <div className="item">
-                                            Offline
-                                        </div>
-                                        <div className="item">
-                                            Opend
-                                        </div>
-                                        <div className="item">
-                                            Closed
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="permissins__btns">
-                                <button className="primaryBtn-1 btn mediumBtn">Save</button>
-                                <button className="primaryBtn-2 btn mediumBtn middle__btn">Revoke All</button>
-                            </div>
-                        </div>
-                        <header className="main__header">
-                            <div className="main__header--div">
-                                <h2 className="zero">
-                                    POs
-                                </h2>
-                            </div>
-                        </header>
-                        <div className="project__Permissions">
-                            <div className="project__Permissions--selectAll">
-                                <div id="allSelected" className="ui checkbox checkBoxGray300 count" >
-                                    <input name="CheckBox" type="checkbox" id="allPermissionInput" tabIndex="0" className="hidden" />
-                                    <label>Select All</label>
-                                </div>
-                            </div>
+    componentWillMount() {
+        let docs = []
+        let module = []
+        let options = []
+        permissions.authorization.forEach(element => {
+            docs = []
+            module.push()
+            element.modules.forEach(item => {
+                docs.push({ label: item.title[currentLanguage], value: item.id })
+                this.setState({ [item.id]: item.permissions })
+            })
+            options.push({ label: element.title[currentLanguage], options: docs })
+        })
+        this.setState({ options })
+    }
+    checkedAll = () => {
+        this.state[this.state.selectedDocument.value].forEach(item => {
+            this.setState({ [item.code]: !this.state.checkedAll })
+        })
+        this.setState({ checkedAll: !this.state.checkedAll })
+
+    }
+    handleCheck = (code) => {
+        this.setState({ [code]: !this.state[code] })
+    }
+
+    addEditPermission = () => {
+        if (this.state.selectedDocument.value != -1) {
+            let group = []
+            this.state[this.state.selectedDocument.value].forEach(item => {
+                group.push({ permissionId: item.code, groupName: this.state.groupName, permissionValue: this.state[item.code], groupId: this.state.groupId })
+            })
+            this.setState({ isLoading: true })
+            Api.post('EditGroupsPermissions', group).then(() => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.setState({ isLoading: false,selectedDocument: { label: Resources.selectDocType[currentLanguage], value: -1 } ,disabled:true})
+            }).catch(() => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ isLoading: false })
+            })
+        }
+    }
+    changeSelect = (event) => {
+        this.setState({ selectedDocument: event })
+        let documentPermission = [];
+        this.state[event.value].forEach(item => {
+            documentPermission.push(item.code)
+        })
+        let doc = {
+            groupId: this.state.groupId,
+            documentPermissions: documentPermission
+        }
+        this.setState({ isLoading: true })
+        Api.post('GetGroupsPermissionsV5', doc).then(res => {
+            if (res) {
+                this.setState({ groupName: res[0].groupName })
+                res.forEach(item => {
+                    this.setState({ [item.permissionId]: item.permissionValue })
+                })
+                this.setState({ isLoading: false ,disabled:false})
+            }
+        })
+    }
+
+    render() {
+        let checkBoxs = this.state.selectedDocument.value == -1 ? null :
+            this.state[this.state.selectedDocument.value].map(item => {
+                return (
+                    <div className="project__Permissions--type " key={item.code}>
+                        <div id="allSelected" className="ui checkbox checkBoxGray300 checked " >
+                            <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state[item.code]}
+                                onChange={(e) => this.handleCheck(item.code)} />
+                            <label>{item.title[currentLanguage]}</label>
                         </div>
                     </div>
+                )
+            })
+
+        return (
+            <div className="mainContainer">
+                <div className="documents-stepper noTabs__document">
+                    <HeaderDocument projectName={this.props.projectName} isViewMode={this.state.isViewMode} docTitle={Resources.groupsPermissions[currentLanguage]} moduleTitle='' />
+                    {this.state.isLoading == true ? <LoadingSection /> :
+                        <div className="doc-container">
+                            {/* <!-- Start Submittal Actions --> */}
+                            <div className="step__permission">
+                                <div className="subiTabsContent">
+                                    {/* <!--End Header--> */}
+                                    <div className="ProForm permission__proForm">
+                                        <div className="linebylineInput valid-input odd">
+                                            <div className="linebylineInput valid-input">
+                                                <Dropdown
+                                                    title="userPermissions"
+                                                    data={this.state.options}
+                                                    selectedValue={this.state.selectedDocument}
+                                                    handleChange={event => { this.changeSelect(event) }}
+                                                    name="userPermissions"
+                                                    index="userPermissions" />
+                                            </div>
+                                        </div>
+                                        <div className="permissins__btns">
+                                            <button className={"primaryBtn-1 btn mediumBtn "+this.state.disabled?'disabled':''} disabled={this.state.disabled} onClick={this.addEditPermission}>{Resources.save[currentLanguage]}</button>
+                                            <button className="primaryBtn-2 btn mediumBtn middle__btn">Revoke All</button>
+                                        </div>
+                                    </div>
+                                    <header className="main__header">
+                                        <div className="main__header--div">
+                                            <h2 className="zero"> </h2>
+                                        </div>
+                                    </header>
+                                    <div className="project__Permissions">
+                                        {this.state.selectedDocument.value == -1 ? null :
+                                            <div className="project__Permissions--selectAll ">
+                                                <div id="allSelected" className="ui checkbox checkBoxGray300 checked " >
+                                                    <input name="CheckBox" type="checkbox" id="allPermissionInput" defaultChecked={this.state.checkedAll}
+                                                        onChange={(e) => this.checkedAll(e)} />
+                                                    <label>Select All</label>
+                                                </div>
+                                            </div>}
+                                        {checkBoxs}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
                 </div>
-    
             </div>
-        </div>
-    
         )
     }
 }
-export default withRouter(PermissionsGroupsPermissions)
+function mapStateToProps(state, ownProps) {
+    return {
+        projectId: state.communication.projectId,
+        projectName: state.communication.projectName
+    }
+}
+export default connect(
+    mapStateToProps
+)(withRouter(PermissionsGroupsPermissions))

@@ -635,7 +635,7 @@ class ProjectTaskAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-          <HeaderDocument projectName={projectName} docTitle={Resources.projectTask[currentLanguage]}
+          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectTask[currentLanguage]}
             moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
 

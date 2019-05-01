@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Api from "../../../api";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
-import "../../../Styles/css/semantic.min.css";
-import "../../../Styles/scss/en-us/layout.css";
 import GridSetup from "../../../Pages/Communication/GridSetup";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'

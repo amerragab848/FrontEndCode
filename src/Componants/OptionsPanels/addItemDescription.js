@@ -46,22 +46,22 @@ class addItemDescription extends Component {
             isLoading: false,
             itemsList: [],
             itemDescription: {
-                id:0,
-                description:'',
-                unit:'',
-                unitPrice:0,
-                quantity:0,
-                revisedQuantity:0,
-                boqTypeId:'',
-                SubBoqTypeId:'',
-                boqTypeChildId:'',
-                arrange:0,
-                parentId:'',
-                itemType:'',
-                equipmentType:'',
-                itemCode:'',
-                resourceCode:'' 
-            }, 
+                id: 0,
+                description: '',
+                unit: '',
+                unitPrice: 0,
+                quantity: 0,
+                revisedQuantity: 0,
+                boqTypeId: '',
+                SubBoqTypeId: '',
+                boqTypeChildId: '',
+                arrange: 0,
+                parentId: '',
+                itemType: '',
+                equipmentType: '',
+                itemCode: '',
+                resourceCode: ''
+            },
             Units: [], selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" },
 
             columns: [],
@@ -137,21 +137,21 @@ class addItemDescription extends Component {
                 this.props.actions.addItemDescription(arr);
                 this.setState({
                     itemDescription: {
-                        id:0,
-                        description:'',
-                        unit:'',
-                        unitPrice:0,
-                        quantity:0,
-                        revisedQuantity:0,
-                        boqTypeId:'',
-                        SubBoqTypeId:'',
-                        boqTypeChildId:'',
-                        arrange:0,
-                        parentId:'',
-                        itemType:'',
-                        equipmentType:'',
-                        itemCode:'',
-                        resourceCode:'' 
+                        id: 0,
+                        description: '',
+                        unit: '',
+                        unitPrice: 0,
+                        quantity: 0,
+                        revisedQuantity: 0,
+                        boqTypeId: '',
+                        SubBoqTypeId: '',
+                        boqTypeChildId: '',
+                        arrange: 0,
+                        parentId: '',
+                        itemType: '',
+                        equipmentType: '',
+                        itemCode: '',
+                        resourceCode: ''
                     },
                     isLoading: false
                 });
@@ -321,40 +321,40 @@ class addItemDescription extends Component {
                                                 {errors.days ? (<em className="pError">{errors.days}</em>) : null}
                                             </div>
                                         </div>
-                                        {this.props.showBoqType==true?
-                                        <React.Fragment>
-                                        <div className="linebylineInput valid-input">
-                                            <Dropdown
-                                                title="boqType"
-                                                data={this.state.boqTypes}
-                                                selectedValue={this.state.selectedBoqType}
-                                                handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds')}
-                                                name="boqType"
-                                                index="boqType" />
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                            <Dropdown
-                                                title="boqTypeChild"
-                                                data={this.state.BoqTypeChilds}
+                                        {this.props.showBoqType == true ?
+                                            <React.Fragment>
+                                                <div className="linebylineInput valid-input">
+                                                    <Dropdown
+                                                        title="boqType"
+                                                        data={this.state.boqTypes}
+                                                        selectedValue={this.state.selectedBoqType}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds')}
+                                                        name="boqType"
+                                                        index="boqType" />
+                                                </div>
+                                                <div className="linebylineInput valid-input">
+                                                    <Dropdown
+                                                        title="boqTypeChild"
+                                                        data={this.state.BoqTypeChilds}
 
-                                                selectedValue={this.state.selectedBoqTypeChild}
-                                                handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
+                                                        selectedValue={this.state.selectedBoqTypeChild}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
 
-                                                name="boqTypeChild"
-                                                index="boqTypeChild" />
-                                        </div>
-                                        <div className="letterFullWidth">
-                                            <div className="linebylineInput valid-input">
-                                                <Dropdown
-                                                    title="boqSubType"
-                                                    data={this.state.BoqSubTypes}
-                                                    selectedValue={this.state.selectedBoqSubType}
-                                                    handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '')}
-                                                    name="boqSubType"
-                                                    index="boqSubType" />
-                                            </div>
-                                        </div>
-                                        </React.Fragment>:null}
+                                                        name="boqTypeChild"
+                                                        index="boqTypeChild" />
+                                                </div>
+                                                <div className="letterFullWidth">
+                                                    <div className="linebylineInput valid-input">
+                                                        <Dropdown
+                                                            title="boqSubType"
+                                                            data={this.state.BoqSubTypes}
+                                                            selectedValue={this.state.selectedBoqSubType}
+                                                            handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '')}
+                                                            name="boqSubType"
+                                                            index="boqSubType" />
+                                                    </div>
+                                                </div>
+                                            </React.Fragment> : null}
                                         <div className={"linebylineInput valid-input " + (this.props.showItemType !== false ? ' ' : ' disNone')}>
                                             <Dropdown
                                                 title="itemType"
@@ -436,4 +436,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(addItemDescription))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(addItemDescription))

@@ -248,7 +248,8 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
             this.setState({
@@ -493,7 +494,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
 
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.primaveraLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.primaveraLog[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
 

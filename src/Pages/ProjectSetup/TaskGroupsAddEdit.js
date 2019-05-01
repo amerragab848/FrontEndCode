@@ -188,13 +188,26 @@ class TaskGroupsAddEdit extends Component {
         )
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
 
     componentWillMount = () => {
+        if (docId > 0) {
+            let url = 'GetProjectTaskGroupsForEdit?taskId=' + docId + ''
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectTaskGroups');
+        }
+        else {
+            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=99&companyId=undefined&contactId=undefined').then(
+                res => {
+                    MaxArrange = res
+                    this.setState({ DocumentDate: moment().format("DD:MM:YYYY") })
+                })
+            this.props.actions.documentForAdding();
+        }
         this.FillCompanyDrop();
         this.FillContactsList()
         if (Config.IsAllow(776)) {
@@ -263,11 +276,11 @@ class TaskGroupsAddEdit extends Component {
     }
 
     componentWillReceiveProps(props, state) {
-        if (props.document && props.document.id > 0) {
+        if (props.document.id) {
             let date = moment(props.document.docDate).format("DD/MM/YYYY")
             this.setState({
                 IsEditMode: true,
-                DocTaskGroupsData: { ...props.document },
+                DocTaskGroupsData:props.document,
                 DocumentDate: date,
                 isLoading: false
             });
@@ -450,19 +463,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     componentDidMount = () => {
-        if (docId > 0) {
-            let url = 'GetProjectTaskGroupsForEdit?taskId=' + docId + ''
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectTaskGroups');
-            this.checkDocumentIsView();
-        }
-        else {
-            Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=99&companyId=undefined&contactId=undefined').then(
-                res => {
-                    MaxArrange = res
-                    this.setState({ DocumentDate: moment().format("DD:MM:YYYY") })
-                })
-            this.props.actions.documentForAdding();
-        }
+        this.checkDocumentIsView();
     }
 
     saveAndExit = () => {
@@ -471,7 +472,8 @@ class TaskGroupsAddEdit extends Component {
         })
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
                 currentComponent: item.value,
@@ -502,6 +504,29 @@ class TaskGroupsAddEdit extends Component {
                 CurrStep: 2,
             })
         }
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });
+        }
+    }
+
+    showBtnsSaving() {
+        let btn = null;
+
+        if (this.state.docId === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>;
+        } else if (this.state.docId > 0) {
+            btn = this.state.isViewMode === false ?
+                <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button> : null
+        }
+        return btn;
     }
     
     render() {
@@ -627,10 +652,10 @@ class TaskGroupsAddEdit extends Component {
 
         return (
             <div className="mainContainer" >
-                <div className="documents-stepper noTabs__document one__tab one_step">
+                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     {/* Header */}
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.projectTaskGroups[currentLanguage]}
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectTaskGroups[currentLanguage]}
                         moduleTitle={Resources['generalCoordination'][currentLanguage]} />
 
 
@@ -722,7 +747,7 @@ class TaskGroupsAddEdit extends Component {
                                                 </div>
                                                 <div className="doc-pre-cycle">
                                                     <div className="slider-Btns">
-                                                        <button className="primaryBtn-1 btn meduimBtn" type='submit'>NEXT</button>
+                                                        {this.showBtnsSaving()}
                                                     </div>
                                                 </div>
 

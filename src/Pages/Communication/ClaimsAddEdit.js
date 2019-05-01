@@ -405,7 +405,8 @@ class ClaimsAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -437,7 +438,7 @@ class ClaimsAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.claims[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.claims[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                      
                     <div className="doc-container">
                         {
@@ -568,23 +569,7 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.fromContacts}
-                                                                        selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.fromContactId}
-                                                                        touched={touched.fromContactId}
-                                                                        isClear={false}
-                                                                        index="letter-fromContactId"
-                                                                        name="fromContactId"
-                                                                        id="fromContactId" />
-                                                                </div>
-                                                                <div className="super_company">
-                                                                    <Dropdown
+                                                                     <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -600,6 +585,22 @@ class ClaimsAddEdit extends Component {
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
                                                                 </div>
+                                                                <div className="super_company">
+                                                                <Dropdown
+                                                                        isMulti={false}
+                                                                        data={this.state.fromContacts}
+                                                                        selectedValue={this.state.selectedFromContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.fromContactId}
+                                                                        touched={touched.fromContactId}
+                                                                        isClear={false}
+                                                                        index="letter-fromContactId"
+                                                                        name="fromContactId"
+                                                                        id="fromContactId" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">
@@ -607,23 +608,7 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown
-                                                                        isMulti={false}
-                                                                        data={this.state.ToContacts}
-                                                                        selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.toContactId}
-                                                                        touched={touched.toContactId}
-
-                                                                        index="letter-toContactId"
-                                                                        name="toContactId"
-                                                                        id="toContactId" />
-                                                                </div>
-                                                                <div className="super_company">
-
+                                                                    
                                                                     <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.companies}
@@ -639,6 +624,22 @@ class ClaimsAddEdit extends Component {
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
                                                                         id="toCompanyId" />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                <Dropdown
+                                                                        isMulti={false}
+                                                                        data={this.state.ToContacts}
+                                                                        selectedValue={this.state.selectedToContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toContactId}
+                                                                        touched={touched.toContactId}
+
+                                                                        index="letter-toContactId"
+                                                                        name="toContactId"
+                                                                        id="toContactId" />
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -3,6 +3,7 @@ export const Document_Add = 'Document_Add';
 export const Document_Adding = 'Document_Adding';
 export const File_Upload = 'File_Upload';
 export const Send_WorkFlow = 'Send_WorkFlow';
+export const Sending_WorkFlow = 'Sending_WorkFlow';
 export const Cycles_WorkFlow = 'Cycles_WorkFlow';
 export const Get_Files = 'Get_Files';
 export const Get_Attendees_Table = 'Get_Attendees_Table';
@@ -28,7 +29,7 @@ export const routeToTabIndex = 'routeToTabIndex';
 export const ViewDocumentAttach = 'ViewDocumentAttach';
 export const GetDocumentCycle = 'GetDocumentCycle';
 export const ViewDocsAttachment = 'ViewDocsAttachment';
-
+export const Set_DocId = 'Set_DocId'; 
 export const add_item = 'add_item';
 export const edit_item = 'edit_item';
 export const delete_item = 'delete_item';
@@ -57,4 +58,5 @@ export const ReportCenterMenu = 'ReportCenterMenu';
 export const RouteToMainDashboard = 'RouteToMainDashboard';  
 export const RouteToTemplate = 'RouteToTemplate'; 
 export const FillGridLeftMenu = 'FillGridLeftMenu'; 
+
 

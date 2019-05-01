@@ -794,7 +794,8 @@ class punchListAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -930,20 +931,20 @@ class punchListAddEdit extends Component {
                                                 <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                 <div className="supervisor__company">
                                                     <div className="super_name">
-                                                        <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
-                                                            onChange={setFieldValue} onBlur={setFieldTouched}
-                                                            error={errors.bicContactId} touched={touched.bicContactId}
-                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" />
-                                                    </div>
-
-                                                    <div className="super_company">
-                                                        <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
+                                                      <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                                             touched={touched.bicCompanyId} name="bicCompanyId"
                                                             handleChange={event =>
                                                                 this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
                                                         />
+                                                    </div>
+
+                                                    <div className="super_company">
+                                                    <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
+                                                            onChange={setFieldValue} onBlur={setFieldTouched}
+                                                            error={errors.bicContactId} touched={touched.bicContactId}
+                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -1301,7 +1302,7 @@ class punchListAddEdit extends Component {
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.punchList[currentLanguage]}
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.punchList[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">

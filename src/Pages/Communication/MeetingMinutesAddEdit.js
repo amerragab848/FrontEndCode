@@ -500,26 +500,27 @@ class MeetingMinutesAddEdit extends Component {
     handleChange = (key, value) => {
         this.setState({ document: { ...this.state.document, [key]: value } })
     }
-    NextStep = () => {
+   
+    NextStep = (next) => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
-                if (this.props.changeStatus == true) {
-                    this.editMeeting();
-                }
-                else if (this.state.docId > 0) {
-                    let CurrStep = this.state.CurrStep + 1
-                    this.setState({ firstComplete: true, CurrStep })
-                }
-                this.setState({
-                    selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                    selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-                    fromContacts: [],
-                    selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
-                    selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-                    calledByContact: []
-                })
-                break;
+            if (next == true) {
+                this.editMeeting();
+            }
+            else if (this.state.docId > 0) {
+                let CurrStep = this.state.CurrStep + 1
+                this.setState({ firstComplete: true, CurrStep })
+            }
+            this.setState({
+                selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+                selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+                fromContacts: [],
+                selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
+                selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
+                calledByContact: []
+            })
+            break;
             case 2:
                 this.setState({ CurrStep: this.state.CurrStep + 1, secondComplete: true })
                 break;
@@ -528,6 +529,7 @@ class MeetingMinutesAddEdit extends Component {
                 break;
         }
     }
+
     PreviousStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
@@ -550,7 +552,8 @@ class MeetingMinutesAddEdit extends Component {
         return btn;
     }
     //#endregion
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -563,6 +566,41 @@ class MeetingMinutesAddEdit extends Component {
             this.simpleDialog.show()
         }
     }
+
+    StepOneLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1,
+                thirdComplete: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0)  {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2,
+                thirdComplete: false,
+
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                thirdComplete: true,
+                CurrStep: 3,
+                firstComplete: true,
+                secondComplete: true,
+            })
+        }
+    }
+
 
     render() {
         let actions = [
@@ -594,7 +632,7 @@ class MeetingMinutesAddEdit extends Component {
                         if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.addMeeting()
                         } else {
-                            this.NextStep()
+                            this.NextStep(true)
                         }
                     }} >
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
@@ -656,7 +694,16 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['CompanyName'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                        <DropdownMelcous
+                                           <DropdownMelcous
+                                            name="fromCompany"
+                                            data={this.state.Companies}
+                                            handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany', 'fromContacts', 'selectedFromContact')}
+                                            placeholder='fromCompany'
+                                            selectedValue={this.state.selectedFromCompany}
+                                        />
+                                    </div>
+                                    <div className="super_company">
+                                    <DropdownMelcous
                                             name="fromContact"
                                             data={this.state.fromContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'fromContactName', 'fromContactId', 'selectedFromContact')}
@@ -669,22 +716,21 @@ class MeetingMinutesAddEdit extends Component {
                                             index="fromContact"
                                             id="fromContact" />
                                     </div>
-                                    <div className="super_company">
-                                        <DropdownMelcous
-                                            name="fromCompany"
-                                            data={this.state.Companies}
-                                            handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany', 'fromContacts', 'selectedFromContact')}
-                                            placeholder='fromCompany'
-                                            selectedValue={this.state.selectedFromCompany}
-                                        />
-                                    </div>
                                 </div>
                             </div>
                             <div className="linebylineInput valid-input mix_dropdown">
                                 <label className="control-label">{Resources['calledByCompany'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                        <DropdownMelcous
+                                  <DropdownMelcous
+                                            name='calledCompany'
+                                            data={this.state.Companies}
+                                            handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedCalledByCompany', 'calledContacts', 'selectedCalledByContact')}
+                                            placeholder='calledByCompany'
+                                            selectedValue={this.state.selectedCalledByCompany} />
+                                    </div>
+                                    <div className="super_company">
+                                    <DropdownMelcous
                                             name='calledByContact'
                                             data={this.state.calledContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'calledByContactName', 'calledByContactId', 'selectedCalledByContact')}
@@ -695,21 +741,21 @@ class MeetingMinutesAddEdit extends Component {
                                             error={errors.calledByContact}
                                             touched={touched.calledByContact} />
                                     </div>
-                                    <div className="super_company">
-                                        <DropdownMelcous
-                                            name='calledCompany'
-                                            data={this.state.Companies}
-                                            handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedCalledByCompany', 'calledContacts', 'selectedCalledByContact')}
-                                            placeholder='calledByCompany'
-                                            selectedValue={this.state.selectedCalledByCompany} />
-                                    </div>
                                 </div>
                             </div>
                             <div className="linebylineInput valid-input mix_dropdown">
                                 <label className="control-label">{Resources['facilitatorContact'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                        <DropdownMelcous
+                                      <DropdownMelcous
+                                            name='facilitatorCompany'
+                                            data={this.state.Companies}
+                                            handleChange={(e) => this.handleChangeDropDowns(e, 'facilitatorCompanyName', 'facilitatorCompanyId', 'selectedFacilitatorCompany', 'facilitatorContacts', 'selectedFacilitatorContact')}
+                                            placeholder='facilitatorCompany'
+                                            selectedValue={this.state.selectedFacilitatorCompany} />
+                                    </div>
+                                    <div className="super_company">
+                                    <DropdownMelcous
                                             name='facilitatorContact'
                                             data={this.state.facilitatorContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'facilitatorContactName', 'facilitatorContactId', 'selectedFacilitatorContact')}
@@ -720,14 +766,6 @@ class MeetingMinutesAddEdit extends Component {
                                             error={errors.facilitatorContact}
                                             touched={touched.facilitatorContact} />
                                     </div>
-                                    <div className="super_company">
-                                        <DropdownMelcous
-                                            name='facilitatorCompany'
-                                            data={this.state.Companies}
-                                            handleChange={(e) => this.handleChangeDropDowns(e, 'facilitatorCompanyName', 'facilitatorCompanyId', 'selectedFacilitatorCompany', 'facilitatorContacts', 'selectedFacilitatorContact')}
-                                            placeholder='facilitatorCompany'
-                                            selectedValue={this.state.selectedFacilitatorCompany} />
-                                    </div>
                                 </div>
                             </div>
                             <div className="linebylineInput valid-input mix_dropdown">
@@ -735,6 +773,14 @@ class MeetingMinutesAddEdit extends Component {
                                 <div className="supervisor__company">
                                     <div className="super_name">
                                         <DropdownMelcous
+                                            name='noteTakerCompany'
+                                            data={this.state.Companies}
+                                            handleChange={(e) => this.handleChangeDropDowns(e, 'noteTakerCompanyName', 'noteTakerCompanyId', 'selectedNoteTakerCompany', 'noteTakerContacts', 'selectedNoteTakerContact')}
+                                            placeholder='noteTakerCompany'
+                                            selectedValue={this.state.selectedNoteTakerCompany} />
+                                    </div>
+                                    <div className="super_company">
+                                    <DropdownMelcous
                                             name='noteTakerContact'
                                             data={this.state.noteTakerContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'noteTakerContactName', 'noteTakerContactId', 'selectedNoteTakerContact')}
@@ -744,14 +790,6 @@ class MeetingMinutesAddEdit extends Component {
                                             onBlur={setFieldTouched}
                                             error={errors.noteTakerContact}
                                             touched={touched.noteTakerContact} />
-                                    </div>
-                                    <div className="super_company">
-                                        <DropdownMelcous
-                                            name='noteTakerCompany'
-                                            data={this.state.Companies}
-                                            handleChange={(e) => this.handleChangeDropDowns(e, 'noteTakerCompanyName', 'noteTakerCompanyId', 'selectedNoteTakerCompany', 'noteTakerContacts', 'selectedNoteTakerContact')}
-                                            placeholder='noteTakerCompany'
-                                            selectedValue={this.state.selectedNoteTakerCompany} />
                                     </div>
                                 </div>
                             </div>
@@ -799,7 +837,16 @@ class MeetingMinutesAddEdit extends Component {
                                     <label className="control-label">{Resources['CompanyName'][currentLanguage]}</label>
                                     <div className="supervisor__company">
                                         <div className="super_name">
-                                            <DropdownMelcous
+                                    <DropdownMelcous
+                                                name="fromCompany"
+                                                data={this.state.Companies}
+                                                handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedAttendencesCompany', 'attendencesContacts', 'selectedAttendencesContact')}
+                                                placeholder='fromCompany'
+                                                selectedValue={this.state.selectedAttendencesCompany}
+                                            />
+                                        </div>
+                                        <div className="super_company">
+                                        <DropdownMelcous
                                                 name="attendeesContact"
                                                 data={this.state.attendencesContacts}
                                                 handleChange={e => this.setState({ selectedAttendencesContact: e })}
@@ -810,15 +857,6 @@ class MeetingMinutesAddEdit extends Component {
                                                 error={errors.attendeesContact}
                                                 touched={touched.attendeesContact}
                                                 id="attendeesContact"
-                                            />
-                                        </div>
-                                        <div className="super_company">
-                                            <DropdownMelcous
-                                                name="fromCompany"
-                                                data={this.state.Companies}
-                                                handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedAttendencesCompany', 'attendencesContacts', 'selectedAttendencesContact')}
-                                                placeholder='fromCompany'
-                                                selectedValue={this.state.selectedAttendencesCompany}
                                             />
                                         </div>
                                     </div>
@@ -920,7 +958,15 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['calledByCompany'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                        <DropdownMelcous
+                                    <DropdownMelcous
+                                            name='topicCompany'
+                                            data={this.state.Companies}
+                                            handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedTopicCompany', 'topicsContacts', 'selectedTopicContact')}
+                                            placeholder='topicCompany'
+                                            selectedValue={this.state.selectedTopicCompany} />
+                                    </div>
+                                    <div className="super_company">
+                                    <DropdownMelcous
                                             name='topicContact'
                                             data={this.state.topicsContacts}
                                             handleChange={e => this.setState({ selectedTopicContact: e })}
@@ -931,14 +977,6 @@ class MeetingMinutesAddEdit extends Component {
                                             error={errors.topicContact}
                                             touched={touched.topicContact}
                                         />
-                                    </div>
-                                    <div className="super_company">
-                                        <DropdownMelcous
-                                            name='topicCompany'
-                                            data={this.state.Companies}
-                                            handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedTopicCompany', 'topicsContacts', 'selectedTopicContact')}
-                                            placeholder='topicCompany'
-                                            selectedValue={this.state.selectedTopicCompany} />
                                     </div>
                                 </div>
                             </div>
@@ -998,7 +1036,7 @@ class MeetingMinutesAddEdit extends Component {
                 <div className="mainContainer">
                     <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper one__tab one_step noTabs__document"}>
                   
-                    <HeaderDocument projectName={projectName} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
  
                         <div className="doc-container">
                             <div className="step-content">
@@ -1032,13 +1070,13 @@ class MeetingMinutesAddEdit extends Component {
                                     <div className="step-content-foot">
                                         <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
                                             "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                        <span onClick={this.NextStep} className={this.state.CurrStep < 3 && this.state.meetingId > 0 ? "step-content-btn-prev "
+                                        <span onClick={this.NextStep} className={this.state.meetingId > 0 ? "step-content-btn-prev "
                                             : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                         </span>
                                     </div>
                                     <div className="workflow-sliderSteps">
                                         <div className="step-slider">
-                                            <div data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                            <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>1</span>
                                                 </div>
@@ -1046,7 +1084,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     <h6>{Resources.addMeetingMinutes[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                            <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>2</span>
                                                 </div>
@@ -1054,7 +1092,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     <h6 >{Resources.attendenceAdttion[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
+                                            <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
                                                 <div className="steps-timeline">
                                                     <span>3</span>
                                                 </div>

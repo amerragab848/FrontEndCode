@@ -18,7 +18,7 @@ const _ = require('lodash')
 class SendWorkFlow extends Component {
     constructor(props) {
         super(props)
-        this.state = { 
+        this.state = {
             workFlowData: {
                 projectId: this.props.projectId,
                 docId: this.props.docId,
@@ -30,7 +30,7 @@ class SendWorkFlow extends Component {
             },
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
             selectedApproveId: { label: "select To Contact", value: 0 },
-
+            submitLoading: false,
             WorkFlowData: [],
             WorkFlowContactData: []
         }
@@ -51,24 +51,48 @@ class SendWorkFlow extends Component {
     componentDidMount = () => {
         let url = "ProjectWorkFlowGetList?projectId=" + this.state.workFlowData.projectId;
         this.GetData(url, 'subject', 'id', 'WorkFlowData', 1);
+        this.props.actions.SendingWorkFlow(true);
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.showModal !== this.props.showModal) {
+            this.setState({ submitLoading: false })
+            console.log('showmodal changed...', nextProps.showModal)
+        }
+    }
+
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.showModal != this.props.showModal) {
+    //         if (this.props.showModal) {
+    //             // this.setState({ submitLoading: true })
+    //             this.props.actions.SendingWorkFlow(true);
+
+    //         } else {
+    //             this.setState({ submitLoading: false })
+    //         }
+    //         this.props.actions.SendingWorkFlow(this.props.showModal);
+    //     }
+    // }
 
     inputChangeHandler = (e) => {
         this.setState({ workFlowData: { ...this.state.workFlowData, Comment: e.target.value } });
     }
 
     toAccounthandelChange = (item) => {
-        this.setState({ 
+        this.setState({
             toAccountId: { ...this.state.workFlowData, toAccountId: item.value },
-            selectedApproveId:item
-        }); 
+            selectedApproveId: item
+        });
     }
 
     clickHandler = (e) => {
+        this.setState({ submitLoading: true })
+
         let workFlowObj = { ...this.state.workFlowData };
         workFlowObj.toAccountId = this.state.selectedApproveId.value;
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.props.docId + '&docType=' + this.props.docTypeId + '&projectId=' + this.props.projectId;
         this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
+
     }
 
     render() {
@@ -85,12 +109,21 @@ class SendWorkFlow extends Component {
                     name="ddlApproveTo"
                     selectedValue={this.state.selectedApproveId}
                     index='ddlApproveTo'
-                    handleChange ={this.toAccounthandelChange}
+                    handleChange={this.toAccounthandelChange}
                     className={this.state.toCompanyClass} />
-
-                <div className="fullWidthWrapper">
-                    <button className="workFlowDataBtn-1 primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
-                </div>
+                {!this.state.submitLoading ?
+                    <div className="fullWidthWrapper">
+                        <button className="workFlowDataBtn-1 primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
+                    </div>
+                    : (
+                        <span className="primaryBtn-1 btn largeBtn disabled">
+                            <div className="spinner">
+                                <div className="bounce1" />
+                                <div className="bounce2" />
+                                <div className="bounce3" />
+                            </div>
+                        </span>
+                    )}
             </div>
         );
     }
@@ -135,7 +168,8 @@ function mapStateToProps(state) {
 
     return {
         workFlowCycles: state.communication.workFlowCycles,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        showModal: state.communication.showModal
     }
 }
 

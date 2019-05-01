@@ -276,7 +276,8 @@ class ProjectIssuesAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
             this.setState({
@@ -305,7 +306,7 @@ class ProjectIssuesAddEdit extends Component {
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                <HeaderDocument projectName={projectName} docTitle={Resources.projectIssuesLog[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectIssuesLog[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?

@@ -228,17 +228,22 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {   
         this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
 
+
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
+        }
+
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });
         }
     }
 
@@ -264,7 +269,8 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    handleShowAction = (item) => {
+    handleShowAction = (item) => { 
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
 
@@ -281,10 +287,11 @@ class projectWorkFlowAddEdit extends Component {
     showBtnsSaving() {
         let btn = null;
 
-        if (this.state.docId === 0) {
+        if (this.state.docId === 0 ) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button>
+            btn = this.state.isViewMode === false?
+             <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button>:null
         }
         return btn;
     }
@@ -1434,7 +1441,7 @@ class projectWorkFlowAddEdit extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                             <div className="inputDev ui input">
                                                 <input autoComplete="off" className="form-control" value={values.Description} name="Description"
@@ -1498,34 +1505,23 @@ class projectWorkFlowAddEdit extends Component {
 
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
-
-
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <Dropdown title="company" data={this.state.CompanyData} name="CompanyFollowUp"
-                                                    selectedValue={values.CompanyFollowUp} onChange={setFieldValue}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "CompanyFollowUp")}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.CompanyFollowUp}
-                                                    touched={touched.CompanyFollowUp}
-                                                    value={values.CompanyFollowUp} />
-                                            </div>
+                                            <Dropdown title="company" data={this.state.CompanyData} name="CompanyFollowUp"
+                                                selectedValue={values.CompanyFollowUp} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "CompanyFollowUp")}
+                                                onBlur={setFieldTouched} error={errors.CompanyFollowUp}
+                                                touched={touched.CompanyFollowUp} value={values.CompanyFollowUp} />
                                         </div>
 
-
                                         <div className="linebylineInput valid-input">
-                                            <div className="inputDev ui input">
-                                                <Dropdown title="ContactName" data={this.state.ContactData} name="ContactNameFollowUp"
-                                                    selectedValue={values.ContactNameFollowUp} onChange={setFieldValue}
-                                                    handleChange={(e) => this.handleChangeDrops(e, "ContactNameFollowUp")}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.ContactNameFollowUp}
-                                                    touched={touched.ContactNameFollowUp}
-                                                    value={values.ContactNameFollowUp} />
-                                            </div>
+                                            <Dropdown title="ContactName" data={this.state.ContactData} name="ContactNameFollowUp"
+                                                selectedValue={values.ContactNameFollowUp} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "ContactNameFollowUp")}
+                                                onBlur={setFieldTouched} error={errors.ContactNameFollowUp}
+                                                touched={touched.ContactNameFollowUp} value={values.ContactNameFollowUp} />
                                         </div>
-
                                     </div>
+
                                     <div className="slider-Btns">
                                         <button className="primaryBtn-1 btn meduimBtn" type='submit' >ADD</button>
                                     </div>
@@ -1806,10 +1802,11 @@ class projectWorkFlowAddEdit extends Component {
                 {this.state.IsLoadingCheckCode ?
                     <LoadingSection /> : null
                 }
+
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
 
-                    <HeaderDocument projectName={projectName} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
 
 
                     <div className="doc-container">

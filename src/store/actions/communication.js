@@ -215,11 +215,22 @@ export function SnedToWorkFlow(url, formData, urlCycle) {
         }).catch((ex) => {
             dispatch({
                 type: types.Send_WorkFlow,
-                hasWorkflow: false
+                hasWorkflow: false,
+                showModal: false
             });
         });
     }
 }
+
+export function SendingWorkFlow(value) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Sending_WorkFlow,
+            showModal: value
+        });
+    }
+}
+
 export function GetWorkFlowCycles(urlAction) {
     return (dispatch, getState) => {
 
@@ -230,7 +241,8 @@ export function GetWorkFlowCycles(urlAction) {
             dispatch({
                 type: types.Cycles_WorkFlow,
                 workFlowCycles: result.cycles,
-                hasWorkflow: result.hasWorkFlow
+                hasWorkflow: result.hasWorkFlow,
+                showModal: false
             });
 
         }).catch((ex) => {
@@ -404,4 +416,13 @@ function BuildWorkFlowCycleStracture(result) {
 
     returnObj.cycles = cycles;
     return returnObj;
-}; 
+};
+
+export function setDocId(docId) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Set_DocId,
+            docId: docId
+        });
+    }
+}

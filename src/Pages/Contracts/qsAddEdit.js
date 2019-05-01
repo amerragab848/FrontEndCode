@@ -816,7 +816,7 @@ class QsAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
-        <HeaderDocument projectName={projectName} docTitle={Resources.contractsQs[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+        <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.contractsQs[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
           <div className="doc-container">
             {/* Right Menu */}
             <div className="step-content">
