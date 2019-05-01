@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import addNoDataModule from 'highcharts/modules/no-data-to-display'; 
-import Api from '../../api';
-import language from '../../resources.json'
-let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
 
-addNoDataModule(Highcharts);
+import { Donut } from 'britecharts-react'
+
+import Api from '../../api';
+// const logMouseOver = () => console.log('Mouse Over');
 
 class PieChartComp extends Component {
 
@@ -14,83 +11,60 @@ class PieChartComp extends Component {
         super(props);
 
         this.state = {
-            options:
-            {
-                lang: {
-                    noData: language['noData'][currentLanguage],
-                },
-                noData: {
-                    style: {
-                        fontWeight: 'bold',
-                        fontSize: '25px',
-                        color: '#1B4EDB',
-                    },
-                },
-
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: 0,
-                    plotShadow: false,
-                    type: 'pie'
-                   
-                },
-                title: {
-                    text: this.props.title
-                },
-              
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: false
-                        },
-                        showInLegend: true
-                    }
-                },
-                series:[],
-                credits: {
-                    enabled: false
-
-                }
-
-            }
+            dataChart: [],
+            isLoading: true
         }
+
     }
-    componentDidMount(){
-        this.abortController = new AbortController();
+    componentDidMount() {
+        // this.abortController = new AbortController();
 
-        let signal = this.abortController.signal;
+        // let signal = this.abortController.signal;
 
-        let _series=[]
-        Api.get(this.props.api, signal).then(results => {
-            results.map((obj)=>{
-                _series.push({name:obj[this.props.name] , y:obj[this.props.y] });
-                return null;
-            })
-            this.setState({options:{ series: { name:this.props.seriesName , data :_series} }});
-         }).catch ((ex) => {
+        let dataChart = [];
+
+        Api.get(this.props.api).then(res => {
+            if (res) {
+                res.map((obj, index) => {
+                    dataChart.push({
+                        quantity: obj[this.props.y],
+                        name: obj[this.props.name],
+                        id: index
+                    });
+                    return null;
+                })
+            }
+            this.setState({ isLoading: false, dataChart: dataChart });
+
+        }).catch((ex) => {
             console.log(ex);
-         }); 
+        });
     }
 
-    componentWillUnmount() {    
-        this.abortController.abort();
+    componentWillUnmount() {
+        // this.abortController.abort();
     }
 
-    render() { 
-        return ( 
-                <div className="panel">
-                    <div className="panel-body">
-                        <HighchartsReact
-                            highcharts={Highcharts}
-                            options={this.state.options}
+    render() {
+        return (
+            <div className="panel">
+                <div className="panel-body">
+                    <h2>
+                        {this.props.title}
+                    </h2>
+                    {this.state.isLoading == false ?
+                        <Donut
+                            data={this.state.dataChart}
+                            // customMouseOver={logMouseOver}
+                            externalRadius={100}
+                            internalRadius={47}
+                            highlightSliceById={1}
+
+                            colorSchema={["#6aedc7", "#39c2c9", "#ffce00", "#ffa71a", "#f866b9", "#998ce3"]}
                         />
-                    </div> 
-                </div> 
+                        : null}
+                </div>
+            </div>
         );
     }
 }

@@ -8,9 +8,19 @@ let ChartWidgets = [{
         'y': 'total'
     },
     type: 'pie',
-    seriesName:"projectStatus"
- }
-, {
+    seriesName: "projectStatus"
+}, {
+    id: 'wt-Name13',
+    title: 'percentageExpensesTypesOfTotal',
+    props: {
+        'api': 'GetPercentageExpensesType',
+        'name': 'projectName',
+        'y': 'total'
+    }, 
+    type: 'pie',
+    seriesName: "expensesAllProject"
+
+},{
     id: 'wt-Name02',
     title: 'expensesAllProject',
     props: {
@@ -19,9 +29,9 @@ let ChartWidgets = [{
         'y': 'total'
     },
     type: 'pie',
-    seriesName:"expensesAllProject"
+    seriesName: "expensesAllProject"
 
-},{
+}, {
     id: 'wt-Name03',
     title: 'completedActivitiesCommulative',
     props: {
@@ -30,12 +40,12 @@ let ChartWidgets = [{
         'data': 'percentage'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'total',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'total',
+    catagName: 'projectName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     id: 'wt-Name04',
     title: 'completedActivitiesThisMonth',
     props: {
@@ -44,12 +54,12 @@ let ChartWidgets = [{
         'data': 'percentage'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'total',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'total',
+    catagName: 'projectName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     id: 'wt-Name05',
     title: 'percentOfMaterialRequestPerProject',
     props: {
@@ -58,12 +68,12 @@ let ChartWidgets = [{
         'data': 'percentage'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'total',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'total',
+    catagName: 'projectName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     id: 'wt-Name06',
     title: 'percentOfMaterialRequestPerProject',
     props: {
@@ -72,12 +82,12 @@ let ChartWidgets = [{
         'data': 'percentage'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'total',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'total',
+    catagName: 'projectName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     ////////////////////////////////////
     id: 'wt-Name07',
     title: 'percentOfRejectedSubmittalPerProject',
@@ -87,12 +97,12 @@ let ChartWidgets = [{
         'data': 'percentage'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'total',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'total',
+    catagName: 'projectName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     id: 'wt-Name08',
     title: 'countinspectionApproved',
     props: {
@@ -101,12 +111,12 @@ let ChartWidgets = [{
         'data': 'percentage'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'sum',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'sum',
+    catagName: 'projectName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     id: 'wt-Name09',
     title: 'rejectedInspectionRequest',
     props: {
@@ -115,12 +125,12 @@ let ChartWidgets = [{
         'data': 'percentage'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'sum',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'sum',
+    catagName: 'projectName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     id: 'wt-Name10',
     title: 'pendingItemInWorkFlow',
     props: {
@@ -129,12 +139,12 @@ let ChartWidgets = [{
         'data': 'count'
     },
     type: 'column',
-    stack:'normal',
-    yTitle:'total',
-    catagName:'docName',
-    multiSeries:'no',
-    barContent:[]
-},{
+    stack: 'normal',
+    yTitle: 'total',
+    catagName: 'docName',
+    multiSeries: 'no',
+    barContent: []
+}, {
     id: 'wt-Name11',
     title: 'contractsPerProject',
     props: {
@@ -143,14 +153,14 @@ let ChartWidgets = [{
         'data': 'count'
     },
     type: 'column',
-    stack:'',
-    yTitle:'total',
-    catagName:'projectName',
-    multiSeries:'yes',
-    barContent:[{name:'Contracted' ,value:'percentageContract'},{name:'Contracts Under Review', value:'countUnderContract'}]
+    stack: '',
+    yTitle: 'total',
+    catagName: 'projectName',
+    multiSeries: 'yes',
+    barContent: [{ name: 'Contracted', value: 'percentageContract' }, { name: 'Contracts Under Review', value: 'countUnderContract' }]
 
 }
-,{
+    , {
     id: 'wt-Name12',
     title: 'contractsSummaryAllProjectProject',
     props: {
@@ -159,28 +169,28 @@ let ChartWidgets = [{
         'data': 'count'
     },
     type: 'column',
-    stack:'',
-    yTitle:'total',
-    catagName:'projectName',
-    multiSeries:'yes',
-    barContent:[{name:'Contracts Under Review' ,value:'countUnderContract'},{name:'Contracted', value:'countContract'}]
+    stack: '',
+    yTitle: 'total',
+    catagName: 'projectName',
+    multiSeries: 'yes',
+    barContent: [{ name: 'Contracts Under Review', value: 'countUnderContract' }, { name: 'Contracted', value: 'countContract' }]
 
-},{
-    id: 'wt-Name13',
-    title: 'percentageExpensesTypesOfTotal',
-    props: {
-        'api': 'GetPercentageExpensesType',
-        'name': 'projectName',
-        'data': 'total'
-    },
-    type: 'column',
-    stack:'normal',
-    yTitle:'sum',
-    catagName:'projectName',
-    multiSeries:'no',
-    barContent:[]
+}, {
+    //     id: 'wt-Name13',
+    //     title: 'percentageExpensesTypesOfTotal',
+    //     props: {
+    //         'api': 'GetPercentageExpensesType',
+    //         'name': 'projectName',
+    //         'data': 'total'
+    //     },
+    //     type: 'column',
+    //     stack:'normal',
+    //     yTitle:'sum',
+    //     catagName:'projectName',
+    //     multiSeries:'no',
+    //     barContent:[]
 
-},{
+    // },{
     id: 'wt-Name14',
     title: 'budgetVariance',
     props: {
@@ -189,11 +199,11 @@ let ChartWidgets = [{
         'data': 'total'
     },
     type: 'column',
-    stack:'',
-    yTitle:'total',
-    catagName:'expenseTypeName',
-    multiSeries:'yes',
-    barContent:[{name:'Actual Total' ,value:'actual'},{name:'Budget Expenses', value:'budgetedExpenseValue'}]
+    stack: '',
+    yTitle: 'total',
+    catagName: 'expenseTypeName',
+    multiSeries: 'yes',
+    barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
 
 }
 
