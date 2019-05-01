@@ -30,7 +30,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
-import GridSetup from "../Communication/GridSetup";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import IPConfig from '../../IP_Configrations'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -78,7 +78,7 @@ let arrange = 0;
 
 
 class bogAddEdit extends Component {
- 
+
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -124,6 +124,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
+
             }, {
                 key: "boqType",
                 name: Resources["boqType"][currentLanguage],
@@ -350,8 +351,9 @@ class bogAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
- 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
 
@@ -728,7 +730,7 @@ class bogAddEdit extends Component {
         }
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
 
@@ -937,7 +939,7 @@ class bogAddEdit extends Component {
     };
 
     StepOneLink = () => {
-        if (docId !== 0)  {
+        if (docId !== 0) {
             this.setState({
                 firstComplete: true,
                 secondComplete: false,
@@ -948,7 +950,7 @@ class bogAddEdit extends Component {
     }
 
     StepTwoLink = () => {
-        if (docId !== 0)  {
+        if (docId !== 0) {
             this.setState({
                 firstComplete: true,
                 secondComplete: true,
@@ -972,7 +974,7 @@ class bogAddEdit extends Component {
 
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
-            <GridSetup
+            <GridSetupWithFilter
                 rows={this.state.items}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
@@ -982,6 +984,7 @@ class bogAddEdit extends Component {
                 onRowsSelected={this.onRowsSelected}
                 onRowsDeselected={this.onRowsDeselected}
                 onGridRowsUpdated={this._onGridRowsUpdated}
+
                 assign={true}
                 assignFn={() => this.assign()}
                 key='items'
@@ -1657,7 +1660,7 @@ class bogAddEdit extends Component {
                     <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
                         : "documents-stepper noTabs__document one__tab one_step"}>
 
-                        <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                        <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> :
@@ -1707,7 +1710,7 @@ class bogAddEdit extends Component {
                                     </div>
                                     <div className="workflow-sliderSteps">
                                         <div className="step-slider">
-                                            <div  onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                            <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>1</span>
                                                 </div>
@@ -1715,7 +1718,7 @@ class bogAddEdit extends Component {
                                                     <h6>{Resources.boq[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div  onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                            <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
                                                 <div className="steps-timeline">
                                                     <span>2</span>
                                                 </div>
@@ -1723,7 +1726,7 @@ class bogAddEdit extends Component {
                                                     <h6 >{Resources.items[currentLanguage]}</h6>
                                                 </div>
                                             </div>
-                                            <div  onClick={this.StepThreeLink}  data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
+                                            <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
                                                 <div className="steps-timeline">
                                                     <span>3</span>
                                                 </div>

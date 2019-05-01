@@ -1087,6 +1087,7 @@ class SubmittalAddEdit extends Component {
       });
     }
   }
+  
 
   addSubmittalItems() {
 
