@@ -741,7 +741,7 @@ class ProjectTasks extends Component {
         selectedRows: selectedRows
       });
     } else {
-      toast.WARNING(Resources["missingPermissions"][currentLanguage]);
+      toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   };
 
@@ -780,7 +780,7 @@ class ProjectTasks extends Component {
           showDeleteModal: false
         });
 
-        toast.WARNING(Resources["operationSuccess"][currentLanguage]);
+        toast.warning(Resources["operationSuccess"][currentLanguage]);
       });
   };
 

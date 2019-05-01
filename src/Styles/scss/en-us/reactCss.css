@@ -921,8 +921,8 @@ table edition
   margin-right: 15px;
 }
 .dashboardLoading {
-  position: fixed;
-  top: 153px;
+  position: absolute;
+  top: 0;
   right: 0;
   left: 0;
   bottom: 0;
@@ -973,7 +973,7 @@ table edition
   }
   .ui.modal.smallModal {
     max-width: 430px;
-    padding: 0;
+    /* padding: 0; */
 }
 .rodal .modal .actions button:nth-child(2) {
   margin-left: 10px;
@@ -1436,6 +1436,7 @@ tfoot tr td p{
 }
 .SummeriesContainer .SummeriesTitle {
   padding-top: 30px;
+  padding-bottom: 59px;
 }
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList .first {
   margin-right: 10px;
@@ -1896,9 +1897,6 @@ button.companies_icon {
       color: #252833;
       opacity: 0.3;
       font-family: font-b; }
-      .one__tab .approveDocument {
-        width: auto !important
-      }
     .one__tab .approveDocument .approveDocumentBTNS {
       flex: 1.5;
       display: flex;
@@ -2567,7 +2565,11 @@ button.companies_icon {
 }
 
 .main-header.dashboard__header {
-  padding-left: 76px;
+  padding-left: 60px;
+}
+.main-header.dashboard__header .header-content .nav-left {
+  display: flex;
+  align-items: center;
 }
 .dashboard__header .nav-right {
   position: relative;
@@ -2578,6 +2580,10 @@ button.companies_icon {
   top: 12px;
   cursor: pointer;
   display: block;
+}
+.dashboard__selectMenu {
+  width: 204px;
+  margin-left: 64px;
 }
 .dashboard__selectMenu .css-10nd86i {
   max-width: 204px;
@@ -2617,9 +2623,10 @@ button.companies_icon {
 }
 .dashboard__selectMenu .css-10nd86i .css-d8oujb {
   background-color: white;
-  opacity: 0.1;
-  margin-bottom: 6px;
-  margin-top: 6px;
+  opacity: 0.9;
+  margin-bottom: 0;
+  margin-top: 0;
+  width: 2px;
 }
 .dashboard__selectMenu .css-10nd86i .css-2o5izw {
   background-color: #4382f9;
@@ -2806,12 +2813,12 @@ button.companies_icon {
 .reactTableActions {
   position: relative;
 }
-.ui.modal.mediumModal, .ui.modal.largeModal, .ui.modal.smallModal {
+/* .ui.modal.mediumModal, .ui.modal.largeModal, .ui.modal.smallModal {
   max-width: 600px;
   max-height: 500px;
   overflow: auto;
 
-}
+} */
 .ui.modal.largeModal {
   max-width: 600px;
   max-height: 500px;
@@ -3639,7 +3646,6 @@ width: 256px;
 background-color: #FAFBFC;
 position: relative;
 z-index: 1;
-height: calc(100vh - 72px);
 border-right: 1px solid #E9ECF0; }
 .settings-container .settings-tabs-items h3 {
   height: 72px;
@@ -3656,7 +3662,14 @@ border-right: 1px solid #E9ECF0; }
   color: #252833;
   font-family: font-b;
   font-size: 20px;
-  border-bottom: 1px solid #E9ECF0; }
+  border-bottom: 1px solid #E9ECF0;
+  position: sticky;
+  top: 72px;
+}
+.settings-container .settings-tabs-items ul {
+  position: sticky !important;
+  top: 144px;
+}
 .settings-container .settings-tabs-items ul li {
   padding-left: 40px;
   height: 64px;
@@ -3875,8 +3888,8 @@ width: calc(100% - 256px);
   background: #fff
 }
 .reports__content {
-    padding-left: 32px;
-    padding-right: 40px;
+    padding-left: 0;
+    padding-right: 0;
     padding-top: 35px;
 }
 
@@ -4113,11 +4126,11 @@ width: calc(100% - 256px);
   flex-shrink: 0 !important
 }
 .notifiBar {
-  position: fixed;
-  top: 65px;
+  position: absolute;
+  top: 150%;
   z-index: 999;
-  right: 108px;
   width: 345px;
+  right: -162px;
 }
 .notifi__tabs .react-tabs__tab--selected {
   border: none !important;
@@ -4153,6 +4166,12 @@ width: calc(100% - 256px);
   background: #fff;
   z-index: 99;
 }
+.notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper img, .notifiBar .smallNotifiBar .notifiContent .smallAvatarSize img {
+  transform: none !important;
+}
+.notifiBar .smallNotifiBar .notifi__tabs ul li {
+  margin-left: 0 !important
+}
 .tableReports.attachmentTable tbody tr .contentCell {
   font-family: font-r;
 }
@@ -4168,16 +4187,12 @@ width: calc(100% - 256px);
   font-size: 10px !important;
   padding: 0 6px !important;
 }
-
-
 .document__sign {
   top: 28px;
   position: absolute;
   left: 40px;
   transform: rotate(-4deg);
 }
-
-
 .document__sign .ui.label.labelWithArrowRedS {
   height: 51px;
   padding: 0 10px;
@@ -4186,9 +4201,68 @@ width: calc(100% - 256px);
   align-items: center;
   min-width: 125px;
 }
-
 .document__sign .ui.label.labelWithArrowRedS span {
   text-transform: uppercase;
   white-space: nowrap;
   font-size: 16px;
+}
+.workflowWrapper .workflow-header {
+  padding-bottom: 12px;
+}
+.workflowWrapper .workflow-header h4 {
+  display: flex;;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.workflowWrapper .workflow-header h4 p span:first-child {
+  font-family: font-r;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
+}
+.workflowWrapper .workflow-header h4 p span:last-child {
+  font-family: font-b;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #adbccc;
+  margin-left: 8px;
+}
+.workflowWrapper .workflow-header h4 span:last-child {
+  font-family: font-opens;
+  font-size: 14px;
+  line-height: 1.71;
+  letter-spacing: -0.2px;
+  color: #3e4352;
+}
+.workFlowStep {
+  margin: 0;
+}
+.settings-container .settings-tabs-items ul li .subUlTitle {
+  font-size: 14px;
+}
+.cardDeclined .Status__comment,
+.cardApproval .Status__comment {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 17px;
+}
+
+.cardDeclined .Status__comment span,
+.cardApproval .Status__comment span {
+    margin-right: 25px;
+    cursor: pointer;
+}
+.card-status .card-box .signature-h .smallAvatarSize {
+  flex-shrink: 0;
+}
+.card-status .card-box .signature-h .avatarName h6 {
+  max-width: 145px;
+  overflow: hidden;
+}
+.ui.radio.checkbox {
+  margin-bottom: 5px;
 }

@@ -170,7 +170,7 @@ class requestPaymentsAddEdit extends Component {
                 pathname: "/requestPayments/" + projectId
             });
         }
-        this.editRowsClick = this.editRowsClick.bind(this); 
+        this.editRowsClick = this.editRowsClick.bind(this);
         this.GetCellActions = this.GetCellActions.bind(this);
     }
 
@@ -385,6 +385,7 @@ class requestPaymentsAddEdit extends Component {
         ];
 
     }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -518,6 +519,7 @@ class requestPaymentsAddEdit extends Component {
             });
         })
     }
+
     fillDropDowns(isEdit) {
 
         if (isEdit === false) {
@@ -538,7 +540,8 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -704,7 +707,7 @@ class requestPaymentsAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
@@ -760,7 +763,7 @@ class requestPaymentsAddEdit extends Component {
             })
             if (this.props.changeStatus === true) {
                 if (this.props.items.length == 0) {
-                 //   this.fillVoItems();
+                    //   this.fillVoItems();
                 }
             }
 
@@ -893,95 +896,6 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    NextTopStep = () => {
-
-        if (this.state.CurrentStep === 1) {
-            this.setState({
-                isLoading: true
-            });
-            this.FillGridItems();
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
-            })
-
-        }
-        else if (this.state.CurrentStep === 2) {
-            this.FillSummariesTab();
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        }
-        else if (this.state.CurrentStep === 3) {
-            this.fillDeductions();
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: false,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: false,
-                FourthStep: true,
-                FourthStepComplate: true
-            })
-        } else if (this.state.CurrentStep === 4) {
-            this.props.history.push({
-                pathname: "/requestPayments/" + projectId
-            });
-        }
-
-    }
-
-    PreviousStep = () => {
-        if (this.state.docId !== 0) {
-            if (this.state.CurrentStep === 4) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
-                    SecondStep: false,
-                    ThirdStep: false,
-                    CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: false,
-                    FourthStep: true,
-                    FourthStepComplate: true
-                })
-            }
-            if (this.state.CurrentStep === 3) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
-                    SecondStep: true,
-                    ThirdStep: false,
-                    CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: false,
-                    SecondStepComplate: true
-                })
-            }
-            else {
-                if (this.state.CurrentStep === 2) {
-                    window.scrollTo(0, 0)
-                    this.setState({
-                        FirstStep: true,
-                        SecondStep: false,
-                        SecondStepComplate: false,
-                        ThirdStep: false,
-                        CurrentStep: (this.state.CurrentStep - 1)
-                    })
-                }
-            }
-        }
-    }
 
     saveVariationOrderItem(event) {
         let saveDocument = { ...this.state.voItem };
@@ -1285,6 +1199,156 @@ class requestPaymentsAddEdit extends Component {
             this.setState({ showCommentModal: false, isLoading: false })
         }
 
+    }
+
+    NextTopStep = () => {
+
+        if (this.state.CurrentStep === 1) {
+            this.setState({
+                isLoading: true
+            });
+            this.FillGridItems();
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: false,
+                CurrentStep: this.state.CurrentStep + 1,
+                ThirdStep: false
+            })
+
+        }
+        else if (this.state.CurrentStep === 2) {
+            this.FillSummariesTab();
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: true,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: true
+            })
+        }
+        else if (this.state.CurrentStep === 3) {
+            this.fillDeductions();
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: false,
+                FourthStep: true,
+                FourthStepComplate: true
+            })
+        } else if (this.state.CurrentStep === 4) {
+            this.props.history.push({
+                pathname: "/requestPayments/" + projectId
+            });
+        }
+
+    }
+
+    PreviousStep = () => {
+        if (this.state.docId !== 0) {
+            if (this.state.CurrentStep === 4) {
+                window.scrollTo(0, 0)
+                this.setState({
+                    FirstStep: false,
+                    SecondStep: false,
+                    ThirdStep: false,
+                    CurrentStep: (this.state.CurrentStep - 1),
+                    ThirdStepComplate: false,
+                    FourthStep: true,
+                    FourthStepComplate: true
+                })
+            }
+            if (this.state.CurrentStep === 3) {
+                window.scrollTo(0, 0)
+                this.setState({
+                    FirstStep: false,
+                    SecondStep: true,
+                    ThirdStep: false,
+                    CurrentStep: (this.state.CurrentStep - 1),
+                    ThirdStepComplate: false,
+                    SecondStepComplate: true
+                })
+            }
+            else {
+                if (this.state.CurrentStep === 2) {
+                    window.scrollTo(0, 0)
+                    this.setState({
+                        FirstStep: true,
+                        SecondStep: false,
+                        SecondStepComplate: false,
+                        ThirdStep: false,
+                        CurrentStep: (this.state.CurrentStep - 1)
+                    })
+                }
+            }
+        }
+    }
+
+    StepOneLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                CurrentStep: 1,
+                ThirdStepComplate: false,
+                FourthStepComplate: false,
+            })
+
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                isLoading: true,
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrentStep: 2,
+                ThirdStepComplate: false,
+                FourthStepComplate: false,
+            })
+            this.FillGridItems();
+        }
+    }
+
+    StepThreeLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                ThirdStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: true,
+                CurrentStep: 3,
+                FourthStepComplate: false,
+                FourthStep: false,
+                FirstStep: false,
+                SecondStep: false,
+            })
+        }
+    }
+
+    StepFourLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FourthStep: true,
+                ThirdStep: false,
+                FirstStep: false,
+                SecondStep: false,
+                FourthStepComplate: true,
+                CurrentStep: 4,
+
+                ThirdStepComplate: true,
+                SecondStepComplate: true
+            })
+        }
     }
 
     render() {
@@ -1974,14 +2038,14 @@ class requestPaymentsAddEdit extends Component {
                                 <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
                                     "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
 
-                                <span onClick={this.NextTopStep} className={!this.state.FourthStepComplate && this.state.docId !== 0 ? "step-content-btn-prev "
+                                <span onClick={this.NextTopStep} className={this.state.docId !== 0 ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -1990,7 +2054,7 @@ class requestPaymentsAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.SecondStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
@@ -1999,7 +2063,7 @@ class requestPaymentsAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepThreeLink} data-id="step2 " className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>
@@ -2008,7 +2072,7 @@ class requestPaymentsAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepFourLink} data-id="step2 " className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>4</span>
                                         </div>
@@ -2027,13 +2091,13 @@ class requestPaymentsAddEdit extends Component {
 
                                         {this.state.isApproveMode === true ?
                                             <div >
-                                                <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                             </div>
                                             : null
                                         }
                                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                       <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                         <span className="border"></span>
                                         <div className="document__action--menu">
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
