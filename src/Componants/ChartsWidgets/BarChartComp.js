@@ -3,16 +3,27 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import addNoDataModule from 'highcharts/modules/no-data-to-display';
 import exporting from 'highcharts/modules/exporting'
- import Api from '../../api';
+import Api from '../../api';
 import language from '../../resources.json'
-let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
+import { Bar } from 'britecharts-react'
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 addNoDataModule(Highcharts);
 exporting(Highcharts)
+
+const marginObject = {
+    left: 100,
+    right: 40,
+    top: 100,
+    bottom: 50,
+};
+
+
 class BarChartComp extends Component {
 
     constructor(props) {
-        super(props); 
+        super(props);
         this.state = {
 
             options:
@@ -81,30 +92,43 @@ class BarChartComp extends Component {
                     enabled: false
 
                 },
-                exporting:{
-                    enabled:true
-                } 
-            }
+                exporting: {
+                    enabled: true
+                }
+            },
+            dataByTopic: {
+                dataByTopic: [
+                    {
+                        topic: -1,
+                        topicName: 'Vivid',
+                        dates: []
+                    }]
+            },
+            barData: [],
+            isLoading: true
         }
     }
 
     componentDidMount = () => {
         let _catag = []
         let _data = []
+        let barData = [];
         Api.get(this.props.api).then(results => {
             if (this.props.multiSeries === 'no') {
                 results.map((item) => {
                     _data.push(item[this.props.y])
                     _catag.push(item[this.props.catagName]);
+                    barData.push({ 'value': item[this.props.y], 'name': item[this.props.catagName] })
                     return null;
                 });
-                this.setState({ options: { series: { name: this.props.title, data: _data }, xAxis: { categories: _catag } } });
+                this.setState({ isLoading: false, barData: barData });
             }
-            else {
+            else { 
                 results.map((item) => {
                     _catag.push(item[this.props.catagName]);
                     return null;
                 })
+
                 let _series = []
                 this.props.barContent.map((bar) => {
 
@@ -120,20 +144,33 @@ class BarChartComp extends Component {
             }
 
         }).catch((ex) => {
-            //console.log(ex);
         });
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <div className="panel barChart__container">
                 <div className="panel-body">
-                    <HighchartsReact 
-                        highcharts={Highcharts}
-                        options={this.state.options}
-                    />
-                </div> 
-            </div> 
+                    {this.props.multiSeries !== 'no' ?
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={this.state.options}
+                        />
+                        :
+                        this.state.isLoading == false ?
+
+                            <Bar
+                                data={this.state.barData}
+                                width={600}
+                                isHorizontal={false}
+                                margin={marginObject}
+                                colorSchema={["#6aedc7", "#39c2c9", "#ffce00", "#ffa71a", "#f866b9", "#998ce3"]}
+                            />
+                            : null
+                    }
+
+                </div>
+            </div>
         );
     }
 }
