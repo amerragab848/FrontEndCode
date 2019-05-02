@@ -114,7 +114,7 @@ class expensesDetailsOnProjectsReport extends Component {
             let rows = res == null ? [] : res;
             this.setState({ rows, isLoading: false })
         }).catch(() => {
-            this.setState({ isLoading: false,rows:[] })
+            this.setState({ isLoading: false, rows: [] })
             toast.error(Resources.operationCanceled[currentLanguage])
         })
 
@@ -162,8 +162,8 @@ class expensesDetailsOnProjectsReport extends Component {
                     }}>
                     {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className='proForm reports__proForm' >
-                            <div className="reports__multiDrop letterFullWidth">
-                                <div className="reports__proForm " style={{ margin: '0' }}>
+                            <div className="reportsWithMulti">
+                                <div className="reports__multiDrop letterFullWidth">
                                     <div className="linebylineInput multiChoice">
                                         <Dropdown title='Projects' data={this.state.projectsList}
                                             name='selectedProject'
@@ -176,32 +176,36 @@ class expensesDetailsOnProjectsReport extends Component {
                                         />
                                     </div>
                                 </div>
+                                <div className="reports__smallInputs">
+                                    <div className="linebylineInput valid-input ">
+                                        <Dropdown title='CompanyName' data={this.state.companiesList}
+                                            name='selectedCompany'
+                                            selectedValue={this.state.selectedCompany}
+                                            handleChange={e => this.companyChange(e)}
+                                        />
+                                    </div>
+                                    <div className="linebylineInput valid-input " >
+                                        <Dropdown title='users' data={this.state.usersData}
+                                            name='selectUser'
+                                            selectedValue={this.state.selectedUser}
+                                            handleChange={e => this.setState({ selectedUser: e })}
+                                        />
+                                    </div>
+                                    <div className="linebylineInput valid-input alternativeDate">
+                                        <DatePicker title='startDate'
+                                            startDate={this.state.startDate}
+                                            handleChange={e => this.handleChange('startDate', e)} />
+                                    </div>
+                                    <div className="linebylineInput valid-input alternativeDate">
+                                        <DatePicker title='finishDate'
+                                            startDate={this.state.finishDate}
+                                            handleChange={e => this.handleChange('finishDate', e)} />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="linebylineInput valid-input ">
-                                <Dropdown title='CompanyName' data={this.state.companiesList}
-                                    name='selectedCompany'
-                                    selectedValue={this.state.selectedCompany}
-                                    handleChange={e => this.companyChange(e)}
-                                />
+                            <div className="button__reports">
+                                <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                             </div>
-                            <div className="linebylineInput valid-input " >
-                                <Dropdown title='users' data={this.state.usersData}
-                                    name='selectUser'
-                                    selectedValue={this.state.selectedUser}
-                                    handleChange={e => this.setState({ selectedUser: e })}
-                                />
-                            </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='startDate'
-                                    startDate={this.state.startDate}
-                                    handleChange={e => this.handleChange('startDate', e)} />
-                            </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='finishDate'
-                                    startDate={this.state.finishDate}
-                                    handleChange={e => this.handleChange('finishDate', e)} />
-                            </div>
-                            <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                         </Form>
                     )}
                 </Formik>

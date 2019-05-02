@@ -499,7 +499,8 @@ class inspectionRequestAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -660,7 +661,7 @@ class inspectionRequestAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
@@ -987,6 +988,44 @@ class inspectionRequestAddEdit extends Component {
         )
     }
 
+
+    StepOneLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FirstStep: true,
+                SecondStep: false,
+                SecondStepComplate: false,
+                ThirdStepComplate: false,
+                CurrentStep: 1,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: false,
+                CurrentStep: 2,
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                ThirdStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: true,
+                CurrentStep: 3,
+                FirstStep: false,
+                SecondStep: false,
+            })
+        }
+    }
+
     render() {
 
         let actions = [
@@ -1141,7 +1180,7 @@ class inspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                       <Dropdown
+                                                                            <Dropdown
                                                                                 data={this.state.companies}
                                                                                 isMulti={false}
                                                                                 selectedValue={this.state.selectedFromCompany}
@@ -1158,7 +1197,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 id="fromCompanyId" />
                                                                         </div>
                                                                         <div className="super_company">
-                                                                        <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.fromContacts}
                                                                                 selectedValue={this.state.selectedFromContact}
@@ -1180,7 +1219,7 @@ class inspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                          <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
                                                                                 selectedValue={this.state.selectedToCompany}
@@ -1193,7 +1232,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 name="toCompanyId" />
                                                                         </div>
                                                                         <div className="super_company">
-                                                                        <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.ToContacts}
                                                                                 selectedValue={this.state.selectedToContact}
@@ -1216,7 +1255,7 @@ class inspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                      
+
                                                                             <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
@@ -1226,7 +1265,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 name="bicCompanyId" />
                                                                         </div>
                                                                         <div className="super_company">
-                                                                        <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.bicContacts}
                                                                                 selectedValue={this.state.selectedActionByContactId}
@@ -1408,14 +1447,14 @@ class inspectionRequestAddEdit extends Component {
                                 <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
                                     "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
 
-                                <span onClick={this.NextTopStep} className={!this.state.ThirdStepComplate && this.state.docId !== 0 ? "step-content-btn-prev "
+                                <span onClick={this.NextTopStep} className={ this.state.docId !== 0 ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
@@ -1424,7 +1463,7 @@ class inspectionRequestAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
@@ -1432,7 +1471,7 @@ class inspectionRequestAddEdit extends Component {
                                             <h6 >{Resources.newCycle[currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                    <div onClick={this.StepThreeLink} data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>

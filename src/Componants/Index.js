@@ -100,7 +100,7 @@ class Index extends Component {
         );
       } else {
         return (
-          <div className="col-xs-8" key={item.id}>
+          <Fragment key={item.id}>
             <BarChartComp
               api={item.props.api}
               name={item.props.name}
@@ -112,7 +112,7 @@ class Index extends Component {
               multiSeries={item.multiSeries}
               barContent={item.barContent}
             />
-          </div>
+          </Fragment>
         );
       }
     });
@@ -132,7 +132,7 @@ class Index extends Component {
       let selectedCategoriesLocalStoarge = Object.keys(Widgets_Order);
 
       if (selectedCategoriesLocalStoarge.length > 0) {
- 
+
         let bulkWidgets = "";
 
         bulkWidgets = Widgets_Order[index];

@@ -27,10 +27,9 @@ import * as communicationActions from '../../store/actions/communication';
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
-import GridSetup from "../Communication/GridSetup";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import IPConfig from '../../IP_Configrations'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -124,6 +123,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
+
             }, {
                 key: "boqType",
                 name: Resources["boqType"][currentLanguage],
@@ -354,8 +354,6 @@ class bogAddEdit extends Component {
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
-       //
-        this.props.actions.documentForAdding()
     }
 
     fillDropDowns(isEdit) {
@@ -983,7 +981,7 @@ class bogAddEdit extends Component {
 
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
-            <GridSetup
+            <GridSetupWithFilter
                 rows={this.state._items}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
@@ -993,6 +991,7 @@ class bogAddEdit extends Component {
                 onRowsSelected={this.onRowsSelected}
                 onRowsDeselected={this.onRowsDeselected}
                 onGridRowsUpdated={this._onGridRowsUpdated}
+
                 assign={true}
                 assignFn={() => this.assign()}
                 key='items'

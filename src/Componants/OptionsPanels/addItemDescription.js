@@ -381,19 +381,17 @@ class addItemDescription extends Component {
                                                     index="equipmentType" />
                                             </div> : null}
 
-                                        {this.state.isLoading === false ? (
-                                            <div className={"slider-Btns fullWidthWrapper textLeft "}>
+                                        <div className="slider-Btns fullWidthWrapper textLeft ">
+                                            {this.state.isLoading === false ? 
                                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
-                                            </div>
-                                        ) : (
-                                                <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                 : <button className="primaryBtn-1 btn  disabled" disabled="disabled">
                                                     <div className="spinner">
                                                         <div className="bounce1" />
                                                         <div className="bounce2" />
                                                         <div className="bounce3" />
                                                     </div>
                                                 </button>
-                                            )}
+                                            }    </div>
                                     </div>
                                 </div>
                             </Form>

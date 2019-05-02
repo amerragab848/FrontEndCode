@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Api from "../../../../api";
 import LoadingSection from "../../../publicComponants/LoadingSection";
-import Export from "../../../OptionsPanels/Export";
 import Dropdown from "../../../OptionsPanels/DropdownMelcous";
 import "../../../../Styles/css/semantic.min.css";
 import "../../../../Styles/scss/en-us/layout.css";
@@ -12,7 +11,8 @@ import { connect } from 'react-redux';
 import config from "../../../../Services/Config";
 import permissions from '../../../../permissions.json'
 import HeaderDocument from '../../../OptionsPanels/HeaderDocument'
-import texture from "material-ui/svg-icons/image/texture";
+import _ from "lodash";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 //const filePermissions = JSON.parse(permissions).authorization;
 
@@ -25,7 +25,8 @@ class PermissionsGroupsPermissions extends Component {
             selectedDocument: { label: Resources.selectDocType[currentLanguage], value: -1 },
             checkedAll: false,
             groupName: '',
-            disabled:true
+            disabled: true,
+            status: 0
         }
         if (config.getPayload().uty != 'company') {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -36,6 +37,14 @@ class PermissionsGroupsPermissions extends Component {
     }
 
     componentWillMount() {
+        this.setState({ isLoading: true })
+        Api.get('AccountsPermissionsGroupsGetById?id=' + this.state.groupId).then(res => {
+            if (!_.isEmpty(res))
+                this.setState({ groupName: res[0].groupName, isLoading: false })
+        }).catch(() => {
+            this.setstate({ isLoading: false })
+        })
+
         let docs = []
         let module = []
         let options = []
@@ -49,6 +58,7 @@ class PermissionsGroupsPermissions extends Component {
             options.push({ label: element.title[currentLanguage], options: docs })
         })
         this.setState({ options })
+
     }
     checkedAll = () => {
         this.state[this.state.selectedDocument.value].forEach(item => {
@@ -64,13 +74,22 @@ class PermissionsGroupsPermissions extends Component {
     addEditPermission = () => {
         if (this.state.selectedDocument.value != -1) {
             let group = []
-            this.state[this.state.selectedDocument.value].forEach(item => {
-                group.push({ permissionId: item.code, groupName: this.state.groupName, permissionValue: this.state[item.code], groupId: this.state.groupId })
-            })
+            if (this.state.status == 1) {
+                this.state[this.state.selectedDocument.value].forEach(item => {
+                    group.push({ permissionId: item.code, groupName: this.state.groupName, permissionValue: this.state[item.code], groupId: this.state.groupId })
+                })
+            }
+            else {
+                this.state[this.state.selectedDocument.value].forEach(item => {
+                    if (this.state[item.code] == true)
+                        group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId })
+                })
+            }
             this.setState({ isLoading: true })
-            Api.post('EditGroupsPermissions', group).then(() => {
+            let url = this.state.status == 0 ? 'AddGroupsPermissions' : 'EditGroupsPermissions'
+            Api.post(url, group).then(() => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.setState({ isLoading: false,selectedDocument: { label: Resources.selectDocType[currentLanguage], value: -1 } ,disabled:true})
+                this.setState({ isLoading: false, selectedDocument: { label: Resources.selectDocType[currentLanguage], value: -1 }, disabled: true })
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ isLoading: false })
@@ -89,13 +108,17 @@ class PermissionsGroupsPermissions extends Component {
         }
         this.setState({ isLoading: true })
         Api.post('GetGroupsPermissionsV5', doc).then(res => {
-            if (res) {
-                this.setState({ groupName: res[0].groupName })
+            if (!_.isEmpty(res)) {
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
                 })
-                this.setState({ isLoading: false ,disabled:false})
+                this.setState({ isLoading: false, disabled: false, status: 1 })
             }
+            else {
+                this.setState({ isLoading: false, disabled: false, status: 0 })
+            }
+        }).catch(() => {
+            this.setState({ isLoading: false, disabled: false, status: 0 })
         })
     }
 
@@ -136,7 +159,7 @@ class PermissionsGroupsPermissions extends Component {
                                             </div>
                                         </div>
                                         <div className="permissins__btns">
-                                            <button className={"primaryBtn-1 btn mediumBtn "+this.state.disabled?'disabled':''} disabled={this.state.disabled} onClick={this.addEditPermission}>{Resources.save[currentLanguage]}</button>
+                                            <button className={"primaryBtn-1 btn mediumBtn " +( this.state.disabled ? "disabled" : '')} disabled={this.state.disabled} onClick={this.addEditPermission}>{Resources.save[currentLanguage]}</button>
                                             <button className="primaryBtn-2 btn mediumBtn middle__btn">Revoke All</button>
                                         </div>
                                     </div>

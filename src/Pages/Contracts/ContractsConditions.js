@@ -87,34 +87,45 @@ class ContractsConditions extends Component {
             showDeleteModal: false,
             addLoadding: false,
             contracts: [],
-            arrange: 1
+            arrange: 1,
+            selectedContract: { label: Resources.selectConditions[currentLanguage], value: -1 },
+            description: ''
         }
     }
-
     changeTab = (tabIndex) => {
+        if (tabIndex == 1)
+            this.setState({ selectedContract: { label: Resources.specsSectionSelection[currentLanguage], value: -1 } })
+        else
+            this.setState({ selectedContract: { label: Resources.selectConditions[currentLanguage], value: -1 } })
         this.setState({ activeTab: tabIndex })
     }
-
     componentWillMount = () => {
+        this.setState({ isLoading: true })
         DataService.GetDataList("GetAccountsContractsConditionsCategories?accountOwnerId=2&pageNumber=0&pageSize=1000", 'details', 'id').then((res) => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ contracts: res })
+            this.setState({ contracts: res, isLoading: false })
         }).catch(res => {
+            this.setState({ isLoading: false })
         })
     }
 
     addRecord(values) {
+        let arrange = this.state.arrange
+        this.state.rows.forEach(item => {
+            if (item.arrange >= arrange)
+                arrange = item.arrange + 1
+        })
+        this.setState({ arrange })
         let record = {
-            conditionType: this.state.activeTab == 0 ? 'general' : '',
+            conditionType: this.state.activeTab == 0 ? 'general' : 'particular',
             details: this.state.activeCondition == 1 ? values.description : '',
-            arrange: this.state.activeCondition == 1 ? values.arrange : this.state.arrange,
-            contractId: 6697, //this.props.contractId
-            accountsContractId: this.state.activeCondition == 1 ? undefined : this.state.selectedContract.value
+            arrange: this.state.activeCondition == 1 ? values.arrange : arrange,
+            contractId: 7715, //this.props.contractId
+            accountsContractId: this.state.activeCondition == 0 ? (this.state.activeTab == 1 ? this.state.selectedContract.value : this.state.selectedContract.label) : undefined
         }
-        if (this.state.activeCondition == 0) {
-            let arrange = this.state.arrange + 1
-            this.setState({ arrange })
-        }
+        if (this.state.activeTab == 1)
+            this.setState({ selectedContract: { label: Resources.specsSectionSelection[currentLanguage], value: -1 } })
+        else
+            this.setState({ selectedContract: { label: Resources.selectConditions[currentLanguage], value: -1 } })
         this.setState({ addLoadding: true })
         Api.post("AddContractCondition", record).then((res) => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -178,10 +189,9 @@ class ContractsConditions extends Component {
                     <Formik
                         enableReinitialize={true}
                         initialValues={{
-                            description: '',
-                            arrange: '',
-                            fromContract: ''
-
+                            description: this.state.description,
+                            arrange: this.state.arrange + 1,
+                            fromContract: this.state.selectedContract.value == -1 ? '' : this.state.selectedContract.label
                         }}
                         validationSchema={this.state.activeCondition == 1 ? conditionSchema : fromContractSchema}
                         onSubmit={(values) => {
@@ -208,7 +218,7 @@ class ContractsConditions extends Component {
                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
                                             <div className={"inputDev ui input " + (errors.description ? 'has-error' : !errors.description && touched.description ? (" has-success") : " ")}>
                                                 <input type="text" className="form-control" id="description"
-                                                    defaultValue={values.description}
+                                                    value={values.description}
                                                     name="description"
                                                     placeholder={Resources.description[currentLanguage]}
                                                     onBlur={handleBlur}
@@ -221,7 +231,7 @@ class ContractsConditions extends Component {
                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                             <div className={"inputDev ui input " + (errors.arrange ? 'has-error' : !errors.arrange && touched.arrange ? (" has-success") : " ")}>
                                                 <input type="text" className="form-control" id="arrange"
-                                                    defaultValue={values.arrange}
+                                                    value={values.arrange}
                                                     onBlur={handleBlur}
                                                     onChange={handleChange}
                                                     name="arrange"
@@ -233,7 +243,7 @@ class ContractsConditions extends Component {
                                     </div> :
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
-                                            title="fromContract"
+                                            title={this.state.activeTab == 1 ? 'specsSection' : "conditions"}
                                             data={this.state.contracts}
                                             selectedValue={this.state.selectedContract}
                                             handleChange={event => {
@@ -266,7 +276,7 @@ class ContractsConditions extends Component {
                     </Formik>
                     <header className="main__header">
                         <div className="main__header--div">
-                            <h2 className="zero">{Resources['addGeneralCondition'][currentLanguage]}</h2>
+                            <h2 className="zero">{this.state.activeTab == 1 ? Resources['addParticularCondition'][currentLanguage]:Resources['addGeneralCondition'][currentLanguage]}</h2>
                         </div>
                     </header>
                     <table className="attachmentTable">
