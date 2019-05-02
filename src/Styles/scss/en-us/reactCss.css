@@ -698,7 +698,7 @@ table edition
   overflow: hidden;
   display: flex;
   align-items: center;
-  text-transform: capitalize;
+  text-transform: uppercase;
   font-size : 12px;
   transition: all 0.5s ease-in-out;
 }
@@ -986,7 +986,18 @@ table edition
   cursor: pointer;
 }
 .panel {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
+}
+.donut-container {
+  display: flex;
+  justify-content: center;
+}
+.panel h2 {
+  text-align: center;
+}
+.legend-container {
+  display: flex;
+  justify-content: center;
 }
 .App.react-tabs__tab-panel--selected {
   padding-top: 35px;
@@ -2016,7 +2027,7 @@ button.companies_icon {
     font-size: 13px;
   }
 }
-  .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
+.readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput {
     -webkit-pointer-events: none;
     -moz-pointer-events: none;
     -ms-pointer-events: none;
@@ -2024,12 +2035,6 @@ button.companies_icon {
     cursor: not-allowed;
   }
 
-    .readOnly_inputs .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
-      -webkit-pointer-events: none;
-      -moz-pointer-events: none;
-      -ms-pointer-events: none;
-      pointer-events: none;
-    }
 .proForm .has-error label.control-label {
   color: #26344c !important;
 }
@@ -2226,7 +2231,7 @@ button.companies_icon {
 .summerisItem__number .content__number .number {
   font-family: font-b;
   font-size: 56px;
-  line-height: 1.14;
+  line-height: 1.4;
   letter-spacing: -1.1px;
   color: #252833;
   margin: 0;
@@ -2776,7 +2781,6 @@ button.companies_icon {
   letter-spacing: -0.2px;
   color: #a8b0bf;
   background: #f9fafb;
-  border-bottom: 1px solid rgba(34,36,38,.1)
 }
 .ReactTable .rt-thead .rt-resizable-header-content {
   padding: 0 5px;;
@@ -2799,13 +2803,39 @@ button.companies_icon {
   letter-spacing: -0.2px;
   color: #3e4352;
   min-height: 50px;
-  background: #fff;
   border-bottom: 1px solid rgba(34,36,38,.1);
   padding-left: 10px;
+  text-overflow: ellipsis;
 }
 .ReactTable .rt-tbody .rt-td .btn{
   padding: 0 5px;
   margin-left: 0 !important;
+}
+
+.ReactTable .rt-tr {
+  border-bottom: 1px solid #e9ecf0 !important;
+  background: #fff !important;
+}
+.ReactTable .rt-thead .rt-tr {
+  border-bottom: 1px solid #e9ecf0 !important;
+  background: #fafbfc !important;
+}
+.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
+  background: #fafbfc !important;
+}
+
+.ReactTable .-pagination {
+  background: #fff;
+}
+
+.ReactTable .-pagination .-btn {
+  color: #a8b0bf;
+  font-family: font-b;
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.2px;
+  background: #f9fafb;
+
 }
 .ReactTable .rt-thead {
   height: 58px;
@@ -3169,7 +3199,6 @@ button.companies_icon {
 .ReactTable .rt-tbody .rt-td {
   display: flex;
   align-items: center !important;
-  overflow: visible;
 }
 .ReactTable .rt-tbody .rt-tr-group .fillter-status.fillter-item-c {
   margin-bottom: 0;
@@ -3551,6 +3580,7 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
 }
 .doc-pre-cycle.has__table {
   display: flex;
+  flex-wrap: wrap
 }
 .doc-pre-cycle.has__table .attachmentTable{
   margin: 0;
@@ -3571,7 +3601,7 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
   width: 100px;
 }
 .table__figure {
-  max-width: 110px;
+  /* max-width: 110px; */
   margin-left: 15px;
 }
 .table__figure .table__figure--item {
@@ -3593,11 +3623,6 @@ path.highcharts-label-box.highcharts-tooltip-box + text , path.highcharts-label-
   padding-left: 40px;
   padding-right: 40px;
 }
-
-
-
-
-
 
 .skylight-dialog {
   width: 100% !important;
@@ -3953,7 +3978,7 @@ width: calc(100% - 256px);
 
 .reports__proForm .linebylineInput .inputDev.ui.input {
     padding: 0;
-    margin-top: 4px;
+    /* margin-top: 4px; */
 }
 
 .reports__proForm .linebylineInput .inputDev.ui.input input {
@@ -4265,4 +4290,21 @@ width: calc(100% - 256px);
 }
 .ui.radio.checkbox {
   margin-bottom: 5px;
+}
+
+.reportsWithMulti .reports__smallInputs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.reportsWithMulti .reports__multiDrop {
+  width: 100%;
+  padding-right: 16px;
+}
+.reportsWithMulti .reports__multiDrop .linebylineInput.multiChoice{
+  width: 100%;
+}
+.bar-container text {
+  font-size: 1rem;
+  fill: #666a73;
+  padding: 12px;
 }

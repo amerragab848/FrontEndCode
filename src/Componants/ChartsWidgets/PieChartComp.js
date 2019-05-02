@@ -1,10 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
-import { Donut } from 'britecharts-react'
+import { Donut, Legend } from 'britecharts-react'
 
 import Api from '../../api';
 // const logMouseOver = () => console.log('Mouse Over');
 
+const colorSchema = [
+    '#07bc0c',
+    '#119015',
+    '#47cc4a',
+    '#7cdb79',
+    '#5fd45f',
+    '#119015',
+    '#07bc0cbb',
+]
 class PieChartComp extends Component {
 
     constructor(props) {
@@ -12,7 +21,8 @@ class PieChartComp extends Component {
 
         this.state = {
             dataChart: [],
-            isLoading: true
+            isLoading: true,
+            highlightedSlice: null
         }
 
     }
@@ -45,6 +55,18 @@ class PieChartComp extends Component {
         // this.abortController.abort();
     }
 
+    // _handleMouseOver(data) {
+    //     this.setState({
+    //       highlightedSlice: data.data.id
+    //     });
+    //     console.log('fdnknvk')
+    //   }
+  
+    //   _handleMouseOut() {
+    //     this.setState({
+    //       highlightedSlice: 99999
+    //     });
+    //   }
     render() {
         return (
             <div className="panel">
@@ -53,15 +75,30 @@ class PieChartComp extends Component {
                         {this.props.title}
                     </h2>
                     {this.state.isLoading == false ?
-                        <Donut
-                            data={this.state.dataChart}
-                            // customMouseOver={logMouseOver}
-                            externalRadius={100}
-                            internalRadius={47}
-                            highlightSliceById={1}
-
-                            colorSchema={["#6aedc7", "#39c2c9", "#ffce00", "#ffa71a", "#f866b9", "#998ce3"]}
-                        />
+                        <Fragment>
+                            <Donut
+                                data={this.state.dataChart}
+                                externalRadius={350 / 2.5}
+                                internalRadius={350 / 5}
+                                colorSchema={colorSchema}
+                                width={300}
+                                height={300}
+                                isAnimated={true}
+                                loadingState={true}
+                                //customMouseOver={this._handleMouseOver.bind(this)}
+                                //customMouseOut={this._handleMouseOut.bind(this)}
+                            />
+                            <Legend
+                                data={this.state.dataChart}
+                                colorSchema={colorSchema}
+                                isHorizontal={true}
+                                markerSize={6}
+                                marginRatio={1.7}
+                                width={500}
+                                height={100}
+                                highlightEntryById={this.state.highlightedSlice}
+                            />
+                        </Fragment>
                         : null}
                 </div>
             </div>

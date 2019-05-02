@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Resources from "../../resources.json";
 import Api from "../../api";
 import { withRouter } from "react-router-dom";
@@ -51,8 +51,8 @@ class WidgetsWithText extends Component {
 
   render() {
     return (
-      <div>
-        <div className="summerisItem">
+      <Fragment>
+        <div className="summerisItem withOutOf">
           <div className="content">
             <h4 className="title">
               {Resources[this.props.title][currentLanguage]}
@@ -64,7 +64,7 @@ class WidgetsWithText extends Component {
           </div>
         </div>
         <div />
-      </div>
+      </Fragment>
     );
   }
 }
