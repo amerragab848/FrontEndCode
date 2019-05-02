@@ -88,7 +88,7 @@ class Index extends Component {
     let chartWidgets = this.state.chartData.map((item, index) => {
       if (item.type === "pie") {
         return (
-          <div className="col-xs-4" key={item.id}>
+          <div className="col-lg-4 col-md-6" key={item.id}>
             <PieChartComp
               api={item.props.api}
               name={item.props.name}
@@ -100,7 +100,7 @@ class Index extends Component {
         );
       } else {
         return (
-          <div className="col-xs-8" key={item.id}>
+          <Fragment key={item.id}>
             <BarChartComp
               api={item.props.api}
               name={item.props.name}
@@ -112,7 +112,7 @@ class Index extends Component {
               multiSeries={item.multiSeries}
               barContent={item.barContent}
             />
-          </div>
+          </Fragment>
         );
       }
     });
@@ -132,7 +132,7 @@ class Index extends Component {
       let selectedCategoriesLocalStoarge = Object.keys(Widgets_Order);
 
       if (selectedCategoriesLocalStoarge.length > 0) {
- 
+
         let bulkWidgets = "";
 
         bulkWidgets = Widgets_Order[index];

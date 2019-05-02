@@ -1,139 +1,108 @@
-import React, { Component } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import addNoDataModule from 'highcharts/modules/no-data-to-display';
-import exporting from 'highcharts/modules/exporting'
- import Api from '../../api';
-import language from '../../resources.json'
-let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
+import React, { Component, Fragment } from 'react';
+import Api from '../../api';
+import { Bar, GroupedBar } from 'britecharts-react'
 
-addNoDataModule(Highcharts);
-exporting(Highcharts)
+
+const marginObject = {
+    left: 40,
+    right: 40,
+    top: 50,
+    bottom: 50,
+};
+
 class BarChartComp extends Component {
 
     constructor(props) {
-        super(props); 
+        super(props);
         this.state = {
-
-            options:
-            {
-                lang: {
-                    noData: language['noData'][currentLanguage],
-                },
-                noData: {
-                    style: {
-                        fontWeight: 'bold',
-                        fontSize: '25px',
-                        color: '#1B4EDB',
-                    },
-                },
-                chart: {
-                    type: 'line',
-                },
-                title: {
-                    text: this.props.title
-                },
-                xAxis: {
-                    categories: []
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: this.props.yTitle
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                        }
-                    }
-                },
-                legend: {
-                    align: 'right',
-                    x: -30,
-                    verticalAlign: 'top',
-                    y: 25,
-                    floating: true,
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                    borderColor: '#CCC',
-                    borderWidth: 1,
-                    shadow: false
-                },
-                tooltip: {
-                    headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: ' <span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
-                },
-                plotOptions: {
-                    column: {
-                        stacking: this.props.stack,
-                        dataLabels: {
-                            enabled: true,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black'
-                        }
-                    }
-                },
-                series: [{
-                    name: '',
-                    data: []
-                }],
-                credits: {
-                    enabled: false
-
-                },
-                exporting:{
-                    enabled:true
-                } 
-            }
+            dataByTopic: {
+                dataByTopic: [
+                    {
+                        topic: -1,
+                        topicName: 'Vivid',
+                        dates: []
+                    }]
+            },
+            barData: [],
+            isLoading: true,
+            groupedBarData: []
         }
     }
 
     componentDidMount = () => {
-        let _catag = []
-        let _data = []
+        let barData = [];
         Api.get(this.props.api).then(results => {
             if (this.props.multiSeries === 'no') {
                 results.map((item) => {
-                    _data.push(item[this.props.y])
-                    _catag.push(item[this.props.catagName]);
+                    barData.push({ 'value': item[this.props.y], 'name': item[this.props.catagName] })
                     return null;
                 });
-                this.setState({ options: { series: { name: this.props.title, data: _data }, xAxis: { categories: _catag } } });
+                this.setState({ isLoading: false, barData: barData });
             }
             else {
-                results.map((item) => {
-                    _catag.push(item[this.props.catagName]);
-                    return null;
-                })
-                let _series = []
+                let groupedBarData = []
                 this.props.barContent.map((bar) => {
-
-                    let content = []
                     results.map((obj) => {
-                        content.push(obj[bar.value]);
+                        groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
                         return null;
                     })
-                    _series.push({ name: bar.name, data: content });
+
                     return null;
                 })
-                this.setState({ options: { series: _series, xAxis: { categories: _catag } } });
+                this.setState({
+                    isLoading: false,
+                    groupedBarData: groupedBarData
+                });
             }
 
         }).catch((ex) => {
-            //console.log(ex);
         });
     }
 
-    render() { 
-        return ( 
-            <div className="panel barChart__container">
-                <div className="panel-body">
-                    <HighchartsReact 
-                        highcharts={Highcharts}
-                        options={this.state.options}
-                    />
-                </div> 
-            </div> 
+    render() {
+        return (
+            <Fragment>
+
+
+                {this.props.multiSeries !== 'no' ?
+                    <div className="col-md-8 col-lg-6">
+                        <div className="panel barChart__container">
+                            <div className="panel-body">
+                                {this.state.isLoading == false ?
+                                    <GroupedBar
+                                        data={this.state.groupedBarData}
+                                        width={650}
+                                        groupLabel='stack'
+                                        nameLabel='name'
+                                        valueLabel='total'
+                                        margin={marginObject}
+                                        colorSchema={["#39bd3d", "#dfe2e6"]}
+                                        yTickTextOffset={-65}
+                                    />
+                                    : null}
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    this.state.isLoading == false ?
+                        <div className="col-md-8 col-lg-6">
+                            <div id="ContainerWidth" className="panel barChart__container">
+                                <div className="panel-body">
+                                    <Bar
+                                        data={this.state.barData}
+                                        width={650}
+                                        isHorizontal={false}
+                                        margin={marginObject}
+                                        colorSchema={["#dfe2e6", "#39bd3d"]}
+                                    />
+                                </div>
+                            </div >
+                        </div >
+                        : null
+                }
+
+
+            </Fragment >
         );
     }
 }

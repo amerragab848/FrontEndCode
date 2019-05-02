@@ -204,14 +204,14 @@ class SubmittalAddEdit extends Component {
 
   componentWillReceiveProps(nextProps, prevProps) {
     if (nextProps.document.id) {
-      
+
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
       nextProps.document.forwardToDate = nextProps.document.forwardToDate != null ? moment(nextProps.document.forwardToDate).format("DD/MM/YYYY") : moment();
 
       let obj = this.state.SubmittalTypes.find(o => o.label === nextProps.document.submittalType);
 
       this.setState({
-        selectedSubmittalType:nextProps.document.submittalType != "" ? { label: obj.label , value: obj.value } :{ label: Resources.submittalType[currentLanguage], value: "0" },
+        selectedSubmittalType: nextProps.document.submittalType != "" ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
         isEdit: true,
         document: nextProps.document,
         hasWorkflow: nextProps.hasWorkflow
@@ -355,7 +355,7 @@ class SubmittalAddEdit extends Component {
 
       this.fillDropDowns(false);
       this.props.actions.documentForAdding();
-    } 
+    }
   }
 
   fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -1088,6 +1088,7 @@ class SubmittalAddEdit extends Component {
     }
   }
 
+
   addSubmittalItems() {
 
     this.setState({
@@ -1434,6 +1435,44 @@ class SubmittalAddEdit extends Component {
     }
   }
 
+  StepOneLink = () => {
+    if (docId !== 0) {
+      this.setState({
+        // FirstStep: true,
+        SecondStep: false,
+        SecondStepComplate: false,
+        ThirdStepComplate: false,
+        Stepes: 1,
+      })
+    }
+  }
+
+  StepTwoLink = () => {
+    if (docId !== 0) {
+      this.setState({
+        // FirstStep: false,
+        SecondStep: true,
+        SecondStepComplate: true,
+        ThirdStepComplate: false,
+        Stepes: 2,
+      })
+    }
+  }
+
+  StepThreeLink = () => {
+    if (docId !== 0) {
+      this.setState({
+        ThirdStep: true,
+        SecondStepComplate: true,
+        ThirdStepComplate: true,
+        Stepes: 3,
+        //FirstStep: false,
+        SecondStep: false,
+      })
+    }
+  }
+
+
   render() {
 
     const columnsCycles = [
@@ -1570,7 +1609,7 @@ class SubmittalAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one_step one__tab readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
-          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.Submittal[currentLanguage]} moduleTitle={Resources['technicalOffice'][currentLanguage]} />
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.Submittal[currentLanguage]} moduleTitle={Resources['technicalOffice'][currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
               <div id="step1" className="step-content-body">
@@ -1832,7 +1871,7 @@ class SubmittalAddEdit extends Component {
                               {
                                 this.state.isViewMode === false ?
                                   (this.state.isLoading === false ?
-                                    (<button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}  type="submit">
+                                    (<button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">
                                       {this.state.docId > 0
                                         ? Resources["next"][currentLanguage]
                                         : Resources["save"][currentLanguage]}
@@ -2241,7 +2280,7 @@ class SubmittalAddEdit extends Component {
               {/* Steps Active  */}
               <div className="workflow-sliderSteps">
                 <div className="step-slider">
-                  <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                  <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                     <div className="steps-timeline">
                       <span>1</span>
                     </div>
@@ -2249,7 +2288,7 @@ class SubmittalAddEdit extends Component {
                       <h6 onClick={e => this.setState({ Stepes: 1 })}>{Resources['Submittal'][currentLanguage]}</h6>
                     </div>
                   </div>
-                  <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                  <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                     <div className="steps-timeline">
                       <span>2</span>
                     </div>
@@ -2257,7 +2296,7 @@ class SubmittalAddEdit extends Component {
                       <h6>{Resources['cyclesCount'][currentLanguage]}</h6>
                     </div>
                   </div>
-                  <div data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
+                  <div onClick={this.StepThreeLink} data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
                     <div className="steps-timeline">
                       <span>3</span>
                     </div>

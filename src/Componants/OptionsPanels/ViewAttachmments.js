@@ -33,7 +33,7 @@ class ViewAttachmments extends Component {
             docId: this.props.docId
         }
     }
- 
+
     deletehandler = (file) => {
         let urlDelete = 'DeleteAttachFileById?id=' + file.id
         this.props.actions.deleteFile(urlDelete, file);
@@ -58,14 +58,15 @@ class ViewAttachmments extends Component {
 
     getData() {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-         console.log('viewFiles...' + this.props.files.length)
+        console.log('viewFiles...' + this.props.files.length)
         if (this.props.files.length === 0) {//&& this.props.changeStatus === true)
             this.props.actions.GetUploadedFiles(url);
         }
     }
     render() {
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
-            let ext = item['fileName'].split(".")[1].toLowerCase();
+
+            let ext = item['fileName'].split(".")[1] ? item['fileName'].split(".")[1].toLowerCase() : 'png';
             let extension = (ext == 'xlsx' ? xlsx : ext == 'pdf' ? pdf : ext == 'jpeg' ? jpeg : ext == 'png' ? png : ext == 'jpg' ? jpg : doc)
             let createdDate = moment(item['createdDate']).format('DD/MM/YYYY');
             if (item.fileName) {

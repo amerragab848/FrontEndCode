@@ -52,14 +52,18 @@ class HeaderMenu extends Component {
     this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
     this.handleChangeSelectProject = this.handleChangeSelectProject.bind(this);
     this.ReportCenterMenu = this.ReportCenterMenu.bind(this);
+
+    //this.viewNotifications = this.handleClick.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
   }
 
   componentWillMount = () => {
     dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "projectId").then(result => {
-        this.setState({
-          projects: result
-        });
+      this.setState({
+        projects: result
       });
+    });
 
     dataservice.GetDataGrid("GetNotificationPostit").then(result => {
       this.setState({
@@ -75,6 +79,12 @@ class HeaderMenu extends Component {
   };
 
   openProfile = () => {
+    if (!this.state.activeClass) {
+      // attach/remove event handler
+      document.addEventListener('click', this.handleOutsideClickProfile, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClickProfile, false);
+    }
     this.setState({
       activeClass: !this.state.activeClass
     });
@@ -133,9 +143,29 @@ class HeaderMenu extends Component {
   }
 
   viewNotifications() {
+    if (!this.state.viewNotification) {
+      // attach/remove event handler
+      document.addEventListener('click', this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClick, false);
+    }
     this.setState({
       viewNotification: !this.state.viewNotification
     });
+  }
+
+  handleOutsideClick(e) {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.viewNotifications();
+  }
+
+  handleOutsideClickProfile(e) {
+    if (this.profile.contains(e.target)) {
+      return;
+    }
+    this.openProfile();
   }
 
   navigateLink(link, param) {
@@ -185,19 +215,19 @@ class HeaderMenu extends Component {
 
           case "expensesUserAddEdit":
             dataservice.GetDataGrid("GetExpensesUserForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "transmittalAddEdit":
             dataservice.GetDataGrid("GetCommunicationTransmittalForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "lettersAddEdit":
             dataservice.GetDataGrid("GetLettersById?id=" + id).then(data => {
-              this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
             });
             break;
 
@@ -933,19 +963,17 @@ class HeaderMenu extends Component {
     });
   }
 
-  showDetails()
-  {   
+  showDetails() {
     this.setState({
-      viewNotification:false
+      viewNotification: false
     });
-    
+
     this.props.history.push({ pathname: "/postitNotificationsDetail" });
   }
 
-  navigateMyTasks()
-  {
+  navigateMyTasks() {
     this.setState({
-      viewNotification:false
+      viewNotification: false
     });
     this.props.history.push("/myTasks");
   }
@@ -959,13 +987,21 @@ class HeaderMenu extends Component {
           <header className={"main-header " + (this.props.showLeftMenu === false ? " dashboard__header" : " ")}>
             <div className="header-content">
               <ul className="nav-left">
-                <div className="dashboard__selectMenu">
-                  {this.props.showSelectProject === true ? (
-                    <Select key="dash-selectproject" ref="dash-selectproject" options={this.state.projects}
-                            isSearchable="true" defaultValue={this.state.value} value={this.state.selectedValue}
-                            isMulti={false} onChange={this.handleChangeSelectProject} />
-                  ) : null}
-                </div>
+                {this.props.showSelectProject === true ? (
+                  <Fragment>
+                    <li className="procoor__logo">
+                      <NavLink to="/">
+                        <img src={Logo} alt="logo" />
+                      </NavLink>
+                    </li>
+                    <li className="dashboard__selectMenu">
+                      <Select key="dash-selectproject" ref="dash-selectproject" options={this.state.projects}
+                        isSearchable="true" defaultValue={this.state.value} value={this.state.selectedValue}
+                        isMulti={false} onChange={this.handleChangeSelectProject} />
+                    </li>
+                  </Fragment>
+                ) : null}
+
                 {this.props.showLeftMenu === true ? (
                   <Fragment>
                     <li className="titleproject1">
@@ -976,13 +1012,6 @@ class HeaderMenu extends Component {
                 ) : null}
               </ul>
               <ul className="nav-right">
-                {this.props.showSelectProject === true ? (
-                  <li className="procoor__logo">
-                    <NavLink to="/">
-                      <img src={Logo} alt="logo" />
-                    </NavLink>
-                  </li>
-                ) : null}
                 <li>
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
                     <img alt="" title="" src={Chart} />
@@ -993,21 +1022,127 @@ class HeaderMenu extends Component {
                     <img alt="" title="" src={Setting} />
                   </NavLink>
                 </li>
-                <li className="notifi-icon">
-                  <a onClick={this.viewNotifications.bind(this)}>
+                <li ref={node => { this.node = node }} className="notifi-icon">
+                  <a id="notiClicked" onClick={this.viewNotifications.bind(this)}>
                     <img alt="" title="" src={Notif} />
                     <div className="inboxNotif smallSquare">
                       {totalNotification}
                     </div>
                   </a>
+                  {this.state.viewNotification ? (
+                    <div id="notiClosed" className="notifiBar">
+                      <div className="smallNotifiBar">
+                        <div className="notifi__tabs">
+                          <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.onClickTabItem(tabIndex)}>
+                            <TabList className="zero">
+                              <Tab className={this.state.tabNotifi ? "active" : ""}>
+                                <span className="imgWrapper not__icon">
+                                  <img className="activeImg" src={iconActive} />
+                                  <img className="normalImg" src={notifIcon} />
+                                </span>
+                                <span className="tabNAme">
+                                  {Resources["general"][currentLanguage]}
+                                </span>
+                              </Tab>
+                              <Tab className={this.state.tabTask ? "active" : ""}>
+                                <span className="imgWrapper base__icon">
+                                  <img className="activeImg" src={baseActive} />
+                                  <img className="normalImg" src={greyBase} />
+                                </span>
+                                <span className="tabNAme">
+                                  {Resources["myTasks"][currentLanguage]}
+                                </span>
+                              </Tab>
+                            </TabList>
+                            <TabPanel>
+                              <Fragment>
+                                {this.state.notifications.map(item => {
+                                  let now = moment(new Date());
+                                  let sentDate = moment(item.sentDate);
+                                  let duration = moment.duration(now.diff(sentDate));
+                                  let diffDays = duration.asDays();
+
+                                  let obj = {
+                                    docId: item.id,
+                                    projectId: window.localStorage.getItem("lastSelectedProject"),
+                                    projectName: window.localStorage.getItem("lastSelectedprojectName"),
+                                    arrange: 0,
+                                    docApprovalId: 0,
+                                    isApproveMode: false
+                                  };
+
+                                  let currentLink = item.description.split("/");
+
+                                  let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+                                  let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+                                  let link = currentLink[0] + "?id=" + encodedPaylod;
+
+                                  return (
+                                    <div className="notifiContent" key={item.id} onClick={() => this.updateStatus(item)}>
+                                      <div className="notfiText">
+                                        <div className="notifiName">
+                                          <h3>{item.fromContactName}</h3>
+                                          <p>{diffDays.toFixed(0) + " Days"}</p>
+                                        </div>
+                                        <p className="notofoWorkflow">
+                                          <span>{item.documentName}</span>
+                                          <a data-toggle="tooltip" title={item.title} href={link}
+                                            onClick={() => this.navigateLink(currentLink[0], encodedPaylod).bind(this)}>
+                                            “{item.title}”
+                                          </a>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                                <div className="fullWidthWrapper">
+                                  <button className="primaryBtn-1 btn smallBtn" onClick={this.showDetails.bind(this)}>
+                                    {Resources["showMore"][currentLanguage]}
+                                  </button>
+                                </div>
+                              </Fragment>
+                            </TabPanel>
+                            <TabPanel>
+                              {this.state.taskes.map(item => {
+                                let now = moment(new Date());
+                                let docDate = moment(item.docDate);
+                                let duration = moment.duration(now.diff(docDate));
+                                let diffDays = duration.asDays();
+
+                                let link = "/taskDetails?id=" + item.id;
+
+                                return (
+                                  <div className="notifiContent" key={item.id} onClick={this.navigateMyTasks.bind(this)}>
+                                    <figure className="avatarProfile smallAvatarSize">
+                                      <img src={item.userImage} />
+                                    </figure>
+                                    <div className="notfiText">
+                                      <div className="notifiName">
+                                        <h3>{item.fromContactName}</h3>
+                                        <p>{diffDays.toFixed(0) + " Days"}</p>
+                                      </div>
+                                      <p className="notofoWorkflow">
+                                        {item.projectName + " - " + item.statusName}
+                                        <a href={link}>“{item.subject}”</a>
+                                      </p>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </TabPanel>
+                          </Tabs>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
                 </li>
                 {/* <li>
                   <a>
                     <img alt="" title="" src={Message} />
                   </a>
                 </li> */}
-                <li className="UserImg ">
-                  <div className={ this.state.activeClass === false ? "dropdownContent" : "dropdownContent active"} onClick={this.openProfile} >
+                <li className="UserImg" ref={profile => { this.profile = profile; }}>
+                  <div className={this.state.activeClass === false ? "dropdownContent" : "dropdownContent active"} onClick={this.openProfile} >
                     <figure className="zero avatarProfile onlineAvatar">
                       <img alt="" title="" src={this.state.profilePath} />
                       <span className="avatarStatusCircle" />
@@ -1040,11 +1175,11 @@ class HeaderMenu extends Component {
                         </div>
                         <div className="item">
                           <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio" value="en" checked={this.state.languageSelected === "en"} onChange={event => this.handleChange(event)}/>
+                            <input type="radio" value="en" checked={this.state.languageSelected === "en"} onChange={event => this.handleChange(event)} />
                             <label>English</label>
                           </div>
                           <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio" value="ar" checked={this.state.languageSelected === "ar"} onChange={event => this.handleChange(event)}/>
+                            <input type="radio" value="ar" checked={this.state.languageSelected === "ar"} onChange={event => this.handleChange(event)} />
                             <label>عربى</label>
                           </div>
                         </div>
@@ -1172,6 +1307,7 @@ class HeaderMenu extends Component {
             </div>
           </div>
         ) : null}
+
       </div>
     );
   }
@@ -1194,4 +1330,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(HeaderMenu));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderMenu));

@@ -71,6 +71,7 @@ import SubmittalAddEdit from "./Pages/TechnicalOffice/SubmittalAddEdit";
 import siteInstructionsAddEdit from "./Pages/TechnicalOffice/siteInstructionsAddEdit";
 import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
+import ContractsConditions from "./Pages/Contracts/ContractsConditions";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
 import projectWorkFlowAddEdit from './Pages/ProjectSetup/projectWorkFlowAddEdit';
@@ -78,6 +79,7 @@ import AccountsAlerts from './Pages/ProjectSetup/AccountsAlerts';
 import projectPicturesAddEdit from "./Pages/TechnicalOffice/projectPicturesAddEdit";
 import GeneralConfiguration from './Componants/GeneralSetting/Project/GeneralConfiguration';
 import permissionsGroups from './Componants/GeneralSetting/Administrations/GroupsPermission/permissionsGroups';
+import PermissionsGroupsPermissions from './Componants/GeneralSetting/Administrations/GroupsPermission/PermissionsGroupsPermissions';
 import AccountsGroup from './Componants/GeneralSetting/Administrations/GroupsPermission/AccountsGroup';
 import RequestPaymentsAddEdit from "./Pages/Contracts/requestPaymentsAddEdit";
 import projectEstimateAddEdit from "./Pages/ProjectEstimation/projectEstimateAddEdit";
@@ -223,6 +225,7 @@ let originalRoutes = [
     , <Route path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
     , <Route path="/punchListAddEdit" component={punchListAddEdit} />
     , <Route path="/boqAddEdit" component={boqAddEdit} />
+    , <Route path="/ContractsConditions" component={ContractsConditions} />
     , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
     , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
@@ -277,6 +280,13 @@ let originalRoutes = [
     , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} /> 
     , <Route path="/ProjectCompanies" component={ProjectCompanies} />
     , <Route path="/permissionsGroups" component={permissionsGroups} />
+    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
+    , <Route path="/PermissionsGroupsPermissions/:groupId" component={PermissionsGroupsPermissions} />
+    
+
+
+
+
     , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} /> 
     , <Route path="/projectBackLog" component={ProjectBackLog} />
     , <Route path="/projectsAchievements" component={ProjectsAchievements} />

@@ -31,12 +31,12 @@ class App extends Component {
       : <Login />
     return (
       <Provider store={store}>
-        <ErrorHandler >
+        {/* <ErrorHandler > */}
           <div>
             {showComp}
             <ToastContainer autoClose={3000} />
           </div>
-        </ErrorHandler >
+        {/* </ErrorHandler > */}
       </Provider>
 
     );
