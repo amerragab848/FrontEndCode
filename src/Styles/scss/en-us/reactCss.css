@@ -994,6 +994,11 @@ table edition
 }
 .panel h2 {
   text-align: center;
+  font-family: font-r;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
 }
 .legend-container {
   display: flex;
@@ -3256,7 +3261,7 @@ color: #4382f9 !important;
   display: flex;
   flex-wrap: wrap;
   padding: 0 40px;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .charts__row .highcharts-color-0, .charts__row .highcharts-color-0 .highcharts-point {
   stroke: transparent;
@@ -4303,8 +4308,22 @@ width: calc(100% - 256px);
 .reportsWithMulti .reports__multiDrop .linebylineInput.multiChoice{
   width: 100%;
 }
-.bar-container text {
-  font-size: 1rem;
-  fill: #666a73;
-  padding: 12px;
+.britechart text, .britechart tspan {
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    fill: #3e4352;
+    font-family: font-opens;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bar-container, .grouped-bar-container {
+  display: flex;
+  justify-content: center;
+}
+@media screen and (max-width: 1300){
+  .col-lg-6 {
+    width: 66.6666666667% !important;
+  }
 }
