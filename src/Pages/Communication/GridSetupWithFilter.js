@@ -1,13 +1,13 @@
-import React, { Component, Fragment, useState } from "react";
+import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
-import { ToolsPanel, Data, Draggable, Toolbar } from "react-data-grid-addons";
+import {ToolsPanel,Toolbar, Data, Draggable, Filters } from "react-data-grid-addons";
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
-// const Toolbar = ToolsPanel.AdvancedToolbar;
+const ToolbarGroup = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
 
 const selectors = Data.Selectors;
@@ -27,13 +27,12 @@ class GridSetupWithFilter extends Component {
             selectedRows: [],
             selectedRow: [],
             copmleteRows: [],
+            expandedRows: {},
             filteredRows: this.props.rows,
-            expandedRows: {}
         };
 
         this.groupColumn = this.groupColumn.bind(this);
         this.onRowsSelected = this.onRowsSelected.bind(this);
-        this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
     componentWillMount = () => { };
@@ -66,7 +65,7 @@ class GridSetupWithFilter extends Component {
         });
         this.setState(reorderedColumns);
         //console.log(reorderedColumns);
-    }
+    };
 
     sortRows = (initialRows, sortColumn, sortDirection) => {
         const comparer = (a, b) => {
@@ -80,6 +79,18 @@ class GridSetupWithFilter extends Component {
         return sortDirection === "NONE"
             ? initialRows
             : [...this.state.rows].sort(comparer);
+    };
+
+    handleFilterChange = (filter) => {
+        const newFilters = this.state.setFilters;
+        if (filter.filterTerm) {
+            newFilters[filter.column.key] = filter;
+        } else {
+            delete newFilters[filter.column.key];
+        }
+        let rows = [...this.state.rows]
+        this.getRowsFilter(rows, newFilters);
+        return newFilters
     }
 
     getValidFilterValues = (rows, columnId) => {
@@ -92,9 +103,13 @@ class GridSetupWithFilter extends Component {
             .filter((item, i, a) => {
                 return i === a.indexOf(item);
             });
-    }
+    };
 
     getRows = (rows, filters) => {
+        return selectors.getRows({ rows, filters });
+    };
+
+    getRowsFilter = (rows, filters) => {
         let rowsList = selectors.getRows({ rows, filters });
         this.setState({
             filteredRows: rowsList
@@ -108,12 +123,15 @@ class GridSetupWithFilter extends Component {
 
     groupColumn = columnKey => {
         const columnGroups = this.state.groupBy.slice(0);
+
         const activeColumn = this.state.columns.find(c => c.key === columnKey);
-        const isNotInGroups = columnGroups.find(c => activeColumn.key === c.key) == null;
+
+        const isNotInGroups =
+            columnGroups.find(c => activeColumn.key === c.key) == null;
+
         if (isNotInGroups) {
             columnGroups.push({ key: activeColumn.key, name: activeColumn.name });
         }
-
         return columnGroups;
     }
 
@@ -283,83 +301,73 @@ class GridSetupWithFilter extends Component {
         });
     }
 
-    handleFilterChange = (filter) => {
-
-        const newFilters = this.state.setFilters;
-        if (filter.filterTerm) {
-            newFilters[filter.column.key] = filter;
-        } else {
-            delete newFilters[filter.column.key];
-        }
-        let rows = [...this.state.rows]
-        this.getRows(rows, newFilters);
-
-        return newFilters;
-    };
-
     render() {
+        const { rows, groupBy, filters } = this.state;
+        const groupedRows = Data.Selectors.getRows({ rows, groupBy, filters });
 
+        //const groupedRows = Data.Selectors.getRows({ rows, filters });
         const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
-        
-        const CustomToolbar = ({
-            groupBy,
-            onColumnGroupAdded,
-            onColumnGroupDeleted,
-            onAddFilter,
-            onClearFilters
-        }) => {
-            return (
-                <Toolbar>
-                    <GroupedColumnsPanel
-                        groupBy={groupBy}
-                        onColumnGroupAdded={onColumnGroupAdded}
-                        onColumnGroupDeleted={onColumnGroupDeleted}
-                        onAddFilter={onAddFilter}
-                        onClearFilters={onClearFilters}
-                        noColumnsSelectedMessage={drag}
-                    />
-                    {this.state.selectedRows.length > 0 ? (
-                        <div className="gridSystemSelected active">
-                            <div className="tableselcted-items">
-                                <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
-                            </div>
-                            <div className="tableSelctedBTNs">
-                                {this.props.addLevel ? null : <button
-                                    className="defaultBtn btn smallBtn"
-                                    onClick={this.clickHandlerDeleteRows}
-                                >{this.props.NoShowDeletedBar === undefined ?
-                                    'DELETE' : 'Currency'}
-                                </button>}
-                                {this.props.assign ? <button
-                                    className="primaryBtn-1 btn smallBtn"
-                                    onClick={() => this.props.assignFn()} >
-                                    <i className="fa fa-retweet"></i>
-                                </button> : null}
 
-                                {this.props.addLevel ? <button
-                                    className="primaryBtn-1 btn smallBtn"
-                                    onClick={() => this.props.addLevel()} >
-                                    <i className="fa fa-paper-plane"></i>
-                                </button> : null}
+         const CustomToolbar = ({
+             groupBy,
+             onColumnGroupAdded,
+             onColumnGroupDeleted,
+             onAddFilter,
+             onClearFilters
+         }) => {
+             return (
+                 <ToolbarGroup >
+                     <GroupedColumnsPanel
+                         groupBy={groupBy}
+                         onColumnGroupAdded={onColumnGroupAdded}
+                         onColumnGroupDeleted={onColumnGroupDeleted}
+                         onAddFilter={onAddFilter}
+                         onClearFilters={onClearFilters}
+                         noColumnsSelectedMessage={drag}
+                     />
+                     <Toolbar enableFilter={true} />
+                     {this.state.selectedRows.length > 0 ? (
+                         <div className="gridSystemSelected active">
+                             <div className="tableselcted-items">
+                                 <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
+                             </div>
+                             <div className="tableSelctedBTNs">
+                                 {this.props.addLevel ? null : <button
+                                     className="defaultBtn btn smallBtn"
+                                     onClick={this.clickHandlerDeleteRows}
+                                 >{this.props.NoShowDeletedBar === undefined ?
+                                     'DELETE' : 'Currency'}
+                                 </button>}
+                                 {this.props.assign ? <button
+                                     className="primaryBtn-1 btn smallBtn"
+                                     onClick={() => this.props.assignFn()} >
+                                     <i className="fa fa-retweet"></i>
+                                 </button> : null}
 
-                                {this.props.Panels !== undefined ?
-                                    <Fragment>
-                                        <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTaskGroups'][currentLanguage]} >
-                                            <i className="fa fa-users" aria-hidden="true"></i>
-                                        </button>
+                                 {this.props.addLevel ? <button
+                                     className="primaryBtn-1 btn smallBtn"
+                                     onClick={() => this.props.addLevel()} >
+                                     <i className="fa fa-paper-plane"></i>
+                                 </button> : null}
 
-                                        <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTask'][currentLanguage]} >
-                                            <i className="fa fa-tasks" aria-hidden="true"></i>
-                                        </button>
-                                    </Fragment>
-                                    : null}
+                                 {this.props.Panels !== undefined ?
+                                     <Fragment>
+                                         <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTaskGroups'][currentLanguage]} >
+                                             <i class="fa fa-users" aria-hidden="true"></i>
+                                         </button>
 
-                            </div>
-                        </div>
-                    ) : null}
-                </Toolbar>
-            );
-        };
+                                         <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTask'][currentLanguage]} >
+                                             <i class="fa fa-tasks" aria-hidden="true"></i>
+                                         </button>
+                                     </Fragment>
+                                     : null}
+
+                             </div>
+                         </div>
+                     ) : null}
+                 </ToolbarGroup>
+             );
+         };
         return (
             <div className="grid-container">
                 <div id="top__scroll">
@@ -367,16 +375,16 @@ class GridSetupWithFilter extends Component {
                     </div>
                 </div>
                 <div id="bottom__scroll">
-                    <DraggableContainer>
+              <DraggableContainer> 
 
                         <ReactDataGrid
                             rowKey="id"
-                            minHeight={this.state.filteredRows != undefined ? (this.state.filteredRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
+                            minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
                             height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
                             columns={this.state.columns}
 
-                            rowGetter={i => this.state.filteredRows[i] != null ? this.state.filteredRows[i] : ''}
-                            rowsCount={this.state.filteredRows != undefined ? this.state.filteredRows.length : 1}
+                            rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
+                            rowsCount={groupedRows != undefined ? groupedRows.length : 1}
 
                             enableCellSelect={true}
                             onGridRowsUpdated={this.onGridRowsUpdated}
@@ -386,26 +394,31 @@ class GridSetupWithFilter extends Component {
                                 //console.log(this.state.columns[idx-1]);
                                 // console.log(`Column ${idx} has been resized to ${width}`);
                             }}
-
                             onGridSort={(sortColumn, sortDirection) =>
                                 this.setState({
                                     rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
                                 })
                             }
-
                             enableDragAndDrop={true}
-                            toolbar=
-                            {<Toolbar enableFilter={true} />}
-                            // <CustomToolbar  
-                            //   groupBy={this.state.groupBy}
-                            //   onColumnGroupAdded={columnKey =>
-                            //     this.setState({ groupBy: this.groupColumn(columnKey) })
-                            //   }
-                            //   onColumnGroupDeleted={columnKey =>
-                            //     this.setState({ groupBy: this.ungroupColumn(columnKey) })
-                            //   }
-                            // />
+                            toolbar={
+                                 <CustomToolbar
 
+                                     groupBy={this.state.groupBy}
+                                     onColumnGroupAdded={columnKey =>
+                                         this.setState({ groupBy: this.groupColumn(columnKey) })
+                                     }
+                                     onColumnGroupDeleted={columnKey =>
+                                         this.setState({ groupBy: this.ungroupColumn(columnKey) })
+                                     }
+                                     onAddFilter={filter =>
+                                         this.setState({ setFilters: this.handleFilterChange(filter) })
+                                     }
+                                     onClearFilters={() =>
+                                         this.setState({ setFilters: {} })
+                                     }
+
+                                 />
+                            }
                             rowSelection={{
                                 showCheckbox: this.props.showCheckbox,
                                 defaultChecked: false,
@@ -413,7 +426,9 @@ class GridSetupWithFilter extends Component {
                                 onRowsSelected: this.onRowsSelected,
                                 onRowsDeselected: this.onRowsDeselected,
                                 enableRowSelect: 'single',
-                                selectBy: { indexes: this.state.selectedIndexes }
+                                selectBy: {
+                                    indexes: this.state.selectedIndexes
+                                }
                             }}
 
                             onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
@@ -424,10 +439,10 @@ class GridSetupWithFilter extends Component {
 
                             getCellActions={this.props.getCellActions}
                         />
-                    </DraggableContainer >
+                   </DraggableContainer > 
                 </div>
             </div>
         );
     }
 }
-export default GridSetupWithFilter;
+export default GridSetupWithFilter;;
