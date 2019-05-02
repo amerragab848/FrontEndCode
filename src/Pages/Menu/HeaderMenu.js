@@ -52,6 +52,10 @@ class HeaderMenu extends Component {
     this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
     this.handleChangeSelectProject = this.handleChangeSelectProject.bind(this);
     this.ReportCenterMenu = this.ReportCenterMenu.bind(this);
+
+    //this.viewNotifications = this.handleClick.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
   }
 
   componentWillMount = () => {
@@ -72,35 +76,15 @@ class HeaderMenu extends Component {
         taskes: result
       });
     });
-    this.windowonload()
   };
-
-  windowonload(e) {
-    //var notiClicked = document.getElementById('notiClicked');
-    // document.onclick = function(e){
-    //    if(e.target.id !== 'notiClicked'){
-    //     console.log('this.state.viewNotification' )
-    //    } else {
-    //     console.log('this.state.notiClicked' )
-
-    //    }
-    // };
-      window.addEventListener('click', function (e) {
-        if (document.getElementById('notiClicked').contains(e.target)) {
-          console.log('this.state.viewNotification')
-        } else {
-          console.log('this.state.notiClicked')
-          
-        }
-      });
-  
-  };
-
-  componentDidMount() {
-    this.windowonload()
-  }
 
   openProfile = () => {
+    if (!this.state.activeClass) {
+      // attach/remove event handler
+      document.addEventListener('click', this.handleOutsideClickProfile, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClickProfile, false);
+    }
     this.setState({
       activeClass: !this.state.activeClass
     });
@@ -159,13 +143,35 @@ class HeaderMenu extends Component {
   }
 
   viewNotifications() {
+    if (!this.state.viewNotification) {
+      // attach/remove event handler
+      document.addEventListener('click', this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClick, false);
+    }
     this.setState({
       viewNotification: !this.state.viewNotification
     });
   }
 
+  handleOutsideClick(e) {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.viewNotifications();
+  }
+
+  handleOutsideClickProfile(e) {
+    if (this.profile.contains(e.target)) {
+      return;
+    }
+    this.openProfile();
+  }
+
   navigateLink(link, param) {
-    this.props.history.push({ pathname: "/" + link, search: "?id=" + param });
+    if(link != ""){
+      this.props.history.push({ pathname: "/" + link, search: "?id=" + param });
+    }
   }
 
   routeToView(docView, projectId, projectName, arrange) {
@@ -1016,7 +1022,7 @@ class HeaderMenu extends Component {
                     <img alt="" title="" src={Setting} />
                   </NavLink>
                 </li>
-                <li className="notifi-icon">
+                <li ref={node => { this.node = node }} className="notifi-icon">
                   <a id="notiClicked" onClick={this.viewNotifications.bind(this)}>
                     <img alt="" title="" src={Notif} />
                     <div className="inboxNotif smallSquare">
@@ -1135,7 +1141,7 @@ class HeaderMenu extends Component {
                     <img alt="" title="" src={Message} />
                   </a>
                 </li> */}
-                <li className="UserImg ">
+                <li className="UserImg" ref={profile => { this.profile = profile; }}>
                   <div className={this.state.activeClass === false ? "dropdownContent" : "dropdownContent active"} onClick={this.openProfile} >
                     <figure className="zero avatarProfile onlineAvatar">
                       <img alt="" title="" src={this.state.profilePath} />
@@ -1192,8 +1198,114 @@ class HeaderMenu extends Component {
           </header>
         </div>
         {this.state.logOut ? (
-          <ConfirmationModal closed={this.onCloseModal} showDeleteModal={this.state.logOut} clickHandlerCancel={this.onCloseModal}
-            clickHandlerContinue={() => this.logOutHandler()} title="You Will Be Missed, Are You Sure Want to Leave US?" buttonName="submit" />
+          <ConfirmationModal closed={this.onCloseModal} showDeleteModal={this.state.logOut} clickHandlerCancel={this.onCloseModal} 
+                             clickHandlerContinue={() => this.logOutHandler()} title="You Will Be Missed, Are You Sure Want to Leave US?" buttonName="submit"/>
+        ) : null}
+        {this.state.viewNotification ? (
+          <div className="notifiBar">
+            <div className="smallNotifiBar">
+              <div className="notifi__tabs">
+                <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.onClickTabItem(tabIndex)}>
+                  <TabList className="zero">
+                    <Tab className={this.state.tabNotifi ? "active" : ""}>
+                      <span className="imgWrapper not__icon">
+                        <img className="activeImg" src={iconActive} />
+                        <img className="normalImg" src={notifIcon} />
+                      </span>
+                      <span className="tabNAme">
+                        {Resources["general"][currentLanguage]}
+                      </span>
+                    </Tab>
+                    <Tab className={this.state.tabTask ? "active" : ""}>
+                      <span className="imgWrapper base__icon">
+                        <img className="activeImg" src={baseActive} />
+                        <img className="normalImg" src={greyBase} />
+                      </span>
+                      <span className="tabNAme">
+                        {Resources["myTasks"][currentLanguage]}
+                      </span>
+                    </Tab>
+                  </TabList>
+                  <TabPanel>
+                    <Fragment>
+                      {this.state.notifications.map(item => {
+                        let now = moment(new Date());
+                        let sentDate = moment(item.sentDate);
+                        let duration = moment.duration(now.diff(sentDate));
+                        let diffDays = duration.asDays();
+
+                        let obj = {
+                          docId: item.id,
+                          projectId: window.localStorage.getItem("lastSelectedProject"),
+                          projectName: window.localStorage.getItem("lastSelectedprojectName"),
+                          arrange: 0,
+                          docApprovalId: 0,
+                          isApproveMode: false
+                        };
+
+                        let currentLink = item.description.split("/");
+
+                        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+                        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+                        let link = currentLink[0] + "?id=" + encodedPaylod;
+
+                        return (
+                          <div className="notifiContent" key={item.id} onClick={() => this.updateStatus(item)}>
+                            <div className="notfiText">
+                              <div className="notifiName">
+                                <h3>{item.fromContactName}</h3>
+                                <p>{diffDays.toFixed(0) + " Days"}</p>
+                              </div>
+                              <p className="notofoWorkflow">
+                                <span>{item.documentName}</span>
+                                {currentLink[0] != "" ? <a data-toggle="tooltip" title={item.title} href={link}
+                                  onClick={() => this.navigateLink(currentLink[0], encodedPaylod).bind(this)}>
+                                  “{item.title}”
+                                </a> : <span>“{item.title}”</span>}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      <div className="fullWidthWrapper">
+                        <button className="primaryBtn-1 btn smallBtn" onClick={ this.showDetails.bind(this) }>
+                          {Resources["showMore"][currentLanguage]}
+                        </button>
+                      </div>
+                    </Fragment>
+                  </TabPanel>
+                  <TabPanel>
+                    {this.state.taskes.map(item => {
+                      let now = moment(new Date());
+                      let docDate = moment(item.docDate);
+                      let duration = moment.duration(now.diff(docDate));
+                      let diffDays = duration.asDays();
+
+                      let link = "/taskDetails?id="+item.id; 
+
+                      return (
+                        <div className="notifiContent" key={item.id} onClick={this.navigateMyTasks.bind(this)}>
+                          <figure className="avatarProfile smallAvatarSize">
+                            <img src={item.userImage} />
+                          </figure>
+                          <div className="notfiText">
+                            <div className="notifiName">
+                              <h3>{item.fromContactName}</h3>
+                              <p>{diffDays.toFixed(0) + " Days"}</p>
+                            </div>
+                            <p className="notofoWorkflow">
+                              {item.projectName + " - " + item.statusName}
+                              <a href={link}>“{item.subject}”</a>
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </TabPanel>
+                </Tabs>
+              </div>
+            </div>
+          </div>
         ) : null}
 
       </div>

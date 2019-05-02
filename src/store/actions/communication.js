@@ -416,4 +416,13 @@ function BuildWorkFlowCycleStracture(result) {
 
     returnObj.cycles = cycles;
     return returnObj;
-}; 
+};
+
+export function setDocId(docId) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Set_DocId,
+            docId: docId
+        });
+    }
+}
