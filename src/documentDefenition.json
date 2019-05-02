@@ -4114,7 +4114,7 @@
   "boq": {
     "documentTitle": "boqLog",
     "docTyp": 64,
-    "documentAddEditLink": "boqAddEdit/",
+    "documentAddEditLink": "boqAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 616,
     "documentEditPermission": 617,
@@ -5065,7 +5065,7 @@
   "contractInfo": {
     "documentTitle": "contractLog",
     "docTyp": 9,
-    "documentAddEditLink": "contractInfoAddEdit/",
+    "documentAddEditLink": "contractInfoAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 139,
     "documentEditPermission": 140,

@@ -6727,6 +6727,10 @@
     "en": "Advanced Payment Required",
     "ar": "الدفعة المقدمة"
   },
+  "advancedInfo": {
+    "en": "Advanced Info",
+    "ar": "معلومات المتقدمة"
+  },
   "arrangeRequired": {
     "en": "Please Enter Number ",
     "ar": "برجاء إدخال الرقم"

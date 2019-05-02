@@ -994,6 +994,11 @@ table edition
 }
 .panel h2 {
   text-align: center;
+  font-family: font-r;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
 }
 .legend-container {
   display: flex;
@@ -3256,7 +3261,7 @@ color: #4382f9 !important;
   display: flex;
   flex-wrap: wrap;
   padding: 0 40px;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .charts__row .highcharts-color-0, .charts__row .highcharts-color-0 .highcharts-point {
   stroke: transparent;
@@ -4331,6 +4336,14 @@ width: calc(100% - 256px);
   white-space: nowrap;
   font-size: 16px;
 }
+
+.withManyTabs .company__total .data__tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .withManyTabs .company__total .data__tabs li {
+    margin-bottom: 12px;
+  }
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.radio__only .linebylineInput:only-child {
   flex-flow: row
 }
@@ -4406,10 +4419,30 @@ width: calc(100% - 256px);
 .reportsWithMulti .reports__multiDrop .linebylineInput.multiChoice{
   width: 100%;
 }
+.britechart text, .britechart tspan {
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    fill: #3e4352;
+    font-family: font-opens;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bar-container, .grouped-bar-container {
+  display: flex;
+  justify-content: center;
+}
+
 .bar-container text {
   font-size: 1rem;
   fill: #666a73;
   padding: 12px;
+}
+.filter__grid {
+  position: absolute;
+    z-index: 999;
+    top: -40px;
 }
 .react-grid-Row:last-of-type .react-grid-Cell .rdg-cell-action-last .rdg-cell-action-menu {
   top: auto !important;

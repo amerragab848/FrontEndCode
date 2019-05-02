@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react';
 
-import { Donut, Legend } from 'britecharts-react'
+import { Donut, Legend, ResponsiveContainer, withResponsiveness } from 'britecharts-react'
 
 import Api from '../../api';
-// const logMouseOver = () => console.log('Mouse Over');
 
 const colorSchema = [
     '#07bc0c',
@@ -54,19 +53,17 @@ class PieChartComp extends Component {
     componentWillUnmount() {
         // this.abortController.abort();
     }
-
     // _handleMouseOver(data) {
     //     this.setState({
-    //       highlightedSlice: data.data.id
+    //         highlightedSlice: this.state.dataChart.id
     //     });
-    //     console.log('fdnknvk')
-    //   }
-  
-    //   _handleMouseOut() {
+    // }
+
+    // _handleMouseOut() {
     //     this.setState({
-    //       highlightedSlice: 99999
+    //         highlightedSlice: 99999
     //     });
-    //   }
+    // }
     render() {
         return (
             <div className="panel">
@@ -75,31 +72,35 @@ class PieChartComp extends Component {
                         {this.props.title}
                     </h2>
                     {this.state.isLoading == false ?
-                        <Fragment>
-                            <Donut
-                                data={this.state.dataChart}
-                                externalRadius={350 / 2.5}
-                                internalRadius={350 / 5}
-                                colorSchema={colorSchema}
-                                width={300}
-                                height={300}
-                                isAnimated={true}
-                                loadingState={true}
-                                //customMouseOver={this._handleMouseOver.bind(this)}
-                                //customMouseOut={this._handleMouseOut.bind(this)}
-                            />
-                            <Legend
-                                data={this.state.dataChart}
-                                colorSchema={colorSchema}
-                                isHorizontal={true}
-                                markerSize={6}
-                                marginRatio={1.7}
-                                width={500}
-                                height={100}
-                                highlightEntryById={this.state.highlightedSlice}
-                            />
-                        </Fragment>
+                        <ResponsiveContainer
+                            render={
+                                ({ width }) =>
+                                    <div>
+                                        <Donut
+                                            data={this.state.dataChart}
+                                            height={width / 2}
+                                            width={width / 2}
+                                            externalRadius={width / 4}
+                                            internalRadius={width / 10}
+                                            highlightSliceById={this.state.highlightedSlice}
+                                            colorSchema={colorSchema}
+                                            isAnimated={true}
+                                            // customMouseOver={this._handleMouseOver.bind(this)}
+                                            // customMouseOut={this._handleMouseOut.bind(this)}
+                                            // hasHoverAnimation={true}
+                                        />
+                                        {/* <Legend
+                                            data={this.state.dataChart}
+                                            height={200}
+                                            width={width}
+                                            highlightEntryById={this.state.highlightedSlice}
+                                        /> */}
+                                    </div>
+                            }
+
+                        />
                         : null}
+
                 </div>
             </div>
         );
