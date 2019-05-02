@@ -280,6 +280,12 @@ export default function (state = initialState.app.communication, action) {
                 ...state
             };
 
+        case types.Set_DocId:
+            state.docId = action.docId
+            return {
+                ...state
+            };
+
         default:
             return {
                 ...state

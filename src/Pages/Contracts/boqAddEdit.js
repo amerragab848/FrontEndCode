@@ -27,7 +27,6 @@ import * as communicationActions from '../../store/actions/communication';
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
@@ -302,6 +301,7 @@ class bogAddEdit extends Component {
             { name: 'createTransmittal', code: 3057 }, { name: 'sendToWorkFlow', code: 720 },
             { name: 'viewAttachments', code: 3295 }, { name: 'deleteAttachments', code: 862 }],
             document: {},
+            _items:[]
         }
 
         if (!Config.IsAllow(616) && !Config.IsAllow(617) && !Config.IsAllow(619)) {
@@ -354,7 +354,6 @@ class bogAddEdit extends Component {
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
-        this.props.actions.documentForAdding()
     }
 
     fillDropDowns(isEdit) {
@@ -404,6 +403,14 @@ class bogAddEdit extends Component {
     componentDidMount() {
 
     }
+
+    getNextArrange = (event) => {
+        this.setState({ selectedFromCompany: event })
+        Api.get('GetBoqNumber?projectId=' + this.state.projectId + '&companyId=' + event.value).then(res => {
+            this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false})
+        })
+    }
+
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true })
@@ -415,7 +422,7 @@ class bogAddEdit extends Component {
         } else {
             let cmi = Config.getPayload().cmi
             this.setState({ LoadingPage: true })
-            Api.get('GetBoqNumber?projectId=' + + this.state.projectId + '&companyId=' + cmi).then(res => {
+            Api.get('GetBoqNumber?projectId=' + this.state.projectId + '&companyId=' + cmi).then(res => {
                 this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false, LoadingPage: false })
             })
             this.fillDropDowns(false);
@@ -497,14 +504,13 @@ class bogAddEdit extends Component {
             props.document.statusName = props.document.status ? 'Opened' : 'Closed'
             let document = Object.assign(props.document, { documentDate: docDate })
             this.setState({ document });
-
-            let items = props.items
-            if (items) {
-                this.setState({ isLoading: true })
-                this.setState({ items }, () => this.setState({ isLoading: false }));
-            }
             this.fillDropDowns(true);
             this.checkDocumentIsView();
+        }
+        let _items = props.items
+        if (_items) {
+            this.setState({ isLoading: true })
+            this.setState({ _items }, () => this.setState({ isLoading: false }));
         }
 
     }
@@ -533,6 +539,7 @@ class bogAddEdit extends Component {
             showOptimization: values.showOptimization
         };
         DataService.addObject('AddBoq', documentObj).then(result => {
+            this.props.actions.setDocId(result.id)
             this.setState({
                 docId: result.id,
                 isLoading: false,
@@ -975,7 +982,7 @@ class bogAddEdit extends Component {
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <GridSetupWithFilter
-                rows={this.state.items}
+                rows={this.state._items}
                 showCheckbox={true}
                 pageSize={this.state.pageSize}
                 onRowClick={this.onRowClick}
@@ -1506,9 +1513,7 @@ class bogAddEdit extends Component {
                                                 title="fromCompany"
                                                 data={this.state.Companies}
                                                 selectedValue={this.state.selectedFromCompany}
-                                                handleChange={event => {
-                                                    this.setState({ selectedFromCompany: event })
-                                                }}
+                                                handleChange={event => {this.getNextArrange(event)}}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.fromCompany}
@@ -1566,7 +1571,7 @@ class bogAddEdit extends Component {
                                         <div className={"slider-Btns fullWidthWrapper textLeft "}>
 
                                             {this.state.isLoading === false ? (
-                                                <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources[this.state.btnTxt][currentLanguage]}</button>
+                                                <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isViewMode}  >{Resources[this.state.btnTxt][currentLanguage]}</button>
                                             ) :
                                                 (
                                                     <button className="primaryBtn-1 btn  disabled" disabled="disabled">

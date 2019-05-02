@@ -578,21 +578,24 @@ class meetingAgendaAddEdit extends Component {
         this.setState({ document: { ...this.state.document, [key]: value } })
     }
 
-    NextStep = () => {
+    NextStep = (next) => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
-              if (this.state.docId > 0) {
-                    let CurrStep = this.state.CurrStep + 1
-                    this.setState({ firstComplete: true, CurrStep })
-                }
-                this.setState({
-                    fromContacts: [],
-                    selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
-                    selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-                    calledByContact: []
-                })
-                break;
+            if (next == true) {
+                this.editMeeting();
+            }
+            else if (this.state.docId > 0) {
+                let CurrStep = this.state.CurrStep + 1
+                this.setState({ firstComplete: true, CurrStep })
+            }
+            this.setState({
+                fromContacts: [],
+                selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
+                selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
+                calledByContact: []
+            })
+            break;
             case 2:
                 this.setState({
                     CurrStep: this.state.CurrStep + 1, secondComplete: true,
@@ -933,7 +936,7 @@ class meetingAgendaAddEdit extends Component {
                         if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.addMeetingAgenda()
                         } else {
-                            this.NextStep();
+                            this.NextStep(true);
                         }
                     }} >
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (

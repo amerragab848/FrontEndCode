@@ -84,7 +84,7 @@ class PieChartComp extends Component {
                                             internalRadius={width / 10}
                                             highlightSliceById={this.state.highlightedSlice}
                                             colorSchema={colorSchema}
-                                            isAnimated={false}
+                                            isAnimated={true}
                                             // customMouseOver={this._handleMouseOver.bind(this)}
                                             // customMouseOut={this._handleMouseOut.bind(this)}
                                             // hasHoverAnimation={true}
