@@ -11,7 +11,7 @@ const ToolbarGroup = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
 
 const selectors = Data.Selectors;
-
+ 
 class GridSetupWithFilter extends Component {
     constructor(props) {
         super(props);
@@ -29,6 +29,7 @@ class GridSetupWithFilter extends Component {
             copmleteRows: [],
             expandedRows: {},
             filteredRows: this.props.rows,
+            enableFilter: true
         };
 
         this.groupColumn = this.groupColumn.bind(this);
@@ -80,18 +81,6 @@ class GridSetupWithFilter extends Component {
             ? initialRows
             : [...this.state.rows].sort(comparer);
     };
-
-    handleFilterChange = (filter) => {
-        const newFilters = this.state.setFilters;
-        if (filter.filterTerm) {
-            newFilters[filter.column.key] = filter;
-        } else {
-            delete newFilters[filter.column.key];
-        }
-        let rows = [...this.state.rows]
-        this.getRowsFilter(rows, newFilters);
-        return newFilters
-    }
 
     getValidFilterValues = (rows, columnId) => {
         rows.map(r => r[columnId])
@@ -246,7 +235,7 @@ class GridSetupWithFilter extends Component {
     };
 
     rowGroupRenderer = () => {
-        alert("rowGroupRenderer");
+     
     };
 
     onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
@@ -301,32 +290,35 @@ class GridSetupWithFilter extends Component {
         });
     }
 
-    render() {
-        const { rows, groupBy, filters } = this.state;
-        const groupedRows = Data.Selectors.getRows({ rows, groupBy, filters });
-
-        //const groupedRows = Data.Selectors.getRows({ rows, filters });
+    handleFilterChange = (filter) => {
+        const newFilters = this.state.setFilters;
+        if (filter.filterTerm) {
+            newFilters[filter.column.key] = filter;
+        } else {
+            delete newFilters[filter.column.key];
+        }
+        let rows = [...this.state.rows]
+        this.getRowsFilter(rows, newFilters);
+        return newFilters
+    }
+ 
+    render() { 
         const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
          const CustomToolbar = ({
              groupBy,
              onColumnGroupAdded,
-             onColumnGroupDeleted,
-             onAddFilter,
-             onClearFilters
+             onColumnGroupDeleted  
          }) => {
              return (
                  <ToolbarGroup >
-                     <GroupedColumnsPanel
+                     <GroupedColumnsPanel  
                          groupBy={groupBy}
                          onColumnGroupAdded={onColumnGroupAdded}
-                         onColumnGroupDeleted={onColumnGroupDeleted}
-                         onAddFilter={onAddFilter}
-                         onClearFilters={onClearFilters}
+                         onColumnGroupDeleted={onColumnGroupDeleted} 
                          noColumnsSelectedMessage={drag}
                      />
-                     <Toolbar enableFilter={true} />
-                     {this.state.selectedRows.length > 0 ? (
+                      {this.state.selectedRows.length > 0 ? (
                          <div className="gridSystemSelected active">
                              <div className="tableselcted-items">
                                  <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
@@ -379,45 +371,38 @@ class GridSetupWithFilter extends Component {
 
                         <ReactDataGrid
                             rowKey="id"
-                            minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
+                            minHeight={this.state.filteredRows != undefined ? (this.state.filteredRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
                             height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
                             columns={this.state.columns}
 
-                            rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
-                            rowsCount={groupedRows != undefined ? groupedRows.length : 1}
+                            rowGetter={i => this.state.filteredRows[i] != null ? this.state.filteredRows[i] : ''}
+                            rowsCount={this.state.filteredRows != undefined ? this.state.filteredRows.length : 1}
+
 
                             enableCellSelect={true}
                             onGridRowsUpdated={this.onGridRowsUpdated}
                             onCellSelected={this.onCellSelected}
                             onColumnResize={(idx, width, event) => {
-                                this.scrolllll();
-                                //console.log(this.state.columns[idx-1]);
-                                // console.log(`Column ${idx} has been resized to ${width}`);
+                                this.scrolllll(); 
                             }}
                             onGridSort={(sortColumn, sortDirection) =>
                                 this.setState({
-                                    rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
+                                    rows: this.sortRows(this.state.filteredRows, sortColumn, sortDirection)
                                 })
                             }
                             enableDragAndDrop={true}
                             toolbar={
+                                //   <Toolbar enableFilter={true} />
                                  <CustomToolbar
-
+ 
                                      groupBy={this.state.groupBy}
                                      onColumnGroupAdded={columnKey =>
                                          this.setState({ groupBy: this.groupColumn(columnKey) })
                                      }
                                      onColumnGroupDeleted={columnKey =>
                                          this.setState({ groupBy: this.ungroupColumn(columnKey) })
-                                     }
-                                     onAddFilter={filter =>
-                                         this.setState({ setFilters: this.handleFilterChange(filter) })
-                                     }
-                                     onClearFilters={() =>
-                                         this.setState({ setFilters: {} })
-                                     }
-
-                                 />
+                                     } 
+                                />
                             }
                             rowSelection={{
                                 showCheckbox: this.props.showCheckbox,

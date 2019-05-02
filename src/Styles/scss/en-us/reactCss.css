@@ -4308,3 +4308,8 @@ width: calc(100% - 256px);
   fill: #666a73;
   padding: 12px;
 }
+.filter__grid {
+  position: absolute;
+    z-index: 999;
+    top: -40px;
+}

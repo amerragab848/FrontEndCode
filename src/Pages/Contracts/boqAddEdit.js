@@ -112,8 +112,7 @@ class bogAddEdit extends Component {
         this.itemsColumns = [
             {
                 formatter: this.customButton,
-                key: 'customBtn'
-
+                key: 'customBtn' 
             },
             {
                 key: "arrange",
