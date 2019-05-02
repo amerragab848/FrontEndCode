@@ -52,6 +52,10 @@ class HeaderMenu extends Component {
     this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
     this.handleChangeSelectProject = this.handleChangeSelectProject.bind(this);
     this.ReportCenterMenu = this.ReportCenterMenu.bind(this);
+
+    //this.viewNotifications = this.handleClick.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
   }
 
   componentWillMount = () => {
@@ -72,35 +76,15 @@ class HeaderMenu extends Component {
         taskes: result
       });
     });
-    this.windowonload()
   };
-
-  windowonload(e) {
-    //var notiClicked = document.getElementById('notiClicked');
-    // document.onclick = function(e){
-    //    if(e.target.id !== 'notiClicked'){
-    //     console.log('this.state.viewNotification' )
-    //    } else {
-    //     console.log('this.state.notiClicked' )
-
-    //    }
-    // };
-      window.addEventListener('click', function (e) {
-        if (document.getElementById('notiClicked').contains(e.target)) {
-          console.log('this.state.viewNotification')
-        } else {
-          console.log('this.state.notiClicked')
-          
-        }
-      });
-  
-  };
-
-  componentDidMount() {
-    this.windowonload()
-  }
 
   openProfile = () => {
+    if (!this.state.activeClass) {
+      // attach/remove event handler
+      document.addEventListener('click', this.handleOutsideClickProfile, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClickProfile, false);
+    }
     this.setState({
       activeClass: !this.state.activeClass
     });
@@ -159,9 +143,29 @@ class HeaderMenu extends Component {
   }
 
   viewNotifications() {
+    if (!this.state.viewNotification) {
+      // attach/remove event handler
+      document.addEventListener('click', this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClick, false);
+    }
     this.setState({
       viewNotification: !this.state.viewNotification
     });
+  }
+
+  handleOutsideClick(e) {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.viewNotifications();
+  }
+
+  handleOutsideClickProfile(e) {
+    if (this.profile.contains(e.target)) {
+      return;
+    }
+    this.openProfile();
   }
 
   navigateLink(link, param) {
@@ -1016,7 +1020,7 @@ class HeaderMenu extends Component {
                     <img alt="" title="" src={Setting} />
                   </NavLink>
                 </li>
-                <li className="notifi-icon">
+                <li ref={node => { this.node = node }} className="notifi-icon">
                   <a id="notiClicked" onClick={this.viewNotifications.bind(this)}>
                     <img alt="" title="" src={Notif} />
                     <div className="inboxNotif smallSquare">
@@ -1135,7 +1139,7 @@ class HeaderMenu extends Component {
                     <img alt="" title="" src={Message} />
                   </a>
                 </li> */}
-                <li className="UserImg ">
+                <li className="UserImg" ref={profile => { this.profile = profile; }}>
                   <div className={this.state.activeClass === false ? "dropdownContent" : "dropdownContent active"} onClick={this.openProfile} >
                     <figure className="zero avatarProfile onlineAvatar">
                       <img alt="" title="" src={this.state.profilePath} />

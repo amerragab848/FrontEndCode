@@ -54,14 +54,21 @@ class PieChartComp extends Component {
     componentWillUnmount() {
         // this.abortController.abort();
     }
+    cleanLegend() {
+        var donutChart = document.getElementsByClassName('donut-chart'),
+            legendText = document.getElementById('')
+        for (var i = 0; i < donutChart.length; i++) {
+            donutChart[i].querySelector('.donut-text').innerHTML = '';
+        }
 
+    }
     // _handleMouseOver(data) {
     //     this.setState({
     //       highlightedSlice: data.data.id
     //     });
     //     console.log('fdnknvk')
     //   }
-  
+
     //   _handleMouseOut() {
     //     this.setState({
     //       highlightedSlice: 99999
@@ -85,8 +92,8 @@ class PieChartComp extends Component {
                                 height={300}
                                 isAnimated={true}
                                 loadingState={true}
-                                //customMouseOver={this._handleMouseOver.bind(this)}
-                                //customMouseOut={this._handleMouseOut.bind(this)}
+                                customMouseOver={this.cleanLegend.bind(this)}
+                            //customMouseOut={this._handleMouseOut.bind(this)}
                             />
                             <Legend
                                 data={this.state.dataChart}
@@ -98,6 +105,10 @@ class PieChartComp extends Component {
                                 height={100}
                                 highlightEntryById={this.state.highlightedSlice}
                             />
+                            <div id="legend__text">
+
+                            </div>
+
                         </Fragment>
                         : null}
                 </div>

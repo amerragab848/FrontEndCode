@@ -5,7 +5,7 @@ import addNoDataModule from 'highcharts/modules/no-data-to-display';
 import exporting from 'highcharts/modules/exporting'
 import Api from '../../api';
 import language from '../../resources.json'
-import { Bar } from 'britecharts-react'
+import { Bar, d3 } from 'britecharts-react'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -19,6 +19,7 @@ const marginObject = {
     bottom: 50,
 };
 
+//const container = document.getElementById('ContainerWidth').style.width;
 
 class BarChartComp extends Component {
 
@@ -163,12 +164,12 @@ class BarChartComp extends Component {
                     </div>
                     :
                     this.state.isLoading == false ?
-                        <div className="col-xs-6">
-                            <div className="panel barChart__container">
+                        <div className="col-md-8 col-lg-6">
+                            <div id="ContainerWidth" className="panel barChart__container">
                                 <div className="panel-body">
                                     <Bar
                                         data={this.state.barData}
-                                        width={800}
+                                        width={600}
                                         isHorizontal={false}
                                         margin={marginObject}
                                         colorSchema={["#dfe2e6", "#39bd3d"]}
