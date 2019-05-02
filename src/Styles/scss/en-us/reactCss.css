@@ -4420,3 +4420,11 @@ width: calc(100% - 256px);
 .react-grid-Canvas {
   padding-bottom: 100px;
 }
+.doc-pre-cycle .linebylineInput.pre-radioBtn{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.doc-pre-cycle .linebylineInput.pre-radioBtn >div{
+  width: 50%
+}

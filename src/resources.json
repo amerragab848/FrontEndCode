@@ -7815,5 +7815,9 @@
   "loginToAccount": {
     "en": "Login to your account",
     "ar": "تسجيل الدخول لحسابك"
+  },
+  "toContactNameRequired": {
+    "en": "Please select to Contact Name",
+    "ar": "برجاء إختيار الشخص المسئول"
   }
 }
