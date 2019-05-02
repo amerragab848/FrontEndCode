@@ -175,22 +175,7 @@ let ChartWidgets = [{
     multiSeries: 'yes',
     barContent: [{ name: 'Contracts Under Review', value: 'countUnderContract' }, { name: 'Contracted', value: 'countContract' }]
 
-}, {
-    //     id: 'wt-Name13',
-    //     title: 'percentageExpensesTypesOfTotal',
-    //     props: {
-    //         'api': 'GetPercentageExpensesType',
-    //         'name': 'projectName',
-    //         'data': 'total'
-    //     },
-    //     type: 'column',
-    //     stack:'normal',
-    //     yTitle:'sum',
-    //     catagName:'projectName',
-    //     multiSeries:'no',
-    //     barContent:[]
-
-    // },{
+}, { 
     id: 'wt-Name14',
     title: 'budgetVariance',
     props: {

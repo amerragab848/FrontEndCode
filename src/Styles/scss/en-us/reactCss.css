@@ -994,6 +994,11 @@ table edition
 }
 .panel h2 {
   text-align: center;
+  font-family: font-r;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
 }
 .legend-container {
   display: flex;
@@ -3256,7 +3261,7 @@ color: #4382f9 !important;
   display: flex;
   flex-wrap: wrap;
   padding: 0 40px;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .charts__row .highcharts-color-0, .charts__row .highcharts-color-0 .highcharts-point {
   stroke: transparent;
@@ -4110,6 +4115,106 @@ width: calc(100% - 256px);
 .proForm .togglePW.active-pw .show {
   display: none;
 }
+.step__permission {
+  border-right: 0;
+  background-color: #ffffff;
+  padding-bottom: 70px;
+  padding: 40px 50px 0;
+}
+.project__Permissions--type .ui.checkbox input[type=checkbox] {
+  height: 100%
+}
+.project__Permissions {
+  display: flex;
+  flex-wrap: wrap;
+  /* margin-top: 20px; */
+}
+
+.project__Permissions--type {
+  display: flex;
+  flex-basis: 25%;
+  align-items: center;
+  padding: 8px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #E9ECF0;
+  background-color: #ffffff;
+}
+
+.project__Permissions--type .ui.checkbox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.project__Permissions--type .ui.checkbox label {
+  font-family: font-opensb;
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.2px;
+  color: #5e6475cc;
+  display: block;
+}
+
+.project__Permissions--type .checkBoxGray300.ui.checkbox.checked label {
+  color: #252833;
+}
+
+@media screen and (max-width: 1300px) {
+  .project__Permissions--type {
+      flex-basis: 32%;
+  }
+}
+
+.permission__proForm {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.permission__proForm .linebylineInput {
+  width: 50%;
+}
+
+.permission__proForm .linebylineInput .control-label {
+  width: auto;
+  text-align: left;
+  margin-right: 32px;
+  font-family: font-opensb;
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.2px;
+  color: #252833;
+  margin-bottom: 4px;
+  display: block
+}
+
+.step__permission .main__header,
+.noTabs__document .doc-container .step__permission .main__header,
+.documents-stepper .doc-container .step__permission .subiTabsContent>header {
+  padding: 0;
+}
+
+.step__permission .main__header--div,
+.noTabs__document .doc-container .step__permission .main__header .main__header--div {
+  width: 100%;
+}
+
+.permissins__btns button:first-child {
+  margin-right: 10px;
+}
+
+.project__Permissions--selectAll {
+  width: 100%;
+  flex-shrink: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
 .mainSide .header-logo-menu {
   cursor: pointer;
   z-index: 99999;
@@ -4138,15 +4243,15 @@ width: calc(100% - 256px);
   flex-wrap: wrap !important;
   margin-bottom: 33px !important
 }
-.proForm.first-proform div:first-child {
+.proForm.first-proform .linebylineInput:first-child {
   width: 100% !important;
   flex-shrink: 0 !important;
   margin-bottom: 33px !important
 }
-.proForm.first-proform div:first-child .inputDev.ui.input, .proForm.first-proform div:first-child .inputDev.ui.input input {
+.proForm.first-proform .linebylineInput:first-child .inputDev.ui.input, .proForm.first-proform .linebylineInput:first-child .inputDev.ui.input input {
   width: 100% !important;
 }
-.proForm.first-proform div:first-child {
+.proForm.first-proform .linebylineInput:first-child {
   width: 100% !important;
   flex-shrink: 0 !important
 }
@@ -4231,6 +4336,9 @@ width: calc(100% - 256px);
   white-space: nowrap;
   font-size: 16px;
 }
+.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.radio__only .linebylineInput:only-child {
+  flex-flow: row
+}
 .workflowWrapper .workflow-header {
   padding-bottom: 12px;
 }
@@ -4303,8 +4411,32 @@ width: calc(100% - 256px);
 .reportsWithMulti .reports__multiDrop .linebylineInput.multiChoice{
   width: 100%;
 }
+.britechart text, .britechart tspan {
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    fill: #3e4352;
+    font-family: font-opens;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bar-container, .grouped-bar-container {
+  display: flex;
+  justify-content: center;
+}
+
 .bar-container text {
   font-size: 1rem;
   fill: #666a73;
   padding: 12px;
+}
+.react-grid-Row:last-of-type .react-grid-Cell .rdg-cell-action-last .rdg-cell-action-menu {
+  top: auto !important;
+  bottom: 100%;
+  max-height: 200px;
+  overflow: auto
+}
+.react-grid-Canvas {
+  padding-bottom: 100px;
 }

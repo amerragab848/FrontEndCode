@@ -18199,7 +18199,7 @@
   },
   "Risk": {
     "documentTitle": "risk",
-    "docTyp": 28,
+    "docTyp": 115,
     "documentAddEditLink": "riskAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 84,
@@ -18208,9 +18208,9 @@
     "documentViewPermission": 87,
     "documentPermission": 88,
     "documentApi": {
-      "get": "GetCommunicationTransmittal",
-      "getCustom": "GetCommunicationTransmittalCustom",
-      "delete": "CommunicationTransmittalMultipleDelete"
+      "get": "GetCommunicationRisk",
+      "getCustom": "GetCommunicationRiskCustom",
+      "delete": "CommunicationRiskMultipleDelete"
     },
     "documentColumns": [
       {

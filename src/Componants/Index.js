@@ -88,7 +88,7 @@ class Index extends Component {
     let chartWidgets = this.state.chartData.map((item, index) => {
       if (item.type === "pie") {
         return (
-          <div className="col-xs-4" key={item.id}>
+          <div className="col-lg-4 col-md-6" key={item.id}>
             <PieChartComp
               api={item.props.api}
               name={item.props.name}
