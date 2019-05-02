@@ -143,6 +143,10 @@ import taskDetails from "./Pages/Menu/taskDetails";
 import myTasks from "./Pages/Menu/myTasks";
 import contractInfoAddEdit from "./Pages/Contracts/contractInfoAddEdit";
 
+
+import PaymentRequisitionList from "./Pages/Contracts/AmendmentList";
+
+
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -304,7 +308,9 @@ let originalRoutes = [
     , <Route path="/postitNotificationsDetail" component={PostitNotificationsDetail} />
     , <Route path="/taskDetails" component={taskDetails} />
     , <Route path="/myTasks" component={myTasks} />
-    , <Route path="/contractInfoAddEdit" component={contractInfoAddEdit} />
+    , <Route path="/contractInfoAddEdit" component={contractInfoAddEdit} /> 
+    , <Route path="/PaymentRequisitionList" component={PaymentRequisitionList} />
+    
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
