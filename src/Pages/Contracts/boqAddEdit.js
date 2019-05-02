@@ -655,6 +655,7 @@ class bogAddEdit extends Component {
             this.setState({ isLoading: false })
         })
     }
+    
     checkItemCode = (code) => {
         Api.get('GetItemCode?itemCode=' + code + '&projectId=' + this.state.projectId).then(res => {
             if (res == true) {

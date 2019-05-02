@@ -139,7 +139,9 @@ class HeaderMenu extends Component {
   }
 
   navigateLink(link, param) {
-    this.props.history.push({ pathname: "/" + link, search: "?id=" + param });
+    if(link != ""){
+      this.props.history.push({ pathname: "/" + link, search: "?id=" + param });
+    }
   }
 
   routeToView(docView, projectId, projectName, arrange) {
@@ -1121,10 +1123,10 @@ class HeaderMenu extends Component {
                               </div>
                               <p className="notofoWorkflow">
                                 <span>{item.documentName}</span>
-                                <a data-toggle="tooltip" title={item.title} href={link}
+                                {currentLink[0] != "" ? <a data-toggle="tooltip" title={item.title} href={link}
                                   onClick={() => this.navigateLink(currentLink[0], encodedPaylod).bind(this)}>
                                   “{item.title}”
-                                </a>
+                                </a> : <span>“{item.title}”</span>}
                               </p>
                             </div>
                           </div>

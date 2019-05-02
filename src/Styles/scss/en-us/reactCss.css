@@ -4192,3 +4192,11 @@ width: calc(100% - 256px);
   white-space: nowrap;
   font-size: 16px;
 }
+
+.withManyTabs .company__total .data__tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .withManyTabs .company__total .data__tabs li {
+    margin-bottom: 12px;
+  }
