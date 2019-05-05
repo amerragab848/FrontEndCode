@@ -14,8 +14,8 @@ class ContractsDeductions extends Component {
         super(props)
         this.state = {
             ContractsDeductionsList: [],
-            // contractId:this.props.contractId
-            contractId: 433
+            contractId:this.props.contractId
+           // contractId: 433
         }
     }
 
@@ -44,7 +44,7 @@ class ContractsDeductions extends Component {
         ]
 
         return (
-            <div className="mainContainer">
+            <div>
                 <div className="doc-pre-cycle">
                     <header>
                         <h2 className="zero">{Resources['contractsDeductions'][currentLanguage]}</h2>

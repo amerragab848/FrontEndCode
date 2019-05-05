@@ -191,7 +191,7 @@ class materialInspectionRequestAddEdit extends Component {
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: "/inspectionRequest/" + projectId
+                pathname: "/materialInspectionRequest/" + projectId
             });
         }
         this.onChangeMessage = this.onChangeMessage.bind(this);
@@ -201,7 +201,8 @@ class materialInspectionRequestAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -530,8 +531,35 @@ class materialInspectionRequestAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-            }
+            } 
+            // else {
+            //     let original_document = { ...this.state.document };
+
+            //     let updated_document = {};
+
+            //     updated_document[field] = "";
+
+            //     updated_document = Object.assign(original_document, updated_document);
+
+            //     this.setState({
+            //         document: updated_document,
+            //         [field]: ''
+            //     });
+
+            // }
         }
+        //  else {
+        //     let original_document = { ...this.state.document };
+        //     let updated_document = {};
+        //     updated_document[field] = "";
+        //     updated_document = Object.assign(original_document, updated_document);
+
+        //     this.setState({
+        //         document: updated_document,
+        //         [field]: ''
+        //     });
+
+        // }
     };
 
     handleChange(e, field) {
@@ -668,7 +696,7 @@ class materialInspectionRequestAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
@@ -711,7 +739,7 @@ class materialInspectionRequestAddEdit extends Component {
             })
         } else {
             this.props.history.push({
-                pathname: "/inspectionRequest/" + projectId
+                pathname: "/materialInspectionRequest/" + projectId
             });
         }
 
@@ -743,7 +771,7 @@ class materialInspectionRequestAddEdit extends Component {
             })
         } else {
             this.props.history.push({
-                pathname: "/inspectionRequest/" + projectId
+                pathname: "/materialInspectionRequest/" + projectId
             });
         }
 
@@ -998,7 +1026,7 @@ class materialInspectionRequestAddEdit extends Component {
     }
 
     StepOneLink = () => {
-        if (docId !==0) {
+        if (docId !== 0) {
             this.setState({
                 FirstStep: true,
                 SecondStep: false,
@@ -1010,7 +1038,7 @@ class materialInspectionRequestAddEdit extends Component {
     }
 
     StepTwoLink = () => {
-        if (docId !==0) {
+        if (docId !== 0) {
             this.setState({
                 FirstStep: false,
                 SecondStep: true,
@@ -1022,7 +1050,7 @@ class materialInspectionRequestAddEdit extends Component {
     }
 
     StepThreeLink = () => {
-        if (docId !==0) {
+        if (docId !== 0) {
             this.setState({
                 ThirdStep: true,
                 SecondStepComplate: true,
@@ -1052,7 +1080,7 @@ class materialInspectionRequestAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.materialInspectionRequest[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialInspectionRequest[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -1187,7 +1215,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                         <Dropdown
+                                                                            <Dropdown
                                                                                 data={this.state.companies}
                                                                                 isMulti={false}
                                                                                 selectedValue={this.state.selectedFromCompany}
@@ -1204,7 +1232,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 id="fromCompanyId" />
                                                                         </div>
                                                                         <div className="super_company">
-                                                                        <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.fromContacts}
                                                                                 selectedValue={this.state.selectedFromContact}
@@ -1226,7 +1254,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                     <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
                                                                                 selectedValue={this.state.selectedToCompany}
@@ -1239,7 +1267,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 name="toCompanyId" />
                                                                         </div>
                                                                         <div className="super_company">
-                                                                        <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.ToContacts}
                                                                                 selectedValue={this.state.selectedToContact}
@@ -1262,7 +1290,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                         <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
                                                                                 selectedValue={this.state.selectedActionByCompanyId}
@@ -1271,7 +1299,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 name="bicCompanyId" />
                                                                         </div>
                                                                         <div className="super_company">
-                                                                        <Dropdown
+                                                                            <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.bicContacts}
                                                                                 selectedValue={this.state.selectedActionByContactId}
@@ -1285,7 +1313,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 index="IR-bicContactId"
                                                                                 name="bicContactId"
                                                                                 id="bicContactId" />
-                                                                         
+
                                                                         </div>
                                                                     </div>
                                                                 </div>

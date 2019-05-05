@@ -318,7 +318,8 @@ class GridSetupWithFilter extends Component {
                          onColumnGroupDeleted={onColumnGroupDeleted} 
                          noColumnsSelectedMessage={drag}
                      />
-                      {this.state.selectedRows.length > 0 ? (
+                      
+                      {this.state.selectedRows.length > 0 && this.props.showToolBar!=false ? (
                          <div className="gridSystemSelected active">
                              <div className="tableselcted-items">
                                  <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
@@ -391,8 +392,9 @@ class GridSetupWithFilter extends Component {
                                 })
                             }
                             enableDragAndDrop={true}
-                            toolbar={
+                            toolbar=
                                 //   <Toolbar enableFilter={true} />
+                              {
                                  <CustomToolbar
  
                                      groupBy={this.state.groupBy}
@@ -402,8 +404,8 @@ class GridSetupWithFilter extends Component {
                                      onColumnGroupDeleted={columnKey =>
                                          this.setState({ groupBy: this.ungroupColumn(columnKey) })
                                      } 
-                                />
-                            }
+                                />}
+                            
                             rowSelection={{
                                 showCheckbox: this.props.showCheckbox,
                                 defaultChecked: false,

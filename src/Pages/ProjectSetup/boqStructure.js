@@ -32,9 +32,7 @@ const validationSchemaForCopyTo = Yup.object().shape({
         .required(Resources['projectRequired'][currentLanguage])
         .nullable(true),
 });
-
-
-
+ 
 class boqStructure extends Component {
     constructor(props) {
         super(props);
@@ -296,13 +294,9 @@ class boqStructure extends Component {
     }
 
     UpdateTree = (SelectedNode, NewNode) => {
-        console.log('SelectedNode', SelectedNode)
-        console.log('NewNode', NewNode)
-        console.log('Trees', this.state.trees)
-
-        let x = this.state.trees.trees.filter(s => s.perentId === NewNode.perentId)
-        console.log('x', x)
-
+       
+        //let x = this.state.trees.trees.filter(s => s.perentId === NewNode.perentId)
+      
         if (SelectedNode.perentId !== null) {
             if (this.state.IsEditMode) {
             }
@@ -314,9 +308,7 @@ class boqStructure extends Component {
                     if (element.trees) {
                         SelectedParent = element.trees.filter(s => s.id === SelectedNode.perentId)
                     }
-                })
-
-                console.log(SelectedParent)
+                }) 
             }
             this.setState({
                 isLoading: false,
@@ -350,19 +342,19 @@ class boqStructure extends Component {
 
         //console.log(this.state.SelectedNode)
         let EditObj = this.state.SelectedNode
-        if (this.state.IsEditMode) {
-
-
+        if (this.state.IsEditMode) { 
             if (EditObj.perentId !== null) {
                 EditObj.showPaymentRequsition = this.state.ShowPayment
             }
 
             dataservice.addObject('EditBoqStructure', EditObj).then(
                 res => {
+                    this.setState({ isLoading: false, viewPopUp: false })
                     this.UpdateTree(EditObj, res)
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.setState({ isLoading: false, viewPopUp: false })
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
                 })
         }
         else {
@@ -378,10 +370,12 @@ class boqStructure extends Component {
 
             dataservice.addObject('AddBoqStructure', AddingObj).then(
                 res => {
+                    this.setState({ isLoading: false, viewPopUp: false })
                     this.UpdateTree(EditObj, res)
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.setState({ isLoading: false, viewPopUp: false })
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
                 });
         }
     }
