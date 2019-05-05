@@ -96,7 +96,7 @@ class PaymentRequisitionList extends Component {
         ]
 
         return (
-            <div className="mainContainer">
+            <div>
                 <div className="doc-pre-cycle">
                     <header>
                         <h2 className="zero">{Resources['paymentRequistionList'][currentLanguage]}</h2>

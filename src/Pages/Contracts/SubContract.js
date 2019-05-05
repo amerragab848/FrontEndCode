@@ -470,9 +470,9 @@ class SubContract extends Component {
         </React.Fragment >
         return (
             <React.Fragment>
-                <div className="mainContainer">
+                <div>
                     <div className="documents-stepper noTabs__document one__tab one_step" >
-                        <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                        <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.subContracts[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> : Step_1}

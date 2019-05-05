@@ -494,11 +494,7 @@ class AmendmentList extends Component {
         ) : <LoadingSection />
 
         return (
-            <div className="mainContainer" >
-
-
-
-
+            <div>
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopupItem: false })}
                         title={Resources['amendmentItems'][currentLanguage]}
@@ -587,7 +583,7 @@ class AmendmentList extends Component {
                 </div>
 
                 <div className="filterBTNS">
-                    <button className="primaryBtn-1 btn mediumBtn" onClick={e => this.setState({ ShowPopup: true })}>{Resources['add'][currentLanguage]}</button>
+                    <button className="primaryBtn-1 btn mediumBtn" onClick={e => this.setState({ ShowPopup: true })}>{Resources['assignAmendment'][currentLanguage]}</button>
                 </div>
 
                 <div className="grid-container">

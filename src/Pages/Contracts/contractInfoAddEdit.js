@@ -15,6 +15,11 @@ import DataService from "../../Dataservice";
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Distribution from "../../Componants/OptionsPanels/DistributionList";
+import AmendmentList from "./AmendmentList";
+import PaymentRequisitionList from "./PaymentRequisitionList";
+import ContractsDeductions from "./ContractsDeductions";
+import ContractsConditions from "./ContractsConditions";
+import SubContract from "./SubContract";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
@@ -25,9 +30,7 @@ import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import SkyLight from "react-skylight";
-import * as communicationActions from "../../store/actions/communication";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
-import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
+import * as communicationActions from "../../store/actions/communication"; 
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";  
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup"; 
@@ -48,75 +51,43 @@ const contractInfoSchema = Yup.object().shape({
 const variationOrdersSchema = Yup.object().shape({
   changeOrder: Yup.string().required(Resources["selectChangeOrder"][currentLanguage])
 });
-
-const contractSchema = Yup.object().shape({
-  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
-  tax: Yup.number()
-    .typeError(Resources["onlyNumbers"][currentLanguage])
-    .min(0, Resources["onlyNumbers"][currentLanguage]),
-  vat: Yup.number()
-    .typeError(Resources["onlyNumbers"][currentLanguage])
-    .min(0, Resources["onlyNumbers"][currentLanguage]),
-  retainage: Yup.number()
-    .typeError(Resources["onlyNumbers"][currentLanguage])
-    .min(0, Resources["onlyNumbers"][currentLanguage]),
-  insurance: Yup.number()
-    .typeError(Resources["onlyNumbers"][currentLanguage])
-    .min(0, Resources["onlyNumbers"][currentLanguage]),
-  advancedPayment: Yup.number()
-    .typeError(Resources["onlyNumbers"][currentLanguage])
-    .min(0, Resources["onlyNumbers"][currentLanguage]),
-  advancedPaymentAmount: Yup.number()
-    .typeError(Resources["onlyNumbers"][currentLanguage])
-    .min(0, Resources["onlyNumbers"][currentLanguage])
-});
-
-const purchaseSchema = Yup.object().shape({
-  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
-  advancedPaymentPercent: Yup.number()
-    .typeError(Resources["onlyNumbers"][currentLanguage])
-    .min(0, Resources["onlyNumbers"][currentLanguage])
-});
-
-const BoqTypeSchema = Yup.object().shape({
-  boqType: Yup.string().required(Resources["boqSubType"][currentLanguage]),
-  boqChild: Yup.string().required(Resources["boqSubType"][currentLanguage]),
-  boqSubType: Yup.string().required(Resources["boqSubType"][currentLanguage])
-});
-
+    
 let docId = 0;
 let projectId = 0;
 let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
+ 
+let columnsGrid =[];
+let selectedRow = [];
+let indexx = 0;
 
-const statusButton = ({ value, row }) => {
-  let doc_view = "";
-    if(row){
-      if (row.readStatus === true) {
-        doc_view = <div style={{textAlign:'center',margin:'4px auto',padding:'4px 10px',borderRadius:'26px',backgroundColor:'#5FD45F',width:'100%',color:'#fff', fontSize: '12px'}}>{Resources["read"][currentLanguage]}</div>
-      }else{
-        doc_view = <div style={{textAlign:'center',padding:'4px 10px',margin:'4px auto',borderRadius:'26px',backgroundColor:'#E74C3C',width:'100%',color:'#FFF', fontSize: '12px'}}>{Resources["unRead"][currentLanguage]}</div>
-      } 
-        return doc_view; 
-    }
-    return null;
+let editRevQuantity = ({ value, row }) => {
+  if (row) {
+      return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.revisedQuantity != null ?row.revisedQuantity:0}</span></a>;
+  }
+  return null;
 };
 
-let columnsGrid =[];
+let spanRevQuantity = ({ value, row }) => {
+return <span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.revisedQuantity != null ?row.revisedQuantity:0}</span>;
+}
 
 class ContractInfoAddEdit extends Component {
+ 
   constructor(props) {
     super(props);
+
     const query = new URLSearchParams(this.props.location.search);
+    
     let index = 0;
+    
     for (let param of query.entries()) {
       if (index == 0) {
         try {
-          let obj = JSON.parse(
-            CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8)
-          );
+          let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+
           docId = obj.docId;
           projectId = obj.projectId;
           projectName = obj.projectName;
@@ -130,15 +101,9 @@ class ContractInfoAddEdit extends Component {
       index++;
     } 
  
-    this.state = {
-      isCompany: Config.getPayload().uty == "company" ? true : false,
-      showForm: false,
-      loadingContractPurchase: false,
-      AddedPurchase: false,
-      loadingContract: false,
+    this.state = {    
       LoadingPage: false,
-      docTypeId: 9,
-      selectedRow: {},
+      docTypeId: 9, 
       pageSize: 50,
       CurrStep: 1,
       firstComplete: false,
@@ -163,6 +128,7 @@ class ContractInfoAddEdit extends Component {
       contacts:[],
       variationOrders:[],
       variationOrdersData:[],
+      viewHistoryData:[],
       selectedFromCompany: {label: Resources.fromCompanyRequired[currentLanguage],value: "0"},
       selectedContract: {label: Resources.selectContract[currentLanguage],value: "0"},
       selectedContractWithContact: {label: Resources.selectContract[currentLanguage],value: "0"},
@@ -182,16 +148,14 @@ class ContractInfoAddEdit extends Component {
         { name: "viewAttachments", code: 3297 },
         { name: "deleteAttachments", code: 860 }
       ],
-      document: {}
+      document: {},
+      originalContractSum:0,
+      revisedContractSum:0,
+      contractExecutedToDate:0,
+      balanceToFinish:0,
+      changeOrderSum:0
     };
-
-    let editRevQuantity = ({ value, row }) => {
-      if (row) {
-          return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.revisedQuantity}</span></a>;
-      }
-      return null;
-  };
-
+ 
    columnsGrid = [
     {
       key: "id",
@@ -202,7 +166,7 @@ class ContractInfoAddEdit extends Component {
       resizable: true,
       filterable: true,
       sortDescendingFirst: true, 
-      formatter:statusButton
+      formatter:this.statusButton
     },
     {
       key: "details",
@@ -325,23 +289,7 @@ class ContractInfoAddEdit extends Component {
       sortDescendingFirst: true 
     } 
   ];
-
-  if(Config.IsAllow(3739)){
-    columnsGrid.push( 
-      {
-        key: "revisedQuantity",
-        name: Resources["revQuantity"][currentLanguage],
-        width: 120,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        formatter: editRevQuantity,
-        editable: true 
-    });
-  }
-
+   
     if (!Config.IsAllow(139) && !Config.IsAllow(140) && !Config.IsAllow(142)) {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push({
@@ -349,15 +297,10 @@ class ContractInfoAddEdit extends Component {
       });
     }
   }
- 
-
-  customButton = () => {
-    return (
-      <button className="companies_icon" style={{ cursor: "pointer" }}>
-        <i class="fa fa-folder-open" />
-      </button>
-    );
-  };
+  
+  statusButton = ({ value, row }) => {
+    return <button className="companies_icon" style={{ cursor: "pointer" }} onClick={() => this.viewHistoryDocument(value)}><i className="fa fa-history"></i></button>;
+  }; 
 
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
@@ -419,8 +362,10 @@ class ContractInfoAddEdit extends Component {
   }
 
   fillSubDropDown(url,param,value,subField_lbl,subField_value,subDatasource,subDatasource_2) {
+ 
     this.setState({ isLoading: true });
     let action = url +  value;
+
     DataService.GetDataList(action, "contactName", "id").then(result => {
 
         let toContactId = this.state.document.toContactId;
@@ -437,21 +382,19 @@ class ContractInfoAddEdit extends Component {
       }
     );
   }
-
-  componentDidMount() {}
-
+   
   componentWillMount() {
     if (this.state.docId > 0) {
       this.setState({ isLoading: true, LoadingPage: true });
       this.props.actions.documentForEdit("GetContractsForEdit?id=" + this.state.docId,this.state.docTypeId,"boq").then(() => {
           this.setState({
-            isLoading: false,
-            showForm: true,
+            isLoading: false, 
             btnTxt: "next",
             LoadingPage: false
           });
           this.checkDocumentIsView(); 
         });
+
         DataService.GetDataGrid("GetContractOrderByContractId?ContractId=" + this.state.docId).then(result => {
           this.setState({
               rows: [...result]
@@ -462,6 +405,16 @@ class ContractInfoAddEdit extends Component {
           this.setState({
             variationOrdersData:  result != null ? result : []
           });  
+      });
+
+      DataService.GetDataGrid("GetContractsForEdit?id="+this.state.docId).then(result => {
+          this.setState({
+            originalContractSum:result.originalContractSum,
+            revisedContractSum:result.revisedContractSum,
+            contractExecutedToDate:result.contractExecutedToDate,
+            balanceToFinish:result.balanceToFinish,
+            changeOrderSum:result.changeOrderSum
+          });
       });
 
       this.fillDropDowns(true);
@@ -494,53 +447,7 @@ class ContractInfoAddEdit extends Component {
       this.props.actions.documentForAdding();
     }
   }
-
-  getTabelData() {
-    let Table = [];
-    this.setState({ isLoading: true, LoadingPage: true });
-    Api.get(
-      "GetBoqItemsList?id=" + this.state.docId + "&pageNumber=0&pageSize=1000"
-    ).then(res => {
-      let data = { items: res };
-      this.props.actions.ExportingData(data);
-
-      res.forEach((element, index) => {
-        Table.push({
-          id: element.id,
-          boqId: element.boqId,
-          unitPrice: this.state.items.unitPrice,
-          itemType: element.itemType,
-          itemTypeLabel: "",
-          days: element.days,
-          equipmentType: element.equipmentType,
-          equipmentTypeLabel: "",
-          editable: true,
-          boqSubTypeId: element.boqSubTypeId,
-          boqTypeId: element.boqTypeId,
-          boqChildTypeId: element.boqChildTypeId,
-          arrange: element.arrange,
-          boqType: element.boqType,
-          boqTypeChild: element.boqTypeChild,
-          boqSubType: element.boqSubType,
-          itemCode: element.itemCode,
-          description: element.description,
-          quantity: element.quantity,
-          revisedQuntitty: element.revisedQuantity,
-          unit: element.unit,
-          unitPrice: element.unitPrice,
-          total: element.total,
-          resourceCode: element.resourceCode
-        });
-      });
-      this.setState({ rows: Table });
-      this.props.actions.setItemDescriptions(Table);
-
-      setTimeout(() => {
-        this.setState({ isLoading: false, LoadingPage: false });
-      }, 500);
-    });
-  }
-
+  
   componentDidUpdate(prevProps) {
     if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
       this.checkDocumentIsView();
@@ -549,10 +456,11 @@ class ContractInfoAddEdit extends Component {
       this.setState({ showModal: this.props.showModal });
     }
   }
-
+ 
   componentWillReceiveProps(props, state) {
+ 
     if (props.document && props.document.id > 0) {
-  
+   
       let docDate = moment(props.document.documentDate);
       props.document.statusName = props.document.status ? "Opened" : "Closed";
       let document = Object.assign(props.document, { documentDate: docDate });
@@ -563,7 +471,27 @@ class ContractInfoAddEdit extends Component {
         this.setState({ isLoading: true });
         this.setState({ items }, () => this.setState({ isLoading: false }));
       } 
- 
+
+     if(indexx === 0){
+
+      if(Config.IsAllow(3739)){
+        columnsGrid.push( 
+          {
+            key: "revisedQuantity",
+            name: Resources["revQuantity"][currentLanguage],
+            width: 120,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true,
+            formatter: this.state.isViewMode === false ? editRevQuantity : spanRevQuantity ,
+            editable: this.state.isViewMode === false ? true : false
+        });
+      }
+      indexx ++;
+     } 
+
       this.checkDocumentIsView();
     }
   }
@@ -654,143 +582,7 @@ class ContractInfoAddEdit extends Component {
         });
     }
   };
-
-  addEditItems = () => {
-    this.setState({ isLoading: true });
-    let item = {
-      id: this.state.items.id,
-      boqId: this.state.docId,
-      parentId: "",
-      description: this.state.items.description,
-      quantity: this.state.items.quantity,
-      arrange: this.state.items.arrange,
-      unit: this.state.selectedUnit.value,
-      unitLabel: this.state.selectedUnit.label,
-      unitPrice: this.state.items.unitPrice,
-      revisedQuantity: 0,
-      resourceCode: this.state.items.resourceCode,
-      itemCode: this.state.items.itemCode,
-      itemType:
-        this.state.selectedItemType.value == "0"
-          ? null
-          : this.state.selectedItemType.value,
-      itemTypeLabel: this.state.selectedItemType.label,
-      days: this.state.items.days,
-      equipmentType:
-        this.state.selectedequipmentType.value > 0
-          ? this.state.selectedequipmentType.value
-          : "",
-      equipmentTypeLabel:
-        this.state.selectedequipmentType.value > 0
-          ? this.state.selectedequipmentType.label
-          : "",
-      editable: true,
-      boqSubTypeId:
-        this.state.selectedBoqSubType.value == "0"
-          ? null
-          : this.state.selectedBoqSubType.value,
-      boqSubType: this.state.selectedBoqSubType.label,
-      boqTypeId:
-        this.state.selectedBoqType.value == "0"
-          ? null
-          : this.state.selectedBoqType.value,
-      boqType: this.state.selectedBoqType.label,
-      boqChildTypeId:
-        this.state.selectedBoqTypeChild.value == "0"
-          ? null
-          : this.state.selectedBoqTypeChild.value,
-      boqTypeChild: this.state.selectedBoqTypeChild.label
-    };
-    let url = this.state.showPopUp ? "EditBoqItem" : "AddBoqItem";
-    Api.post(url, item)
-      .then(res => {
-        if (this.state.showPopUp) {
-          let items = Object.assign(this.state.rows);
-          this.state.rows.forEach((element, index) => {
-            if (element.id == this.state.items.id) {
-              item.id = this.state.items.id;
-              items[index] = item;
-              this.setState({ rows: items, isLoading: false }, function() {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-              });
-            }
-          });
-        } else {
-          if (this.state.items.itemCode != null) {
-            let data = [...this.state.rows];
-            item.id = res.id;
-            data.push({
-              ...item
-            });
-            this.setState(
-              {
-                rows: data,
-                items: {
-                  ...this.state.items,
-                  arrange: res.arrange + 1,
-                  description: "",
-                  quantity: "",
-                  itemCode: "",
-                  resourceCode: "",
-                  unitPrice: "",
-                  days: 1
-                }
-              },
-              function() {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-              }
-            );
-          }
-        }
-        this.setState({
-          selectedUnit: {
-            label: Resources.unitSelection[currentLanguage],
-            value: "0"
-          },
-          selectedBoqType: {
-            label: Resources.boqType[currentLanguage],
-            value: "0"
-          },
-          selectedBoqTypeChild: {
-            label: Resources.boqTypeChild[currentLanguage],
-            value: "0"
-          },
-          selectedBoqSubType: {
-            label: Resources.boqSubType[currentLanguage],
-            value: "0"
-          },
-          selectedItemType: {
-            label: Resources.itemTypeSelection[currentLanguage],
-            value: "0"
-          },
-          selectedequipmentType: {
-            label: Resources.equipmentTypeSelection[currentLanguage],
-            value: "0"
-          },
-          BoqTypeChilds: [],
-          BoqSubTypes: [],
-          isLoading: false,
-          showPopUp: false,
-          btnText: "add"
-        });
-      })
-      .catch(() => {
-        toast.error(Resources["operationCanceled"][currentLanguage]);
-        this.setState({ isLoading: false });
-      });
-  };
-
-  checkItemCode = code => {
-    Api.get(
-      "GetItemCode?itemCode=" + code + "&projectId=" + this.state.projectId
-    ).then(res => {
-      if (res == true) {
-        toast.error(Resources["itemCodeExist"][currentLanguage]);
-        this.setState({ items: { ...this.state.items, itemCode: "" } });
-      }
-    });
-  };
-
+   
   onCloseModal() {
     this.setState({ showDeleteModal: false });
   }
@@ -866,126 +658,17 @@ class ContractInfoAddEdit extends Component {
     //   }
     // }
   };
-
-  clickHandlerDeleteRowsMain = selectedRows => {
-    this.setState({
-      showDeleteModal: true,
-      selectedRow: selectedRows
-    });
-  };
-
-  onRowsSelected = selectedRows => {
-    this.setState({
-      selectedRow: selectedRows
-    });
-  };
-
-  onRowsDeselected = () => {
-    this.setState({
-      selectedRow: []
-    });
-  };
-
-  assign = () => {
-    this.setState({ showBoqModal: true });
-    this.boqTypeModal.show();
-  };
-
-  assignBoqType = () => {
-    this.setState({ showBoqModal: true, isLoading: true });
-    let itemsId = [];
-    this.state.selectedRow.forEach(element => {
-      itemsId.push(element.row.id);
-    });
-    let boq = {
-      boqChildTypeId: this.state.selectedBoqTypeChildEdit.value,
-      boqItemId: itemsId,
-      boqSubTypeId: this.state.selectedBoqSubTypeEdit.value
-    };
-    Api.post("EditBoqItemForSubType", boq)
-      .then(() => {
-        this.setState({ showBoqModal: false, isLoading: false });
-        toast.success(Resources["operationSuccess"][currentLanguage]);
-        //this.getTabelData();
-      })
-      .catch(() => {
-        toast.error(Resources["operationCanceled"][currentLanguage]);
-        this.setState({ showBoqModal: false, isLoading: false });
-      });
-  };
-
-  _executeBeforeModalClose = () => {
-    this.setState({
-      showPopUp: false,
-      btnText: "add",
-      showBoqModal: false
-    });
-  };
-
-  _executeBeforeModalOpen = () => {
-    this.setState({
-      btnText: "save"
-    });
-  };
-
-  showBtnsSaving() {
-    let btn = null;
-
-    if (this.state.docId === 0) {
-      btn = (
-        <button className="primaryBtn-1 btn meduimBtn" type="submit">
-          {Resources.save[currentLanguage]}
-        </button>
-      );
-    } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-      btn = (
-        <button className="primaryBtn-1 btn mediumBtn" type="submit">
-          {Resources.saveAndExit[currentLanguage]}
-        </button>
-      );
-    }
-    return btn;
-  }
   
-  addPurchaseOrder = values => {
-    if (this.props.document.purchaseOrderId != null || this.state.AddedPurchase)
-      toast.info(Resources.alreadyContract[currentLanguage]);
-    else {
-      let purchaseOrder = {
-        projectId: this.state.projectId,
-        boqId: this.state.docId,
-        subject: values.subject,
-        companyId: Config.getPayload().cmi,
-        completionDate: moment(values.completionDate, "DD/MM/YYYY").format(
-          "YYYY-MM-DD[T]HH:mm:ss.SSS"
-        ),
-        status: values.status,
-        useRevised: values.useRevised,
-        useItemization: values.useItemization,
-        docDate: moment(values.docDate, "DD/MM/YYYY").format(
-          "YYYY-MM-DD[T]HH:mm:ss.SSS"
-        ),
-        refDoc: values.reference,
-        actionCurrency:
-          this.state.selectedCurrency != undefined
-            ? this.state.selectedCurrency.value
-            : 0,
-        advancePaymentPercent: values.advancedPaymentPercent
-      };
-      this.setState({ loadingContractPurchase: true, AddedPurchase: true });
-      DataService.addObject("AddContractsPurchaseOrdersForBoq", purchaseOrder)
-        .then(() => {
-          toast.success(Resources["operationSuccess"][currentLanguage]);
-          this.setState({ loadingContractPurchase: false });
-        })
-        .catch(() => {
-          toast.error(Resources["operationCanceled"][currentLanguage]);
-          this.setState({ loadingContractPurchase: false });
-        });
-      this.changeTab();
-    }
-  };
+  clickHandlerDeleteRowsMain = selectedRows => {
+  
+    selectedRow = selectedRows;
 
+    this.setState({
+      showDeleteModal: true 
+    });
+ 
+  }; 
+   
   changeTab = tabName => { 
     this.setState({ activeTab: tabName }); 
   };
@@ -1004,18 +687,17 @@ class ContractInfoAddEdit extends Component {
         return { rows };
       },
       function() {
-        if (
-          updateRow[Object.keys(updated)[0]] !==
-          updated[Object.keys(updated)[0]]
-        ) {
+        if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
+
           updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-          Api.post(
-            "EditBoqItemUnitPrice?id=" +
-              this.state.rows[fromRow].id +
-              "&unitPrice=" +
-              updated.unitPrice
-          )
-            .then(() => {
+
+          let obj = {};
+
+          obj.contractId = this.state.docId;
+          obj.revisedQuantity = updateRow.revisedQuantity;
+          obj.id = updateRow.id;
+
+          Api.post("EditRevisedQuantity",obj).then(() => {
               toast.success(Resources["operationSuccess"][currentLanguage]);
               this.setState({ isLoading: false });
             })
@@ -1129,32 +811,100 @@ class ContractInfoAddEdit extends Component {
 
   clickHandlerContinueMain()
   {
-    this.setState({
+   if(Config.IsAllow(3738)){
+     this.setState({
       isLoading : true,
       showDeleteModal:false
     });
 
-    let originalData = this.state.variationOrdersData;
+    let originalData = this.state.rows;
 
-    DataService.addObject("DeleteChangeOrderByContractId?id="+ this.state.currentId).then(result => {
+    DataService.addObject("DeletMultipleContractOrderById", selectedRow ).then(result => {
 
-      let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
+      selectedRow.forEach(item => {
 
-      originalData.splice(getIndex, 1);
+        let getIndex = originalData.findIndex(x => x.id === item);
 
+        originalData.splice(getIndex, 1);
+      });
+ 
       this.setState({ 
-        isLoading: false ,
-        variationOrdersData:originalData
+        showPopUp:false,
+        isLoading: false,
+        rows:originalData
       });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(() => {
       toast.error(Resources["operationCanceled"][currentLanguage]);
       this.setState({ isLoading: false });
     });
+  }else{
+    toast.warning(Resources["missingPermissions"][currentLanguage]);
+  } 
+  }
+
+  viewHistoryDocument(values)
+  {
+    if(this.state.isViewMode === false){
+      
+      DataService.GetDataList("GetContractsItemsHistory?id=" + values ).then(result => {
+   
+        this.setState({ 
+              viewHistoryData: result,
+              showPopUp:true
+          });
+
+        this.simpleDialog.show();
+      });  
+    } 
   }
 
   render() {
   
+    const columnsDetails  = [
+      {
+        Header: Resources["description"][currentLanguage],
+        accessor: "description",
+        sortabel: true,
+        width: 250
+      }, 
+      {
+        Header: Resources["originalPrice"][currentLanguage],
+        accessor: "oldPrice",
+        width: 150,
+        sortabel: true
+      },
+      {
+        Header: Resources["unitPrice"][currentLanguage],
+        accessor: "price",
+        width: 200,
+        sortabel: true 
+      },
+      {
+        Header: Resources["addedBy"][currentLanguage],
+        accessor: "addedByName",
+        width: 200,
+        sortabel: true 
+      }, 
+      {
+        Header: Resources["addedDate"][currentLanguage],
+        accessor: "addedDate",
+        width: 200,
+        sortabel: true,
+        Cell: row => (
+          <span>
+            <span>{moment(row.value).format("DD/MM/YYYY")}</span>
+          </span>
+        ) 
+      },
+      {
+        Header: Resources["comment"][currentLanguage],
+        accessor: "reason",
+        width: 200,
+        sortabel: true
+      } 
+    ];
+
     const columns  = [
       {
         Header: Resources["arrange"][currentLanguage],
@@ -1230,16 +980,9 @@ class ContractInfoAddEdit extends Component {
 
     const ItemsGrid =
       this.state.isLoading === false ? (
-        <GridSetup
-                rows={this.state.rows}
-                showCheckbox={false}
-                pageSize={this.state.pageSize}
-                onRowClick={this.onRowClick}
-                columns={columnsGrid}
-                onGridRowsUpdated={this._onGridRowsUpdated}
-                getCellActions={this.GetCellActions}
-                key='rows'
-            /> 
+        <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
+                   pageSize={this.state.pageSize} onRowClick={this.onRowClick} columns={columnsGrid}
+                   onGridRowsUpdated={this._onGridRowsUpdated}  key='rows' /> 
       ) : (
         <LoadingSection />
       );
@@ -1304,13 +1047,13 @@ class ContractInfoAddEdit extends Component {
               </Form>
             )}
           </Formik>
-          <div>
+          <Fragment>
            <ReactTable data={this.state.variationOrdersData}
                        columns={columns}
                        defaultPageSize={5}
                        noDataText={Resources["noData"][currentLanguage]}
                        className="-striped -highlight" />
-          </div>
+          </Fragment>
         </div>
       </React.Fragment>
     );
@@ -1408,8 +1151,7 @@ class ContractInfoAddEdit extends Component {
                                  onChange={e => { handleChange(e); }}
                                  name="arrange" placeholder={Resources.arrange[currentLanguage]}/>
                         </div>
-                      </div>
-
+                      </div> 
                       <div className="linebylineInput valid-input">
                         <label className="control-label">
                           {Resources.refDoc[currentLanguage]}
@@ -1520,6 +1262,72 @@ class ContractInfoAddEdit extends Component {
                         </div>
                       </div>
 
+                      {this.props.changeStatus === true ? (
+                        <Fragment>
+                        <header className="main__header">
+                            <div className="main__header--div">
+                            <h2 className="zero">
+                                {Resources["docDetails"][currentLanguage]}
+                            </h2>
+                            </div>
+                        </header> 
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.originalContractSum[currentLanguage]}
+                          </label>
+                          <div className="ui input inputDev">
+                            <input type="text" className="form-control" id="originalContractSum" readOnly
+                                  onChange={handleChange} onBlur={handleBlur}
+                                  defaultValue={this.state.originalContractSum }
+                                  name="originalContractSum" placeholder={ Resources.originalContractSum[currentLanguage]}/>
+                          </div>
+                        </div>  
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.revisedContractSumToDate[currentLanguage]}
+                          </label>
+                          <div className="ui input inputDev">
+                            <input type="text" className="form-control" id="revisedContractSumToDate" readOnly
+                                  onChange={handleChange} onBlur={handleBlur}
+                                  defaultValue={this.state.revisedContractSum }
+                                  name="revisedContractSumToDate" placeholder={ Resources.revisedContractSumToDate[currentLanguage]}/>
+                          </div>
+                        </div>  
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.contractExecutedToDate[currentLanguage]}
+                          </label>
+                          <div className="ui input inputDev">
+                            <input type="text" className="form-control" id="contractExecutedToDate" readOnly
+                                  onChange={handleChange} onBlur={handleBlur}
+                                  defaultValue={this.state.contractExecutedToDate }
+                                  name="contractExecutedToDate" placeholder={ Resources.contractExecutedToDate[currentLanguage]}/>
+                          </div>
+                        </div>  
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.balance[currentLanguage]}
+                          </label>
+                          <div className="ui input inputDev">
+                            <input type="text" className="form-control" id="balance" readOnly
+                                  onChange={handleChange} onBlur={handleBlur}
+                                  defaultValue={this.state.balanceToFinish }
+                                  name="balance" placeholder={ Resources.balance[currentLanguage]}/>
+                          </div>
+                        </div>  
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.changeOrderSum[currentLanguage]}
+                          </label>
+                          <div className="ui input inputDev">
+                            <input type="text" className="form-control" id="changeOrderSum" readOnly
+                                  onChange={handleChange} onBlur={handleBlur}
+                                  defaultValue={this.state.changeOrderSum }
+                                  name="changeOrderSum" placeholder={ Resources.changeOrderSum[currentLanguage]}/>
+                          </div>
+                        </div>  
+                      </Fragment>
+                      ):null }
                       <div className={"slider-Btns fullWidthWrapper textLeft "}>
                         {this.state.isLoading === false ? (
                           <button className={ "primaryBtn-1 btn " + (this.state.isApproveMode === true ? "disNone" : "") } type="submit" disabled={this.state.isApproveMode}>
@@ -1558,8 +1366,7 @@ class ContractInfoAddEdit extends Component {
     ); 
 
     let Step_2 = (
-      <React.Fragment>
-        {this.state.loadingContractPurchase ? <LoadingSection /> : null}
+      <React.Fragment> 
         <div className="company__total proForm"> 
           <ul id="stepper__tabs" className="data__tabs">
             <li className={ " data__tabs--list " + (this.state.activeTab == "pricedItem" ? "active" : "") } onClick={() => this.changeTab("pricedItem")}>
@@ -1596,6 +1403,11 @@ class ContractInfoAddEdit extends Component {
         </div>
         {this.state.activeTab == "pricedItem" ? (<React.Fragment>{pricedItemContent}</React.Fragment>) : null }
         {this.state.activeTab == "cos" ? (<React.Fragment>{variationOrders}</React.Fragment>) : null}
+        {this.state.activeTab == "paymentRequisitions" ? (<PaymentRequisitionList contractId={this.state.docId}/>) : null}
+        {this.state.activeTab == "contractsDeductions" ? (<ContractsDeductions contractId={this.state.docId}/>) : null}
+        {this.state.activeTab == "conditions" ? (<ContractsConditions contractId={this.state.docId}/>) : null} 
+        {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId}/>) : null}
+        {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId}/>) : null}
         {this.state.activeTab == "subPOs" ? (<SubPurchaseOrders contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
@@ -1695,16 +1507,23 @@ class ContractInfoAddEdit extends Component {
             </div>
           </div>
 
+          <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
+              <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources["viewHistory"][currentLanguage]}>
+                <Fragment> 
+                  <ReactTable data={this.state.viewHistoryData}
+                       columns={columnsDetails}
+                       defaultPageSize={5}
+                       noDataText={Resources["noData"][currentLanguage]}
+                       className="-striped -highlight" /> 
+                </Fragment>
+              </SkyLight>
+          </div>
+
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} closed={this.onCloseModal}
                                showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
                                buttonName="delete" clickHandlerContinue={this.clickHandlerContinueMain.bind(this)}/>
-          ) : null}
-          <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
-            <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
-              {this.state.currentComponent}
-            </SkyLight>
-          </div> 
+          ) : null} 
         </div>
       </React.Fragment>
     );
