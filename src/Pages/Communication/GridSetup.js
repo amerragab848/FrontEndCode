@@ -345,7 +345,7 @@ class GridSetup extends Component {
                     </button>
 
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTask'][currentLanguage]} >
-                      <i class="fa fa-tasks" aria-hidden="true"></i>
+                      <i className="fa fa-tasks" aria-hidden="true"></i>
                     </button>
                   </Fragment>
                   : null}

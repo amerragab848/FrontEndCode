@@ -14,8 +14,8 @@ class ContractsDeductions extends Component {
         super(props)
         this.state = {
             ContractsDeductionsList: [],
-            // contractId:this.props.contractId
-            contractId: 433
+            contractId:this.props.contractId
+           // contractId: 433
         }
     }
 
