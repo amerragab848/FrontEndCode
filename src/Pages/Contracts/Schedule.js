@@ -31,12 +31,11 @@ class Schedule extends Component {
         super(props)
         this.state = {
             ScheduleLsit: [],
-            //contractId:this.props.contractId
-            contractId: 4664,
+            contractId:this.props.contractId,
             ProjectScheduleDrop: [],
             ProjectScheduleFillData: [],
             SelectedProjectSchedule: {},
-            projectId: 2,
+            projectId: this.props.projectId,
             showDeleteModal: false,
             selectedId:0
         }
@@ -167,7 +166,7 @@ class Schedule extends Component {
         ]
 
         return (
-            <div className="mainContainer">
+            <div>
                 <div className="doc-pre-cycle">
                 {/* {contractContent} */}
                     <header>

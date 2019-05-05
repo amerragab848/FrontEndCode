@@ -19,6 +19,7 @@ import AmendmentList from "./AmendmentList";
 import PaymentRequisitionList from "./PaymentRequisitionList";
 import ContractsDeductions from "./ContractsDeductions";
 import ContractsConditions from "./ContractsConditions";
+import Schedule from "./Schedule";
 import SubContract from "./SubContract";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
@@ -304,7 +305,7 @@ class ContractInfoAddEdit extends Component {
 
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(140) || this.props.document.contractId !== null) {
+      if (!Config.IsAllow(140)) {
         this.setState({ isViewMode: true });
       } else if (this.state.isApproveMode != true && Config.IsAllow(140)) {
         if (this.props.hasWorkflow == false && Config.IsAllow(140)) {
@@ -1407,6 +1408,7 @@ class ContractInfoAddEdit extends Component {
         {this.state.activeTab == "contractsDeductions" ? (<ContractsDeductions contractId={this.state.docId}/>) : null}
         {this.state.activeTab == "conditions" ? (<ContractsConditions contractId={this.state.docId}/>) : null} 
         {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId}/>) : null}
+        {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId}/>) : null}
         {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId}/>) : null}
         {this.state.activeTab == "subPOs" ? (<SubPurchaseOrders contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
         <div className="doc-pre-cycle letterFullWidth">
