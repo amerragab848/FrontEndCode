@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Api from '../../api';
-import { Bar, GroupedBar } from 'britecharts-react'
+import { Bar, GroupedBar, Tooltip, ResponsiveContainer, withResponsiveness } from 'britecharts-react'
 
 
 const marginObject = {
@@ -9,7 +9,7 @@ const marginObject = {
     top: 50,
     bottom: 50,
 };
-
+const colorSchema = ["#39bd3d", "#dfe2e6"]
 class BarChartComp extends Component {
 
     constructor(props) {
@@ -62,22 +62,26 @@ class BarChartComp extends Component {
     render() {
         return (
             <Fragment>
-
-
                 {this.props.multiSeries !== 'no' ?
                     <div className="col-md-8 col-lg-6">
                         <div className="panel barChart__container">
                             <div className="panel-body">
                                 {this.state.isLoading == false ?
-                                    <GroupedBar
-                                        data={this.state.groupedBarData}
-                                        width={650}
-                                        groupLabel='stack'
-                                        nameLabel='name'
-                                        valueLabel='total'
-                                        margin={marginObject}
-                                        colorSchema={["#39bd3d", "#dfe2e6"]}
-                                        yTickTextOffset={-65}
+                                    <ResponsiveContainer
+                                        render={
+                                            ({ width }) =>
+                                                <div>
+                                                    <GroupedBar
+                                                        data={this.state.groupedBarData}
+                                                        width={width}
+                                                        groupLabel='stack'
+                                                        nameLabel='name'
+                                                        valueLabel='total'
+                                                        //margin={marginObject}
+                                                        colorSchema={colorSchema}
+                                                    />
+                                                </div>
+                                        }
                                     />
                                     : null}
                             </div>
@@ -86,17 +90,24 @@ class BarChartComp extends Component {
                     :
                     this.state.isLoading == false ?
                         <div className="col-md-8 col-lg-6">
-                            <div id="ContainerWidth" className="panel barChart__container">
+                            <div className="panel barChart__container">
                                 <div className="panel-body">
-                                    <Bar
-                                        data={this.state.barData}
-                                        width={650}
-                                        isHorizontal={false}
-                                        margin={marginObject}
-                                        colorSchema={["#dfe2e6", "#39bd3d"]}
+                                    <ResponsiveContainer
+                                        render={
+                                            ({ width }) =>
+                                                <div>
+                                                    <Bar
+                                                        width={width}
+                                                        data={this.state.barData}
+                                                        isHorizontal={false}
+                                                        margin={marginObject}
+                                                        colorSchema={colorSchema}
+                                                    />
+                                                </div>
+                                        }
                                     />
                                 </div>
-                            </div >
+                            </div>
                         </div >
                         : null
                 }

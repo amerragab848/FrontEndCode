@@ -4440,3 +4440,61 @@ width: calc(100% - 256px);
 .react-grid-Canvas {
   padding-bottom: 100px;
 }
+
+line.horizontal-grid-line {
+  stroke: #dfe2e6;
+  shape-rendering: crispEdges;
+  stroke-width: 1;
+  stroke-dasharray: 4,4;
+}
+.bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .horizontal-grid-line, .bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .vertical-grid-line {
+  stroke: #dfe2e6;
+  shape-rendering: crispEdges;
+  stroke-width: 1;
+  stroke-dasharray: 4,4;
+}
+
+.donut__legend {
+  display: flex;
+  align-items: center;
+}
+
+/* #legenbd__teext, .donut-text {
+  display: none;
+} */
+#legenbd__teext:first-of-type {
+  display: block;
+}
+#legenbd__teext .chartName {
+  font-family: font-b;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #39bd3d;
+  display: block;
+}
+#legenbd__teext .percentage {
+  font-family: font-b;
+  font-size: 56px;
+  line-height: 1.14;
+  letter-spacing: -1.1px;
+  color: #252833;
+  display: block;
+}
+#legenbd__teext .totalAmount {
+  font-family: font-b;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #252833;
+  display: block;
+}
+.y-axis-group path.domain {
+  display: none;
+}
+.y-axis-group .tick line {
+  stroke: none
+}
+.x-axis-group path.domain {
+  stroke: #e9ecf0;
+}
