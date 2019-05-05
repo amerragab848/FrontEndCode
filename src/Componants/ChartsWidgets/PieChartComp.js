@@ -68,7 +68,7 @@ class PieChartComp extends Component {
         //     isAnimated: false
         // })
         this.setState({
-            data: e.data    
+            data: e.data
         });
         data = e.data;
         console.log(e.data);
@@ -108,11 +108,13 @@ class PieChartComp extends Component {
                                         internalRadius={width / 10}
                                         colorSchema={colorSchema}
                                         customMouseOver={this.logMouseOver}
+                                        isAnimated={false}
                                     />
 
-                                    <p id="legenbd__teext"><span className="chartName"> {this.state.data.name}</span>
+                                    <p id="legenbd__teext">
+                                        <span className="chartName"> {this.state.data.name}</span>
                                         <span className="percentage">{this.state.data.percentage + '%'}</span>
-                                        <span className="totalAmount">{this.state.data.quantity}</span>
+                                        <span className="totalAmount">{this.state.data.quantity + 'LE'}</span>
                                     </p>
 
                                 </div>

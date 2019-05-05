@@ -79,7 +79,7 @@ class postitNotificationsDetail extends Component {
           toast.success(Resources["operationSuccess"][currentLanguage]);
 
         }).catch(ex => {
-          toast.success(Resources["operationSuccess"][currentLanguage]);
+          toast.error(Resources["operationSuccess"][currentLanguage]);
         });
       } 
   };
@@ -92,7 +92,7 @@ class postitNotificationsDetail extends Component {
             this.props.history.push(docView);
           } else {
             let obj = {
-              docId: item.id,
+              docId: item.docId,
               projectId: projectId,
               projectName: projectName,
               arrange: arrange,

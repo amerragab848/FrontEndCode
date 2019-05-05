@@ -112,13 +112,13 @@ class PermissionsGroupsPermissions extends Component {
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
                 })
-                this.setState({ isLoading: false, disabled: false, status: 1 })
+                this.setState({ isLoading: false, disabled: false, status: 1 ,checkedAll:false})
             }
             else {
-                this.setState({ isLoading: false, disabled: false, status: 0 })
+                this.setState({ isLoading: false, disabled: false, status: 0 ,checkedAll:false})
             }
         }).catch(() => {
-            this.setState({ isLoading: false, disabled: false, status: 0 })
+            this.setState({ isLoading: false, disabled: false, status: 0,checkedAll:false })
         })
     }
 
@@ -139,7 +139,7 @@ class PermissionsGroupsPermissions extends Component {
         return (
             <div className="mainContainer">
                 <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={this.props.projectName} isViewMode={this.state.isViewMode} docTitle={Resources.groupsPermissions[currentLanguage]} moduleTitle='' />
+                    <HeaderDocument projectName={''} isViewMode={this.state.isViewMode} docTitle={Resources.groupsPermissions[currentLanguage]} moduleTitle='' />
                     {this.state.isLoading == true ? <LoadingSection /> :
                         <div className="doc-container">
                             {/* <!-- Start Submittal Actions --> */}

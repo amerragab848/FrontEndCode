@@ -70,14 +70,13 @@ class BarChartComp extends Component {
                                     <ResponsiveContainer
                                         render={
                                             ({ width }) =>
-                                                <div>
+                                                <div className="group__charts">
                                                     <GroupedBar
                                                         data={this.state.groupedBarData}
                                                         width={width}
                                                         groupLabel='stack'
                                                         nameLabel='name'
                                                         valueLabel='total'
-                                                        //margin={marginObject}
                                                         colorSchema={colorSchema}
                                                     />
                                                 </div>
@@ -102,6 +101,7 @@ class BarChartComp extends Component {
                                                         isHorizontal={false}
                                                         margin={marginObject}
                                                         colorSchema={colorSchema}
+                                                        
                                                     />
                                                 </div>
                                         }

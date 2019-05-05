@@ -71,6 +71,7 @@ import SubmittalAddEdit from "./Pages/TechnicalOffice/SubmittalAddEdit";
 import siteInstructionsAddEdit from "./Pages/TechnicalOffice/siteInstructionsAddEdit";
 import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
+import SubContract from "./Pages/Contracts/SubContract";
 import ContractsConditions from "./Pages/Contracts/ContractsConditions";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
@@ -141,6 +142,11 @@ import expensesDetailsOnProjectsReport from './Pages/ReportsCenter/ProjectReport
 import PostitNotificationsDetail from "./Pages/Menu/postitNotificationsDetail";
 import taskDetails from "./Pages/Menu/taskDetails";
 import myTasks from "./Pages/Menu/myTasks";
+import contractInfoAddEdit from "./Pages/Contracts/contractInfoAddEdit";
+
+
+import PaymentRequisitionList from "./Pages/Contracts/AmendmentList";
+
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
@@ -224,6 +230,7 @@ let originalRoutes = [
     , <Route path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
     , <Route path="/punchListAddEdit" component={punchListAddEdit} />
     , <Route path="/boqAddEdit" component={boqAddEdit} />
+    , <Route path="/SubContract" component={SubContract} />
     , <Route path="/ContractsConditions" component={ContractsConditions} />
     , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
     , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
@@ -303,6 +310,9 @@ let originalRoutes = [
     , <Route path="/postitNotificationsDetail" component={PostitNotificationsDetail} />
     , <Route path="/taskDetails" component={taskDetails} />
     , <Route path="/myTasks" component={myTasks} />
+    , <Route path="/contractInfoAddEdit" component={contractInfoAddEdit} /> 
+    , <Route path="/PaymentRequisitionList" component={PaymentRequisitionList} />
+    
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]

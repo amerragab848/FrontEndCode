@@ -6727,6 +6727,10 @@
     "en": "Advanced Payment Required",
     "ar": "الدفعة المقدمة"
   },
+  "advancedInfo": {
+    "en": "Advanced Info",
+    "ar": "معلومات المتقدمة"
+  },
   "arrangeRequired": {
     "en": "Please Enter Number ",
     "ar": "برجاء إدخال الرقم"
@@ -7815,5 +7819,9 @@
   "loginToAccount": {
     "en": "Login to your account",
     "ar": "تسجيل الدخول لحسابك"
+  },
+  "toContactNameRequired": {
+    "en": "Please select to Contact Name",
+    "ar": "برجاء إختيار الشخص المسئول"
   }
 }

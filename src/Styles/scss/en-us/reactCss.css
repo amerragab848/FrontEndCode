@@ -4336,6 +4336,14 @@ width: calc(100% - 256px);
   white-space: nowrap;
   font-size: 16px;
 }
+
+.withManyTabs .company__total .data__tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .withManyTabs .company__total .data__tabs li {
+    margin-bottom: 12px;
+  }
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.radio__only .linebylineInput:only-child {
   flex-flow: row
 }
@@ -4431,6 +4439,11 @@ width: calc(100% - 256px);
   fill: #666a73;
   padding: 12px;
 }
+.filter__grid {
+  position: absolute;
+    z-index: 999;
+    top: -40px;
+}
 .react-grid-Row:last-of-type .react-grid-Cell .rdg-cell-action-last .rdg-cell-action-menu {
   top: auto !important;
   bottom: 100%;
@@ -4459,11 +4472,11 @@ line.horizontal-grid-line {
   align-items: center;
 }
 
-/* #legenbd__teext, .donut-text {
+.donut-text {
   display: none;
-} */
-#legenbd__teext:first-of-type {
-  display: block;
+}
+#legenbd__teext {
+  overflow: hidden;
 }
 #legenbd__teext .chartName {
   font-family: font-b;
@@ -4489,6 +4502,10 @@ line.horizontal-grid-line {
   color: #252833;
   display: block;
 }
+.group__charts .y-axis-group path.domain {
+  display: block;
+  stroke: #ccd2db;
+}
 .y-axis-group path.domain {
   display: none;
 }
@@ -4496,5 +4513,16 @@ line.horizontal-grid-line {
   stroke: none
 }
 .x-axis-group path.domain {
-  stroke: #e9ecf0;
+  stroke: #ccd2db;
+}
+.doc-pre-cycle .linebylineInput.pre-radioBtn{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.doc-pre-cycle .linebylineInput.pre-radioBtn >div{
+  width: 50%
+}
+.chart-group .bar {
+  max-width: 46px !important;
 }
