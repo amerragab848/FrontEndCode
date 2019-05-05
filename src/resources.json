@@ -7819,5 +7819,25 @@
   "loginToAccount": {
     "en": "Login to your account",
     "ar": "تسجيل الدخول لحسابك"
+  },
+  "riskCause": {
+    "en": "Risk Cause",
+    "ar": "riskCause"
+  },
+  "likelihood": {
+    "en": "Likelihood",
+    "ar": "likelihood"
+  },
+  "riskLevel": {
+    "en": "Risk Level",
+    "ar": "riskLevel"
+  },
+  "consequence": {
+    "en": "Risk Consequences",
+    "ar": "consequences"
+  },
+  "EMV": {
+    "en": "Risk EMV",
+    "ar": "EMV"
   }
 }
