@@ -4336,6 +4336,14 @@ width: calc(100% - 256px);
   white-space: nowrap;
   font-size: 16px;
 }
+
+.withManyTabs .company__total .data__tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .withManyTabs .company__total .data__tabs li {
+    margin-bottom: 12px;
+  }
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.radio__only .linebylineInput:only-child {
   flex-flow: row
 }
@@ -4431,6 +4439,11 @@ width: calc(100% - 256px);
   fill: #666a73;
   padding: 12px;
 }
+.filter__grid {
+  position: absolute;
+    z-index: 999;
+    top: -40px;
+}
 .react-grid-Row:last-of-type .react-grid-Cell .rdg-cell-action-last .rdg-cell-action-menu {
   top: auto !important;
   bottom: 100%;
@@ -4439,4 +4452,12 @@ width: calc(100% - 256px);
 }
 .react-grid-Canvas {
   padding-bottom: 100px;
+}
+.doc-pre-cycle .linebylineInput.pre-radioBtn{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.doc-pre-cycle .linebylineInput.pre-radioBtn >div{
+  width: 50%
 }

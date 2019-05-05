@@ -229,9 +229,7 @@ class inspectionRequestAddEdit extends Component {
             });
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-
-
+            this.checkDocumentIsView(); 
         }
     }
 
