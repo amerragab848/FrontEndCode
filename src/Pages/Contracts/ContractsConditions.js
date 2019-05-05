@@ -307,7 +307,7 @@ class ContractsConditions extends Component {
             </React.Fragment >
         return (
             <React.Fragment>
-                <div className="mainContainer">
+                <div>
                     <div className="documents-stepper noTabs__document one__tab one_step">
                         <div className="doc-container">
                             <div className="step-content">

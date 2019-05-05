@@ -12,27 +12,9 @@ import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import DataService from '../../Dataservice'
 import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
-import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import Config from "../../Services/Config.js";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import SkyLight from 'react-skylight';
-import * as communicationActions from '../../store/actions/communication';
-import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
-import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import 'react-table/react-table.css'
-import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
-import IPConfig from '../../IP_Configrations'
-import flashAuto from 'material-ui/svg-icons/image/flash-auto';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const poqSchema = Yup.object().shape({
@@ -49,10 +31,7 @@ let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
-
-
 class SubContract extends Component {
-
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -74,22 +53,37 @@ class SubContract extends Component {
             }
             index++;
         }
+        let editQuntity = ({ value, row }) => {
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.quantity}</span></a>;
+            }
+            return null;
+        };
         let editUnitPrice = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.unitPrice}</span></a>;
             }
             return null;
         };
-
+        let editDefaultQuntity = ({ value, row }) => {
+            if (row) {
+                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.defaultQuantity}</span></a>;
+            }
+            return null;
+        };
         this.itemsColumns = [
             {
-                formatter: this.customButton,
-                key: 'customBtn'
-
-            },
-            {
-                key: "arrange",
-                name: Resources["no"][currentLanguage],
+                key: "details",
+                name: Resources["description"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "resourceCode",
+                name: Resources["resourceCode"][currentLanguage],
                 width: 50,
                 draggable: true,
                 sortable: true,
@@ -98,26 +92,8 @@ class SubContract extends Component {
                 sortDescendingFirst: true
 
             }, {
-                key: "boqType",
-                name: Resources["boqType"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "boqTypeChild",
-                name: Resources["boqTypeChild"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "boqSubType",
-                name: Resources["boqSubType"][currentLanguage],
+                key: "specsSectionName",
+                name: Resources["specsSection"][currentLanguage],
                 width: 100,
                 draggable: true,
                 sortable: true,
@@ -134,35 +110,26 @@ class SubContract extends Component {
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "description",
-                name: Resources["details"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "revisedQuntitty",
-                name: Resources["receivedQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "originalQuantity",
+                name: Resources["originalQuantity"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            }, {
+                key: "originalUnitPrice",
+                name: Resources["originalPrice"][currentLanguage],
                 width: 100,
                 draggable: true,
                 sortable: true,
@@ -175,214 +142,152 @@ class SubContract extends Component {
                 width: 100,
                 draggable: true,
                 sortable: true,
-                editable: true,
                 resizable: true,
+                editable: true,
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: editUnitPrice
             }, {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 100,
+                key: "quantity",
+                name: Resources["originalQuantity"][currentLanguage],
+                width: 120,
                 draggable: true,
                 sortable: true,
+                editable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: editQuntity
             }, {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 100,
+                key: "defaultQuantity",
+                name: Resources["defaultQuantity"][currentLanguage],
+                width: 120,
                 draggable: true,
                 sortable: true,
+                editable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
-            }
-        ];
+                sortDescendingFirst: true,
+                formatter: editDefaultQuntity
+            }];
 
         this.state = {
-            isCompany: Config.getPayload().uty == 'company' ? true : false,
             saveLoading: false,
             isLoading: false,
             companies: [],
             contracts: [],
-            formCompany: { label: Resources.selectCompany[currentLanguage], value: -1 },
+            selectedRows: [],
+            rows: [],
+            fromCompany: { label: Resources.selectCompany[currentLanguage], value: -1 },
             contractTo: { label: Resources.selectContact[currentLanguage], value: -1 },
             contractWithContact: { label: Resources.selectContact[currentLanguage], value: -1 },
+            itemsColumns: this.itemsColumns
         }
-
-    }
-
-    fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
-        this.setState({ isLoading: true })
-        let action = url + "?" + param + "=" + value
-        DataService.GetDataList(action, subField_lbl, subField_value).then(result => {
-            this.setState({
-                [subDatasource]: result,
-                [subDatasource_2]: result,
-                isLoading: false
-            })
-        });
-    }
-    componentDidMount() {
 
     }
 
     componentWillMount() {
         this.setState({ isLoading: true })
-        DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId=2', 'companyName', 'companyId').then(res => {
+        DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId='+this.props.projectId, 'companyName', 'companyId').then(res => {
             this.setState({ companies: res, isLoading: false })
         }).catch(() => {
             this.setState({ isLoading: false })
         })
-
-    }
-    getTabelData() {
-        let Table = []
-        this.setState({ isLoading: true, LoadingPage: true })
-        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=0&pageSize=1000').then(res => {
-            let data = { items: res };
-            this.props.actions.ExportingData(data);
-
-            res.forEach((element, index) => {
-                Table.push({
-                    id: element.id,
-                    boqId: element.boqId,
-                    unitPrice: this.state.items.unitPrice,
-                    itemType: element.itemType,
-                    itemTypeLabel: '',
-                    days: element.days,
-                    equipmentType: element.equipmentType,
-                    equipmentTypeLabel: '',
-                    editable: true,
-                    boqSubTypeId: element.boqSubTypeId,
-                    boqTypeId: element.boqTypeId,
-                    boqChildTypeId: element.boqChildTypeId,
-                    arrange: element.arrange,
-                    boqType: element.boqType,
-                    boqTypeChild: element.boqTypeChild,
-                    boqSubType: element.boqSubType,
-                    itemCode: element.itemCode,
-                    description: element.description,
-                    quantity: element.quantity,
-                    revisedQuntitty: element.revisedQuantity,
-                    unit: element.unit,
-                    unitPrice: element.unitPrice,
-                    total: element.total,
-                    resourceCode: element.resourceCode
-                })
-            })
-            this.setState({ rows: Table })
-            this.props.actions.setItemDescriptions(Table);
-
-            setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
+        this.setState({ isLoading: true })
+        Api.get('ShowContractItemsByContractId?contractId='+this.props.contractId+'&pageNumber=0&pageSize=2000').then((res) => {
+            if (res) {
+                let itemsColumns = _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity')
+                this.setState({ rows: res, itemsColumns, isLoading: false })
+            }
         })
-
 
     }
 
     componentWillReceiveProps(props, state) {
     }
 
-    onRowClick = (value, index, column) => {
-        console.log('column.key', column.key)
-        if (!Config.IsAllow(11)) {
-            toast.warning("you don't have permission");
-        }
-        else if (column.key == 'customBtn') {
-            this.itemization(value)
-        }
-        else if (column.key != 'select-row' && column.key != 'unitPrice') {
+    onRowsSelected = selectedRow => {
+        let selectedRows = this.state.selectedRows
+        selectedRows.push(selectedRow[0].row)
+        this.setState({ selectedRows });
 
-            if (this.state.CurrStep == 2) {
-                this.setState({ showPopUp: true, btnText: 'save', selectedRow: value })
-                this.simpleDialog1.show()
-            }
-
-        }
-    }
-    clickHandlerDeleteRowsMain = selectedRows => {
-        this.setState({
-            showDeleteModal: true,
-            selectedRow: selectedRows
-        });
-    };
-    onRowsSelected = selectedRows => {
-        this.setState({
-            selectedRow: selectedRows
-        });
     }
     onRowsDeselected = () => {
         this.setState({
-            selectedRow: []
+            selectedRows: []
         });
     }
 
     addContract = (values) => {
-        if (this.props.document.contractId != null || this.state.addedContract)
-            toast.info(Resources.alreadyContract[currentLanguage])
-        else {
-            let contract = {
-                projectId: this.state.projectId,
-                boqId: this.state.docId,
-                subject: values.subject,
-                companyId: Config.getPayload().cmi,
-                completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                status: values.status == undefined ? this.props.document.status : values.status,
-                docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                reference: values.reference,
-                currencyAction: this.state.selectedCurrency != undefined ? this.state.selectedCurrency.value : 0,
-                tax: values.tax,
-                vat: values.vat,
-                advancedPayment: values.advancedPayment,
-                retainage: values.retainage,
-                insurance: values.insurance,
-                advancedPaymentAmount: values.advancedPaymentAmount,
-            }
-            this.setState({ loadingContractPurchase: true })
-            DataService.addObject('AddContractsForBoq', contract).then(() => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.setState({
-                    selectedCurrency: { label: Resources.pleaseSelect[currentLanguage], value: "0" },
-                    loadingContractPurchase: false,
-                    addedContract: true
-                })
-            }).catch(() => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-                this.setState({ loadingContractPurchase: false })
+        if (this.state.selectedRows.length > 1) {
+            this.setState({ isLoading: true })
+            Api.get('GetNextArrangeMainDoc?projectId='+this.props.projectId+'&docType=9&companyId=' + this.state.fromCompany.value + '&contactId=0').then((res) => {
+                if (res) {
+                    let contract = {
+                        projectId: this.state.projectId,
+                        companyId: this.state.fromCompany.value,
+                        toCompanyId: this.state.contractTo.value,
+                        toContactId: this.state.contractWithContact.value,
+                        subject: values.subject,
+                        arrange: res,
+                        reference: values.refDoc,
+                        docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                        status: values.status == undefined ? true : values.status,
+                        completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                        actualExceuted: 0,
+                        originalContactSum: 0,
+                        parentId:this.props.contractId,
+                        parentType: 'Contract',
+                        tax: 0,
+                        vat: 0,
+                        contractId:this.props.contractId
 
+                    }
+                    DataService.addObject('AddContracts', contract).then((data) => {
+                        let count = 0;
+                        this.state.selectedRows.forEach(element => {
+                            let item = element
+                            if (values.status == undefined || values.status == false)
+                                item.defaultOrOriginal = false;
+                            else {
+                                if (item.defaultQuantity !== 0)
+                                    item.defaultOrOriginal = true;
+                            }
+                            item.projectId = this.props.projectId
+                            item.docId = data["id"];
+                            item.contractId = data["id"];
+                            Api.post('AddContractsOrder', item).then(() => {
+                                if (count == this.state.selectedRows.length - 1){
+                                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                                    this.setState({isLoading:false})}
+                                else
+                                    count++;
+                            })
+                        })
+                    }).catch(() => {
+                        toast.error(Resources["operationCanceled"][currentLanguage]);
+                        this.setState({ isLoading: false })
+                    })
+                }
             })
-            this.changeTab()
+        }
+        else {
+            toast.info('Please Select At least One Item')
         }
     }
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
         this.setState({ isLoading: true })
-
-        let updateRow = this.state.rows[fromRow];
-
         this.setState(state => {
             const rows = state.rows.slice();
             for (let i = fromRow; i <= toRow; i++) {
                 rows[i] = { ...rows[i], ...updated };
             }
             return { rows };
-        }, function () {
-            if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-
-                updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-                Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice)
-                    .then(() => {
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                        this.setState({ isLoading: false })
-                    })
-                    .catch(() => {
-                        toast.error(Resources["operationCanceled"][currentLanguage]);
-                        this.setState({ isLoading: false })
-                    })
-            }
         });
+        setTimeout(() => {
+            this.setState({ isLoading: false })
+        }, 300)
     };
 
     ChangeContract = (event) => {
@@ -396,17 +301,24 @@ class SubContract extends Component {
             this.setState({ isLoading: false })
         })
     }
-
+    setupColumns(value) {
+        this.setState({ isLoading: true })
+        let itemsColumns = value == 'quantity' ? _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity') : _.filter(this.itemsColumns, (col) => col.key != 'quantity')
+        setTimeout(() => {
+            this.setState({ itemsColumns, isLoading: false })
+        }, 200)
+    }
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <GridSetupWithFilter
-                rows={this.state._items}
+                rows={this.state.rows}
                 onRowClick={this.onRowClick}
-                columns={this.itemsColumns}
+                columns={this.state.itemsColumns}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                 onRowsSelected={this.onRowsSelected}
                 onRowsDeselected={this.onRowsDeselected}
                 onGridRowsUpdated={this._onGridRowsUpdated}
+                showToolBar={false}
                 key='items'
             />) : <LoadingSection />;
         let Step_1 = <React.Fragment>
@@ -425,7 +337,7 @@ class SubContract extends Component {
                             }}
                             validationSchema={poqSchema}
                             onSubmit={(values) => {
-                                console.log('values', values)
+                                this.addContract(values)
                             }}  >
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                 <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -444,11 +356,11 @@ class SubContract extends Component {
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="status" defaultChecked={values.status === false ? null : 'checked'} value="true" onChange={() => setFieldValue('status', true)} />
+                                                <input type="radio" name="status" defaultChecked='checked' value="false" onChange={() => setFieldValue('status', false)} />
                                                 <label>{Resources.oppened[currentLanguage]}</label>
                                             </div>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="status" defaultChecked={values.status === false ? 'checked' : null} value="false" onChange={() => setFieldValue('status', false)} />
+                                                <input type="radio" name="status" value="true" onChange={() => setFieldValue('status', true)} />
                                                 <label>{Resources.closed[currentLanguage]}</label>
                                             </div>
                                         </div>
@@ -539,15 +451,15 @@ class SubContract extends Component {
                         </Formik>
                     </div>
                     <div className="doc-pre-cycle">
-                        <header><h2 class="zero">Contact List</h2></header>
+                        <header><h2 class="zero">{Resources.items[currentLanguage]}</h2></header>
                         <div className="linebylineInput pre-radioBtn">
                             <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="status" defaultChecked='checked' />
-                                <label>{Resources.oppened[currentLanguage]}</label>
+                                <input type="radio" name="status" defaultChecked='checked' onChange={e => this.setupColumns('quantity')} />
+                                <label>{Resources.origenalQuantity[currentLanguage]}</label>
                             </div>
                             <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="status" />
-                                <label>{Resources.closed[currentLanguage]}</label>
+                                <input type="radio" name="status" onChange={e => this.setupColumns('defaultQuantity')} />
+                                <label>{Resources.defaultQuantity[currentLanguage]}</label>
                             </div>
                         </div>
                         {ItemsGrid}
@@ -557,9 +469,9 @@ class SubContract extends Component {
         </React.Fragment >
         return (
             <React.Fragment>
-                <div className="mainContainer">
+                <div>
                     <div className="documents-stepper noTabs__document one__tab one_step" >
-                        <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                        <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.subContracts[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> : Step_1}

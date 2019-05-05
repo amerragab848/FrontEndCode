@@ -245,20 +245,27 @@ class AmendmentList extends Component {
 
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
+
         Api.post('DeleteContractAmendmentByContractId?', this.state.selectedRow).then((res) => {
-            let data = [...this.state.AmendmentList]
-            let length = data.length
-            data.forEach((element, index) => {
-                data = data.filter(item => { return item.id != element.id });
-                if (index == length - 1) {
-                    this.setState({ AmendmentList: data, showDeleteModal: false, isLoading: false });
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }
+
+            let originalRows = this.state.AmendmentList
+            this.state.selectedRow.map(i => {
+                originalRows = originalRows.filter(r => r.id !== i);
             })
-        }).catch(() => {
+            this.setState({
+                AmendmentList: originalRows,
+                showDeleteModal: false,
+                isLoading: false,
+            })
+            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+
+        }).catch(ex => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ showDeleteModal: false, isLoading: false });
-        })
+            this.setState({
+                isLoading: false,
+            })
+        });
+
 
     }
 
@@ -494,11 +501,7 @@ class AmendmentList extends Component {
         ) : <LoadingSection />
 
         return (
-            <div className="mainContainer" >
-
-
-
-
+            <div>
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopupItem: false })}
                         title={Resources['amendmentItems'][currentLanguage]}
@@ -587,7 +590,7 @@ class AmendmentList extends Component {
                 </div>
 
                 <div className="filterBTNS">
-                    <button className="primaryBtn-1 btn mediumBtn" onClick={e => this.setState({ ShowPopup: true })}>{Resources['add'][currentLanguage]}</button>
+                    <button className="primaryBtn-1 btn mediumBtn" onClick={e => this.setState({ ShowPopup: true })}>{Resources['assignAmendment'][currentLanguage]}</button>
                 </div>
 
                 <div className="grid-container">

@@ -1,28 +1,16 @@
-import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import React, { Component } from "react"; 
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import DatePicker from "../../Componants/OptionsPanels/DatePicker";
+import * as Yup from 'yup'; 
 import dataservice from "../../Dataservice";
-import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
-import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
+import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous"; 
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom";
 import RichTextEditor from 'react-rte';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import Config from "../../Services/Config.js";
-import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
-import * as communicationActions from '../../store/actions/communication';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
-import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+import { bindActionCreators } from 'redux'; 
+import moment from "moment"; 
+import * as communicationActions from '../../store/actions/communication'; 
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -39,6 +27,7 @@ const validationSchema = Yup.object().shape({
     toContactId: Yup.string().required(Resources['ToContact'][currentLanguage]).nullable(true) 
 });
    
+let originalData = [];
 
 class SubPurchaseOrders extends Component {
 
@@ -54,6 +43,7 @@ class SubPurchaseOrders extends Component {
             document:   {},
             companies: [],
             contacts: [], 
+            purchaseOrderData:[],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -92,7 +82,8 @@ class SubPurchaseOrders extends Component {
                 docDate: moment(),
                 status: "true",
                 refDoc: "",  
-                parentId:this.state.contractId
+                parentId:this.state.contractId,
+                parentType:"Contract"
             };
 
             this.setState({
@@ -100,25 +91,19 @@ class SubPurchaseOrders extends Component {
             });
 
             this.fillDropDowns(false);
-        
+
+
+        dataservice.GetDataGrid("GetSubPOsByContractId?contractId=" + this.state.contractId).then(data => {
+            this.setState({
+                purchaseOrderData: data
+            });
+        }).catch(ex => {
+            this.setState({purchaseOrderData:[]});
+            toast.error(Resources["failError"][currentLanguage])});
+
         this.props.actions.documentForAdding();
     }
-
-    // fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
-    //     let action = url + "?" + param + "=" + value
-    //     dataservice.GetDataList(action, 'contactName', 'id').then(result => {
-    //         if (this.props.changeStatus === true) {
-    //             let toSubField = this.state.document[subField];
-    //             let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-    //             console.log(targetFieldSelected);
-    //             this.setState({
-    //                 [subSelectedValue]: targetFieldSelected,
-    //                 [subDatasource]: result
-    //             });
-    //         }
-    //     });
-    // }
-
+ 
     fillDropDowns(isEdit) {
         //from Companies
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" +this.state.projectId, "companyName", "companyId").then(result => {
@@ -131,7 +116,6 @@ class SubPurchaseOrders extends Component {
                     this.setState({
                         selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
                     });
-                    //this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
 
                 let toCompanyId = this.props.document.toCompanyId;
@@ -141,8 +125,6 @@ class SubPurchaseOrders extends Component {
                     this.setState({
                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
                     });
-
-                    //this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
                 }
             }
             this.setState({
@@ -194,25 +176,33 @@ class SubPurchaseOrders extends Component {
         });
  
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
+            let action = url + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
                 this.setState({
                     [targetState]: result
                 });
             });
         }
-    }
+    } 
  
-    savePO(event) {
-        let saveDocument = { ...this.state.document };
+    savePO() {
+
+        let saveDocument = {
+            ...this.state.document,
+            isLoading:true 
+        };
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.completionDate = moment(saveDocument.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
+        dataservice.addObject('AddContractsPurchaseOrders', saveDocument).then(result => {
+
+            originalData = this.state.purchaseOrderData;
+            
+            originalData.push(result);
 
             this.setState({
-                docId: result.id
+                purchaseOrderData : originalData
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -303,15 +293,10 @@ class SubPurchaseOrders extends Component {
                <div className="document-fields">
                <Formik initialValues={{  ...this.state.document }}
                                 validationSchema={validationSchema}
-                                enableReinitialize={this.props.changeStatus}
                                 onSubmit={values => {
-                                if (this.props.changeStatus === true && this.state.docId > 0 ) {
-                                    this.editContract(values);
-                                } else if (this.props.changeStatus === false && this.state.docId === 0 ) {
-                                    this.addContract(values);
-                                } else if (this.props.changeStatus === false && this.state.docId > 0 ) {
-                                    this.NextStep();
-                                }
+                                if (this.state.contractId > 0 ) {
+                                    this.savePO();
+                                 } 
                                 }}>
                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                   <Form id="ContractForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -322,29 +307,52 @@ class SubPurchaseOrders extends Component {
                         </label>
                         <div className={"inputDev ui input " +(errors.subject? "has-error": !errors.subject && touched.subject? " has-success": " ")}>
                           <input name="subject" className="form-control" id="subject" placeholder={Resources["subject"][currentLanguage]}
-                                 autoComplete="off" onBlur={handleBlur} defaultValue={values.subject}
-                                 onChange={e => { handleChange(e); }} />
-                          {errors.subject ? ( <em className="pError">{errors.subject}</em> ) : null} 
+                                 autoComplete="off" onBlur={handleBlur}  
+                                 value={this.state.document.subject}
+                                 onBlur={e => { handleBlur(e); handleChange(e); }}
+                                 onChange={e => { this.handleChange(e,"subject"); }} />
+                          {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}  
                         </div>
                       </div>
+                         <div className="linebylineInput valid-input">
+                            <label className="control-label">
+                                {Resources.status[currentLanguage]}
+                            </label>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                  <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : "checked"}
+                                    value="true" onChange={e => this.handleChange(e, "status")} />
+                                  <label>
+                                    {Resources.oppened[currentLanguage]}
+                                  </label>
+                                </div>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                  <input type="radio" name="status" defaultChecked={this.state.document.status === false ? "checked" : null}
+                                    value="false"
+                                    onChange={e => this.handleChange(e, "status")} />
+                                  <label>
+                                    {Resources.closed[currentLanguage]}
+                                  </label>
+                                </div>
+                              </div>
+                       </div>
+               
                       <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources.status[currentLanguage]}</label>
-                        <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio" name="status" defaultChecked={values.status === false ? null : 'checked'} value="true" onChange={() => setFieldValue('status', true)} />
-                            <label>{Resources.oppened[currentLanguage]}</label>
+                        <div className="inputDev ui input input-group date NormalInputDate">
+                            <div className="customDatepicker fillter-status fillter-item-c ">
+                            <div className="proForm datepickerContainer">
+                                <label className="control-label">
+                                {Resources.docDate[currentLanguage]}
+                                </label>
+                                <div className="linebylineInput">
+                                <div className="inputDev ui input input-group date NormalInputDate">
+                                    <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
+                                    onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
-                        <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio" name="status" defaultChecked={values.status === false ? 'checked' : null} value="false" onChange={() => setFieldValue('status', false)} />
-                            <label>{Resources.closed[currentLanguage]}</label>
-                        </div>
-                    </div>
-                    </div>
-                    <div className="letterFullWidth">
-                        <div className="linebylineInput valid-input"> 
-                          <DatePicker title="docDate" format={"DD/MM/YYYY"} name="docDate"
-                                      startDate={this.state.document.docDate} handleChange={e => { handleChange(e); setFieldValue("docDate", e);}}/>
-                        </div>
-                      </div>
+                        </div>  
                     <div className="proForm datepickerContainer">
                       <div className="linebylineInput valid-input">
                         <label className="control-label">
@@ -353,7 +361,7 @@ class SubPurchaseOrders extends Component {
                         <div className="ui input inputDev">
                           <input type="text" className="form-control" id="arrange" readOnly
                                  value={this.state.document.arrange}
-                                 onChange={e => { handleChange(e); }}
+                                 onChange={e => { this.handleChange(e,"arrange"); }} 
                                  name="arrange" placeholder={Resources.arrange[currentLanguage]}/>
                         </div>
                       </div>
@@ -364,28 +372,30 @@ class SubPurchaseOrders extends Component {
                         </label>
                         <div className={"inputDev ui input " +(errors.refDoc? "has-error": !errors.refDoc && touched.refDoc? " has-success": " ")}>
                           <input name="refDoc" className="form-control" id="refDoc" placeholder={Resources["refDoc"][currentLanguage]}
-                                 autoComplete="off" onBlur={handleBlur} defaultValue={values.refDoc}
-                                 onChange={e => { handleChange(e); }} />
+                                 autoComplete="off"  onBlur={handleBlur}  
+                                 onBlur={e => { handleBlur(e); handleChange(e); }}
+                                 value={this.state.document.refDoc} 
+                                 onChange={e => { this.handleChange(e,"refDoc"); }} />
                           {errors.refDoc ? ( <em className="pError">{errors.refDoc}</em> ) : null} 
                         </div>
-                      </div>
-
-                      {/* <div className="linebylineInput valid-input">
-                        <label className="control-label">
-                          {Resources.refDoc[currentLanguage]}
-                        </label>
-                        <div className="ui input inputDev">
-                          <input type="text" className="form-control" id="refDoc" defaultValue={this.state.document.refDoc}
-                                 onChange={e => { handleChange(e); }}
-                                 name="refDoc" placeholder={Resources.refDoc[currentLanguage]}/>
+                      </div> 
+                      <div className="linebylineInput valid-input">
+                        <div className="inputDev ui input input-group date NormalInputDate">
+                            <div className="customDatepicker fillter-status fillter-item-c ">
+                            <div className="proForm datepickerContainer">
+                                <label className="control-label">
+                                {Resources.completionDate[currentLanguage]}
+                                </label>
+                                <div className="linebylineInput">
+                                <div className="inputDev ui input input-group date NormalInputDate">
+                                    <ModernDatepicker date={this.state.document.completionDate} format={"DD/MM/YYYY"} showBorder
+                                    onChange={e => this.handleChangeDate(e, "completionDate")} placeholder={"Select a date"} />
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
-                      </div> */}
-                      <div className="letterFullWidth">
-                        <div className="linebylineInput valid-input">
-                          <DatePicker title="completionDate" format={"DD/MM/YYYY"} name="completionDate"
-                                      startDate={this.state.document.completionDate} handleChange={e => { handleChange(e); setFieldValue("completionDate", e);}}/>
-                        </div>
-                      </div>
+                        </div> 
                       <div className="linebylineInput valid-input"> 
                         <Dropdown title="CompanyName"
                             data={this.state.companies}
@@ -407,13 +417,22 @@ class SubPurchaseOrders extends Component {
                       </div>
 
                       <div className="linebylineInput valid-input">
-                        <Dropdown title="ToContact" data={this.state.contacts}
+                      <Dropdown title="ToContact"
+                            data={this.state.contacts}
+                            selectedValue={this.state.selectedContractWithContact}
+                            handleChange={event => this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedContractWithContact")}
+                            onChange={setFieldValue}
+                            onBlur={setFieldTouched}
+                            error={errors.toContactId}
+                            touched={touched.toContactId}
+                            name="toContactId" id="toContactId" />
+                        {/* <Dropdown title="ToContact" data={this.state.contacts}
                                   selectedValue={this.state.selectedContractWithContact}
                                   handleChange={event => {
                                     this.setState({selectedContractWithContact: event});
                                 }}
                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toContactId}
-                                touched={touched.toContactId} name="toContactId" index="toContactId" />
+                                touched={touched.toContactId} name="toContactId" index="toContactId" /> */}
                       </div>
  
                       <div className="linebylineInput valid-input">
@@ -422,12 +441,11 @@ class SubPurchaseOrders extends Component {
                         </label>
                         <div className="ui input inputDev">
                           <input type="text" className="form-control" id="advancePaymentPercent"
-                                 onChange={handleChange} onBlur={handleBlur}
+                                onChange={e => { this.handleChange(e,"advancePaymentPercent"); }} onBlur={handleBlur}
                                  defaultValue={this.state.document.advancePaymentPercent}
                                  name="advancePaymentPercent" placeholder={ Resources.advancePaymentPercent[currentLanguage]}/>
                         </div>
-                      </div>
-
+                      </div> 
                       <div className={"slider-Btns fullWidthWrapper textLeft "}>
                         {this.state.isLoading === false ? (
                           <button className={ "primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.props.isViewMode}>
@@ -447,8 +465,7 @@ class SubPurchaseOrders extends Component {
                   </Form>
                 )}
               </Formik> 
-            </div>
- 
+            </div> 
             <header className="main__header">
                 <div className="main__header--div">
                 <h2 className="zero">
@@ -457,12 +474,10 @@ class SubPurchaseOrders extends Component {
                 </div>
             </header>
            <ReactTable data={this.state.purchaseOrderData}
-                       pivotBy={['subject']}
                        columns={columns}
                        defaultPageSize={5}
                        noDataText={Resources["noData"][currentLanguage]}
                        className="-striped -highlight" />
-        
           </div>
         </div> 
       </div>
