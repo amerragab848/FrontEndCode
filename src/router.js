@@ -145,7 +145,7 @@ import myTasks from "./Pages/Menu/myTasks";
 import contractInfoAddEdit from "./Pages/Contracts/contractInfoAddEdit";
 
 
-import PaymentRequisitionList from "./Pages/Contracts/AmendmentList";
+import PaymentRequisitionList from "./Pages/Contracts/Schedule";
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {

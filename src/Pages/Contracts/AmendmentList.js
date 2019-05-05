@@ -245,20 +245,27 @@ class AmendmentList extends Component {
 
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
+
         Api.post('DeleteContractAmendmentByContractId?', this.state.selectedRow).then((res) => {
-            let data = [...this.state.AmendmentList]
-            let length = data.length
-            data.forEach((element, index) => {
-                data = data.filter(item => { return item.id != element.id });
-                if (index == length - 1) {
-                    this.setState({ AmendmentList: data, showDeleteModal: false, isLoading: false });
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }
+
+            let originalRows = this.state.AmendmentList
+            this.state.selectedRow.map(i => {
+                originalRows = originalRows.filter(r => r.id !== i);
             })
-        }).catch(() => {
+            this.setState({
+                AmendmentList: originalRows,
+                showDeleteModal: false,
+                isLoading: false,
+            })
+            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+
+        }).catch(ex => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ showDeleteModal: false, isLoading: false });
-        })
+            this.setState({
+                isLoading: false,
+            })
+        });
+
 
     }
 
