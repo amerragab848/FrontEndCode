@@ -1201,6 +1201,7 @@ class HeaderMenu extends Component {
           <ConfirmationModal closed={this.onCloseModal} showDeleteModal={this.state.logOut} clickHandlerCancel={this.onCloseModal} 
                              clickHandlerContinue={() => this.logOutHandler()} title="You Will Be Missed, Are You Sure Want to Leave US?" buttonName="submit"/>
         ) : null}
+{/*         
         {this.state.viewNotification ? (
           <div className="notifiBar">
             <div className="smallNotifiBar">
@@ -1306,7 +1307,7 @@ class HeaderMenu extends Component {
               </div>
             </div>
           </div>
-        ) : null}
+        ) : null} */}
 
       </div>
     );

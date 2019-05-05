@@ -119,7 +119,7 @@ class ContractsConditions extends Component {
             conditionType: this.state.activeTab == 0 ? 'general' : 'particular',
             details: this.state.activeCondition == 1 ? values.description : '',
             arrange: this.state.activeCondition == 1 ? values.arrange : arrange,
-            contractId: this.props.contractId , 
+            contractId: 7715, //this.props.contractId
             accountsContractId: this.state.activeCondition == 0 ? (this.state.activeTab == 1 ? this.state.selectedContract.value : this.state.selectedContract.label) : undefined
         }
         if (this.state.activeTab == 1)
@@ -175,7 +175,7 @@ class ContractsConditions extends Component {
                             </a>
                         </div>
                     </td>
-                    <td colSpan={6}>
+                    <td colspan={6}>
                         <div className="contentCell tableCell-2">
                             <span>{item.details} </span>
                         </div>
@@ -292,7 +292,7 @@ class ContractsConditions extends Component {
                                         <span>{Resources.delete[currentLanguage]} </span>
                                     </div>
                                 </th>
-                                <th colSpan={6}>
+                                <th colspan={6}>
                                     <div className="headCell tableCell-2">
                                         <span>{Resources['description'][currentLanguage]} </span>
                                     </div>

@@ -186,7 +186,6 @@ class SubContract extends Component {
 
     }
 
-
     componentWillMount() {
         this.setState({ isLoading: true })
         DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId='+this.props.projectId, 'companyName', 'companyId').then(res => {
@@ -304,7 +303,7 @@ class SubContract extends Component {
     }
     setupColumns(value) {
         this.setState({ isLoading: true })
-        let itemsColumns = value == 'originalQuantity' ? _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity') : _.filter(this.itemsColumns, (col) => col.key != 'originalQuantity')
+        let itemsColumns = value == 'quantity' ? _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity') : _.filter(this.itemsColumns, (col) => col.key != 'quantity')
         setTimeout(() => {
             this.setState({ itemsColumns, isLoading: false })
         }, 200)
@@ -455,7 +454,7 @@ class SubContract extends Component {
                         <header><h2 class="zero">{Resources.items[currentLanguage]}</h2></header>
                         <div className="linebylineInput pre-radioBtn">
                             <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="status" defaultChecked='checked' onChange={e => this.setupColumns('originalQuantity')} />
+                                <input type="radio" name="status" defaultChecked='checked' onChange={e => this.setupColumns('quantity')} />
                                 <label>{Resources.origenalQuantity[currentLanguage]}</label>
                             </div>
                             <div className="ui checkbox radio radioBoxBlue">
