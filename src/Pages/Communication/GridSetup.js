@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
-import { ToolsPanel, Data, Draggable, Filters } from "react-data-grid-addons";
+import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
 import { toast } from "react-toastify";
@@ -31,6 +31,7 @@ class GridSetup extends Component {
     };
 
     this.groupColumn = this.groupColumn.bind(this);
+    this.onHeaderDrop = this.onHeaderDrop.bind(this);
     this.onRowsSelected = this.onRowsSelected.bind(this);
   }
 
@@ -62,8 +63,7 @@ class GridSetup extends Component {
     const reorderedColumns = Object.assign({}, this.state, {
       columns: stateCopy.columns
     });
-    this.setState(reorderedColumns);
-    //console.log(reorderedColumns);
+    this.setState(reorderedColumns); 
   };
 
   sortRows = (initialRows, sortColumn, sortDirection) => {
@@ -290,11 +290,27 @@ class GridSetup extends Component {
     });
   }
 
+  onOrderColumn = (source, target) => {
+    console.log(source,target);
+
+    const stateCopy = Object.assign({}, this.state);
+    const columnSourceIndex = this.state.columns.findIndex(      i => i.key === source    );
+
+    const columnTargetIndex = this.state.columns.findIndex(      i => i.key === target    );
+
+    stateCopy.columns.splice(      columnTargetIndex,      0,      stateCopy.columns.splice(columnSourceIndex, 1)[0]    );
+
+    const emptyColumns = Object.assign({}, this.state, { columns: [] });
+    this.setState(emptyColumns);
+
+    const reorderedColumns = Object.assign({}, this.state, {      columns: stateCopy.columns    });
+    this.setState(reorderedColumns);
+  };
+
   render() {
     const { rows, groupBy, filters } = this.state;
     const groupedRows = Data.Selectors.getRows({ rows, groupBy, filters });
-
-    //const groupedRows = Data.Selectors.getRows({ rows, filters });
+  
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
@@ -302,7 +318,7 @@ class GridSetup extends Component {
       onColumnGroupAdded,
       onColumnGroupDeleted,
       onAddFilter,
-      onClearFilters
+      onClearFilters 
     }) => {
       return (
         <Toolbar >
@@ -312,8 +328,7 @@ class GridSetup extends Component {
             onColumnGroupDeleted={onColumnGroupDeleted}
             onAddFilter={onAddFilter}
             onClearFilters={onClearFilters}
-            noColumnsSelectedMessage={drag}
-          />
+            noColumnsSelectedMessage={drag}           />
           {this.state.selectedRows.length > 0 ? (
             <div className="gridSystemSelected active">
               <div className="tableselcted-items">
@@ -356,6 +371,7 @@ class GridSetup extends Component {
         </Toolbar>
       );
     };
+    
     return (
       <div className="grid-container">
         <div id="top__scroll">
@@ -363,7 +379,7 @@ class GridSetup extends Component {
           </div>
         </div>
         <div id="bottom__scroll">
-          <DraggableContainer>
+          <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
 
             <ReactDataGrid
               rowKey="id"
@@ -397,14 +413,7 @@ class GridSetup extends Component {
                   }
                   onColumnGroupDeleted={columnKey =>
                     this.setState({ groupBy: this.ungroupColumn(columnKey) })
-                  }
-                  onAddFilter={filter =>
-                    this.setState({ setFilters: this.handleFilterChange(filter) })
-                  }
-                  onClearFilters={() =>
-                    this.setState({ setFilters: {} })
-                  }
-    
+                  } 
                 />
               } 
               rowSelection={{
@@ -420,18 +429,6 @@ class GridSetup extends Component {
               }}
 
               onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
-
-              // onAddFilter={filter =>
-              //   this.setState({ setFilters: this.handleFilterChange(filter) })
-              // }
-              // onClearFilters={() =>
-              //   this.setState({ setFilters: {} })
-              // }
-
-              // getValidFilterValues={columnKey =>
-              //   this.getValidFilterValues(this.state.rows, columnKey)
-              // }
-
               getCellActions={this.props.getCellActions}
             />
           </DraggableContainer >

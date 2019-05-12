@@ -11,22 +11,16 @@ import documentDefenition from "../../documentDefenition.json";
 import Resources from "../../resources.json";
 
 import { withRouter } from "react-router-dom";
-
 import MinimizeV from "../../Styles/images/table1.png";
-import MinimizeH from "../../Styles/images/table2.png";
-
 import MinimizeVBlue from "../../Styles/images/table1.png";
-
 import CryptoJS from "crypto-js";
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
 
 import Config from "../../Services/Config.js";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -129,7 +123,7 @@ class CommonLog extends Component {
     return shouldUpdate;
   }
 
-  componentWillUpdate() {}
+  componentWillUpdate() { }
 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
@@ -196,6 +190,7 @@ class CommonLog extends Component {
         pathname: "/" + editView,
         search: "?id=" + encodedPaylod
       });
+      
     } else {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
@@ -209,34 +204,24 @@ class CommonLog extends Component {
         pageNumber: pageNumber
       });
 
-      let url =
-        (this.state.query == "" ? this.state.api : this.state.apiFilter) +
-        "?projectId=" +
-        this.state.projectId +
-        "&pageNumber=" +
-        pageNumber +
-        "&pageSize=" +
-        this.state.pageSize +
-        (this.state.query == "" ? "" : "&query=" + this.state.query);
+      let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url)
-        .then(result => {
-          let oldRows = []; // this.state.rows;
-          const newRows = [...oldRows, ...result];
+      Api.get(url).then(result => {
+        let oldRows = []; // this.state.rows;
+        const newRows = [...oldRows, ...result];
 
-          this.setState({
-            rows: newRows,
-            totalRows: newRows.length,
-            isLoading: false
-          });
-        })
-        .catch(ex => {
-          let oldRows = this.state.rows;
-          this.setState({
-            rows: oldRows,
-            isLoading: false
-          });
+        this.setState({
+          rows: newRows,
+          totalRows: newRows.length,
+          isLoading: false
         });
+      }).catch(ex => {
+        let oldRows = this.state.rows;
+        this.setState({
+          rows: oldRows,
+          isLoading: false
+        });
+      });
     }
   }
 
@@ -250,33 +235,23 @@ class CommonLog extends Component {
         pageNumber: pageNumber
       });
 
-      let url =
-        (this.state.query == "" ? this.state.api : this.state.apiFilter) +
-        "?projectId=" +
-        this.state.projectId +
-        "&pageNumber=" +
-        pageNumber +
-        "&pageSize=" +
-        this.state.pageSize +
-        (this.state.query == "" ? "" : "&query=" + this.state.query);
-      Api.get(url)
-        .then(result => {
-          let oldRows = []; // this.state.rows;
-          const newRows = [...oldRows, ...result.data]; // arr3 ==> [1,2,3,3,4,5]
+      let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
+      Api.get(url).then(result => {
+        let oldRows = []; // this.state.rows;
+        const newRows = [...oldRows, ...result.data]; // arr3 ==> [1,2,3,3,4,5]
 
-          this.setState({
-            rows: newRows,
-            totalRows: newRows.length,
-            isLoading: false
-          });
-        })
-        .catch(ex => {
-          let oldRows = this.state.rows;
-          this.setState({
-            rows: oldRows,
-            isLoading: false
-          });
+        this.setState({
+          rows: newRows,
+          totalRows: newRows.length,
+          isLoading: false
         });
+      }).catch(ex => {
+        let oldRows = this.state.rows;
+        this.setState({
+          rows: oldRows,
+          isLoading: false
+        });
+      });
     }
   }
 
@@ -288,34 +263,22 @@ class CommonLog extends Component {
       query: stringifiedQuery
     });
 
-    Api.get(
-      apiFilter +
-        "?projectId=" +
-        this.state.projectId +
-        "&pageNumber=" +
-        this.state.pageNumber +
-        "&pageSize=" +
-        this.state.pageSize +
-        "&query=" +
-        stringifiedQuery
-    )
-      .then(result => {
-        this.setState({
-          rows: [...result.data],
-          totalRows: result.total,
-          isLoading: false
-        });
-
-        this.setState({
-          isLoading: false
-        });
-      })
-      .catch(ex => {
-        this.setState({
-          rows: [],
-          isLoading: false
-        });
+    Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
+      this.setState({
+        rows: [...result.data],
+        totalRows: result.total,
+        isLoading: false
       });
+
+      this.setState({
+        isLoading: false
+      });
+    }).catch(ex => {
+      this.setState({
+        rows: [],
+        isLoading: false
+      });
+    });
   };
 
   onCloseModal = () => {
@@ -331,26 +294,24 @@ class CommonLog extends Component {
       isLoading: true
     });
 
-    Api.post(this.state.apiDelete, this.state.selectedRows)
-      .then(result => {
-        let originalRows = this.state.rows;
-        this.state.selectedRows.map(i => {
-          originalRows = originalRows.filter(r => r.id !== i);
-        });
-
-        this.setState({
-          rows: originalRows,
-          totalRows: originalRows.length,
-          isLoading: false,
-          showDeleteModal: false
-        });
-      })
-      .catch(ex => {
-        this.setState({
-          isLoading: false,
-          showDeleteModal: false
-        });
+    Api.post(this.state.apiDelete, this.state.selectedRows).then(result => {
+      let originalRows = this.state.rows;
+      this.state.selectedRows.map(i => {
+        originalRows = originalRows.filter(r => r.id !== i);
       });
+
+      this.setState({
+        rows: originalRows,
+        totalRows: originalRows.length,
+        isLoading: false,
+        showDeleteModal: false
+      });
+    }).catch(ex => {
+      this.setState({
+        isLoading: false,
+        showDeleteModal: false
+      });
+    });
   };
 
   clickHandlerDeleteRowsMain = selectedRows => {
@@ -368,6 +329,7 @@ class CommonLog extends Component {
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
+
     let subjectLink = ({ value, row }) => {
       let subject = "";
       if (row) {
@@ -382,16 +344,10 @@ class CommonLog extends Component {
 
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-        let doc_view =
-          "/" +
-          documentObj.documentAddEditLink.replace("/", "") +
-          "?id=" +
-          encodedPaylod;
+        let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
         subject = row.subject;
 
         return <a href={doc_view}> {subject} </a>;
-
-        //return <a onClick={() => this.editHandler(row)} href="javascript:void(0);"> {subject} </a>;
       }
       return null;
     };
@@ -411,13 +367,9 @@ class CommonLog extends Component {
         resizable: true,
         filterable: false,
         sortDescendingFirst: true,
-        formatter:
-          item.field === "subject"
-            ? subjectLink
-            : item.dataType === "date"
-            ? dateFormate
-            : ""
+        formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
       };
+
       if (isCustom !== true) {
         cNames.push(obj);
       } else {
@@ -425,6 +377,7 @@ class CommonLog extends Component {
           cNames.push(obj);
         }
       }
+
     });
 
     filtersColumns = documentObj.filters;
@@ -442,25 +395,12 @@ class CommonLog extends Component {
       projectId: projectId
     });
 
-    this.GetRecordOfLog(
-      isCustom === true
-        ? documentObj.documentApi.getCustom
-        : documentObj.documentApi.get,
-      projectId
-    );
+    this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
   }
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
-      let url =
-        api +
-        (documentObj.docTyp == 33
-          ? "projectId=" + projectId
-          : "?projectId=" + projectId) +
-        "&pageNumber=" +
-        this.state.pageNumber +
-        "&pageSize=" +
-        this.state.pageSize;
+      let url = api + (documentObj.docTyp == 33 ? "projectId=" + projectId : "?projectId=" + projectId) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
       this.GetLogData(url);
     } else {
       this.setState({ isLoading: false });
@@ -468,17 +408,15 @@ class CommonLog extends Component {
   }
 
   GetLogData(url) {
-    Api.get(url)
-      .then(result => {
-        this.setState({
-          rows: result.data,
-          totalRows: result.total,
-          isLoading: false
-        });
-      })
-      .catch(ex => {
-        this.setState({ isLoading: false });
+    Api.get(url).then(result => {
+      this.setState({
+        rows: result.data,
+        totalRows: result.total,
+        isLoading: false
       });
+    }).catch(ex => {
+      this.setState({ isLoading: false });
+    });
   }
 
   handleMinimize = () => {
@@ -533,11 +471,11 @@ class CommonLog extends Component {
       } else {
         toast.warning(Resources["missingPermissions"][currentLanguage]);
       }
-    }  
+    }
   };
 
   render() {
-    const showCheckbox = true;
+    const showCheckbox = Config.IsAllow(this.state.documentObj.documentDeletePermission);
 
     const dataGrid =
       this.state.isLoading === false ? (
@@ -550,8 +488,8 @@ class CommonLog extends Component {
           columns={this.state.columns}
         />
       ) : (
-        <LoadingSection />
-      );
+          <LoadingSection />
+        );
 
     const btnExport =
       this.state.isLoading === false ? (
@@ -635,11 +573,11 @@ class CommonLog extends Component {
                   <span className="hide-fillter">Hide Fillter</span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
-                </span>
-              )}
+                  <span className="text">
+                    <span className="show-fillter">Show Fillter</span>
+                    <span className="hide-fillter">Hide Fillter</span>
+                  </span>
+                )}
             </div>
           </div>
           <div className="filterBTNS">
@@ -670,7 +608,7 @@ class CommonLog extends Component {
             <button
               className={
                 this.state.totalRows !==
-                this.state.pageSize * this.state.pageNumber +
+                  this.state.pageSize * this.state.pageNumber +
                   this.state.pageSize
                   ? "rowunActive"
                   : ""
@@ -704,8 +642,8 @@ class CommonLog extends Component {
                 {this.state.minimizeClick ? (
                   <img src={MinimizeVBlue} alt="" />
                 ) : (
-                  <img src={MinimizeV} alt="" />
-                )}
+                    <img src={MinimizeV} alt="" />
+                  )}
               </div>
               {/* <div className="V-tableSize">
                 <img src={MinimizeH} alt="" />
