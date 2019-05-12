@@ -93,13 +93,13 @@ class SubPurchaseOrders extends Component {
             this.fillDropDowns(false);
 
 
-        // dataservice.GetDataGrid("GetSubPOsByContractId?contractId=" + this.state.contractId).then(data => {
-        //     this.setState({
-        //         purchaseOrderData: data
-        //     });
-        // }).catch(ex => {
-        //     this.setState({purchaseOrderData:[]});
-        //     toast.error(Resources["failError"][currentLanguage])});
+        dataservice.GetDataGrid("GetSubPOsByContractId?contractId=" + this.state.contractId).then(data => {
+            this.setState({
+                purchaseOrderData: data
+            });
+        }).catch(ex => {
+            this.setState({purchaseOrderData:[]});
+            toast.error(Resources["failError"][currentLanguage])});
 
         this.props.actions.documentForAdding();
     }
@@ -187,7 +187,10 @@ class SubPurchaseOrders extends Component {
  
     savePO() {
 
-        let saveDocument = { ...this.state.document };
+        let saveDocument = {
+            ...this.state.document,
+            isLoading:true 
+        };
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.completionDate = moment(saveDocument.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
