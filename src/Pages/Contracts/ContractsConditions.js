@@ -83,6 +83,8 @@ class ContractsConditions extends Component {
             activeCondition: 0,
             isLoading: false,
             rows: [],
+            generalRows:[],
+            particularRows:[],
             item: '',
             showDeleteModal: false,
             addLoadding: false,
@@ -110,7 +112,8 @@ class ContractsConditions extends Component {
 
     addRecord(values) {
         let arrange = this.state.arrange
-        this.state.rows.forEach(item => {
+        let rows = this.state.activeTab == 0 ? this.state.generalRows : this.state.particularRows
+        rows.forEach(item => {
             if (item.arrange >= arrange)
                 arrange = item.arrange + 1
         })
@@ -129,7 +132,11 @@ class ContractsConditions extends Component {
         this.setState({ addLoadding: true })
         Api.post("AddContractCondition", record).then((res) => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ addLoadding: false, rows: res })
+            if (this.state.activeTab == 0)
+                this.setState({ generalRows: res })
+            else
+                this.setState({ particularRows: res })
+            this.setState({ addLoadding: false })
         }).catch(res => {
             this.setState({ addLoadding: false })
         })
@@ -148,19 +155,24 @@ class ContractsConditions extends Component {
         Api.post("DeleteGeneralConditionById?id=" + this.state.item.id).then((res) => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             let rows = []
-            this.state.rows.forEach(item => {
+            let _rows = this.state.activeTab == 0 ? this.state.generalRows : this.state.particularRows
+            _rows.forEach(item => {
                 if (item.id != this.state.item.id) {
                     rows.push(item)
                 }
             })
-            this.setState({ isLoading: false, rows })
+            if (this.state.activeTab == 0)
+            this.setState({isLoading: false, generalRows: rows })
+        else
+            this.setState({isLoading: false, particularRows: rows })
         }).catch(res => {
             this.setState({ isLoading: false })
         })
     }
 
     render() {
-        let tabel = this.state.rows ? this.state.rows.map((item, Index) => {
+        let rows = this.state.activeTab == 0 ? this.state.generalRows : this.state.particularRows
+        let tabel = rows ? rows.map((item, Index) => {
             return (
                 <tr key={Index}>
                     <td>
@@ -276,7 +288,7 @@ class ContractsConditions extends Component {
                     </Formik>
                     <header className="main__header">
                         <div className="main__header--div">
-                            <h2 className="zero">{this.state.activeTab == 1 ? Resources['addParticularCondition'][currentLanguage]:Resources['addGeneralCondition'][currentLanguage]}</h2>
+                            <h2 className="zero">{this.state.activeTab == 1 ? Resources['addParticularCondition'][currentLanguage] : Resources['addGeneralCondition'][currentLanguage]}</h2>
                         </div>
                     </header>
                     <table className="attachmentTable">

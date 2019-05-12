@@ -12,7 +12,7 @@ const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
   };
   
-class ContractInfo extends Component {
+class SubContractLog extends Component {
     constructor(props) {
         super(props)
         this.itemsColumns = [
@@ -134,4 +134,4 @@ class ContractInfo extends Component {
              )
     }
 }
-export default withRouter(ContractInfo)
+export default withRouter(SubContractLog)
