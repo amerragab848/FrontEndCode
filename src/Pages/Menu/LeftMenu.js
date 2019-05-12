@@ -348,12 +348,14 @@ class LeftMenu extends Component {
     localStorage.setItem("lastSelectedprojectName", titleProject);
 
     this.props.actions.LeftMenuClick(e, moduleName);
-    
+
 
   };
 
   EpsComponent() {
-    const Eps = this.state.ListEps.map((eps, index) => {
+
+    const Eps = this.state.ListEps == null ? null : this.state.ListEps.map((eps, index) => {
+
       return (
         <div key={eps.id}>
           <ul className="MainProjectsMenuUL zero">
@@ -374,7 +376,8 @@ class LeftMenu extends Component {
           </ul>
         </div>
       );
-    });
+
+    })
 
     return Eps;
   }
@@ -630,7 +633,7 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
-                         
+
                         <li className={this.state.rowIndex === 4 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 4 ? "title active" : "title"} onClick={() => this.OpenSubMenu(4, Resources["technicalOffice"][currentLanguage])}>
                             <span className="ULimg">
@@ -831,7 +834,7 @@ class LeftMenu extends Component {
                           </ul>
                         </li>
 
-                        
+
                         <li className={this.state.rowIndex === 9 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 9 ? "title active" : "title"} onClick={() => this.OpenSubMenu(9, Resources["qualityControlList"][currentLanguage])}>
                             <span className="ULimg">
@@ -960,7 +963,7 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
-                        
+
                       </ul>
                     </div>
                   </div>
