@@ -734,7 +734,7 @@ table edition
   -ms-flex-align: center;
   align-items: center;
   color: #A8B0BF;
-  font-family: font-b;
+  font-family: font-xb;
   font-size: 12px;
   cursor: pointer;
   border-bottom: 2px solid transparent !important;
@@ -948,11 +948,11 @@ table edition
   }
 .dashboardLoading h3 {
     font-family: font-b;
-    font-size: 45px;
-    line-height: 1.16;
+    margin-top: 30px;
+    font-size: 34px;
+    line-height: 1.18;
     letter-spacing: -1.1px;
     color: #252833;
-    margin-top: 36px;
   }
 @keyframes rotate {
   0% {
@@ -1183,11 +1183,14 @@ tfoot tr td p{
   width: auto;
   min-width: 349px;
 }
-.dashboard__Project .dash__content .project__content .project__select .project__title
-{
+.dashboard__Project .dash__content .project__content .project__select .project__title {
   flex: 1 0;
   text-align: left;
   padding-left: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 42px;
 }
 .dashboard__Project .dash__content .project__content .project__select .project__title h3{
   overflow: hidden;
@@ -1227,11 +1230,7 @@ tfoot tr td p{
   overflow-y: auto;
   height: 400px;
 }
-.dashboard__Project .dash__content .project__content .project__select .project__title {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
+
 /* ul.project__content div:first-of-type {
   position: unset !important;
 } */
@@ -1351,6 +1350,7 @@ tfoot tr td p{
 }
 .documents-stepper .doc-container {
   min-height: 71vh;
+  border-top-color: transparent;
 }
 .submittalActions__add {
   background-color: transparent;
@@ -1935,7 +1935,7 @@ button.companies_icon {
  }
  .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform , 
  .one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
-  width: 786px;
+  max-width: 786px;
  }
 @media screen and (max-width: 1200px) {
   .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform,
@@ -2007,10 +2007,10 @@ button.companies_icon {
 .noTabs__document.one__tab.one_step .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width: 100%;
 }
-.react-grid-Cell--frozen:last-of-type, .react-grid-HeaderCell--frozen:last-of-type {
+/* .react-grid-Cell--frozen:last-of-type, .react-grid-HeaderCell--frozen:last-of-type {
   box-shadow: none !important;
   border-right: 1px solid #E9ECF0 !important;
-}
+} */
 .noTabs__document .approveDocument {
   z-index: 1000;
 }
@@ -2223,7 +2223,7 @@ button.companies_icon {
   margin-bottom: 0;
 }
 .summerisItem__number .content__number {
-  width: 236px;
+  width: 240px;
   height: 156px;
   border-radius: 4px;
   background-color: #f5f5f6;
@@ -2617,12 +2617,15 @@ button.companies_icon {
 .dashboard__selectMenu .css-10nd86i .css-xp4uvy {
   font-family: font-b;
   font-size: 13px;
-  font-weight: bold;
   line-height: 1.54;
   letter-spacing: 0.4px;
   color: #ffffff;
   width: 100%;
   text-transform: uppercase;
+  text-align: center
+}
+.dashboard__selectMenu .css-10nd86i .css-1hwfws3 {
+  padding: 0;
 }
 .dashboard__selectMenu .css-10nd86i .css-19bqh2r {
   display: inline-block;
@@ -3739,8 +3742,8 @@ border-right: 1px solid #E9ECF0; }
     line-height: 1.5;
     letter-spacing: -0.2px;
     color: #252833;
-    font-size: 16px;
-    font-family: font-b; }
+    font-family: font-b;
+   }
   .settings-container .settings-tabs-items ul li .subUlsubT {
     line-height: 1.33;
     letter-spacing: -0.2px;
@@ -4403,6 +4406,7 @@ width: calc(100% - 256px);
 .card-status .card-box .signature-h .avatarName h6 {
   max-width: 145px;
   overflow: hidden;
+  font-family: font-b
 }
 .ui.radio.checkbox {
   margin-bottom: 5px;
@@ -4444,12 +4448,14 @@ width: calc(100% - 256px);
     z-index: 999;
     top: -40px;
 }
+
 .react-grid-Row:last-of-type .react-grid-Cell .rdg-cell-action-last .rdg-cell-action-menu {
   top: auto !important;
   bottom: 100%;
   max-height: 200px;
   overflow: auto
 }
+
 .react-grid-Canvas {
   padding-bottom: 100px;
 }
@@ -4525,4 +4531,24 @@ line.horizontal-grid-line {
 }
 .chart-group .bar {
   max-width: 46px !important;
+}
+
+
+.submittalFilter .fillter-button .text.active .show-fillter {
+  color: #858d9e;
+}
+
+.submittalFilter .subFilter svg  g path {
+  fill: rgb(168, 176, 191)
+}
+
+.subitTabs ul li .subUlTitle {
+  text-transform: capitalize; 
+}
+
+.edit__sign .notifiActionsContainer {
+  position: unset;
+  margin: 10px auto;
+  text-align: center;
+  max-width: 696px;
 }
