@@ -5524,3 +5524,7 @@ line.horizontal-grid-line {
 .chart-group .bar {
   max-width: 46px !important;
 }
+
+.proForm.first-proform.proForm_onlyChild {
+    margin-bottom: 0 !important
+}

@@ -276,7 +276,7 @@ class ContractsConditions extends Component {
                     </Formik>
                     <header className="main__header">
                         <div className="main__header--div">
-                            <h2 className="zero">{this.state.activeTab == 1 ? Resources['addParticularCondition'][currentLanguage]:Resources['addGeneralCondition'][currentLanguage]}</h2>
+                            <h2 className="zero">{this.state.activeTab == 1 ? Resources['addParticularCondition'][currentLanguage] : Resources['addGeneralCondition'][currentLanguage]}</h2>
                         </div>
                     </header>
                     <table className="attachmentTable">
