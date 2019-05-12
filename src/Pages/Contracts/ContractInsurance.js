@@ -20,33 +20,27 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    refDoc: Yup.string().required(Resources['selectRefNo'][currentLanguage]),
-    companyId: Yup.string().required(Resources['pleaseSelectYourCompany'][currentLanguage]).nullable(true),
-    toCompanyId: Yup.string().required(Resources['toCompany'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['ToContact'][currentLanguage]).nullable(true) 
+    policyType: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
+    arrange: Yup.string().required(Resources['arrange'][currentLanguage]),
+    companyId: Yup.string().required(Resources['pleaseSelectYourCompany'][currentLanguage]).nullable(true) 
 });
    
 let originalData = [];
 
-class SubPurchaseOrders extends Component {
+class ContractInsurance extends Component {
 
     constructor(props) {
 
         super(props);
   
         this.state = {
-            isLoading:false,
-            currentTitle: "sendToWorkFlow", 
+            isLoading:false, 
             contractId: this.props.contractId, 
             projectId: this.props.projectId,  
             document:   {},
-            companies: [],
-            contacts: [], 
-            purchaseOrderData:[],
+            companies: [], 
+            insuranceData:[],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedContract: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }, 
-            selectedContractWithContact: { label: Resources.toContactRequired[currentLanguage], value: "0" }
         } 
     }
 
@@ -73,14 +67,11 @@ class SubPurchaseOrders extends Component {
                 id: 0,
                 projectId:this.state.projectId,
                 arrange: "1",
-                companyId: null,
-                toCompanyId: null, 
-                toContactId: null,
-                subject: "",
+                policyType:"",
+                policyLimit:"",
+                companyId: null, 
                 completionDate: moment(),
                 docDate: moment(),
-                status: "true",
-                refDoc: "",  
                 parentId:this.state.contractId,
                 parentType:"Contract"
             };
@@ -94,10 +85,10 @@ class SubPurchaseOrders extends Component {
 
         dataservice.GetDataGrid("GetSubPOsByContractId?contractId=" + this.state.contractId).then(data => {
             this.setState({
-                purchaseOrderData: data
+                insuranceData: data
             });
         }).catch(ex => {
-            this.setState({purchaseOrderData:[]});
+            this.setState({insuranceData:[]});
             toast.error(Resources["failError"][currentLanguage])});
 
         this.props.actions.documentForAdding();
@@ -106,26 +97,7 @@ class SubPurchaseOrders extends Component {
     fillDropDowns(isEdit) {
         //from Companies
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" +this.state.projectId, "companyName", "companyId").then(result => {
-
-            if (isEdit) {
-
-                let companyId = this.props.document.fromCompanyId;
-
-                if (companyId) {
-                    this.setState({
-                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-                    });
-                }
-
-                let toCompanyId = this.props.document.toCompanyId;
-
-                if (toCompanyId) {
-
-                    this.setState({
-                        selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
-                    });
-                }
-            }
+ 
             this.setState({
                 companies: [...result]
             });
@@ -173,18 +145,9 @@ class SubPurchaseOrders extends Component {
             document: updated_document,
             [selectedValue]: event
         });
- 
-        if (isSubscrib) {
-            let action = url + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
-                this.setState({
-                    [targetState]: result
-                });
-            });
-        }
     } 
  
-    savePO() {
+    saveInsurance() {
 
         let saveDocument = {
             ...this.state.document,
@@ -305,7 +268,7 @@ class SubPurchaseOrders extends Component {
  
         return ( 
         <div className={this.props.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-        <HeaderDocument  isViewMode={this.props.isViewMode} docTitle={Resources.goAdd[currentLanguage]+Resources.subPOs[currentLanguage]}/>
+        <HeaderDocument docTitle={Resources.insurance[currentLanguage]}/>
             <div className="doc-container"> 
                <div className="step-content">
                <div id="step1" className="step-content-body">
@@ -315,47 +278,59 @@ class SubPurchaseOrders extends Component {
                                 validationSchema={validationSchema}
                                 onSubmit={values => {
                                 if (this.state.contractId > 0 ) {
-                                    this.savePO();
+                                    this.saveInsurance();
                                  } 
                                 }}>
                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                   <Form id="ContractForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                    <div className="proForm first-proform">
+                  <div className="proForm datepickerContainer"> 
+                     <div className="linebylineInput valid-input"> 
+                        <Dropdown title="CompanyName"
+                            data={this.state.companies}
+                            selectedValue={this.state.selectedFromCompany}
+                            handleChange={event => this.handleChangeDropDown(event, "companyId", false, "", "", "", "selectedFromCompany")}
+                            onChange={setFieldValue}
+                            onBlur={setFieldTouched}
+                            error={errors.companyId}
+                            touched={touched.companyId}
+                            name="companyId" id="companyId" />
+                      </div>
                       <div className="linebylineInput valid-input">
                         <label className="control-label">
-                          {Resources["subject"][currentLanguage]}
+                          {Resources["policyType"][currentLanguage]}
                         </label>
-                        <div className={"inputDev ui input " +(errors.subject? "has-error": !errors.subject && touched.subject? " has-success": " ")}>
-                          <input name="subject" className="form-control" id="subject" placeholder={Resources["subject"][currentLanguage]}
+                        <div className={"inputDev ui input " +(errors.policyType? "has-error": !errors.policyType && touched.policyType? " has-success": " ")}>
+                          <input name="policyType" className="form-control" id="policyType" placeholder={Resources["policyType"][currentLanguage]}
                                  autoComplete="off" onBlur={handleBlur}  
-                                 value={this.state.document.subject}
+                                 value={this.state.document.policyType}
                                  onBlur={e => { handleBlur(e); handleChange(e); }}
-                                 onChange={e => { this.handleChange(e,"subject"); }} />
-                          {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}  
+                                 onChange={e => { this.handleChange(e,"policyType"); }} />
+                          {errors.policyType ? (<em className="pError">{errors.policyType}</em>) : null}  
                         </div>
                       </div>
-                         <div className="linebylineInput valid-input">
-                            <label className="control-label">
-                                {Resources.status[currentLanguage]}
-                            </label>
-                                <div className="ui checkbox radio radioBoxBlue">
-                                  <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : "checked"}
-                                    value="true" onChange={e => this.handleChange(e, "status")} />
-                                  <label>
-                                    {Resources.oppened[currentLanguage]}
-                                  </label>
-                                </div>
-                                <div className="ui checkbox radio radioBoxBlue">
-                                  <input type="radio" name="status" defaultChecked={this.state.document.status === false ? "checked" : null}
-                                    value="false"
-                                    onChange={e => this.handleChange(e, "status")} />
-                                  <label>
-                                    {Resources.closed[currentLanguage]}
-                                  </label>
-                                </div>
-                              </div>
-                       </div>
-               
+
+                      <div className="linebylineInput valid-input">
+                        <label className="control-label">
+                          {Resources.arrange[currentLanguage]}
+                        </label>
+                        <div className="ui input inputDev">
+                          <input type="text" className="form-control" id="arrange" readOnly
+                                 value={this.state.document.arrange}
+                                 onChange={e => { this.handleChange(e,"arrange"); }} 
+                                 name="arrange" placeholder={Resources.arrange[currentLanguage]}/>
+                        </div>
+                      </div>
+                      <div className="linebylineInput valid-input">
+                        <label className="control-label">
+                          {Resources.policyLimit[currentLanguage]}
+                        </label>
+                        <div className="ui input inputDev">
+                          <input type="text" className="form-control" id="arrange"  
+                                 value={this.state.document.policyLimit}
+                                 onChange={e => { this.handleChange(e,"policyLimit"); }} 
+                                 name="policyLimit" placeholder={Resources.policyLimit[currentLanguage]}/>
+                        </div>
+                      </div> 
                       <div className="linebylineInput valid-input">
                         <div className="inputDev ui input input-group date NormalInputDate">
                             <div className="customDatepicker fillter-status fillter-item-c ">
@@ -373,107 +348,23 @@ class SubPurchaseOrders extends Component {
                             </div>
                         </div>
                         </div>  
-                    <div className="proForm datepickerContainer">
-                      <div className="linebylineInput valid-input">
-                        <label className="control-label">
-                          {Resources.arrange[currentLanguage]}
-                        </label>
-                        <div className="ui input inputDev">
-                          <input type="text" className="form-control" id="arrange" readOnly
-                                 value={this.state.document.arrange}
-                                 onChange={e => { this.handleChange(e,"arrange"); }} 
-                                 name="arrange" placeholder={Resources.arrange[currentLanguage]}/>
-                        </div>
-                      </div>
-
-                      <div className="linebylineInput valid-input">
-                        <label className="control-label">
-                          {Resources["refDoc"][currentLanguage]}
-                        </label>
-                        <div className={"inputDev ui input " +(errors.refDoc? "has-error": !errors.refDoc && touched.refDoc? " has-success": " ")}>
-                          <input name="refDoc" className="form-control" id="refDoc" placeholder={Resources["refDoc"][currentLanguage]}
-                                 autoComplete="off"  onBlur={handleBlur}  
-                                 onBlur={e => { handleBlur(e); handleChange(e); }}
-                                 value={this.state.document.refDoc} 
-                                 onChange={e => { this.handleChange(e,"refDoc"); }} />
-                          {errors.refDoc ? ( <em className="pError">{errors.refDoc}</em> ) : null} 
-                        </div>
-                      </div> 
                       <div className="linebylineInput valid-input">
                         <div className="inputDev ui input input-group date NormalInputDate">
                             <div className="customDatepicker fillter-status fillter-item-c ">
                             <div className="proForm datepickerContainer">
                                 <label className="control-label">
-                                {Resources.completionDate[currentLanguage]}
+                                {Resources.docDate[currentLanguage]}
                                 </label>
                                 <div className="linebylineInput">
                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                    <ModernDatepicker date={this.state.document.completionDate} format={"DD/MM/YYYY"} showBorder
-                                    onChange={e => this.handleChangeDate(e, "completionDate")} placeholder={"Select a date"} />
+                                    <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
+                                    onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
                                 </div>
                                 </div>
                             </div>
-                            </div>
-                        </div>
-                        </div> 
-                      <div className="linebylineInput valid-input"> 
-                        <Dropdown title="CompanyName"
-                            data={this.state.companies}
-                            selectedValue={this.state.selectedFromCompany}
-                            handleChange={event => this.handleChangeDropDown(event, "companyId", false, "", "", "", "selectedFromCompany")}
-                            onChange={setFieldValue}
-                            onBlur={setFieldTouched}
-                            error={errors.companyId}
-                            touched={touched.companyId}
-                            name="companyId" id="companyId" />
-                      </div>
-
-                      <div className="linebylineInput valid-input">
-                        <Dropdown title="toCompany" data={this.state.companies} selectedValue={this.state.selectedContract}
-                                  handleChange={event => { this.setState({ selectedContract: event }); }}
-                                  onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toCompanyId}
-                                  handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "contacts", "GetContactsByCompanyId?companyId=", "", "selectedContract")}
-                                  touched={touched.toCompanyId} name="toCompanyId" index="toCompanyId" />
-                      </div>
-
-                      <div className="linebylineInput valid-input">
-                      <Dropdown title="ToContact"
-                            data={this.state.contacts}
-                            selectedValue={this.state.selectedContractWithContact}
-                            handleChange={event => this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedContractWithContact")}
-                            onChange={setFieldValue}
-                            onBlur={setFieldTouched}
-                            error={errors.toContactId}
-                            touched={touched.toContactId}
-                            name="toContactId" id="toContactId" /> 
-                      </div>
- 
-                      <div className="linebylineInput valid-input">
-                        <label className="control-label">
-                          {Resources.advancePaymentPercent[currentLanguage]}
-                        </label>
-                        <div className="ui input inputDev">
-                          <input type="text" className="form-control" id="advancePaymentPercent"
-                                onChange={e => { this.handleChange(e,"advancePaymentPercent"); }} onBlur={handleBlur}
-                                 defaultValue={this.state.document.advancePaymentPercent}
-                                 name="advancePaymentPercent" placeholder={ Resources.advancePaymentPercent[currentLanguage]}/>
-                        </div>
-                      </div> 
-                      <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                        {this.state.isLoading === false ? (
-                          <button className={ "primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.props.isViewMode}>
-                            {Resources["save"][currentLanguage]}
-                          </button>
-                        ) : (
-                          <button className="primaryBtn-1 btn  disabled" disabled="disabled">
-                            <div className="spinner">
-                              <div className="bounce1" />
-                              <div className="bounce2" />
-                              <div className="bounce3" />
-                            </div>
-                          </button>
-                        )}
-                      </div>
+                          </div>
+                         </div>
+                        </div>   
                     </div>
                   </Form>
                 )}
@@ -518,4 +409,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SubPurchaseOrders))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ContractInsurance))

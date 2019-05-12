@@ -893,29 +893,29 @@ table edition
 }
 
 .customeTabs .react-tabs__tab {
-    border: none !important;
-    padding: 15px 10px !important;
-    box-shadow: none !important;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    color: #A8B0BF;
-    font-family: font-b;
-    font-size: 12px;
-    cursor: pointer;
-    border-bottom: 2px solid transparent !important;
-    text-transform: uppercase;
-    line-height: 1.33;
-    letter-spacing: 0.4px;
-    -webkit-transition: 0.3s;
-    transition: 0.3s;
-    height: 100%;
+  border: none !important;
+  padding: 15px 10px !important;
+  box-shadow: none !important;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #A8B0BF;
+  font-family: font-xb;
+  font-size: 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent !important;
+  text-transform: uppercase;
+  line-height: 1.33;
+  letter-spacing: 0.4px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  height: 100%;
 }
 
 .customeTabs .react-tabs__tab--selected {
@@ -1149,10 +1149,35 @@ table edition
 
 .dashboardLoading h3 {
     font-family: font-b;
-    font-size: 45px;
-    line-height: 1.16;
+    margin-top: 30px;
+    font-size: 34px;
+    line-height: 1.18;
     letter-spacing: -1.1px;
     color: #252833;
+  }
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+   }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+  }
+  .ui.modal.smallModal {
+    max-width: 430px;
+    /* padding: 0; */
+}
+.rodal .modal .actions button:nth-child(2) {
+  margin-left: 10px;
     margin-top: 36px;
 }
 
@@ -1431,11 +1456,14 @@ tfoot tr td p {
     width: auto;
     min-width: 349px;
 }
-
 .dashboard__Project .dash__content .project__content .project__select .project__title {
-    flex: 1 0;
-    text-align: left;
-    padding-left: 10px;
+  flex: 1 0;
+  text-align: left;
+  padding-left: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 42px;
 }
 
 .dashboard__Project .dash__content .project__content .project__select .project__title h3 {
@@ -1481,13 +1509,6 @@ tfoot tr td p {
     overflow-y: auto;
     height: 400px;
 }
-
-.dashboard__Project .dash__content .project__content .project__select .project__title {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
 
 /* ul.project__content div:first-of-type {
   position: unset !important;
@@ -1634,7 +1655,8 @@ tfoot tr td p {
 }
 
 .documents-stepper .doc-container {
-    min-height: 71vh;
+  min-height: 71vh;
+  border-top-color: transparent;
 }
 
 .submittalActions__add {
@@ -2385,17 +2407,15 @@ button.companies_icon {
 /* 2022 to 2076 */
 
 .one__tab.one_step .doc-container .step-content {
-    width: calc(100% - 232px);
-    padding: 0;
-    padding-left: 78px;
-    padding-right: 40px;
-}
-
-.one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform,
-.one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
-    width: 786px;
-}
-
+  width: calc(100% - 232px);
+  padding: 0;
+  padding-left: 78px;
+  padding-right: 40px;
+ }
+ .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform , 
+ .one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
+  max-width: 786px;
+ }
 @media screen and (max-width: 1200px) {
     .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform,
     .one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
@@ -2482,13 +2502,10 @@ button.companies_icon {
 .noTabs__document.one__tab.one_step .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
     width: 100%;
 }
-
-.react-grid-Cell--frozen:last-of-type,
-.react-grid-HeaderCell--frozen:last-of-type {
-    box-shadow: none !important;
-    border-right: 1px solid #E9ECF0 !important;
-}
-
+/* .react-grid-Cell--frozen:last-of-type, .react-grid-HeaderCell--frozen:last-of-type {
+  box-shadow: none !important;
+  border-right: 1px solid #E9ECF0 !important;
+} */
 .noTabs__document .approveDocument {
     z-index: 1000;
 }
@@ -2742,15 +2759,15 @@ button.companies_icon {
 }
 
 .summerisItem__number .content__number {
-    width: 236px;
-    height: 156px;
-    border-radius: 4px;
-    background-color: #f5f5f6;
-    margin: 0 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-flow: column;
+  width: 240px;
+  height: 156px;
+  border-radius: 4px;
+  background-color: #f5f5f6;
+  margin: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
 }
 
 .summerisItem__number .content__number .number {
@@ -3229,14 +3246,17 @@ button.companies_icon {
 }
 
 .dashboard__selectMenu .css-10nd86i .css-xp4uvy {
-    font-family: font-b;
-    font-size: 13px;
-    font-weight: bold;
-    line-height: 1.54;
-    letter-spacing: 0.4px;
-    color: #ffffff;
-    width: 100%;
-    text-transform: uppercase;
+  font-family: font-b;
+  font-size: 13px;
+  line-height: 1.54;
+  letter-spacing: 0.4px;
+  color: #ffffff;
+  width: 100%;
+  text-transform: uppercase;
+  text-align: center
+}
+.dashboard__selectMenu .css-10nd86i .css-1hwfws3 {
+  padding: 0;
 }
 
 .dashboard__selectMenu .css-10nd86i .css-19bqh2r {
@@ -4577,11 +4597,9 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.5;
     letter-spacing: -0.2px;
     color: #252833;
-    font-size: 16px;
     font-family: font-b;
-}
-
-.settings-container .settings-tabs-items ul li .subUlsubT {
+   }
+  .settings-container .settings-tabs-items ul li .subUlsubT {
     line-height: 1.33;
     letter-spacing: -0.2px;
     color: #A8B0BF;
@@ -5365,8 +5383,9 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .card-status .card-box .signature-h .avatarName h6 {
-    max-width: 145px;
-    overflow: hidden;
+  max-width: 145px;
+  overflow: hidden;
+  font-family: font-b
 }
 
 .ui.radio.checkbox {
@@ -5529,3 +5548,25 @@ line.horizontal-grid-line {
     min-height: 30px !important;
 }
 
+
+.submittalFilter .fillter-button .text.active .show-fillter {
+  color: #858d9e;
+}
+
+.submittalFilter .subFilter svg  g path {
+  fill: rgb(168, 176, 191)
+}
+
+.subitTabs ul li .subUlTitle {
+  text-transform: capitalize; 
+}
+
+.edit__sign .notifiActionsContainer {
+  position: unset;
+  margin: 10px auto;
+  text-align: center;
+  max-width: 696px;
+}
+.proForm.first-proform.proForm_onlyChild {
+    margin-bottom: 0 !important
+}
