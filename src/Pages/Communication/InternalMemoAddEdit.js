@@ -104,7 +104,7 @@ class InternalMemoAddEdit extends Component {
             answer: RichTextEditor.createEmptyValue()
         }
 
-        if (!Config.IsAllow(98) || !Config.IsAllow(99) || !Config.IsAllow(101)) {
+        if (!Config.IsAllow(98) && !Config.IsAllow(99) && !Config.IsAllow(101)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/InternalMemo/" + this.state.projectId);
         }  

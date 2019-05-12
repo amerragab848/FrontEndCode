@@ -5524,3 +5524,8 @@ line.horizontal-grid-line {
 .chart-group .bar {
   max-width: 46px !important;
 }
+
+.public-DraftStyleDefault-block {
+    min-height: 30px !important;
+}
+

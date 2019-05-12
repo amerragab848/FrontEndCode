@@ -103,12 +103,7 @@ class CommonLog extends Component {
           true
         );
       } else {
-        this.GetRecordOfLog(
-          this.state.isCustom === true
-            ? this.state.documentObj.documentApi.getCustom
-            : this.state.documentObj.documentApi.get,
-          nextProps.projectId
-        );
+        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, nextProps.projectId);
       }
 
       this.setState({
@@ -144,11 +139,8 @@ class CommonLog extends Component {
       };
 
       if (
-        this.state.documentObj.docTyp === 37 ||
-        this.state.documentObj.docTyp === 114
-      ) {
-        obj.isModification =
-          this.state.documentObj.docTyp === 114 ? true : false;
+        this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+        obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
       }
 
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -162,6 +154,7 @@ class CommonLog extends Component {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   }
+
   editHandler(row) {
     if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
       let editView = this.state.routeAddEdit;
@@ -190,7 +183,7 @@ class CommonLog extends Component {
         pathname: "/" + editView,
         search: "?id=" + encodedPaylod
       });
-      
+
     } else {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
@@ -315,7 +308,7 @@ class CommonLog extends Component {
   };
 
   clickHandlerDeleteRowsMain = selectedRows => {
-    if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
+    if (Config.IsAllow(this.state.documentObj.documentDeletePermission)) {
       this.setState({
         showDeleteModal: true,
         selectedRows: selectedRows
