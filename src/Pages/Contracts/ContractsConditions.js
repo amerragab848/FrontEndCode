@@ -119,7 +119,7 @@ class ContractsConditions extends Component {
             conditionType: this.state.activeTab == 0 ? 'general' : 'particular',
             details: this.state.activeCondition == 1 ? values.description : '',
             arrange: this.state.activeCondition == 1 ? values.arrange : arrange,
-            contractId: 7715, //this.props.contractId
+            contractId: this.props.contractId,
             accountsContractId: this.state.activeCondition == 0 ? (this.state.activeTab == 1 ? this.state.selectedContract.value : this.state.selectedContract.label) : undefined
         }
         if (this.state.activeTab == 1)
