@@ -72,6 +72,7 @@ import siteInstructionsAddEdit from "./Pages/TechnicalOffice/siteInstructionsAdd
 import punchListAddEdit from "./Pages/QualityControl/punchListAddEdit";
 import boqAddEdit from "./Pages/Contracts/boqAddEdit";
 import SubContract from "./Pages/Contracts/SubContract";
+import SubContractLog from "./Pages/Contracts/SubContractLog";
 import ContractsConditions from "./Pages/Contracts/ContractsConditions";
 import variationOrderAddEdit from "./Pages/Contracts/variationOrderAddEdit";
 import addEditModificationDrawing from "./Pages/Design/addEditModificationDrawing";
@@ -312,6 +313,7 @@ let originalRoutes = [
     , <Route path="/myTasks" component={myTasks} />
     , <Route path="/contractInfoAddEdit" component={contractInfoAddEdit} /> 
     , <Route path="/PaymentRequisitionList" component={PaymentRequisitionList} />
+    , <Route path="/SubContractLog" component={SubContractLog} />
     
 ];
     

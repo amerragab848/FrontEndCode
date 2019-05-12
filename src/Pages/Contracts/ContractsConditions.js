@@ -48,46 +48,25 @@ const conditionSchema = Yup.object().shape({
 });
 
 
-let docId = 0;
-let projectId = 0;
-let projectName = "";
-let isApproveMode = 0;
-let docApprovalId = 0;
-let arrange = 0;
+
 
 
 class ContractsConditions extends Component {
     constructor(props) {
         super(props)
-        const query = new URLSearchParams(this.props.location.search);
-        let index = 0;
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                }
-                catch{
-                    this.props.history.goBack();
-                }
-            }
-            index++;
-        }
         this.state = {
             activeTab: 0,
             activeCondition: 0,
             isLoading: false,
             rows: [],
+            generalRows: [],
+            particularRows: [],
             item: '',
             showDeleteModal: false,
             addLoadding: false,
             contracts: [],
-            arrange: 1,
+            G_Arrange: 1,
+            P_Arrange: 1,
             selectedContract: { label: Resources.selectConditions[currentLanguage], value: -1 },
             description: ''
         }
@@ -109,17 +88,23 @@ class ContractsConditions extends Component {
     }
 
     addRecord(values) {
-        let arrange = this.state.arrange
-        this.state.rows.forEach(item => {
-            if (item.arrange >= arrange)
-                arrange = item.arrange + 1
-        })
-        this.setState({ arrange })
+        let arrange = this.state.activeTab == 0 ? this.state.G_Arrange : this.state.P_Arrange
+        let rows = this.state.activeTab == 0 ? this.state.generalRows : this.state.particularRows
+        if (rows.length > 0) {
+            rows.forEach(item => {
+                if (item.arrange >= arrange)
+                    arrange = item.arrange + 1
+            })
+        }
+        if (this.state.activeTab == 0)
+            this.setState({ G_Arrange: arrange })
+        else
+            this.setState({ P_Arrange: arrange })
         let record = {
             conditionType: this.state.activeTab == 0 ? 'general' : 'particular',
             details: this.state.activeCondition == 1 ? values.description : '',
             arrange: this.state.activeCondition == 1 ? values.arrange : arrange,
-            contractId: this.props.contractId,
+            contractId: this.props.contractId, 
             accountsContractId: this.state.activeCondition == 0 ? (this.state.activeTab == 1 ? this.state.selectedContract.value : this.state.selectedContract.label) : undefined
         }
         if (this.state.activeTab == 1)
@@ -129,7 +114,11 @@ class ContractsConditions extends Component {
         this.setState({ addLoadding: true })
         Api.post("AddContractCondition", record).then((res) => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ addLoadding: false, rows: res })
+            if (this.state.activeTab == 0)
+                this.setState({ generalRows: res })
+            else
+                this.setState({ particularRows: res })
+            this.setState({ addLoadding: false })
         }).catch(res => {
             this.setState({ addLoadding: false })
         })
@@ -148,19 +137,24 @@ class ContractsConditions extends Component {
         Api.post("DeleteGeneralConditionById?id=" + this.state.item.id).then((res) => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             let rows = []
-            this.state.rows.forEach(item => {
+            let _rows = this.state.activeTab == 0 ? this.state.generalRows : this.state.particularRows
+            _rows.forEach(item => {
                 if (item.id != this.state.item.id) {
                     rows.push(item)
                 }
             })
-            this.setState({ isLoading: false, rows })
+            if (this.state.activeTab == 0)
+                this.setState({ isLoading: false, generalRows: rows })
+            else
+                this.setState({ isLoading: false, particularRows: rows })
         }).catch(res => {
             this.setState({ isLoading: false })
         })
     }
 
     render() {
-        let tabel = this.state.rows ? this.state.rows.map((item, Index) => {
+        let rows = this.state.activeTab == 0 ? this.state.generalRows : this.state.particularRows
+        let tabel = rows ? rows.map((item, Index) => {
             return (
                 <tr key={Index}>
                     <td>
@@ -190,7 +184,7 @@ class ContractsConditions extends Component {
                         enableReinitialize={true}
                         initialValues={{
                             description: this.state.description,
-                            arrange: this.state.arrange + 1,
+                            arrange: this.state.activeTab == 0 ? this.state.G_Arrange : this.state.P_Arrange,
                             fromContract: this.state.selectedContract.value == -1 ? '' : this.state.selectedContract.label
                         }}
                         validationSchema={this.state.activeCondition == 1 ? conditionSchema : fromContractSchema}
@@ -276,7 +270,7 @@ class ContractsConditions extends Component {
                     </Formik>
                     <header className="main__header">
                         <div className="main__header--div">
-                            <h2 className="zero">{this.state.activeTab == 1 ? Resources['addParticularCondition'][currentLanguage]:Resources['addGeneralCondition'][currentLanguage]}</h2>
+                            <h2 className="zero">{this.state.activeTab == 1 ? Resources['addParticularCondition'][currentLanguage] : Resources['addGeneralCondition'][currentLanguage]}</h2>
                         </div>
                     </header>
                     <table className="attachmentTable">

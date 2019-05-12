@@ -40,8 +40,12 @@ const validationSchema = Yup.object().shape({
 const documentCycleValidationSchema = Yup.object().shape({
     subject: Yup.string()
         .required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    approvalStatusId: Yup.string()
-        .required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
+    likelihood: Yup.string()
+        .required(Resources['likelihood'][currentLanguage]).nullable(true),
+    riskLevel: Yup.string()
+        .required(Resources['riskLevel'][currentLanguage]).nullable(true),
+    riskCause: Yup.string()
+        .required(Resources['riskCause'][currentLanguage]).nullable(true),
 })
 
 let docId = 0;
@@ -55,8 +59,8 @@ const _ = require('lodash');
 
 let columns = [
     {
-        Header: 'arrange',
-        accessor: 'arrange',
+        Header: 'refNo',
+        accessor: 'refNo',
         width: '30px'
     }, {
         Header: Resources['subject'][currentLanguage],
@@ -64,32 +68,28 @@ let columns = [
         width: '150px',
     }, {
         Header: Resources['statusName'][currentLanguage],
-        accessor: 'statusName',
+        accessor: 'statusText',
         width: '40px',
     }, {
-        Header: Resources['CompanyName'][currentLanguage],
-        accessor: 'flowCompanyName',
+        Header: Resources['riskCause'][currentLanguage],
+        accessor: 'riskCauseTitle',
         width: '80px',
     }, {
-        Header: Resources['ContactName'][currentLanguage],
-        accessor: 'flowContactName',
+        Header: Resources['riskLevel'][currentLanguage],
+        accessor: 'riskLevelTitle',
         width: '80px',
     }, {
         Header: Resources['docDate'][currentLanguage],
-        accessor: 'docDate',
+        accessor: 'cycleDate',
         format: 'date',
         width: '80px',
     }, {
-        Header: Resources['approvalStatus'][currentLanguage],
-        accessor: 'approvalStatusName',
-        width: '60px',
-    }, {
-        Header: Resources['progressPercent'][currentLanguage],
-        accessor: 'progressPercent',
+        Header: Resources['likelihood'][currentLanguage],
+        accessor: 'likelihoodTitle',
         width: '60px',
     }, {
         Header: Resources['comment'][currentLanguage],
-        accessor: 'cycleComment',
+        accessor: 'notes',
         width: '80px',
     }
 ]
@@ -134,6 +134,8 @@ class riskAddEdit extends Component {
             CycleAddLoading: false,
             DocLoading: false,
 
+            EMV:0,
+            likelihood: 0.1,
             documentCycle: {},
             currentTitle: "sendToWorkFlow",
             showModal: false,
@@ -150,9 +152,13 @@ class riskAddEdit extends Component {
             companies: [],
             ToContacts: [],
             fromContacts: [],
-            discplines: [],
+
+            riskLevels: [],
+            riskCauses: [],
+            likelihoods: [],
+            items: [],
             areas: [],
-            locations: [],
+            IRCycles: [],
             priority: [],
             permission: [{ name: 'sendByEmail', code: 1022 },
             { name: 'sendByInbox', code: 1021 },
@@ -166,18 +172,23 @@ class riskAddEdit extends Component {
             selectedToCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
+
+            selectedLikelihood: { label: Resources.likelihood[currentLanguage], value: "0" },
+            selectedRiskLevel: { label: Resources.riskLevel[currentLanguage], value: "0" },
+            selectedRiskCause: { label: Resources.riskCause[currentLanguage], value: "0" },
+
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
-            selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
             message: RichTextEditor.createEmptyValue()
         }
 
         if (!Config.IsAllow(84) && !Config.IsAllow(85) && !Config.IsAllow(87)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-
             this.props.history.push("/Risk/" + this.state.projectId);
         }
+
+        this.newCycle = this.newCycle.bind(this);
+        this.editCycle = this.editCycle.bind(this);
     }
 
     componentDidMount() {
@@ -190,7 +201,6 @@ class riskAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
-
         this.checkDocumentIsView();
     };
 
@@ -252,8 +262,40 @@ class riskAddEdit extends Component {
 
             this.props.actions.documentForEdit(url);
 
+            dataservice.GetDataGrid("GetRiskCycles?riskId=" + this.state.docId).then(result => {
+                this.setState({
+                    IRCycles: [...result]
+                });
+                let data = { items: result };
+                this.props.actions.ExportingData(data);
+            });
+
+            dataservice.GetDataGrid("GetRiskLastCycle?id=" + this.state.docId).then(result => {
+                this.setState({
+                    documentCycle: { ...result }
+                });
+                this.fillDropDownsCycle(true);
+            });
+
+            let items = []
+            let consequences = ['T', 'C', 'P', 'R', 'S']
+            for (var i = 0; i < 5; i++) {
+
+                let consequenceItem = {
+                    conesquenceId: consequences[i],
+                    riskId: this.state.docId,
+                    value: 0,
+                    id: null
+                };
+                items.push(consequenceItem)
+            }
+
+            this.setState({
+                items
+            });
+
         } else {
-            const transmittalDocument = { 
+            const riskDocument = {
                 id: 0,
                 projectId: projectId,
                 arrange: "1",
@@ -279,10 +321,11 @@ class riskAddEdit extends Component {
             };
 
             this.setState({
-                document: transmittalDocument
+                document: riskDocument
             });
 
             this.fillDropDowns(false);
+            this.fillDropDownsCycle(false);
             this.props.actions.documentForAdding();
         }
 
@@ -368,7 +411,7 @@ class riskAddEdit extends Component {
                 areas: [...result]
             });
         });
-      
+
         //priorty
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
             if (isEdit) {
@@ -386,6 +429,75 @@ class riskAddEdit extends Component {
             }
             this.setState({
                 priority: [...result]
+            });
+        });
+    }
+
+    fillDropDownsCycle(isEdit) {
+
+        //riskLevels
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=riskLevels", "title", "id").then(result => {
+            if (isEdit) {
+                let riskLevel = this.state.documentCycle.riskLevel;
+                if (riskLevel) {
+                    let priorityName = result.find(i => i.value === parseInt(riskLevel));
+                    this.setState({
+                        selectedRiskLevel: { label: priorityName.label, value: riskLevel }
+                    });
+                }
+            }
+            this.setState({
+                riskLevels: [...result]
+            });
+        });
+
+        //riskCauses
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=riskCauses", "title", "id").then(result => {
+            if (isEdit) {
+
+                let riskCauses = this.state.documentCycle.riskCauses;
+                if (riskCauses) {
+                    let priorityName = result.find(i => i.value === parseInt(riskCauses));
+                    this.setState({
+                        selectedRiskCause: { label: priorityName.label, value: riskCauses }
+                    });
+                }
+            }
+            this.setState({
+                riskCauses: [...result]
+            });
+        });
+
+        //likelihoods
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=likelihoods", "title", "id").then(result => {
+            if (isEdit) {
+                let likelihood = this.state.documentCycle.likelihood;
+                if (likelihood) {
+                    let priorityName = result.find(i => i.value === parseInt(likelihood));
+                    this.setState({
+                        selectedLikelihood: { label: priorityName.label, value: likelihood }
+                    });
+                }
+            }
+            this.setState({
+                likelihoods: [...result]
+            });
+        });
+
+        //consequences
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=consequences", "title", "id").then(result => {
+            if (isEdit) {
+
+                let riskConsquence = this.state.documentCycle.riskConsquence;
+                if (riskConsquence) {
+                    let priorityName = result.find(i => i.value === parseInt(riskConsquence));
+                    this.setState({
+                        selectedconsequence: { label: priorityName.label, value: riskConsquence }
+                    });
+                }
+            }
+            this.setState({
+                consequences: [...result]
             });
         });
     }
@@ -496,8 +608,6 @@ class riskAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-
-            // this.props.history.push("/Risk/" + this.state.projectId);
         });
     }
 
@@ -509,22 +619,38 @@ class riskAddEdit extends Component {
 
         dataservice.addObject('AddCommunicationRisk', saveDocument).then(result => {
             if (result.id) {
-
                 toast.success(Resources["operationSuccess"][currentLanguage]);
+
                 let cycle = {
-                    requestForInspectionId: result.id,
                     subject: this.state.document.subject,
-                    docDate: this.state.document.docDate,
-                    progressPercent: 0,
-                    status: 'false',
-                    approvalStatusId: null,
-                    cycleComment: '',
-                    arrange: 0
+                    status: '1',
+                    cycleDate: this.state.document.docDate,
+                    refNo: '',
+                    riskId: result.id,
+                    riskCause: null,
+                    notes: '',
+                    riskLevel: null,
+                    impact: null,
+                    id: null
                 };
+                let items = []
+                let consequences = ['T', 'C', 'P', 'R', 'S']
+                for (var i = 0; i < 5; i++) {
+
+                    let consequenceItem = {
+                        conesquenceId: consequences[i],
+                        riskId: result.id,
+                        value: 0,
+                        id: null
+                    };
+                    items.push(consequenceItem)
+                }
+
                 this.setState({
                     documentCycle: cycle,
                     docId: result.id,
-                    DocLoading: false
+                    DocLoading: false,
+                    items: items
                 });
             }
         }).catch(res => {
@@ -575,7 +701,7 @@ class riskAddEdit extends Component {
     NextStep = () => {
 
         if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) { 
+            if (this.props.changeStatus == true) {
                 this.editRisk();
             }
             window.scrollTo(0, 0)
@@ -666,6 +792,96 @@ class riskAddEdit extends Component {
         }
     }
 
+    handleChangeCycle(e, field) {
+
+        let original_document = { ...this.state.documentCycle };
+
+        let updated_document = {};
+
+        updated_document[field] = e.target.value;
+
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            documentCycle: updated_document
+        });
+    }
+
+    handleChangeCycleDropDown(event, field, selectedValue) {
+        if (event == null) return;
+        let original_document = { ...this.state.documentCycle };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            documentCycle: updated_document,
+            [selectedValue]: event
+        });
+
+    }
+
+    newCycle(e) {
+
+        let cycleObj = { ...this.state.documentCycle };
+        cycleObj.typeAddOrEdit = "";
+        this.setState({
+            documentCycle: { ...cycleObj }
+        });
+    }
+
+    editCycle(e) {
+        let cycleObj = { ...this.state.documentCycle };
+        cycleObj.typeAddOrEdit = "editLastCycle";
+        this.setState({
+            documentCycle: { ...cycleObj }
+        });
+    }
+    saveInspectionRequestCycle(event) {
+        let saveDocument = { ...this.state.documentCycle };
+
+        saveDocument.projectId = this.state.projectId;
+        saveDocument.riskId = this.state.docId;
+
+        let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditRiskCycle' : 'AddCommunicationRiskCycles';
+
+        if (saveDocument.typeAddOrEdit === "editLastCycle") {
+            this.setState({ CycleEditLoading: true })
+        } else {
+            this.setState({ CycleAddLoading: true })
+        }
+
+        dataservice.addObject(api, saveDocument).then(result => {
+            if (result) {
+                let cycle = {
+                    subject: result.subject,
+                    cycleDate: result.cycleDate,
+                    refNo: result.refNo,
+                    status: result.status,
+                    riskId: this.state.docId,
+                    riskCause: result.riskCause,
+                    notes: result.notes,
+                    riskLevel: result.riskLevel,
+                    impact: result.impact,
+                    id: result.id
+                };
+
+                this.setState({
+                    documentCycle: cycle,
+                    CycleEditLoading: false,
+                    CycleAddLoading: false,
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
+        }).catch(res => {
+            this.setState({
+                CycleEditLoading: false,
+                CycleAddLoading: false,
+            });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+    }
+
     AddNewCycle() {
         return (
             <Fragment>
@@ -711,11 +927,11 @@ class riskAddEdit extends Component {
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.status[currentLanguage]}</label>
                                         <div className="ui checkbox radio radioBoxBlue">
-                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.cycleStatus === false ? null : 'checked'} value="true" onChange={e => this.handleChangeCycle(e, 'status')} />
+                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.cycleStatus === false ? null : 'checked'} value="1" onChange={e => this.handleChangeCycle(e, 'status')} />
                                             <label>{Resources.oppened[currentLanguage]}</label>
                                         </div>
                                         <div className="ui checkbox radio radioBoxBlue">
-                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.cycleStatus === false ? 'checked' : null} value="false" onChange={e => this.handleChangeCycle(e, 'status')} />
+                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.cycleStatus === false ? 'checked' : null} value="2" onChange={e => this.handleChangeCycle(e, 'status')} />
                                             <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
                                     </div>
@@ -723,42 +939,86 @@ class riskAddEdit extends Component {
                                 </div>
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="approvalStatus"
+                                        <Dropdown title="riskLevel"
                                             isMulti={false}
-                                            data={this.state.approvalstatusList}
-                                            selectedValue={this.state.selectedApprovalStatusId}
-                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
-
+                                            data={this.state.riskLevels}
+                                            selectedValue={this.state.selectedRiskLevel}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "riskLevel", 'selectedRiskLevel')}
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
-                                            error={errors.approvalStatusId}
-                                            touched={touched.approvalStatusId}
+                                            error={errors.riskLevel}
+                                            touched={touched.riskLevel}
                                             isClear={false}
-                                            index="IR-approvalStatusId"
-                                            name="approvalStatusId"
-                                            id="approvalStatusId" />
+                                            index="IR-riskLevel"
+                                            name="riskLevel"
+                                            id="riskLevel" />
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="likelihood"
+                                            isMulti={false}
+                                            data={this.state.likelihoods}
+                                            selectedValue={this.state.selectedLikelihood}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "likelihood", 'selectedLikelihood')}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.likelihood}
+                                            touched={touched.likelihood}
+                                            isClear={false}
+                                            index="risk-likelihood"
+                                            name="likelihood"
+                                            id="likelihood" />
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="riskCause"
+                                            isMulti={false}
+                                            data={this.state.riskCauses}
+                                            selectedValue={this.state.selectedRiskCause}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "riskCause", 'selectedRiskCause')}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.riskCause}
+                                            touched={touched.riskCause}
+                                            isClear={false}
+                                            index="risk-riskCause"
+                                            name="riskCause"
+                                            id="riskCause" />
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="consequence"
+                                            isMulti={false}
+                                            data={this.state.consequences}
+                                            selectedValue={this.state.selectedconsequence}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "riskConsquence", 'selectedconsequence')}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.riskConsquence}
+                                            touched={touched.riskConsquence}
+                                            isClear={false}
+                                            index="risk-riskConsquence"
+                                            name="riskConsquence"
+                                            id="riskConsquence" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources['comment'][currentLanguage]}</label>
                                         <div className='ui input inputDev '>
                                             <input autoComplete="off"
-                                                value={this.state.documentCycle.cycleComment}
+                                                value={this.state.documentCycle.notes}
                                                 className="form-control" name="comment"
                                                 onBlur={(e) => { handleBlur(e) }}
-                                                onChange={(e) => { this.handleChangeCycle(e, 'cycleComment') }}
+                                                onChange={(e) => { this.handleChangeCycle(e, 'notes') }}
                                                 placeholder={Resources['comment'][currentLanguage]} />
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['progressPercent'][currentLanguage]}</label>
+                                        <label className="control-label">{Resources['refNo'][currentLanguage]}</label>
                                         <div className='ui input inputDev '>
                                             <input autoComplete="off"
-                                                value={this.state.documentCycle.progressPercent}
-                                                className="form-control" name="progressPercent"
+                                                value={this.state.documentCycle.refNo}
+                                                className="form-control" name="refNo"
                                                 onBlur={(e) => { handleBlur(e) }}
-                                                onChange={(e) => { this.handleChangeCycle(e, 'progressPercent') }}
-                                                placeholder={Resources['progressPercent'][currentLanguage]} />
+                                                onChange={(e) => { this.handleChangeCycle(e, 'refNo') }}
+                                                placeholder={Resources['refNo'][currentLanguage]} />
                                         </div>
                                     </div>
                                 </div>
@@ -772,7 +1032,7 @@ class riskAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.editCycle}>{Resources['editCycle'][currentLanguage]}</button>}
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.editCycle}>{Resources['editCycle'][currentLanguage]}</button>}
                                     {this.state.CycleAddLoading ?
                                         <button className="primaryBtn-1 btn disabled">
                                             <div className="spinner">
@@ -781,7 +1041,7 @@ class riskAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>}
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>}
                                 </div>
 
                             </div>
@@ -792,7 +1052,81 @@ class riskAddEdit extends Component {
         )
     }
 
-    StepOneLink = () => { 
+    HandleChangeValue = (e, index) => {
+        let items = this.state.items;
+        let likelihood = this.state.likelihood;
+
+        if (parseInt(e.target.value)) {
+            items[index]['value'] = e.target.value
+            let EMV = 0;
+            items.map(i => {
+                EMV = (parseFloat(likelihood) * parseFloat(i.value)) + EMV;
+            })
+            this.setState({
+                items,
+                EMV: EMV
+            })
+        }
+    }
+    addItemEquations() {
+        return (
+            <Fragment>
+                <div className='document-fields '>
+                    <table className="ui table fullInputWidth">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Consequence</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.items.map((item, index) =>
+                                <Fragment>
+                                    <tr key={index}>
+                                        <td>{item.conesquenceId}</td>
+                                        <td>
+                                            <div className='ui input inputDev '>
+                                                <input autoComplete="off"
+                                                    value={item.value}
+                                                    className="form-control" name="value"
+                                                    defaultValue={item.value}
+                                                    onChange={(e) => this.HandleChangeValue(e, index)}
+                                                    placeholder={Resources['value'][currentLanguage]} />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </Fragment>
+
+                            )}
+                        </tbody>
+                    </table>
+                    <div className="Risk__input">
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label">{Resources['EMV'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off" readOnly
+                                    value={this.state.EMV}
+                                    className="form-control" name="EMV"
+                                    placeholder={Resources['EMV'][currentLanguage]} />
+                            </div>
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label">The Risk Ranking Is Calculated</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off" readOnly
+                                    value={Math.log10(this.state.EMV)}
+                                    className="form-control" name="EMV"
+                                    placeholder={Resources['EMV'][currentLanguage]} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Fragment >
+        )
+    }
+    StepOneLink = () => {
         if (docId !== 0) {
             this.setState({
                 FirstStep: true,
@@ -804,7 +1138,7 @@ class riskAddEdit extends Component {
         }
     }
 
-    StepTwoLink = () => { 
+    StepTwoLink = () => {
         if (docId !== 0) {
             this.setState({
                 FirstStep: false,
@@ -816,7 +1150,7 @@ class riskAddEdit extends Component {
         }
     }
 
-    StepThreeLink = () => { 
+    StepThreeLink = () => {
         if (docId !== 0) {
             this.setState({
                 ThirdStep: true,
@@ -861,8 +1195,8 @@ class riskAddEdit extends Component {
 
                                                 onSubmit={(values) => {
                                                     if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                        this.saveRisk(); 
-                                                    } else { 
+                                                        this.saveRisk();
+                                                    } else {
                                                         this.NextStep();
                                                     }
                                                 }}>
@@ -875,12 +1209,12 @@ class riskAddEdit extends Component {
                                                                 <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                     <input name='subject' id="subject" className="form-control fsadfsadsa"
                                                                         placeholder={Resources.subject[currentLanguage]}
-                                                                        autoComplete='off' 
+                                                                        autoComplete='off'
                                                                         value={this.state.document.subject}
                                                                         onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                         onChange={(e) => this.handleChange(e, 'subject')} />
                                                                     {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-                                                                 </div>
+                                                                </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
@@ -1021,7 +1355,7 @@ class riskAddEdit extends Component {
                                                                 <Dropdown title="area" data={this.state.areas}
                                                                     selectedValue={this.state.selectedArea}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')} />
-                                                            </div> 
+                                                            </div>
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                                 <div className="inputDev ui input">
@@ -1070,6 +1404,8 @@ class riskAddEdit extends Component {
                                                     noDataText={Resources['noData'][currentLanguage]}
                                                 />
                                             </div>
+
+                                            {this.addItemEquations()}
 
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">

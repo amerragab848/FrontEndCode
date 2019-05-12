@@ -180,7 +180,7 @@ class projectWorkFlowAddEdit extends Component {
             FourthStep: false,
             FivethStepComplate: false,
             FivethStep: false,
-            isLoading: true,
+            isLoading: false,
             CurrStep: 1,
             rows: [],
             showDeleteModal: false,
@@ -228,7 +228,7 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {   
+    componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
@@ -269,7 +269,7 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -287,11 +287,11 @@ class projectWorkFlowAddEdit extends Component {
     showBtnsSaving() {
         let btn = null;
 
-        if (this.state.docId === 0 ) {
+        if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0) {
-            btn = this.state.isViewMode === false?
-             <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button>:null
+            btn = this.state.isViewMode === false ?
+                <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button> : null
         }
         return btn;
     }
@@ -300,18 +300,17 @@ class projectWorkFlowAddEdit extends Component {
         if (nextProps.document.id) {
             let WorkFlowDoc = nextProps.document
             WorkFlowDoc.docDate = moment(WorkFlowDoc.docDate).format("DD/MM/YYYY")
+            WorkFlowDoc.code = WorkFlowDoc.code === null ? '' : WorkFlowDoc.code
 
             this.setState({
                 document: WorkFlowDoc,
                 IsEditMode: true,
                 hasWorkflow: nextProps.hasWorkflow,
             });
+            this.FillDropDowns(true)
+
             this.checkDocumentIsView();
         }
-    }
-
-    componentDidMount = () => {
-
     }
 
     componentWillMount() {
@@ -332,9 +331,8 @@ class projectWorkFlowAddEdit extends Component {
             this.setState({
                 IsEditMode: true,
             })
-            this.FillDropDowns()
-
-            dataservice.GetDataGrid('GetWorkFlowItemsByWorkFlowId?workFlow=' + this.state.docId + '').then(
+ 
+            dataservice.GetDataGrid('GetWorkFlowItemsByWorkFlowId?workFlow=' + this.state.docId).then(
                 res => {
                     this.setState({
                         IsEditMode: true,
@@ -343,10 +341,9 @@ class projectWorkFlowAddEdit extends Component {
                     })
                     let data = { items: res };
                     this.props.actions.ExportingData(data);
-                }
-
+                } 
             )
-            dataservice.GetDataGrid('getFollowingUpsByWorkFlowId?workFlow=' + this.state.docId + '').then(
+            dataservice.GetDataGrid('getFollowingUpsByWorkFlowId?workFlow=' + this.state.docId).then(
                 res => {
                     this.setState({
                         FollowUpsData: res
@@ -354,7 +351,7 @@ class projectWorkFlowAddEdit extends Component {
                 }
             )
 
-            dataservice.GetDataGrid('GetWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.docId + '').then(
+            dataservice.GetDataGrid('GetWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.docId).then(
                 res => {
                     this.setState({
                         MultiApprovalData: res,
@@ -363,15 +360,14 @@ class projectWorkFlowAddEdit extends Component {
                 }
             )
 
-            dataservice.GetDataGrid('GetWorkFlowDocumentsByWorkFlowId?workFlow=' + this.state.docId + '').then(
+            dataservice.GetDataGrid('GetWorkFlowDocumentsByWorkFlowId?workFlow=' + this.state.docId).then(
                 res => {
                     this.setState({
                         WorkFlowDocumentData: res,
                         isLoading: false
                     })
                 }
-            )
-
+            ) 
         }
         else {
             let cmi = Config.getPayload().cmi
@@ -397,9 +393,10 @@ class projectWorkFlowAddEdit extends Component {
                     })
                 }
             )
-            this.FillDropDowns()
+            this.FillDropDowns(false)
             this.props.actions.documentForAdding();
         }
+
         dataservice.GetDataList('GetAccountsDocType', 'docType', 'id').then(
             res => {
                 this.setState({
@@ -532,34 +529,41 @@ class projectWorkFlowAddEdit extends Component {
     }
 
     SelectedValueDropsInEditMode = (RejData, NextWFData) => {
-        if (docId !== 0) {
-            let RejectionOptionsId = this.state.document.rejectionOptions;
-            let selectedRejectionOptions = _.find(RejData, function (i) { return i.value == RejectionOptionsId });
-            let NextWorkFlowId = this.state.document.nextWorkFlowId;
-            let selectedNextWorkFlow = _.find(NextWFData, function (i) { return i.value == NextWorkFlowId });
-            this.setState({
-                selectedRejectionOptions: selectedRejectionOptions,
-                selectedNextWorkFlow: selectedNextWorkFlow,
-            })
-        }
+
     }
 
-    FillDropDowns = () => {
-        dataservice.GetDataList('GetDefaultListForList?listType=rejectionOptions', 'title', 'id').then(
-            res => {
+    FillDropDowns = (isEdit) => {
+        dataservice.GetDataList('GetDefaultListForList?listType=rejectionOptions', 'title', 'id').then(res => {
+
+            this.setState({
+                RejectionOptionData: res,
+                isLoading: false
+            })
+            if (isEdit === true) {
+                let RejectionOptionsId = this.state.document.rejectionOptions;
+                let selectedRejectionOptions = _.find(res, function (i) { return i.value == RejectionOptionsId });
+
                 this.setState({
-                    RejectionOptionData: res,
+                    selectedRejectionOptions: selectedRejectionOptions,
                 })
-                dataservice.GetDataList('ProjectWorkFlowGetList?projectId=' + projectId + '', 'subject', 'id').then(
-                    result => {
-                        this.setState({
-                            NextWorkFlowData: result,
-                        })
-                        this.SelectedValueDropsInEditMode(res, result)
-                    }
-                )
             }
-        )
+        })
+
+        dataservice.GetDataList('ProjectWorkFlowGetList?projectId=' + projectId + '', 'subject', 'id').then(result => {
+
+            this.setState({
+                NextWorkFlowData: result,
+                isLoading: false
+            })
+
+            if (isEdit === true) {
+                let NextWorkFlowId = this.state.document.nextWorkFlowId;
+                let selectedNextWorkFlow = _.find(result, function (i) { return i.value == NextWorkFlowId });
+                this.setState({
+                    selectedNextWorkFlow: selectedNextWorkFlow
+                })
+            }
+        })
 
     }
 
@@ -568,31 +572,29 @@ class projectWorkFlowAddEdit extends Component {
             this.NextStep()
         }
         else {
+
             let WorkFlowObj = this.state.document
             WorkFlowObj.docDate = moment(WorkFlowObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
-            if (docId > 0) {
-
-                dataservice.addObject('EditWorkFlow', WorkFlowObj).then(
-                    res => {
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    }).catch(ex => {
-                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                    });
+            if (this.props.changeStatus) {
+                dataservice.addObject('EditWorkFlow', WorkFlowObj).then(res => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
                 this.NextStep()
             }
-
             else {
-                dataservice.addObject('AddWorkFlow', WorkFlowObj).then(
-                    res => {
-                        this.setState({
-                            docId: res.id,
-                            IsAddModel: true
-                        })
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    }).catch(ex => {
-                        toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                    });
+                dataservice.addObject('AddWorkFlow', WorkFlowObj).then(res => {
+                    this.setState({
+                        docId: res.id,
+                        IsAddModel: true
+                    })
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
+
                 this.NextStep()
             }
         }
@@ -700,8 +702,6 @@ class projectWorkFlowAddEdit extends Component {
     }
 
     NextStep = () => {
-
-        let sss = this.state.CurrStep
 
         if (this.state.CurrStep === 1) {
             window.scrollTo(0, 0)
@@ -1136,7 +1136,6 @@ class projectWorkFlowAddEdit extends Component {
                 title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
-
         ]
 
         const dataGrid =
@@ -1806,7 +1805,7 @@ class projectWorkFlowAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
 
 
                     <div className="doc-container">
