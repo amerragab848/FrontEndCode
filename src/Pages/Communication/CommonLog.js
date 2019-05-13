@@ -56,9 +56,7 @@ class CommonLog extends Component {
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
-    this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(
-      this
-    );
+    this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
   }
 
   componentDidMount() {

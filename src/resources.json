@@ -7836,6 +7836,10 @@
         "en": "Risk Consequences",
         "ar": "consequences"
     },
+    "consequencesFactosrs": {
+        "en": "Risk Consequences Factors",
+        "ar": "ConsequencesFactosrs"
+    },
     "EMV": {
         "en": "Risk EMV",
         "ar": "EMV"
