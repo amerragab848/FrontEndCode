@@ -7,14 +7,19 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import DashBoardDefenition from "./DashBoardDefenition";
 import Filter from "../FilterComponent/filterComponent";
+import { connect } from 'react-redux';
+import {
+  bindActionCreators
+} from 'redux';
 
+import * as dashboardComponantActions from '../../store/actions/communication';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-export default class DashBoardCounterLog extends Component {
+class DashBoardCounterLog extends Component {
   constructor(props) {
     super(props);
 
@@ -55,7 +60,7 @@ export default class DashBoardCounterLog extends Component {
     let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
 
     var e = { label: this.props.projectName, value: projectId };
-    this.props.actions.RouteToDashboardProject(e);
+   this.props.actions.RouteToDashboardProject(e);
   };
 
   componentDidMount() {
@@ -189,3 +194,19 @@ export default class DashBoardCounterLog extends Component {
     );
   }
 }
+function mapStateToProps(state, ownProps) {
+  return {
+    projectId: state.communication.projectId
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(dashboardComponantActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashBoardCounterLog);
