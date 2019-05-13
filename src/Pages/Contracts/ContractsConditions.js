@@ -266,7 +266,7 @@ class ContractsConditions extends Component {
                                     </div>}
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                     {this.state.addLoadding === false ? (
-                                        <button className={"primaryBtn-1 btn " + (this.props.isApproveMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources['add'][currentLanguage]}</button>
+                                        <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources['add'][currentLanguage]}</button>
                                     ) :
                                         (
                                             <button className="primaryBtn-1 btn  disabled" disabled="disabled">

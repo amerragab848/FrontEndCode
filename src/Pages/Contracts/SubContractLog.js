@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Api from '../../api'
 import moment from 'moment'
 import Resources from '../../resources.json';
@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import 'react-table/react-table.css'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+import SubContract from '../Contracts/SubContract';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -106,7 +107,9 @@ class SubContractLog extends Component {
         this.state = {
             rows: [],
             isLoading: true,
-            contractId: 5667
+            contractId: this.props.contractId,
+            viewModel : false,
+            projectId:this.props.projectId
         }
     }
     componentWillMount() {
@@ -114,8 +117,13 @@ class SubContractLog extends Component {
             this.setState({ isLoading: false, rows: result })
         }).catch(() => {
             this.setState({ isLoading: false, rows: [] })
-        })
+        });
     }
+
+    viewSubContract=()=>{
+        this.setState({viewModel:true});
+    }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridSetupWithFilter
@@ -125,12 +133,19 @@ class SubContractLog extends Component {
                 key='items'
             />) : <LoadingSection />;
         return (
+            <Fragment>
+            {this.state.viewModel === false ? 
             <div className="doc-pre-cycle">
-            <header>
-                <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
-            </header>
-            {dataGrid}
-        </div>
+                <header className="doc-pre-btn">
+                    <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
+                    <button  className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} onClick={this.viewSubContract}><i className="fa fa-file-text"></i></button>
+                </header>
+                {dataGrid}
+            </div>
+            :
+            <SubContract projectId={this.state.projectId} contractId={this.state.contractId}/>
+            }
+        </Fragment>
              )
     }
 }

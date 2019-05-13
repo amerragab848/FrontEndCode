@@ -21,9 +21,7 @@ const dateFormate = ({ value }) => {
 }
 
 const ValidtionSchema = Yup.object().shape({
-    selectedContract: Yup.string()
-        .required(Resources['selectContract'][currentLanguage])
-        .nullable(true),
+    selectedContract: Yup.string().required(Resources['selectContract'][currentLanguage]).nullable(true)
 })
 
 let customButton = () => {
@@ -148,11 +146,9 @@ class AmendmentList extends Component {
             selectedRow: [],
             AmendmentList: [],
             columns: Gridcolumns,
-            // contractId:this.props.contractId
-            contractId: 7716,
+            contractId:this.props.contractId,
             ShowPopup: false,
-            //projectId:this.props.projectId
-            projectId: 2,
+            projectId:this.props.projectId,
             ContractList: [],
             selectedContract: { label: Resources['selectContract'][currentLanguage], value: "0" },
             ShowPopupItem: false,
@@ -169,7 +165,7 @@ class AmendmentList extends Component {
 
     componentWillMount = () => {
 
-        dataservice.GetDataGrid('GetContractAmendmentByContractId?parentId=' + this.state.contractId + '').then(
+        dataservice.GetDataGrid('GetContractAmendmentByContractId?parentId=' + this.state.contractId).then(
             res => {
                 this.setState({
                     AmendmentList: res,
@@ -178,7 +174,7 @@ class AmendmentList extends Component {
             }
         )
 
-        dataservice.GetDataList('GetContractNotAssignedToReqPay?projectId=' + this.state.projectId + '', 'subject', 'id').then(
+        dataservice.GetDataList('GetContractNotAssignedToReqPay?projectId=' + this.state.projectId, 'subject', 'id').then(
             result => {
                 this.setState({
                     ContractList: result
@@ -210,10 +206,8 @@ class AmendmentList extends Component {
                     ShowPopupItem: true,
                     AmendmentItems: res
                 })
-            })
-
-            // console.log(value.id, index, column)
-        }
+            }) 
+         }
     }
 
     clickHandlerDeleteRowsMain = selectedRows => {
@@ -588,9 +582,13 @@ class AmendmentList extends Component {
 
                     </SkyLightStateless>
                 </div>
-
+                <div className="doc-pre-cycle letterFullWidth">
+                    <header>
+                        <h2 className="zero">{Resources['assignAmendment'][currentLanguage]}</h2>
+                    </header>
+                </div>
                 <div className="filterBTNS">
-                    <button className="primaryBtn-1 btn mediumBtn" onClick={e => this.setState({ ShowPopup: true })}>{Resources['assignAmendment'][currentLanguage]}</button>
+                    <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} onClick={e => this.setState({ ShowPopup: true })}>{Resources['assignAmendment'][currentLanguage]}</button>
                 </div>
 
                 <div className="grid-container">
