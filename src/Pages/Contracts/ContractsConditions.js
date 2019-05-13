@@ -48,48 +48,25 @@ const conditionSchema = Yup.object().shape({
 });
 
 
-let docId = 0;
-let projectId = 0;
-let projectName = "";
-let isApproveMode = 0;
-let docApprovalId = 0;
-let arrange = 0;
+
 
 
 class ContractsConditions extends Component {
     constructor(props) {
         super(props)
-        const query = new URLSearchParams(this.props.location.search);
-        let index = 0;
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                }
-                catch{
-                    this.props.history.goBack();
-                }
-            }
-            index++;
-        }
         this.state = {
             activeTab: 0,
             activeCondition: 0,
             isLoading: false,
             rows: [],
-            generalRows:[],
-            particularRows:[],
+            generalRows: [],
+            particularRows: [],
             item: '',
             showDeleteModal: false,
             addLoadding: false,
             contracts: [],
-            arrange: 1,
+            G_Arrange: 1,
+            P_Arrange: 1,
             selectedContract: { label: Resources.selectConditions[currentLanguage], value: -1 },
             description: ''
         }
@@ -111,18 +88,23 @@ class ContractsConditions extends Component {
     }
 
     addRecord(values) {
-        let arrange = this.state.arrange
+        let arrange = this.state.activeTab == 0 ? this.state.G_Arrange : this.state.P_Arrange
         let rows = this.state.activeTab == 0 ? this.state.generalRows : this.state.particularRows
-        rows.forEach(item => {
-            if (item.arrange >= arrange)
-                arrange = item.arrange + 1
-        })
-        this.setState({ arrange })
+        if (rows.length > 0) {
+            rows.forEach(item => {
+                if (item.arrange >= arrange)
+                    arrange = item.arrange + 1
+            })
+        }
+        if (this.state.activeTab == 0)
+            this.setState({ G_Arrange: arrange })
+        else
+            this.setState({ P_Arrange: arrange })
         let record = {
             conditionType: this.state.activeTab == 0 ? 'general' : 'particular',
             details: this.state.activeCondition == 1 ? values.description : '',
             arrange: this.state.activeCondition == 1 ? values.arrange : arrange,
-            contractId: 7715, //this.props.contractId
+            contractId: this.props.contractId, 
             accountsContractId: this.state.activeCondition == 0 ? (this.state.activeTab == 1 ? this.state.selectedContract.value : this.state.selectedContract.label) : undefined
         }
         if (this.state.activeTab == 1)
@@ -162,9 +144,9 @@ class ContractsConditions extends Component {
                 }
             })
             if (this.state.activeTab == 0)
-            this.setState({isLoading: false, generalRows: rows })
-        else
-            this.setState({isLoading: false, particularRows: rows })
+                this.setState({ isLoading: false, generalRows: rows })
+            else
+                this.setState({ isLoading: false, particularRows: rows })
         }).catch(res => {
             this.setState({ isLoading: false })
         })
@@ -202,7 +184,7 @@ class ContractsConditions extends Component {
                         enableReinitialize={true}
                         initialValues={{
                             description: this.state.description,
-                            arrange: this.state.arrange + 1,
+                            arrange: this.state.activeTab == 0 ? this.state.G_Arrange : this.state.P_Arrange,
                             fromContract: this.state.selectedContract.value == -1 ? '' : this.state.selectedContract.label
                         }}
                         validationSchema={this.state.activeCondition == 1 ? conditionSchema : fromContractSchema}

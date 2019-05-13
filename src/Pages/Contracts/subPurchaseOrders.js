@@ -45,9 +45,8 @@ class SubPurchaseOrders extends Component {
             contacts: [], 
             purchaseOrderData:[],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedToCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-            selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" } 
+            selectedContract: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }, 
+            selectedContractWithContact: { label: Resources.toContactRequired[currentLanguage], value: "0" }
         } 
     }
 
@@ -201,8 +200,29 @@ class SubPurchaseOrders extends Component {
             
             originalData.push(result);
 
+            const objDocument = {
+              //field
+              id: 0,
+              projectId:this.state.projectId,
+              arrange: "1",
+              companyId: null,
+              toCompanyId: null, 
+              toContactId: null,
+              subject: "",
+              completionDate: moment(),
+              docDate: moment(),
+              status: "true",
+              refDoc: "",  
+              parentId:this.state.contractId,
+              parentType:"Contract"
+          };
+
             this.setState({
-                purchaseOrderData : originalData
+                purchaseOrderData : originalData,
+                document: objDocument,
+                selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+                selectedContract: { label: Resources.toContactRequired[currentLanguage], value: "0" } ,
+                selectedContractWithContact: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }, 
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -425,14 +445,7 @@ class SubPurchaseOrders extends Component {
                             onBlur={setFieldTouched}
                             error={errors.toContactId}
                             touched={touched.toContactId}
-                            name="toContactId" id="toContactId" />
-                        {/* <Dropdown title="ToContact" data={this.state.contacts}
-                                  selectedValue={this.state.selectedContractWithContact}
-                                  handleChange={event => {
-                                    this.setState({selectedContractWithContact: event});
-                                }}
-                                onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toContactId}
-                                touched={touched.toContactId} name="toContactId" index="toContactId" /> */}
+                            name="toContactId" id="toContactId" /> 
                       </div>
  
                       <div className="linebylineInput valid-input">
