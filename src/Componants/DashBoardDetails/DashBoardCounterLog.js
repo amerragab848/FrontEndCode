@@ -8,6 +8,7 @@ import Export from "../OptionsPanels/Export";
 import DashBoardDefenition from "./DashBoardDefenition";
 import Filter from "../FilterComponent/filterComponent";
 import { connect } from 'react-redux';
+import CryptoJS from "crypto-js";
 import {
   bindActionCreators
 } from 'redux';
@@ -44,6 +45,7 @@ class DashBoardCounterLog extends Component {
 
       this.state = {
         columns: getkeyDetails.columns,
+        RouteEdit: getkeyDetails.RouteEdit,
         rows: [],
         isLoading: true,
         filtersColumns: getkeyDetails.filters,
@@ -58,9 +60,9 @@ class DashBoardCounterLog extends Component {
   componentWillMount = () => {
 
     let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
-
+    console.log(this.props.projectName)
     var e = { label: this.props.projectName, value: projectId };
-   this.props.actions.RouteToDashboardProject(e);
+    //this.props.actions.RouteToDashboardProject(e);
   };
 
   componentDidMount() {
@@ -97,16 +99,37 @@ class DashBoardCounterLog extends Component {
     return this.state.viewfilter;
   }
 
+  onRowClick = (obj) => {
+    if (this.state.RouteEdit !== '') {
+      let objRout = {
+        docId: obj.id,
+        projectId: obj.projectId,
+        projectName: localStorage.getItem("lastSelectedprojectName"),
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" +this.state.RouteEdit ,
+        search: "?id=" + encodedPaylod
+      });
+    }
+  }
+
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} /> ) : (<LoadingSection />);
+      this.state.isLoading === false ? (<GridSetup rows={this.state.rows}
+        onRowClick={this.onRowClick}
+        columns={this.state.columns} showCheckbox={false} />) : (<LoadingSection />);
 
     const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources[this.state.pageTitle][currentLanguage]} />
-      ) : (<LoadingSection />);
+    ) : (<LoadingSection />);
 
-    const ComponantFilter = this.state.isLoading === false ? (<Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> ) : (
-        <LoadingSection />
-      );
+    const ComponantFilter = this.state.isLoading === false ? (<Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} />) : (
+      <LoadingSection />
+    );
 
     return (
       <div className="mainContainer">
@@ -173,15 +196,15 @@ class DashBoardCounterLog extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">{btnExport}</div>
