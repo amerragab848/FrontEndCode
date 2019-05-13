@@ -85,6 +85,20 @@ class ContractsConditions extends Component {
         }).catch(res => {
             this.setState({ isLoading: false })
         })
+        this.setState({ isLoading: true })
+        Api.get('GetContractGeneralConditions?contractId='+this.props.contractId).then(res=>{
+            if(res)
+            this.setState({generalRows:res, isLoading: false})
+            else
+            this.setState({ isLoading: false})
+        })
+        this.setState({ isLoading: true })
+        Api.get('GetContractParticularConditions?contractId='+this.props.contractId).then(res=>{
+            if(res)
+            this.setState({particularRows:res, isLoading: false})
+            else
+            this.setState({ isLoading: false})
+        })
     }
 
     addRecord(values) {
