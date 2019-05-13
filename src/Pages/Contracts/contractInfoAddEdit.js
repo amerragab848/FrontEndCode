@@ -3,6 +3,7 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
+import Rodal from "../../Styles/js/rodal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Resources from "../../resources.json";
@@ -19,6 +20,7 @@ import AmendmentList from "./AmendmentList";
 import PaymentRequisitionList from "./PaymentRequisitionList";
 import ContractsDeductions from "./ContractsDeductions";
 import ContractsConditions from "./ContractsConditions";
+import ContractInsurance from "./ContractInsurance";
 import Schedule from "./Schedule";
 import SubContract from "./SubContract";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
@@ -51,6 +53,14 @@ const contractInfoSchema = Yup.object().shape({
 
 const variationOrdersSchema = Yup.object().shape({
   changeOrder: Yup.string().required(Resources["selectChangeOrder"][currentLanguage])
+});
+
+const itemSchema = Yup.object().shape({
+  details:Yup.string().required(Resources["description"][currentLanguage]),
+  originalQuantity:Yup.string().required(Resources["quantity"][currentLanguage]),
+  arrange:Yup.string().required(Resources["arrange"][currentLanguage]),
+  unit:Yup.string().required(Resources["unit"][currentLanguage]),
+  unitPrice:Yup.string().required(Resources["unitPrice"][currentLanguage])
 });
     
 let docId = 0;
@@ -154,7 +164,14 @@ class ContractInfoAddEdit extends Component {
       revisedContractSum:0,
       contractExecutedToDate:0,
       balanceToFinish:0,
-      changeOrderSum:0
+      changeOrderSum:0,
+      viewItemPopUp : false,
+      objItems:{},
+      // details:"",
+      // originalQuantity:"",
+      // arrange:"",
+      // unit:"",
+      // unitPrice:""
     };
  
    columnsGrid = [
@@ -331,11 +348,12 @@ class ContractInfoAddEdit extends Component {
   fillDropDowns(isEdit) {
    
     DataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId,"companyName","companyId").then(res => {
+     
       if (isEdit) {
 
         let getCompanyId = this.state.document.companyId;
+
         let toCompanyId = this.state.document.toCompanyId;
-      
    
           let comapny = _.find(res, function(x) {
             return x.value == getCompanyId;
@@ -585,7 +603,10 @@ class ContractInfoAddEdit extends Component {
   };
    
   onCloseModal() {
-    this.setState({ showDeleteModal: false });
+    this.setState({
+       showDeleteModal: false ,
+       viewItemPopUp:false
+    });
   }
 
   clickHandlerCancelMain = () => {
@@ -647,17 +668,13 @@ class ContractInfoAddEdit extends Component {
   };
 
   onRowClick = (value, index, column) => {
-    console.log("column.key", column.key);
-    // if (!Config.IsAllow(11)) {
-    //   toast.warning("you don't have permission");
-    // } else if (column.key == "customBtn") {
-    //   this.itemization(value);
-    // } else if (column.key != "select-row" && column.key != "unitPrice") {
-    //   if (this.state.CurrStep == 2) {
-    //     this.setState({ showPopUp: true, btnText: "save", selectedRow: value });
-    //     this.simpleDialog1.show();
-    //   }
-    // }
+    if(column.name !="Actions" && column.key != "revisedQuantity")
+    {  
+      this.setState({
+        viewItemPopUp:true,
+        objItems :value 
+      });
+   }
   };
   
   clickHandlerDeleteRowsMain = selectedRows => {
@@ -731,18 +748,7 @@ class ContractInfoAddEdit extends Component {
         thirdComplete: false
       });
     }
-  };
-
-  StepThreeLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        thirdComplete: true,
-        CurrStep: 3,
-        firstComplete: true,
-        secondComplete: true
-      });
-    }
-  };
+  }; 
 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
@@ -818,21 +824,19 @@ class ContractInfoAddEdit extends Component {
       showDeleteModal:false
     });
 
-    let originalData = this.state.rows;
+    let originalData = this.state.variationOrdersData;
 
-    DataService.addObject("DeletMultipleContractOrderById", selectedRow ).then(result => {
+    DataService.addObject("DeletMultipleContractOrderById", this.state.currentId ).then(result => {
+ 
 
-      selectedRow.forEach(item => {
+      let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
 
-        let getIndex = originalData.findIndex(x => x.id === item);
-
-        originalData.splice(getIndex, 1);
-      });
+      originalData.splice(getIndex, 1);
  
       this.setState({ 
         showPopUp:false,
         isLoading: false,
-        rows:originalData
+        variationOrdersData:originalData
       });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(() => {
@@ -841,7 +845,7 @@ class ContractInfoAddEdit extends Component {
     });
   }else{
     toast.warning(Resources["missingPermissions"][currentLanguage]);
-  } 
+   } 
   }
 
   viewHistoryDocument(values)
@@ -858,6 +862,45 @@ class ContractInfoAddEdit extends Component {
         this.simpleDialog.show();
       });  
     } 
+  }
+
+  handleChangeItems(e, field) {
+
+    let original_document = { ...this.state.objItems };
+
+    let updated_document = {};
+
+    updated_document[field] = e.target.value;
+
+    updated_document = Object.assign(original_document, updated_document);
+
+    this.setState({
+      objItems: updated_document
+    });
+  }
+
+  editItems = () => {
+   
+      this.setState({viewItemPopUp : false});
+
+      DataService.addObject("EditContracOrdertById", this.state.objItems).then(result => {
+
+      let originalData = this.state.rows;
+
+      let findIndex = originalData.findIndex(x => x.id === this.state.currentId);
+
+      originalData.splice(findIndex,1);
+
+      originalData.push(this.state.objItems);
+
+      this.setState({
+        rows:originalData
+      });
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+    }).catch(() => {
+      toast.error(Resources["operationCanceled"][currentLanguage]);
+      this.setState({ isLoading: false });
+    });
   }
 
   render() {
@@ -1053,7 +1096,7 @@ class ContractInfoAddEdit extends Component {
                        columns={columns}
                        defaultPageSize={5}
                        noDataText={Resources["noData"][currentLanguage]}
-                       className="-striped -highlight" />
+                       className="-striped -highlight"  />
           </Fragment>
         </div>
       </React.Fragment>
@@ -1402,15 +1445,18 @@ class ContractInfoAddEdit extends Component {
             </li>
           </ul>
         </div>
-        {this.state.activeTab == "pricedItem" ? (<React.Fragment>{pricedItemContent}</React.Fragment>) : null }
-        {this.state.activeTab == "cos" ? (<React.Fragment>{variationOrders}</React.Fragment>) : null}
-        {this.state.activeTab == "paymentRequisitions" ? (<PaymentRequisitionList contractId={this.state.docId}/>) : null}
-        {this.state.activeTab == "contractsDeductions" ? (<ContractsDeductions contractId={this.state.docId}/>) : null}
-        {this.state.activeTab == "conditions" ? (<ContractsConditions contractId={this.state.docId}/>) : null} 
-        {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId}/>) : null}
-        {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId}/>) : null}
-        {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId}/>) : null}
-        {this.state.activeTab == "subPOs" ? (<SubPurchaseOrders contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
+        <Fragment>
+          {this.state.activeTab == "pricedItem" ? (<React.Fragment>{pricedItemContent}</React.Fragment>) : null }
+          {this.state.activeTab == "cos" ? (<React.Fragment>{variationOrders}</React.Fragment>) : null}
+          {this.state.activeTab == "paymentRequisitions" ? (<PaymentRequisitionList contractId={this.state.docId}/>) : null}
+          {this.state.activeTab == "contractsDeductions" ? (<ContractsDeductions contractId={this.state.docId}/>) : null}
+          {this.state.activeTab == "conditions" ? (<ContractsConditions contractId={this.state.docId}/>) : null}
+          {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId}/>) : null}
+          {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} projectId={projectId}/>):null}
+          {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId}/>) : null}
+          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId}/>) : null}
+          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrders contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
+        </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
             <div className="slider-Btns">
@@ -1458,12 +1504,8 @@ class ContractInfoAddEdit extends Component {
                           </button>
                           <span className="border" />
                           <div className="document__action--menu">
-                            <OptionContainer
-                              permission={this.state.permission}
-                              docTypeId={this.state.docTypeId}
-                              docId={this.state.docId}
-                              projectId={this.state.projectId}
-                            />
+                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId}
+                                             projectId={this.state.projectId} />
                           </div>
                         </div>
                       </div>
@@ -1527,6 +1569,102 @@ class ContractInfoAddEdit extends Component {
                                buttonName="delete" clickHandlerContinue={this.clickHandlerContinueMain.bind(this)}/>
           ) : null} 
         </div>
+        {this.state.viewItemPopUp ?
+            (<Fragment>
+              <Rodal visible={this.state.viewItemPopUp} onClose={this.onCloseModal.bind(this)}>
+                <div className="ui modal largeModal ">
+                  <Formik initialValues={{  ...this.state.objItems }}
+                    validationSchema={itemSchema} enableReinitialize={true}
+                    onSubmit={values => { this.editItems(); }}>
+                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                      <Form className="dropWrapper" onSubmit={handleSubmit}>
+                        <div className=" proForm customProform">
+                          <div className="fillter-status fillter-item-c">
+                            <label className="control-label">
+                              {Resources["description"][currentLanguage]}
+                            </label>
+                            <div className="inputDev ui input">
+                              <input name="description" className="form-control fsadfsadsa" id="description" placeholder={Resources.description[currentLanguage]}
+                                autoComplete="off" value={this.state.objItems.details}
+                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                onChange={e => this.handleChangeItems(e, "details")}   />
+                              {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                            </div>
+                          </div> 
+                          <div className="fillter-status fillter-item-c">
+                            <label className="control-label">
+                              {Resources.quantity[currentLanguage]}
+                            </label>
+                            <div className={"ui input inputDev " + (errors.originalQuantity && touched.originalQuantity ? " has-error" : " ")}>
+                              <input type="text" className="form-control"
+                                id="originalQuantity"
+                                value={this.state.objItems.originalQuantity}
+                                name="originalQuantity"
+                                placeholder={Resources.originalQuantity[currentLanguage]}
+                                onBlur={e => { handleChange(e); handleBlur(e); }}
+                                onChange={e => this.handleChangeItems(e, "originalQuantity")} />
+                              {errors.originalQuantity && touched.originalQuantity ? (<em className="pError">{errors.originalQuantity}</em>) : null}
+                            </div>
+                          </div>
+                          <div className="fillter-status fillter-item-c">
+                            <label className="control-label">
+                              {Resources.numberAbb[currentLanguage]}
+                            </label>
+                            <div className={"ui input inputDev" + (errors.numberAbb && touched.numberAbb ? " has-error" : "ui input inputDev")}>
+                              <input type="text" className="form-control" id="numberAbb"
+                                value={this.state.objItems.arrange}
+                                name="numberAbb" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                                onChange={e => this.handleChangeItems(e, "arrange")}  />
+                              {errors.numberAbb && touched.numberAbb ? (<em className="pError">{errors.numberAbb}</em>) : null}
+                            </div>
+                          </div>
+                          <div className="fillter-status fillter-item-c">
+                            <label className="control-label">
+                              {Resources.unit[currentLanguage]}
+                            </label>
+                            <div className={"ui input inputDev" + (errors.unit && touched.unit ? " has-error" : "ui input inputDev")}>
+                              <input type="text" className="form-control" id="unit"
+                                value={this.state.objItems.unit}
+                                name="unit" placeholder={Resources.unit[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                                onChange={e => this.handleChangeItems(e, "unit")} />
+                              {errors.unit && touched.unit ? (<em className="pError">{errors.unit}</em>) : null}
+                            </div>
+                          </div>
+                          <div className="fillter-status fillter-item-c">
+                            <label className="control-label">
+                              {Resources.unitPrice[currentLanguage]}
+                            </label>
+                            <div className={"ui input inputDev" + (errors.unitPrice && touched.unitPrice ? " has-error" : "ui input inputDev")}>
+                              <input type="text" className="form-control" id="unitPrice"
+                                value={this.state.objItems.unitPrice}
+                                name="unitPrice" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                                onChange={e => this.handleChangeItems(e, "unitPrice")} />
+                              {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                            </div>
+                          </div>
+                          <div className="slider-Btns fullWidthWrapper">
+                            {this.state.isLoading === false ? (
+                              <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                                {Resources["goEdit"][currentLanguage]}
+                              </button>
+                            ) :
+                              (<button className="primaryBtn-1 btn disabled">
+                                <div className="spinner">
+                                  <div className="bounce1" />
+                                  <div className="bounce2" />
+                                  <div className="bounce3" />
+                                </div>
+                              </button>
+                              )}
+                          </div>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
+                </div>
+              </Rodal>
+            </Fragment>
+            ) : null}
       </React.Fragment>
     );
   }

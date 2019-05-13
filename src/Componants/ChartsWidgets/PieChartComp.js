@@ -37,7 +37,9 @@ class PieChartComp extends Component {
             dataChart: [],
             isLoading: true,
             data: {},
-            isAnimated: true
+            isAnimated: true,
+            showLegend: false,
+            highlightedSlice: null
         }
 
     }
@@ -68,7 +70,9 @@ class PieChartComp extends Component {
         //     isAnimated: false
         // })
         this.setState({
-            data: e.data
+            data: e.data,
+            highlightedSlice: e.data.id,
+            showLegend: true
         });
         data = e.data;
         console.log(e.data);
@@ -108,14 +112,17 @@ class PieChartComp extends Component {
                                         internalRadius={width / 10}
                                         colorSchema={colorSchema}
                                         customMouseOver={this.logMouseOver}
+                                        highlightSliceById={this.state.highlightedSlice}
                                         isAnimated={false}
                                     />
 
-                                    <p id="legenbd__teext">
-                                        <span className="chartName"> {this.state.data.name}</span>
-                                        <span className="percentage">{this.state.data.percentage + '%'}</span>
-                                        <span className="totalAmount">{this.state.data.quantity + 'LE'}</span>
-                                    </p>
+                                    {this.state.showLegend === true ?
+                                        <p id="legenbd__teext">
+                                            <span className="chartName"> {this.state.data.name}</span>
+                                            <span className="percentage">{this.state.data.percentage + '%'}</span>
+                                            <span className="totalAmount">{this.state.data.quantity + 'LE'}</span>
+                                        </p>
+                                        : null}
 
                                 </div>
                         }
