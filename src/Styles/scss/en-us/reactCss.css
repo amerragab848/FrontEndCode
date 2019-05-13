@@ -4233,6 +4233,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     cursor: pointer;
 }
 
+
 .eps__actions a img {
     transition: all 0.3s ease-in-out;
     transform: translateY(0)
@@ -4251,6 +4252,19 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     background-repeat: no-repeat;
     transform: translateY(-30px);
     background-size: contain;
+}
+
+.eps__actions a.fourth_epsIcon {
+    width: 22px;
+    display: flex;
+    align-items: center;
+}
+.eps__actions a.fourth_epsIcon img {
+    height: 15px;
+}
+
+.eps__actions a.fourth_epsIcon::after {
+    display: none
 }
 
 .eps__actions a.editIcon::after {
@@ -4274,6 +4288,9 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .eps__actions a:hover::after {
+    transform: translateY(0);
+}
+.eps__actions a.fourth_epsIcon:hover img {
     transform: translateY(0);
 }
 
