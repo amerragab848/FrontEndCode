@@ -5566,3 +5566,16 @@ line.horizontal-grid-line {
 .proForm.first-proform.proForm_onlyChild {
     margin-bottom: 0 !important
 }
+
+.doc-pre-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e1e3e8;
+    padding-bottom: 20px !important;
+    margin-bottom: 20px;
+}
+
+.doc-pre-btn h2{
+    border-bottom-color: transparent !important;
+}
