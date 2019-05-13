@@ -18040,8 +18040,8 @@
     "documentAddPermission": 625,
     "documentEditPermission": 626,
     "documentDeletePermission": 627,
-    "documentViewPermission": 628,
-    "documentPermission": 629,
+    "documentViewPermission": 629,
+    "documentPermission":628 ,
     "documentApi": {
       "get": "ProjectDistributionListGet",
       "getCustom": "ProjectDistributionListGet",
