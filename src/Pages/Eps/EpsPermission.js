@@ -379,7 +379,7 @@ class EpsPermission extends Component {
                 {this.state.isLoadingEps == true ? <LoadingSection /> :
                     <div className="documents-stepper noTabs__document">
                         <div className="tree__header">
-                            <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
+                            <h2 className="zero">{Resources.EPS[currentLanguage]}</h2>
                         </div>
                         <div className="Eps__list">
                             {
