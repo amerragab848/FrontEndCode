@@ -8,6 +8,12 @@ import jpg from '../../Styles/images/ex.png'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
+
+import pdfPrint from '../../Styles/images/pdfPrint.png'
+import pdfDelete from '../../Styles/images/pdfMDelete.png'
+import pdfMenuAction from '../../Styles/images/pdfMenuAction.png'
+import pdfMaxi from '../../Styles/images/pdfMaxi.png'
+
 import Api from '../../api';
 import Resources from '../../resources.json';
 import Submittals from '../../../src/submittals.pdf'
@@ -48,7 +54,7 @@ class ViewAttachmments extends Component {
             Api.get(urlVersion).then(result => {
                 if (result)
                     this.setState({ view: true })
-                    this.simpleDialog.show()
+                this.simpleDialog.show()
             }).catch(ex => {
             });
         }
@@ -72,6 +78,7 @@ class ViewAttachmments extends Component {
             });
         }
     }
+    
     render() {
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
 
@@ -169,13 +176,31 @@ class ViewAttachmments extends Component {
                     </tbody>
                 </table>
                 {this.state.view ?
-                    <div className="largePopup largeModal " style={{ display: this.state.view ? 'block' : 'none' }}>
+                    <div className="largePopup largeModal pdf__popup" style={{ display: this.state.view ? 'block' : 'none' }}>
                         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref}>
-                            <div >
-                                <PDFViewer document={{
-                                    file: Submittals
-                                    //url: 'https://newgizastorage.blob.core.windows.net/project-files/b9a8b348-45fd-4f86-ba94-7a9d90cee1c6.pdf'
-                                }} />
+                            <div id="pdf__size" >
+                                <div className="pdf__action">
+                                    <div className="pdf__action--btns">
+                                        <h2 className="zero">PDF Name</h2>
+                                        <div className="pdf__action--items">
+                                            <div className="pdf__maxi">
+                                                <p className="zero">-</p>
+                                                <span> <img src={pdfMaxi} alt="Print" /></span>
+                                                <p className="zero">+</p>
+                                            </div>
+                                            <div className="pdf__print">
+                                                <span> <img src={pdfPrint} alt="Print" /></span>
+                                                <span> <img src={pdfDelete} alt="Print" /></span>
+                                                <span> <img src={pdfMenuAction} alt="Print" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <PDFViewer
+                                    document={{
+                                        file: Submittals
+                                        //url: 'https://newgizastorage.blob.core.windows.net/project-files/b9a8b348-45fd-4f86-ba94-7a9d90cee1c6.pdf'
+                                    }} />
                             </div>
                         </SkyLight>
                     </div>
