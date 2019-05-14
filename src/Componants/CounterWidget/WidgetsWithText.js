@@ -22,7 +22,7 @@ class WidgetsWithText extends Component {
 
     let signal = this.abortController.signal;
 
-    Api.get(this.props.props.api, signal).then(data => {
+    Api.get(this.props.props.api).then(data => {
        if (data) { 
         let _value = this.props.props.value.split("-");
         let _total = this.props.props.total.split("-");

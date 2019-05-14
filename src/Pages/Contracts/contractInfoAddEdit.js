@@ -22,7 +22,7 @@ import ContractsDeductions from "./ContractsDeductions";
 import ContractsConditions from "./ContractsConditions";
 import ContractInsurance from "./ContractInsurance";
 import Schedule from "./Schedule";
-import SubContract from "./SubContract";
+import SubContract from "./SubContractLog";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
@@ -325,7 +325,7 @@ class ContractInfoAddEdit extends Component {
       if (!Config.IsAllow(140)) {
         this.setState({ isViewMode: true });
       } else if (this.state.isApproveMode != true && Config.IsAllow(140)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(140)) {
+        if (this.props.document.hasWorkflow == false && Config.IsAllow(140)) {
           if (this.props.document.status != false && Config.IsAllow(140)) {
             this.setState({ isViewMode: false });
           } else {
@@ -414,14 +414,19 @@ class ContractInfoAddEdit extends Component {
           this.checkDocumentIsView(); 
         });
 
-        DataService.GetDataGrid("GetContractOrderByContractId?ContractId=" + this.state.docId).then(result => {
+        DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId).then(result => {
           this.setState({
               rows: [...result]
           });  
       });
 
       DataService.GetDataGrid("GetContractsChangeOrderByContractId?contractId=" + this.state.docId).then(result => {
-          this.setState({
+         
+        let maxArrange =Math.max(...result.map(s => s.arrange));
+
+        
+        this.setState({
+            arrange : result != null ?(maxArrange + 1):1,
             variationOrdersData:  result != null ? result : []
           });  
       });
@@ -434,10 +439,7 @@ class ContractInfoAddEdit extends Component {
             balanceToFinish:result.balanceToFinish,
             changeOrderSum:result.changeOrderSum
           });
-      });
-
-      this.fillDropDowns(true);
-
+      });  
     } else {
       this.fillDropDowns(false);
 
@@ -480,17 +482,11 @@ class ContractInfoAddEdit extends Component {
  
     if (props.document && props.document.id > 0) {
    
-      let docDate = moment(props.document.documentDate);
-      props.document.statusName = props.document.status ? "Opened" : "Closed";
-      let document = Object.assign(props.document, { documentDate: docDate });
-      this.setState({ document });
+      props.document.docDate = props.document.docDate != null ? moment(props.document.docDate).format("DD/MM/YYYY") : moment();
+      props.document.completionDate = props.document.completionDate != null ? moment(props.document.completionDate).format("DD/MM/YYYY") : moment();
 
-      let items = props.items;
-      if (items) {
-        this.setState({ isLoading: true });
-        this.setState({ items }, () => this.setState({ isLoading: false }));
-      } 
-
+      this.setState({ document: props.document });
+ 
      if(indexx === 0){
 
       if(Config.IsAllow(3739)){
@@ -510,7 +506,7 @@ class ContractInfoAddEdit extends Component {
       }
       indexx ++;
      } 
-
+      this.fillDropDowns(true);
       this.checkDocumentIsView();
     }
   }
@@ -569,6 +565,7 @@ class ContractInfoAddEdit extends Component {
         firstComplete: true
       });
       let documentObj = {
+        id:this.state.document.id,
         projectId: projectId, 
         subject: values.subject,
         status: values.status != undefined ?  values.status : true, 
@@ -824,19 +821,21 @@ class ContractInfoAddEdit extends Component {
       showDeleteModal:false
     });
 
-    let originalData = this.state.variationOrdersData;
+    let originalData = this.state.rows;
 
-    DataService.addObject("DeletMultipleContractOrderById", this.state.currentId ).then(result => {
- 
+    Api.post("DeletMultipleContractOrderById", selectedRow ).then(result => {
+  
+      selectedRow.forEach(item => {
 
-      let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
+        let getIndex = originalData.findIndex(x => x.id === item);
 
-      originalData.splice(getIndex, 1);
+        originalData.splice(getIndex, 1);
+      });
  
       this.setState({ 
         showPopUp:false,
         isLoading: false,
-        variationOrdersData:originalData
+        rows:originalData
       });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(() => {
@@ -1024,23 +1023,30 @@ class ContractInfoAddEdit extends Component {
 
     const ItemsGrid =
       this.state.isLoading === false ? (
+        <Fragment>
+          <div className="doc-pre-cycle letterFullWidth">
+          <header>
+            <h2 className="zero">{Resources['items'][currentLanguage]}</h2>
+          </header>
+          </div> 
         <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
                    pageSize={this.state.pageSize} onRowClick={this.onRowClick} columns={columnsGrid}
                    onGridRowsUpdated={this._onGridRowsUpdated}  key='rows' /> 
+        </Fragment>
       ) : (
         <LoadingSection />
       );
 
     const pricedItemContent = (
-      <React.Fragment>
+      <Fragment>
         <div className="document-fields">
             {ItemsGrid}
         </div>
-      </React.Fragment>
+      </Fragment>
     );
 
     const variationOrders = (
-      <React.Fragment>
+      <Fragment>
         <div className="document-fields">
           <Formik enableReinitialize={this.props.changeStatus}
             initialValues={{changeOrder: this.state.selectedVariationOrders.value > 0 ? this.state.selectedVariationOrders.value : ""}}
@@ -1048,6 +1054,11 @@ class ContractInfoAddEdit extends Component {
             onSubmit={values => {this.addChangeOrder(values); }}>
             {({errors,touched,setFieldTouched,setFieldValue,handleBlur,handleChange,values}) => (
               <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
+                  <div className="doc-pre-cycle letterFullWidth">
+                  <header>
+                    <h2 className="zero">{Resources['addChangeOrder'][currentLanguage]}</h2>
+                  </header>
+                  </div>
                 <div className="proForm datepickerContainer"> 
                   <div className="linebylineInput valid-input">
                     <Dropdown title="changeOrder" 
@@ -1074,7 +1085,7 @@ class ContractInfoAddEdit extends Component {
 
                   <div className={"slider-Btns fullWidthWrapper textLeft "}>
                     {this.state.isLoading === false ? (
-                      <button className={"primaryBtn-1 btn " +(this.state.isApproveMode === true ? "disabled" : "")} type="submit" disabled={this.state.isApproveMode}>
+                      <button className={ "primaryBtn-1 btn " + (this.state.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.state.isApproveMode}>
                         {Resources.save[currentLanguage]}
                       </button>
                     ) : (
@@ -1099,7 +1110,7 @@ class ContractInfoAddEdit extends Component {
                        className="-striped -highlight"  />
           </Fragment>
         </div>
-      </React.Fragment>
+      </Fragment>
     );
     
     let actions = [
@@ -1126,7 +1137,7 @@ class ContractInfoAddEdit extends Component {
     ];
 
     let Step_1 = (
-      <React.Fragment>
+      <Fragment>
         <div id="step1" className="step-content-body">
           <div className="subiTabsContent">
             <div className="document-fields">
@@ -1390,6 +1401,7 @@ class ContractInfoAddEdit extends Component {
                     </div>
                   </Form>
                 )}
+                
               </Formik>
               <div className="doc-pre-cycle letterFullWidth">
                 <div>
@@ -1406,11 +1418,11 @@ class ContractInfoAddEdit extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </Fragment>
     ); 
 
     let Step_2 = (
-      <React.Fragment> 
+      <Fragment> 
         <div className="company__total proForm"> 
           <ul id="stepper__tabs" className="data__tabs">
             <li className={ " data__tabs--list " + (this.state.activeTab == "pricedItem" ? "active" : "") } onClick={() => this.changeTab("pricedItem")}>
@@ -1446,15 +1458,15 @@ class ContractInfoAddEdit extends Component {
           </ul>
         </div>
         <Fragment>
-          {this.state.activeTab == "pricedItem" ? (<React.Fragment>{pricedItemContent}</React.Fragment>) : null }
-          {this.state.activeTab == "cos" ? (<React.Fragment>{variationOrders}</React.Fragment>) : null}
+          {this.state.activeTab == "pricedItem" ? (<Fragment>{pricedItemContent}</Fragment>) : null }
+          {this.state.activeTab == "cos" ? (<Fragment>{variationOrders}</Fragment>) : null}
           {this.state.activeTab == "paymentRequisitions" ? (<PaymentRequisitionList contractId={this.state.docId}/>) : null}
           {this.state.activeTab == "contractsDeductions" ? (<ContractsDeductions contractId={this.state.docId}/>) : null}
-          {this.state.activeTab == "conditions" ? (<ContractsConditions contractId={this.state.docId}/>) : null}
-          {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId}/>) : null}
-          {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} projectId={projectId}/>):null}
-          {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId}/>) : null}
-          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId}/>) : null}
+          {this.state.activeTab == "conditions" ? (<ContractsConditions contractId={this.state.docId} isViewMode={this.state.isViewMode}/>) : null}
+          {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
+          {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>):null}
+          {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
+          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrders contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
@@ -1466,11 +1478,11 @@ class ContractInfoAddEdit extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </Fragment>
     );
 
     return (
-      <React.Fragment>
+      <Fragment>
         <div className="mainContainer">
           <div className={ this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
             <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.contract[currentLanguage]}
@@ -1560,6 +1572,12 @@ class ContractInfoAddEdit extends Component {
                        noDataText={Resources["noData"][currentLanguage]}
                        className="-striped -highlight" /> 
                 </Fragment>
+              </SkyLight>
+          </div>
+
+          <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+              <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                  {this.state.currentComponent}
               </SkyLight>
           </div>
 
@@ -1665,7 +1683,7 @@ class ContractInfoAddEdit extends Component {
               </Rodal>
             </Fragment>
             ) : null}
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

@@ -5561,6 +5561,10 @@ line.horizontal-grid-line {
   max-width: 46px !important;
 }
 
+.public-DraftStyleDefault-block {
+    min-height: 30px !important;
+}
+
 
 .submittalFilter .fillter-button .text.active .show-fillter {
   color: #858d9e;
@@ -5598,4 +5602,16 @@ line.horizontal-grid-line {
     line-height: 1.4;
     letter-spacing: -0.2px;
     color: #252833;
+}
+.doc-pre-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e1e3e8;
+    padding-bottom: 20px !important;
+    margin-bottom: 20px;
+}
+
+.doc-pre-btn h2{
+    border-bottom-color: transparent !important;
 }
