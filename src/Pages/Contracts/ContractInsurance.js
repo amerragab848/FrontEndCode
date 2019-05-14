@@ -6,11 +6,11 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import moment from "moment"; 
 import * as communicationActions from '../../store/actions/communication'; 
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -20,8 +20,8 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    policyType: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    arrange: Yup.string().required(Resources['arrange'][currentLanguage]),
+    policyType: Yup.string().required(Resources['policyType'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
+    policyLimit: Yup.number().required(Resources['arrange'][currentLanguage]),
     companyId: Yup.string().required(Resources['pleaseSelectYourCompany'][currentLanguage]).nullable(true) 
 });
    
@@ -41,6 +41,8 @@ class ContractInsurance extends Component {
             companies: [], 
             insuranceData:[],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+            showDeleteModal:false,
+            currentId:0
         } 
     }
 
@@ -64,16 +66,14 @@ class ContractInsurance extends Component {
       
             const objDocument = {
                 //field
-                id: 0,
-                projectId:this.state.projectId,
+                id: 0, 
+                companyId: null,  
+                contractId:this.state.contractId,
                 arrange: "1",
                 policyType:"",
                 policyLimit:"",
-                companyId: null, 
-                completionDate: moment(),
-                docDate: moment(),
-                parentId:this.state.contractId,
-                parentType:"Contract"
+                effectiveDate:moment(),
+                expirationDate:moment() 
             };
 
             this.setState({
@@ -82,8 +82,7 @@ class ContractInsurance extends Component {
 
             this.fillDropDowns(false);
 
-
-        dataservice.GetDataGrid("GetSubPOsByContractId?contractId=" + this.state.contractId).then(data => {
+        dataservice.GetDataGrid("GetInsuranceItemsByContractId?contractId=" + this.state.contractId).then(data => {
             this.setState({
                 insuranceData: data
             });
@@ -154,127 +153,149 @@ class ContractInsurance extends Component {
             isLoading:true 
         };
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.completionDate = moment(saveDocument.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.effectiveDate = moment(saveDocument.effectiveDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.expirationDate = moment(saveDocument.expirationDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddContractsPurchaseOrders', saveDocument).then(result => {
-
-            originalData = this.state.purchaseOrderData;
-            
-            originalData.push(result);
-
+        dataservice.addObject('AddInurance', saveDocument).then(result => {
+  
             const objDocument = {
-              //field
-              id: 0,
-              projectId:this.state.projectId,
-              arrange: "1",
-              companyId: null,
-              toCompanyId: null, 
-              toContactId: null,
-              subject: "",
-              completionDate: moment(),
-              docDate: moment(),
-              status: "true",
-              refDoc: "",  
-              parentId:this.state.contractId,
-              parentType:"Contract"
-          };
+                //field
+                id: 0, 
+                companyId: null,  
+                contractId:this.state.contractId,
+                arrange: "1",
+                policyType:"",
+                policyLimit:"",
+                effectiveDate:moment(),
+                expirationDate:moment() 
+            };
 
             this.setState({
-                purchaseOrderData : originalData,
+                insuranceData : result,
                 document: objDocument,
                 selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                selectedContract: { label: Resources.toContactRequired[currentLanguage], value: "0" } ,
-                selectedContractWithContact: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }, 
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     }
  
+    ConfirmDelete = (id) => {
+        this.setState({ showDeleteModal: true ,currentId :id});  
+      };
+
+      
+  clickHandlerCancelMain = () => {
+    this.setState({ showDeleteModal: false });
+  };
+
+  
+  clickHandlerContinueMain()
+  { 
+     this.setState({
+      isLoading : true,
+      showDeleteModal:false
+    });
+
+    let id= this.state.currentId;
+ 
+    dataservice.addObject("DeleteContractsInsuranceById?id="+ id ).then(result => {
+ 
+      let originalData = this.state.insuranceData;
+
+      let getIndex = originalData.findIndex(x => x.id === id);
+
+      originalData.splice(getIndex, 1);
+ 
+      this.setState({  
+        isLoading: false,
+        insuranceData:originalData,
+        selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }
+      });
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+    }).catch(() => {
+      toast.error(Resources["operationCanceled"][currentLanguage]);
+      this.setState({ isLoading: false });
+    });
+  }  
+
     render() { 
  
-    const columns  = [
-        {
-          Header: Resources["numberAbb"][currentLanguage],
-          accessor: "arrange",
-          sortabel: true,
-          width: 80
-        }, 
-        {
-          Header: Resources["subject"][currentLanguage],
-          accessor: "subject",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["CompanyName"][currentLanguage],
-          accessor: "companyName",
-          width: 200,
-          sortabel: true 
-        },
-        {
-          Header: Resources["contractTo"][currentLanguage],
-          accessor: "toCompanyName",
-          width: 200,
-          sortabel: true 
-        },
-        {
-          Header: Resources["attention"][currentLanguage],
-          accessor: "toContactName",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["docDate"][currentLanguage],
-          accessor: "docDate",
-          width: 200,
-          sortabel: true,
-          Cell: row => (
-            <span>
-              <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-            </span>
-          )
-        },
-        {
-          Header: Resources["completionDate"][currentLanguage],
-          accessor: "completionDate",
-          width: 200,
-          sortabel: true,
-          Cell: row => (
-            <span>
-              <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-            </span>
-          )
-        },
-        {
-          Header: Resources["actualExecuted"][currentLanguage],
-          accessor: "actualExceuted",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["docClosedate"][currentLanguage],
-          accessor: "docCloseDate",
-          width: 200,
-          sortabel: true,
-          Cell: row => (
-            <span>
-              <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-            </span>
-          )
-        }
-      ];
- 
+        const columns  = [
+            {
+              Header: Resources["numberAbb"][currentLanguage],
+              accessor: "arrange",
+              sortabel: true,
+              width: 80
+            }
+            ,{
+              Header: Resources["delete"][currentLanguage],
+              accessor: "id",
+              Cell: ({ row }) => {
+                return (
+                  <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.ConfirmDelete(row.id)}>
+                    <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+                  </div>
+                );
+              },
+              width: 70
+            }, 
+            {
+              Header: Resources["CompanyName"][currentLanguage],
+              accessor: "companyName",
+              width: 200,
+              sortabel: true
+            },
+            {
+              Header: Resources["effectiveDate"][currentLanguage],
+              accessor: "effectiveDate",
+              width: 200,
+              sortabel: true,
+              Cell: row => (
+                <span>
+                  <span>{moment(row.value).format("DD/MM/YYYY")}</span>
+                </span>
+              )
+            },
+            {
+              Header: Resources["expirationDate"][currentLanguage],
+              accessor: "expirationDate",
+              width: 200,
+              sortabel: true,
+              Cell: row => (
+                <span>
+                  <span>{moment(row.value).format("DD/MM/YYYY")}</span>
+                </span>
+              )
+            },
+            {
+              Header: Resources["policyType"][currentLanguage],
+              accessor: "policyType",
+              width: 200,
+              sortabel: true
+            },
+            {
+              Header: Resources["policyLimit"][currentLanguage],
+              accessor: "policyLimit",
+              width: 200,
+              sortabel: true
+            } 
+          ];
+      
         return ( 
         <div className={this.props.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-        <HeaderDocument docTitle={Resources.insurance[currentLanguage]}/>
+          <div className="doc-pre-cycle letterFullWidth">
+            <header>
+              <h2 className="zero">{Resources['addInsurance'][currentLanguage]}</h2>
+            </header>
+            </div>
             <div className="doc-container"> 
                <div className="step-content">
                <div id="step1" className="step-content-body">
                <div className="subiTabsContent">
                <div className="document-fields">
                <Formik initialValues={{  ...this.state.document }}
+                                enableReinitialize={true}
                                 validationSchema={validationSchema}
                                 onSubmit={values => {
                                 if (this.state.contractId > 0 ) {
@@ -286,14 +307,14 @@ class ContractInsurance extends Component {
                   <div className="proForm datepickerContainer"> 
                      <div className="linebylineInput valid-input"> 
                         <Dropdown title="CompanyName"
-                            data={this.state.companies}
-                            selectedValue={this.state.selectedFromCompany}
-                            handleChange={event => this.handleChangeDropDown(event, "companyId", false, "", "", "", "selectedFromCompany")}
-                            onChange={setFieldValue}
-                            onBlur={setFieldTouched}
-                            error={errors.companyId}
-                            touched={touched.companyId}
-                            name="companyId" id="companyId" />
+                                  data={this.state.companies}
+                                  selectedValue={this.state.selectedFromCompany}
+                                  handleChange={event => this.handleChangeDropDown(event, "companyId", false, "", "", "", "selectedFromCompany")}
+                                  onChange={setFieldValue}
+                                  onBlur={setFieldTouched}
+                                  error={errors.companyId}
+                                  touched={touched.companyId}
+                                  name="companyId" id="companyId" />
                       </div>
                       <div className="linebylineInput valid-input">
                         <label className="control-label">
@@ -305,7 +326,7 @@ class ContractInsurance extends Component {
                                  value={this.state.document.policyType}
                                  onBlur={e => { handleBlur(e); handleChange(e); }}
                                  onChange={e => { this.handleChange(e,"policyType"); }} />
-                          {errors.policyType ? (<em className="pError">{errors.policyType}</em>) : null}  
+                          {errors.policyType ? (<em className="pError">{errors.policyType}</em>) : null}
                         </div>
                       </div>
 
@@ -336,12 +357,12 @@ class ContractInsurance extends Component {
                             <div className="customDatepicker fillter-status fillter-item-c ">
                             <div className="proForm datepickerContainer">
                                 <label className="control-label">
-                                {Resources.docDate[currentLanguage]}
+                                {Resources.effectiveDate[currentLanguage]}
                                 </label>
                                 <div className="linebylineInput">
                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                    <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
-                                    onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
+                                    <ModernDatepicker date={this.state.document.effectiveDate} format={"DD/MM/YYYY"} showBorder
+                                    onChange={e => this.handleChangeDate(e, "effectiveDate")} placeholder={"Select a date"} />
                                 </div>
                                 </div>
                             </div>
@@ -353,18 +374,34 @@ class ContractInsurance extends Component {
                             <div className="customDatepicker fillter-status fillter-item-c ">
                             <div className="proForm datepickerContainer">
                                 <label className="control-label">
-                                {Resources.docDate[currentLanguage]}
+                                {Resources.expirationDate[currentLanguage]}
                                 </label>
                                 <div className="linebylineInput">
                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                    <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
-                                    onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
+                                    <ModernDatepicker date={this.state.document.expirationDate} format={"DD/MM/YYYY"} showBorder
+                                    onChange={e => this.handleChangeDate(e, "expirationDate")} placeholder={"Select a date"} />
                                 </div>
                                 </div>
                             </div>
                           </div>
                          </div>
                         </div>   
+                    </div>
+                    <div className="slider-Btns">
+                        { 
+                            (this.state.isLoading === false ?
+                            (<button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} type="submit" >
+                                {Resources["goAdd"][currentLanguage]}
+                            </button>
+                            ) : (
+                                <button className="primaryBtn-1 btn disabled">
+                                <div className="spinner">
+                                    <div className="bounce1" />
+                                    <div className="bounce2" />
+                                    <div className="bounce3" />
+                                </div>
+                                </button>
+                            ))}
                     </div>
                   </Form>
                 )}
@@ -373,16 +410,22 @@ class ContractInsurance extends Component {
             <header className="main__header">
                 <div className="main__header--div">
                 <h2 className="zero">
-                    {Resources["subPOsList"][currentLanguage]}
+                    {Resources["insuranceList"][currentLanguage]}
                 </h2>
                 </div>
             </header>
-           <ReactTable data={this.state.purchaseOrderData}
+           <ReactTable data={this.state.insuranceData}
                        columns={columns}
                        defaultPageSize={5}
                        noDataText={Resources["noData"][currentLanguage]}
                        className="-striped -highlight" />
           </div>
+
+          {this.state.showDeleteModal == true ? (
+            <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} closed={this.onCloseModal}
+                               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
+                               buttonName="delete" clickHandlerContinue={this.clickHandlerContinueMain.bind(this)}/>
+          ) : null} 
         </div> 
       </div>
     </div>

@@ -124,9 +124,12 @@ class riskAddEdit extends Component {
         }
 
         this.state = {
+            updateConsequence: false,
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
+            FourStep: false,
+            FourthStepComplate: false,
             SecondStepComplate: false,
             ThirdStepComplate: false,
             CurrentStep: 1,
@@ -134,7 +137,7 @@ class riskAddEdit extends Component {
             CycleAddLoading: false,
             DocLoading: false,
 
-            EMV:0,
+            EMV: 0,
             likelihood: 0.1,
             documentCycle: {},
             currentTitle: "sendToWorkFlow",
@@ -277,22 +280,21 @@ class riskAddEdit extends Component {
                 this.fillDropDownsCycle(true);
             });
 
-            let items = []
-            let consequences = ['T', 'C', 'P', 'R', 'S']
-            for (var i = 0; i < 5; i++) {
-
-                let consequenceItem = {
-                    conesquenceId: consequences[i],
-                    riskId: this.state.docId,
-                    value: 0,
-                    id: null
-                };
-                items.push(consequenceItem)
-            }
-
-            this.setState({
-                items
+            dataservice.GetDataGrid("GetRiskConsequenceByRiskId?riskId=" + this.state.docId).then(result => {
+                if (result) {
+                    let EMV = 0;
+                    let likelihood = this.state.likelihood;
+                    result.map(i => {
+                        EMV = (parseFloat(likelihood) * parseFloat(i.value)) + EMV;
+                    })
+                    this.setState({
+                        EMV: EMV,
+                        items: result
+                    });
+                }
             });
+
+
 
         } else {
             const riskDocument = {
@@ -724,6 +726,19 @@ class riskAddEdit extends Component {
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: true
             })
+        }
+        else if (this.state.CurrentStep === 3) {
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+                FourStep: true,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: false,
+                FourthStepComplate: true
+            })
         } else {
             this.props.history.push({
                 pathname: "/Risk/" + projectId
@@ -756,9 +771,22 @@ class riskAddEdit extends Component {
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: true
             })
+        }
+        else if (this.state.CurrentStep === 3) {
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+                FourStep: true,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: false,
+                FourthStepComplate: true
+            })
         } else {
             this.props.history.push({
-                pathname: "/inspectionRequest/" + projectId
+                pathname: "/Risk/" + projectId
             });
         }
 
@@ -1052,55 +1080,78 @@ class riskAddEdit extends Component {
         )
     }
 
-    HandleChangeValue = (e, index) => {
+    HandleChangeValue = (e, index, id) => {
         let items = this.state.items;
         let likelihood = this.state.likelihood;
+        let value = e.target.value;
+        items[index]['value'] = parseInt(value)
+        this.setState({
+            items
+        })
+    }
+    HandleChangeDb = (e, index, id) => {
+        let items = this.state.items;
+        let likelihood = this.state.likelihood;
+        let value = e.target.value;
+        items[index]['value'] = parseInt(value)
+        if (parseInt(value)) {
+            if (id != null) {
 
-        if (parseInt(e.target.value)) {
-            items[index]['value'] = e.target.value
-            let EMV = 0;
-            items.map(i => {
-                EMV = (parseFloat(likelihood) * parseFloat(i.value)) + EMV;
-            })
-            this.setState({
-                items,
-                EMV: EMV
-            })
+                this.setState({
+                    updateConsequence: true
+                })
+                dataservice.addObject('EditRiskConsequence?id=' + id + '&value=' + parseInt(value)).then(res => {
+                    let EMV = 0;
+                    items.map(i => {
+                        EMV = (parseFloat(likelihood) * parseFloat(i.value)) + EMV;
+                    })
+                    this.setState({
+                        EMV: EMV,
+                        items,
+                        updateConsequence: false
+                    })
+                })
+            }
         }
     }
+
     addItemEquations() {
         return (
             <Fragment>
-                <div className='document-fields '>
-                    <table className="ui table fullInputWidth">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Consequence</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.items.map((item, index) =>
-                                <Fragment>
-                                    <tr key={index}>
-                                        <td>{item.conesquenceId}</td>
-                                        <td>
-                                            <div className='ui input inputDev '>
-                                                <input autoComplete="off"
-                                                    value={item.value}
-                                                    className="form-control" name="value"
-                                                    defaultValue={item.value}
-                                                    onChange={(e) => this.HandleChangeValue(e, index)}
-                                                    placeholder={Resources['value'][currentLanguage]} />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </Fragment>
+                <div className='document-fields'>
+                    {!this.state.updateConsequence ?
+                        <table className="ui table fullInputWidth">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Consequence</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.items.map((item, index) =>
+                                    <Fragment>
+                                        <tr key={index}>
+                                            <td>{item.title}</td>
+                                            <td>
+                                                <div className='ui input inputDev '>
+                                                    <input autoComplete="off"
+                                                        value={item.value}
+                                                        className="form-control" name="value"
+                                                        defaultValue={item.value}
+                                                        onBlur={(e) => this.HandleChangeDb(e, index, item.id)}
+                                                        onChange={(e) => this.HandleChangeValue(e, index, item.id)}
+                                                        placeholder={Resources['value'][currentLanguage]} />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </Fragment>
 
-                            )}
-                        </tbody>
-                    </table>
+                                )}
+                            </tbody>
+                        </table>
+                        : null
+                    }
                     <div className="Risk__input">
                         <div className="linebylineInput valid-input">
                             <label className="control-label">{Resources['EMV'][currentLanguage]}</label>
@@ -1116,16 +1167,18 @@ class riskAddEdit extends Component {
                             <label className="control-label">The Risk Ranking Is Calculated</label>
                             <div className='ui input inputDev '>
                                 <input autoComplete="off" readOnly
-                                    value={Math.log10(this.state.EMV)}
+                                    value={this.state.EMV > 0 ? (Math.log10(this.state.EMV)).toFixed(2) : 0}
                                     className="form-control" name="EMV"
                                     placeholder={Resources['EMV'][currentLanguage]} />
                             </div>
                         </div>
                     </div>
+
                 </div>
             </Fragment >
         )
     }
+
     StepOneLink = () => {
         if (docId !== 0) {
             this.setState({
@@ -1134,6 +1187,8 @@ class riskAddEdit extends Component {
                 SecondStepComplate: false,
                 ThirdStepComplate: false,
                 CurrentStep: 1,
+                FourthStepComplate: false,
+                FourStep: false,
             })
         }
     }
@@ -1146,6 +1201,8 @@ class riskAddEdit extends Component {
                 SecondStepComplate: true,
                 ThirdStepComplate: false,
                 CurrentStep: 2,
+                FourthStepComplate: false,
+                FourStep: false,
             })
         }
     }
@@ -1156,9 +1213,28 @@ class riskAddEdit extends Component {
                 ThirdStep: true,
                 SecondStepComplate: true,
                 ThirdStepComplate: true,
+
+                FourthStepComplate: false,
+                FourStep: false,
                 CurrentStep: 3,
                 FirstStep: false,
                 SecondStep: false,
+            })
+        }
+    }
+
+    StepFourLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FourStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: true,
+                FourthStepComplate: true,
+
+                CurrentStep: 4,
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
             })
         }
     }
@@ -1405,8 +1481,6 @@ class riskAddEdit extends Component {
                                                 />
                                             </div>
 
-                                            {this.addItemEquations()}
-
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
@@ -1415,20 +1489,42 @@ class riskAddEdit extends Component {
                                             </div>
                                         </div>
                                         :
-                                        //Third Step
-                                        <Fragment>
+                                        this.state.ThirdStep ?
 
-                                            <div className="document-fields tableBTnabs">
-                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                            </div>
+                                            //Third Step
+                                            <Fragment>
+                                                <div className="subiTabsContent feilds__top">
+                                                    <div className="doc-pre-cycle">
+                                                        <header>
+                                                            <h2 className="zero">{Resources['consequence'][currentLanguage]}</h2>
+                                                        </header>
+                                                        {this.addItemEquations()}
+                                                    </div>
+                                                    <div className="doc-pre-cycle">
+                                                        <div className="slider-Btns">
+                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                        </div>
 
-                                            <div className="doc-pre-cycle">
-                                                <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                    </div>
                                                 </div>
 
-                                            </div>
-                                        </Fragment>
+
+                                            </Fragment>
+
+                                            :
+                                            <Fragment>
+
+                                                <div className="document-fields tableBTnabs">
+                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                </div>
+
+                                                <div className="doc-pre-cycle">
+                                                    <div className="slider-Btns">
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                    </div>
+
+                                                </div>
+                                            </Fragment>
                                     }
                                 </Fragment>}
                         </div>
@@ -1467,7 +1563,16 @@ class riskAddEdit extends Component {
                                             <span>3</span>
                                         </div>
                                         <div className="steps-info">
+                                            <h6>{Resources.consequence[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+                                    <div onClick={this.StepFourLink} data-id="step3" className={this.state.FourthStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                        <div className="steps-timeline">
+                                            <span>4</span>
+                                        </div>
+                                        <div className="steps-info">
                                             <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
+
                                         </div>
                                     </div>
                                 </div>

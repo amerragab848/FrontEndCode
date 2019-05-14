@@ -157,6 +157,7 @@ class TaskGroupsAddEdit extends Component {
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 950 },
             { name: 'createTransmittal', code: 3036 }, { name: 'sendToWorkFlow', code: 703 }]
         }
+
         if (!Config.IsAllow(625) && !Config.IsAllow(626) && !Config.IsAllow(628)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
@@ -506,7 +507,7 @@ class TaskGroupsAddEdit extends Component {
         })
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
@@ -654,7 +655,7 @@ class TaskGroupsAddEdit extends Component {
             <div className="mainContainer" >
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     {/* Header */}
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.distributionList[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.distributionList[currentLanguage]}
                         moduleTitle={Resources['generalCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">

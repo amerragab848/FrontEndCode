@@ -6,7 +6,7 @@ import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-
+import CryptoJS from "crypto-js";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
@@ -202,9 +202,28 @@ export default class MonitorTasks extends Component {
     return this.state.viewfilter;
   }
 
+  onRowClick = (obj) => {
+    if (this.state.RouteEdit !== '') {
+      let objRout = {
+        docId: obj.id,
+        projectId: obj.projectId,
+        projectName: localStorage.getItem("lastSelectedprojectName"),
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" +'ProjectTaskAddEdit' ,
+        search: "?id=" + encodedPaylod
+      });
+    }
+  }
+
   render() { 
 
-    const dataGrid = this.state.isLoading === false ?(<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>) : <LoadingSection/>;
+    const dataGrid = this.state.isLoading === false ?(<GridSetup onRowClick={this.onRowClick} rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>) : <LoadingSection/>;
 
     const btnExport = this.state.isLoading === false ? 
     <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 

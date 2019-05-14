@@ -4253,6 +4253,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     cursor: pointer;
 }
 
+
 .eps__actions a img {
     transition: all 0.3s ease-in-out;
     transform: translateY(0)
@@ -4271,6 +4272,19 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     background-repeat: no-repeat;
     transform: translateY(-30px);
     background-size: contain;
+}
+
+.eps__actions a.fourth_epsIcon {
+    width: 22px;
+    display: flex;
+    align-items: center;
+}
+.eps__actions a.fourth_epsIcon img {
+    height: 15px;
+}
+
+.eps__actions a.fourth_epsIcon::after {
+    display: none
 }
 
 .eps__actions a.editIcon::after {
@@ -4294,6 +4308,9 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .eps__actions a:hover::after {
+    transform: translateY(0);
+}
+.eps__actions a.fourth_epsIcon:hover img {
     transform: translateY(0);
 }
 
@@ -5544,6 +5561,10 @@ line.horizontal-grid-line {
   max-width: 46px !important;
 }
 
+.public-DraftStyleDefault-block {
+    min-height: 30px !important;
+}
+
 
 .submittalFilter .fillter-button .text.active .show-fillter {
   color: #858d9e;
@@ -5565,4 +5586,32 @@ line.horizontal-grid-line {
 }
 .proForm.first-proform.proForm_onlyChild {
     margin-bottom: 0 !important
+}
+.tree__header {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e9ecf0;
+}
+.tree__header h2{
+    font-family: font-b;
+    font-size: 20px;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    color: #252833;
+}
+.doc-pre-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e1e3e8;
+    padding-bottom: 20px !important;
+    margin-bottom: 20px;
+}
+
+.doc-pre-btn h2{
+    border-bottom-color: transparent !important;
 }

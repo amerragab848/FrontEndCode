@@ -34,8 +34,13 @@ let arrange = 0;
 class SubContract extends Component {
     constructor(props) {
         super(props)
+
+        window.scrollTo(0, 0);
+
         const query = new URLSearchParams(this.props.location.search);
+    
         let index = 0;
+    
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
@@ -181,7 +186,8 @@ class SubContract extends Component {
             fromCompany: { label: Resources.selectCompany[currentLanguage], value: -1 },
             contractTo: { label: Resources.selectContact[currentLanguage], value: -1 },
             contractWithContact: { label: Resources.selectContact[currentLanguage], value: -1 },
-            itemsColumns: this.itemsColumns
+            itemsColumns: this.itemsColumns,
+            projectId:this.props.projectId
         }
 
     }
@@ -199,8 +205,7 @@ class SubContract extends Component {
                 let itemsColumns = _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity')
                 this.setState({ rows: res, itemsColumns, isLoading: false })
             }
-        })
-
+        }) 
     }
 
     componentWillReceiveProps(props, state) {
@@ -219,7 +224,7 @@ class SubContract extends Component {
     }
 
     addContract = (values) => {
-        if (this.state.selectedRows.length > 1) {
+        if (this.state.selectedRows.length > 0) {
             this.setState({ isLoading: true })
             Api.get('GetNextArrangeMainDoc?projectId='+this.props.projectId+'&docType=9&companyId=' + this.state.fromCompany.value + '&contactId=0').then((res) => {
                 if (res) {
@@ -259,6 +264,9 @@ class SubContract extends Component {
                             Api.post('AddContractsOrder', item).then(() => {
                                 if (count == this.state.selectedRows.length - 1){
                                     toast.success(Resources["operationSuccess"][currentLanguage]);
+                                  
+                                    this.props.history.push("/contractInfo/" + this.props.projectId);
+
                                     this.setState({isLoading:false})}
                                 else
                                     count++;
@@ -321,7 +329,7 @@ class SubContract extends Component {
                 showToolBar={false}
                 key='items'
             />) : <LoadingSection />;
-        let Step_1 = <React.Fragment>
+        let Step_1 = <Fragment>
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                     <div className="document-fields">
@@ -466,20 +474,24 @@ class SubContract extends Component {
                     </div>
                 </div>
             </div>
-        </React.Fragment >
+        </Fragment>
         return (
-            <React.Fragment>
+            <Fragment>
                 <div>
                     <div className="documents-stepper noTabs__document one__tab one_step" >
-                        <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.subContracts[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
-                        <div className="doc-container">
+              <div className="doc-pre-cycle letterFullWidth">
+                <header>
+                  <h2 className="zero">{Resources['subContracts'][currentLanguage]}</h2>
+                </header>
+              </div>
+                    <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> : Step_1}
                             </div>
                         </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </Fragment>
         )
     }
 }

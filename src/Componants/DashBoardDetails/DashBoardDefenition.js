@@ -6,6 +6,7 @@ let widgets = [
   {
     title: "monthlyPo",
     key: "1-1-1",
+    RouteEdit:'', 
     apiDetails: "GetTotalPoDetails",
     columns: [
       {
@@ -87,6 +88,7 @@ let widgets = [
   {
     title: "materialRequestcount",
     key: "1-1-2",
+    RouteEdit:'', 
     apiDetails: "GetTotalMaterialRequestCounting",
     columns: [
       {
@@ -200,6 +202,7 @@ let widgets = [
   {
     title: "rejectedTimeSheet",
     key: "1-1-3",
+    RouteEdit:'', 
     apiDetails: "GetRejectedTimesheetBySystem-pageNumber=0&pageSize=200",
     columns: [
       {
@@ -296,6 +299,7 @@ let widgets = [
   {
     title: "monthlyPaymentRequisitions",
     key: "1-1-4",
+    RouteEdit:'', 
     apiDetails: "GetTotalPaymentDetails",
     columns: [
       {
@@ -411,6 +415,7 @@ let widgets = [
     title: "approvalSubmittals",
     key: "1-2-1",
     apiDetails: "GetApprocalStatusDetails?status=true",
+    RouteEdit:'submittalAddEdit',
     columns: [
       {
         key: "refNo",
@@ -716,6 +721,7 @@ let widgets = [
   {
     title: "openedSubmittals",
     key: "1-2-2",
+    RouteEdit:'submittalAddEdit',
     apiDetails: "GetOpenedDocumentsDetails?docType=42",
     columns: [
       {
@@ -796,6 +802,7 @@ let widgets = [
   {
     title: "rejectedSubmittals",
     key: "1-2-3",
+    RouteEdit:'submittalAddEdit',
     apiDetails: "GetApprocalStatusDetails?status=false",
     columns: [
       {
@@ -1101,6 +1108,7 @@ let widgets = [
     },
   {
     title: "openedLetters",
+    RouteEdit:'lettersAddEdit',
     key: "1-3-1",
     apiDetails: "GetOpenedDocumentsDetails?docType=19",
     columns: [
@@ -1182,6 +1190,7 @@ let widgets = [
   {
     title: "openedIR",
     key: "1-3-2",
+    RouteEdit:'inspectionRequestAddEdit',
     apiDetails: "GetOpenedDocumentsDetails?docType=25",
     columns: [
       {
@@ -1262,6 +1271,7 @@ let widgets = [
   {
     title: "rfiOpen",
     key: "1-3-3",
+    RouteEdit:'RfiAddEdit', 
     apiDetails: "GetRfiOpenDetails",
     columns: [
       {
@@ -1602,6 +1612,7 @@ let widgets = [
   {
     title: "openedTransmittals",
     key: "1-3-4",
+    RouteEdit:'TransmittalAddEdit', 
     apiDetails: "GetOpenedDocumentsDetails?docType=28",
     columns: [
       {
@@ -1682,6 +1693,7 @@ let widgets = [
   {
     title: "countinspectionPanding",
     key: "1-4-1",
+    RouteEdit:'', 
     apiDetails: "GetCountInspectionDetails?status=null",
     columns: [
       {
@@ -1779,6 +1791,7 @@ let widgets = [
   {
     title: "countinspectionReject",
     key: "1-4-2",
+    RouteEdit:'', 
     apiDetails: "GetCountInspectionDetails?status=false",
     columns: [
       {
@@ -1876,6 +1889,7 @@ let widgets = [
   {
     title: "countinspectionApproved",
     key: "1-4-3",
+    RouteEdit:'', 
     apiDetails: "GetCountInspectionDetails?status=false",
     columns: [
       {

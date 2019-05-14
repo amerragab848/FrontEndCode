@@ -68,7 +68,8 @@ const DropGeneralData =
     { label: Resources["riskCause"][currentLanguage], value: "riskCauses" },
     { label: Resources["riskLevel"][currentLanguage], value: "riskLevels" },
     { label: Resources["likelihood"][currentLanguage], value: "likelihoods" },
-    { label: Resources["consequence"][currentLanguage], value: "consequences" }]
+    { label: Resources["consequence"][currentLanguage], value: "consequences" },
+    { label: Resources["consequencesFactosrs"][currentLanguage], value: "ConsequencesFactosrs" }]
 
 class GeneralList extends Component {
     constructor(props) {
