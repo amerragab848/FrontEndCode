@@ -28,7 +28,9 @@ class ViewWorkFlow extends Component {
             visualCycle: [],
             projectId: this.props.projectId != null ? this.props.projectId : 0,
             docId: this.props.docId != null ? this.props.docId : 0,
-            docType: this.props.docType != null ? this.props.docType : 0
+            docType: this.props.docType != null ? this.props.docType : 0,
+            showPopup: false,
+            comment: ''
         }
     }
 
@@ -46,6 +48,18 @@ class ViewWorkFlow extends Component {
         }
     };
 
+    showPopup(e) {
+        this.setState({
+            showPopup: true,
+            comment: e
+        });
+    }
+
+    closePopup(e) {
+        this.setState({
+            showPopup: false
+        });
+    }
     renderLevels(items) {
 
         let grouped = _.groupBy(items, 'arrange');
@@ -89,11 +103,13 @@ class ViewWorkFlow extends Component {
                                         </div>
                                         : null}
 
-                                        <div class="Status__comment">
+                                    <div class="Status__comment">
                                         {level.statusVal != null ?
-                                        <span>
-                                            <img src={CommentImg} alt="Cooment"/>
-                                        </span> : null}
+                                            <span>
+                                                {level.comment === null ? null :
+                                                    <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
+                                                }
+                                            </span> : null}
                                         <div className="box-statue">
                                             <h5>{level.status}</h5>
                                             <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
@@ -135,6 +151,15 @@ class ViewWorkFlow extends Component {
     render() {
         return (
             <Fragment >
+                <div className={this.state.showPopup === true ? "popupMedium active" : "popupMedium"}>
+                    <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn">x</button>
+                    <div className={this.state.showPopup === true ? "ui modal smallModal active workflowComment" : "ui modal smallModal workflowComment"} id="smallModal2">
+                        <h2 className="header zero">Comment</h2>
+                        <p className="zero">{this.state.comment}</p>
+                        <button onClick={(e) => this.closePopup()} className="smallBtn primaryBtn-1 btn approve">Close</button>
+                    </div>
+                </div>
+
                 {this.state.visualCycle}
             </Fragment>
         )
