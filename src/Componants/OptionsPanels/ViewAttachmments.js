@@ -132,7 +132,7 @@ class ViewAttachmments extends Component {
                     <tr>
                         <th>
                             <div className="headCell tableCell-1">
-                                <span> {Resources['arrange'][currentLanguage]} </span>
+                                <span> {Resources['actions'][currentLanguage]} </span>
                             </div>
                         </th>
                         <th>
