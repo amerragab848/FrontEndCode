@@ -274,7 +274,7 @@ class LettersAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetLettersByProjectId?projectId=" + this.state.projectId + "&pageNumber=0&pageSize=100", 'subject', 'id').then(result => {
+        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId , 'subject', 'id').then(result => {
             if (isEdit) {
                 let replyId = this.props.document.replyId;
                 let replyLetter = {};
@@ -286,7 +286,7 @@ class LettersAddEdit extends Component {
                 }
             }
             this.setState({
-                letters: [...result]
+                letters:  result
             });
         });
     }
@@ -466,9 +466,7 @@ class LettersAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
                     <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -682,8 +680,7 @@ class LettersAddEdit extends Component {
                                                                 data={this.state.letters}
                                                                 selectedValue={this.state.selectedReplyLetter}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'replyId', false, '', '', '', 'selectedReplyLetter')}
-                                                                index="letter-replyId"
-                                                            />
+                                                                index="letter-replyId"                                                            />
                                                         </div>
 
                                                         <div className="letterFullWidth">
