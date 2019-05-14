@@ -63,7 +63,7 @@ class GridSetup extends Component {
     const reorderedColumns = Object.assign({}, this.state, {
       columns: stateCopy.columns
     });
-    this.setState(reorderedColumns); 
+    this.setState(reorderedColumns);
   };
 
   sortRows = (initialRows, sortColumn, sortDirection) => {
@@ -291,26 +291,26 @@ class GridSetup extends Component {
   }
 
   onOrderColumn = (source, target) => {
-    console.log(source,target);
+    console.log(source, target);
 
     const stateCopy = Object.assign({}, this.state);
-    const columnSourceIndex = this.state.columns.findIndex(      i => i.key === source    );
+    const columnSourceIndex = this.state.columns.findIndex(i => i.key === source);
 
-    const columnTargetIndex = this.state.columns.findIndex(      i => i.key === target    );
+    const columnTargetIndex = this.state.columns.findIndex(i => i.key === target);
 
-    stateCopy.columns.splice(      columnTargetIndex,      0,      stateCopy.columns.splice(columnSourceIndex, 1)[0]    );
+    stateCopy.columns.splice(columnTargetIndex, 0, stateCopy.columns.splice(columnSourceIndex, 1)[0]);
 
     const emptyColumns = Object.assign({}, this.state, { columns: [] });
     this.setState(emptyColumns);
 
-    const reorderedColumns = Object.assign({}, this.state, {      columns: stateCopy.columns    });
+    const reorderedColumns = Object.assign({}, this.state, { columns: stateCopy.columns });
     this.setState(reorderedColumns);
   };
 
   render() {
     const { rows, groupBy, filters } = this.state;
     const groupedRows = Data.Selectors.getRows({ rows, groupBy, filters });
-  
+
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     const CustomToolbar = ({
@@ -318,7 +318,7 @@ class GridSetup extends Component {
       onColumnGroupAdded,
       onColumnGroupDeleted,
       onAddFilter,
-      onClearFilters 
+      onClearFilters
     }) => {
       return (
         <Toolbar >
@@ -328,50 +328,53 @@ class GridSetup extends Component {
             onColumnGroupDeleted={onColumnGroupDeleted}
             onAddFilter={onAddFilter}
             onClearFilters={onClearFilters}
-            noColumnsSelectedMessage={drag}           />
+            noColumnsSelectedMessage={drag} />
           {this.state.selectedRows.length > 0 ? (
-            <div className="gridSystemSelected active">
-              <div className="tableselcted-items">
-                <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
-              </div>
-              <div className="tableSelctedBTNs">
-                {this.props.addLevel ? null : <button
-                  className="defaultBtn btn smallBtn"
-                  onClick={this.clickHandlerDeleteRows}
-                >{this.props.NoShowDeletedBar === undefined ?
-                  'DELETE' : 'Currency'}
-                </button>}
-                {this.props.assign ? <button
-                  className="primaryBtn-1 btn smallBtn"
-                  onClick={() => this.props.assignFn()} >
-                  <i className="fa fa-retweet"></i>
-                </button> : null}
+            <Fragment>
+              {this.props.NoShowToolBar ? null :
+                <div className="gridSystemSelected active">
+                  <div className="tableselcted-items">
+                    <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
+                  </div>
+                  <div className="tableSelctedBTNs">
+                    {this.props.addLevel ? null : <button
+                      className="defaultBtn btn smallBtn"
+                      onClick={this.clickHandlerDeleteRows}
+                    >{this.props.NoShowDeletedBar === undefined ?
+                      'DELETE' : 'Currency'}
+                    </button>}
+                    {this.props.assign ? <button
+                      className="primaryBtn-1 btn smallBtn"
+                      onClick={() => this.props.assignFn()} >
+                      <i className="fa fa-retweet"></i>
+                    </button> : null}
 
-                {this.props.addLevel ? <button
-                  className="primaryBtn-1 btn smallBtn"
-                  onClick={() => this.props.addLevel()} >
-                  <i className="fa fa-paper-plane"></i>
-                </button> : null}
+                    {this.props.addLevel ? <button
+                      className="primaryBtn-1 btn smallBtn"
+                      onClick={() => this.props.addLevel()} >
+                      <i className="fa fa-paper-plane"></i>
+                    </button> : null}
 
-                {this.props.Panels !== undefined ?
-                  <Fragment>
-                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTaskGroups'][currentLanguage]} >
-                      <i class="fa fa-users" aria-hidden="true"></i>
-                    </button>
+                    {this.props.Panels !== undefined ?
+                      <Fragment>
+                        <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTaskGroups'][currentLanguage]} >
+                          <i class="fa fa-users" aria-hidden="true"></i>
+                        </button>
 
-                    <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTask'][currentLanguage]} >
-                      <i className="fa fa-tasks" aria-hidden="true"></i>
-                    </button>
-                  </Fragment>
-                  : null}
+                        <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.ProjectTaskFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTask'][currentLanguage]} >
+                          <i className="fa fa-tasks" aria-hidden="true"></i>
+                        </button>
+                      </Fragment>
+                      : null}
 
-              </div>
-            </div>
+                  </div>
+                </div>}
+            </Fragment>
           ) : null}
         </Toolbar>
       );
     };
-    
+
     return (
       <div className="grid-container">
         <div id="top__scroll">
@@ -406,16 +409,16 @@ class GridSetup extends Component {
               enableDragAndDrop={true}
               enableFilter={true}
               toolbar={
-                <CustomToolbar  
+                <CustomToolbar
                   groupBy={this.state.groupBy}
                   onColumnGroupAdded={columnKey =>
                     this.setState({ groupBy: this.groupColumn(columnKey) })
                   }
                   onColumnGroupDeleted={columnKey =>
                     this.setState({ groupBy: this.ungroupColumn(columnKey) })
-                  } 
+                  }
                 />
-              } 
+              }
               rowSelection={{
                 showCheckbox: this.props.showCheckbox,
                 defaultChecked: false,
