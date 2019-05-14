@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Api from "../../api"; 
-import Resources from "../../resources.json"; 
+import Api from "../../api";
+import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
- 
+
 
 class ApprovalRejectDocument extends Component {
   constructor(props) {
@@ -38,9 +38,9 @@ class ApprovalRejectDocument extends Component {
 
   selectValue(value) {
 
-    var objCopy={...this.state.objCopyTo};
+    var objCopy = { ...this.state.objCopyTo };
 
-    objCopy.projectId =value["value"] ;
+    objCopy.projectId = value["value"];
 
     this.setState(state => {
       return { objCopyTo: objCopy };
@@ -49,24 +49,26 @@ class ApprovalRejectDocument extends Component {
 
   saveCopyTo() {
     if (this.state.objCopyTo.projectId != undefined) {
-      Api.post("CopyDocument",this.state.objCopyTo).then(result => {
-          console.log(result);
+      Api.post("CopyDocument", this.state.objCopyTo).then(result => {
+        console.log(result);
       });
     }
   }
 
   render() {
     return (
-      <div>
-        <div className="approveReject">
-            <h3>Approve Document</h3>
-            <div className="reject_approve"> 
-                <button className="primaryBtn-2 btn firstBtnApprov" onClick={() => this.props.ApproveHandler(false)}>{Resources["reject"][currentLanguage]}</button>
-                <button className="primaryBtn-1 btn" onClick={() => this.props.ApproveHandler(true)}>{Resources["approvalModalApprove"][currentLanguage]}</button>
-            </div>
+
+      <div className="without__navigation noTabs__document">
+        <div className="approveDocument">
+          <h2 className="zero">Approve Document</h2>
+          <div className="approveDocumentBTNS">
+            <button className="primaryBtn-2 btn" onClick={() => this.props.ApproveHandler(false)}>{Resources["reject"][currentLanguage]}</button>
+            <span className="border"></span>
+            <button type="button" className="primaryBtn-1 btn middle__btn" onClick={() => this.props.ApproveHandler(true)}>{Resources["approvalModalApprove"][currentLanguage]}</button>
+          </div>
         </div>
       </div>
-    );
+    )
   }
 }
 

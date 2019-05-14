@@ -51,7 +51,8 @@ class DashBoardCounterLog extends Component {
         filtersColumns: getkeyDetails.filters,
         viewfilter: false,
         apiDetails: getkeyDetails.apiDetails,
-        pageTitle: getkeyDetails.title
+        pageTitle: getkeyDetails.title,
+        ShowCheckbox:false
       };
     }
   }
@@ -87,8 +88,8 @@ class DashBoardCounterLog extends Component {
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
-          });
-        });
+          })
+        })
       }
     }
   }
@@ -112,7 +113,7 @@ class DashBoardCounterLog extends Component {
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
       this.props.history.push({
-        pathname: "/" +this.state.RouteEdit ,
+        pathname: "/" + this.state.RouteEdit,
         search: "?id=" + encodedPaylod
       });
     }
@@ -122,7 +123,7 @@ class DashBoardCounterLog extends Component {
     const dataGrid =
       this.state.isLoading === false ? (<GridSetup rows={this.state.rows}
         onRowClick={this.onRowClick}
-        columns={this.state.columns} showCheckbox={false} />) : (<LoadingSection />);
+        columns={this.state.columns} showCheckbox={this.state.ShowCheckbox} />) : (<LoadingSection />);
 
     const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources[this.state.pageTitle][currentLanguage]} />
     ) : (<LoadingSection />);

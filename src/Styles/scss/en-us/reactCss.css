@@ -2128,12 +2128,16 @@ tfoot tr td p {
     align-items: center;
 }
 
+.without__navigation .approveDocument {
+    left: 40px;
+}
+
 .noTabs__document .approveDocument .spanValidation {
     margin: 0;
 }
 
 .noTabs__document .approveDocument h2 {
-    flex: 0.2;
+    /* flex: 0.2; */
     line-height: 1.17;
     letter-spacing: -0.5px;
     color: #252833;
@@ -5587,7 +5591,22 @@ line.horizontal-grid-line {
 .proForm.first-proform.proForm_onlyChild {
     margin-bottom: 0 !important
 }
-
+.tree__header {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e9ecf0;
+}
+.tree__header h2{
+    font-family: font-b;
+    font-size: 20px;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    color: #252833;
+}
 .doc-pre-btn {
     display: flex;
     justify-content: space-between;

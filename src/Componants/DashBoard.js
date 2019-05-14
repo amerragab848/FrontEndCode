@@ -6,6 +6,7 @@ import Rodal from "../Styles/js/rodal";
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
 import widgets from "./WidgetsDashBorad";
 import Resources from "../resources.json";
+import Config from "../Services/Config";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -420,7 +421,7 @@ class DashBoard extends Component {
       });
     }
   }
- 
+
   parentChageOrder(order) {
 
     let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
@@ -927,22 +928,25 @@ class DashBoard extends Component {
   render() {
 
     var pane = this.state["refrence"].map((widget, index) => {
-      return (
-        <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
-          <div className="secondTabs project__select ui-state-default">
-            <img src={dashBoardLogo} />
-            <div
-              className={widget.checked === true ? "ui checkbox checkBoxGray300 count checked" : "ui checkbox checkBoxGray300 count"}
-              onClick={event => this.toggleParentCheck(event, widget.key, index)}>
-              <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" checked={widget.checked} />
-              <label />
+      if (Config.IsAllow(widget.permission))
+        return (
+          <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
+            <div className="secondTabs project__select ui-state-default">
+              <img src={dashBoardLogo} />
+              <div
+                className={widget.checked === true ? "ui checkbox checkBoxGray300 count checked" : "ui checkbox checkBoxGray300 count"}
+                onClick={event => this.toggleParentCheck(event, widget.key, index)}>
+                <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" checked={widget.checked} />
+                <label />
+              </div>
+              <div className="project__title" onClick={event => this.viewCurrentMenu(event, widget.key)}>
+                <h3>{Resources[widget.widgetCategory][currentLanguage]}</h3>
+              </div>
             </div>
-            <div className="project__title" onClick={event => this.viewCurrentMenu(event, widget.key)}>
-              <h3>{Resources[widget.widgetCategory][currentLanguage]}</h3>
-            </div>
-          </div>
-        </Pane>
-      );
+          </Pane>
+        );
+      else
+        return null;
     });
 
     var paneChild = "";
