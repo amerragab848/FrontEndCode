@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
@@ -106,7 +107,7 @@ class LettersAddEdit extends Component {
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
             selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
+            message: ''
         }
 
         if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
@@ -135,12 +136,12 @@ class LettersAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
+                message: nextProps.document.message
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-        } 
-        
+        }
+
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
@@ -292,24 +293,19 @@ class LettersAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-
+        if (value != null) {
             this.setState({ message: value });
-            if (value.toString('markdown').length > 1) {
+            let original_document = { ...this.state.document };
+            let updated_document = {};
 
-                let original_document = { ...this.state.document };
+            updated_document.message = value;
 
-                let updated_document = {};
+            updated_document = Object.assign(original_document, updated_document);
 
-                updated_document.message = value.toString('markdown');
+            this.setState({
+                document: updated_document
+            });
 
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
 
         }
 
@@ -386,7 +382,7 @@ class LettersAddEdit extends Component {
 
         dataservice.addObject('EditLetterById', this.state.document).then(result => {
             this.setState({
-                isLoading: true
+                isLoading: false
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -398,13 +394,17 @@ class LettersAddEdit extends Component {
     }
 
     saveLetter(event) {
+        this.setState({
+            isLoading: true
+        });
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
         dataservice.addObject('AddLetters', saveDocument).then(result => {
             this.setState({
-                docId: result
+                docId: result,
+                isLoading: false
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
@@ -437,8 +437,8 @@ class LettersAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }  
+    handleShowAction = (item) => {
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
                 currentComponent: item.value,
@@ -467,7 +467,7 @@ class LettersAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
 
                     <div className="doc-container">
                         {
@@ -591,7 +591,7 @@ class LettersAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                  <Dropdown
+                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -608,7 +608,7 @@ class LettersAddEdit extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
@@ -630,7 +630,7 @@ class LettersAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                     <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
@@ -647,7 +647,7 @@ class LettersAddEdit extends Component {
                                                                         id="toCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
@@ -661,7 +661,7 @@ class LettersAddEdit extends Component {
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId" />
-                                                                  
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -689,29 +689,42 @@ class LettersAddEdit extends Component {
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor
+                                                                <TextEditor
                                                                     value={this.state.message}
-                                                                    onChange={this.onChangeMessage.bind(this)}
-                                                                />
+                                                                    onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                     <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}
+                                                        {this.state.isLoading ?
+                                                            <button className="primaryBtn-1 btn disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button> :
+                                                            this.showBtnsSaving()}
                                                     </div>
                                                     {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
-                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
-
+                                                                    {this.state.isLoading ?
+                                                                        <button className="primaryBtn-1 btn disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button> :
+                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
+                                                                    }
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
                                                                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                                                             <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
                                                                         </div>
                                                                         : null
                                                                     }

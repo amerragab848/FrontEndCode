@@ -5615,3 +5615,10 @@ line.horizontal-grid-line {
 .doc-pre-btn h2{
     border-bottom-color: transparent !important;
 }
+/* 
+.ck-file-dialog-button{
+    display: none !important
+  }
+  .ck .ck-editor__main{
+    text-align: left;
+  } */

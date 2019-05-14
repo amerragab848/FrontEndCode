@@ -13,7 +13,7 @@ import ReactTable from "react-table";
 
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
 import {
@@ -180,8 +180,8 @@ class materialInspectionRequestAddEdit extends Component {
             reasonForIssues: [],
             areas: [],
             buildings: [],
-            answer: RichTextEditor.createEmptyValue(),
-            rfi: RichTextEditor.createEmptyValue(),
+            answer: '',
+            rfi: '',
             CurrentStep: 1,
             CycleEditLoading: false,
             CycleAddLoading: false,
@@ -194,8 +194,7 @@ class materialInspectionRequestAddEdit extends Component {
                 pathname: "/materialInspectionRequest/" + projectId
             });
         }
-        this.onChangeMessage = this.onChangeMessage.bind(this);
-
+     
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
 
@@ -231,8 +230,8 @@ class materialInspectionRequestAddEdit extends Component {
             this.setState({
                 document: { ...serverInspectionRequest },
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: RichTextEditor.createValueFromString(nextProps.document.answer, 'html'),
-                rfi: RichTextEditor.createValueFromString(nextProps.document.rfi, 'html')
+                answer: nextProps.document.answer,
+                rfi: nextProps.document.rfi
             });
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -513,54 +512,30 @@ class materialInspectionRequestAddEdit extends Component {
 
     }
 
-    onChangeMessage = (value, field) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-
-            this.setState({ [field]: value });
-            if (value.toString('markdown').length > 1) {
-
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document[field] = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            } 
-            // else {
-            //     let original_document = { ...this.state.document };
-
-            //     let updated_document = {};
-
-            //     updated_document[field] = "";
-
-            //     updated_document = Object.assign(original_document, updated_document);
-
-            //     this.setState({
-            //         document: updated_document,
-            //         [field]: ''
-            //     });
-
-            // }
+    onChangeAnswer = (value) => {
+        if (value != null) {
+            this.setState({ answer: value });
+            let original_document = { ...this.state.document };
+            let updated_document = {};
+            updated_document['answer'] = value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
         }
-        //  else {
-        //     let original_document = { ...this.state.document };
-        //     let updated_document = {};
-        //     updated_document[field] = "";
-        //     updated_document = Object.assign(original_document, updated_document);
-
-        //     this.setState({
-        //         document: updated_document,
-        //         [field]: ''
-        //     });
-
-        // }
-    };
+    }
+    onChangeRfi = (value) => {
+        if (value != null) {
+            this.setState({ rfi: value });
+            let original_document = { ...this.state.document };
+            let updated_document = {};
+            updated_document['rfi'] = value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
+        }
+    }
 
     handleChange(e, field) {
 
@@ -1386,20 +1361,20 @@ class materialInspectionRequestAddEdit extends Component {
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
-                                                                        <RichTextEditor
-                                                                            value={this.state.answer}
-                                                                            onChange={event => this.onChangeMessage(event, 'answer')}
-                                                                        />
+                                                                        <div className="inputDev ui input">
+                                                                            <TextEditor
+                                                                                value={this.state.answer}
+                                                                                onChange={this.onChangeAnswer} />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
-                                                                        <RichTextEditor
+                                                                        <TextEditor
                                                                             value={this.state.rfi}
-                                                                            onChange={event => this.onChangeMessage.bind(event, 'rfi')}
-                                                                        />
+                                                                            onChange={this.onChangeRfi} />
                                                                     </div>
                                                                 </div>
                                                             </div>

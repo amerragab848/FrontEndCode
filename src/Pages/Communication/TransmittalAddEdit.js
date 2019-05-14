@@ -10,7 +10,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -112,7 +112,7 @@ class TransmittalAddEdit extends Component {
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
             selectedSubmittedFor: { label: Resources.submittedForSelect[currentLanguage], value: "0" },
             selectedSendingMethod: { label: Resources.sendingMethodRequired[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
+            message: ''
         }
 
         if (!Config.IsAllow(84) && !Config.IsAllow(85) && !Config.IsAllow(87)) {
@@ -151,7 +151,7 @@ class TransmittalAddEdit extends Component {
             this.setState({
                 document: serverInspectionRequest,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: RichTextEditor.createValueFromString(serverInspectionRequest.description, 'html')
+                message: serverInspectionRequest.description
             });
 
             this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
@@ -392,27 +392,17 @@ class TransmittalAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-
-        if (isEmpty === false) {
+        if (value != null) {
 
             this.setState({ message: value });
-
-            if (value.toString('markdown').length > 1) {
-
                 let original_document = { ...this.state.document };
-
                 let updated_document = {};
-
-                updated_document.description = value.toString('markdown');
-
+                updated_document.description = value;
                 updated_document = Object.assign(original_document, updated_document);
-
                 this.setState({
                     document: updated_document
                 });
-            }
+            
         }
     };
 
@@ -816,8 +806,10 @@ class TransmittalAddEdit extends Component {
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
-                                                            <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event)} />
+                                                               <div className="inputDev ui input">
+                                                                <TextEditor
+                                                                    value={this.state.message}
+                                                                    onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
                                                     </div>
