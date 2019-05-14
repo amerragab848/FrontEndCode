@@ -103,7 +103,7 @@ class ViewWorkFlow extends Component {
                                         </div>
                                         : null}
 
-                                    <div class="Status__comment">
+                                    <div className="Status__comment">
                                         {level.statusVal != null ?
                                             <span>
                                                 {level.comment === null ? null :

@@ -12,8 +12,7 @@ import Resources from "../../resources.json";
 import ReactTable from "react-table";
 
 import { withRouter } from "react-router-dom";
-
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
 import {
@@ -180,8 +179,8 @@ class inspectionRequestAddEdit extends Component {
             reasonForIssues: [],
             areas: [],
             buildings: [],
-            answer: RichTextEditor.createEmptyValue(),
-            rfi: RichTextEditor.createEmptyValue(),
+            answer: '',
+            rfi: '',
             CurrentStep: 1,
             CycleEditLoading: false,
             CycleAddLoading: false,
@@ -194,8 +193,6 @@ class inspectionRequestAddEdit extends Component {
                 pathname: "/inspectionRequest/" + projectId
             });
         }
-        this.onChangeMessage = this.onChangeMessage.bind(this);
-
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
     }
@@ -224,12 +221,12 @@ class inspectionRequestAddEdit extends Component {
             this.setState({
                 document: { ...serverInspectionRequest },
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: RichTextEditor.createValueFromString(nextProps.document.answer, 'html'),
-                rfi: RichTextEditor.createValueFromString(nextProps.document.rfi, 'html')
+                answer: nextProps.document.answer,
+                rfi: nextProps.document.rfi
             });
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView(); 
+            this.checkDocumentIsView();
         }
     }
 
@@ -504,25 +501,28 @@ class inspectionRequestAddEdit extends Component {
         });
     }
 
-    onChangeMessage = (value, field) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-
-            this.setState({ [field]: value });
-            if (value.toString('markdown').length > 1) {
-
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document[field] = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
+    onChangeAnswer = (value) => {
+        if (value != null) {
+            this.setState({ answer: value });
+            let original_document = { ...this.state.document };
+            let updated_document = {};
+            updated_document['answer'] = value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
+        }
+    }
+    onChangeRfi = (value) => {
+        if (value != null) {
+            this.setState({ rfi: value });
+            let original_document = { ...this.state.document };
+            let updated_document = {};
+            updated_document['rfi'] = value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
         }
     }
 
@@ -1043,7 +1043,7 @@ class inspectionRequestAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.inspectionRequest[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.inspectionRequest[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -1349,20 +1349,21 @@ class inspectionRequestAddEdit extends Component {
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
-                                                                        <RichTextEditor
-                                                                            value={this.state.answer}
-                                                                            onChange={event => this.onChangeMessage(event, 'answer')}
-                                                                        />
+                                                                        <div className="inputDev ui input">
+                                                                            <TextEditor
+                                                                                value={this.state.answer}
+                                                                                onChange={this.onChangeAnswer} />
+                                                                        </div>
+
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
-                                                                        <RichTextEditor
+                                                                        <TextEditor
                                                                             value={this.state.rfi}
-                                                                            onChange={event => this.onChangeMessage.bind(event, 'rfi')}
-                                                                        />
+                                                                            onChange={this.onChangeRfi} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1445,7 +1446,7 @@ class inspectionRequestAddEdit extends Component {
                                 <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
                                     "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
 
-                                <span onClick={this.NextTopStep} className={ this.state.docId !== 0 ? "step-content-btn-prev "
+                                <span onClick={this.NextTopStep} className={this.state.docId !== 0 ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>

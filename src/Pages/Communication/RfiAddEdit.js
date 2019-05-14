@@ -10,7 +10,6 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json"; 
 import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom"; 
-import RichTextEditor from 'react-rte'; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import Config from "../../Services/Config.js";
@@ -21,6 +20,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { toast } from "react-toastify";
@@ -105,8 +105,8 @@ class RfiAddEdit extends Component {
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
             selectedLocation: { label: Resources.location[currentLanguage], value: "0" }, 
-            message: RichTextEditor.createEmptyValue(), 
-            replyMessage: RichTextEditor.createEmptyValue()
+            message: '', 
+            replyMessage: ''
         }
 
         if (!Config.IsAllow(75) && !Config.IsAllow(76) && !Config.IsAllow(78)) {
@@ -114,7 +114,6 @@ class RfiAddEdit extends Component {
             this.props.history.push("/Rfi/" + this.state.projectId);
         } 
 
-        this.onChangeMessage = this.onChangeMessage.bind(this);
     }
 
     componentDidMount() {
@@ -139,8 +138,8 @@ class RfiAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                message:RichTextEditor.createValueFromString(nextProps.document.rfi, 'html'),
-                replyMessage:RichTextEditor.createValueFromString(nextProps.document.answer, 'html'),
+                message:nextProps.document.rfi,
+                replyMessage:nextProps.document.answer,
             }); 
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -321,29 +320,29 @@ class RfiAddEdit extends Component {
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
-    onChangeMessage = (value,field) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-
-          field === "rfi" ? this.setState({ message: value }) : this.setState({ replyMessage: value });
-
-            if (value.toString('markdown').length > 1) {
-
+    onChangeMessageRfi = (value) => {
+        if (value!=null) {
+          this.setState({ message: value })
                 let original_document = { ...this.state.document };
-
                 let updated_document = {};
-
-                updated_document[field] = value.toString('markdown');
-
+                updated_document['rfi'] = value;
                 updated_document = Object.assign(original_document, updated_document);
-
                 this.setState({
                     document: updated_document
-                });
-            }
-
+                }); 
         }
-
+    };
+    onChangeMessageAnswer = (value) => {
+        if (value!=null) {
+          this.setState({ replyMessage: value })
+                let original_document = { ...this.state.document };
+                let updated_document = {};
+                updated_document['answer'] = value;
+                updated_document = Object.assign(original_document, updated_document);
+                this.setState({
+                    document: updated_document
+                }); 
+        }
     };
 
     handleChange(e, field) {
@@ -719,14 +718,20 @@ class RfiAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.message} onChange={event => this.onChangeMessage(event,"rfi")} />
+                                                                <TextEditor
+                                                                    value={this.state.message}
+                                                                    onChange={this.onChangeMessageRfi} />
                                                             </div>
+                                                         
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor value={this.state.replyMessage} onChange={event => this.onChangeMessage(event,"answer")} />
+                                                                <TextEditor
+                                                                    value={this.state.replyMessage}
+                                                                    onChange={this.onChangeMessageAnswer} />
                                                             </div>
+                                                         
                                                         </div>
                                                     </div>
                                                     <div className="slider-Btns">
