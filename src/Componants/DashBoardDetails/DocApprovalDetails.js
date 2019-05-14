@@ -72,9 +72,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter,
         formatter:statusButton
       },
       {
@@ -84,9 +82,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter,
         formatter:subjectLink
       },
       {
@@ -96,9 +92,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -108,9 +102,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "arrange",
@@ -119,9 +111,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true 
       },
       {
         key: "actionBy",
@@ -130,9 +120,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true 
       },
       {
         key: "openedBy",
@@ -141,9 +129,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-      //  filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
+       
       },
       {
         key: "description",
@@ -152,9 +139,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "projectName",
@@ -163,9 +148,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "docType",
@@ -174,9 +157,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "refDoc",
@@ -185,9 +166,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "lastApproveDate",
@@ -196,9 +175,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -208,9 +185,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -220,9 +195,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -232,9 +205,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
         formatter:dateFormate
       },
       {
@@ -244,7 +215,6 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
        // filterRenderer: SingleSelectFilter
       },
@@ -255,7 +225,6 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
       //  filterRenderer: SingleSelectFilter
       }
