@@ -33,13 +33,6 @@ class HeaderDocument extends Component {
                 </div>
                 {this.props.isViewMode === true ?
 
-                    // <div className="document__sign">
-
-                    //     <div className="ui left pointing label labelWithArrowRedS">
-                    //         <span>Can't Edit!</span>
-                    //     </div>
-                    // </div>
-
                     <div className="edit__sign">
                         <div className="notifiError notifiActionsContainer">
                             <span className="notfiSpan">Sorry, You can't edit this document</span>
