@@ -123,7 +123,6 @@ class PieChartComp extends Component {
                                             <span className="totalAmount">{this.state.data.quantity + 'LE'}</span>
                                         </p>
                                         : null}
-
                                 </div>
                         }
 
