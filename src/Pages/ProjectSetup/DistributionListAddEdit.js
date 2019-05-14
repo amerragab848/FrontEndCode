@@ -569,6 +569,7 @@ class TaskGroupsAddEdit extends Component {
                     showCheckbox={this.state.showCheckbox}
                     minHeight={350}
                     clickHandlerDeleteRows={this.DeleteContact}
+                    single={true}
                 />
             ) : <LoadingSection />
 

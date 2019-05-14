@@ -432,7 +432,6 @@ class siteInstructionsAddEdit extends Component {
     }
 
     saveAndExit(event) {
-
         this.props.history.push({
             pathname: "/siteInstructions/" + this.state.projectId
         });

@@ -511,7 +511,7 @@ class phoneAddEdit extends Component {
                                                     </div>
                                                 </div>
                                                 <div className={"linebylineInput valid-input "}  >
-                                                    <label className="control-label">{Resources['callTime'][currentLanguage]} </label>
+                                                    <label className="control-label">{Resources['callTime'][currentLanguage]} (Minutes)</label>
                                                     <div className={'inputDev ui input ' + (errors.callTime && touched.callTime ? 'has-error' : !errors.callTime && touched.callTime ? (" has-success") : " ")} >
                                                         <input name='callTime' className="form-control" id="callTime" placeholder={Resources['callTime'][currentLanguage]} autoComplete='off'
                                                             defaultValue={this.state.phone.callTime} onBlur={handleBlur}

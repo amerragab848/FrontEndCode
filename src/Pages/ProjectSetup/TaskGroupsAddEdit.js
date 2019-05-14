@@ -29,7 +29,6 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const _ = require('lodash')
 let MaxArrange = 1
 
-
 const ValidtionSchemaForTaskGroups = Yup.object().shape({
     ArrangeTaskGroups: Yup.string()
         .required(Resources['isRequiredField'][currentLanguage]),
@@ -57,6 +56,7 @@ let arrange = 0;
 let actions = []
 
 class TaskGroupsAddEdit extends Component {
+
     constructor(props) {
         super(props)
 
@@ -76,7 +76,6 @@ class TaskGroupsAddEdit extends Component {
                 catch{
                     this.props.history.goBack();
                 }
-
                 index++;
             }
         }
@@ -280,7 +279,7 @@ class TaskGroupsAddEdit extends Component {
             let date = moment(props.document.docDate).format("DD/MM/YYYY")
             this.setState({
                 IsEditMode: true,
-                DocTaskGroupsData:props.document,
+                DocTaskGroupsData: props.document,
                 DocumentDate: date,
                 isLoading: false
             });
@@ -472,7 +471,7 @@ class TaskGroupsAddEdit extends Component {
         })
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
@@ -507,7 +506,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
+
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
@@ -528,7 +527,7 @@ class TaskGroupsAddEdit extends Component {
         }
         return btn;
     }
-    
+
     render() {
 
         let actions = [
@@ -540,9 +539,10 @@ class TaskGroupsAddEdit extends Component {
             }, {
                 title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }];
+            }]
 
         let Data = this.state.rows
+       
         let RenderContactsTable = Data.map((item, index) => {
             return (
                 this.state.isLoading === false ?
@@ -568,6 +568,7 @@ class TaskGroupsAddEdit extends Component {
                     showCheckbox={this.state.showCheckbox}
                     minHeight={350}
                     clickHandlerDeleteRows={this.DeleteContact}
+                    single={true}
                 />
             ) : <LoadingSection />
 
@@ -655,7 +656,7 @@ class TaskGroupsAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     {/* Header */}
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectTaskGroups[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.projectTaskGroups[currentLanguage]}
                         moduleTitle={Resources['generalCoordination'][currentLanguage]} />
 
 

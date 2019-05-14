@@ -46,7 +46,7 @@ const validationSchema = Yup.object().shape({
 const validationCycleSubmital = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
   arrange: Yup.number().required(Resources["arrange"][currentLanguage]),
-  fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
+  fromContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
   approvalStatusId: Yup.string().required(Resources["approvalStatusSelection"][currentLanguage]).nullable(true)
 });
 
@@ -166,7 +166,7 @@ class SubmittalAddEdit extends Component {
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
       selectedFromCompanyCycles: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-      selectedFromContactCycles: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+      selectedFromContactCycles: { label: Resources.toContactRequired[currentLanguage], value: "0" },
       selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
       selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
       selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
@@ -1998,7 +1998,7 @@ class SubmittalAddEdit extends Component {
                                       </div>
                                       <div className="linebylineInput valid-input mix_dropdown">
                                         <label className="control-label">
-                                          {Resources.fromCompany[currentLanguage]}
+                                          {Resources.toCompany[currentLanguage]}
                                         </label>
                                         <div className="supervisor__company">
                                           <div className="super_name">
@@ -2087,7 +2087,7 @@ class SubmittalAddEdit extends Component {
                                 {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                                   <Form onSubmit={handleSubmit}>
                                     <div className="proForm datepickerContainer">
-                                      <div className="linebylineInput valid-input">
+                                      <div className="letterFullWidth fullInputWidth">
                                         <label className="control-label">
                                           {Resources["description"][currentLanguage]}
                                         </label>

@@ -449,11 +449,14 @@ class NCRAddEdit extends Component {
     }
 
     showBtnsSaving() {
-        let btn = null;
+        let btn = <button
+            className={this.props.changeStatus == false ? 'primaryBtn-1 btn meduimBtn ' : ' primaryBtn-1 btn meduimBtn  disNone'}
+            type="submit">
+            {this.state.docId > 0 && this.props.changeStatus === false ? Resources.saveAndExit[currentLanguage] :
+                Resources.save[currentLanguage]}
+        </button>
 
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        }
+
         return btn;
     }
 
@@ -491,7 +494,7 @@ class NCRAddEdit extends Component {
                 dataservice.addObject('EditCommunicationNCRs', NCRDoc).then(
                     res => {
                         this.setState({
-                            isLoading: false
+                            isLoading: false,
                         })
                         toast.success(Resources["operationSuccess"][currentLanguage]);
 
@@ -509,7 +512,8 @@ class NCRAddEdit extends Component {
                     res => {
                         this.setState({
                             docId: res.id,
-                            isLoading: false
+                            isLoading: false,
+                            IsAddModel: true
                         })
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                     }).catch(ex => {
@@ -532,7 +536,7 @@ class NCRAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -761,7 +765,7 @@ class NCRAddEdit extends Component {
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.NCRLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.NCRLog[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -1025,8 +1029,23 @@ class NCRAddEdit extends Component {
                                                     </div>
 
                                                 </div>
-                                            
-                                               <div className="slider-Btns">
+                                                
+                                                <div className="doc-pre-cycle letterFullWidth">
+                                                    <div>
+                                                        {this.state.docId !== 0 ?
+                                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                            : null
+                                                        }
+                                                        {this.viewAttachments()}
+
+                                                        {this.state.docId !== 0 ?
+                                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                            : null
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                                <div className="slider-Btns">
                                                     {this.state.isLoading ?
                                                         this.state.IsEditMode === false ?
                                                             <button className="primaryBtn-1 btn disabled">
@@ -1042,20 +1061,7 @@ class NCRAddEdit extends Component {
                                         )}
                                     </Formik>
                                 </div>
-                                <div className="doc-pre-cycle letterFullWidth">
-                                    <div>
-                                        {this.state.docId !== 0 ?
-                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
-                                        {this.viewAttachments()}
 
-                                        {this.state.docId !== 0 ?
-                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
-                                    </div>
-                                </div>
                             </div>
 
 

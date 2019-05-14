@@ -32,7 +32,7 @@ const validationSchemaForCopyTo = Yup.object().shape({
         .required(Resources['projectRequired'][currentLanguage])
         .nullable(true),
 });
- 
+
 class boqStructure extends Component {
     constructor(props) {
         super(props);
@@ -84,12 +84,21 @@ class boqStructure extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.projectId !== this.props.projectId) {
-            dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + nextProps.projectId).then(result => {
+
+            dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + this.state.projectId).then(result => {
                 this.setState({
                     trees: result,
                     projectId: nextProps.projectId
-                })
+                });
+            }).catch(ex => {
             })
+            // dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + nextProps.projectId).then(result => {
+            //     this.setState({
+            //         trees: result,
+            //         projectId: nextProps.projectId
+            //     })
+            // }).catch(ex => {
+            // })
         }
 
     }
@@ -101,6 +110,7 @@ class boqStructure extends Component {
             this.setState({
                 trees: result,
             });
+        }).catch(ex => {
         })
 
         dataservice.GetDataList('GetAccountsProjects', 'projectName', 'projectId').then(
@@ -109,7 +119,8 @@ class boqStructure extends Component {
                     ProjectsData: res
                 })
             }
-        )
+        ).catch(ex => {
+        })
     }
 
     AddNode(item) {
@@ -294,9 +305,9 @@ class boqStructure extends Component {
     }
 
     UpdateTree = (SelectedNode, NewNode) => {
-       
+
         //let x = this.state.trees.trees.filter(s => s.perentId === NewNode.perentId)
-      
+
         if (SelectedNode.perentId !== null) {
             if (this.state.IsEditMode) {
             }
@@ -308,7 +319,7 @@ class boqStructure extends Component {
                     if (element.trees) {
                         SelectedParent = element.trees.filter(s => s.id === SelectedNode.perentId)
                     }
-                }) 
+                })
             }
             this.setState({
                 isLoading: false,
@@ -342,7 +353,7 @@ class boqStructure extends Component {
 
         //console.log(this.state.SelectedNode)
         let EditObj = this.state.SelectedNode
-        if (this.state.IsEditMode) { 
+        if (this.state.IsEditMode) {
             if (EditObj.perentId !== null) {
                 EditObj.showPaymentRequsition = this.state.ShowPayment
             }
@@ -438,51 +449,55 @@ class boqStructure extends Component {
 
                     {/* ParentNode */}
                     <div className="Eps__list">
-                        {this.state.trees.map((item, i) => {
-                            return (
-                                <Fragment key={item.id}>
-                                    <div className="epsTitle active" key={item.id}>
-                                        <div className="listTitle">
-                                            <span className="dropArrow">
-                                                <i className="dropdown icon" />
-                                            </span>
-                                            <span className="accordionTitle">{item.title + '-' + item.code}</span>
-                                        </div>
-                                        <div className="Project__num">
-                                            <div className="eps__actions">
-                                                {Config.IsAllow(3657) ?
-                                                    <a className="editIcon" data-toggle="tooltip" title={Resources.edit[currentLanguage]} onClick={() => this.EditNode(item)}>
-                                                        <img src={Edit} alt="Edit" />
-                                                    </a>
-                                                    : null}
+                        {this.state.trees.length < 0 ? null :
+                            <Fragment>
+                                {this.state.trees.map((item, i) => {
+                                    return (
+                                        <Fragment key={item.id}>
+                                            <div className="epsTitle active" key={item.id}>
+                                                <div className="listTitle">
+                                                    <span className="dropArrow">
+                                                        <i className="dropdown icon" />
+                                                    </span>
+                                                    <span className="accordionTitle">{item.title + '-' + item.code}</span>
+                                                </div>
+                                                <div className="Project__num">
+                                                    <div className="eps__actions">
+                                                        {Config.IsAllow(3657) ?
+                                                            <a className="editIcon" data-toggle="tooltip" title={Resources.edit[currentLanguage]} onClick={() => this.EditNode(item)}>
+                                                                <img src={Edit} alt="Edit" />
+                                                            </a>
+                                                            : null}
 
-                                                {Config.IsAllow(3656) ?
-                                                    <a className="plusIcon" data-toggle="tooltip" title={Resources.add[currentLanguage]} onClick={() => this.AddNode(item)}>
-                                                        <img src={Plus} alt="Add" />
-                                                    </a>
-                                                    : null}
+                                                        {Config.IsAllow(3656) ?
+                                                            <a className="plusIcon" data-toggle="tooltip" title={Resources.add[currentLanguage]} onClick={() => this.AddNode(item)}>
+                                                                <img src={Plus} alt="Add" />
+                                                            </a>
+                                                            : null}
 
-                                                {Config.IsAllow(3658) ?
-                                                    <a className="deleteIcon" data-toggle="tooltip" title={Resources.delete[currentLanguage]} onClick={() => this.DeleteNode(item.id)}>
-                                                        <img src={Delete} alt="Delete" />
-                                                    </a>
-                                                    : null}
+                                                        {Config.IsAllow(3658) ?
+                                                            <a className="deleteIcon" data-toggle="tooltip" title={Resources.delete[currentLanguage]} onClick={() => this.DeleteNode(item.id)}>
+                                                                <img src={Delete} alt="Delete" />
+                                                            </a>
+                                                            : null}
 
-                                                {Config.IsAllow(3671) ?
-                                                    <a className="copyTo" data-toggle="tooltip" title={Resources.copyTo[currentLanguage]} onClick={() => this.ViewPopUpCopyTo(item.id)}>
-                                                        <img src={CopyTo} alt="CopyTO" />
-                                                    </a>
-                                                    : null}
+                                                        {Config.IsAllow(3671) ?
+                                                            <a className="copyTo" data-toggle="tooltip" title={Resources.copyTo[currentLanguage]} onClick={() => this.ViewPopUpCopyTo(item.id)}>
+                                                                <img src={CopyTo} alt="CopyTO" />
+                                                            </a>
+                                                            : null}
 
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="epsContent">
-                                        {item.trees.length > 0 ? this.printChild(item.trees) : null}
-                                    </div>
-                                </Fragment>
-                            )
-                        })
+                                            <div className="epsContent">
+                                                {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                                            </div>
+                                        </Fragment>
+                                    )
+                                })
+                                }
+                            </Fragment>
                         }
                     </div>
                 </div>
