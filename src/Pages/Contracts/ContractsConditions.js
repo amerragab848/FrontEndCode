@@ -85,6 +85,20 @@ class ContractsConditions extends Component {
         }).catch(res => {
             this.setState({ isLoading: false })
         })
+        this.setState({ isLoading: true })
+        Api.get('GetContractGeneralConditions?contractId='+this.props.contractId).then(res=>{
+            if(res)
+            this.setState({generalRows:res, isLoading: false})
+            else
+            this.setState({ isLoading: false})
+        })
+        this.setState({ isLoading: true })
+        Api.get('GetContractParticularConditions?contractId='+this.props.contractId).then(res=>{
+            if(res)
+            this.setState({particularRows:res, isLoading: false})
+            else
+            this.setState({ isLoading: false})
+        })
     }
 
     addRecord(values) {
@@ -252,7 +266,7 @@ class ContractsConditions extends Component {
                                     </div>}
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                     {this.state.addLoadding === false ? (
-                                        <button className={"primaryBtn-1 btn " + (this.props.isApproveMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources['add'][currentLanguage]}</button>
+                                        <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources['add'][currentLanguage]}</button>
                                     ) :
                                         (
                                             <button className="primaryBtn-1 btn  disabled" disabled="disabled">

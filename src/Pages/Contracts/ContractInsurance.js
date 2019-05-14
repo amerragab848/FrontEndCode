@@ -21,7 +21,6 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     policyType: Yup.string().required(Resources['policyType'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    arrange: Yup.string().required(Resources['arrange'][currentLanguage]),
     policyLimit: Yup.number().required(Resources['arrange'][currentLanguage]),
     companyId: Yup.string().required(Resources['pleaseSelectYourCompany'][currentLanguage]).nullable(true) 
 });
@@ -158,11 +157,7 @@ class ContractInsurance extends Component {
         saveDocument.expirationDate = moment(saveDocument.expirationDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddInurance', saveDocument).then(result => {
-
-            originalData = this.state.insuranceData;
-            
-            originalData.push(result);
-
+  
             const objDocument = {
                 //field
                 id: 0, 
@@ -176,10 +171,9 @@ class ContractInsurance extends Component {
             };
 
             this.setState({
-                insuranceData : originalData,
+                insuranceData : result,
                 document: objDocument,
                 selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -202,29 +196,18 @@ class ContractInsurance extends Component {
       isLoading : true,
       showDeleteModal:false
     });
- 
-    dataservice.addObject("DeleteContractsInsuranceById", this.state.currentId ).then(result => {
- 
-        let originalData = this.state.insuranceData;
 
-      let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
+    let id= this.state.currentId;
+ 
+    dataservice.addObject("DeleteContractsInsuranceById?id="+ id ).then(result => {
+ 
+      let originalData = this.state.insuranceData;
+
+      let getIndex = originalData.findIndex(x => x.id === id);
 
       originalData.splice(getIndex, 1);
-
-      const objDocument = {
-        //field
-        id: 0, 
-        companyId: null,  
-        contractId:this.state.contractId,
-        arrange: "1",
-        policyType:"",
-        policyLimit:"",
-        effectiveDate:moment(),
-        expirationDate:moment() 
-    };
  
       this.setState({  
-        document : objDocument,
         isLoading: false,
         insuranceData:originalData,
         selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }
@@ -301,13 +284,18 @@ class ContractInsurance extends Component {
       
         return ( 
         <div className={this.props.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-        <HeaderDocument docTitle={Resources.insurance[currentLanguage]}/>
+          <div className="doc-pre-cycle letterFullWidth">
+            <header>
+              <h2 className="zero">{Resources['addInsurance'][currentLanguage]}</h2>
+            </header>
+            </div>
             <div className="doc-container"> 
                <div className="step-content">
                <div id="step1" className="step-content-body">
                <div className="subiTabsContent">
                <div className="document-fields">
                <Formik initialValues={{  ...this.state.document }}
+                                enableReinitialize={true}
                                 validationSchema={validationSchema}
                                 onSubmit={values => {
                                 if (this.state.contractId > 0 ) {
@@ -338,7 +326,7 @@ class ContractInsurance extends Component {
                                  value={this.state.document.policyType}
                                  onBlur={e => { handleBlur(e); handleChange(e); }}
                                  onChange={e => { this.handleChange(e,"policyType"); }} />
-                          {errors.policyType ? (<em className="pError">{errors.policyType}</em>) : null}  
+                          {errors.policyType ? (<em className="pError">{errors.policyType}</em>) : null}
                         </div>
                       </div>
 
@@ -402,7 +390,7 @@ class ContractInsurance extends Component {
                     <div className="slider-Btns">
                         { 
                             (this.state.isLoading === false ?
-                            (<button className="primaryBtn-1 btn meduimBtn" type="submit" >
+                            (<button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} type="submit" >
                                 {Resources["goAdd"][currentLanguage]}
                             </button>
                             ) : (

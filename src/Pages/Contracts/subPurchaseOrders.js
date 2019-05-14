@@ -305,7 +305,11 @@ class SubPurchaseOrders extends Component {
  
         return ( 
         <div className={this.props.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-        <HeaderDocument  isViewMode={this.props.isViewMode} docTitle={Resources.goAdd[currentLanguage]+Resources.subPOs[currentLanguage]}/>
+        <div className="doc-pre-cycle letterFullWidth">
+          <header>
+            <h2 className="zero">{Resources['subPOs'][currentLanguage]}</h2>
+          </header>
+        </div>
             <div className="doc-container"> 
                <div className="step-content">
                <div id="step1" className="step-content-body">
