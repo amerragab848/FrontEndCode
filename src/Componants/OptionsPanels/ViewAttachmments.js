@@ -10,7 +10,10 @@ import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
 import Api from '../../api';
 import Resources from '../../resources.json';
+import Submittals from '../../../src/submittals.pdf'
+import PDFViewer from 'mgr-pdf-viewer-react'
 import { connect } from 'react-redux';
+import SkyLight from 'react-skylight';
 import {
     bindActionCreators
 } from 'redux';
@@ -39,12 +42,16 @@ class ViewAttachmments extends Component {
         this.props.actions.deleteFile(urlDelete, file);
     }
 
-    versionHandler = (parentId) => {
-        let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
-        Api.get(urlVersion).then(result => {
-
-        }).catch(ex => {
-        });
+    versionHandler = (parentId, extension) => {
+        if (extension == 'pdf') {
+            let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
+            Api.get(urlVersion).then(result => {
+                if (result)
+                    this.setState({ view: true })
+                    this.simpleDialog.show()
+            }).catch(ex => {
+            });
+        }
     }
 
     componentDidMount() {
@@ -60,7 +67,9 @@ class ViewAttachmments extends Component {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
         console.log('viewFiles...' + this.props.files.length)
         if (this.props.files.length === 0) {//&& this.props.changeStatus === true)
-            this.props.actions.GetUploadedFiles(url);
+            this.props.actions.GetUploadedFiles(url).then(file => {
+                console.log('file', file)
+            });
         }
     }
     render() {
@@ -117,7 +126,7 @@ class ViewAttachmments extends Component {
                             <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
-                            <a className="attachPend" onClick={() => this.versionHandler(item['parentId'])}>
+                            <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
                                 <img src={Pending} alt="pend" width="100%" height="100%" />
                             </a>
                         </div>
@@ -127,37 +136,52 @@ class ViewAttachmments extends Component {
         }) : null
 
         return (
-            <table className="attachmentTable">
-                <thead>
-                    <tr>
-                        <th>
-                            <div className="headCell tableCell-1">
-                                <span> {Resources['arrange'][currentLanguage]} </span>
+            <React.Fragment>
+                <table className="attachmentTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div className="headCell tableCell-1">
+                                    <span> {Resources['arrange'][currentLanguage]} </span>
+                                </div>
+                            </th>
+                            <th>
+                                <div className="headCell tableCell-2">
+                                    <span>{Resources['fileName'][currentLanguage]} </span>
+                                </div>
+                            </th>
+                            <th>
+                                <div className="headCell tableCell-3">
+                                    <span>{Resources['docDate'][currentLanguage]}
+                                    </span>
+                                </div>
+                            </th>
+                            <th>
+                                <div className="headCell tableCell-4">
+                                    <span>{Resources['uploadedBy'][currentLanguage]} </span>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tabel}
+                    </tbody>
+                </table>
+                {this.state.view ?
+                    <div className="largePopup largeModal " style={{ display: this.state.view ? 'block' : 'none' }}>
+                        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref}>
+                            <div >
+                                <PDFViewer document={{
+                                    file: Submittals
+                                    //url: 'https://newgizastorage.blob.core.windows.net/project-files/b9a8b348-45fd-4f86-ba94-7a9d90cee1c6.pdf'
+                                }} />
                             </div>
-                        </th>
-                        <th>
-                            <div className="headCell tableCell-2">
-                                <span>{Resources['fileName'][currentLanguage]} </span>
-                            </div>
-                        </th>
-                        <th>
-                            <div className="headCell tableCell-3">
-                                <span>{Resources['docDate'][currentLanguage]}
-                                </span>
-                            </div>
-                        </th>
-                        <th>
-                            <div className="headCell tableCell-4">
-                                <span>{Resources['uploadedBy'][currentLanguage]} </span>
-                            </div>
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tabel}
-                </tbody>
-            </table>
+                        </SkyLight>
+                    </div>
+
+                    : null}
+            </React.Fragment>
         )
     }
 

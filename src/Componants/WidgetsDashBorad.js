@@ -9,6 +9,7 @@ var widgets = [
     widgets: [
       {
         title: "timesheetLog",
+        permission: 0,
         key: "0-1-1",
         canView: false,
         order: 1,
@@ -27,6 +28,7 @@ var widgets = [
       },
       {
         title: "docApproval",
+        permission: 0,
         key: "0-1-2",
         canView: false,
         order: 2,
@@ -45,6 +47,7 @@ var widgets = [
       },
       {
         title: "pendingExpenses",
+        permission: 0,
         key: "0-1-3",
         canView: false,
         checked: false,
@@ -63,6 +66,7 @@ var widgets = [
       },
       {
         title: "docRejected",
+        permission: 0,
         key: "0-1-4",
         canView: false,
         checked: false,
@@ -81,6 +85,7 @@ var widgets = [
       },
       {
         title: "docNotify",
+        permission: 0,
         key: "0-1-5",
         canView: false,
         checked: false,
@@ -99,6 +104,7 @@ var widgets = [
       },
       {
         title: "workFlowAlert",
+        permission: 0,
         key: "0-1-6",
         canView: false,
         checked: false,
@@ -117,6 +123,7 @@ var widgets = [
       },
       {
         title: "monitorTasks",
+        permission: 0,
         key: "0-1-7",
         canView: false,
         checked: false,
@@ -135,6 +142,7 @@ var widgets = [
       },
       {
         title: "monthlyTasks",
+        permission: 0,
         key: "0-1-8",
         canView: false,
         checked: false,
@@ -153,6 +161,7 @@ var widgets = [
       },
       {
         title: "followUpsSummary",
+        permission: 0,
         key: "0-1-9",
         canView: false,
         checked: false,
@@ -181,6 +190,7 @@ var widgets = [
     widgets: [
       {
         title: "alertingQntySummary",
+        permission: 0,
         key: "0-2-1",
         canView: false,
         checked: false,
@@ -199,6 +209,7 @@ var widgets = [
       },
       {
         title: "closedSummary",
+        permission: 0,
         key: "0-2-2",
         canView: false,
         checked: false,
@@ -217,6 +228,7 @@ var widgets = [
       },
       {
         title: "distributionInboxSummary",
+        permission: 0,
         key: "0-2-3",
         canView: false,
         checked: false,
@@ -235,6 +247,7 @@ var widgets = [
       },
       {
         title: "inboxSummary",
+        permission: 0,
         key: "0-2-4",
         canView: false,
         checked: false,
@@ -253,6 +266,7 @@ var widgets = [
       },
       {
         title: "notCodedExpensesSummary",
+        permission: 0,
         key: "0-2-5",
         canView: false,
         checked: false,
@@ -271,6 +285,7 @@ var widgets = [
       },
       {
         title: "notCodedInvoicesSummary",
+        permission: 0,
         key: "0-2-6",
         canView: false,
         checked: false,
@@ -289,6 +304,7 @@ var widgets = [
       },
       {
         title: "notCodedPayment",
+        permission: 0,
         key: "0-2-7",
         canView: false,
         checked: false,
@@ -307,6 +323,7 @@ var widgets = [
       },
       {
         title: "actionBySummary",
+        permission: 0,
         key: "0-2-8",
         canView: false,
         checked: false,
@@ -325,6 +342,7 @@ var widgets = [
       },
       {
         title: "openedSummary",
+        permission: 0,
         key: "0-2-9",
         canView: 1372,
         checked: false,
@@ -343,6 +361,7 @@ var widgets = [
       },
       {
         title: "schedualActionBy",
+        permission: 0,
         key: "0-2-10",
         canView: false,
         checked: false,
@@ -361,6 +380,7 @@ var widgets = [
       },
       {
         title: "ScheduleAlertsSummary",
+        permission: 0,
         key: "0-2-11",
         canView: false,
         checked: false,
@@ -389,6 +409,7 @@ var widgets = [
     widgets: [
       {
         title: "monthlyPo",
+        permission: 0,
         key: "1-1-1",
         canView: false,
         checked: false,
@@ -407,6 +428,7 @@ var widgets = [
       },
       {
         title: "materialRequestcount",
+        permission: 3343,
         key: "1-1-2",
         canView: false,
         checked: false,
@@ -425,6 +447,7 @@ var widgets = [
       },
       {
         title: "rejectedTimeSheet",
+        permission: 0,
         key: "1-1-3",
         canView: false,
         checked: false,
@@ -442,6 +465,7 @@ var widgets = [
         }
       }, {
         title: "monthlyPaymentRequisitions",
+        permission: 0,
         key: "1-1-4",
         canView: false,
         checked: false,
@@ -470,6 +494,7 @@ var widgets = [
     widgets: [
       {
         title: "approvalSubmittals",
+        permission: 3493,
         key: "1-2-1",
         canView: false,
         checked: false,
@@ -487,6 +512,7 @@ var widgets = [
         }
       }, {
         title: "openedSubmittals",
+        permission: 3510,
         key: "1-2-2",
         canView: false,
         checked: false,
@@ -505,6 +531,7 @@ var widgets = [
       },
       {
         title: "rejectedSubmittals",
+        permission: 3494,
         key: "1-2-3",
         canView: false,
         checked: false,
@@ -533,6 +560,7 @@ var widgets = [
     widgets: [
       {
         title: "openedLetters",
+        permission: 3512,
         key: "1-3-1",
         canView: false,
         checked: false,
@@ -550,6 +578,7 @@ var widgets = [
         }
       }, {
         title: "openedIR",
+        permission: 3513,
         key: "1-3-2",
         canView: false,
         checked: false,
@@ -568,6 +597,7 @@ var widgets = [
       },
       {
         title: "rfiOpen",
+        permission: 3495,
         key: "1-3-3",
         canView: false,
         checked: false,
@@ -586,6 +616,7 @@ var widgets = [
       },
       {
         title: "openedTransmittals",
+        permission: 3511,
         key: "1-3-4",
         canView: false,
         checked: false,
@@ -614,6 +645,7 @@ var widgets = [
     widgets: [
       {
         title: "countinspectionPanding",
+        permission: 3202,
         key: "1-4-1",
         canView: false,
         checked: false,
@@ -631,6 +663,7 @@ var widgets = [
         }
       }, {
         title: "countinspectionReject",
+        permission: 3201,
         key: "1-4-2",
         canView: false,
         checked: false,
@@ -649,6 +682,7 @@ var widgets = [
       },
       {
         title: "countinspectionApproved",
+        permission: 3200,
         key: "1-4-3",
         canView: false,
         checked: false,
@@ -676,6 +710,7 @@ var widgets = [
     widgets: [
       {
         title: "avgRespondTimeLetters",
+        permission: 3514,
         key: "1-5-1",
         canView: false,
         checked: false,
@@ -693,6 +728,7 @@ var widgets = [
         }
       }, {
         title: "avgRespondTimeTransmittals",
+        permission: 3515,
         key: "1-5-2",
         canView: false,
         checked: false,
@@ -711,6 +747,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeIR",
+        permission: 3514,
         key: "1-5-3",
         canView: false,
         checked: false,
@@ -729,6 +766,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeMIR",
+        permission: 3515,
         key: "1-5-4",
         canView: false,
         checked: false,
@@ -747,6 +785,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeRFI",
+        permission: 3515,
         key: "1-5-5",
         canView: false,
         checked: false,
@@ -765,6 +804,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeSubmittals",
+        permission: 3515,
         key: "1-5-6",
         canView: false,
         checked: false,
@@ -783,6 +823,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimePO",
+        permission: 3515,
         key: "1-5-7",
         canView: false,
         checked: false,
@@ -811,6 +852,7 @@ var widgets = [
     widgets: [
       {
         title: "materialRequestcount",
+        permission: 3343,
         key: "2-1-1",
         canView: false,
         checked: false,
@@ -828,6 +870,7 @@ var widgets = [
         }
       }, {
         title: "inspectionRequestCount",
+        permission: 0,
         key: "2-1-2",
         canView: false,
         checked: false,
@@ -845,6 +888,7 @@ var widgets = [
         }
       }, {
         title: "NCRCount",
+        permission: 0,
         key: "2-1-3",
         canView: false,
         checked: false,
@@ -862,6 +906,7 @@ var widgets = [
         }
       }, {
         title: "siteInstructionsCount",
+        permission: 0,
         key: "2-1-4",
         canView: false,
         checked: false,
@@ -890,6 +935,7 @@ var widgets = [
     widgets: [
       {
         title: "InvoicesForPOCount",
+        permission: 0,
         key: "2-2-1",
         canView: false,
         checked: false,
@@ -907,6 +953,7 @@ var widgets = [
         }
       }, {
         title: "projectInventory",
+        permission: 0,
         key: "2-2-2",
         canView: false,
         checked: false,
