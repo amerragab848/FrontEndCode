@@ -163,7 +163,8 @@ class TimeSheetWorkFlow extends Component {
       password: "",
       comment: "",
       viewMessage: false,
-      Message:""
+      Message:"",
+      Ids: []
     };
 
     this.approveTimeSheet = this.approveTimeSheet.bind(this);
@@ -247,6 +248,7 @@ class TimeSheetWorkFlow extends Component {
     rows.map(item => {
       listSelectedRows.push(item);
     });
+    this.setState({Ids: listSelectedRows})
   }
 
   onRowsDeselected(rows) {
@@ -255,6 +257,7 @@ class TimeSheetWorkFlow extends Component {
     rows.map(item => {
       listSelectedRows.push(item);
     });
+    this.setState({Ids: listSelectedRows})
   }
 
   approveTimeSheet(values) {
@@ -265,7 +268,7 @@ class TimeSheetWorkFlow extends Component {
       Api.getPassword("GetPassWordEncrypt", values["password"]).then(res => {
           if (res) {
             listSelectedRows.map((id, index) => {
-              Api.post("EditExpensesUserApprovalStatus?id=" +id + "&comment=" + values["comment"] + "&type=" + this.state.approvalStatus).then(res => {
+              Api.post("ApproveRejectedTimesheet?id=" +id +"&status=" + this.state.approvalStatus+ "&comment=" + values["comment"]).then(res => {
                   if (index + 1 == listSelectedRows.length) {
                     listSelectedRows = [];
                     Api.get( "GetExpensesUserByContactIdType?requestFromUserId=" + timeSheetId + "&type=timeSheet").then(result => {
@@ -315,6 +318,7 @@ class TimeSheetWorkFlow extends Component {
           columns={this.state.columns}
           selectedRows={this.selectedRows.bind(this)}
           DeSelectedRows={this.onRowsDeselected.bind(this)}
+          NoShowToolBar={true}
         />
       ) : (
         <LoadingSection />
@@ -418,9 +422,9 @@ class TimeSheetWorkFlow extends Component {
           </div>
           <div className="filterBTNS">{btnExport}</div>
         </div>
-        <div>
-          <Approval ApproveHandler={this.ApproveHandler.bind(this)} />
-        </div>
+       
+        {this.state.Ids.length > 0 ? <Approval ApproveHandler={this.ApproveHandler.bind(this)} /> : null}
+
         <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">{ComponantFilter}</div>
         </div>

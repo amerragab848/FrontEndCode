@@ -456,7 +456,7 @@ var widgets = [
         props: {
           api: "GetRejectedTimesheetBySystemCount",
           apiDetails: "",
-          route: "DashBoardCounterLog",
+          route: "RejectedTimesheetsDetails",
           value: "total",
           listType: "item",
           action: "action",

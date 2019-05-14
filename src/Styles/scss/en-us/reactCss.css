@@ -2128,12 +2128,16 @@ tfoot tr td p {
     align-items: center;
 }
 
+.without__navigation .approveDocument {
+    left: 40px;
+}
+
 .noTabs__document .approveDocument .spanValidation {
     margin: 0;
 }
 
 .noTabs__document .approveDocument h2 {
-    flex: 0.2;
+    /* flex: 0.2; */
     line-height: 1.17;
     letter-spacing: -0.5px;
     color: #252833;
