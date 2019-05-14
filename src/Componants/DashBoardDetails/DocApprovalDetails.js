@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 // import {  Filters } from "react-data-grid-addons";
@@ -20,41 +20,41 @@ let currentLanguage =
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}; 
+};
 
 const statusButton = ({ value, row }) => {
   let doc_view = "";
-    if(row){
-      if (row.readStatus === true) {
-        doc_view = <div style={{textAlign:'center',margin:'4px auto',padding:'4px 10px',borderRadius:'26px',backgroundColor:'#5FD45F',width:'100%',color:'#fff', fontSize: '12px'}}>{Resources["read"][currentLanguage]}</div>
-      }else{
-        doc_view = <div style={{textAlign:'center',padding:'4px 10px',margin:'4px auto',borderRadius:'26px',backgroundColor:'#E74C3C',width:'100%',color:'#FFF', fontSize: '12px'}}>{Resources["unRead"][currentLanguage]}</div>
-      } 
-        return doc_view; 
+  if (row) {
+    if (row.readStatus === true) {
+      doc_view = <div style={{ textAlign: 'center', margin: '4px auto', padding: '4px 10px', borderRadius: '26px', backgroundColor: '#5FD45F', width: '100%', color: '#fff', fontSize: '12px' }}>{Resources["read"][currentLanguage]}</div>
+    } else {
+      doc_view = <div style={{ textAlign: 'center', padding: '4px 10px', margin: '4px auto', borderRadius: '26px', backgroundColor: '#E74C3C', width: '100%', color: '#FFF', fontSize: '12px' }}>{Resources["unRead"][currentLanguage]}</div>
     }
-    return null;
+    return doc_view;
+  }
+  return null;
 };
 
 
-let  subjectLink = ({ value, row }) => {
+let subjectLink = ({ value, row }) => {
   let doc_view = "";
   let subject = "";
   if (row) {
-    
-    let obj={
-      docId:row.docId ,
-      projectId:row.projectId,
-      projectName:row.projectName,
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
       arrange: row.arrange,
-      docApprovalId:row.accountDocWorkFlowId,
+      docApprovalId: row.accountDocWorkFlowId,
       isApproveMode: true
     };
 
-    let parms=  CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view ="/"+ row.docLink.replace('/','') +"?id="+ encodedPaylod
+    doc_view = "/" + row.docLink.replace('/', '') + "?id=" + encodedPaylod
     subject = row.subject;
- 
+
     return <a href={doc_view}> {subject} </a>;
   }
   return null;
@@ -72,10 +72,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter,
-        formatter:statusButton
+        formatter: statusButton
       },
       {
         key: "subject",
@@ -84,10 +82,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter,
-        formatter:subjectLink
+        formatter: subjectLink
       },
       {
         key: "creationDate",
@@ -96,10 +92,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "duration2",
@@ -108,9 +102,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "arrange",
@@ -119,9 +111,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "actionBy",
@@ -130,9 +120,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "openedBy",
@@ -141,9 +129,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-      //  filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
+
       },
       {
         key: "description",
@@ -152,9 +139,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "projectName",
@@ -163,9 +148,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "docType",
@@ -174,20 +157,16 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "refDoc",
         name: Resources["docNo"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "lastApproveDate",
@@ -196,10 +175,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "delayDuration",
@@ -208,10 +185,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "dueDate",
@@ -220,10 +195,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-        //filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "lastSendDate",
@@ -232,10 +205,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "lastSendTime",
@@ -244,9 +215,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-       // filterRenderer: SingleSelectFilter
+        // filterRenderer: SingleSelectFilter
       },
       {
         key: "lastApproveTime",
@@ -255,9 +225,8 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        filterable: true,
         sortDescendingFirst: true,
-      //  filterRenderer: SingleSelectFilter
+        //  filterRenderer: SingleSelectFilter
       }
     ];
 
@@ -305,7 +274,7 @@ class DocApprovalDetails extends Component {
         name: "openedBy",
         type: "string",
         isCustom: true
-      }, 
+      },
       {
         field: "projectName",
         name: "projectName",
@@ -352,8 +321,8 @@ class DocApprovalDetails extends Component {
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
-      isCustom: true ,
-      apiFilter:"" 
+      isCustom: true,
+      apiFilter: ""
     };
   }
 
@@ -365,13 +334,13 @@ class DocApprovalDetails extends Component {
     for (let param of query.entries()) {
       action = param[1];
     }
-     
+
     if (action === "1") {
       this.setState({
         pageTitle: Resources["docRejected"][currentLanguage]
       });
 
-      Api.get("GetRejectedRequestsDocApprove").then(result => { 
+      Api.get("GetRejectedRequestsDocApprove").then(result => {
         this.setState({
           rows: result != null ? result : [],
           isLoading: false
@@ -381,7 +350,7 @@ class DocApprovalDetails extends Component {
       this.setState({
         pageTitle: Resources["docApproval"][currentLanguage]
       });
-      Api.get("GetApprovalRequestsDocApprove").then(result => { 
+      Api.get("GetApprovalRequestsDocApprove").then(result => {
         this.setState({
           rows: result != null ? result : [],
           isLoading: false
@@ -405,17 +374,17 @@ class DocApprovalDetails extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -428,20 +397,20 @@ class DocApprovalDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} 
-        columns={this.state.columns} 
-        showCheckbox={false}/>
-      ) : <LoadingSection/>;
+        <GridSetup rows={this.state.rows}
+          columns={this.state.columns}
+          showCheckbox={false} />
+      ) : <LoadingSection />;
 
-      const btnExport = this.state.isLoading === false ? 
-      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-      : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-      const ComponantFilter= this.state.isLoading === false ?   
+    const ComponantFilter = this.state.isLoading === false ?
       <Filter
         filtersColumns={this.state.filtersColumns}
         apiFilter={this.state.apiFilter}
-        filterMethod={this.filterMethodMain} 
+        filterMethod={this.filterMethodMain}
       /> : <LoadingSection />;
 
     return (
@@ -503,34 +472,26 @@ class DocApprovalDetails extends Component {
 
               {this.state.viewfilter === false ? (
                 <span className="text active">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
-                  </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
+                  <span className="show-fillter">{Resources["showFillter"][currentLanguage]}</span>
+                  <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">{Resources["showFillter"][currentLanguage]}</span>
+                    <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
             {btnExport}
-          </div> 
+          </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
             {ComponantFilter}
           </div>
-        </div> 
+        </div>
         <div>{dataGrid}</div>
       </div>
     );

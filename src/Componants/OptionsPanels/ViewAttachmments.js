@@ -8,9 +8,14 @@ import jpg from '../../Styles/images/ex.png'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
+
+import pdfPrint from '../../Styles/images/pdfPrint.png'
+import pdfDelete from '../../Styles/images/pdfMDelete.png'
+import pdfMenuAction from '../../Styles/images/pdfMenuAction.png'
+import pdfMaxi from '../../Styles/images/pdfMaxi.png'
+
 import Api from '../../api';
 import Resources from '../../resources.json';
-import Submittals from '../../../src/submittals.pdf'
 import PDFViewer from 'mgr-pdf-viewer-react'
 import { connect } from 'react-redux';
 import SkyLight from 'react-skylight';
@@ -24,7 +29,7 @@ import Config from '../../Services/Config';
 import _ from "lodash";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
+let activeURL=''
 class ViewAttachmments extends Component {
 
     constructor(props) {
@@ -33,7 +38,8 @@ class ViewAttachmments extends Component {
         this.state = {
             data: [],
             docTypeId: this.props.docTypeId,
-            docId: this.props.docId
+            docId: this.props.docId,
+            activeURL: ''
         }
     }
 
@@ -46,11 +52,22 @@ class ViewAttachmments extends Component {
         if (extension == 'pdf') {
             let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
             Api.get(urlVersion).then(result => {
-                if (result)
-                    this.setState({ view: true })
+                if (result) {
+                   // this.setState({ view: true })
                     this.simpleDialog.show()
-            }).catch(ex => {
+                }
             });
+        }
+    }
+
+    previewPDF = (item, extension) => {
+        if (extension == 'pdf') {
+            this.setState({
+                view: true,
+                activeURL: item.attachFile
+            })
+            activeURL=item.attachFile;
+            this.simpleDialog.show()
         }
     }
 
@@ -65,13 +82,11 @@ class ViewAttachmments extends Component {
 
     getData() {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        console.log('viewFiles...' + this.props.files.length)
         if (this.props.files.length === 0) {//&& this.props.changeStatus === true)
-            this.props.actions.GetUploadedFiles(url).then(file => {
-                console.log('file', file)
-            });
+            this.props.actions.GetUploadedFiles(url);
         }
     }
+
     render() {
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
 
@@ -95,7 +110,7 @@ class ViewAttachmments extends Component {
                     <td>
                         <div className="contentCell tableCell-1">
                             <span>
-                                <img src={extension} alt={extension} width="100%" height="100%" />
+                                <img src={extension} alt={extension} width="100%" height="100%" onClick={() => this.previewPDF(item, ext)} />
                             </span>
                         </div>
                     </td>
@@ -142,7 +157,7 @@ class ViewAttachmments extends Component {
                         <tr>
                             <th>
                                 <div className="headCell tableCell-1">
-                                    <span> {Resources['arrange'][currentLanguage]} </span>
+                                    <span> {Resources['actions'][currentLanguage]} </span>
                                 </div>
                             </th>
                             <th>
@@ -168,14 +183,33 @@ class ViewAttachmments extends Component {
                         {tabel}
                     </tbody>
                 </table>
+
                 {this.state.view ?
-                    <div className="largePopup largeModal " style={{ display: this.state.view ? 'block' : 'none' }}>
+                    <div className="largePopup largeModal pdf__popup" style={{ display: this.state.view ? 'block' : 'none' }}>
                         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref}>
-                            <div >
-                                <PDFViewer document={{
-                                    file: Submittals
-                                    //url: 'https://newgizastorage.blob.core.windows.net/project-files/b9a8b348-45fd-4f86-ba94-7a9d90cee1c6.pdf'
-                                }} />
+                            <div id="pdf__size" >
+                                <div className="pdf__action">
+                                    <div className="pdf__action--btns">
+                                        <h2 className="zero">PDF Name</h2>
+                                        <div className="pdf__action--items">
+                                            <div className="pdf__maxi">
+                                                <p className="zero">-</p>
+                                                <span> <img src={pdfMaxi} alt="Print" /></span>
+                                                <p className="zero">+</p>
+                                            </div>
+                                            <div className="pdf__print">
+                                                <span> <img src={pdfPrint} alt="Print" /></span>
+                                                <span> <img src={pdfDelete} alt="Print" /></span>
+                                                <span> <img src={pdfMenuAction} alt="Print" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <PDFViewer
+                                    document={{
+                                        url: activeURL
+                                    }} />
                             </div>
                         </SkyLight>
                     </div>
