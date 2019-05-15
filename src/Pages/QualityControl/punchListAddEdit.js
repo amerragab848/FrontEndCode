@@ -380,7 +380,7 @@ class punchListAddEdit extends Component {
                 CurrStep: this.state.CurrStep + 1,
             })
         }
-        if (this.state.CurrStep === 2) {
+       else {
             this.saveAndExit()
         }
 
@@ -566,10 +566,10 @@ class punchListAddEdit extends Component {
     showBtnsSaving() {
         let btn = null;
 
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{this.state.IsAddModel ? Resources.next[currentLanguage] : Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" >{Resources.next[currentLanguage]}</button>
+        if (docId === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >Resources.save[currentLanguage]</button>;
+        } else  {
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit">{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -653,10 +653,11 @@ class punchListAddEdit extends Component {
                     res => {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                         this.setState({ isLoading: false })
+                        this.NextStep()
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
-                this.NextStep()
+              //  
             }
 
             else {
