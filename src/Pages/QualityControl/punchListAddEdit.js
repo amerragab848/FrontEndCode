@@ -566,8 +566,8 @@ class punchListAddEdit extends Component {
     showBtnsSaving() {
         let btn = null;
 
-        if (docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >Resources.save[currentLanguage]</button>;
+        if (this.state.docId === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else  {
             btn = <button className="primaryBtn-1 btn mediumBtn" type="submit">{Resources.next[currentLanguage]}</button>
         }
