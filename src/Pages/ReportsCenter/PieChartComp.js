@@ -1,93 +1,100 @@
-import React, { Component } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import addNoDataModule from 'highcharts/modules/no-data-to-display'; 
-import Api from '../../api';
-import language from '../../resources.json'
-let currentLanguage = localStorage.getItem('lang')==null? 'en' : localStorage.getItem('lang');
+import React, { Component } from "react"; 
+import { Donut, Legend, ResponsiveContainer, withResponsiveness } from "britecharts-react";
+import Api from "../../api";
+import language from "../../resources.json";
+let currentLanguage =
+  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+ 
 
-addNoDataModule(Highcharts);
+const colorSchema = [
+  "#07bc0c",
+  "#119015",
+  "#47cc4a",
+  "#7cdb79",
+  "#5fd45f",
+  "#119015",
+  "#07bc0cbb"
+];
+
+let data = {};
 
 class PieChartComp extends Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
+    this.state = {
+      dataChart: [],
+      isLoading: true,
+      data: {},
+      isAnimated: true,
+      showLegend: false,
+      highlightedSlice: null,
+      noClicks: null
+    };
+  }
 
-        this.state = {
-            options:
-            {
-                lang: {
-                    noData: language['noData'][currentLanguage],
-                },
-                noData: {
-                    style: {
-                        fontWeight: 'bold',
-                        fontSize: '25px',
-                        color: '#1B4EDB',
-                    },
-                },
+  componentWillReceiveProps(props) {
+    let dataChart = [];
+    if (props.series.length > 0) {
+      props.series[0].data.map((item, index) => {
+        dataChart.push({
+          quantity: item["y"],
+          name: item["name"],
+          id: index
+        });
+        return null;
+      });
 
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: 0,
-                    plotShadow: false,
-                    type: 'pie'
-                   
-                },
-                title: {
-                    text:language[this.props.title][currentLanguage]
-                },
-              
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: false
-                        },
-                        showInLegend: true
-                    }
-                },
-                series:[],
-                credits: {
-                    enabled: false
-
-                }
-
-            }
-           , noClicks: null,
-        }
+      this.setState({ isLoading: false, dataChart: dataChart });
     }
+  }
 
-    componentWillReceiveProps(props) {
-        if (props.noClicks != this.state.noClicks) {
-            this.setState({ isLoading: true, noClicks: props.noClicks })
-            let options = { ...this.state.options };
-            options.series = props.series
-            this.setState({ options }, function () { this.setState({ isLoading: false }) });
-        }
-    }
+  logMouseOver = e => {
+    this.setState({
+      data: e.data,
+      highlightedSlice: e.data.id,
+      showLegend: true
+    });
+  };
 
-    render() {
-        let test = <HighchartsReact
-            highcharts={Highcharts}
-            options={this.state.options}
-        />
-        return (
-            <div className="charts__row">
-                <div className="panel">
-                    <div className="panel-body">
-                        {this.state.isLoading == true ? null :
-                            test
-                        }
-                    </div>
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="panel">
+        <div className="panel-body">
+          <h2>{this.props.title}</h2>
+          <ResponsiveContainer
+            render={({ width }) => (
+              <div className="donut__legend">
+                <Donut
+                  data={this.state.dataChart}
+                  height={width / 2}
+                  width={width / 2}
+                  externalRadius={width / 4}
+                  internalRadius={width / 10}
+                  colorSchema={colorSchema}
+                  customMouseOver={this.logMouseOver}
+                  highlightSliceById={this.state.highlightedSlice}
+                  isAnimated={false}
+                />
+
+                {this.state.showLegend === true ? (
+                  <p id="legenbd__teext">
+                    <span className="chartName"> {this.state.data.name}</span>
+                    <span className="percentage">
+                      {this.state.data.percentage + "%"}
+                    </span>
+                    <span className="totalAmount">
+                      {this.state.data.quantity + "LE"}
+                    </span>
+                  </p>
+                ) : null}
+              </div>
+            )}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default PieChartComp;

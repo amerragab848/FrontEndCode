@@ -5853,3 +5853,12 @@ line.horizontal-grid-line {
     cursor: pointer;
     margin: 0 8px;
 }
+.exbortBtn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.exbortBtn button:nth-child(2) {
+    margin-left: 16px;
+}

@@ -2,9 +2,9 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import ReactTable from "react-table";
-import moment from "moment";
 import dataservice from "../../Dataservice";
 import Config from "../../Services/Config.js";
+import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 
@@ -14,8 +14,8 @@ class ContractsDeductions extends Component {
         super(props)
         this.state = {
             ContractsDeductionsList: [],
-            contractId:this.props.contractId
-           // contractId: 433
+            contractId: this.props.contractId
+            // contractId: 433
         }
     }
 
@@ -43,13 +43,25 @@ class ContractsDeductions extends Component {
             }
         ]
 
+        let ExportColumns = [
+            { key: 'title', name: Resources['description'][currentLanguage] },
+            { key: 'deductionValue', name: Resources['deductions'][currentLanguage] },
+        ]
+
         return (
             <div>
                 <div className="doc-pre-cycle">
                     <header>
                         <h2 className="zero">{Resources['contractsDeductions'][currentLanguage]}</h2>
                     </header>
+
+                    <div className="filterBTNS exbortBtn">
+                        <Export rows={this.state.ContractsDeductionsList}
+                            columns={ExportColumns} fileName={Resources['contractsDeductions'][currentLanguage]} />
+                    </div>
+
                     <ReactTable
+                        filterable
                         ref={(r) => {
                             this.selectTable = r;
                         }}

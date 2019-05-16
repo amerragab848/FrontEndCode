@@ -130,7 +130,7 @@ class BarChartComp extends Component {
                 }
 
 
-            </Fragment >
+            </Fragment>
         );
     }
 }

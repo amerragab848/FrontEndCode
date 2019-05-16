@@ -53,17 +53,19 @@ class TechnicalOfficeReport extends Component {
             let noClicks = this.state.noClicks;
             this.setState({ isLoading: true })
             Api.post('GetTechnicalOfficeDocument', reportobj).then(res => {
-                this.setState({ isLoading: false })
+                this.setState({ isLoading: false,showChart:true })
                 let _catag = []
                 let _data = []
+                let series = []
                 res.map((item, index) => {
                     _catag.push(item.docName);
-                    _data.push(item.count)
+                    _data.push(item.count);
+                    series.push({ name: item["docName"], value: item["count"] })
                 })
-                let series = []
-                series.push({ name: Resources['count'][currentLanguage], data: _data })
+                //let series = []
+                //series.push({ name: Resources['count'][currentLanguage], data: _data })
                 let xAxis = { categories: _catag }
-                this.setState({ series, xAxis, noClicks: noClicks + 1, isLoading: false, showChart: true });
+                this.setState({ series, series, noClicks: noClicks + 1, isLoading: false, showChart: true });
             })
         }
     }
@@ -71,12 +73,13 @@ class TechnicalOfficeReport extends Component {
         this.setState({ [name]: value })
     }
     render() {
-        const Chart =
-            <BarChartComp
+        const Chart = this.state.showChart ?
+            (<BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
-                title={Resources['technicalOfficeDocument'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
+                multiSeries="no"
+                title={Resources['technicalOfficeDocument'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />):null
         return (
             <div className="reports__content">
                 <header>

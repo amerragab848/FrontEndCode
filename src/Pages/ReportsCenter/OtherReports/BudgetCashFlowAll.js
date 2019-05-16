@@ -12,8 +12,7 @@ import { SkyLightStateless } from 'react-skylight';
 import moment from 'moment';
 import Api from '../../../api.js';
 import ReactTable from "react-table";
-import "react-table/react-table.css";
-import { charts } from 'highcharts';
+import "react-table/react-table.css"; 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 const _ = require('lodash')
 const dateFormate = ({ value }) => {
@@ -113,7 +112,7 @@ class BudgetCashFlowAll extends Component {
             finishDate: moment(this.state.finishDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         }
         Api.post('GetBudgetCashFlowAll', obj).then(res => {
-
+            this.setState({showChart:true});
             let categories = []
             let estimatedIn = []
             let estimatedOut = []
@@ -128,14 +127,24 @@ class BudgetCashFlowAll extends Component {
             })
             let series = [];
 
-            series.push({ name: 'Actual', data: actualIn, color: '#90ED7D' });
-            series.push({ name: 'Actual', data: actualOut, color: '#f45b4f' });
-            series.push({ name: 'Estimate', data: estimatedIn, color: '#95ceff' });
-            series.push({ name: 'Estimate', data: estimatedOut, color: '#90000f' });
+            let stacks = ["Actual In","Actual Out","Estimated In","Estimated Out"];
+
+            // series.push({ name: 'Actual', data: actualIn, color: '#90ED7D' });
+            // series.push({ name: 'Actual', data: actualOut, color: '#f45b4f' });
+            // series.push({ name: 'Estimate', data: estimatedIn, color: '#95ceff' });
+            // series.push({ name: 'Estimate', data: estimatedOut, color: '#90000f' });
 
             let xAxis = { categories: categories }
             let noClicks = this.state.noClicks
-            this.setState({ series, xAxis, noClicks: noClicks + 1, showChart: true });
+
+            res.forEach(function (item) { 
+                series.push({stack : stacks[0] , name :moment(item.date).format("DD/MM/YYYY") ,total : item.totalIn}); 
+                series.push({stack : stacks[1] , name :moment(item.date).format("DD/MM/YYYY") ,total : item.estimatedCashIn});
+                series.push({stack : stacks[2] , name :moment(item.date).format("DD/MM/YYYY") ,total : item.totalOut});
+                series.push({stack : stacks[3] , name :moment(item.date).format("DD/MM/YYYY") ,total : item.estimatedCashOut});
+            });
+
+            this.setState({ series:series, xAxis, noClicks: noClicks + 1, showChart: true });
 
             //Lables Count
             let totalsEstimatedIn = []
@@ -152,6 +161,7 @@ class BudgetCashFlowAll extends Component {
             let EstimatedOut = _.sum(totalsEstimatedOut)
             let ActualTotalIn = _.sum(totalsActualTotalIn)
             let ActualTotalOut = _.sum(totalsActualTotalOut)
+ 
             this.setState({
                 EstimatedIn,
                 EstimatedOut,
@@ -173,23 +183,26 @@ class BudgetCashFlowAll extends Component {
     onRowClick = (rowData, value, column) => {
         if (column.idx === 3) {
             if (rowData.totalIn !== 0) {
+                
                 this.setState({ isLoading: true })
+                
                 let obj = {
                     startDate: moment(this.state.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                     finishDate: moment(this.state.finishDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
                 }
+
                 Api.post('GetActualTotalIn', obj).then(
                     res => {
                         this.setState({
                             RowsDetails: res,
                             isLoading: false,
-                            ShowPopup: true
-
+                            ShowPopup: true 
                         })
                     }
                 )
             }
         }
+
         if (column.idx === 4) {
             if (rowData.totalOut !== 0) {
                 this.setState({ isLoading: true })
@@ -212,13 +225,15 @@ class BudgetCashFlowAll extends Component {
     }
 
     render() {
-        const Chart =
-            <BarChartComp
+
+        const Chart = this.state.showChart ?
+            (<BarChartComp
                 noClicks={this.state.noClicks}
                 type={'spline'}
                 series={this.state.series}
+                multiSeries="yes"
                 xAxis={this.state.xAxis}
-                title={Resources['budgetCashFlowReport'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
+                title={Resources['budgetCashFlowReport'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />) : null
 
         const columnsCycles = [
             {
@@ -320,7 +335,11 @@ class BudgetCashFlowAll extends Component {
                         </div>
 
                     </div>
-                    {Chart}
+
+                    {this.state.showChart ? 
+                    <div className="row">
+                     { Chart }
+                     </div>: null}
                     {dataGrid}
                 </div>
 
