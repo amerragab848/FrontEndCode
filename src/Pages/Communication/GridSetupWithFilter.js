@@ -1,6 +1,9 @@
+
 import React, { Component, Fragment } from "react";
+
 import ReactDataGrid from "react-data-grid";
-import {ToolsPanel,Toolbar, Data, Draggable, Filters } from "react-data-grid-addons";
+import {ToolsPanel, Data, Draggable } from "react-data-grid-addons";
+
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
 import { toast } from "react-toastify";

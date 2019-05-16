@@ -116,6 +116,22 @@ export function uploadFile(BlobUpload, formData, header) {
     }
 }
 
+export function uploadFileLinks(BlobUpload, formData) {
+    return (dispatch, getState) => {
+        return Api.post(BlobUpload, formData).then(resp => {
+            dispatch({
+                type: types.File_Upload,
+                file: resp[0]
+            });
+        }).catch((ex) => {
+            dispatch({
+                type: types.File_Upload,
+                file: {}
+            });
+        });
+    }
+}
+
 export function addItemDescription(item) {
     return (dispatch, getState) => {
         dispatch({

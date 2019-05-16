@@ -43,7 +43,7 @@ class ViewAttachmments extends Component {
         }
     }
 
-    deletehandler = (file) => {
+    deletehandler = (file) => { 
         let urlDelete = 'DeleteAttachFileById?id=' + file.id
         this.props.actions.deleteFile(urlDelete, file);
     }
