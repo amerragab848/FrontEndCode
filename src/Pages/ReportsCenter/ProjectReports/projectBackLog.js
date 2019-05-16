@@ -7,8 +7,7 @@ import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
-import moment from "moment";
-import Highcharts from 'highcharts';
+import moment from "moment"; 
 import Api from '../../../api';
 import BarChartComp from '../TechnicalOffice/BarChartComp'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -70,18 +69,21 @@ class projectBackLog extends Component {
             res => {
                 this.setState({
                     rows: res,
-                    isLoading: false,showChart:true
+                    isLoading: false,
+                    showChart:true
                 })
                 let categoriesData = []
-                res.map(item => {
-                    var docDate = new Date(item.docDate);
-                    docDate = Date.UTC(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
-                    var categoryData = [docDate, item.total];
-                    categoriesData.push(categoryData)
-                })
+                
                 let series = []
-                series.push({ name: Resources['total'][currentLanguage], data: categoriesData })
-                this.setState({ series, noClicks: noClicks + 1 });
+                res.map(item => {
+                    // var docDate = new Date(item.docDate);
+                    // docDate = Date.UTC(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
+                    var categoryData = [item.docDate, item.total];
+                    categoriesData.push(categoryData)
+                    series.push({ name:moment(item.docDate).format('MMMM Do YYYY'), value: item.total })
+                })
+//                series.push({ name: Resources['total'][currentLanguage], data: categoriesData })
+                this.setState({ series:series, noClicks: noClicks + 1 ,showChart:true});
             }
         ).catch(() => {
             this.setState({ isLoading: false })
@@ -92,23 +94,16 @@ class projectBackLog extends Component {
         this.setState({ [name]: value })
     }
     render() {
-        let tooltip = {
-            shared: true,
-            crosshairs: true,
-            formatter: function () {
-                var s = Highcharts.dateFormat('%A, %b %e, %Y', this.x) + '<br/> ' +
-                    '<b style="color: #7cb5ec">●</b> Total: ' + this.y;
-                return s;
-            }
-        }
-        const Chart =
-            <BarChartComp
+  
+        const Chart = this.state.showChart ?
+           (<BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
-                tooltip={tooltip}
                 xAxis={null}
+                multiSeries="no"
                 xAxisType='datetime'
-                title={Resources['projectsBackLog'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
+                title={Resources['projectsBackLog'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />):null
+                
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
@@ -138,7 +133,7 @@ class projectBackLog extends Component {
 
                 </div>
                 {this.state.showChart==true? 
-                <div className="doc-pre-cycle letterFullWidth">
+                <div className="row">
                     {Chart}
                 </div>:null}
                 <div className="doc-pre-cycle letterFullWidth">

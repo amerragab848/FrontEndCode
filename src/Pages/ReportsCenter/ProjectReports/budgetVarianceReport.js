@@ -93,18 +93,20 @@ class budgetVarianceReport extends Component {
             toast.error('somthing wrong')
         })
     }
+
     getChartData = () => {
         this.setState({ isLoading: true })
         Api.get('GetBudgetVarianceByProject?projectId=' + this.state.selectedProject.value).then((result) => {
             this.setState({  showChart: true})
             if (result.length > 0) {
-                var catag = [];
-                var valuesActual = [];
-                var valuesExpenses = [];
-                var series = [];
-                var actual = 0;
-                var balance = 0;
-                var budget = 0;
+                let catag = [];
+                let valuesActual = [];
+                let valuesExpenses = [];
+                let series = [];
+                let stacks =["Actual Total", "Budget Expenses"];
+                let actual = 0;
+                let balance = 0;
+                let budget = 0;
                 result.forEach(function (item) {
                     catag.push(item.expenseTypeName);
                 });
@@ -123,13 +125,17 @@ class budgetVarianceReport extends Component {
                             balance = balance + parseFloat(item2["balance"]);
                             budget = budget + parseFloat(item2["budgetedExpenseValue"]);
                         }
-                    });
-                    series.push({ name: "Actual Total", data: valuesActual });
-                    series.push({ name: "Budget Expenses", data: valuesExpenses });
-                });
+                    }); 
+                 });
+
+                    result.forEach(function (item2) {
+                        series.push({stack : stacks[0] , name :item2.expenseTypeName ,total : item2.actual}); 
+                        series.push({stack : stacks[1] , name :item2.expenseTypeName ,total : item2.budgetedExpenseValue});
+                    }); 
+ 
                 let xAxis = { categories: catag }
                 let noClicks = this.state.noClicks
-                this.setState({isLoading: false, series, xAxis, noClicks: noClicks + 1, showChart: true, actualTotal: actual, totalBalance: balance, totalBudget: budget,rows:result });
+                this.setState({isLoading: false, series:series, xAxis, noClicks: noClicks + 1, showChart: true, actualTotal: actual, totalBalance: balance, totalBudget: budget,rows:result });
             }
             else{
                 this.setState({isLoading: false, series:[], xAxis:[], noClicks:0, showChart: false, actualTotal: 0, totalBalance: 0, totalBudget: 0,rows:[] })
@@ -139,13 +145,14 @@ class budgetVarianceReport extends Component {
         })
     }
     render() {
-        const Chart =
-            <BarChartComp
+        const Chart =this.state.showChart ?
+            (<BarChartComp
                 noClicks={this.state.noClicks}
                 type={'spline'}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
-                title={Resources['budgetVariance'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />
+                multiSeries="yes"
+                title={Resources['budgetVariance'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />):null
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
@@ -189,7 +196,7 @@ class budgetVarianceReport extends Component {
                     </Formik>
                 </div>
                 {this.state.showChart == true ?
-                    <div className="doc-pre-cycle letterFullWidth">
+                    <div className="row">
                         {Chart}
                     </div> : null}
                 <div className='proForm reports__proForm'>

@@ -23,6 +23,7 @@ class UsersAccountsReport extends Component {
             series: [],
             xAxis: { type: 'pie' },
             noClicks: 0,
+            showChart:false
         }
 
         if (!Config.IsAllow(3722)) {
@@ -81,6 +82,8 @@ class UsersAccountsReport extends Component {
 
         dataService.GetDataGrid('GetUsersAccountsReport').then(
             res => {
+                this.setState({showChart:true});
+
                 let noClicks = this.state.noClicks;
                 //Lables Count
                 let totals = []
@@ -118,8 +121,9 @@ class UsersAccountsReport extends Component {
 
     render() {
 
-        let Chart = <PieChartComp noClicks={this.state.noClicks}
-            series={this.state.series} title='usersAccountsReport' />
+        let Chart = this.state.showChart ?
+            (<PieChartComp noClicks={this.state.noClicks}
+            series={this.state.series} title='usersAccountsReport' />):null
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
@@ -163,7 +167,7 @@ class UsersAccountsReport extends Component {
 
                 </div>
 
-                <div className="doc-pre-cycle letterFullWidth">
+                <div className="row">
                     {Chart}
                 </div>
 

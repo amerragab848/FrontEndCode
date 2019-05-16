@@ -38,17 +38,19 @@ class SubmittalsPerNeighBorhood extends Component {
 
         this.setState({ isLoading: true })
         Api.post('GetEpsCountFromSubmittals', reportobj).then(res => {
-            this.setState({ isLoading: false })
+            this.setState({ isLoading: false ,showChart:true})
             let _catag = []
             let _data = []
+            let series = []
             res.map((item, index) => {
                 _catag.push(item.title);
                 _data.push(item.count)
+                series.push({ name: item['title'], value: item['count']})
             })
-            let series = []
-            series.push({ name: Resources['count'][currentLanguage], data: _data })
+            
+            
             let xAxis = { categories: _catag }
-            this.setState({ series, xAxis, noClicks: noClicks + 1, showChart: true });
+            this.setState({ series, series, noClicks: noClicks + 1, showChart: true });
         })
 
     }
@@ -57,12 +59,13 @@ class SubmittalsPerNeighBorhood extends Component {
     }
 
     render() {
-        const Chart =
-            <BarChartComp
+        const Chart = this.state.showChart ?
+            (<BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
+                multiSeries="no"
                 xAxis={this.state.xAxis}
-                title={Resources['submittalsPerNeighBorhood'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} />
+                title={Resources['submittalsPerNeighBorhood'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} />):null
 
         return (
 

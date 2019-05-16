@@ -44,8 +44,7 @@ class SiteRequestReleasedQnt extends Component {
                 pathname: "/"
             })
         }
-        this.columns = [
-
+        this.columns = [ 
             {
                 key: "details",
                 name: Resources["description"][currentLanguage],
@@ -95,7 +94,9 @@ class SiteRequestReleasedQnt extends Component {
         let noClicks = this.state.noClicks;
         Dataservice.GetDataGrid('GetSiteRequestItemsForReport?RequestId=' + this.state.selectedMaterialRequest.value + '').then(
             res => {
+                 
                 this.setState({
+                    showChart:true,
                     rows: res,
                     isLoading: false
                 })
@@ -107,14 +108,14 @@ class SiteRequestReleasedQnt extends Component {
                     totalRequested += element['requestedQuantity']
                     totalReleased += element['releasedQuantity']
                 });
-                let seriesData = [{ name: Resources['requestedQuantity'][currentLanguage], y: totalRequested }
-                    , { name: Resources['releasedQuantity'][currentLanguage], y: totalReleased }]
+                let seriesData = [{ name: Resources['requestedQuantity'][currentLanguage], value: totalRequested },
+                                  { name: Resources['releasedQuantity'][currentLanguage], value: totalReleased }]
 
                 let series = []
                 series.push({ name: Resources['total'][currentLanguage], data: seriesData })
 
                 this.setState({
-                    series,
+                    series:seriesData,
                     rows: res,
                     noClicks: noClicks + 1,
                     isLoading: false,
@@ -140,13 +141,14 @@ class SiteRequestReleasedQnt extends Component {
     }
 
     render() {
-        let Chart =
-            <BarChartComp
+        let Chart =this.state.showChart ?
+            (<BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
+                multiSeries="no"
                 xAxis={this.state.xAxis}
                 title='Payment Requisition Quantities'
-                yTitle={Resources['total'][currentLanguage]} />
+                yTitle={Resources['total'][currentLanguage]} />) :null
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
@@ -203,7 +205,7 @@ class SiteRequestReleasedQnt extends Component {
                     {dataGrid}
                 </div>
                 {this.state.showChart == true ?
-                    <div className="doc-pre-cycle letterFullWidth">
+                    <div className="row">
                         {Chart}
                     </div> : null}
             </div>

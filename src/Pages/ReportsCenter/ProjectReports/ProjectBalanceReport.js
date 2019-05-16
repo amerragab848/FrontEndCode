@@ -107,6 +107,9 @@ class ProjectBalanceReport extends Component {
         this.setState({ isLoading: true })
         Dataservice.GetDataGrid('GetProjectsWithNegativeAndPositiveBalanceReport?statusBalance=' + this.state.selectedStatus.value + '').then(
             res => {
+
+                this.setState({showChart:true});
+                
                 let noClicks = this.state.noClicks;
                 let _Equal = 0
                 let _Positive = 0
@@ -115,9 +118,9 @@ class ProjectBalanceReport extends Component {
                     i.balance > 0 ? _Positive = _Positive + 1 : i.balance < 0 ? _Negative = _Negative + 1 : _Equal = _Equal + 1
                 })
                 let seriesData = [
-                    { name: Resources['equal'][currentLanguage], y: _Equal }
-                    , { name: Resources['positive'][currentLanguage], y: _Positive }
-                    , { name: Resources['negative'][currentLanguage], y: _Negative }
+                    { name: Resources['equal'][currentLanguage], value: _Equal }
+                    , { name: Resources['positive'][currentLanguage], value: _Positive }
+                    , { name: Resources['negative'][currentLanguage], value: _Negative }
                 ]
                 let _catag = []
                 _catag.push(Resources['equal'][currentLanguage])
@@ -127,7 +130,7 @@ class ProjectBalanceReport extends Component {
                 series.push({ name: Resources['balance'][currentLanguage], data: seriesData })
                 let xAxis = { categories: _catag }
                 this.setState({
-                    series, xAxis,
+                    series:seriesData, xAxis,
                     rows: res,
                     showChart:true,
                     noClicks: noClicks + 1,
@@ -140,13 +143,14 @@ class ProjectBalanceReport extends Component {
     }
 
     render() {
-        let Chart =
-            <BarChartComp
+        let Chart =this.state.showChart ?
+            (<BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
+                multiSeries="no"
                 title={Resources['projectBalanceReport'][currentLanguage]}
-                yTitle={Resources['total'][currentLanguage]} />
+                yTitle={Resources['total'][currentLanguage]} />):null
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
@@ -191,7 +195,7 @@ class ProjectBalanceReport extends Component {
                         )}
                     </Formik>
                     {this.state.showChart==true?
-                    <div className="doc-pre-cycle letterFullWidth">
+                    <div className="row">
                         {Chart}
                     </div>:null}
                     <div className="doc-pre-cycle letterFullWidth">
