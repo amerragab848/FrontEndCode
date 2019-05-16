@@ -44,6 +44,13 @@ const validationSchema = Yup.object().shape({
 
 })
 
+
+const AprovalsData = [
+    { label: Resources.pending[currentLanguage], value: null },
+    { label: Resources.approved[currentLanguage], value: "true" },
+    { label: Resources.rejected[currentLanguage], value: "false" }
+];
+
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -51,6 +58,8 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 const _ = require('lodash')
+
+
 class invoicesForPoAddEdit extends Component {
 
     constructor(props) {
@@ -84,27 +93,35 @@ class invoicesForPoAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 19,
+            docTypeId: 72,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            companies: [],
-            ToContacts: [],
-            fromContacts: [],
-            discplines: [],
-            letters: [],
+
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
             { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
-            selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
-            selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-            selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
-            message: ''
+
+
+            selectedCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+
+            selectedPurchaseOrders: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+
+            selectedBOQCostCoding: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+
+            selectedBoqItem: { label: Resources.toContactRequired[currentLanguage], value: "0" },
+
+            selectedTransactionType: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
+
+            selectedApprovalStatus: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
+
+            CompaniesData: [],
+            PurchaseOrdersData: [],
+            BOQCostCodingData: [],
+            BoqItemData: [],
+            TransactionTypeData: [],
         }
 
         if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
@@ -114,6 +131,7 @@ class invoicesForPoAddEdit extends Component {
             });
         }
     }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -124,9 +142,8 @@ class invoicesForPoAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
-        this.checkDocumentIsView();
 
-    };
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
@@ -142,7 +159,7 @@ class invoicesForPoAddEdit extends Component {
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
-    };
+    }
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
@@ -214,9 +231,9 @@ class invoicesForPoAddEdit extends Component {
         }
     };
 
-    fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
+    fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource, DropLable, DropValue) {
         let action = url + "?" + param + "=" + value
-        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+        dataservice.GetDataList(action, DropLable, DropValue).then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
@@ -230,83 +247,79 @@ class invoicesForPoAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+
+        dataservice.GetDataList('GetContractsBoqShowInCostCodingTree?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', 'subject', 'id').then(result => {
 
             if (isEdit) {
-                let companyId = this.props.document.fromCompanyId;
-                if (companyId) {
+                let id = this.props.document.fromCompanyId;
+                if (id) {
                     this.setState({
-                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
+                        selectedBOQCostCo: { label: this.props.document.fromCompanyName, value: id }
                     });
-                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
-                }
-
-                let toCompanyId = this.props.document.toCompanyId;
-                if (toCompanyId) {
-                    this.setState({
-                        selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
-                    });
-
-                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+                    this.fillSubDropDownInEdit('GetContractsBoqItems', 'boqId', id, 'fromContactId', 'selectedBoqItem', 'fromContacts', 'details', 'id');
                 }
             }
             this.setState({
-                companies: [...result]
+                BOQCostCodingData: [...result]
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+
+
+        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
             if (isEdit) {
-                let disciplineId = this.props.document.disciplineId;
+                let id = this.props.document.disciplineId;
                 let discpline = {};
-                if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                if (id) {
+                    discpline = _.find(result, function (i) { return i.value == id });
 
                     this.setState({
-                        selectedDiscpline: discpline
+                        selectedCompany: discpline
                     });
                 }
             }
             this.setState({
-                discplines: [...result]
+                CompaniesData: [...result]
             });
-        });
+        })
 
-        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId , 'subject', 'id').then(result => {
+        dataservice.GetDataList('GetContractsPurchaseOrders?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', 'subject', 'id').then(
+            result => {
+                if (isEdit) {
+                    let id = this.props.document.replyId;
+                    let replyLetter = {};
+                    if (id) {
+                        replyLetter = _.find(result, function (i) { return i.value == id });
+                        this.setState({
+                            selectedPurchaseOrders: replyLetter
+                        });
+                    }
+                }
+                this.setState({
+                    PurchaseOrdersData: result.data
+                });
+            })
+        this.checkDocumentIsView();
+
+
+
+        dataservice.GetDataList('GetAccountsDefaultList?listType=transactiontype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
             if (isEdit) {
-                let replyId = this.props.document.replyId;
+                let id = this.props.document.replyId;
                 let replyLetter = {};
-                if (replyId) {
-                    replyLetter = _.find(result, function (i) { return i.value == replyId; });
+                if (id) {
+                    replyLetter = _.find(result, function (i) { return i.value == id; });
                     this.setState({
-                        [replyLetter]: replyLetter
+                        selectedTransactionType: replyLetter
                     });
                 }
             }
             this.setState({
-                letters:  result
+                TransactionTypeData: result
             });
-        });
+        })
+
     }
-
-    onChangeMessage = (value) => {
-        if (value != null) {
-            this.setState({ message: value });
-            let original_document = { ...this.state.document };
-            let updated_document = {};
-
-            updated_document.message = value;
-
-            updated_document = Object.assign(original_document, updated_document);
-
-            this.setState({
-                document: updated_document
-            });
-
-
-        }
-
-    };
 
     handleChange(e, field) {
         console.log(field, e);
@@ -447,6 +460,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     render() {
+
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -463,7 +477,7 @@ class invoicesForPoAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -566,64 +580,123 @@ class invoicesForPoAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                 
+
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="purchaseOrder"
-                                                                data={this.state.discplines}
-                                                                selectedValue={this.state.selectedDiscpline}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                                                data={this.state.PurchaseOrdersData}
+                                                                selectedValue={this.state.selectedPurchaseOrders}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedPurchaseOrders')}
                                                                 index="letter-discipline"
                                                             />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="CompanyName"
-                                                                data={this.state.discplines}
-                                                                selectedValue={this.state.selectedDiscpline}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                                                data={this.state.CompaniesData}
+                                                                selectedValue={this.state.selectedCompany}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedCompany')}
                                                                 index="letter-discipline"
                                                             />
                                                         </div>
-                                                        
+
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="BOQCostCoding"
-                                                                data={this.state.discplines}
-                                                                selectedValue={this.state.selectedDiscpline}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                                                data={this.state.BOQCostCodingData}
+                                                                selectedValue={this.state.selectedBOQCostCoding}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedBOQCostCoding')}
                                                                 index="letter-discipline"
                                                             />
                                                         </div>
+
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">{Resources.costCoding[currentLanguage]}</label>
+                                                            <div className="shareLinks">
+                                                                <div className="inputDev ui input">
+                                                                    <input type="text" className="form-control" id="sharedSettings"
+                                                                        onChange={(e) => this.handleChange(e, 'sharedSettings')}
+                                                                        value={this.state.document.sharedSettings}
+                                                                        name="sharedSettings"
+                                                                        placeholder={Resources.costCoding[currentLanguage]} />
+                                                                </div>
+                                                                <div onClick={e => alert('AA')}>
+                                                                    <span className="collapseIcon"><span className="plusSpan greenSpan">+</span>
+                                                                        <span>{Resources.add[currentLanguage]}</span>  </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+
+
+
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="boqItem"
-                                                                data={this.state.discplines}
-                                                                selectedValue={this.state.selectedDiscpline}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                                                data={this.state.BoqItemData}
+                                                                selectedValue={this.state.selectedBoqItem}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedBoqItem')}
                                                                 index="letter-discipline"
                                                             />
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown
-                                                                title="approvalStatus"
-                                                                data={this.state.discplines}
-                                                                selectedValue={this.state.selectedDiscpline}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
-                                                                index="letter-discipline"
-                                                            />
+
+                                                        <div className="proForm first-proform">
+
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">{Resources.collectedStatus[currentLanguage]}</label>
+                                                                <div className="ui checkbox radio radioBoxBlue">
+                                                                    <input type="radio" name="collectedStatus"
+                                                                        onBlur={e => this.handleChange(e, 'collectedStatus')} defaultChecked={this.state.document.collectedStatus === false ? null : 'checked'}
+                                                                        value="true" onChange={e => this.handleChange(e, 'collectedStatus')} />
+                                                                    <label>{Resources.yes[currentLanguage]}</label>
+                                                                </div>
+                                                                <div className="ui checkbox radio radioBoxBlue">
+                                                                    <input type="radio" name="collectedStatus"
+                                                                        onBlur={e => this.handleChange(e, 'collectedStatus')} defaultChecked={this.state.document.collectedStatus === false ? 'checked' : null}
+                                                                        value="false" onChange={e => this.handleChange(e, 'collectedStatus')} />
+                                                                    <label>{Resources.no[currentLanguage]}</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">{Resources.canceled[currentLanguage]}</label>
+                                                                <div className="ui checkbox radio radioBoxBlue">
+                                                                    <input type="radio" name="canceled" onBlur={e => this.handleChange(e, 'canceled')} defaultChecked={this.state.document.canceled === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'canceled')} />
+                                                                    <label>{Resources.yes[currentLanguage]}</label>
+                                                                </div>
+                                                                <div className="ui checkbox radio radioBoxBlue">
+                                                                    <input type="radio" name="canceled" onBlur={e => this.handleChange(e, 'canceled')} defaultChecked={this.state.document.canceled === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'canceled')} />
+                                                                    <label>{Resources.no[currentLanguage]}</label>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="transactionType"
-                                                                data={this.state.letters}
-                                                                selectedValue={this.state.selectedReplyLetter}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'replyId', false, '', '', '', 'selectedReplyLetter')}
-                                                                index="letter-replyId"                                                            />
+                                                                data={this.state.TransactionTypeData}
+                                                                selectedValue={this.state.selectedTransactionType}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'replyId', false, '', '', '', 'selectedTransactionType')}
+                                                                index="letter-replyId" />
                                                         </div>
+
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown
+                                                                title="approvalStatus"
+                                                                data={AprovalsData}
+                                                                selectedValue={this.state.selectedApprovalStatus}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedApprovalStatus')}
+                                                                index="letter-discipline"
+                                                            />
+                                                        </div>
+
+
 
                                                     </div>
                                                     <div className="slider-Btns">
