@@ -9,8 +9,8 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import RichTextEditor from 'react-rte';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument' 
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import GridSetup from "../Communication/GridSetup";
 
@@ -160,7 +160,7 @@ class requestPaymentsAddEdit extends Component {
             paymentsItems: [],
             CurrentStep: 1,
             editRows: [],
-            comment: RichTextEditor.createEmptyValue()
+            comment: ''
 
         }
 
@@ -547,21 +547,22 @@ class requestPaymentsAddEdit extends Component {
         });
     }
 
-    onChangeMessage = (value, field) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
+    onChangeMessage = (value) => {
 
-            if (value.toString('markdown').length > 1) {
+        if (value != null) { 
+            let original_document = { ...this.state.document };
 
-                let comment = value.toString('markdown');
+            let updated_document = {}; 
+            updated_document.comment = value; 
+            updated_document = Object.assign(original_document, updated_document);
 
-                this.setState({
-                    comment: comment
-                });
-            }
+            this.setState({
+                document: updated_document,
+                comment: value 
+            });
         }
     };
-
+    
     handleChange(e, field) {
 
         let original_document = { ...this.state.document };
@@ -992,7 +993,7 @@ class requestPaymentsAddEdit extends Component {
                                 if (Config.IsAllow(1001103)) {
                                     this.setState({
                                         showCommentModal: true,
-                                        comment: RichTextEditor.createValueFromString(row.comment, 'html')
+                                        comment: row.comment
 
                                     });
 
@@ -2127,7 +2128,7 @@ class requestPaymentsAddEdit extends Component {
                                 <div className="letterFullWidth">
                                     <label className="control-label">{Resources.comment[currentLanguage]}</label>
                                     <div className="inputDev ui input">
-                                        <RichTextEditor
+                                        <TextEditor
                                             value={this.state.comment}
                                             onChange={this.onChangeMessage.bind(this)}
                                         />

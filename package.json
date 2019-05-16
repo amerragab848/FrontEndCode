@@ -54,7 +54,6 @@
     "react-redux": "^6.0.1",
     "react-responsive-modal": "^3.5.1",
     "react-router-dom": "^4.3.1",
-    "react-rte": "^0.16.1",
     "react-scripts": "2.1.1",
     "react-select": "^2.2.0",
     "react-select-2": "^2.0.11",
@@ -74,8 +73,8 @@
     "yup": "^0.26.10"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --max_old_space_size=4096 start",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

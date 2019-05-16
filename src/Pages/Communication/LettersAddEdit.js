@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -11,9 +11,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
-
-import RichTextEditor from 'react-rte';
-
+ 
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -304,11 +302,8 @@ class LettersAddEdit extends Component {
 
             this.setState({
                 document: updated_document
-            });
-
-
-        }
-
+            });  
+        } 
     };
 
     handleChange(e, field) {

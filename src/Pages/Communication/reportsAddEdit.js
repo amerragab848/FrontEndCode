@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -10,8 +10,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
+import { withRouter } from "react-router-dom"; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -25,6 +24,7 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import { toast } from "react-toastify";
 import Api from '../../api'
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
@@ -100,7 +100,7 @@ class reportsAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedReportType: { label: Resources.pleaseSelectReportType[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
+            message: ''
         }
 
         if (!Config.IsAllow(423) && !Config.IsAllow(424) && !Config.IsAllow(426)) {
@@ -129,7 +129,7 @@ class reportsAddEdit extends Component {
                 document: { ...nextProps.document },
                 hasWorkflow: nextProps.hasWorkflow,
                 selectedReportType: { label: nextProps.document.reportTypeName, value: nextProps.document.reportTypeId },
-                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
+                message: nextProps.document.message
             },function(){
                 let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
                 this.setState({document:{...this.state.document,docDate:docDate}})
@@ -201,27 +201,23 @@ class reportsAddEdit extends Component {
             this.fillDropDowns(false);
         }
     };
+
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-
+        if (value != null) {
             this.setState({ message: value });
-            if (value.toString('markdown').length > 1) {
-                let original_document = { ...this.state.document };
+            let original_document = { ...this.state.document };
+            let updated_document = {};
 
-                let updated_document = {};
+            updated_document.message = value;
 
-                updated_document.message = value.toString('markdown');
+            updated_document = Object.assign(original_document, updated_document);
 
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
-        }
-
+            this.setState({
+                document: updated_document
+            });  
+        } 
     };
+
     fillDropDowns(isEdit) {
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
             if (isEdit) {
@@ -615,11 +611,11 @@ class reportsAddEdit extends Component {
 
                                                         <div className="fullWidthWrapper textLeft">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
+                                                        
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor
+                                                                <TextEditor
                                                                     value={this.state.message}
-                                                                    onChange={this.onChangeMessage.bind(this)}
-                                                                />
+                                                                    onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
 

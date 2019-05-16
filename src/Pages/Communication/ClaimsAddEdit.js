@@ -12,7 +12,7 @@ import Resources from "../../resources.json";
 
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
 import {
@@ -102,7 +102,7 @@ class ClaimsAddEdit extends Component {
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
             selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
+            message: ''
         }
         if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -129,13 +129,14 @@ class ClaimsAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
+                message: nextProps.document.message
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
     };
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -260,29 +261,23 @@ class ClaimsAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
 
-            this.setState({ message: value });
-            if (value.toString('markdown').length > 1) {
+        if (value != null) {
+            let original_document = { ...this.state.document };
 
-                let original_document = { ...this.state.document };
+            let updated_document = {};
 
-                let updated_document = {};
+            updated_document.message = value;
 
-                updated_document.message = value.toString('markdown');
+            updated_document = Object.assign(original_document, updated_document);
 
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
-
+            this.setState({
+                document: updated_document,
+                message: value
+            });
         }
-
     };
-
+    
     handleChange(e, field) {
         console.log(field, e);
         let original_document = { ...this.state.document };
@@ -405,7 +400,7 @@ class ClaimsAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -438,8 +433,8 @@ class ClaimsAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.claims[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-                     
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.claims[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -569,7 +564,7 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                     <Dropdown
+                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -586,7 +581,7 @@ class ClaimsAddEdit extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
@@ -608,7 +603,7 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    
+
                                                                     <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.companies}
@@ -626,7 +621,7 @@ class ClaimsAddEdit extends Component {
                                                                         id="toCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
@@ -666,11 +661,11 @@ class ClaimsAddEdit extends Component {
 
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
+
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor
+                                                                <TextEditor
                                                                     value={this.state.message}
-                                                                    onChange={this.onChangeMessage.bind(this)}
-                                                                />
+                                                                    onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
 

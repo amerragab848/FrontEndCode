@@ -4456,7 +4456,7 @@
         "en": "Contract / Purchase Orders ",
         "ar": "عقد/ أمر الشراء"
     },
-    "contractsPerProject": {
+    "contractsPerProject": { 
         "en": "Contracts ",
         "ar": "ملخص العقود "
     },

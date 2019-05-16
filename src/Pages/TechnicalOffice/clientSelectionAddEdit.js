@@ -12,7 +12,8 @@ import Resources from "../../resources.json";
 
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
+
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { connect } from 'react-redux';
 import {
@@ -114,7 +115,7 @@ class clientSelectionAddEdit extends Component {
             selectedClientSelection: { label: Resources.clientSelectionType[currentLanguage], value: "0" },
             selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
             selectedbuildingno: { label: Resources.Buildings[currentLanguage], value: "0" },
-            answer: RichTextEditor.createEmptyValue(),
+            answer: '',
         }
 
         if (!Config.IsAllow(3147) && !Config.IsAllow(3148) && !Config.IsAllow(3150)) {
@@ -150,7 +151,7 @@ class clientSelectionAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: RichTextEditor.createValueFromString(nextProps.document.answer, 'html')
+                answer:  nextProps.document.answer
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -400,26 +401,18 @@ class clientSelectionAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
+        if (value != null) { 
+            let original_document = { ...this.state.document };
 
-            this.setState({ answer: value });
-            if (value.toString('markdown').length > 1) {
+            let updated_document = {}; 
+            updated_document.answer = value; 
+            updated_document = Object.assign(original_document, updated_document);
 
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document.answer = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
+            this.setState({
+                document: updated_document,
+                answer: value 
+            });
         }
-
     };
 
     handleChange(e, field) {
@@ -837,7 +830,7 @@ class clientSelectionAddEdit extends Component {
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor
+                                                                <TextEditor
                                                                     value={this.state.answer}
                                                                     onChange={this.onChangeMessage.bind(this)}
                                                                 />

@@ -297,7 +297,38 @@ class DashBoard extends Component {
                     key: val.props.key
                   }
                 });
-              } else {
+              } else if (val.type === "pie") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api,
+                    name: val.props.name,
+                    y: val.props.y
+                  }
+                });
+              }
+              else if (val.type === "column") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api,
+                    name: val.props.name,
+                    data: val.props.data,
+                    multiSeries:val.props.multiSeries
+                  }
+                });
+              }
+              else {
                 widgets.push({
                   key: val.key,
                   order: i + 1,
@@ -377,7 +408,38 @@ class DashBoard extends Component {
                   key: val.props.key
                 }
               });
-            } else {
+            } else if (val.type === "pie") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  name: val.props.name,
+                  y: val.props.y
+                }
+              });
+            }
+            else if (val.type === "column") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  name: val.props.name,
+                  data: val.props.data,
+                  multiSeries:val.props.multiSeries
+                }
+              });
+            }
+            else {
               widgets.push({
                 key: val.key,
                 order: i + 1,
@@ -487,7 +549,39 @@ class DashBoard extends Component {
                     key: val.props.key
                   }
                 });
-              } else {
+              } else if (val.type === "pie") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  parentId: getValueKey.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api,
+                    name: val.props.name,
+                    y: val.props.y
+                  }
+                });
+              }
+              else if (val.type === "column") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  parentId: getValueKey.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api,
+                    name: val.props.name,
+                    data: val.props.data,
+                    multiSeries:val.props.multiSeries
+                  }
+                });
+              }
+
+              else {
                 widgets.push({
                   title: val.title,
                   key: val.key,
@@ -558,7 +652,39 @@ class DashBoard extends Component {
                   key: val.props.key
                 }
               });
-            } else {
+            } else if (val.type === "pie") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                parentId: getValueKey.key,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  name: val.props.name,
+                  y: val.props.y
+                }
+              });
+            }
+            else if (val.type === "column") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                parentId: getValueKey.key,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  name: val.props.name,
+                  data: val.props.data,
+                  multiSeries:val.props.multiSeries
+                }
+              });
+            }
+
+            else {
               widgets.push({
                 key: val.key,
                 order: i + 1,
@@ -705,7 +831,39 @@ class DashBoard extends Component {
                   }
                 });
               }
-            } else {
+            } else if (val.type === "pie") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  name: val.props.name,
+                  y: val.props.y
+                }
+              });
+            }
+            else if (val.type === "column") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  name: val.props.name,
+                  data: val.props.data,
+                  multiSeries:val.props.multiSeries
+                }
+              });
+            }
+
+            else {
               if (val.key === id) {
                 widgets.push({
                   key: val.key,

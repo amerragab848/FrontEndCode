@@ -1,12 +1,11 @@
 import React, { Component } from "react"; 
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup'; 
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous"; 
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
+import { withRouter } from "react-router-dom"; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import moment from "moment"; 
@@ -14,9 +13,7 @@ import * as communicationActions from '../../store/actions/communication';
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
