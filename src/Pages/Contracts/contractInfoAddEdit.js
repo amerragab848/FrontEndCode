@@ -1149,6 +1149,8 @@ class ContractInfoAddEdit extends Component {
                                        vat: this.props.changeStatus ? this.props.document.vat : "",
                                        retainage: this.props.changeStatus ? this.props.document.retainage : "",
                                        insurance: this.props.changeStatus ? this.props.document.insurance : "",
+                                       advancedPayment:this.props.changeStatus ? this.props.document.advancedPayment :"",
+                                       advancedPaymentAmount:this.props.changeStatus ? this.props.document.advancedPaymentAmount :"",
                                        docDate:moment(),
                                        completionDate:moment()
                              }}

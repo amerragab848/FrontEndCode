@@ -129,8 +129,7 @@ class budgetCashFlow extends Component {
             finishDate: moment(),
             showTable: false,
             cashFlowTable: [],
-        }
-
+        } 
     }
 
     componentWillMount() {
@@ -172,7 +171,7 @@ class budgetCashFlow extends Component {
         let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
         Api.get(url).then(result => {
             let oldRows = this.state.rows;
-            const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+            const newRows = [...oldRows, ...result];  
             this.setState({
                 rows: newRows,
                 totalRows: newRows.length,
@@ -372,8 +371,7 @@ class budgetCashFlow extends Component {
 
     generateDateFun = () => {
         this.setState({ showTable: true });
-        this.cashFlowDiff()
-
+        this.cashFlowDiff() 
     }
 
     handleChange(e, field, index) {

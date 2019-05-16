@@ -30,8 +30,7 @@ class ActiveProjectsReport extends Component {
             selectedStatus: { label: Resources.selectAll[currentLanguage], value: '' },
             rows: [],
             finishDate: moment(),
-            startDate: moment(),
-            showChart: true,
+            startDate: moment(), 
             series: [],
             xAxis: { type: 'pie' },
             noClicks: 0,
@@ -91,7 +90,7 @@ class ActiveProjectsReport extends Component {
         let noClicks = this.state.noClicks;
         Api.get('ActiveProjectReport?status=' + this.state.selectedStatus.value + '').then(
             res => {
-
+                this.setState({showChart:true});
                 let hold = 0
                 let unhold = 0
                 res.map(i => {
@@ -122,11 +121,11 @@ class ActiveProjectsReport extends Component {
 
     render() {
 
-        let Chart =
-            <PieChartComp
+        let Chart = this.state.showChart ? 
+            (<PieChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
-                title='activeProjectsReport' />
+                title='activeProjectsReport' />):null
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
@@ -152,7 +151,7 @@ class ActiveProjectsReport extends Component {
                     <button className="primaryBtn-1 btn smallBtn" type='submit' onClick={e => this.getGridRows()}>{Resources['search'][currentLanguage]} </button>
                 </div>
                 {this.state.showChart == true ?
-                    <div className="doc-pre-cycle letterFullWidth">
+                    <div className="row">
                         {Chart}
                     </div> : null}
                 <div className="doc-pre-cycle letterFullWidth">
