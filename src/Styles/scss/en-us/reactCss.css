@@ -5829,3 +5829,12 @@ line.horizontal-grid-line {
   color: #f9fbfc;
   left: 46%;
 }
+.exbortBtn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.exbortBtn button:nth-child(2) {
+    margin-left: 16px;
+}
