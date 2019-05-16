@@ -21,7 +21,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     policyType: Yup.string().required(Resources['policyType'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    policyLimit: Yup.number().required(Resources['arrange'][currentLanguage]),
+    //policyLimit: Yup.number().required(Resources['arrange'][currentLanguage]),
     companyId: Yup.string().required(Resources['pleaseSelectYourCompany'][currentLanguage]).nullable(true) 
 });
    
@@ -83,8 +83,25 @@ class ContractInsurance extends Component {
             this.fillDropDowns(false);
 
         dataservice.GetDataGrid("GetInsuranceItemsByContractId?contractId=" + this.state.contractId).then(data => {
+           
+          let maxArrange =Math.max(...data.map(s => s.arrange));
+
+          const objDocument = {
+            //field
+            id: 0, 
+            companyId: null,  
+            contractId:this.state.contractId,
+            arrange: maxArrange + 1,
+            policyType:"",
+            policyLimit:"",
+            effectiveDate:moment(),
+            expirationDate:moment() 
+        };
+
+
             this.setState({
-                insuranceData: data
+                insuranceData: data,
+                document :objDocument
             });
         }).catch(ex => {
             this.setState({insuranceData:[]});
@@ -148,9 +165,9 @@ class ContractInsurance extends Component {
  
     saveInsurance() {
 
+      this.setState({isLoading:true });
         let saveDocument = {
-            ...this.state.document,
-            isLoading:true 
+            ...this.state.document  
         };
 
         saveDocument.effectiveDate = moment(saveDocument.effectiveDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -163,7 +180,7 @@ class ContractInsurance extends Component {
                 id: 0, 
                 companyId: null,  
                 contractId:this.state.contractId,
-                arrange: "1",
+                arrange: this.state.document.arrange + 1,
                 policyType:"",
                 policyLimit:"",
                 effectiveDate:moment(),
@@ -173,6 +190,7 @@ class ContractInsurance extends Component {
             this.setState({
                 insuranceData : result,
                 document: objDocument,
+                isLoading:false, 
                 selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             });
 
