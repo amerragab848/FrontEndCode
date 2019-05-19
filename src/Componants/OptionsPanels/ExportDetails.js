@@ -143,8 +143,6 @@ class ExportDetails extends Component {
     }
 
     drawFiled_pdf() {
-        console.log(this.props)
-
         let fields = DED[this.props.docTypeId]
         let data = this.props.document
         let rows = fields.fields.map((field, index) => {
