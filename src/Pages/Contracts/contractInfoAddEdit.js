@@ -621,6 +621,7 @@ class ContractInfoAddEdit extends Component {
     switch (this.state.CurrStep) {
       case 1:
         this.setState({
+          activeTab : "pricedItem",
           CurrStep: this.state.CurrStep + 1,
           firstComplete: true
         });
@@ -742,6 +743,7 @@ class ContractInfoAddEdit extends Component {
   StepTwoLink = () => {
     if (docId !== 0) {
       this.setState({
+        activeTab : "pricedItem",
         firstComplete: true,
         secondComplete: true,
         CurrStep: 2,
@@ -903,12 +905,7 @@ class ContractInfoAddEdit extends Component {
       toast.error(Resources["operationCanceled"][currentLanguage]);
       this.setState({ isLoading: false });
     });
-  }
-
-  hidePopUp = () =>{
-
-
-  }
+  } 
 
   render() {
   
@@ -1697,6 +1694,7 @@ class ContractInfoAddEdit extends Component {
     );
   }
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     document: state.communication.document,
