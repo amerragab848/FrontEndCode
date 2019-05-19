@@ -235,7 +235,6 @@ class projectWorkFlowAddEdit extends Component {
         });
     }
 
-
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
@@ -1140,12 +1139,8 @@ class projectWorkFlowAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    minHeight={350}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    onRowClick={this.ShowPopUpForEdit}
-                />
+                <GridSetup rows={this.state.rows} columns={this.state.columns} minHeight={350} onRowClick={this.ShowPopUpForEdit}
+                    showCheckbox={this.state.showCheckbox} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} />
             ) : <LoadingSection />
 
         let FollowUpsData = this.state.FollowUpsData
@@ -1155,9 +1150,7 @@ class projectWorkFlowAddEdit extends Component {
                     <tr key={item.id}>
                         <td className="removeTr">
                             <div className="contentCell tableCell-1">
-                                <span className="pdfImage"
-                                    onClick={() => this.DeleteFollowUp(item.id, index)}
-                                >
+                                <span className="pdfImage" onClick={() => this.DeleteFollowUp(item.id, index)}>
                                     <img src={Recycle} alt="pdf" />
                                 </span>
                             </div>
@@ -1175,9 +1168,7 @@ class projectWorkFlowAddEdit extends Component {
                     <tr key={item.id}>
                         <td className="removeTr">
                             <div className="contentCell tableCell-1">
-                                <span className="pdfImage"
-                                    onClick={() => this.DeleteDocType(item.id, index)}
-                                >
+                                <span className="pdfImage" onClick={() => this.DeleteDocType(item.id, index)}>
                                     <img src={Recycle} alt="pdf" />
                                 </span>
                             </div>
@@ -1192,7 +1183,6 @@ class projectWorkFlowAddEdit extends Component {
 
         const renderMultiApprovalTable =
             this.state.MultiApprovalData.map((item) => {
-
                 return (
                     <tr key={item.workFlowItemId}>
                         <td>{item.arrange}</td>
@@ -1591,14 +1581,14 @@ class projectWorkFlowAddEdit extends Component {
 
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
-                                        <div className="linebylineInput valid-input"> 
+                                        <div className="linebylineInput valid-input">
                                             <Dropdown title="docType" data={this.state.DocumentTypeDropData} name="DocumentTypeDrop"
                                                 selectedValue={values.DocumentTypeDrop} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "DocumentTypeDrop")}
                                                 onBlur={setFieldTouched}
                                                 error={errors.DocumentTypeDrop}
                                                 touched={touched.DocumentTypeDrop}
-                                                value={values.DocumentTypeDrop} /> 
+                                                value={values.DocumentTypeDrop} />
                                         </div>
 
                                         {/* <div className="linebylineInput valid-input">

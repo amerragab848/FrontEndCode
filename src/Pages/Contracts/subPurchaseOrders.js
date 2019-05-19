@@ -1,22 +1,17 @@
 import React, { Component } from "react"; 
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup'; 
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous"; 
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
+import { withRouter } from "react-router-dom"; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import moment from "moment"; 
 import * as communicationActions from '../../store/actions/communication'; 
-import { toast } from "react-toastify";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
-
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
+import { toast } from "react-toastify"; 
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -40,6 +35,7 @@ class SubPurchaseOrders extends Component {
             currentTitle: "sendToWorkFlow", 
             contractId: this.props.contractId, 
             projectId: this.props.projectId,  
+            isViewMode:this.props.isViewMode,
             document:   {},
             companies: [],
             contacts: [], 
@@ -90,15 +86,6 @@ class SubPurchaseOrders extends Component {
             });
 
             this.fillDropDowns(false);
-
-
-        dataservice.GetDataGrid("GetSubPOsByContractId?contractId=" + this.state.contractId).then(data => {
-            this.setState({
-                purchaseOrderData: data
-            });
-        }).catch(ex => {
-            this.setState({purchaseOrderData:[]});
-            toast.error(Resources["failError"][currentLanguage])});
 
         this.props.actions.documentForAdding();
     }
@@ -231,77 +218,6 @@ class SubPurchaseOrders extends Component {
  
     render() { 
  
-    const columns  = [
-        {
-          Header: Resources["numberAbb"][currentLanguage],
-          accessor: "arrange",
-          sortabel: true,
-          width: 80
-        }, 
-        {
-          Header: Resources["subject"][currentLanguage],
-          accessor: "subject",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["CompanyName"][currentLanguage],
-          accessor: "companyName",
-          width: 200,
-          sortabel: true 
-        },
-        {
-          Header: Resources["contractTo"][currentLanguage],
-          accessor: "toCompanyName",
-          width: 200,
-          sortabel: true 
-        },
-        {
-          Header: Resources["attention"][currentLanguage],
-          accessor: "toContactName",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["docDate"][currentLanguage],
-          accessor: "docDate",
-          width: 200,
-          sortabel: true,
-          Cell: row => (
-            <span>
-              <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-            </span>
-          )
-        },
-        {
-          Header: Resources["completionDate"][currentLanguage],
-          accessor: "completionDate",
-          width: 200,
-          sortabel: true,
-          Cell: row => (
-            <span>
-              <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-            </span>
-          )
-        },
-        {
-          Header: Resources["actualExecuted"][currentLanguage],
-          accessor: "actualExceuted",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["docClosedate"][currentLanguage],
-          accessor: "docCloseDate",
-          width: 200,
-          sortabel: true,
-          Cell: row => (
-            <span>
-              <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-            </span>
-          )
-        }
-      ];
  
         return ( 
         <div className={this.props.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
@@ -483,18 +399,7 @@ class SubPurchaseOrders extends Component {
                 )}
               </Formik> 
             </div> 
-            <header className="main__header">
-                <div className="main__header--div">
-                <h2 className="zero">
-                    {Resources["subPOsList"][currentLanguage]}
-                </h2>
-                </div>
-            </header>
-           <ReactTable data={this.state.purchaseOrderData}
-                       columns={columns}
-                       defaultPageSize={5}
-                       noDataText={Resources["noData"][currentLanguage]}
-                       className="-striped -highlight" />
+            
           </div>
         </div> 
       </div>

@@ -5829,3 +5829,36 @@ line.horizontal-grid-line {
   color: #f9fbfc;
   left: 46%;
 }
+
+.drive__wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e9ecf0;
+    padding-bottom: 13px;
+    margin-bottom: 24px;
+}
+
+.drive__wrapper h2 {
+    margin-right: 34px;
+}
+
+.upload__drive {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.upload__drive  img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin: 0 8px;
+}
+.exbortBtn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.exbortBtn button:nth-child(2) {
+    margin-left: 16px;
+}

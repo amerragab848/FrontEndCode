@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js';
-
-// import "react-tabs/style/react-tabs.css";
-
 import { Widgets, WidgetsWithText } from "./CounterWidget";
 import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
@@ -11,7 +8,6 @@ import DashBoardWidgets from "./WidgetsDashBorad";
 import DashBoard from "./DashBoard";
 import _ from "lodash";
 import language from "../resources.json";
-//import Config from "../Services/Config";
 import Api from "../api";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -157,8 +153,40 @@ class Index extends Component {
                             return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
                           } else if (panel.type === "twoWidget") {
                             return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
-                          } else {
+                          } else if (panel.type === "oneWidget") {
                             return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                          }
+                          else {
+                            if (panel.type === "pie") {
+                              return (
+                                <div className="col-lg-4 col-md-6" key={panel.id}>
+                                  <PieChartComp
+                                    api={panel.props.api}
+                                    name={panel.props.name}
+                                    y={panel.props.y}
+                                    title={panel.title}
+                                    seriesName={panel.seriesName}
+                                  />
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <Fragment key={panel.id}>
+                                  <BarChartComp
+                                    api={panel.props.api}
+                                    name={panel.props.name}
+                                    y={panel.props.data}
+                                    title={panel.title}
+                                    stack={panel.stack}
+                                    yTitle={panel.yTitle}
+                                    catagName={panel.catagName}
+                                    multiSeries={panel.multiSeries}
+                                    barContent={panel.barContent}
+                                  />
+                                </Fragment>
+                              );
+                            }
+
                           }
                         }
                       })
@@ -196,8 +224,41 @@ class Index extends Component {
                         else if (panel.type === "twoWidget") {
                           return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
                         }
-                        else {
+                        else if (panel.type === "oneWidget") {
                           return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                        }
+                        else {
+
+                          if (panel.type === "pie") {
+                            return (
+                              <div className="col-lg-4 col-md-6" key={panel.id}>
+                                <PieChartComp
+                                  api={panel.props.api}
+                                  name={panel.props.name}
+                                  y={panel.props.y}
+                                  title={panel.title}
+                                    seriesName={panel.seriesName}
+                                />
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <Fragment key={panel.id}>
+                                <BarChartComp
+                                  api={panel.props.api}
+                                  name={panel.props.name}
+                                  y={panel.props.data}
+                                  title={panel.title}
+                                  stack={panel.stack}
+                                  yTitle={panel.yTitle}
+                                  catagName={panel.catagName}
+                                  multiSeries={panel.multiSeries}
+                                  barContent={panel.barContent}
+                                />
+                              </Fragment>
+                            );
+                          }
+
                         }
                       }) : null}
                   </div>
@@ -209,7 +270,7 @@ class Index extends Component {
       }
     }
     catch (err) {
-
+      console.log(err);
       localStorage.removeItem("Widgets_Order");
 
       var refrence = DashBoardWidgets.filter(function (i) {
@@ -233,8 +294,41 @@ class Index extends Component {
                       else if (panel.type === "twoWidget") {
                         return (<WidgetsWithText key={panel.key} title={panel.title} {...panel} />);
                       }
-                      else {
+                      else if (panel.type === "oneWidget") {
                         return (<Widgets key={panel.key} title={panel.title} {...panel} />);
+                      }
+                      else {
+
+                        if (panel.type === "pie") {
+                          return (
+                            <div className="col-lg-4 col-md-6" key={panel.id}>
+                              <PieChartComp
+                                api={panel.props.api}
+                                name={panel.props.name}
+                                y={panel.props.y}
+                                title={panel.title}
+                                seriesName={panel.seriesName}
+                              />
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <Fragment key={panel.id}>
+                              <BarChartComp
+                                api={panel.props.api}
+                                name={panel.props.name}
+                                y={panel.props.data}
+                                title={panel.title}
+                                stack={panel.stack}
+                                yTitle={panel.yTitle}
+                                catagName={panel.catagName}
+                                multiSeries={panel.multiSeries}
+                                barContent={panel.barContent}
+                              />
+                            </Fragment>
+                          );
+                        }
+
                       }
                     }) : null}
                 </div>
