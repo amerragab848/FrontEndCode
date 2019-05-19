@@ -29,7 +29,7 @@ import Config from '../../Services/Config';
 import _ from "lodash";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let activeURL=''
+let activeURL = ''
 class ViewAttachmments extends Component {
 
     constructor(props) {
@@ -43,7 +43,7 @@ class ViewAttachmments extends Component {
         }
     }
 
-    deletehandler = (file) => { 
+    deletehandler = (file) => {
         let urlDelete = 'DeleteAttachFileById?id=' + file.id
         this.props.actions.deleteFile(urlDelete, file);
     }
@@ -53,7 +53,7 @@ class ViewAttachmments extends Component {
             let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
             Api.get(urlVersion).then(result => {
                 if (result) {
-                   // this.setState({ view: true })
+                    // this.setState({ view: true })
                     this.simpleDialog.show()
                 }
             });
@@ -66,9 +66,20 @@ class ViewAttachmments extends Component {
                 view: true,
                 activeURL: item.attachFile
             })
-            activeURL=item.attachFile;
+            activeURL = item.attachFile;
             this.simpleDialog.show()
+        } 
+    }
+
+    convertDataURIToBinary(base64) {
+        var raw = window.atob(base64);
+        var rawLength = raw.length;
+        var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+        for (var i = 0; i < rawLength; i++) {
+            array[i] = raw.charCodeAt(i);
         }
+        return array;
     }
 
     componentDidMount() {
@@ -214,7 +225,7 @@ class ViewAttachmments extends Component {
                         </SkyLight>
                     </div>
 
-                    : null}
+                    : null} 
             </React.Fragment>
         )
     }
