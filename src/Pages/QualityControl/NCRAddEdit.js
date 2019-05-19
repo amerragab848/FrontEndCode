@@ -12,7 +12,7 @@ import Resources from "../../resources.json";
 import Api from '../../api';
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
 import {
@@ -72,9 +72,7 @@ const validationSchemaForAddCycle = Yup.object().shape({
         .required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 })
-
-
-
+ 
 class NCRAddEdit extends Component {
 
     constructor(props) {
@@ -145,8 +143,8 @@ class NCRAddEdit extends Component {
             reasonForIssues: [],
             areas: [],
             buildings: [],
-            answer: RichTextEditor.createEmptyValue(),
-            rfi: RichTextEditor.createEmptyValue(),
+            answer: '',
+            rfi: '',
             specificationSectionList: [],
             reviewResultList: [],
             activityIRList: [],
@@ -196,8 +194,7 @@ class NCRAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let NCRDoc = nextProps.document
-            //moment(serverInspectionRequest.docDate).format('DD/MM/YYYY')
+            let NCRDoc = nextProps.document 
             NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
             NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD/MM/YYYY')
             NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD/MM/YYYY')
@@ -205,7 +202,7 @@ class NCRAddEdit extends Component {
             this.setState({
                 document: NCRDoc,
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: RichTextEditor.createValueFromString(nextProps.document.answer, 'html')
+                answer: nextProps.document.answer
             });
 
             this.checkDocumentIsView();
@@ -370,27 +367,18 @@ class NCRAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
+        if (value != null) { 
+            let original_document = { ...this.state.document };
 
-            this.setState({ answer: value });
-            if (value.toString('markdown').length > 1) {
+            let updated_document = {}; 
+            updated_document.answer = value; 
+            updated_document = Object.assign(original_document, updated_document);
 
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document.answer = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
-
+            this.setState({
+                document: updated_document,
+                answer: value 
+            });
         }
-
     };
 
     handleChange(e, field) {
@@ -449,11 +437,14 @@ class NCRAddEdit extends Component {
     }
 
     showBtnsSaving() {
-        let btn = null;
+        let btn = <button
+            className={this.props.changeStatus == false ? 'primaryBtn-1 btn meduimBtn ' : ' primaryBtn-1 btn meduimBtn  disNone'}
+            type="submit">
+            {this.state.docId > 0 && this.props.changeStatus === false ? Resources.saveAndExit[currentLanguage] :
+                Resources.save[currentLanguage]}
+        </button>
 
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        }
+
         return btn;
     }
 
@@ -491,7 +482,7 @@ class NCRAddEdit extends Component {
                 dataservice.addObject('EditCommunicationNCRs', NCRDoc).then(
                     res => {
                         this.setState({
-                            isLoading: false
+                            isLoading: false,
                         })
                         toast.success(Resources["operationSuccess"][currentLanguage]);
 
@@ -509,7 +500,8 @@ class NCRAddEdit extends Component {
                     res => {
                         this.setState({
                             docId: res.id,
-                            isLoading: false
+                            isLoading: false,
+                            IsAddModel: true
                         })
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                     }).catch(ex => {
@@ -532,7 +524,7 @@ class NCRAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -761,7 +753,7 @@ class NCRAddEdit extends Component {
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.NCRLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.NCRLog[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -1018,15 +1010,30 @@ class NCRAddEdit extends Component {
                                                     <div className="letterFullWidth">
                                                         <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                         <div className="inputDev ui input">
-                                                            <RichTextEditor value={this.state.answer}
-                                                                onChange={event => this.onChangeMessage(event, 'answer')}
+                                                            <TextEditor value={this.state.answer}
+                                                                onChange={this.onChangeMessage}
                                                             />
                                                         </div>
                                                     </div>
 
                                                 </div>
-                                            
-                                               <div className="slider-Btns">
+                                                
+                                                <div className="doc-pre-cycle letterFullWidth">
+                                                    <div>
+                                                        {this.state.docId !== 0 ?
+                                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                            : null
+                                                        }
+                                                        {this.viewAttachments()}
+
+                                                        {this.state.docId !== 0 ?
+                                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                            : null
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                                <div className="slider-Btns">
                                                     {this.state.isLoading ?
                                                         this.state.IsEditMode === false ?
                                                             <button className="primaryBtn-1 btn disabled">
@@ -1042,20 +1049,7 @@ class NCRAddEdit extends Component {
                                         )}
                                     </Formik>
                                 </div>
-                                <div className="doc-pre-cycle letterFullWidth">
-                                    <div>
-                                        {this.state.docId !== 0 ?
-                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
-                                        {this.viewAttachments()}
 
-                                        {this.state.docId !== 0 ?
-                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
-                                    </div>
-                                </div>
                             </div>
 
 

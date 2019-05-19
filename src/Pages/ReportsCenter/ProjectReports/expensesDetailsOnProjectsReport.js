@@ -10,14 +10,13 @@ import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
 import dataService from '../../../Dataservice'
 import GridSetup from "../../Communication/GridSetup"
+import BarChartComp from '../TechnicalOffice/BarChartComp'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
+    selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -27,6 +26,7 @@ class expensesDetailsOnProjectsReport extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            showChart:false,
             projectsList: [],
             companiesList: [],
             usersList: [],
@@ -36,6 +36,7 @@ class expensesDetailsOnProjectsReport extends Component {
             selectedUser: { label: Resources.users[currentLanguage], value: "-1" },
             finishDate: moment(),
             startDate: moment(),
+            series:[],
             columns: [
                 {
                     key: "projectName",
@@ -77,7 +78,6 @@ class expensesDetailsOnProjectsReport extends Component {
                     sortDescendingFirst: true
                 }
             ]
-
         }
 
         if (!Config.IsAllow(3685)) {
@@ -85,8 +85,7 @@ class expensesDetailsOnProjectsReport extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-        }
-
+        } 
     }
     componentWillMount() {
         this.setState({ isLoading: true })
@@ -100,6 +99,7 @@ class expensesDetailsOnProjectsReport extends Component {
 
 
     }
+
     getGridtData = () => {
         this.setState({ currentComponent: null })
         let reportobj = {
@@ -112,7 +112,15 @@ class expensesDetailsOnProjectsReport extends Component {
         this.setState({ isLoading: true })
         Api.post('ExpensesDetailsOnProjectReport', reportobj).then(res => {
             let rows = res == null ? [] : res;
-            this.setState({ rows, isLoading: false })
+            this.setState({showChart:true});
+
+            let seriesData = _(res).groupBy('projectName').map((objs, key) => {
+                                return {
+                                    'name': key,
+                                    'value': _.sumBy(objs, 'expenseValue')
+                                }}).value();
+  
+            this.setState({ rows, isLoading: false,showChart:true,series:seriesData })
         }).catch(() => {
             this.setState({ isLoading: false, rows: [] })
             toast.error(Resources.operationCanceled[currentLanguage])
@@ -138,6 +146,10 @@ class expensesDetailsOnProjectsReport extends Component {
         this.setState({ projectIds })
     }
     render() {
+        let Chart = this.state.showChart ?
+        (<BarChartComp  series={this.state.series}  multiSeries="no"
+            title={Resources['expensesDetailsOnProjectsReport'][currentLanguage]}
+            yTitle={Resources['total'][currentLanguage]} />) :null
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.state.columns} />) : <LoadingSection />
@@ -209,6 +221,10 @@ class expensesDetailsOnProjectsReport extends Component {
                         </Form>
                     )}
                 </Formik>
+                {this.state.showChart==true?
+                    <div className="row">
+                        {Chart}
+                    </div>:null}
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
                 </div>

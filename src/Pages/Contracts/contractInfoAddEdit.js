@@ -23,6 +23,7 @@ import ContractsConditions from "./ContractsConditions";
 import ContractInsurance from "./ContractInsurance";
 import Schedule from "./Schedule";
 import SubContract from "./SubContractLog";
+import SubPurchaseOrderLog from "./subPurchaseOrderLog";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
@@ -167,6 +168,7 @@ class ContractInfoAddEdit extends Component {
       changeOrderSum:0,
       viewItemPopUp : false,
       objItems:{},
+      showSubPurchaseOrders:false
       // details:"",
       // originalQuantity:"",
       // arrange:"",
@@ -426,7 +428,7 @@ class ContractInfoAddEdit extends Component {
 
         
         this.setState({
-            arrange : result != null ?(maxArrange + 1):1,
+            arrange : result.length > 0 ?(maxArrange + 1):1,
             variationOrdersData:  result != null ? result : []
           });  
       });
@@ -685,6 +687,7 @@ class ContractInfoAddEdit extends Component {
   }; 
    
   changeTab = tabName => { 
+   
     this.setState({ activeTab: tabName }); 
   };
 
@@ -900,6 +903,11 @@ class ContractInfoAddEdit extends Component {
       toast.error(Resources["operationCanceled"][currentLanguage]);
       this.setState({ isLoading: false });
     });
+  }
+
+  hidePopUp = () =>{
+
+
   }
 
   render() {
@@ -1149,6 +1157,8 @@ class ContractInfoAddEdit extends Component {
                                        vat: this.props.changeStatus ? this.props.document.vat : "",
                                        retainage: this.props.changeStatus ? this.props.document.retainage : "",
                                        insurance: this.props.changeStatus ? this.props.document.insurance : "",
+                                       advancedPayment:this.props.changeStatus ? this.props.document.advancedPayment :"",
+                                       advancedPaymentAmount:this.props.changeStatus ? this.props.document.advancedPaymentAmount :"",
                                        docDate:moment(),
                                        completionDate:moment()
                              }}
@@ -1466,8 +1476,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
           {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>):null}
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrders contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
+          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
+          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} />) : null}
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
@@ -1574,7 +1584,7 @@ class ContractInfoAddEdit extends Component {
                 </Fragment>
               </SkyLight>
           </div>
-
+ 
           <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
               <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                   {this.state.currentComponent}

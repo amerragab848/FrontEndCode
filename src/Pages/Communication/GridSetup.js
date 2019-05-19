@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
+
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
+
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;

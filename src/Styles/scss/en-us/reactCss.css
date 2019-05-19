@@ -5620,6 +5620,74 @@ line.horizontal-grid-line {
     border-bottom-color: transparent !important;
 }
 
+.ck-file-dialog-button{
+    display: none !important
+  }
+  .ck .ck-editor__main{
+    text-align: left;
+  }
+
+.popupMedium {
+    position: fixed;
+    -webkit-perspective: 2000px;
+    perspective: 2000px;
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow: auto;
+    padding: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+}
+
+.popupMedium.active {
+    display: flex !important;
+}
+
+.workflowComment {
+    max-width: 408px !important;
+    height: auto !important;
+}
+
+.workflowComment h2 {
+    font-family: font-b;
+    font-size: 20px;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    text-align: center;
+    color: #252833;
+    padding-bottom: 29px;
+}
+
+.workflowComment p {
+    font-family: font-opens;
+    font-size: 14px;
+    line-height: 1.71;
+    letter-spacing: -0.2px;
+    color: #3e4352;
+    padding-bottom: 56px;
+}
+
+.workflowComment button {
+    float: right;
+    margin: 0;
+}
+
+.workflowComment__closeBtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 25px;
+}
 .pdf__popup .skylight-overlay {
   background-color: rgba(0,0,0,0.85) !important
 }
@@ -5764,4 +5832,36 @@ line.horizontal-grid-line {
 
 #canvas__wrapper{ 
     width: 891px;
+}
+.drive__wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e9ecf0;
+    padding-bottom: 13px;
+    margin-bottom: 24px;
+}
+
+.drive__wrapper h2 {
+    margin-right: 34px;
+}
+
+.upload__drive {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.upload__drive  img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin: 0 8px;
+}
+.exbortBtn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.exbortBtn button:nth-child(2) {
+    margin-left: 16px;
 }

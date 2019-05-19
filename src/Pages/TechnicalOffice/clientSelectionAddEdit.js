@@ -12,7 +12,8 @@ import Resources from "../../resources.json";
 
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
+
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { connect } from 'react-redux';
 import {
@@ -114,7 +115,7 @@ class clientSelectionAddEdit extends Component {
             selectedClientSelection: { label: Resources.clientSelectionType[currentLanguage], value: "0" },
             selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
             selectedbuildingno: { label: Resources.Buildings[currentLanguage], value: "0" },
-            answer: RichTextEditor.createEmptyValue(),
+            answer: '',
         }
 
         if (!Config.IsAllow(3147) && !Config.IsAllow(3148) && !Config.IsAllow(3150)) {
@@ -138,7 +139,8 @@ class clientSelectionAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -149,7 +151,7 @@ class clientSelectionAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: RichTextEditor.createValueFromString(nextProps.document.answer, 'html')
+                answer:  nextProps.document.answer
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -381,36 +383,36 @@ class clientSelectionAddEdit extends Component {
             }
         });
 
-        if (isEdit === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-                this.setState({
-                    contractsPos: [...result]
-                });
+        dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+            if (isEdit === false) { 
+                let contractId = this.props.document.contractId;
+                let selectedContract = {};
+                if (contractId) {
+                    selectedContract = _.find(result, function (i) { return i.value == contractId; });
+                    this.setState({
+                        selectedContract: selectedContract
+                    });
+                }
+            }
+            this.setState({
+                contractsPos: [...result]
             });
-        }
+        });
     }
 
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
+        if (value != null) { 
+            let original_document = { ...this.state.document };
 
-            this.setState({ answer: value });
-            if (value.toString('markdown').length > 1) {
+            let updated_document = {}; 
+            updated_document.answer = value; 
+            updated_document = Object.assign(original_document, updated_document);
 
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document.answer = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
+            this.setState({
+                document: updated_document,
+                answer: value 
+            });
         }
-
     };
 
     handleChange(e, field) {
@@ -525,7 +527,7 @@ class clientSelectionAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -558,7 +560,7 @@ class clientSelectionAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.clientSelectionLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.clientSelectionLog[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -680,7 +682,7 @@ class clientSelectionAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                              <Dropdown
+                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -697,7 +699,7 @@ class clientSelectionAddEdit extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
@@ -720,7 +722,7 @@ class clientSelectionAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                       <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
@@ -733,7 +735,7 @@ class clientSelectionAddEdit extends Component {
                                                                         name="toCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
@@ -828,7 +830,7 @@ class clientSelectionAddEdit extends Component {
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor
+                                                                <TextEditor
                                                                     value={this.state.answer}
                                                                     onChange={this.onChangeMessage.bind(this)}
                                                                 />
@@ -853,11 +855,11 @@ class clientSelectionAddEdit extends Component {
                                                             <label className="control-label">{Resources.modifications[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
                                                                 <input type="radio" name="clientSelection-status" defaultChecked={this.state.document.isModification === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isModification')} />
-                                                                <label>{Resources.oppened[currentLanguage]}</label>
+                                                                <label>{Resources.yes[currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue">
                                                                 <input type="radio" name="clientSelection-status" defaultChecked={this.state.document.isModification === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'isModification')} />
-                                                                <label>{Resources.closed[currentLanguage]}</label>
+                                                                <label>{Resources.no[currentLanguage]}</label>
                                                             </div>
                                                         </div>
 

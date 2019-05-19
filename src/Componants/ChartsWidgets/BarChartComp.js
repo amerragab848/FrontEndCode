@@ -33,6 +33,10 @@ class BarChartComp extends Component {
         let barData = [];
         Api.get(this.props.api).then(results => {
             if (this.props.multiSeries === 'no') {
+
+                this.setState({
+                    isLoading: true
+                });
                 results.map((item) => {
                     barData.push({ 'value': item[this.props.y], 'name': item[this.props.catagName] })
                     return null;
@@ -41,21 +45,28 @@ class BarChartComp extends Component {
             }
             else {
                 let groupedBarData = []
+
+                this.setState({
+                    isLoading: true
+                });
                 this.props.barContent.map((bar) => {
                     results.map((obj) => {
                         groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
                         return null;
                     })
-
                     return null;
                 })
+
                 this.setState({
-                    isLoading: false,
-                    groupedBarData: groupedBarData
+                    isLoading: false, groupedBarData: groupedBarData
                 });
             }
 
         }).catch((ex) => {
+
+            this.setState({
+                isLoading: false
+            });
         });
     }
 
@@ -66,6 +77,9 @@ class BarChartComp extends Component {
                     <div className="col-md-8 col-lg-6">
                         <div className="panel barChart__container">
                             <div className="panel-body">
+                                <h2>
+                                    {this.props.title}
+                                </h2>
                                 {this.state.isLoading == false ?
                                     <ResponsiveContainer
                                         render={
@@ -91,6 +105,9 @@ class BarChartComp extends Component {
                         <div className="col-md-8 col-lg-6">
                             <div className="panel barChart__container">
                                 <div className="panel-body">
+                                    <h2>
+                                        {this.props.title}
+                                    </h2>
                                     <ResponsiveContainer
                                         render={
                                             ({ width }) =>
@@ -101,7 +118,7 @@ class BarChartComp extends Component {
                                                         isHorizontal={false}
                                                         margin={marginObject}
                                                         colorSchema={colorSchema}
-                                                        
+
                                                     />
                                                 </div>
                                         }
@@ -113,7 +130,7 @@ class BarChartComp extends Component {
                 }
 
 
-            </Fragment >
+            </Fragment>
         );
     }
 }

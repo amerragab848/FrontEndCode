@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import moment from "moment";
 import Resources from '../../resources.json';
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import {
@@ -11,6 +12,7 @@ import {
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 
 class ExportDetails extends Component {
 
@@ -25,58 +27,70 @@ class ExportDetails extends Component {
     }
 
     tableToExcel(Fields, items, name) {
-        
-        var uri = 'data:application/vnd.ms-excel;base64,'
-            , template = '<html xmlns: o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
-                + '<head> '
-                + '<style>td {border: 0.5pt solid #c0c0c0} .tRight {text - align: right} .tLeft {text - align: left} </style>'
-                + '<xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet><x: Name>{worksheet}</x: Name><x: WorksheetOptions><x: DisplayGridlines/></x: WorksheetOptions></x: ExcelWorksheet ></x: ExcelWorksheets ></x: ExcelWorkbook ></xml >'
-                + '<meta http-equiv="content-type" content="text/plain; charset=UTF-8" />'
-                + '<h2> Procoor Document </h2>'
-                + '</head > '
-                + '<body>'
-                + ' <table>{Fields}</table>   <table> <h6>Document Cycles </h6></table> '
-                + ' <table>{items}</table>   <table> <h6> Attachments </h6></table> '
-                + ' <table>{attachmentTable}</table>   <table><h6>   </table> '
-                + ' <table>{workflowCycles}</table>   <table> Doc. Attachments </table> '
-                + ' <table>{docAttachments}</table>     '
-                + '</body></html > '
-            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-
-        var Fields = '', items = '', attachmentTable = '', workflowCycles = '', docAttachments = '';
-        if (!'Fields'.nodeType) Fields = document.getElementById('Fields').innerHTML
-
-        if (this.props.items.length) items = document.getElementById('items').innerHTML
-
-        if (!'attachmentTable'.nodeType) attachmentTable = document.getElementById('attachmentTable').innerHTML
-        if (this.props.workFlowCycles.length) workflowCycles = document.getElementById('workflowCycles').innerHTML
-        if (this.props.attachDocuments.length) docAttachments = document.getElementById('attachDocuments').innerHTML
-
-        var ctx = {
-            name: 'procoor Export',
-            Fields: Fields,
-            items: items,
-            attachmentTable: attachmentTable,
-            workflowCycles: workflowCycles,
-            docAttachments: docAttachments
+        if (this.state.isExcel == false) {
+            const input = document.getElementById('test');
+            html2canvas(input)
+                .then((canvas) => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF();
+                    pdf.addImage(imgData, 'JPEG', 0, 0);
+                    // pdf.output('dataurlnewwindow');
+                    pdf.save("download.pdf");
+                })
         }
+        else {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns: o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
+                    + '<head> '
+                    + '<style>td {border: 0.5pt solid #c0c0c0} .tRight {text - align: right} .tLeft {text - align: left} </style>'
+                    + '<xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet><x: Name>{worksheet}</x: Name><x: WorksheetOptions><x: DisplayGridlines/></x: WorksheetOptions></x: ExcelWorksheet ></x: ExcelWorksheets ></x: ExcelWorkbook ></xml >'
+                    + '<meta http-equiv="content-type" content="text/plain; charset=UTF-8" />'
+                    + '<h2> Procoor Document </h2>'
+                    + '</head > '
+                    + '<body>'
+                    + ' <table>{Fields}</table>   <table> <h6>Document Cycles </h6></table> '
+                    + ' <table>{items}</table>   <table> <h6> Attachments </h6></table> '
+                    + ' <table>{attachmentTable}</table>   <table><h6>   </table> '
+                    + ' <table>{workflowCycles}</table>   <table> Doc. Attachments </table> '
+                    + ' <table>{docAttachments}</table>     '
+                    + '</body></html > '
+                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
 
-        var blob = new Blob([format(template, ctx)]);
-        //var blobURL = window.URL.createObjectURL(blob);
+            var Fields = '', items = '', attachmentTable = '', workflowCycles = '', docAttachments = '';
+            if (!'Fields'.nodeType) Fields = document.getElementById('Fields').innerHTML
 
-        if (this.ifIE()) {
-            //csvData = table.innerHTML;
-            if (window.navigator.msSaveBlob) {
-                var blob = new Blob([format(template, ctx)], {
-                    type: "text/html"
-                });
-                return navigator.msSaveBlob(blob, '' + name + '.xls');
+            if (this.props.items.length) items = document.getElementById('items').innerHTML
+
+            if (!'attachmentTable'.nodeType) attachmentTable = document.getElementById('attachmentTable').innerHTML
+            if (this.props.workFlowCycles.length) workflowCycles = document.getElementById('workflowCycles').innerHTML
+            if (this.props.attachDocuments.length) docAttachments = document.getElementById('attachDocuments').innerHTML
+
+            var ctx = {
+                name: 'procoor Export',
+                Fields: Fields,
+                items: items,
+                attachmentTable: attachmentTable,
+                workflowCycles: workflowCycles,
+                docAttachments: docAttachments
             }
-        }
-        else
-            return window.location.href = uri + base64(format(template, ctx))
 
+            var blob = new Blob([format(template, ctx)]);
+            //var blobURL = window.URL.createObjectURL(blob);
+
+            if (this.ifIE()) {
+                //csvData = table.innerHTML;
+                if (window.navigator.msSaveBlob) {
+                    var blob = new Blob([format(template, ctx)], {
+                        type: "text/html"
+                    });
+                    return navigator.msSaveBlob(blob, '' + name + '.xls');
+                }
+            }
+            else
+                return window.location.href = uri + base64(format(template, ctx))
+
+        }
     }
 
     ifIE() {
@@ -88,7 +102,7 @@ class ExportDetails extends Component {
     drawFiled() {
         let fields = DED[this.props.docTypeId]
         let data = this.props.document
-    
+
         let rows = fields.fields.map((field, index) => {
             let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
             let nextIndex = (index + 1);
@@ -302,15 +316,14 @@ class ExportDetails extends Component {
     }
 
     handleChange(e, field) {
-
         this.setState({
-            [field]: e.target
+            [field]: e.target.value
         });
     }
 
     render() {
         return (
-            <Fragment>
+            <Fragment id={'docExport'}>
                 <div className="dropWrapper">
                     <div className="proForm customProform">
 
@@ -341,7 +354,7 @@ class ExportDetails extends Component {
                         <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => this.tableToExcel('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
                     </div>
                 </div>
-                <div style={{ display: 'none' }}>
+                <div id="test" style={{ display: 'block' }}>
                     {this.drawFiled()}
                     {this.drawItems()}
                     {this.drawAttachments()}

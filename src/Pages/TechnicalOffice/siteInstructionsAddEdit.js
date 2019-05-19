@@ -12,8 +12,8 @@ import Resources from "../../resources.json";
 
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
 
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -111,7 +111,7 @@ class siteInstructionsAddEdit extends Component {
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             selecetedinspectionRequest: { label: Resources.inspectionRequest[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue(),
+            message: '',
         }
 
         if (!Config.IsAllow(635) && !Config.IsAllow(636) && !Config.IsAllow(638)) {
@@ -133,7 +133,8 @@ class siteInstructionsAddEdit extends Component {
             }
         }
     };
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         })
@@ -144,7 +145,7 @@ class siteInstructionsAddEdit extends Component {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
+                message: nextProps.document.message
             }, function () {
                 let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
                 let requiredDate = moment(this.state.document.requiredDate).format('DD/MM/YYYY')
@@ -188,7 +189,7 @@ class siteInstructionsAddEdit extends Component {
             this.setState({ loadingPage: true })
             let url = "GetLogsSiteInstructionsForEdit?id=" + this.state.docId
             this.setState({ loadingPage: true })
-            this.props.actions.documentForEdit(url ,this.state.docTypeId ,'siteInstructions').then(() => {
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'siteInstructions').then(() => {
                 this.checkDocumentIsView()
                 setTimeout(() => {
                     this.setState({ loadingPage: false })
@@ -219,8 +220,8 @@ class siteInstructionsAddEdit extends Component {
                 orderId: 0,
                 orderType: ''
             };
-            this.setState({ document: siteInstruction }); 
-            this.fillDropDowns(false); 
+            this.setState({ document: siteInstruction });
+            this.fillDropDowns(false);
             this.props.actions.documentForAdding()
         }
     };
@@ -318,23 +319,15 @@ class siteInstructionsAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-
+        if (value != null) {
             this.setState({ message: value });
-            if (value.toString('markdown').length > 1) {
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document.message = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
+            let original_document = { ...this.state.document };
+            let updated_document = {};
+            updated_document.message = value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
         }
 
     };
@@ -432,7 +425,6 @@ class siteInstructionsAddEdit extends Component {
     }
 
     saveAndExit(event) {
-
         this.props.history.push({
             pathname: "/siteInstructions/" + this.state.projectId
         });
@@ -448,7 +440,7 @@ class siteInstructionsAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -478,7 +470,6 @@ class siteInstructionsAddEdit extends Component {
     }
 
     render() {
-        console.log(this.state)
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -493,12 +484,9 @@ class siteInstructionsAddEdit extends Component {
         ];
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
-                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.siteInstructions[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.siteInstructions[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
-
                     {this.state.loadingPage ? <LoadingSection /> :
                         <div className="doc-container">
                             {
@@ -533,7 +521,6 @@ class siteInstructionsAddEdit extends Component {
 
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                     <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                                         <div className="proForm first-proform">
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.subject[currentLanguage]}</label>
@@ -599,7 +586,7 @@ class siteInstructionsAddEdit extends Component {
                                                                 <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                     <Dropdown
+                                                                        <Dropdown
                                                                             data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedFromCompany}
@@ -612,7 +599,7 @@ class siteInstructionsAddEdit extends Component {
                                                                             id="fromCompanyId" />
                                                                     </div>
                                                                     <div className="super_company">
-                                                                    <Dropdown
+                                                                        <Dropdown
                                                                             isMulti={false}
                                                                             data={this.state.fromContacts}
                                                                             selectedValue={this.state.selectedFromContact}
@@ -633,7 +620,7 @@ class siteInstructionsAddEdit extends Component {
                                                                 <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                   <Dropdown
+                                                                        <Dropdown
                                                                             isMulti={false}
                                                                             data={this.state.companies}
                                                                             selectedValue={this.state.selectedToCompany}
@@ -642,7 +629,7 @@ class siteInstructionsAddEdit extends Component {
                                                                             name="toCompanyId" />
                                                                     </div>
                                                                     <div className="super_company">
-                                                                    <Dropdown
+                                                                        <Dropdown
                                                                             isMulti={false}
                                                                             data={this.state.ToContacts}
                                                                             selectedValue={this.state.selectedToContact}
@@ -680,7 +667,7 @@ class siteInstructionsAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input">
-                                                                <Dropdown 
+                                                                <Dropdown
                                                                     title="inspectionRequest"
                                                                     isMulti={false}
                                                                     data={this.state.inspectionRequests}
@@ -691,16 +678,16 @@ class siteInstructionsAddEdit extends Component {
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                 <div className="inputDev ui input">
-                                                                    <RichTextEditor
+                                                                    <TextEditor
                                                                         value={this.state.message}
-                                                                        onChange={this.onChangeMessage.bind(this)}
-                                                                    />
+                                                                        onChange={this.onChangeMessage.bind(this)} />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">
+                                                        { this.props.changeStatus === false?
                                                             <React.Fragment>
-                                                                {this.state.isLoading === false ? (
+                                                                {this.state.isLoading === false  ? (
                                                                     <button
                                                                         className={this.props.changeStatus == false ? 'primaryBtn-1 btn meduimBtn ' : ' primaryBtn-1 btn meduimBtn  disNone'}
                                                                         type="submit"
@@ -716,7 +703,7 @@ class siteInstructionsAddEdit extends Component {
                                                                             </div>
                                                                         </button>
                                                                     )}
-                                                            </React.Fragment>
+                                                            </React.Fragment>:null}
                                                         </div>
                                                         {
                                                             this.props.changeStatus === true ?

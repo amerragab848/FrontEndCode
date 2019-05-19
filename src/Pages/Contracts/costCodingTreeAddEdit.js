@@ -56,7 +56,8 @@ class CostCodingTreeAddEdit extends Component {
       isLoading: false,
       drawChilderns: false,
       showDeleteModal: false,
-      docId: ""
+      docId: "",
+      IsFirstParent: false
     };
 
     if (!Config.IsAllow(134) || !Config.IsAllow(135) || !Config.IsAllow(137)) {
@@ -205,7 +206,7 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   closePopUp() {
-    this.state({
+    this.setState({
       viewPopUp: false
     });
   }
@@ -229,7 +230,7 @@ class CostCodingTreeAddEdit extends Component {
       isLoading: true
     });
     let saveDocument = { ...this.state.document };
-    saveDocument.parentId = this.state.parentId;
+    saveDocument.parentId = this.state.IsFirstParent ? '' : this.state.parentId;
     saveDocument.projectId = this.state.projectId;
 
     dataservice.addObject("AddcostCodeTree", saveDocument).then(result => {
@@ -243,11 +244,14 @@ class CostCodingTreeAddEdit extends Component {
         costForcast: "",
         parentId: ""
       };
-
+      let data = this.state.trees
+      data.push(result)
       this.setState({
+        trees: data,
         viewPopUp: false,
         document: treeDocument,
-        isLoading: false
+        isLoading: false,
+        IsFirstParent: false
       });
     }).catch(ex => {
       this.setState({ viewPopUp: false });
@@ -318,8 +322,10 @@ class CostCodingTreeAddEdit extends Component {
         <div className="documents-stepper noTabs__document">
           <div className="tree__header">
             <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
+            <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
+              {Resources["goAdd"][currentLanguage]}
+            </button>
           </div>
-          {/* <HeaderDocument projectName={''} docTitle={Resources.costCodingTree[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} /> */}
           <div className="Eps__list">
             {
               this.state.trees.map((item, i) => {

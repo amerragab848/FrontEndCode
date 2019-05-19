@@ -16,7 +16,6 @@ import pdfMaxi from '../../Styles/images/pdfMaxi.png'
 
 import Api from '../../api';
 import Resources from '../../resources.json';
-import Submittals from '../../../src/submittals.pdf'
 import PDFViewer from 'mgr-pdf-viewer-react'
 import { connect } from 'react-redux';
 import SkyLight from 'react-skylight';
@@ -30,7 +29,7 @@ import Config from '../../Services/Config';
 import _ from "lodash";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
+let activeURL=''
 class ViewAttachmments extends Component {
 
     constructor(props) {
@@ -39,11 +38,12 @@ class ViewAttachmments extends Component {
         this.state = {
             data: [],
             docTypeId: this.props.docTypeId,
-            docId: this.props.docId
+            docId: this.props.docId,
+            activeURL: ''
         }
     }
 
-    deletehandler = (file) => {
+    deletehandler = (file) => { 
         let urlDelete = 'DeleteAttachFileById?id=' + file.id
         this.props.actions.deleteFile(urlDelete, file);
     }
@@ -52,11 +52,22 @@ class ViewAttachmments extends Component {
         if (extension == 'pdf') {
             let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
             Api.get(urlVersion).then(result => {
-                if (result)
-                    this.setState({ view: true })
-                this.simpleDialog.show()
-            }).catch(ex => {
+                if (result) {
+                   // this.setState({ view: true })
+                    this.simpleDialog.show()
+                }
             });
+        }
+    }
+
+    previewPDF = (item, extension) => {
+        if (extension == 'pdf') {
+            this.setState({
+                view: true,
+                activeURL: item.attachFile
+            })
+            activeURL=item.attachFile;
+            this.simpleDialog.show()
         }
     }
 
@@ -71,11 +82,8 @@ class ViewAttachmments extends Component {
 
     getData() {
         let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId
-        console.log('viewFiles...' + this.props.files.length)
         if (this.props.files.length === 0) {//&& this.props.changeStatus === true)
-            this.props.actions.GetUploadedFiles(url).then(file => {
-                console.log('file', file)
-            });
+            this.props.actions.GetUploadedFiles(url);
         }
     }
 
@@ -102,7 +110,7 @@ class ViewAttachmments extends Component {
                     <td>
                         <div className="contentCell tableCell-1">
                             <span>
-                                <img src={extension} alt={extension} width="100%" height="100%" />
+                                <img src={extension} alt={extension} width="100%" height="100%" onClick={() => this.previewPDF(item, ext)} />
                             </span>
                         </div>
                     </td>
@@ -149,7 +157,7 @@ class ViewAttachmments extends Component {
                         <tr>
                             <th>
                                 <div className="headCell tableCell-1">
-                                    <span> {Resources['arrange'][currentLanguage]} </span>
+                                    <span> {Resources['actions'][currentLanguage]} </span>
                                 </div>
                             </th>
                             <th>
@@ -175,6 +183,7 @@ class ViewAttachmments extends Component {
                         {tabel}
                     </tbody>
                 </table>
+
                 {this.state.view ?
                     <div className="largePopup largeModal pdf__popup" style={{ display: this.state.view ? 'block' : 'none' }}>
                         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref}>
@@ -196,10 +205,10 @@ class ViewAttachmments extends Component {
                                         </div>
                                     </div>
                                 </div>
+
                                 <PDFViewer
                                     document={{
-                                        file: Submittals
-                                        //url: 'https://newgizastorage.blob.core.windows.net/project-files/b9a8b348-45fd-4f86-ba94-7a9d90cee1c6.pdf'
+                                        url: activeURL
                                     }} />
                             </div>
                         </SkyLight>

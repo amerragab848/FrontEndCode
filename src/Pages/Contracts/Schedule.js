@@ -5,7 +5,6 @@ import ReactTable from "react-table";
 import moment from "moment";
 import dataservice from "../../Dataservice";
 import Config from "../../Services/Config.js";
-import CryptoJS from "crypto-js";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
@@ -14,6 +13,7 @@ import ConfirmationModal from '../../Componants/publicComponants/ConfirmationMod
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import Api from "../../api.js";
+import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const _ = require('lodash')
 const TabTwoSchema = Yup.object().shape({
@@ -24,7 +24,7 @@ const TabOneSchema = Yup.object().shape({
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
     arrange: Yup.number().required(Resources['arrangeRequired'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
     taskId: Yup.string().required(Resources['taskIdRequired'][currentLanguage])
-});
+})
 
 class Schedule extends Component {
 
@@ -227,18 +227,26 @@ class Schedule extends Component {
             }
         ]
 
+        let ExportColumns = [
+            { key: 'arrange', name: Resources['arrange'][currentLanguage] },
+            { key: 'taskId', name: Resources['taskId'][currentLanguage] },
+            { key: 'description', name: Resources['description'][currentLanguage] },
+            { key: 'startDate', name: Resources['startDate'][currentLanguage] },
+            { key: 'finishDate', name: Resources['finishDate'][currentLanguage] }, ,
+        ]
+
         return (
             <div className="doc-pre-cycle">
                 <div className="document-fields">
                     <Formik
-                        enableReinitialize={true}
+
                         initialValues={{
                             description: '',
                             arrange: this.state.ScheduleLsit.length ? this.state.ScheduleLsit.length + 1 : 1,
                             ProjectSchedule: '',
                             taskId: ''
                         }}
-
+                        enableReinitialize={true}
                         validationSchema={this.state.TabActive == 0 ? TabOneSchema : TabTwoSchema}
 
                         onSubmit={(values) => { this.SaveSchedule(values) }}>
@@ -271,7 +279,12 @@ class Schedule extends Component {
                                                 <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                 <div className={"inputDev ui input " + (errors.description ? 'has-error' : !errors.description && touched.description ? (" has-success") : " ")}>
                                                     <input type="text" className="form-control" id="description" value={values.description}
-                                                        name="description" placeholder={Resources.description[currentLanguage]} onBlur={handleBlur} onChange={handleChange} />
+                                                        name="description" placeholder={Resources.description[currentLanguage]}
+                                                        onBlur={(e) => {
+                                                            handleChange(e)
+                                                            handleBlur(e)
+                                                        }}
+                                                        onChange={handleChange} />
                                                     {errors.description ? (<em className="pError">{errors.description}</em>) : null}
                                                 </div>
                                             </div>
@@ -286,15 +299,24 @@ class Schedule extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input fullInputWidth">
+                                        <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources.taskId[currentLanguage]}</label>
-                                            <div className={"inputDev ui input " + (errors.taskId ? 'has-error' : !errors.taskId && touched.taskId ? (" has-success") : " ")}>
-                                                <input className="form-control" id="taskId" value={values.taskId}
-                                                    name="taskId" placeholder={Resources.taskId[currentLanguage]}
-                                                    onBlur={handleBlur} onChange={handleChange} />
-                                                {errors.taskId ? (<em className="pError">{errors.taskId}</em>) : null}
+                                            <div className={"ui input inputDev" + (errors.taskId && touched.taskId ? (" has-error") : "ui input inputDev")} >
+                                                <input type="text" className="form-control" id="taskId"
+                                                    value={values.taskId}
+                                                    name="taskId"
+                                                    placeholder={Resources.taskId[currentLanguage]}
+                                                    onBlur={(e) => {
+                                                        handleChange(e)
+                                                        handleBlur(e)
+                                                    }}
+                                                    onChange={handleChange} />
+                                                {touched.taskId ? (<em className="pError">{errors.taskId}</em>) : null}
+
                                             </div>
                                         </div>
+
+
 
                                         <div className="linebylineInput valid-input">
                                             <div className="inputDev ui input">
@@ -338,7 +360,11 @@ class Schedule extends Component {
                     <header>
                         <h2 className="zero">{Resources['scheduleList'][currentLanguage]}</h2>
                     </header>
-                    <ReactTable ref={(r) => { this.selectTable = r; }}
+                    <div className="filterBTNS exbortBtn">
+                        <Export rows={this.state.ScheduleLsit}
+                            columns={ExportColumns} fileName={Resources['scheduleList'][currentLanguage]} />
+                    </div>
+                    <ReactTable ref={(r) => { this.selectTable = r; }} filterable
                         data={this.state.ScheduleLsit} columns={columns} defaultPageSize={10}
                         minRows={2} noDataText={Resources['noData'][currentLanguage]} />
 

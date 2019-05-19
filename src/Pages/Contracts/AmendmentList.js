@@ -8,6 +8,7 @@ import ConfirmationModal from '../../Componants/publicComponants/ConfirmationMod
 import moment from "moment";
 import dataservice from "../../Dataservice";
 import Config from "../../Services/Config.js";
+import Export from "../../Componants/OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import { Formik, Form } from 'formik';
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
@@ -42,6 +43,36 @@ class AmendmentList extends Component {
             {
                 formatter: customButton,
                 key: 'customBtn'
+            },
+            {
+                key: "arrange",
+                name: Resources["arrange"][currentLanguage],
+                width: 150,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "refDoc",
+                name: Resources["refDoc"][currentLanguage],
+                width: 150,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "statusName",
+                name: Resources["statusName"][currentLanguage],
+                width: 150,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
             },
             {
                 key: "subject",
@@ -91,33 +122,6 @@ class AmendmentList extends Component {
                 sortDescendingFirst: true,
                 formatter: dateFormate
             }, {
-                key: "refDoc",
-                name: Resources["refDoc"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "statusName",
-                name: Resources["statusName"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
                 key: "completionDate",
                 name: Resources["completionDate"][currentLanguage],
                 width: 150,
@@ -146,9 +150,9 @@ class AmendmentList extends Component {
             selectedRow: [],
             AmendmentList: [],
             columns: Gridcolumns,
-            contractId:this.props.contractId,
+            contractId: this.props.contractId,
             ShowPopup: false,
-            projectId:this.props.projectId,
+            projectId: this.props.projectId,
             ContractList: [],
             selectedContract: { label: Resources['selectContract'][currentLanguage], value: "0" },
             ShowPopupItem: false,
@@ -206,8 +210,8 @@ class AmendmentList extends Component {
                     ShowPopupItem: true,
                     AmendmentItems: res
                 })
-            }) 
-         }
+            })
+        }
     }
 
     clickHandlerDeleteRowsMain = selectedRows => {
@@ -518,6 +522,7 @@ class AmendmentList extends Component {
                                     </div>
                                 ) : null}
                                 <ReactTable
+                                    filterable
                                     ref={(r) => {
                                         this.selectTable = r;
                                     }}
@@ -573,8 +578,21 @@ class AmendmentList extends Component {
                                         </div>
 
                                         <div className="fullWidthWrapper slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['save'][currentLanguage]}</button>
+                                            {this.state.isLoading === false ? (
+                                            <button className={ "primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.props.isViewMode}>
+                                                {Resources["save"][currentLanguage]}
+                                            </button>
+                                            ) : (
+                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                            )}
                                         </div>
+                                        
                                     </div>
                                 </Form>
                             )}
@@ -587,8 +605,10 @@ class AmendmentList extends Component {
                         <h2 className="zero">{Resources['assignAmendment'][currentLanguage]}</h2>
                     </header>
                 </div>
-                <div className="filterBTNS">
+                <div className="filterBTNS  exbortBtn">
                     <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} onClick={e => this.setState({ ShowPopup: true })}>{Resources['assignAmendment'][currentLanguage]}</button>
+                    <Export rows={this.state.AmendmentList}
+                            columns={this.state.columns.filter(s=>s.key !=='customBtn')} fileName={Resources['assignAmendment'][currentLanguage]} />
                 </div>
 
                 <div className="grid-container">
@@ -604,7 +624,7 @@ class AmendmentList extends Component {
                     />
                 ) : null
                 }
-            </div >
+            </div>
         )
     }
 }

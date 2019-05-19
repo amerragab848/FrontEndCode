@@ -51,8 +51,7 @@ class projectsAchievements extends Component {
                 { label: '2019', value: "2019" },
                 { label: '2020', value: "2020" },
                 { label: '2021', value: "2021" }
-            ]
-
+            ] 
         }
 
         if (!Config.IsAllow(3680)) {
@@ -94,18 +93,20 @@ class projectsAchievements extends Component {
             res => {
                 this.setState({
                     rows: res,
-                    isLoading: false,showChart:true
+                    isLoading: false,
+                    showChart:true
                 })
                 let _data = []
                 let _catag = []
+                let seriesData = []
                 res.map((item, index) => {
                     _data.push(item.total)
                     _catag.push(item.quarter)
+                    seriesData.push({ name: item.quarter, value: item.total ,stack:index})
                 })
-                let series = []
                 let xAxis = { categories: _catag }
-                series.push({ name: Resources['total'][currentLanguage], data: _data })
-                this.setState({ series, xAxis, noClicks: noClicks + 1 });
+                //series.push({ name: Resources['total'][currentLanguage], data: _data })
+                this.setState({ series:seriesData, xAxis, noClicks: noClicks + 1,showChart:true });
             }
         ).catch(() => {
             this.setState({ isLoading: false })
@@ -118,12 +119,13 @@ class projectsAchievements extends Component {
     }
 
     render() {
-        const Chart =
-            <BarChartComp
+        const Chart = this.state.showChart ?
+            (<BarChartComp
+                multiSeries="no"
                 noClicks={this.state.noClicks}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
-                title={'INCREASES IN PROJECTS'} yTitle={Resources['total'][currentLanguage]} />
+                title={'INCREASES IN PROJECTS'} yTitle={Resources['total'][currentLanguage]} />):null
 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
@@ -173,7 +175,7 @@ class projectsAchievements extends Component {
                     )}
                 </Formik>
                 {this.state.showChart == true ?
-                    <div className="doc-pre-cycle letterFullWidth">
+                    <div className="row">
                         {Chart}
                     </div> : null}
                 <div className="doc-pre-cycle letterFullWidth">

@@ -6,6 +6,7 @@ import moment from "moment";
 import dataservice from "../../Dataservice";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
+import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 
@@ -15,8 +16,8 @@ class PaymentRequisitionList extends Component {
         super(props)
         this.state = {
             paymentRequistionList: [],
-            contractId:this.props.contractId
-           // contractId: 5667
+            contractId: this.props.contractId
+            // contractId: 5667
         }
     }
 
@@ -38,17 +39,17 @@ class PaymentRequisitionList extends Component {
             arrange: 0,
             docApprovalId: 0,
             isApproveMode: false
-          }
+        }
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
         this.props.history.push({
-          pathname: "/" + 'requestPaymentsAddEdit',
-          search: "?id=" + encodedPaylod
+            pathname: "/" + 'requestPaymentsAddEdit',
+            search: "?id=" + encodedPaylod
         });
     }
 
     render() {
-       
+
         let columns = [
             {
                 Header: Resources["action"][currentLanguage],
@@ -95,13 +96,29 @@ class PaymentRequisitionList extends Component {
             }
         ]
 
+        let ExportColumns = [
+            { key: 'arrange', name: Resources['arrange'][currentLanguage] },
+            { key: 'subject', name: Resources['subject'][currentLanguage] },
+            { key: 'totalEarned', name: Resources['totalEarned'][currentLanguage] },
+            { key: 'docDate', name: Resources['docDate'][currentLanguage] },
+            { key: 'currentPaymentDue', name: Resources['currentPaymentDue'][currentLanguage] },
+            { key: 'balanceToFinish', name: Resources['balanceToFinish'][currentLanguage] },
+        ]
+
         return (
             <div>
                 <div className="doc-pre-cycle">
                     <header>
                         <h2 className="zero">{Resources['paymentRequistionList'][currentLanguage]}</h2>
                     </header>
+
+                    <div className="filterBTNS exbortBtn">
+                        <Export rows={this.state.paymentRequistionList}
+                            columns={ExportColumns} fileName={Resources['paymentRequistionList'][currentLanguage]} />
+                    </div>
+
                     <ReactTable
+                        filterable
                         ref={(r) => {
                             this.selectTable = r;
                         }}
