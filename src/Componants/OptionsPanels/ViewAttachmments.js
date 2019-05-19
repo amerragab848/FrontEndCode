@@ -78,7 +78,7 @@ class ViewAttachmments extends Component {
             });
         }
     }
-    
+
     render() {
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
 

@@ -5683,9 +5683,9 @@ line.horizontal-grid-line {
   white-space: nowrap;
 }
 
-.mgrpdf-navigation__controls--disabled {
+/* .mgrpdf-navigation__controls--disabled {
   opacity: 0.4;
-}
+} */
 
 .mgrpdf-navigation.mgrpdf-navigation__controls a {
   color: #fff;
@@ -5760,4 +5760,8 @@ line.horizontal-grid-line {
   letter-spacing: -0.2px;
   color: #f9fbfc;
   left: 46%;
+}
+
+#canvas__wrapper{ 
+    width: 891px;
 }
