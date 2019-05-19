@@ -26,8 +26,9 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
-import { __esModule } from 'react-data-export/dist/ExcelPlugin/components/ExcelFile';
+ 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+ 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
 let projectId = 0;
@@ -115,6 +116,7 @@ class projectWorkFlowAddEdit extends Component {
                 }
                 catch{
                     this.props.history.goBack();
+                    
                 }
             }
             index++;

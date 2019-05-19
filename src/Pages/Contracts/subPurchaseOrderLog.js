@@ -50,6 +50,10 @@ class subPurchaseOrderLog extends Component {
     this.simpleDialog.show();
   };
 
+  hidePopUp = (type) =>{
+    this.setState({ showSubPurchaseOrders: type });
+  }
+
   render() {
     const columns = [
       {
@@ -125,7 +129,7 @@ class subPurchaseOrderLog extends Component {
 
     return (
       <Fragment>
-        <header className="main__header">
+        <header className="doc-pre-btn">
           <h2 className="zero">{Resources["subPOsList"][currentLanguage]}</h2>
           <button
             className={
@@ -157,6 +161,7 @@ class subPurchaseOrderLog extends Component {
                 contractId={this.state.contractId}
                 projectId={this.state.projectId}
                 isViewMode={this.state.isViewMode}
+                hidePopUp={this.hidePopUp}
               />
             </Fragment>
           </SkyLight>

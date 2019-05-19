@@ -578,8 +578,21 @@ class AmendmentList extends Component {
                                         </div>
 
                                         <div className="fullWidthWrapper slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['save'][currentLanguage]}</button>
+                                            {this.state.isLoading === false ? (
+                                            <button className={ "primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.props.isViewMode}>
+                                                {Resources["save"][currentLanguage]}
+                                            </button>
+                                            ) : (
+                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                            )}
                                         </div>
+                                        
                                     </div>
                                 </Form>
                             )}
@@ -611,7 +624,7 @@ class AmendmentList extends Component {
                     />
                 ) : null
                 }
-            </div >
+            </div>
         )
     }
 }
