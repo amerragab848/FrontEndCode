@@ -12,8 +12,6 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
-
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -463,7 +461,7 @@ class LettersAddEdit extends Component {
 
         ];
         return (
-            <div className="mainContainer">
+            <div className="mainContainer" id={'mainContainer'}>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
