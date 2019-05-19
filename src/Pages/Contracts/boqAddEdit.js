@@ -39,6 +39,7 @@ const poqSchema = Yup.object().shape({
     fromCompany: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
 });
+
 const itemsValidationSchema = Yup.object().shape({
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
@@ -49,6 +50,7 @@ const itemsValidationSchema = Yup.object().shape({
     quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
     unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
 });
+
 const contractSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     tax: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
@@ -58,10 +60,12 @@ const contractSchema = Yup.object().shape({
     advancedPayment: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
     advancedPaymentAmount: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
 });
+
 const purchaseSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     advancedPaymentPercent: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage])
 });
+
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
     boqChild: Yup.string().required(Resources['boqSubType'][currentLanguage]),
@@ -399,6 +403,7 @@ class bogAddEdit extends Component {
             })
         });
     }
+
     componentDidMount() {
 
     }
@@ -444,6 +449,7 @@ class bogAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
     }
+
     getTabelData() {
         let Table = []
         this.setState({ isLoading: true, LoadingPage: true })
@@ -513,6 +519,7 @@ class bogAddEdit extends Component {
         }
 
     }
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -550,6 +557,7 @@ class bogAddEdit extends Component {
             this.setState({ isLoading: false })
         })
     }
+
     editBoq = (values) => {
         if (this.state.isViewMode) {
             this.NextStep()
@@ -672,6 +680,7 @@ class bogAddEdit extends Component {
             }
         })
     }
+
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
@@ -699,6 +708,7 @@ class bogAddEdit extends Component {
             })
         }
     }
+
     NextStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
@@ -725,6 +735,7 @@ class bogAddEdit extends Component {
                 break;
         }
     }
+
     PreviousStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
@@ -768,26 +779,31 @@ class bogAddEdit extends Component {
 
         }
     }
+
     clickHandlerDeleteRowsMain = selectedRows => {
         this.setState({
             showDeleteModal: true,
             selectedRow: selectedRows
         });
     };
+
     onRowsSelected = selectedRows => {
         this.setState({
             selectedRow: selectedRows
         });
     }
+
     onRowsDeselected = () => {
         this.setState({
             selectedRow: []
         });
     }
+
     assign = () => {
         this.setState({ showBoqModal: true })
         this.boqTypeModal.show()
     }
+
     assignBoqType = () => {
         this.setState({ showBoqModal: true, isLoading: true })
         let itemsId = []
@@ -809,16 +825,19 @@ class bogAddEdit extends Component {
         })
 
     }
+
     _executeBeforeModalClose = () => {
         this.setState({
             showPopUp: false, btnText: 'add', showBoqModal: false
         })
     }
+
     _executeBeforeModalOpen = () => {
         this.setState({
             btnText: 'save'
         })
     }
+
     showBtnsSaving() {
         let btn = null;
 
@@ -1178,6 +1197,7 @@ class bogAddEdit extends Component {
             </div>
 
         </React.Fragment >
+   
         const purchaseOrderContent = <React.Fragment>
             <div className="document-fields">
                 <Formik
@@ -1424,7 +1444,8 @@ class bogAddEdit extends Component {
                 </Formik>
             </div>
         </React.Fragment >
-        let actions = [
+    
+       let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
@@ -1435,6 +1456,7 @@ class bogAddEdit extends Component {
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ];
+   
         let Step_1 = <React.Fragment>
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
@@ -1611,7 +1633,8 @@ class bogAddEdit extends Component {
             </div>
 
         </React.Fragment>
-        let Step_2 = <React.Fragment>
+      
+      let Step_2 = <React.Fragment>
             {addItemContent}
             <Fragment>
                 <XSLfile key='boqImport' docId={this.state.docId} docType='boq' link={IPConfig.downloads + '/Downloads/Excel/BOQ.xlsx'} header='addManyItems'
@@ -1634,13 +1657,14 @@ class bogAddEdit extends Component {
                 </div>
             </div>
         </React.Fragment>
-        let Step_3 = <React.Fragment>
+    
+      let Step_3 = <React.Fragment>
             {this.state.loadingContractPurchase ? <LoadingSection /> : null}
             <div className="company__total proForm">
                 <div className="form-group ">
                     <label className="control-label">{Resources.company[currentLanguage]}</label>
                     <div className="ui right labeled input">
-                        <input autoComplete="off" type="text" value={this.props.document.subject} readOnly data-toggle="tooltip" title="procoor Company" />
+                        <input autoComplete="off" type="text" value={this.state.selectedFromCompany.label} readOnly data-toggle="tooltip" title="procoor Company" />
                         <span className="total_money">{Resources.total[currentLanguage]}</span>
                         <div className="ui basic label greyLabel"> {this.props.document.total}</div>
                     </div>
