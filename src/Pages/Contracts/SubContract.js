@@ -264,14 +264,14 @@ class SubContract extends Component {
                             Api.post('AddContractsOrder', item).then(() => {
                                 if (count == this.state.selectedRows.length - 1){
                                     toast.success(Resources["operationSuccess"][currentLanguage]);
-                                  
-                                    this.props.history.push("/contractInfo/" + this.props.projectId);
-
+                                   
                                     this.setState({isLoading:false})}
                                 else
                                     count++;
                             })
                         })
+
+                        this.props.hidePopUp(false);
                     }).catch(() => {
                         toast.error(Resources["operationCanceled"][currentLanguage]);
                         this.setState({ isLoading: false })

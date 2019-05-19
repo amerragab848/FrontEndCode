@@ -621,6 +621,7 @@ class ContractInfoAddEdit extends Component {
     switch (this.state.CurrStep) {
       case 1:
         this.setState({
+          activeTab : "pricedItem",
           CurrStep: this.state.CurrStep + 1,
           firstComplete: true
         });
@@ -742,6 +743,7 @@ class ContractInfoAddEdit extends Component {
   StepTwoLink = () => {
     if (docId !== 0) {
       this.setState({
+        activeTab : "pricedItem",
         firstComplete: true,
         secondComplete: true,
         CurrStep: 2,
@@ -903,7 +905,7 @@ class ContractInfoAddEdit extends Component {
       toast.error(Resources["operationCanceled"][currentLanguage]);
       this.setState({ isLoading: false });
     });
-  }
+  } 
 
   render() {
   
@@ -1471,8 +1473,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
           {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>):null}
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
+          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
+          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} />) : null}
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
@@ -1692,6 +1694,7 @@ class ContractInfoAddEdit extends Component {
     );
   }
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     document: state.communication.document,

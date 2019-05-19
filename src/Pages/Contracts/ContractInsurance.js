@@ -433,7 +433,7 @@ class ContractInsurance extends Component {
                 </div>
             </header>
            <ReactTable data={this.state.insuranceData}
-                       columns={columns}
+                       columns={columns} filterable
                        defaultPageSize={5}
                        noDataText={Resources["noData"][currentLanguage]}
                        className="-striped -highlight" />
