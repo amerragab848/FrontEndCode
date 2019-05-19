@@ -905,6 +905,11 @@ class ContractInfoAddEdit extends Component {
     });
   }
 
+  hidePopUp = () =>{
+
+
+  }
+
   render() {
   
     const columnsDetails  = [
@@ -1471,8 +1476,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
           {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>):null}
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
+          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
+          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} />) : null}
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">

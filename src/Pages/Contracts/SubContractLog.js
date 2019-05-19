@@ -124,6 +124,10 @@ class SubContractLog extends Component {
         this.setState({viewModel:true});
     }
 
+    hidePopUp=(type)=>{
+        this.setState({viewModel:type});
+    }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridSetupWithFilter
@@ -143,7 +147,7 @@ class SubContractLog extends Component {
                 {dataGrid}
             </div>
             :
-            <SubContract projectId={this.state.projectId} contractId={this.state.contractId}/>
+            <SubContract projectId={this.state.projectId} contractId={this.state.contractId} hidePopUp={this.hidePopUp}/>
             }
         </Fragment>
              )

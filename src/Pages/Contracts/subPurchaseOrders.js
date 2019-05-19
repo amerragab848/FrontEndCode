@@ -174,9 +174,12 @@ class SubPurchaseOrders extends Component {
     savePO() {
 
         let saveDocument = {
-            ...this.state.document,
-            isLoading:true 
+            ...this.state.document 
         };
+
+        this.setState({
+          isLoading:true 
+        });
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.completionDate = moment(saveDocument.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -205,12 +208,15 @@ class SubPurchaseOrders extends Component {
           };
 
             this.setState({
+                isLoading:false,
                 purchaseOrderData : originalData,
                 document: objDocument,
                 selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
                 selectedContract: { label: Resources.toContactRequired[currentLanguage], value: "0" } ,
                 selectedContractWithContact: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }, 
             });
+
+            this.props.hidePopUp(false);
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
