@@ -1,8 +1,7 @@
 import config from "./IP_Configrations.json";
 import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
-
-//let currentLanguage = localStorage.getItem('lang');
+ 
 let Authorization = localStorage.getItem('userToken');
 
 const Domain = config.static
