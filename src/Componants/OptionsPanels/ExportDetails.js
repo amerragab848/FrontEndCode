@@ -5,6 +5,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
+import Profile from '../../Styles/images/icons/person.svg'
+import PdfImg from '../../Styles/images/pdfAttache.png'
 import {
     bindActionCreators
 } from 'redux';
@@ -28,13 +30,12 @@ class ExportDetails extends Component {
 
     tableToExcel(Fields, items, name) {
         if (this.state.isExcel == false) {
-            const input = document.getElementById('test');
+            const input = document.getElementById('printPdf');
             html2canvas(input)
                 .then((canvas) => {
                     const imgData = canvas.toDataURL('image/png');
                     const pdf = new jsPDF();
                     pdf.addImage(imgData, 'JPEG', 0, 0);
-                    // pdf.output('dataurlnewwindow');
                     pdf.save("download.pdf");
                 })
         }
@@ -140,6 +141,38 @@ class ExportDetails extends Component {
             </table>
         )
     }
+
+    drawFiled_pdf() {
+        console.log(this.props)
+
+        let fields = DED[this.props.docTypeId]
+        let data = this.props.document
+        let rows = fields.fields.map((field, index) => {
+            let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
+            return (<tr key={index}>
+                <td>
+                    <h4 className="ui image header">
+                        <img src={Profile} alt="Doc." />
+                        <div className="content">
+                            {Resources[field.name][currentLanguage]}
+                        </div>
+                    </h4>
+                </td>
+                <td>
+                    {formatData}
+                </td>
+            </tr>
+            )
+        });
+        return (
+            <table id="Fields"  >
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+        )
+    }
+
     drawItems() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
         let rows = this.props.items.length > 0 ?
@@ -157,7 +190,8 @@ class ExportDetails extends Component {
         let fieldsName = DED[this.props.docTypeId].friendlyNames
         if (fieldsName.length > 0) {
             return (
-                <table id="items" style={{ border: 'double' }}>
+                <table id="items " style={{ border: 'double' }}>
+
                     <thead valign="top">
                         <tr style={{ border: '4px' }}>
                             {fieldsName.map(column => {
@@ -177,6 +211,49 @@ class ExportDetails extends Component {
             return (null)
         }
     }
+
+    drawItems_pdf() {
+        let fieldsItems = DED[this.props.docTypeId].columnsItems
+        let rows = this.props.items.length > 0 ?
+            (this.props.items.map(row => {
+                return (
+                    <tr>
+                        {fieldsItems.map(field => {
+                            return (<td><div className="contentCell tableCell-2"><span>{row[field]}</span></div></td>)
+                        })}
+                    </tr>
+                )
+            })
+            )
+            : null
+        let fieldsName = DED[this.props.docTypeId].friendlyNames
+        if (fieldsName.length > 0) {
+            return (
+                <table id="items" className="attachmentTable attachmentTable__items">
+                    <thead >
+                        <tr >
+                            {fieldsName.map(column => {
+                                return (
+                                    <th>
+                                        <div className="headCell ">
+                                            {Resources[column][currentLanguage]}
+                                        </div>
+                                    </th>
+                                )
+                            })}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+            )
+        }
+        else {
+            return (null)
+        }
+    }
+
 
     drawAttachments() {
         return (
@@ -219,6 +296,70 @@ class ExportDetails extends Component {
                                 </div>
                             </td>
                         </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+
+        )
+    }
+
+    drawAttachments_pdf() {
+        return (
+            <table className="attachmentTable" id="attachmentTable">
+                <thead>
+                    <tr>
+                        <th>
+                            <div className="headCell tableCell-1">
+                                <span>{Resources.type[currentLanguage]}</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="headCell tableCell-2">
+                                <span>{Resources.fileName[currentLanguage]} </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="headCell tableCell-3">
+                                <span>{Resources.uploadedDate[currentLanguage]}</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="headCell tableCell-4">
+                                <span>{Resources.uploadedBy[currentLanguage]}</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.props.files.map(file => {
+                        let formatData = moment(file.createdDate).format('DD/MM/YYYY')
+                        return (
+                            <tr>
+                                <td className="nameOfAttach">
+                                    <div className="contentCell tableCell-1">
+                                        <span className="pdfImage">
+                                            <img src={PdfImg} alt="pdf" />
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell tableCell-2">
+                                        <a className="pdfPopup various zero">{file.fileNameDisplay}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell tableCell-3">
+                                        <p className="zero status">{formatData}</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell tableCell-4">
+                                        <p className="zero">{file.uploadBy}</p>
+                                    </div>
+                                </td>
+
+                            </tr>
                         )
                     })}
                 </tbody>
@@ -275,7 +416,54 @@ class ExportDetails extends Component {
 
         )
     }
+    drawattachDocuments_pdf() {
+        return (
+            <table className="attachmentTable" id="attachDocumentss">
+                <thead>
+                    <tr>
+                        <th >
+                            <div className="headCell tableCell-2">
+                                <span>{Resources["subject"][currentLanguage]}  </span>
+                            </div>
+                        </th>
+                        <th >
+                            <div className="headCell tableCell-3">
+                                <span>{Resources["docType"][currentLanguage]}</span>
+                            </div>
+                        </th>
+                        <th >
+                            <div className="headCell tableCell-4">
+                                <span>{Resources["docDate"][currentLanguage]}</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.props.attachDocuments.map(file => {
+                        return (<tr>
+                            <td>
+                                <div className="contentCell tableCell-2">
+                                    <a className="pdfPopup various zero">{file.subject}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="contentCell tableCell-3">
+                                    <p className="zero status">{file.docTypeName}</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="contentCell tableCell-4">
+                                    <p className="zero">{file.docDate}</p>
+                                </div>
+                            </td>
+                        </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
 
+        )
+    }
     drawWorkFlow() {
         let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
         return (
@@ -315,6 +503,36 @@ class ExportDetails extends Component {
         )
     }
 
+
+    drawWorkFlow_pdf() {
+        let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
+        levels.map((cycle, index) => {
+            return (
+                <div className="workflowPrint">
+                    <div className="flowLevel">
+                        <div className="flowNumber">
+                            <span className="stepLevel">{index + 1}</span>
+                        </div>
+                        <div className="flowMember">
+                            <figure className="avatarProfile smallAvatarSize">
+                                <img alt="" title="" src="../images/24176695_10215314500400869_7164682088117484142_n.jpg" />
+                            </figure>
+                            <div className="FlowText">
+                                <h3>{cycle.contactName}</h3>
+                                <p>{cycle.companyName}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flowStatus approvedStatue">
+                        <span className=" statueName">{cycle.status}</span>
+                        <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
+                        <span className="statueSignature"><img src="../images/mySignature.png" /></span>
+                    </div>
+                </div>
+            )
+        })
+    }
+
     handleChange(e, field) {
         this.setState({
             [field]: e.target.value
@@ -322,9 +540,75 @@ class ExportDetails extends Component {
     }
 
     render() {
+        let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY')
+        let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
+        let exportPdf =
+            <div id="printPdf" className="printWrapper">
+                <div className="company__name">
+                    <span className="company__logo"></span>
+                    <h3>Company name</h3>
+                </div>
+                <div className="subiGrid printGrid">
+                    <div className="printHead">
+                        <h3 className="zero">
+                            {this.props.documentTitle}
+                        </h3>
+                    </div>
+                    <div className="docStatus">
+                        <div className="highClosed">
+                            <span className="subiStatus">{this.props.document.status == true ? 'Opended' : 'Closed'}</span>
+                        </div>
+                        <div className="requireDate">
+                            <span>{Resources.docDate[currentLanguage] + ' '}</span>
+                            <span>{formatData}</span>
+                        </div>
+                    </div>
+                    <div className="subiTable">
+                        {this.drawFiled_pdf()}
+                    </div>
+
+                </div>
+                <div className="table__withItem">
+                    {this.drawItems_pdf()}
+                </div>
+                <hr />
+
+                <p id="pdfLength">Attached documents</p>
+                {this.drawAttachments_pdf()}
+                <div class="printWrapper printSecondPage">
+                    {levels.map((cycle, index) => {
+                        return (
+                            <div className="workflowPrint">
+                                <div className="flowLevel">
+                                    <div className="flowNumber">
+                                        <span className="stepLevel">{index + 1}</span>
+                                    </div>
+                                    <div className="flowMember">
+                                        <figure className="avatarProfile smallAvatarSize">
+                                            <img alt="" title="" src="../images/24176695_10215314500400869_7164682088117484142_n.jpg" />
+                                        </figure>
+                                        <div className="FlowText">
+                                            <h3>{cycle.contactName}</h3>
+                                            <p>{cycle.companyName}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flowStatus approvedStatue">
+                                    <span className=" statueName">{cycle.status}</span>
+                                    <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
+                                    <span className="statueSignature"><img src="../images/mySignature.png" /></span>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="subiTable">
+                    {this.drawattachDocuments_pdf()}
+                </div>
+            </div>
         return (
-            <Fragment id={'docExport'}>
-                <div className="dropWrapper">
+            <div id={'docExport'}>
+                <div classNameName="dropWrapper">
                     <div className="proForm customProform">
 
                         <div className="fillter-status fillter-item-c undefined valid-input">
@@ -351,17 +635,20 @@ class ExportDetails extends Component {
                         </div>
                     </div>
                     <div className="fullWidthWrapper">
-                        <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => this.tableToExcel('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
+                        <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.tableToExcel('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
                     </div>
                 </div>
-                <div id="test" style={{ display: 'block' }}>
+                <div className="export__pdf" style={{ display: 'none' }}>
                     {this.drawFiled()}
                     {this.drawItems()}
                     {this.drawAttachments()}
                     {this.drawWorkFlow()}
                     {this.drawattachDocuments()}
                 </div>
-            </Fragment>
+                <div className="export__pdf">
+                    {exportPdf}
+                </div>
+            </div>
         )
     }
 }
@@ -376,7 +663,8 @@ function mapStateToProps(state, ownProps) {
         fields: state.communication.fields,
         fieldsItems: state.communication.fieldsItems,
         attachDocuments: state.communication.attachDocuments,
-        docTypeId: state.communication.docTypeId
+        docTypeId: state.communication.docTypeId,
+        documentTitle: state.communication.documentTitle
     }
 }
 
