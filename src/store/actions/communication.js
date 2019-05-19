@@ -3,7 +3,7 @@ import Api from '../../api';
 
 const _ = require('lodash')
 
-export function documentForEdit(urlAction, docTypeId) {
+export function documentForEdit(urlAction, docTypeId,docName) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
 
@@ -12,7 +12,8 @@ export function documentForEdit(urlAction, docTypeId) {
                 document: resp,
                 docId: resp.id,
                 docTypeId: docTypeId,
-                showLeftReportMenu: false
+                showLeftReportMenu: false,
+                docName:docName
             });
 
         }).catch((ex) => {

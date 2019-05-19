@@ -30,7 +30,8 @@ export default function (state = initialState.app.communication, action) {
                 changeStatus: true,
                 showLeftMenu: true,
                 showSelectProject: false,
-                showLeftReportMenu: false
+                showLeftReportMenu: false,
+                documentTitle:action.docName
             };
 
         case types.Clear_Cash_Document:
