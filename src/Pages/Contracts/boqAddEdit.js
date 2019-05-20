@@ -1457,7 +1457,7 @@ class bogAddEdit extends Component {
             }
         ];
    
-        let Step_1 = <React.Fragment>
+        let     Step_1 = <React.Fragment>
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                     <div className="document-fields">
@@ -1620,10 +1620,9 @@ class bogAddEdit extends Component {
                                 }
                                 {this.viewAttachments()}
 
-                                {this.props.changeStatus === true ?
+                               
                                     <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    : null
-                                }
+                                
                             </div>
                         </div>
                     </div>
