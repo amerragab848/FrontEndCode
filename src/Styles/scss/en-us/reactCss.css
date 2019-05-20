@@ -5900,3 +5900,7 @@ line.horizontal-grid-line {
 .printWrapper {
     width: 100% !important;
 }
+
+.printSecondPage .workflowPrint .flowStatus.rejectedStatue::after {
+    background-image: url(../../images/declined.png); 
+}

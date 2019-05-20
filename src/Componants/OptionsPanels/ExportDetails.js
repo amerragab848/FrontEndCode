@@ -7,6 +7,8 @@ import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import Profile from '../../Styles/images/icons/person.svg'
 import PdfImg from '../../Styles/images/pdfAttache.png'
+import LoadingSection from '../publicComponants/LoadingSection'
+import Signature from '../../Styles/images/mySignature.png';
 import {
     bindActionCreators
 } from 'redux';
@@ -15,29 +17,42 @@ import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-
 class ExportDetails extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isExcel: false,
-            isLandscape: false
+            isExcel: "false",
+            isLandscape: false,
+            disNone: "disNone",
+            isLoading: false
         };
 
         this.tableToExcel = this.tableToExcel.bind(this);
     }
 
     tableToExcel(Fields, items, name) {
-        if (this.state.isExcel == false) {
+        if (this.state.isExcel == "false") {
+
+            this.setState({
+                isLoading: true
+            });
             const input = document.getElementById('printPdf');
-            html2canvas(input)
-                .then((canvas) => {
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF();
-                    pdf.addImage(imgData, 'JPEG', 0, 0);
-                    pdf.save("download.pdf");
-                })
+            input.style.height = 'auto'
+            input.style.visibility = 'visible'
+            html2canvas(input).then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                pdf.addImage(imgData, 'JPEG', 0, 0);
+                pdf.save("download.pdf");
+                input.style.visibility = 'hidden';
+                input.style.height = '0';
+                this.setState({
+                    isLoading: false
+                });
+            })
+
+
         }
         else {
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -174,11 +189,11 @@ class ExportDetails extends Component {
     drawItems() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
         let rows = this.props.items.length > 0 ?
-            (this.props.items.map(row => {
+            (this.props.items.map((row,index) => {
                 return (
-                    <tr>
-                        {fieldsItems.map(field => {
-                            return (<td>{row[field]}</td>)
+                    <tr key={'rwow- '+index}>
+                        {fieldsItems.map((field,index) => {
+                            return (<td key={'field- '+index}>{row[field]}</td>)
                         })}
                     </tr>
                 )
@@ -191,10 +206,10 @@ class ExportDetails extends Component {
                 <table id="items " style={{ border: 'double' }}>
 
                     <thead valign="top">
-                        <tr style={{ border: '4px' }}>
-                            {fieldsName.map(column => {
+                        <tr  key={'dd- '} style={{ border: '4px' }}>
+                            {fieldsName.map((column,index) => {
                                 return (
-                                    <th style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {Resources[column][currentLanguage]}</th>
+                                    <th  key={'dddd- '+index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {Resources[column][currentLanguage]}</th>
                                 )
                             })}
                         </tr>
@@ -213,11 +228,11 @@ class ExportDetails extends Component {
     drawItems_pdf() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
         let rows = this.props.items.length > 0 ?
-            (this.props.items.map(row => {
+            (this.props.items.map((row,index) => {
                 return (
-                    <tr>
-                        {fieldsItems.map(field => {
-                            return (<td><div className="contentCell tableCell-2"><span>{row[field]}</span></div></td>)
+                    <tr key={'tr- '+index}>
+                        {fieldsItems.map((field,index) => {
+                            return (<td key={'td- '+index}><div className="contentCell tableCell-2"><span>{row[field]}</span></div></td>)
                         })}
                     </tr>
                 )
@@ -227,31 +242,32 @@ class ExportDetails extends Component {
         let fieldsName = DED[this.props.docTypeId].friendlyNames
         if (fieldsName.length > 0) {
             return (
-                <table id="items" className="attachmentTable attachmentTable__items">
-                    <thead >
-                        <tr >
-                            {fieldsName.map(column => {
-                                return (
-                                    <th>
-                                        <div className="headCell ">
-                                            {Resources[column][currentLanguage]}
-                                        </div>
-                                    </th>
-                                )
-                            })}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows}
-                    </tbody>
-                </table>
-            )
+                <Fragment>
+                    <p id="pdfLength">{Resources.itemsList[currentLanguage]}</p>
+                    <table id="items" className="attachmentTable attachmentTable__items">
+                        <thead >
+                            <tr >
+                                {fieldsName.map((column,index) => {
+                                    return (
+                                        <th key={'th- '+index}>
+                                            <div className="headCell ">
+                                                {Resources[column][currentLanguage]}
+                                            </div>
+                                        </th>
+                                    )
+                                })}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows}
+                        </tbody>
+                    </table>
+                </Fragment>)
         }
         else {
             return (null)
         }
     }
-
 
     drawAttachments() {
         return (
@@ -476,9 +492,9 @@ class ExportDetails extends Component {
                             </tr>
                             <tr className="workflowPrint">
 
-                                {levels.map(cycle => {
+                                {levels.map((cycle,index) => {
                                     return (
-                                        <td className="flowNumber">
+                                        <td key={'cyc-'+index} className="flowNumber">
                                             <div className="FlowText">
                                                 <h3 style={{ margin: '0' }}>{cycle.contactName}</h3>
                                                 <p style={{ textAlign: 'center', margin: '0' }}>{cycle.arrange}</p>
@@ -501,36 +517,6 @@ class ExportDetails extends Component {
         )
     }
 
-
-    drawWorkFlow_pdf() {
-        let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
-        levels.map((cycle, index) => {
-            return (
-                <div className="workflowPrint">
-                    <div className="flowLevel">
-                        <div className="flowNumber">
-                            <span className="stepLevel">{index + 1}</span>
-                        </div>
-                        <div className="flowMember">
-                            <figure className="avatarProfile smallAvatarSize">
-                                <img alt="" title="" src="../images/24176695_10215314500400869_7164682088117484142_n.jpg" />
-                            </figure>
-                            <div className="FlowText">
-                                <h3>{cycle.contactName}</h3>
-                                <p>{cycle.companyName}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flowStatus approvedStatue">
-                        <span className=" statueName">{cycle.status}</span>
-                        <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
-                        <span className="statueSignature"><img src="../images/mySignature.png" /></span>
-                    </div>
-                </div>
-            )
-        })
-    }
-
     handleChange(e, field) {
         this.setState({
             [field]: e.target.value
@@ -541,8 +527,8 @@ class ExportDetails extends Component {
         let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY')
         let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
         let exportPdf =
-            <div className="">
-                <div id="printPdf" className="printWrapper">
+            <div>
+                <div id="printPdf" className="printWrapper" style={{ height: 0, visibility: "hidden" }} >
                     <div className="company__name">
                         <span className="company__logo"></span>
                         <h3>Company name</h3>
@@ -555,7 +541,8 @@ class ExportDetails extends Component {
                         </div>
                         <div className="docStatus">
                             <div className="highClosed">
-                                <span className="subiStatus">{this.props.document.status == true ? 'Opended' : 'Closed'}</span>
+                                <span className="subiStatus">{Resources.status[currentLanguage]} </span>
+                                <span className="subiPriority redSpan"> {this.props.document.status == true ? 'Opended' : 'Closed'}</span>
                             </div>
                             <div className="requireDate">
                                 <span>{Resources.docDate[currentLanguage] + ' '}</span>
@@ -572,52 +559,56 @@ class ExportDetails extends Component {
                     </div>
                     <hr />
 
-                    <p id="pdfLength">Attached documents</p>
+                    <p id="pdfLength">Attached files</p>
                     {this.drawAttachments_pdf()}
-                    <div class="printWrapper printSecondPage">
+
+                    <p className="pdfLength"><span>{this.props.workFlowCycles[0].subject}</span><span>{" at Level:" + this.props.workFlowCycles[0].currentLevel}</span><span> {"Sent:" + moment(this.props.workFlowCycles[0].creationDate).format('DD-MM-YYYY')}</span></p>
+
+                    <div className="printWrapper printSecondPage">
                         {levels.map((cycle, index) => {
                             return (
-                                <div className="workflowPrint">
+                                <div  key={'row- '+index} className="workflowPrint">
                                     <div className="flowLevel">
                                         <div className="flowNumber">
                                             <span className="stepLevel">{index + 1}</span>
                                         </div>
                                         <div className="flowMember">
-                                            <figure className="avatarProfile smallAvatarSize">
-                                                <img alt="" title="" src="../images/24176695_10215314500400869_7164682088117484142_n.jpg" />
-                                            </figure>
                                             <div className="FlowText">
                                                 <h3>{cycle.contactName}</h3>
                                                 <p>{cycle.companyName}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flowStatus approvedStatue">
+                                    <div  className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
                                         <span className=" statueName">{cycle.status}</span>
                                         <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
-                                        <span className="statueSignature"><img src="../images/mySignature.png" /></span>
+                                        <span className="statueSignature">
+                                            <img src={cycle.statusVal == null ? null:cycle.signature != null ? cycle.signature : Signature} alt="..." />
+                                        </span>
                                     </div>
                                 </div>
                             )
                         })}
                     </div>
+                    <p id="pdfLength">Attached documents</p>
                     <div className="subiTable">
                         {this.drawattachDocuments_pdf()}
                     </div>
                 </div>
             </div>
         return (
-            <div id={'docExport'}>
+            <div id={'docExport'} >
+
                 <div className="dropWrapper">
                     <div className="proForm customProform">
                         <div className="fillter-status fillter-item-c">
                             <label className="control-label">{Resources.export[currentLanguage]}</label>
                             <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isExcel')} />
+                                <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? null : 'checked'} value={true} onChange={e => this.handleChange(e, 'isExcel')} />
                                 <label>{Resources.excel[currentLanguage]}</label>
                             </div>
                             <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'isExcel')} />
+                                <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? 'checked' : null} value={false} onChange={e => this.handleChange(e, 'isExcel')} />
                                 <label>{Resources.pdf[currentLanguage]}</label>
                             </div>
                         </div>
@@ -633,46 +624,50 @@ class ExportDetails extends Component {
                             </div>
                         </div>
                     </div>
-                        <div className="fullWidthWrapper">
-                            <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.tableToExcel('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
-                        </div>
+                    <div className="fullWidthWrapper">
+                        <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.tableToExcel('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
                     </div>
-                        <div style={{ display: 'none' }}>
-                            {this.drawFiled()}
-                            {this.drawItems()}
-                            {this.drawAttachments()}
-                            {this.drawWorkFlow()}
-                            {this.drawattachDocuments()}
-                        </div>
-                        {exportPdf}
-                    </div>
-                        )
-                    }
-                }
-                
-                
+                </div>
+                {this.state.isLoading === true ?
+                    <LoadingSection /> : null}
+
+                <div style={{ display: 'none' }}>
+                    {this.drawFiled()}
+                    {this.drawItems()}
+                    {this.drawAttachments()}
+                    {this.drawWorkFlow()}
+                    {this.drawattachDocuments()}
+                </div>
+                {exportPdf}
+            </div>
+
+        )
+    }
+}
+
+
 function mapStateToProps(state, ownProps) {
     return {
-                            document: state.communication.document,
-                        files: state.communication.files,
-                        workFlowCycles: state.communication.workFlowCycles,
-                        items: state.communication.items,
-                        fields: state.communication.fields,
-                        fieldsItems: state.communication.fieldsItems,
-                        attachDocuments: state.communication.attachDocuments,
-                        docTypeId: state.communication.docTypeId,
-                        documentTitle: state.communication.documentTitle
-                    }
-                }
-                
+        document: state.communication.document,
+        files: state.communication.files,
+        workFlowCycles: state.communication.workFlowCycles,
+        items: state.communication.items,
+        fields: state.communication.fields,
+        fieldsItems: state.communication.fieldsItems,
+        attachDocuments: state.communication.attachDocuments,
+        docTypeId: state.communication.docTypeId,
+        documentTitle: state.communication.documentTitle
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return {
-                            actions: bindActionCreators(communicationActions, dispatch)
-                    };
-                }
-                
-                export default connect(
-                    mapStateToProps,
-                    mapDispatchToProps
-                )(ExportDetails);
-                
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ExportDetails);
+

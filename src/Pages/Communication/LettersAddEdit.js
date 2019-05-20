@@ -433,6 +433,7 @@ class LettersAddEdit extends Component {
     }
 
     handleShowAction = (item) => {
+        console.log(item.value)
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
