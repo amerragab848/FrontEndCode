@@ -332,6 +332,7 @@ class RfiAddEdit extends Component {
                 }); 
         }
     };
+
     onChangeMessageAnswer = (value) => {
         if (value!=null) {
           this.setState({ replyMessage: value })
@@ -360,7 +361,8 @@ class RfiAddEdit extends Component {
         });
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {   
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -467,7 +469,7 @@ class RfiAddEdit extends Component {
    
     viewAttachments() {
         return (
-            this.state.docId > 0 ? (Config.IsAllow(3317) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
+            this.state.docId > 0 ? (Config.IsAllow(3318) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={828} /> : null) : null
         )
     }
 
@@ -763,9 +765,14 @@ class RfiAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={827} EditAttachments={3224} ShowDropBox={3609} ShowGoogleDrive={3610} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                                             {this.viewAttachments()}
-                                            {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null }
+                                            {this.props.changeStatus === true ?
+                                                (Config.IsAllow(3318) === true ?
+                                                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={828} />
+                                                    : null) :
+                                                null
+                                            }
                                         </div>
                                     </div>
                                 </div>
