@@ -40,7 +40,7 @@ let docApprovalId = 0;
 let arrange = 0;
 const _ = require("lodash");
 
-class RequestProposalAddEdit extends Component {
+class ProposalAddEdit extends Component {
   constructor(props) {
     super(props);
     const query = new URLSearchParams(this.props.location.search);
@@ -48,9 +48,7 @@ class RequestProposalAddEdit extends Component {
     for (let param of query.entries()) {
       if (index == 0) {
         try {
-          let obj = JSON.parse(
-            CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8)
-          );
+          let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
           docId = obj.docId;
           projectId = obj.projectId;
@@ -58,6 +56,7 @@ class RequestProposalAddEdit extends Component {
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
           arrange = obj.arrange;
+
         } catch {
           this.props.history.goBack();
         }
@@ -84,14 +83,14 @@ class RequestProposalAddEdit extends Component {
       discplines: [],
       letters: [],
       permission: [
-        { name: "sendByEmail", code: 63 },
-        { name: "sendByInbox", code: 62 },
+        { name: "sendByEmail", code: 72 },
+        { name: "sendByInbox", code: 71 },
         { name: "sendTask", code: 0 },
-        { name: "distributionList", code: 961 },
-        { name: "createTransmittal", code: 3047 },
-        { name: "sendToWorkFlow", code: 711 },
-        { name: "viewAttachments", code: 3288 },
-        { name: "deleteAttachments", code: 830 }
+        { name: "distributionList", code: 962 },
+        { name: "createTransmittal", code: 3048 },
+        { name: "sendToWorkFlow", code: 712 },
+        { name: "viewAttachments", code: 3287 },
+        { name: "deleteAttachments", code: 832 }
       ],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
@@ -100,18 +99,17 @@ class RequestProposalAddEdit extends Component {
       message: ""
     };
 
-    if (!Config.IsAllow(57) && !Config.IsAllow(58) && !Config.IsAllow(60)) {
+    if (!Config.IsAllow(66) && !Config.IsAllow(67) && !Config.IsAllow(69)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push({
-        pathname: "/RequestProposal/" + projectId
+        pathname: "/Proposal/" + projectId
       });
     }
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll(
-      ".noTabs__document .doc-container .linebylineInput"
-    );
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
     for (var i = 0; i < links.length; i++) {
       if ((i + 1) % 2 == 0) {
         links[i].classList.add("even");
@@ -161,12 +159,12 @@ class RequestProposalAddEdit extends Component {
 
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(58)) {
+      if (!Config.IsAllow(67)) {
         this.setState({ isViewMode: true });
       }
-      if (this.state.isApproveMode != true && Config.IsAllow(58)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(58)) {
-          if (this.props.document.status !== false && Config.IsAllow(58)) {
+      if (this.state.isApproveMode != true && Config.IsAllow(67)) {
+        if (this.props.hasWorkflow == false && Config.IsAllow(67)) {
+          if (this.props.document.status !== false && Config.IsAllow(67)) {
             this.setState({ isViewMode: false });
           } else {
             this.setState({ isViewMode: true });
@@ -183,7 +181,7 @@ class RequestProposalAddEdit extends Component {
   componentWillMount() {
     if (this.state.docId > 0) {
       
-        let url = "GetRequestProposalById?id=" + this.state.docId;
+        let url = "GetCommunicationProposalForEdit?id=" + this.state.docId;
        this.props.actions.documentForEdit(url,this.state.docTypeId,"procurement");
         this.setState({
             isEdit:true
@@ -321,6 +319,7 @@ class RequestProposalAddEdit extends Component {
       [selectedValue]: event
     });
  
+    
     if (isSubscrib) {
       let action = url + "?" + param + "=" + event.value;
       dataservice.GetDataList(action, "contactName", "id").then(result => {
@@ -340,7 +339,7 @@ class RequestProposalAddEdit extends Component {
 
     saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    dataservice.addObject("EditRequestProposalById", saveDocument).then(result => {
+    dataservice.addObject("EditCommunicationProposal", saveDocument).then(result => {
 
         this.setState({
           isLoading: false
@@ -349,7 +348,7 @@ class RequestProposalAddEdit extends Component {
         toast.success(Resources["operationSuccess"][currentLanguage]);
 
         this.props.history.push({
-          pathname: "/RequestProposal/" + this.state.projectId
+          pathname: "/Proposal/" + this.state.projectId
         });
       });
   }
@@ -362,7 +361,7 @@ class RequestProposalAddEdit extends Component {
 
     saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    dataservice.addObject("AddRequestProposal", saveDocument).then(result => {
+    dataservice.addObject("AddCommunicationProposal", saveDocument).then(result => {
       this.setState({
         docId: result.id,
         isLoading: false
@@ -373,7 +372,7 @@ class RequestProposalAddEdit extends Component {
 
   saveAndExit(event) {
     this.props.history.push({
-      pathname: "/RequestProposal/" + this.state.projectId
+      pathname: "/Proposal/" + this.state.projectId
     });
   }
 
@@ -398,7 +397,7 @@ class RequestProposalAddEdit extends Component {
 
   viewAttachments() {
     return this.state.docId > 0 ? (
-      Config.IsAllow(3288) === true ? (
+      Config.IsAllow(3287) === true ? (
         <ViewAttachment
           docTypeId={this.state.docTypeId}
           docId={this.state.docId}
@@ -715,15 +714,8 @@ class RequestProposalAddEdit extends Component {
             </div>
           </div>
         </div>
-        <div
-          className="largePopup largeModal "
-          style={{ display: this.state.showModal ? "block" : "none" }}
-        >
-          <SkyLight
-            hideOnOverlayClicked
-            ref={ref => (this.simpleDialog = ref)}
-            title={Resources[this.state.currentTitle][currentLanguage]}
-          >
+        <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
+          <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
             {this.state.currentComponent}
           </SkyLight>
         </div>
@@ -749,7 +741,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(RequestProposalAddEdit));
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(ProposalAddEdit));
