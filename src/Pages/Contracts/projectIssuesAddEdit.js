@@ -484,12 +484,6 @@ class ProjectIssuesAddEdit extends Component {
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3796} EditAttachments={3797} ShowDropBox={3803} ShowGoogleDrive={3804} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                                             {this.viewAttachments()}
-                                            {this.props.changeStatus === true ?
-                                                (Config.IsAllow(3798) === true ?
-                                                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3783} />
-                                                    : null) :
-                                                null
-                                            }
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>

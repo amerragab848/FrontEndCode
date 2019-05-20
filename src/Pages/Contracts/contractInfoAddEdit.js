@@ -1416,11 +1416,8 @@ class ContractInfoAddEdit extends Component {
                   {this.viewAttachments()}
 
                   {this.props.changeStatus === true ?
-                      (Config.IsAllow(3297) === true ?
-                          <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={860} />
-                          : null) :
-                      null
-                  }
+                      <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                      : null}
                 </div>
               </div>
             </div>
