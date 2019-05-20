@@ -2,21 +2,22 @@ import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
- 
+
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 
 import Dropzone from 'react-dropzone';
 import Drive from '../../Styles/images/googleDrive.png'
 import dropbox from '../../Styles/images/dropbox.png'
- 
+import Config from "../../Services/Config.js";
+
 import { connect } from 'react-redux';
 import {
     bindActionCreators
 } from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
- 
+
 class UploadAttachment extends Component {
     constructor(props) {
         super(props);
@@ -27,15 +28,15 @@ class UploadAttachment extends Component {
             link: this.props.link,
             parentId: '',
             _className: ''
-        } 
+        }
     }
- 
+
     onCancel(files) {
 
     }
 
     onSuccess(files) {
-        
+
         let selectedFiles = [];
 
         files.forEach(function (doc) {
@@ -46,7 +47,7 @@ class UploadAttachment extends Component {
             };
             selectedFiles.push(newFile);
         });
-        
+
         this.props.actions.uploadFileLinks("UploadFilesModalLinksByDocId?docId=" + this.props.docId + "&docTypeId=" + this.props.docTypeId, selectedFiles);
 
     }
@@ -62,7 +63,7 @@ class UploadAttachment extends Component {
     }
 
     onDropAcceptedHandler = (acceptedFiles) => {
-        
+
         setTimeout(() => {
             this.setState({ _className: "hundredPercent" })
         }, 500)
@@ -79,7 +80,7 @@ class UploadAttachment extends Component {
     }
 
     render() {
-        return (
+        return (// className={this.props.changeStatus === false ? (Config.IsAllow(addPermission) === true ? '' : 'disNone') : (Config.IsAllow(editPermission) === true ? '' : 'disNone')}
             <div>
                 <Dropzone onDrop={e => this.onDrop(e)}
                     onDragLeave={e => this.setState({ _className: " " })}
