@@ -2,21 +2,21 @@ import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
- 
+
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 
 import Dropzone from 'react-dropzone';
-import Drive from '../../Styles/images/googleDrive.png'
+import Drive from '../../Styles/images/gdrive.png'
 import dropbox from '../../Styles/images/dropbox.png'
- 
+
 import { connect } from 'react-redux';
 import {
     bindActionCreators
 } from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
- 
+
 class UploadAttachment extends Component {
     constructor(props) {
         super(props);
@@ -27,15 +27,15 @@ class UploadAttachment extends Component {
             link: this.props.link,
             parentId: '',
             _className: ''
-        } 
+        }
     }
- 
+
     onCancel(files) {
 
     }
 
     onSuccess(files) {
-        
+
         let selectedFiles = [];
 
         files.forEach(function (doc) {
@@ -46,7 +46,7 @@ class UploadAttachment extends Component {
             };
             selectedFiles.push(newFile);
         });
-        
+
         this.props.actions.uploadFileLinks("UploadFilesModalLinksByDocId?docId=" + this.props.docId + "&docTypeId=" + this.props.docTypeId, selectedFiles);
 
     }
@@ -62,7 +62,7 @@ class UploadAttachment extends Component {
     }
 
     onDropAcceptedHandler = (acceptedFiles) => {
-        
+
         setTimeout(() => {
             this.setState({ _className: "hundredPercent" })
         }, 500)
@@ -98,11 +98,11 @@ class UploadAttachment extends Component {
                                             <div className="uploadFormDiv">
                                                 <img src={AttachUpload} />
                                                 <div className="dragUpload">
-                                                    <p>Drag and drop photos here to share your food shots! or</p>
-                                                    <form>
+                                                    <p>Drag and drop your files here</p>
+                                                    {/* <form>
                                                         <input type="file" name="file" id="file" className="inputfile" />
                                                         <label >Upload</label>
-                                                    </form>
+                                                    </form> */}
                                                 </div>
                                             </div>
                                             <div className="dragHoverDiv">
@@ -119,24 +119,17 @@ class UploadAttachment extends Component {
                                         </div>
                                     }
                                 </div>
-                                <div className="drive__wrapper">
-                                    <h2 className="zero">Upload from</h2>
-                                    <div className="upload__drive">
+                                <div className="drives__upload" >
+                                    <form  {...getRootProps()}>
+                                        <input {...getInputProps()} type="file" name="file" id="file" className="inputfile" />
+                                        <label for="file">Open my folders</label>
+                                    </form>
+                                    <span className="upload__border"></span>
+                                    <div className="drive__wrapper">
+                                        <h2 className="zero">Upload from</h2>
                                         {/* <img src={Drive} alt="googleDrive" />
                                         <img src={dropbox} alt="googleDrive" /> */}
                                         <Fragment>
-                                            <DropboxChooser
-                                                appKey={'einhoekbvh9jws7'}
-                                                success={files => this.onSuccess(files)}
-                                                cancel={() => this.onCancel()}
-                                                multiselect={true}
-                                                accessToken={'l7phamm2skocwwy'}
-                                                extensions={['.pdf', '.doc', '.docx', '.png']} >
-                                                <div className="dropbox-button" >
-                                                    <img src={dropbox} alt="googleDrive" />
-                                                </div>
-                                            </DropboxChooser>
-
                                             <GooglePicker
                                                 clientId={'850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com'}
                                                 developerKey={'uof5qzvtwpq1dao'}
@@ -167,15 +160,40 @@ class UploadAttachment extends Component {
                                                     picker.build().setVisible(true);
                                                 }}
                                             >
-                                                <img src={Drive} alt="googleDrive" />
+                                                <div className="drive__button--tooltip">
 
-                                                <div className="google"></div>
+                                                    <div className="drive__button gDrive">
+                                                        <img src={Drive} alt="googleDrive" />
+                                                    </div>
+
+                                                    <div className="drive__toolTip">
+                                                        Goggle Drive
+                                                    </div>
+                                                </div>
+                                                {/* <img src={Drive} alt="googleDrive" />
+
+                                                <div className="google"></div> */}
                                             </GooglePicker>
+                                            <DropboxChooser
+                                                appKey={'einhoekbvh9jws7'}
+                                                success={files => this.onSuccess(files)}
+                                                cancel={() => this.onCancel()}
+                                                multiselect={true}
+                                                accessToken={'l7phamm2skocwwy'}
+                                                extensions={['.pdf', '.doc', '.docx', '.png']} >
+                                                {/* <div className="dropbox-button" >
+                                                    <img src={dropbox} alt="googleDrive" />
+                                                </div> */}
+                                                <div className="drive__button--tooltip">
+                                                    <div className="drive__button Dbox">
+                                                        <img src={dropbox} alt="drobBox" />
+                                                    </div>
+                                                    <div className="drive__toolTip">dropbox</div>
+                                                </div>
+                                            </DropboxChooser>
                                         </Fragment>
-
                                     </div>
                                 </div>
-
                             </Fragment>
                         )
                     }}
