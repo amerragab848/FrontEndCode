@@ -146,6 +146,7 @@ import myTasks from "./Pages/Menu/myTasks";
 import contractInfoAddEdit from "./Pages/Contracts/contractInfoAddEdit";
 import RejectedTimesheetsDetails from "./Componants/DashBoardDetails/RejectedTimesheetsDetails";
 import invoicesForPoAddEdit from "./Pages/Procurement/invoicesForPoAddEdit";
+import requestProposalAddEdit from "./Pages/Procurement/requestProposalAddEdit";
 
 import PaymentRequisitionList from "./Pages/Contracts/Schedule";
 
@@ -317,6 +318,7 @@ let originalRoutes = [
     , <Route path="/SubContractLog" component={SubContractLog} />
     , <Route path="/RejectedTimesheetsDetails" component={RejectedTimesheetsDetails} />
     , <Route path="/invoicesForPoAddEdit" component={invoicesForPoAddEdit} />
+    , <Route path="/requestProposalAddEdit" component={requestProposalAddEdit} />
     
 ];
     
