@@ -203,7 +203,7 @@ class LettersAddEdit extends Component {
                 toContactId: '',
                 replayId: '',
                 docDate: moment(),
-                status: 'false',
+                status: false,
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
