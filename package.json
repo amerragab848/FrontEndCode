@@ -34,7 +34,6 @@
     "react-ckeditor-component": "^1.1.0",
     "react-cookie": "^3.0.8",
     "react-cookies": "^0.1.0",
-    "react-data-export": "^0.5.0",
     "react-data-grid": "github:elsokary/react-data-grid#master",
     "react-data-grid-addons": "github:elsokary/react-data-grid-addons#master",
     "react-date-picker": "^7.1.1",
