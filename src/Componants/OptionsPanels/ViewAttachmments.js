@@ -186,9 +186,12 @@ class ViewAttachmments extends Component {
                             <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
-                            <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
-                                <img src={Pending} alt="pend" width="100%" height="100%" />
-                            </a>
+                            {Config.IsAllow(this.props.deleteAttachments) ?
+                                <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
+                                    <img src={Pending} alt="pend" width="100%" height="100%" />
+                                </a> :
+                                null
+                            }
                         </div>
                     </td>
                 </tr>
