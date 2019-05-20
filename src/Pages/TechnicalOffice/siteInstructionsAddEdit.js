@@ -685,25 +685,25 @@ class siteInstructionsAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">
-                                                        { this.props.changeStatus === false?
-                                                            <React.Fragment>
-                                                                {this.state.isLoading === false  ? (
-                                                                    <button
-                                                                        className={this.props.changeStatus == false ? 'primaryBtn-1 btn meduimBtn ' : ' primaryBtn-1 btn meduimBtn  disNone'}
-                                                                        type="submit"
-                                                                    >  {this.state.docId > 0 && this.props.changeStatus === false ? Resources.saveAndExit[currentLanguage] : Resources.save[currentLanguage]}
-                                                                    </button>
-                                                                ) :
-                                                                    (
-                                                                        <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
-                                                                            <div className="spinner">
-                                                                                <div className="bounce1" />
-                                                                                <div className="bounce2" />
-                                                                                <div className="bounce3" />
-                                                                            </div>
+                                                            {this.props.changeStatus === false ?
+                                                                <React.Fragment>
+                                                                    {this.state.isLoading === false ? (
+                                                                        <button
+                                                                            className={this.props.changeStatus == false ? 'primaryBtn-1 btn meduimBtn ' : ' primaryBtn-1 btn meduimBtn  disNone'}
+                                                                            type="submit"
+                                                                        >  {this.state.docId > 0 && this.props.changeStatus === false ? Resources.saveAndExit[currentLanguage] : Resources.save[currentLanguage]}
                                                                         </button>
-                                                                    )}
-                                                            </React.Fragment>:null}
+                                                                    ) :
+                                                                        (
+                                                                            <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
+                                                                                <div className="spinner">
+                                                                                    <div className="bounce1" />
+                                                                                    <div className="bounce2" />
+                                                                                    <div className="bounce3" />
+                                                                                </div>
+                                                                            </button>
+                                                                        )}
+                                                                </React.Fragment> : null}
                                                         </div>
                                                         {
                                                             this.props.changeStatus === true ?
@@ -746,10 +746,12 @@ class siteInstructionsAddEdit extends Component {
                                         </div>
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
-                                                {this.state.docId > 0 ?
-                                                    <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                    : null
+
+                                                {this.state.docId > 0 ? this.props.changeStatus === false ?
+                                                    (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
+                                                    (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
                                                 }
+
                                                 {this.viewAttachments()}
 
                                                 {this.props.changeStatus === true ?

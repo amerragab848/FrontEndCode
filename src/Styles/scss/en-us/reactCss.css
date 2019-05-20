@@ -5900,3 +5900,15 @@ line.horizontal-grid-line {
 .printWrapper {
     width: 100% !important;
 }
+
+.printSecondPage .workflowPrint .flowStatus.rejectedStatue::after {
+    background-image: url(../../images/declined.png); 
+}
+
+.attachmentTable tbody tr .contentCell.tableCell-2 {
+    padding-left: 11px;
+}
+
+.attachmentTable .headCell {
+    padding-left: 16px !important;
+}
