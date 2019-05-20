@@ -1616,7 +1616,7 @@
   "Proposal": {
     "documentTitle": "proposal",
     "docTyp": 22,
-    "documentAddEditLink": "proposalAddEdit/",
+    "documentAddEditLink": "proposalAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 66,
     "documentEditPermission": 67,
@@ -1938,7 +1938,7 @@
   "RequestProposal": {
     "documentTitle": "requestProposal",
     "docTyp": 21,
-    "documentAddEditLink": "requestProposalAddEdit/",
+    "documentAddEditLink": "requestProposalAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 57,
     "documentDeletePermission": 59,
