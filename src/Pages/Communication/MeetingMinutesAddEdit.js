@@ -198,14 +198,14 @@ class MeetingMinutesAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   
+    componentWillUnmount() {
         this.props.actions.clearCashDocument();
-    } 
+    }
 
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true })
-            this.props.actions.documentForEdit('GetCommunicationMeetingMinutesForEdit?id=' + this.state.docId,this.state.docTypeId,'meetingMinutes').then(() => {
+            this.props.actions.documentForEdit('GetCommunicationMeetingMinutesForEdit?id=' + this.state.docId, this.state.docTypeId, 'meetingMinutes').then(() => {
                 this.setState({ meetingId: this.state.docId, isLoading: false })
                 this.getTabelData()
                 this.checkDocumentIsView();
@@ -262,7 +262,7 @@ class MeetingMinutesAddEdit extends Component {
         this.props.actions.GetTopicsTable('GetCommunicationMeetingMinutesTopics?meetingId=' + this.state.docId).then(res => {
             let data = { items: this.props.topics };
             this.props.actions.ExportingData(data);
-            
+
             this.props.topics.forEach((element, index) => {
                 topicstable.push(
                     < tr id={'top_' + index} >
@@ -283,6 +283,9 @@ class MeetingMinutesAddEdit extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
+        }
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });
         }
     }
 
@@ -500,27 +503,27 @@ class MeetingMinutesAddEdit extends Component {
     handleChange = (key, value) => {
         this.setState({ document: { ...this.state.document, [key]: value } })
     }
-   
+
     NextStep = (next) => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
             case 1:
-            if (next == true) {
-                this.editMeeting();
-            }
-            else if (this.state.docId > 0) {
-                let CurrStep = this.state.CurrStep + 1
-                this.setState({ firstComplete: true, CurrStep })
-            }
-            this.setState({
-                selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-                selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-                fromContacts: [],
-                selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
-                selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-                calledByContact: []
-            })
-            break;
+                if (next == true) {
+                    this.editMeeting();
+                }
+                else if (this.state.docId > 0) {
+                    let CurrStep = this.state.CurrStep + 1
+                    this.setState({ firstComplete: true, CurrStep })
+                }
+                this.setState({
+                    selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+                    selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+                    fromContacts: [],
+                    selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
+                    selectedCalledByContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
+                    calledByContact: []
+                })
+                break;
             case 2:
                 this.setState({ CurrStep: this.state.CurrStep + 1, secondComplete: true })
                 break;
@@ -552,7 +555,7 @@ class MeetingMinutesAddEdit extends Component {
         return btn;
     }
     //#endregion
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -568,7 +571,7 @@ class MeetingMinutesAddEdit extends Component {
     }
 
     StepOneLink = () => {
-        if (docId !== 0)  {
+        if (docId !== 0) {
             this.setState({
                 firstComplete: true,
                 secondComplete: false,
@@ -579,7 +582,7 @@ class MeetingMinutesAddEdit extends Component {
     }
 
     StepTwoLink = () => {
-        if (docId !== 0)  {
+        if (docId !== 0) {
             this.setState({
                 firstComplete: true,
                 secondComplete: true,
@@ -694,7 +697,7 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['CompanyName'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                           <DropdownMelcous
+                                        <DropdownMelcous
                                             name="fromCompany"
                                             data={this.state.Companies}
                                             handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany', 'fromContacts', 'selectedFromContact')}
@@ -703,7 +706,7 @@ class MeetingMinutesAddEdit extends Component {
                                         />
                                     </div>
                                     <div className="super_company">
-                                    <DropdownMelcous
+                                        <DropdownMelcous
                                             name="fromContact"
                                             data={this.state.fromContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'fromContactName', 'fromContactId', 'selectedFromContact')}
@@ -722,7 +725,7 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['calledByCompany'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                  <DropdownMelcous
+                                        <DropdownMelcous
                                             name='calledCompany'
                                             data={this.state.Companies}
                                             handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedCalledByCompany', 'calledContacts', 'selectedCalledByContact')}
@@ -730,7 +733,7 @@ class MeetingMinutesAddEdit extends Component {
                                             selectedValue={this.state.selectedCalledByCompany} />
                                     </div>
                                     <div className="super_company">
-                                    <DropdownMelcous
+                                        <DropdownMelcous
                                             name='calledByContact'
                                             data={this.state.calledContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'calledByContactName', 'calledByContactId', 'selectedCalledByContact')}
@@ -747,7 +750,7 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['facilitatorContact'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                      <DropdownMelcous
+                                        <DropdownMelcous
                                             name='facilitatorCompany'
                                             data={this.state.Companies}
                                             handleChange={(e) => this.handleChangeDropDowns(e, 'facilitatorCompanyName', 'facilitatorCompanyId', 'selectedFacilitatorCompany', 'facilitatorContacts', 'selectedFacilitatorContact')}
@@ -755,7 +758,7 @@ class MeetingMinutesAddEdit extends Component {
                                             selectedValue={this.state.selectedFacilitatorCompany} />
                                     </div>
                                     <div className="super_company">
-                                    <DropdownMelcous
+                                        <DropdownMelcous
                                             name='facilitatorContact'
                                             data={this.state.facilitatorContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'facilitatorContactName', 'facilitatorContactId', 'selectedFacilitatorContact')}
@@ -780,7 +783,7 @@ class MeetingMinutesAddEdit extends Component {
                                             selectedValue={this.state.selectedNoteTakerCompany} />
                                     </div>
                                     <div className="super_company">
-                                    <DropdownMelcous
+                                        <DropdownMelcous
                                             name='noteTakerContact'
                                             data={this.state.noteTakerContacts}
                                             handleChange={e => this.updateSelectedValue(e, 'noteTakerContactName', 'noteTakerContactId', 'selectedNoteTakerContact')}
@@ -803,16 +806,11 @@ class MeetingMinutesAddEdit extends Component {
 
             <div className="doc-pre-cycle">
                 <div>
-                    {this.state.docId > 0 ?
-                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                        : null
-                    }
+                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={835} EditAttachments={3231} ShowDropBox={3623} ShowGoogleDrive={3624} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     {this.viewAttachments()}
-
                     {this.props.changeStatus === true ?
                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                        : null
-                    }
+                        : null}
                 </div>
             </div>
 
@@ -837,7 +835,7 @@ class MeetingMinutesAddEdit extends Component {
                                     <label className="control-label">{Resources['CompanyName'][currentLanguage]}</label>
                                     <div className="supervisor__company">
                                         <div className="super_name">
-                                    <DropdownMelcous
+                                            <DropdownMelcous
                                                 name="fromCompany"
                                                 data={this.state.Companies}
                                                 handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedAttendencesCompany', 'attendencesContacts', 'selectedAttendencesContact')}
@@ -846,7 +844,7 @@ class MeetingMinutesAddEdit extends Component {
                                             />
                                         </div>
                                         <div className="super_company">
-                                        <DropdownMelcous
+                                            <DropdownMelcous
                                                 name="attendeesContact"
                                                 data={this.state.attendencesContacts}
                                                 handleChange={e => this.setState({ selectedAttendencesContact: e })}
@@ -958,7 +956,7 @@ class MeetingMinutesAddEdit extends Component {
                                 <label className="control-label">{Resources['calledByCompany'][currentLanguage]}</label>
                                 <div className="supervisor__company">
                                     <div className="super_name">
-                                    <DropdownMelcous
+                                        <DropdownMelcous
                                             name='topicCompany'
                                             data={this.state.Companies}
                                             handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedTopicCompany', 'topicsContacts', 'selectedTopicContact')}
@@ -966,7 +964,7 @@ class MeetingMinutesAddEdit extends Component {
                                             selectedValue={this.state.selectedTopicCompany} />
                                     </div>
                                     <div className="super_company">
-                                    <DropdownMelcous
+                                        <DropdownMelcous
                                             name='topicContact'
                                             data={this.state.topicsContacts}
                                             handleChange={e => this.setState({ selectedTopicContact: e })}
@@ -1035,9 +1033,9 @@ class MeetingMinutesAddEdit extends Component {
             <React.Fragment>
                 <div className="mainContainer">
                     <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper one__tab one_step noTabs__document"}>
-                  
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
- 
+
+                        <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+
                         <div className="doc-container">
                             <div className="step-content">
                                 <Fragment>
@@ -1134,7 +1132,8 @@ function mapStateToProps(state, ownProps) {
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
         attendees: state.communication.attendees,
-        topics: state.communication.topics
+        topics: state.communication.topics,
+        showModal: state.communication.showModal
     }
 }
 

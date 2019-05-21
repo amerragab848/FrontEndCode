@@ -115,7 +115,7 @@ class bogAddEdit extends Component {
         this.itemsColumns = [
             {
                 formatter: this.customButton,
-                key: 'customBtn' 
+                key: 'customBtn'
             },
             {
                 key: "arrange",
@@ -304,7 +304,7 @@ class bogAddEdit extends Component {
             { name: 'createTransmittal', code: 3057 }, { name: 'sendToWorkFlow', code: 720 },
             { name: 'viewAttachments', code: 3295 }, { name: 'deleteAttachments', code: 862 }],
             document: {},
-            _items:[]
+            _items: []
         }
 
         if (!Config.IsAllow(616) && !Config.IsAllow(617) && !Config.IsAllow(619)) {
@@ -411,7 +411,7 @@ class bogAddEdit extends Component {
     getNextArrange = (event) => {
         this.setState({ selectedFromCompany: event })
         Api.get('GetBoqNumber?projectId=' + this.state.projectId + '&companyId=' + event.value).then(res => {
-            this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false})
+            this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false })
         })
     }
 
@@ -523,8 +523,8 @@ class bogAddEdit extends Component {
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                Config.IsAllow(3295) === true ?
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={862} />
                     : null)
                 : null
         )
@@ -671,7 +671,7 @@ class bogAddEdit extends Component {
             this.setState({ isLoading: false })
         })
     }
-    
+
     checkItemCode = (code) => {
         Api.get('GetItemCode?itemCode=' + code + '&projectId=' + this.state.projectId).then(res => {
             if (res == true) {
@@ -1197,7 +1197,7 @@ class bogAddEdit extends Component {
             </div>
 
         </React.Fragment >
-   
+
         const purchaseOrderContent = <React.Fragment>
             <div className="document-fields">
                 <Formik
@@ -1444,8 +1444,8 @@ class bogAddEdit extends Component {
                 </Formik>
             </div>
         </React.Fragment >
-    
-       let actions = [
+
+        let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
@@ -1456,8 +1456,8 @@ class bogAddEdit extends Component {
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ];
-   
-        let     Step_1 = <React.Fragment>
+
+        let Step_1 = <React.Fragment>
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                     <div className="document-fields">
@@ -1535,7 +1535,7 @@ class bogAddEdit extends Component {
                                                 title="fromCompany"
                                                 data={this.state.Companies}
                                                 selectedValue={this.state.selectedFromCompany}
-                                                handleChange={event => {this.getNextArrange(event)}}
+                                                handleChange={event => { this.getNextArrange(event) }}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.fromCompany}
@@ -1612,28 +1612,13 @@ class bogAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="doc-pre-cycle letterFullWidth">
-                            <div>
-                                {this.state.docId > 0 ?
-                                    <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    : null
-                                }
-                                {this.viewAttachments()}
-
-                               
-                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                
-                            </div>
-                        </div>
-                    </div>
-
-
+                    </div> 
                 </div>
             </div>
 
         </React.Fragment>
-      
-      let Step_2 = <React.Fragment>
+
+        let Step_2 = <React.Fragment>
             {addItemContent}
             <Fragment>
                 <XSLfile key='boqImport' docId={this.state.docId} docType='boq' link={IPConfig.downloads + '/Downloads/Excel/BOQ.xlsx'} header='addManyItems'
@@ -1656,8 +1641,8 @@ class bogAddEdit extends Component {
                 </div>
             </div>
         </React.Fragment>
-    
-      let Step_3 = <React.Fragment>
+
+        let Step_3 = <React.Fragment>
             {this.state.loadingContractPurchase ? <LoadingSection /> : null}
             <div className="company__total proForm">
                 <div className="form-group ">
@@ -1702,7 +1687,6 @@ class bogAddEdit extends Component {
                                                 {itemsContent}
                                             </SkyLight>
                                         </div>
-
                                         {this.props.changeStatus === true ?
                                             <div className="approveDocument">
                                                 <div className="approveDocumentBTNS">
@@ -1726,7 +1710,18 @@ class bogAddEdit extends Component {
                                         }
                                     </Fragment>
                                 }
+                                {this.state.CurrStep == 1 ?
+                                    <div className="doc-pre-cycle letterFullWidth">
+                                        <div>
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={861} EditAttachments={3254} ShowDropBox={3565} ShowGoogleDrive={3566} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.viewAttachments()}
+                                            {this.props.changeStatus === true ?
+                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                : null}
+                                        </div>
+                                    </div> : null}
                             </div>
+
                             <div>
                                 <div className="docstepper-levels">
                                     <div className="step-content-foot">

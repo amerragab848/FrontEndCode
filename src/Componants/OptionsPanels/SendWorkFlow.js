@@ -24,8 +24,8 @@ class SendWorkFlow extends Component {
                 docId: this.props.docId,
                 docTypeId: this.props.docTypeId,
                 arrange: "",
-                workFlowId: "",
-                toAccountId: "",
+                workFlowId: null,
+                toAccountId:null,
                 dueDate: ""
             },
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
@@ -56,24 +56,10 @@ class SendWorkFlow extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.showModal !== this.props.showModal) {
-            this.setState({ submitLoading: false })
-            console.log('showmodal changed...', nextProps.showModal)
+            this.setState({ submitLoading: false }) 
         }
     }
-
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.showModal != this.props.showModal) {
-    //         if (this.props.showModal) {
-    //             // this.setState({ submitLoading: true })
-    //             this.props.actions.SendingWorkFlow(true);
-
-    //         } else {
-    //             this.setState({ submitLoading: false })
-    //         }
-    //         this.props.actions.SendingWorkFlow(this.props.showModal);
-    //     }
-    // }
-
+ 
     inputChangeHandler = (e) => {
         this.setState({ workFlowData: { ...this.state.workFlowData, Comment: e.target.value } });
     }
@@ -90,6 +76,7 @@ class SendWorkFlow extends Component {
 
         let workFlowObj = { ...this.state.workFlowData };
         workFlowObj.toAccountId = this.state.selectedApproveId.value;
+        workFlowObj.workFlowId = this.state.selectedWorkFlow.value;
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.props.docId + '&docType=' + this.props.docTypeId + '&projectId=' + this.props.projectId;
         this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
 
@@ -134,10 +121,8 @@ class SendWorkFlow extends Component {
             (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
-                obj.value = item[value];
-
+                obj.value = item[value]; 
                 Data.push(obj);
-
             });
 
             this.setState({
