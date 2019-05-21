@@ -188,6 +188,12 @@ class drawingListAddEdit extends Component {
             ToCompany: [],
             contactData: []
         }
+
+        if (!Config.IsAllow(301) && !Config.IsAllow(302) && !Config.IsAllow(303)) {
+
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push("/drawingList/" + this.state.projectId);
+          }
     }
 
     checkDocumentIsView() {
@@ -470,7 +476,7 @@ class drawingListAddEdit extends Component {
         return (
             this.state.docId !== 0 ? (
                 Config.IsAllow(3732) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3733} />
                     : null)
                 : null
         )
@@ -936,33 +942,7 @@ class drawingListAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                 <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
-
-                    {/* <div className="submittalHead">
-                        <h2 className="zero">{Resources.drawingList[currentLanguage]}
-                            <span>{projectName.replace(/_/gi, ' ')} · {Resources.designCoordination[currentLanguage]}</span>
-                        </h2>
-                        <div className="SubmittalHeadClose">
-                            <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                    <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                        <g id="Group-2">
-                                            <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                                <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                                                    <g id="Group">
-                                                        <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                        <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fillRule="nonzero"></path>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div> */}
-
                     <div className="doc-container">
-
                         <div className="step-content">
                             {this.state.FirstStep ?
                                 <div className="subiTabsContent">
@@ -1076,16 +1056,9 @@ class drawingListAddEdit extends Component {
 
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId !== 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
-                                            {this.viewAttachments()}
-
-                                            {this.props.changeStatus === true && docId !== 0 ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                        {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3730} EditAttachments={3731} ShowDropBox={3734} ShowGoogleDrive={3735} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                        {this.viewAttachments()}
+                                        {this.props.changeStatus === true && docId !== 0 ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null }
                                         </div>
                                     </div>
                                 </div>

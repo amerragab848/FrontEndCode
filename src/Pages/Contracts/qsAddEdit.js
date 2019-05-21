@@ -1044,7 +1044,7 @@ class QsAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.CurrentStep === 1 ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.CurrentStep === 1 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={853} EditAttachments={3255} ShowDropBox={3567} ShowGoogleDrive={3568} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                       {this.state.CurrentStep === 1 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
