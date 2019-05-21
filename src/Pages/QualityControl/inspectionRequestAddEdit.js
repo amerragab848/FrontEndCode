@@ -228,6 +228,10 @@ class inspectionRequestAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -1281,15 +1285,26 @@ class inspectionRequestAddEdit extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                {this.props.changeStatus === false ?
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <Dropdown
+                                                                            title="contractPo"
+                                                                            data={this.state.contractsPos}
+                                                                            selectedValue={this.state.selectedContract}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                            index="contractId" />
+                                                                    </div> :
 
-                                                                <div className="linebylineInput valid-input">
-                                                                    <Dropdown
-                                                                        title="contractPo"
-                                                                        data={this.state.contractsPos}
-                                                                        selectedValue={this.state.selectedContract}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                        index="contractId" />
-                                                                </div>
+
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                        <div className="ui input inputDev">
+                                                                            <input type="text" className="form-control" id="contractId"
+                                                                                value={this.state.document.orderSubject}
+                                                                                name="contractId" />
+                                                                        </div>
+                                                                    </div>
+                                                                }
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
@@ -1347,17 +1362,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         index="apartmentNoId" />
                                                                 </div>
 
-                                                                <div className="letterFullWidth">
-                                                                    <label className="control-label">{Resources.message[currentLanguage]}</label>
-                                                                    <div className="inputDev ui input">
-                                                                        <div className="inputDev ui input">
-                                                                            <TextEditor
-                                                                                value={this.state.answer}
-                                                                                onChange={this.onChangeAnswer} />
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
 
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
@@ -1365,6 +1369,18 @@ class inspectionRequestAddEdit extends Component {
                                                                         <TextEditor
                                                                             value={this.state.rfi}
                                                                             onChange={this.onChangeRfi} />
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div className="letterFullWidth">
+                                                                    <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
+                                                                    <div className="inputDev ui input">
+                                                                        <div className="inputDev ui input">
+                                                                            <TextEditor
+                                                                                value={this.state.answer}
+                                                                                onChange={this.onChangeAnswer} />
+                                                                        </div>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1522,7 +1538,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 

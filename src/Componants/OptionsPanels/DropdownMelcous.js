@@ -62,6 +62,7 @@ class DropdownMelcous extends Component {
                     <div className={"customD_Menu " + (this.props.error && this.props.touched ? " errorClass" : '')} style={{ outline: "none", position: 'relative' }}>
                         <div>
                             <Select key={this.props.index} ref={this.props.index}
+                                isDisabled={this.props.isDisabled ? true : false}
                                 options={this.props.data}
                                 placeholder={this.props.title ? Resources[this.props.title][currentLanguage] : ""}
                                 isSearchable="true"

@@ -159,9 +159,9 @@ class LettersAddEdit extends Component {
             this.checkDocumentIsView();
         }
 
-        if (this.state.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
-        }
+        // if (this.state.showModal != this.props.showModal) {
+        //     this.setState({ showModal: this.props.showModal });
+        // }
     }
 
     checkDocumentIsView() {
@@ -203,7 +203,7 @@ class LettersAddEdit extends Component {
                 toContactId: '',
                 replayId: '',
                 docDate: moment(),
-                status: 'false',
+                status: false,
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
@@ -434,7 +434,9 @@ class LettersAddEdit extends Component {
 
     handleShowAction = (item) => {
         console.log(item.value)
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
+        if (item.title == "sendToWorkFlow") {
+            this.props.actions.SendingWorkFlow(true);
+        }
         if (item.value != "0") {
             this.setState({
                 currentComponantDocument: item.value,
@@ -739,7 +741,7 @@ class LettersAddEdit extends Component {
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
 
-                                            {this.state.docId > 0 ? this.props.changeStatus === false ? 
+                                            {this.state.docId > 0 ? this.props.changeStatus === false ?
                                                 (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
                                                 (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
                                             }

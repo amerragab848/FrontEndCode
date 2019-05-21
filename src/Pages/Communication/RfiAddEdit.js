@@ -9,6 +9,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json"; 
 import ModernDatepicker from 'react-modern-datepicker';
+import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom"; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
@@ -73,6 +74,7 @@ class RfiAddEdit extends Component {
         }
 
         this.state = {
+            isLoading:false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -132,8 +134,8 @@ class RfiAddEdit extends Component {
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document.id) {
           
-          nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
-          nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+          nextProps.document.docDate =nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('DD/MM/YYYY') : moment();
+          nextProps.document.requiredDate =nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format('DD/MM/YYYY'): moment();
           
             this.setState({
                 document: nextProps.document,
@@ -429,16 +431,24 @@ class RfiAddEdit extends Component {
 
         dataservice.addObject('EditCommunicationRfi', saveDocument).then(result => {
             this.setState({
-                isLoading: true
+                isLoading: false
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.props.history.push("/Rfi/" + this.state.projectId);
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        }).catch(ex => {
+            this.setState({
+                isLoading: false
+            });
+            toast.error(Resources["failError"][currentLanguage])});
     }
 
     saveRfi(event) {
+
+        this.setState({
+            isLoading:true
+        });
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -446,10 +456,15 @@ class RfiAddEdit extends Component {
 
         dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
             this.setState({
-                docId: result.id
+                docId: result.id,
+                isLoading:false
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        }).catch(ex => {
+            this.setState({
+                isLoading: false
+            });
+            toast.error(Resources["failError"][currentLanguage])});
     }
 
     saveAndExit(event) {  
@@ -468,9 +483,7 @@ class RfiAddEdit extends Component {
     }
    
     viewAttachments() {
-        return (
-            this.state.docId > 0 ? (Config.IsAllow(3318) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={828} /> : null) : null
-        )
+        return ( this.state.docId > 0 ? (Config.IsAllow(3318) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={828} /> : null) : null);
     }
 
     handleShowAction = (item) => { 
@@ -519,6 +532,7 @@ class RfiAddEdit extends Component {
                                     <div className="document-fields">
                                         <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
+                                            enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editRfi();
@@ -559,16 +573,12 @@ class RfiAddEdit extends Component {
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
                                                                     <div className="proForm datepickerContainer">
-                                                                        <label className="control-label">{Resources.docDate[currentLanguage]}</label>
-                                                                        <div className="linebylineInput" >
-                                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.docDate}
-                                                                                                  format={'DD/MM/YYYY'} 
-                                                                                                  showBorder
-                                                                                                  onChange={e => this.handleChangeDate(e, 'docDate')}
-                                                                                                  placeholder={'Select a date'} />
-                                                                            </div>
-                                                                        </div>
+                                                                     <div className="linebylineInput valid-input alternativeDate">
+                                                                                <DatePicker title='docDate'
+                                                                                    format={'DD/MM/YYYY'}
+                                                                                    startDate={this.state.document.docDate}
+                                                                                    handleChange={e => this.handleChangeDate(e, 'docDate')} />
+                                                                     </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -577,15 +587,12 @@ class RfiAddEdit extends Component {
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
                                                                     <div className="proForm datepickerContainer">
-                                                                        <label className="control-label">{Resources.requiredDate[currentLanguage]}</label>
-                                                                        <div className="linebylineInput" >
-                                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.requiredDate}
-                                                                                                  format={'DD/MM/YYYY'} showBorder
-                                                                                                  onChange={e => this.handleChangeDate(e, 'requiredDate')}
-                                                                                                  placeholder={'Select a date'}/>
+                                                                    <div className="linebylineInput valid-input alternativeDate">
+                                                                                <DatePicker title='requiredDate'
+                                                                                    format={'DD/MM/YYYY'}
+                                                                                    startDate={this.state.document.requiredDate}
+                                                                                    handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                                             </div>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -737,13 +744,31 @@ class RfiAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}
+                                                        { 
+                                                            this.props.changeStatus === false ?
+                                                            this.state.isLoading === false ?  this.showBtnsSaving() : 
+                                                            (<button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>):null}
                                                     </div>
                                                     {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument"> 
                                                                 <div className="approveDocumentBTNS">
-                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>
+                                                                {this.state.isLoading ?
+                                                                        <button className="primaryBtn-1 btn disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button> :
+                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                                                                    }
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
                                                                             <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
