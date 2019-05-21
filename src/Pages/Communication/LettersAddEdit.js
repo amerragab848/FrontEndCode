@@ -437,7 +437,7 @@ class LettersAddEdit extends Component {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
-                currentComponent: item.value,
+                currentComponantDocument: item.value,
                 currentTitle: item.title,
                 showModal: true
             })
@@ -714,6 +714,7 @@ class LettersAddEdit extends Component {
                                                                         </button> :
                                                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
                                                                     }
+                                                                    
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
                                                                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
@@ -757,10 +758,10 @@ class LettersAddEdit extends Component {
                         </div>
                     </div>
 
-                </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                </div> 
+                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActionsLetter">
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
+                        {this.state.currentComponantDocument}
                     </SkyLight>
                 </div>
             </div>
