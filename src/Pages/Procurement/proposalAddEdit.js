@@ -695,22 +695,9 @@ class ProposalAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                    {this.state.docId > 0 ? (
-                        this.props.changeStatus === false ?
-                        Config.IsAllow(831)?
-                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>:null :
-                        Config.IsAllow(3246)?
-                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>:null 
-                      ) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={831} EditAttachments={3246} ShowDropBox={3549} ShowGoogleDrive={3550} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                       {this.viewAttachments()}
-
-                      {this.props.changeStatus === true ? (
-                        <ViewWorkFlow
-                          docType={this.state.docTypeId}
-                          docId={this.state.docId}
-                          projectId={this.state.projectId}
-                        />
-                      ) : null}
+                      {this.props.changeStatus === true ? ( <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> ) : null}
                     </div>
                   </div>
                 </div>
