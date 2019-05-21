@@ -86,7 +86,7 @@ class phoneAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             isLoading: true,
-            permission: [{ name: 'sendByEmail', code: 0 }, { name: 'sendByInbox', code: 94 },
+            permission: [{ name: 'sendByEmail', code: 95 }, { name: 'sendByInbox', code: 94 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 965 },
             { name: 'createTransmittal', code: 3051 }, { name: 'sendToWorkFlow', code: 715 },
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
@@ -328,35 +328,21 @@ class phoneAddEdit extends Component {
     }
 
     viewAttachments() {
-        return (
-            this.state.docId > 0 ? (
-                Config.IsAllow(3320) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={840} />
-                    : null)
-                : null
-        )
+        return (this.state.docId > 0 ? ( Config.IsAllow(3320) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} /> : null) : null)
     }
 
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
+ 
         return (
-            <div className="mainContainer">
-
+            <div className="mainContainer"> 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
                     <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.phoneTitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -448,7 +434,7 @@ class phoneAddEdit extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input mix_dropdown">
-                                                    <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
+                                                    <label className="control-label">{Resources['fromCompany'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
                                                            <DropdownMelcous
@@ -477,7 +463,7 @@ class phoneAddEdit extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input mix_dropdown">
-                                                    <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
+                                                    <label className="control-label">{Resources['toCompany'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
                                                                     <DropdownMelcous
@@ -560,17 +546,9 @@ class phoneAddEdit extends Component {
                                 </div>
                                 <div className="doc-pre-cycle">
                                     <div>
-                                        {this.state.docId > 0 ?
-                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
-
-                                        {this.viewAttachments()}
-
-                                        {this.props.changeStatus === true ?
-                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
+                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={833} EditAttachments={3226} ShowDropBox={3613} ShowGoogleDrive={3614} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                    {this.viewAttachments()}
+                                    {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                     </div>
                                 </div>
                             </div>
