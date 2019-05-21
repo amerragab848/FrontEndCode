@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import Api from "../../api";
-  
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Widgets extends Component {
   constructor(props) {
@@ -19,36 +19,38 @@ class Widgets extends Component {
     console.log(this.props.props.api);
 
     Api.get(this.props.props.api).then(result => {
-      this.setState({
-        value: result != null ? result : 0
-      });
+      if (result) {
+        this.setState({
+          value: result != null ? result : 0
+        });
+      }
     });
   }
 
   onOpenModal = () => {
-    if(this.state.value > 0){ 
-      let arr =this.props.props.route.split('action');
-      if(arr.length > 1 ){ 
-        this.props.history.push( 
-            this.props.props.route 
+    if (this.state.value > 0) {
+      let arr = this.props.props.route.split('action');
+      if (arr.length > 1) {
+        this.props.history.push(
+          this.props.props.route
         );
       }
-      else{ 
-        this.props.history.push({ 
+      else {
+        this.props.history.push({
           pathname: this.props.props.route,
           search: "?key=" + this.props.props.key
         });
       }
     }
   };
- 
 
-  render() { 
+
+  render() {
     return (
       <Fragment>
         <div className="summerisItem__number">
           <div className="content__number">
-            <p className="number"  onClick={this.onOpenModal.bind(this)}>
+            <p className="number" onClick={this.onOpenModal.bind(this)}>
               {this.state.value}
             </p>
             <h4 className="title">

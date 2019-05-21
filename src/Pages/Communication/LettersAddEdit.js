@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -11,8 +11,6 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
-
-import RichTextEditor from 'react-rte';
 
 import { connect } from 'react-redux';
 import {
@@ -161,9 +159,9 @@ class LettersAddEdit extends Component {
             this.checkDocumentIsView();
         }
 
-        if (this.state.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
-        }
+        // if (this.state.showModal != this.props.showModal) {
+        //     this.setState({ showModal: this.props.showModal });
+        // }
     }
 
     checkDocumentIsView() {
@@ -205,7 +203,7 @@ class LettersAddEdit extends Component {
                 toContactId: '',
                 replayId: '',
                 docDate: moment(),
-                status: 'false',
+                status: false,
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
@@ -275,7 +273,7 @@ class LettersAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId , 'subject', 'id').then(result => {
+        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
             if (isEdit) {
                 let replyId = this.props.document.replyId;
                 let replyLetter = {};
@@ -287,7 +285,7 @@ class LettersAddEdit extends Component {
                 }
             }
             this.setState({
-                letters:  result
+                letters: result
             });
         });
     }
@@ -305,10 +303,7 @@ class LettersAddEdit extends Component {
             this.setState({
                 document: updated_document
             });
-
-
         }
-
     };
 
     handleChange(e, field) {
@@ -438,7 +433,10 @@ class LettersAddEdit extends Component {
     }
 
     handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
+        console.log(item.value)
+        if (item.title == "sendToWorkFlow") {
+            this.props.actions.SendingWorkFlow(true);
+        }
         if (item.value != "0") {
             this.setState({
                 currentComponent: item.value,
@@ -463,10 +461,10 @@ class LettersAddEdit extends Component {
 
         ];
         return (
-            <div className="mainContainer">
+            <div className="mainContainer" id={'mainContainer'}>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -680,7 +678,7 @@ class LettersAddEdit extends Component {
                                                                 data={this.state.letters}
                                                                 selectedValue={this.state.selectedReplyLetter}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'replyId', false, '', '', '', 'selectedReplyLetter')}
-                                                                index="letter-replyId"                                                            />
+                                                                index="letter-replyId" />
                                                         </div>
 
                                                         <div className="letterFullWidth">
@@ -741,13 +739,16 @@ class LettersAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
+
+                                            {this.state.docId > 0 ? this.props.changeStatus === false ?
+                                                (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
+                                                (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
                                             }
+
                                             {this.viewAttachments()}
 
                                             {this.props.changeStatus === true ?
+
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                 : null
                                             }

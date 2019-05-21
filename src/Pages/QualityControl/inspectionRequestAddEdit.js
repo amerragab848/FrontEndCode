@@ -161,10 +161,10 @@ class inspectionRequestAddEdit extends Component {
             approvalstatusList: [],
             discplines: [],
             letters: [],
-            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            permission: [{ name: 'sendByEmail', code: 372 }, { name: 'sendByInbox', code: 371 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 959 },
+            { name: 'createTransmittal', code: 3045 }, { name: 'sendToWorkFlow', code: 710 },
+            { name: 'viewAttachments', code: 3312 }, { name: 'deleteAttachments', code: 850 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -228,6 +228,10 @@ class inspectionRequestAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -262,7 +266,7 @@ class inspectionRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId);
+            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId, 'inspectionRequest');
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
                 this.setState({
@@ -513,6 +517,7 @@ class inspectionRequestAddEdit extends Component {
             });
         }
     }
+
     onChangeRfi = (value) => {
         if (value != null) {
             this.setState({ rfi: value });
@@ -652,8 +657,8 @@ class inspectionRequestAddEdit extends Component {
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                Config.IsAllow(3312) === true ?
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={850} />
                     : null)
                 : null
         )
@@ -1280,15 +1285,26 @@ class inspectionRequestAddEdit extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                {this.props.changeStatus === false ?
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <Dropdown
+                                                                            title="contractPo"
+                                                                            data={this.state.contractsPos}
+                                                                            selectedValue={this.state.selectedContract}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                            index="contractId" />
+                                                                    </div> :
 
-                                                                <div className="linebylineInput valid-input">
-                                                                    <Dropdown
-                                                                        title="contractPo"
-                                                                        data={this.state.contractsPos}
-                                                                        selectedValue={this.state.selectedContract}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                        index="contractId" />
-                                                                </div>
+
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                        <div className="ui input inputDev">
+                                                                            <input type="text" className="form-control" id="contractId"
+                                                                                value={this.state.document.orderSubject}
+                                                                                name="contractId" />
+                                                                        </div>
+                                                                    </div>
+                                                                }
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
@@ -1346,17 +1362,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         index="apartmentNoId" />
                                                                 </div>
 
-                                                                <div className="letterFullWidth">
-                                                                    <label className="control-label">{Resources.message[currentLanguage]}</label>
-                                                                    <div className="inputDev ui input">
-                                                                        <div className="inputDev ui input">
-                                                                            <TextEditor
-                                                                                value={this.state.answer}
-                                                                                onChange={this.onChangeAnswer} />
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
 
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
@@ -1364,6 +1369,18 @@ class inspectionRequestAddEdit extends Component {
                                                                         <TextEditor
                                                                             value={this.state.rfi}
                                                                             onChange={this.onChangeRfi} />
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div className="letterFullWidth">
+                                                                    <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
+                                                                    <div className="inputDev ui input">
+                                                                        <div className="inputDev ui input">
+                                                                            <TextEditor
+                                                                                value={this.state.answer}
+                                                                                onChange={this.onChangeAnswer} />
+                                                                        </div>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1376,12 +1393,8 @@ class inspectionRequestAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 ?
-                                                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
-                                                    }
+                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849} EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                                                     {this.viewAttachments()}
-
                                                     {this.props.changeStatus === true ?
                                                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                         : null
@@ -1525,7 +1538,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 

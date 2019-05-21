@@ -12,7 +12,7 @@ import Resources from "../../resources.json";
 import Api from '../../api';
 import { withRouter } from "react-router-dom";
 
-import RichTextEditor from 'react-rte';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
 import {
@@ -72,9 +72,7 @@ const validationSchemaForAddCycle = Yup.object().shape({
         .required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 })
-
-
-
+ 
 class NCRAddEdit extends Component {
 
     constructor(props) {
@@ -145,8 +143,8 @@ class NCRAddEdit extends Component {
             reasonForIssues: [],
             areas: [],
             buildings: [],
-            answer: RichTextEditor.createEmptyValue(),
-            rfi: RichTextEditor.createEmptyValue(),
+            answer: '',
+            rfi: '',
             specificationSectionList: [],
             reviewResultList: [],
             activityIRList: [],
@@ -196,8 +194,7 @@ class NCRAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let NCRDoc = nextProps.document
-            //moment(serverInspectionRequest.docDate).format('DD/MM/YYYY')
+            let NCRDoc = nextProps.document 
             NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
             NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD/MM/YYYY')
             NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD/MM/YYYY')
@@ -205,7 +202,7 @@ class NCRAddEdit extends Component {
             this.setState({
                 document: NCRDoc,
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: RichTextEditor.createValueFromString(nextProps.document.answer, 'html')
+                answer: nextProps.document.answer
             });
 
             this.checkDocumentIsView();
@@ -370,27 +367,18 @@ class NCRAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
+        if (value != null) { 
+            let original_document = { ...this.state.document };
 
-            this.setState({ answer: value });
-            if (value.toString('markdown').length > 1) {
+            let updated_document = {}; 
+            updated_document.answer = value; 
+            updated_document = Object.assign(original_document, updated_document);
 
-                let original_document = { ...this.state.document };
-
-                let updated_document = {};
-
-                updated_document.answer = value.toString('markdown');
-
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
-
+            this.setState({
+                document: updated_document,
+                answer: value 
+            });
         }
-
     };
 
     handleChange(e, field) {
@@ -1022,8 +1010,8 @@ class NCRAddEdit extends Component {
                                                     <div className="letterFullWidth">
                                                         <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                         <div className="inputDev ui input">
-                                                            <RichTextEditor value={this.state.answer}
-                                                                onChange={event => this.onChangeMessage(event, 'answer')}
+                                                            <TextEditor value={this.state.answer}
+                                                                onChange={this.onChangeMessage}
                                                             />
                                                         </div>
                                                     </div>

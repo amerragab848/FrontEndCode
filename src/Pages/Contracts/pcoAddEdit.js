@@ -29,7 +29,7 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"; 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -39,11 +39,7 @@ const validationSchema = Yup.object().shape({
 
     description: Yup.string().required(Resources['description'][currentLanguage]),
 
-    contractId: Yup.string().required(Resources['selectContract'][currentLanguage])
-        .nullable(true),
-
-    companyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage])
-        .nullable(true),
+     companyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]) ,
 
     profit: Yup.string().required(Resources['profit'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
@@ -53,7 +49,7 @@ const validationSchema = Yup.object().shape({
     approvalStatusId: Yup.string()
         .required(Resources['overHead'][currentLanguage]),
 
-    timeExtension: Yup.string().required(Resources['timeExtension'][currentLanguage])
+    timeExtensionRequired: Yup.string().required(Resources['timeExtension'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
 
@@ -242,6 +238,10 @@ class pcoAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
+        }
     };
 
     componentDidUpdate(prevProps) {
@@ -253,7 +253,6 @@ class pcoAddEdit extends Component {
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(367)) {
-                alert('not have edit...');
                 this.setState({ isViewMode: true });
             }
 
@@ -266,8 +265,6 @@ class pcoAddEdit extends Component {
                         this.setState({ isViewMode: true });
                     }
                 } else {
-
-                    alert('not have edit and hasWorkflow = ' + this.props.hasWorkflow);
                     this.setState({ isViewMode: true });
                 }
             }
@@ -275,7 +272,6 @@ class pcoAddEdit extends Component {
         else {
             this.setState({ isViewMode: false });
         }
-        console.log('checkDocumentIsView...', this.props, this.state);
     }
 
     componentWillMount() {
@@ -297,7 +293,7 @@ class pcoAddEdit extends Component {
                 projectId: this.state.projectId,
                 arrange: '',
                 docDate: moment(),
-                status: 'true',
+                status: true,
                 isLumpSum: 'false',
                 refDoc: '',
                 profit: 0,
@@ -404,7 +400,8 @@ class pcoAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -502,19 +499,22 @@ class pcoAddEdit extends Component {
 
         dataservice.addObject('EditContractsPco', saveDocument).then(result => {
             this.setState({
-                isLoading: true
+                isLoading: false
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(res => {
             this.setState({
-                isLoading: true
+                isLoading: false
             });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
 
-    saveVariationOrder(event) {
+    saveVariationOrder(event) { 
+        this.setState({
+            isLoading: true
+        });
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -523,14 +523,17 @@ class pcoAddEdit extends Component {
 
         dataservice.addObject('AddContractsPco', saveDocument).then(result => {
             if (result.id) {
-
                 this.setState({
+                    isLoading: false,
                     docId: result.id
                 });
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
         }).catch(res => {
+            this.setState({
+                isLoading: false
+            });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
@@ -540,7 +543,7 @@ class pcoAddEdit extends Component {
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0) {
-            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit'>{Resources.next[currentLanguage]}</button>
+            btn = <button type="submit" className={"primaryBtn-1 btn meduimBtn " + (this.state.isViewMode === true ? " disNone" : " ")} >{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -555,7 +558,7 @@ class pcoAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
@@ -571,9 +574,9 @@ class pcoAddEdit extends Component {
     }
 
     NextStep = () => {
-
+  
         if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) {
+            if (this.props.changeStatus == true) { 
                 this.editVariationOrder();
             }
             window.scrollTo(0, 0)
@@ -593,24 +596,7 @@ class pcoAddEdit extends Component {
         }
 
     }
-
-    NextStep = () => {
-        if (this.state.CurrStep === 1) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else if (this.state.CurrStep === 2) {
-            window.scrollTo(0, 0)
-            this.props.history.push({
-                pathname: '/pco/' + projectId + '',
-            })
-        }
-    }
+ 
 
     NextTopStep = () => {
 
@@ -665,6 +651,7 @@ class pcoAddEdit extends Component {
         saveDocument.proposalId = this.state.docId;
         let currentTab = this.state.currIndex;
         saveDocument.action = currentTab;
+
         dataservice.addObject('AddContractsPcoItems', saveDocument).then(result => {
             if (result) {
                 let oldItems = [...this.state.voItems];
@@ -941,7 +928,7 @@ class pcoAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.pco[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.pco[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
                             {this.state.FirstStep ?
@@ -951,9 +938,9 @@ class pcoAddEdit extends Component {
                                             <div className="document-fields">
                                                 <Formik
                                                     initialValues={{ ...this.state.document }}
-                                                    validationSchema={validationSchema}
-                                                    enableReinitialize={this.props.changeStatus}
-                                                    onSubmit={(values) => {
+                                                     validationSchema={validationSchema}
+                                                     enableReinitialize={this.props.changeStatus}
+                                                    onSubmit={(values) => { 
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveVariationOrder();
                                                         } else {
@@ -962,7 +949,7 @@ class pcoAddEdit extends Component {
                                                     }}  >
 
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                        <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                        <Form id="PCOForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                             <div className="proForm first-proform">
 
@@ -977,7 +964,7 @@ class pcoAddEdit extends Component {
                                                                                 handleBlur(e)
                                                                                 handleChange(e)
                                                                             }}
-                                                                            onChange={(e) => this.handleChange(e, 'subject')} />
+                                                                            onChange={(e) => this.handleChange(e, 'subject')} /> 
                                                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
 
                                                                     </div>
@@ -1045,6 +1032,7 @@ class pcoAddEdit extends Component {
                                                                         name="companyId"
                                                                         id="companyId" />
                                                                 </div>
+
                                                                 {this.props.changeStatus === true ?
                                                                     <div className="linebylineInput valid-input">
 
@@ -1072,6 +1060,7 @@ class pcoAddEdit extends Component {
                                                                             id="contractId" />
                                                                     </div>
                                                                 }
+
                                                                 <div className="linebylineInput  account__checkbox">
                                                                     <div className="linebylineInput valid-input">
                                                                         <label className="control-label">{Resources.isLumpSum[currentLanguage]}</label>
@@ -1105,7 +1094,7 @@ class pcoAddEdit extends Component {
                                                                 </div>
 
                                                                 {this.props.changeStatus === true ?
-                                                                    <div className="proForm first-proform letterFullWidth proform__twoInput">
+                                                                    <Fragment>
                                                                         <div className="linebylineInput valid-input">
                                                                             <label className="control-label">{Resources.approvalStatus[currentLanguage]}</label>
                                                                             <div className="ui input inputDev"  >
@@ -1123,7 +1112,7 @@ class pcoAddEdit extends Component {
                                                                                     name="cvrtitle" />
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </Fragment>
                                                                     :
                                                                     <Fragment>
                                                                         <div className="linebylineInput valid-input">
@@ -1188,26 +1177,37 @@ class pcoAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.timeExtension[currentLanguage]}</label>
-                                                                    <div className={"ui input inputDev" + (errors.timeExtension && touched.timeExtension ? (" has-error") : "ui input inputDev")} >
+                                                                    <div className={"ui input inputDev" + (errors.timeExtensionRequired && touched.timeExtensionRequired ? (" has-error") : "ui input inputDev")} >
                                                                         <input type="text"
                                                                             className="form-control"
-                                                                            id="timeExtension"
+                                                                            id="timeExtensionRequired"
                                                                             value={this.state.document.timeExtensionRequired}
-                                                                            name="timeExtension"
+                                                                            name="timeExtensionRequired"
                                                                             placeholder={Resources.timeExtension[currentLanguage]}
                                                                             onBlur={(e) => {
                                                                                 handleChange(e)
                                                                                 handleBlur(e)
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'timeExtensionRequired')} />
-                                                                        {touched.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}
+
+                                                                        {touched.timeExtensionRequired ? (<em className="pError">{errors.timeExtensionRequired}</em>) : null}
 
                                                                     </div>
                                                                 </div>
 
                                                             </div>
                                                             <div className="slider-Btns">
-                                                                {this.showBtnsSaving()}
+                                                                {this.state.isLoading ?
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                    :
+                                                                    this.showBtnsSaving()}
+                                                                    
                                                             </div>
                                                         </Form>
                                                     )}
@@ -1215,9 +1215,9 @@ class pcoAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 ?
-                                                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
+                                                    {this.state.docId > 0 ? this.props.changeStatus === false ?
+                                                        (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
+                                                        (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
                                                     }
                                                     {this.viewAttachments()}
 
@@ -1234,8 +1234,6 @@ class pcoAddEdit extends Component {
                                 <Fragment>
 
                                     <div className="subiTabsContent feilds__top">
-
-
                                         {this.addVariationDraw()}
 
                                         <div className="doc-pre-cycle">
@@ -1343,7 +1341,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 
@@ -1353,4 +1352,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default withRouter(pcoAddEdit)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(pcoAddEdit))

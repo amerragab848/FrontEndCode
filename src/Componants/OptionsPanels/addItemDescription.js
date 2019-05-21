@@ -24,18 +24,11 @@ import _ from "lodash";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const documentItemValidationSchema = Yup.object().shape({
-    description: Yup.string()
-        .required(Resources['subjectRequired'][currentLanguage]),
-    resourceCode: Yup.string()
-        .required(Resources['resourceCode'][currentLanguage]),
-    itemCode: Yup.string()
-        .required(Resources['itemCode'][currentLanguage]),
-    unitPrice: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    days: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    quantity: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    description: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    itemCode: Yup.string().required(Resources['itemCode'][currentLanguage]),
+    unitPrice: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    days: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    quantity: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
 class addItemDescription extends Component {
 
@@ -291,13 +284,12 @@ class addItemDescription extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['resourceCode'][currentLanguage]} </label>
-                                            <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
+                                            <div className="inputDev ui input has-success">
                                                 <input name='resourceCode'
                                                     className="form-control"
                                                     id="resourceCode" placeholder={Resources['resourceCode'][currentLanguage]} autoComplete='off'
                                                     onBlur={handleBlur} value={this.state.itemDescription.resourceCode}
                                                     onChange={(e) => this.handleChangeItem(e, "resourceCode")} />
-                                                {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">

@@ -194,7 +194,7 @@ class materialInspectionRequestAddEdit extends Component {
                 pathname: "/materialInspectionRequest/" + projectId
             });
         }
-     
+
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
 
@@ -237,6 +237,10 @@ class materialInspectionRequestAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
+        }
     };
 
     componentDidUpdate(prevProps) {
@@ -249,23 +253,17 @@ class materialInspectionRequestAddEdit extends Component {
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(367)) {
-                //alert('not have edit...');
                 this.setState({ isViewMode: true });
             }
 
             if (this.state.isApproveMode != true && Config.IsAllow(367)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
-                    //close => false
                     if (this.props.document.status !== false && Config.IsAllow(367)) {
                         this.setState({ isViewMode: false });
                     } else {
-                        // alert('not have edit and status = ' + this.props.document.status);
-                        // alert('not have edit and status = ' + this.props.document.id);
                         this.setState({ isViewMode: true });
                     }
                 } else {
-
-                    //alert('not have edit and hasWorkflow = ' + this.props.hasWorkflow);
                     this.setState({ isViewMode: true });
                 }
             }
@@ -279,7 +277,7 @@ class materialInspectionRequestAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectTaskGroups');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInspectionRequest');
             dataservice.GetDataGrid("GetMaterialInspectionRequestCycles?materialInspectionId=" + this.state.docId).then(result => {
                 this.setState({
                     IRCycles: [...result]
@@ -1358,16 +1356,6 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         index="apartmentNoId" />
                                                                 </div>
 
-                                                                <div className="letterFullWidth">
-                                                                    <label className="control-label">{Resources.message[currentLanguage]}</label>
-                                                                    <div className="inputDev ui input">
-                                                                        <div className="inputDev ui input">
-                                                                            <TextEditor
-                                                                                value={this.state.answer}
-                                                                                onChange={this.onChangeAnswer} />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
 
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
@@ -1375,6 +1363,17 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         <TextEditor
                                                                             value={this.state.rfi}
                                                                             onChange={this.onChangeRfi} />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="letterFullWidth">
+                                                                    <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
+                                                                    <div className="inputDev ui input">
+                                                                        <div className="inputDev ui input">
+                                                                            <TextEditor
+                                                                                value={this.state.answer}
+                                                                                onChange={this.onChangeAnswer} />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1396,9 +1395,10 @@ class materialInspectionRequestAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 ?
-                                                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
+
+                                                    {this.state.docId > 0 ? this.props.changeStatus === false ?
+                                                        (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
+                                                        (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
                                                     }
                                                     {this.viewAttachments()}
 
@@ -1549,7 +1549,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 

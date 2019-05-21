@@ -3,7 +3,7 @@ import Api from '../../api';
 
 const _ = require('lodash')
 
-export function documentForEdit(urlAction, docTypeId) {
+export function documentForEdit(urlAction, docTypeId,docName) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
 
@@ -12,7 +12,8 @@ export function documentForEdit(urlAction, docTypeId) {
                 document: resp,
                 docId: resp.id,
                 docTypeId: docTypeId,
-                showLeftReportMenu: false
+                showLeftReportMenu: false,
+                docName:docName
             });
 
         }).catch((ex) => {
@@ -103,6 +104,22 @@ export function deleteFile(urlDelete, file) {
 export function uploadFile(BlobUpload, formData, header) {
     return (dispatch, getState) => {
         return Api.postFile(BlobUpload, formData, header).then(resp => {
+            dispatch({
+                type: types.File_Upload,
+                file: resp[0]
+            });
+        }).catch((ex) => {
+            dispatch({
+                type: types.File_Upload,
+                file: {}
+            });
+        });
+    }
+}
+
+export function uploadFileLinks(BlobUpload, formData) {
+    return (dispatch, getState) => {
+        return Api.post(BlobUpload, formData).then(resp => {
             dispatch({
                 type: types.File_Upload,
                 file: resp[0]

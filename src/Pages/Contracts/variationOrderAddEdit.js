@@ -124,28 +124,24 @@ class variationOrderAddEdit extends Component {
 
         this.state = {
             FirstStep: true,
-            SecondStep: false,
-
+            SecondStep: false, 
             SecondStepComplate: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
-            isView: false,
-
+            isView: false, 
             docId: docId,
             docTypeId: 66,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            arrange: arrange,
-
+            arrange: arrange, 
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            voItem: {},
-
+            voItem: {}, 
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code: 3280 }],
             selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             selectPco: { label: Resources.pco[currentLanguage], value: "0" },
             pcos: [],
@@ -235,6 +231,7 @@ class variationOrderAddEdit extends Component {
             this.props.actions.setItemDescriptions(result);
         });
     }
+
     componentWillMount() {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId,this.state.docTypeId,'changeOrder');
@@ -298,7 +295,8 @@ class variationOrderAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -443,8 +441,8 @@ class variationOrderAddEdit extends Component {
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                Config.IsAllow(3298) === true ?
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3280} />
                     : null)
                 : null
         )
@@ -869,16 +867,9 @@ class variationOrderAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 ?
-                                                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
-                                                    }
-                                                    {this.viewAttachments()}
-
-                                                    {this.props.changeStatus === true ?
-                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
-                                                    }
+                                                {this.state.docId > 0 && this.state.isViewMode === false  ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3278} EditAttachments={3279} ShowDropBox={3573} ShowGoogleDrive={3574} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                                {this.viewAttachments()}
+                                                {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null }
                                                 </div>
                                             </div>
                                         </div>

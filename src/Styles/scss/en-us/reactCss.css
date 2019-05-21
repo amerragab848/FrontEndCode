@@ -5619,13 +5619,13 @@ line.horizontal-grid-line {
 .doc-pre-btn h2{
     border-bottom-color: transparent !important;
 }
-/* 
+
 .ck-file-dialog-button{
     display: none !important
   }
   .ck .ck-editor__main{
     text-align: left;
-  } */
+  }
 
 .popupMedium {
     position: fixed;
@@ -5751,9 +5751,9 @@ line.horizontal-grid-line {
   white-space: nowrap;
 }
 
-.mgrpdf-navigation__controls--disabled {
+/* .mgrpdf-navigation__controls--disabled {
   opacity: 0.4;
-}
+} */
 
 .mgrpdf-navigation.mgrpdf-navigation__controls a {
   color: #fff;
@@ -5829,6 +5829,33 @@ line.horizontal-grid-line {
   color: #f9fbfc;
   left: 46%;
 }
+
+#canvas__wrapper{ 
+    width: 891px;
+}
+.drive__wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e9ecf0;
+    padding-bottom: 13px;
+    margin-bottom: 24px;
+}
+
+.drive__wrapper h2 {
+    margin-right: 34px;
+}
+
+.upload__drive {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.upload__drive  img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin: 0 8px;
+}
 .exbortBtn {
     display: flex;
     justify-content: flex-end;
@@ -5842,4 +5869,50 @@ line.horizontal-grid-line {
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:only-child {
     margin-bottom: 0px !important;
+}
+.export__pdf {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 100px;
+}
+
+.table__withItem {
+    max-width: 100%;
+    overflow-x: auto;
+
+}
+.attachmentTable__items tbody tr td:first-child {
+    max-width: 50px;
+}
+
+.attachmentTable__items tbody tr td .contentCell.tableCell-2 {
+    padding-left: 16px;
+}
+
+.attachmentTable__items tbody tr td .contentCell.tableCell-2 span{
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.printWrapper hr {
+    margin: 50px 30px 29px;
+    border: 1px solid #e9ecf0;
+}
+.printWrapper {
+    width: 100% !important;
+}
+
+.printSecondPage .workflowPrint .flowStatus.rejectedStatue::after {
+    background-image: url(../../images/declined.png); 
+}
+
+.attachmentTable tbody tr .contentCell.tableCell-2 {
+    padding-left: 11px;
+}
+
+.attachmentTable .headCell {
+    padding-left: 16px !important;
 }

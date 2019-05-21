@@ -15,10 +15,12 @@ import pdfMenuAction from '../../Styles/images/pdfMenuAction.png'
 import pdfMaxi from '../../Styles/images/pdfMaxi.png'
 
 import Api from '../../api';
+import IP_Configrations from '../../IP_Configrations.json';
 import Resources from '../../resources.json';
 import PDFViewer from 'mgr-pdf-viewer-react'
 import { connect } from 'react-redux';
 import SkyLight from 'react-skylight';
+import axios from 'axios';
 import {
     bindActionCreators
 } from 'redux';
@@ -29,7 +31,7 @@ import Config from '../../Services/Config';
 import _ from "lodash";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let activeURL=''
+let activeURL = ''
 class ViewAttachmments extends Component {
 
     constructor(props) {
@@ -53,7 +55,7 @@ class ViewAttachmments extends Component {
             let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
             Api.get(urlVersion).then(result => {
                 if (result) {
-                   // this.setState({ view: true })
+                    // this.setState({ view: true })
                     this.simpleDialog.show()
                 }
             });
@@ -66,9 +68,46 @@ class ViewAttachmments extends Component {
                 view: true,
                 activeURL: item.attachFile
             })
-            activeURL=item.attachFile;
-            this.simpleDialog.show()
+            activeURL = item.attachFile;
+            // this.simpleDialog.show()
+            this.getPDFblob(item.attachFile);
         }
+    }
+    getPDFblob = (fileLink) => {
+        //   Send filename (text string) to server and then retrieves file as a blob back. 
+        //   using blob as input, converts it to a fileURL that is a link that loads the pdf
+        // let tagetServer = 'https://newgiza.azureedge.net/project-files-demov4';
+
+        axios.get(fileLink, {
+            method: 'GET',
+            responseType: 'blob',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+            mode: 'no-cors',
+            withCredentials: false
+        }).then(response => {
+            if (response) {
+                //Create a Blob from the PDF Stream
+                const blob = new Blob(
+                    [response.data],
+                    { type: 'application/pdf' }
+                );
+                //Build a URL from the file
+                const fileURL = URL.createObjectURL(blob)
+
+                this.setState({
+                    activeURL: fileURL
+                })
+
+                activeURL = fileURL;
+                this.simpleDialog.show()
+            }
+        }).catch(error => {
+            activeURL = '';
+            console.log('abmbmas', error);
+        });
     }
 
     componentDidMount() {
@@ -93,6 +132,12 @@ class ViewAttachmments extends Component {
             let ext = item['fileName'].split(".")[1] ? item['fileName'].split(".")[1].toLowerCase() : 'png';
             let extension = (ext == 'xlsx' ? xlsx : ext == 'pdf' ? pdf : ext == 'jpeg' ? jpeg : ext == 'png' ? png : ext == 'jpg' ? jpg : doc)
             let createdDate = moment(item['createdDate']).format('DD/MM/YYYY');
+            if (item.isCloud !== true) {
+                var containerIndex = item.attachFile.indexOf('/' + IP_Configrations.BlobStorageContainerName);
+                var filePath = item.attachFile.substr(containerIndex);
+                item.attachFile = IP_Configrations.cdn + filePath;
+            }
+
             if (item.fileName) {
                 item.fileNameDisplay = item.fileName.replace(/%23/g, '#');
                 item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
@@ -138,12 +183,15 @@ class ViewAttachmments extends Component {
                                 null
                             }
 
-                            <a href={item['attachFile']} className="pdfPopup various zero attachPdf">
+                            <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
-                            <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
-                                <img src={Pending} alt="pend" width="100%" height="100%" />
-                            </a>
+                            {Config.IsAllow(this.props.deleteAttachments) ?
+                                <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
+                                    <img src={Pending} alt="pend" width="100%" height="100%" />
+                                </a> :
+                                null
+                            }
                         </div>
                     </td>
                 </tr>
@@ -205,15 +253,16 @@ class ViewAttachmments extends Component {
                                         </div>
                                     </div>
                                 </div>
-
-                                <PDFViewer
-                                    document={{
-                                        url: activeURL
-                                    }} />
+                                {activeURL === '' ? null
+                                    :
+                                    <PDFViewer
+                                        document={{
+                                            url: activeURL
+                                        }} />
+                                }
                             </div>
                         </SkyLight>
                     </div>
-
                     : null}
             </React.Fragment>
         )

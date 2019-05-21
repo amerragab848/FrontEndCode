@@ -15,18 +15,6 @@ const colorSchema = [
 ]
 
 let data = {};
-// let logMouseOver = (e) => {
-//     let data = e.data;
-//     console.log(e.data);
-
-//     return (
-//         <p id="legenbd__teext"><span className="chartName"> {data.name}</span>
-//             <span className="percentage">{data.percentage + '%'}</span>
-//             <span className="totalAmount">{data.quantity}</span>
-//         </p>
-//     )
-
-// };
 
 class PieChartComp extends Component {
 
@@ -46,6 +34,7 @@ class PieChartComp extends Component {
     componentDidMount() {
 
         let dataChart = [];
+        this.setState({ isLoading: true });
         Api.get(this.props.api).then(res => {
             if (res) {
                 res.map((obj, index) => {
@@ -61,36 +50,18 @@ class PieChartComp extends Component {
 
         }).catch((ex) => {
             console.log(ex);
+            this.setState({ isLoading: false });
         });
     }
 
     logMouseOver = (e) => {
-        // this.setState({
-        //     data: e.data,
-        //     isAnimated: false
-        // })
         this.setState({
             data: e.data,
             highlightedSlice: e.data.id,
             showLegend: true
         });
         data = e.data;
-        console.log(e.data);
-        console.log(data);
     };
-
-    // _handleMouseOut() {
-    //     this.setState({
-    //         highlightedSlice: 99999
-    //     });
-    // }
-
-    // _handleMouse(e) {
-    //     console.log('this.state.dataChart')
-    //     console.log(this.state.dataChart)
-    //     this.setState({ highlightedSlice: this.state.dataChart.id , showLegend :true})
-    // }
-
 
     render() {
 

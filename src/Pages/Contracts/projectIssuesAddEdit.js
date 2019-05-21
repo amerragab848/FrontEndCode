@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import dataservice from "../../Dataservice";
-import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+import dataservice from "../../Dataservice"; 
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
+import { withRouter } from "react-router-dom"; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -84,12 +82,12 @@ class ProjectIssuesAddEdit extends Component {
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             permission: [{ name: 'sendByEmail', code: 3776 },
             { name: 'sendByInbox', code: 3775 },
-            { name: 'sendTask', code: 1 },
-            { name: 'distributionList', code: 1026 },
-            { name: 'createTransmittal', code: 3027 },
+            { name: 'sendTask', code: 0 },
+            { name: 'distributionList', code: 3800 },
+            { name: 'createTransmittal', code: 3801 },
             { name: 'sendToWorkFlow', code: 3779 },
-            { name: 'viewAttachments', code: 3782 },
-            { name: 'deleteAttachments', code: 3783 }]
+            { name: 'viewAttachments', code: 3798 },
+            { name: 'deleteAttachments', code: 3799 }]
         }
 
         if (!Config.IsAllow(3770) && !Config.IsAllow(3771) && !Config.IsAllow(3773)) {
@@ -271,10 +269,12 @@ class ProjectIssuesAddEdit extends Component {
     }
 
     viewAttachments() {
-        return (
-            this.state.docId > 0 ? (Config.IsAllow(3782) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3783} /> : null) : null
-        )
-    }
+        return this.state.docId > 0 ? (
+          Config.IsAllow(3798) === true ? (
+            <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3799}/>
+          ) : null
+        ) : null;
+      }
 
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
@@ -482,13 +482,8 @@ class ProjectIssuesAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
-                                            {this.props.document.id > 0 ?
-                                                (Config.IsAllow(3782) === true ?
-                                                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3783} />
-                                                    : null) :
-                                                null
-                                            }
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3796} EditAttachments={3797} ShowDropBox={3803} ShowGoogleDrive={3804} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                            {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>

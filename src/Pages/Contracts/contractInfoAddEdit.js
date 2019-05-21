@@ -23,6 +23,7 @@ import ContractsConditions from "./ContractsConditions";
 import ContractInsurance from "./ContractInsurance";
 import Schedule from "./Schedule";
 import SubContract from "./SubContractLog";
+import SubPurchaseOrderLog from "./subPurchaseOrderLog";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
@@ -167,6 +168,7 @@ class ContractInfoAddEdit extends Component {
       changeOrderSum:0,
       viewItemPopUp : false,
       objItems:{},
+      showSubPurchaseOrders:false
       // details:"",
       // originalQuantity:"",
       // arrange:"",
@@ -426,7 +428,7 @@ class ContractInfoAddEdit extends Component {
 
         
         this.setState({
-            arrange : result != null ?(maxArrange + 1):1,
+            arrange : result.length > 0 ?(maxArrange + 1):1,
             variationOrdersData:  result != null ? result : []
           });  
       });
@@ -619,6 +621,7 @@ class ContractInfoAddEdit extends Component {
     switch (this.state.CurrStep) {
       case 1:
         this.setState({
+          activeTab : "pricedItem",
           CurrStep: this.state.CurrStep + 1,
           firstComplete: true
         });
@@ -685,6 +688,7 @@ class ContractInfoAddEdit extends Component {
   }; 
    
   changeTab = tabName => { 
+   
     this.setState({ activeTab: tabName }); 
   };
 
@@ -739,6 +743,7 @@ class ContractInfoAddEdit extends Component {
   StepTwoLink = () => {
     if (docId !== 0) {
       this.setState({
+        activeTab : "pricedItem",
         firstComplete: true,
         secondComplete: true,
         CurrStep: 2,
@@ -900,7 +905,7 @@ class ContractInfoAddEdit extends Component {
       toast.error(Resources["operationCanceled"][currentLanguage]);
       this.setState({ isLoading: false });
     });
-  }
+  } 
 
   render() {
   
@@ -1407,14 +1412,12 @@ class ContractInfoAddEdit extends Component {
               </Formik>
               <div className="doc-pre-cycle letterFullWidth">
                 <div>
-                  {this.state.docId > 0 ? (
-                    <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
-                  ) : null}
+                {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={859} EditAttachments={3256} ShowDropBox={3569} ShowGoogleDrive={3570} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                   {this.viewAttachments()}
 
-                  {this.props.changeStatus === true ? (
-                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                  ) : null}
+                  {this.props.changeStatus === true ?
+                      <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                      : null}
                 </div>
               </div>
             </div>
@@ -1468,8 +1471,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "schedule" ? (<Schedule contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
           {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>):null}
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrders contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}/>) : null}
+          {this.state.activeTab == "subContracts" ? (<SubContract contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
+          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} />) : null}
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
@@ -1576,7 +1579,7 @@ class ContractInfoAddEdit extends Component {
                 </Fragment>
               </SkyLight>
           </div>
-
+ 
           <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
               <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                   {this.state.currentComponent}
@@ -1689,6 +1692,7 @@ class ContractInfoAddEdit extends Component {
     );
   }
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     document: state.communication.document,

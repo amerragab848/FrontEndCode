@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -10,8 +10,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom";
-import RichTextEditor from 'react-rte';
+import { withRouter } from "react-router-dom"; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -25,6 +24,7 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import { toast } from "react-toastify";
 import Api from '../../api'
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
@@ -100,7 +100,7 @@ class reportsAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedReportType: { label: Resources.pleaseSelectReportType[currentLanguage], value: "0" },
-            message: RichTextEditor.createEmptyValue()
+            message: ''
         }
 
         if (!Config.IsAllow(423) && !Config.IsAllow(424) && !Config.IsAllow(426)) {
@@ -122,20 +122,24 @@ class reportsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
+    
     }
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document && nextProps.document.id > 0) {
             this.setState({
                 document: { ...nextProps.document },
                 hasWorkflow: nextProps.hasWorkflow,
                 selectedReportType: { label: nextProps.document.reportTypeName, value: nextProps.document.reportTypeId },
-                message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
+                message: nextProps.document.message
             },function(){
                 let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
                 this.setState({document:{...this.state.document,docDate:docDate}})
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+        }
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -201,27 +205,23 @@ class reportsAddEdit extends Component {
             this.fillDropDowns(false);
         }
     };
+
     onChangeMessage = (value) => {
-        let isEmpty = !value.getEditorState().getCurrentContent().hasText();
-        if (isEmpty === false) {
-
+        if (value != null) {
             this.setState({ message: value });
-            if (value.toString('markdown').length > 1) {
-                let original_document = { ...this.state.document };
+            let original_document = { ...this.state.document };
+            let updated_document = {};
 
-                let updated_document = {};
+            updated_document.message = value;
 
-                updated_document.message = value.toString('markdown');
+            updated_document = Object.assign(original_document, updated_document);
 
-                updated_document = Object.assign(original_document, updated_document);
-
-                this.setState({
-                    document: updated_document
-                });
-            }
-        }
-
+            this.setState({
+                document: updated_document
+            });  
+        } 
     };
+
     fillDropDowns(isEdit) {
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
             if (isEdit) {
@@ -368,7 +368,7 @@ class reportsAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3326) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={822} />
                     : null)
                 : null
         )
@@ -402,12 +402,8 @@ class reportsAddEdit extends Component {
         ];
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
-
                 <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.Reports[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-                    
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -615,11 +611,11 @@ class reportsAddEdit extends Component {
 
                                                         <div className="fullWidthWrapper textLeft">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
+                                                        
                                                             <div className="inputDev ui input">
-                                                                <RichTextEditor
+                                                                <TextEditor
                                                                     value={this.state.message}
-                                                                    onChange={this.onChangeMessage.bind(this)}
-                                                                />
+                                                                    onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
 
@@ -657,27 +653,19 @@ class reportsAddEdit extends Component {
 
                                         </Formik>
                                     </div>
-                                    <div className="doc-pre-cycle">
+                                    <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                        {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={821} EditAttachments={3232} ShowDropBox={3625} ShowGoogleDrive={3626} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                                             {this.viewAttachments()}
-
                                             {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            : null}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
@@ -696,7 +684,8 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        showModal: state.communication.showModal
     }
 }
 
