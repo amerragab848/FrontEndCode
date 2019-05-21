@@ -187,28 +187,6 @@ class DrawingSetsAddEdit extends Component {
     }
   }
 
-  // checkDocumentIsView() {
-  //   if (this.props.changeStatus === true) {
-  //     if (!Config.IsAllow(212)) {
-  //       this.setState({ isViewMode: true });
-  //     }
-
-  //     if (this.state.isApproveMode != true && Config.IsAllow(212)) {
-  //       if (this.props.hasWorkflow == false && Config.IsAllow(212)) {
-  //         if (this.props.document.status !== false && Config.IsAllow(212)) {
-  //           this.setState({ isViewMode: false });
-  //         } else {
-  //           this.setState({ isViewMode: true });
-  //         }
-  //       } else {
-  //         this.setState({ isViewMode: true });
-  //       }
-  //     }
-  //   } else {
-  //     this.setState({ isViewMode: false });
-  //   }
-  // }
-
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
       if (!(Config.IsAllow(212))) {
@@ -575,8 +553,9 @@ class DrawingSetsAddEdit extends Component {
   }
 
   viewAttachments() {
-
-    return this.state.docId > 0 ? (Config.IsAllow(3331) === true ? (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={896} />) : null) : null;
+    return this.state.docId > 0 ? (
+      Config.IsAllow(3331) === true ?
+        (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={896} />) : null) : null;
   }
 
   handleShowAction = item => {
@@ -1063,7 +1042,7 @@ class DrawingSetsAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.CurrentStep === 1 ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={895} EditAttachments={3237} ShowDropBox={3637} ShowGoogleDrive={3638} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                       {this.state.CurrentStep === 1 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>

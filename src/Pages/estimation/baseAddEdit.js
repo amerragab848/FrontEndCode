@@ -130,7 +130,8 @@ class BaseAddEdit extends Component {
         }
     };
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {  
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
