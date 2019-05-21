@@ -158,10 +158,7 @@ class LettersAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-
-        // if (this.state.showModal != this.props.showModal) {
-        //     this.setState({ showModal: this.props.showModal });
-        // }
+ 
     }
 
     checkDocumentIsView() {
@@ -486,7 +483,8 @@ class LettersAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
-                                            onSubmit={(values) => {
+                                            onSubmit={(e) => {
+                                                e.stopPropagation();
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {

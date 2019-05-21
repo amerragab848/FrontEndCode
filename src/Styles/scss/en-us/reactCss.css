@@ -5912,3 +5912,7 @@ line.horizontal-grid-line {
 .attachmentTable .headCell {
     padding-left: 16px !important;
 }
+
+.table__wrapper {
+    text-align: left;
+}
