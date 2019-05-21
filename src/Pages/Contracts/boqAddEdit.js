@@ -399,6 +399,7 @@ class bogAddEdit extends Component {
             })
         });
     }
+
     componentDidMount() {
 
     }
@@ -444,6 +445,7 @@ class bogAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
     }
+
     getTabelData() {
         let Table = []
         this.setState({ isLoading: true, LoadingPage: true })
@@ -513,6 +515,7 @@ class bogAddEdit extends Component {
         }
 
     }
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -550,6 +553,7 @@ class bogAddEdit extends Component {
             this.setState({ isLoading: false })
         })
     }
+
     editBoq = (values) => {
         if (this.state.isViewMode) {
             this.NextStep()
@@ -672,6 +676,7 @@ class bogAddEdit extends Component {
             }
         })
     }
+
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
@@ -699,6 +704,7 @@ class bogAddEdit extends Component {
             })
         }
     }
+
     NextStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
@@ -725,6 +731,7 @@ class bogAddEdit extends Component {
                 break;
         }
     }
+
     PreviousStep = () => {
         window.scrollTo(0, 0)
         switch (this.state.CurrStep) {
@@ -768,22 +775,26 @@ class bogAddEdit extends Component {
 
         }
     }
+
     clickHandlerDeleteRowsMain = selectedRows => {
         this.setState({
             showDeleteModal: true,
             selectedRow: selectedRows
         });
-    };
+    }
+
     onRowsSelected = selectedRows => {
         this.setState({
             selectedRow: selectedRows
         });
     }
+
     onRowsDeselected = () => {
         this.setState({
             selectedRow: []
         });
     }
+    
     assign = () => {
         this.setState({ showBoqModal: true })
         this.boqTypeModal.show()

@@ -5838,3 +5838,8 @@ line.horizontal-grid-line {
 .exbortBtn button:nth-child(2) {
     margin-left: 16px;
 }
+
+
+.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:only-child {
+    margin-bottom: 0px !important;
+}

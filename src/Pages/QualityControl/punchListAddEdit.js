@@ -121,7 +121,7 @@ class punchListAddEdit extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "bicContactId",
+                key: "bicContactName",
                 name: Resources["actionByContact"][currentLanguage],
                 width: 100,
                 draggable: true,
@@ -300,7 +300,6 @@ class punchListAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
@@ -380,7 +379,7 @@ class punchListAddEdit extends Component {
                 CurrStep: this.state.CurrStep + 1,
             })
         }
-       else {
+        else {
             this.saveAndExit()
         }
 
@@ -568,7 +567,7 @@ class punchListAddEdit extends Component {
 
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else  {
+        } else {
             btn = <button className="primaryBtn-1 btn mediumBtn" type="submit">{Resources.next[currentLanguage]}</button>
         }
         return btn;
@@ -657,7 +656,7 @@ class punchListAddEdit extends Component {
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
-              //  
+                //  
             }
 
             else {
@@ -795,7 +794,7 @@ class punchListAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
@@ -932,7 +931,7 @@ class punchListAddEdit extends Component {
                                                 <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                 <div className="supervisor__company">
                                                     <div className="super_name">
-                                                      <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
+                                                        <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                                             touched={touched.bicCompanyId} name="bicCompanyId"
                                                             handleChange={event =>
@@ -941,7 +940,7 @@ class punchListAddEdit extends Component {
                                                     </div>
 
                                                     <div className="super_company">
-                                                    <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                        <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
                                                             handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
                                                             onChange={setFieldValue} onBlur={setFieldTouched}
                                                             error={errors.bicContactId} touched={touched.bicContactId}
@@ -1013,7 +1012,6 @@ class punchListAddEdit extends Component {
                 </div>
             )
         }
-
         //Render Add Item In Second Step
         let RenderAddItem = () => {
             return (
@@ -1125,20 +1123,20 @@ class punchListAddEdit extends Component {
                                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <Dropdown data={this.state.ToContactsItem} selectedValue={this.state.selectedActionByContactItem}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem', false, '', '', '', 'selectedActionByContactItem')}
-                                                                onChange={setFieldValue} onBlur={setFieldTouched}
-                                                                error={errors.ActionByContactItem} touched={touched.ActionByContactItem}
-                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" />
-                                                        </div>
-
-                                                        <div className="super_company">
                                                             <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyIdItem}
                                                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.ActionByCompanyIdItem}
                                                                 touched={touched.ActionByCompanyIdItem} name="ActionByCompanyIdItem"
                                                                 handleChange={event =>
                                                                     this.handleChangeDropDown(event, 'ActionByCompanyIdItem', true, 'ToContactsItem', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyIdItem', 'selectedActionByContactItem')}
                                                             />
+                                                        </div>
+
+                                                        <div className="super_company">
+                                                            <Dropdown data={this.state.ToContactsItem} selectedValue={this.state.selectedActionByContactItem}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem', false, '', '', '', 'selectedActionByContactItem')}
+                                                                onChange={setFieldValue} onBlur={setFieldTouched}
+                                                                error={errors.ActionByContactItem} touched={touched.ActionByContactItem}
+                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1157,7 +1155,6 @@ class punchListAddEdit extends Component {
                 </Formik>
             )
         }
-
         //Render Grid In Second Step
         const dataGrid =
             this.state.isLoading === false ? (
@@ -1303,7 +1300,7 @@ class punchListAddEdit extends Component {
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.punchList[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.punchList[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
