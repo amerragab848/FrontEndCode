@@ -6,9 +6,9 @@ import jsPDF from 'jspdf';
 import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import Profile from '../../Styles/images/icons/person.svg'
-import PdfImg from '../../Styles/images/pdfAttache.png'
-import LoadingSection from '../publicComponants/LoadingSection'
+ import LoadingSection from '../publicComponants/LoadingSection'
 import Signature from '../../Styles/images/mySignature.png';
+
 import {
     bindActionCreators
 } from 'redux';
@@ -41,25 +41,14 @@ class ExportDetails extends Component {
             const input = document.getElementById('printPdf');
             input.style.height = 'auto'
             input.style.visibility = 'visible'
-            // html2canvas(input).then((canvas) => {
-            //     const imgData = canvas.toDataURL('image/png');
-            //     const pdf = new jsPDF();
-            //     pdf.addImage(imgData, 'JPEG', 0, 0);
-            //     pdf.save("download.pdf");
-            //     input.style.visibility = 'hidden';
-            //     input.style.height = '0';
-            //     this.setState({
-            //         isLoading: false
-            //     });
-            // }) 
-
+           
             html2canvas(input).then((canvas) => {
                 var imgData = canvas.toDataURL('image/png');
                 var imgWidth = 210;
                 var pageHeight = 295;
                 var imgHeight = canvas.height * imgWidth / canvas.width;
                 var heightLeft = imgHeight;
-                var doc = new jsPDF('p', 'mm','a4');
+                var doc = new jsPDF('p', 'mm','letter');
                 var position = 0;
 
                 doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
@@ -195,14 +184,14 @@ class ExportDetails extends Component {
                 !notExist ?
                     <tr key={index}>
                         <td>
-                            <h4 className="ui image header">
+                            <h4 className="ui image header ">
                                 <img src={Profile} alt="Doc." />
                                 <div className="content">
                                     {Resources[field.name][currentLanguage]}
                                 </div>
                             </h4>
                         </td>
-                        <td>
+                        <td className="white mt5 tc f3">
                             {formatData}
                         </td>
                     </tr>

@@ -259,6 +259,9 @@ class phoneAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });
+        }
     }
 
     componentWillReceiveProps(props, state) {
@@ -315,7 +318,7 @@ class phoneAddEdit extends Component {
         });
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
             this.setState({
@@ -331,7 +334,7 @@ class phoneAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3320) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={840} />
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} />
                     : null)
                 : null
         )
@@ -352,11 +355,8 @@ class phoneAddEdit extends Component {
         ];
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.phoneTitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.phoneTitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -451,7 +451,7 @@ class phoneAddEdit extends Component {
                                                     <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                           <DropdownMelcous
+                                                            <DropdownMelcous
                                                                 name="fromCompany"
                                                                 data={this.state.CompanyData}
                                                                 handleChange={e => this.handleChange('fromCompany', e)}
@@ -460,7 +460,7 @@ class phoneAddEdit extends Component {
                                                             />
                                                         </div>
                                                         <div className="super_company">
-                                                        <DropdownMelcous
+                                                            <DropdownMelcous
                                                                 name="fromContact"
                                                                 data={this.state.fromContactNameData}
                                                                 handleChange={e => this.handleChange('fromContact', e)}
@@ -480,7 +480,7 @@ class phoneAddEdit extends Component {
                                                     <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                                    <DropdownMelcous
+                                                            <DropdownMelcous
                                                                 name='toCompany'
                                                                 data={this.state.CompanyData}
                                                                 handleChange={(e) => this.handleChange("toCompany", e)}
@@ -488,7 +488,7 @@ class phoneAddEdit extends Component {
                                                                 selectedValue={this.state.selectedToCompany} />
                                                         </div>
                                                         <div className="super_company">
-                                                        <DropdownMelcous
+                                                            <DropdownMelcous
                                                                 name='toContact'
                                                                 data={this.state.toContactNameData}
                                                                 handleChange={(e) => this.handleChange("toContact", e)}
@@ -560,17 +560,11 @@ class phoneAddEdit extends Component {
                                 </div>
                                 <div className="doc-pre-cycle">
                                     <div>
-                                        {this.state.docId > 0 ?
-                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
-
+                                        {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={833} EditAttachments={3226} ShowDropBox={3613} ShowGoogleDrive={3614} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                         {this.viewAttachments()}
-
                                         {this.props.changeStatus === true ?
                                             <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
+                                            : null}
                                     </div>
                                 </div>
                             </div>
@@ -596,7 +590,8 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        showModal: state.communication.showModal
     }
 }
 
