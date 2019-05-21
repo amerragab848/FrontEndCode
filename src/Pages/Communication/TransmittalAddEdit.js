@@ -23,8 +23,8 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
-
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -135,7 +135,9 @@ class TransmittalAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
+        
         this.setState({
             docId: 0
         });
@@ -158,7 +160,6 @@ class TransmittalAddEdit extends Component {
             this.checkDocumentIsView();
         }
     };
-
     
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
@@ -525,7 +526,7 @@ class TransmittalAddEdit extends Component {
 
     viewAttachments() {
         return (
-            this.state.docId > 0 ? (Config.IsAllow(3327) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
+            this.state.docId > 0 ? (Config.IsAllow(3327) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={824} /> : null) : null
         )
     }
 
@@ -846,9 +847,11 @@ class TransmittalAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={823} EditAttachments={3233} ShowDropBox={3627} ShowGoogleDrive={3628} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                                             {this.viewAttachments()}
-                                            {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                            {this.props.changeStatus === true ?
+                                              <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            : null}
                                         </div>
                                     </div>
                                 </div>

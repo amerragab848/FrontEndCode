@@ -262,7 +262,7 @@ class inspectionRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId);
+            this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId, 'inspectionRequest');
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
                 this.setState({

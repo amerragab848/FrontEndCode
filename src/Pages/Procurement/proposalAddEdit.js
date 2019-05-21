@@ -402,7 +402,7 @@ class ProposalAddEdit extends Component {
           docTypeId={this.state.docTypeId}
           docId={this.state.docId}
           projectId={this.state.projectId}
-          deleteAttachments={840}
+          deleteAttachments={832}
         />
       ) : null
     ) : null;
@@ -695,8 +695,12 @@ class ProposalAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 ? (
-                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
+                    {this.state.docId > 0 ? (
+                        this.props.changeStatus === false ?
+                        Config.IsAllow(831)?
+                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>:null :
+                        Config.IsAllow(3246)?
+                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>:null 
                       ) : null}
                       {this.viewAttachments()}
 

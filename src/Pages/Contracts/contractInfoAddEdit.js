@@ -1412,14 +1412,12 @@ class ContractInfoAddEdit extends Component {
               </Formik>
               <div className="doc-pre-cycle letterFullWidth">
                 <div>
-                  {this.state.docId > 0 ? (
-                    <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
-                  ) : null}
+                {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={859} EditAttachments={3256} ShowDropBox={3569} ShowGoogleDrive={3570} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                   {this.viewAttachments()}
 
-                  {this.props.changeStatus === true ? (
-                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                  ) : null}
+                  {this.props.changeStatus === true ?
+                      <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                      : null}
                 </div>
               </div>
             </div>

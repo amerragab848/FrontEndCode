@@ -403,7 +403,7 @@ class RequestProposalAddEdit extends Component {
           docTypeId={this.state.docTypeId}
           docId={this.state.docId}
           projectId={this.state.projectId}
-          deleteAttachments={840}
+          deleteAttachments={830}
         />
       ) : null
     ) : null;
@@ -696,18 +696,9 @@ class RequestProposalAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 ? (
-                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
-                      ) : null}
-                      {this.viewAttachments()}
-
-                      {this.props.changeStatus === true ? (
-                        <ViewWorkFlow
-                          docType={this.state.docTypeId}
-                          docId={this.state.docId}
-                          projectId={this.state.projectId}
-                        />
-                      ) : null}
+                    {this.state.docId > 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={823} EditAttachments={3233} ShowDropBox={3627} ShowGoogleDrive={3628} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                    {this.viewAttachments()}
+                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                     </div>
                   </div>
                 </div>
@@ -715,15 +706,8 @@ class RequestProposalAddEdit extends Component {
             </div>
           </div>
         </div>
-        <div
-          className="largePopup largeModal "
-          style={{ display: this.state.showModal ? "block" : "none" }}
-        >
-          <SkyLight
-            hideOnOverlayClicked
-            ref={ref => (this.simpleDialog = ref)}
-            title={Resources[this.state.currentTitle][currentLanguage]}
-          >
+        <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
+          <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
             {this.state.currentComponent}
           </SkyLight>
         </div>
