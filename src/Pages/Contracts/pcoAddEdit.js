@@ -1215,10 +1215,11 @@ class pcoAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 ?
-                                                        <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
-                                                    }
+
+                                            {this.state.docId > 0 ? this.props.changeStatus === false ? 
+                                                (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
+                                                (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
+                                            }
                                                     {this.viewAttachments()}
 
                                                     {this.props.changeStatus === true ?

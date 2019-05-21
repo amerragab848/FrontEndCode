@@ -7189,7 +7189,7 @@
               "value": false
             },
             {
-              "code": 839,
+              "code": 839, 
               "title": {
                 "en": "Add Attachments",
                 "ar": "اضافة مرفقات"
@@ -13257,7 +13257,7 @@
               "value": false
             },
             {
-              "code": 3780,
+              "code": 3796,
               "title": {
                 "en": "Add Attachments",
                 "ar": "اضافة مرفقات"
@@ -13265,7 +13265,7 @@
               "value": false
             },
             {
-              "code": 3781,
+              "code": 3797,
               "title": {
                 "en": "Edit Attachments",
                 "ar": "تعديل مرفقات"
@@ -13273,7 +13273,7 @@
               "value": false
             },
             {
-              "code": 3782,
+              "code": 3798,
               "title": {
                 "en": "View Attachments",
                 "ar": "عرض مرفقات"
@@ -13281,7 +13281,7 @@
               "value": false
             },
             {
-              "code": 3783,
+              "code": 3799,
               "title": {
                 "en": "Delete Attachments",
                 "ar": "حذف مرفقات"
@@ -13289,7 +13289,7 @@
               "value": false
             },
             {
-              "code": 3784,
+              "code": 3800,
               "title": {
                 "en": "Send To Distribution List",
                 "ar": "ارسال الى قائمةالتوزيع"
@@ -13297,7 +13297,7 @@
               "value": false
             },
             {
-              "code": 3785,
+              "code": 3801,
               "title": {
                 "en": "Create Transmittal",
                 "ar": "انشاء ارسالية"
@@ -13305,7 +13305,7 @@
               "value": false
             },
             {
-              "code": 3786,
+              "code": 3802,
               "title": {
                 "en": "New Cycle",
                 "ar": "دورة جديدة"
@@ -13313,7 +13313,7 @@
               "value": false
             },
             {
-              "code": 3787,
+              "code": 3803,
               "title": {
                 "en": "Show Drop Box",
                 "ar": "اظهار الدروب بوكس"
@@ -13321,7 +13321,7 @@
               "value": false
             },
             {
-              "code": 3788,
+              "code": 3804,
               "title": {
                 "en": "Show Google Drive",
                 "ar": "اظهار جوجل دريف"
