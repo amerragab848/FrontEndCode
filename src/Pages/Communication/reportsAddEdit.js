@@ -122,9 +122,10 @@ class reportsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
+    
     }
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document && nextProps.document.id > 0) {
             this.setState({
                 document: { ...nextProps.document },
                 hasWorkflow: nextProps.hasWorkflow,
@@ -136,6 +137,9 @@ class reportsAddEdit extends Component {
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+        }
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -364,7 +368,7 @@ class reportsAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3326) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={822} />
                     : null)
                 : null
         )
@@ -398,12 +402,8 @@ class reportsAddEdit extends Component {
         ];
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
-
                 <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.Reports[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-                    
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -653,27 +653,19 @@ class reportsAddEdit extends Component {
 
                                         </Formik>
                                     </div>
-                                    <div className="doc-pre-cycle">
+                                    <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                        {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={821} EditAttachments={3232} ShowDropBox={3625} ShowGoogleDrive={3626} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                                             {this.viewAttachments()}
-
                                             {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            : null}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
@@ -692,7 +684,8 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        showModal: state.communication.showModal
     }
 }
 

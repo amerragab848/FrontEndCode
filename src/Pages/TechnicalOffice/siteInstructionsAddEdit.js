@@ -160,6 +160,9 @@ class siteInstructionsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
+        if (prevProps.showModal != this.props.showModal) {
+            this.setState({ showModal: this.props.showModal });
+        }
     }
 
     checkDocumentIsView() {
@@ -441,10 +444,8 @@ class siteInstructionsAddEdit extends Component {
     }
 
     handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        console.log(item);
-        if (item.value != "0") {
-
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); } 
+        if (item.value != "0") { 
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -746,9 +747,11 @@ class siteInstructionsAddEdit extends Component {
                                         </div>
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
-                                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={863} EditAttachments={3269} ShowDropBox={3601} ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={863} EditAttachments={3269} ShowDropBox={3601} ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
-                                                {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                                {this.props.changeStatus === true ?
+                                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    : null}
                                             </div>
                                         </div>
                                     </div>
@@ -777,7 +780,8 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 
