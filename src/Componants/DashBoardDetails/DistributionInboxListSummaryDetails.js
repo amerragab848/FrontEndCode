@@ -6,7 +6,9 @@ import Export from "../OptionsPanels/Export";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons"; 
 import Resources from "../../resources.json";
-import moment from "moment"; 
+import moment from "moment";
+import CryptoJS from 'crypto-js';
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -20,6 +22,32 @@ const {
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 }; 
+
+let subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+
+    let spliteLink = row.docView.split('/');
+
+    let obj = {
+      docId: spliteLink[1],
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: 0,
+      isApproveMode: false
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/" + spliteLink[0] + "?id=" + encodedPaylod
+    subject = row.subject;
+
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
 
 const statusButton = ({ value, row }) => {
   let doc_view = "";
@@ -60,7 +88,8 @@ class DistributionInboxListSummaryDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter:subjectLink
       },
       {
         key: "projectName",
@@ -248,11 +277,32 @@ class DistributionInboxListSummaryDetails extends Component {
       });
   };
 
+  onRowClick = (obj) => { 
+  if(obj){
+    let spliteLink = obj.docView.split('/');
+
+    let objRout = {
+      docId: spliteLink[1],
+      projectId: obj.projectId,
+      projectName: obj.projectName,
+      arrange: obj.arrange,
+      docApprovalId: 0,
+      isApproveMode: false
+    }
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+    this.props.history.push({
+      pathname: "/" + spliteLink[0],
+      search: "?id=" + encodedPaylod
+    }); 
+   }
+  }
+
   render() {
 
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+        <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false}/>
       ) : <LoadingSection/>;
 
       const btnExport = this.state.isLoading === false ? 

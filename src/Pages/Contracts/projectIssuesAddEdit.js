@@ -80,17 +80,17 @@ class ProjectIssuesAddEdit extends Component {
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            permission: [{ name: 'sendByEmail', code: 3776 },
-            { name: 'sendByInbox', code: 3775 },
+            permission: [{ name: 'sendByEmail', code: 26 },
+            { name: 'sendByInbox', code: 25 },
             { name: 'sendTask', code: 0 },
-            { name: 'distributionList', code: 3800 },
-            { name: 'createTransmittal', code: 3801 },
-            { name: 'sendToWorkFlow', code: 3779 },
+            { name: 'distributionList', code: 947 },
+            { name: 'createTransmittal', code: 3033 },
+            { name: 'sendToWorkFlow', code: 700 },
             { name: 'viewAttachments', code: 3798 },
             { name: 'deleteAttachments', code: 3799 }]
         }
 
-        if (!Config.IsAllow(3770) && !Config.IsAllow(3771) && !Config.IsAllow(3773)) {
+        if (!Config.IsAllow(20) && !Config.IsAllow(21) && !Config.IsAllow(23)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/projectIssues/" + this.state.projectId);
         }
@@ -110,7 +110,8 @@ class ProjectIssuesAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() { 
+          this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -139,12 +140,12 @@ class ProjectIssuesAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(3771))) {
+            if (!(Config.IsAllow(21))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(3771)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(3771)) {
-                    if (this.props.document.status !== false && Config.IsAllow(3771)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(21)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(21)) {
+                    if (this.props.document.status !== false && Config.IsAllow(21)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -270,8 +271,8 @@ class ProjectIssuesAddEdit extends Component {
 
     viewAttachments() {
         return this.state.docId > 0 ? (
-          Config.IsAllow(3798) === true ? (
-            <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3799}/>
+          Config.IsAllow(3300) === true ? (
+            <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={866}/>
           ) : null
         ) : null;
       }
@@ -476,13 +477,10 @@ class ProjectIssuesAddEdit extends Component {
                                                 </Form>
                                             )}
                                         </Formik>
-                                    </div>
-                                    <div className="doc-pre-cycle tableBTnabs">
-                                        {this.state.docId > 0 && this.state.isViewMode === false ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                    </div>
+                                    </div> 
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3796} EditAttachments={3797} ShowDropBox={3803} ShowGoogleDrive={3804} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={865} EditAttachments={3259} ShowDropBox={3577} ShowGoogleDrive={3578} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
