@@ -5833,29 +5833,7 @@ line.horizontal-grid-line {
 #canvas__wrapper{ 
     width: 891px;
 }
-.drive__wrapper {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #e9ecf0;
-    padding-bottom: 13px;
-    margin-bottom: 24px;
-}
 
-.drive__wrapper h2 {
-    margin-right: 34px;
-}
-
-.upload__drive {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-.upload__drive  img {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    margin: 0 8px;
-}
 .exbortBtn {
     display: flex;
     justify-content: flex-end;
@@ -5903,6 +5881,143 @@ line.horizontal-grid-line {
 }
 .printWrapper {
     width: 100% !important;
+}
+
+
+
+
+
+
+.drives__upload form .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.drives__upload form label {
+    letter-spacing: 0.2px;
+    color: #858D9E;
+    padding: 0;
+    overflow: visible;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    font-family: font-b;
+    font-size: 14px;
+    line-height: 1.14;
+    letter-spacing: 0.2px;
+    text-decoration: underline
+}
+
+.drives__upload .upload__border {
+    width: 1px;
+    height: 16px;
+    border: solid 1px #ccd2db;
+    margin: 0 15.5px;
+}
+
+.drives__upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 42px;
+}
+
+.drive__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drive__wrapper h2 {
+    font-family: font-b;
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.2px;
+    color: #252833;
+    margin-right: 12px;
+}
+
+.drive__button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.drive__button img {
+    transform: translateY(0);
+    transition: all 0.5s ease;
+}
+
+.drive__button::after {
+    content: '';
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: translateY(-30px);
+    transition: all 0.5s ease;
+}
+
+.drive__button.gDrive::after {
+    background-image: url(../../images/gdriveH.png);
+}
+
+.drive__button.Dbox::after {
+    background-image: url(../../images/dropboxH.png);
+}
+
+.drive__button:hover img {
+    transform: translateY(30px);
+}
+
+.drive__button:hover::after {
+    transform: translateY(0);
+}
+
+.uploadForm {
+    margin-bottom: 16px;
+}
+
+.drive__button--tooltip {
+    position: relative;
+}
+
+.drive__toolTip {
+    height: 32px;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    background-color: #252833;
+    font-family: font-opens;
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    color: #ffffff;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: -50%;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    transition: all 0.5s ease-in-out
+}
+
+.drive__button:hover + .drive__toolTip {
+    opacity: 1;
 }
 
 .printSecondPage .workflowPrint .flowStatus.rejectedStatue::after {

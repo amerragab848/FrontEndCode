@@ -2,7 +2,7 @@
   "Letters": {
     "documentTitle": "lettertitle",
     "docTyp": 19,
-    "documentAddEditLink": "LettersAddEdit/",
+    "documentAddEditLink": "LettersAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 48,
     "documentEditPermission": 49,
@@ -1312,7 +1312,7 @@
   "Phone": {
     "documentTitle": "phoneTitle",
     "docTyp": 29,
-    "documentAddEditLink": "phoneAddEdit/",
+    "documentAddEditLink": "phoneAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 89,
     "documentEditPermission": 90,
