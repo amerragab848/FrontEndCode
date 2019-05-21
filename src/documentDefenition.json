@@ -2564,7 +2564,7 @@
   "Rfi": {
     "documentTitle": "communicationRFI",
     "docTyp": 23,
-    "documentAddEditLink": "RfiAddEdit/",
+    "documentAddEditLink": "RfiAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 75,
     "documentEditPermission": 76,
