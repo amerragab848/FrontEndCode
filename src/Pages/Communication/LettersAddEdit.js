@@ -483,8 +483,8 @@ class LettersAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
-                                            onSubmit={(e) => {
-                                                e.stopPropagation();
+                                            onSubmit={(values) => {
+                                                
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -494,8 +494,11 @@ class LettersAddEdit extends Component {
                                                 }
                                             }}  >
 
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                            {  ({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                                <Form id="letterForm" className="customProform" noValidate="novalidate"   onSubmit={e => {
+                                                    e.stopPropagation();
+                                                   // formikProps.handleSubmit(e);
+                                                  }}>
 
                                                     <div className="proForm first-proform">
 
