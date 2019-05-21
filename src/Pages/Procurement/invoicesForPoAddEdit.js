@@ -36,7 +36,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-// import { dateToNumber } from "react-data-export/dist/ExcelPlugin/utils/DataUtil";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
