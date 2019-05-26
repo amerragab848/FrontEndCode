@@ -6035,3 +6035,18 @@ line.horizontal-grid-line {
 .table__wrapper {
     text-align: left;
 }
+#allSelected {
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.header__dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+.header__dropdown .custom__dropDown {
+    min-width: 250px;
+}

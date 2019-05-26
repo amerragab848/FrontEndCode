@@ -97,10 +97,9 @@ class CreateTransmittal extends Component {
                     validationSchema={validationSchema_createTransmittal}
                     initialValues={{ ...this.state.sendingData }}
                     onSubmit={(values) => {
-                        alert('create-trans-panel-form');
-                        this.clickHandler()
+                        //this.clickHandler()
                     }}                >
-                    {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched, handleBlur, handleChange }) => (
+                    {({ errors, touched, setFieldValue, setFieldTouched, handleBlur, handleChange }) => (
                         <Form id="create-trans-panel-form" className="proForm customProform" noValidate="novalidate"  >
                             <div className="proForm first-proform letterFullWidth">
                                 <div className="linebylineInput valid-input">
@@ -177,11 +176,15 @@ class CreateTransmittal extends Component {
                                     name='submittedFor'
                                 />
                             </div>
+
                             <div className="fullWidthWrapper">
-                                <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={handleSubmit}>{Resources.save[currentLanguage]}</button>
+                                <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
                             </div>
-                        </Form>)}
+                        </Form>
+                    )}
+
                 </Formik>
+
             </div>
         )
     }
