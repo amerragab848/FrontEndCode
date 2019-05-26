@@ -1,8 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import Api from '../../api'
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import moment from 'moment'
 import Resources from '../../resources.json';
 import _ from "lodash";
 import { Formik, Form } from 'formik';
@@ -10,34 +8,14 @@ import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import DataService from '../../Dataservice'
-import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
-import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import Config from "../../Services/Config.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
-import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
 import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
-import GridSetup from "../Communication/GridSetup";
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
-import IPConfig from '../../IP_Configrations'
 import Recycle from '../../Styles/images/attacheRecycle.png'
-import 'react-table/react-table.css'
-
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
 const fromContractSchema = Yup.object().shape({
     fromContract: Yup.string().required(Resources['selectConditions'][currentLanguage])
 });

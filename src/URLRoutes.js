@@ -1449,7 +1449,7 @@ var routes = [
     settings: { Contracts: false }
   },
   {
-    route: "siteRequest",
+    route: "materialRequestAddEdit",
     moduleId: "commonLogs",
     title: "materialRequest",
     nav: true,
