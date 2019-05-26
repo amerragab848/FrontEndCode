@@ -554,7 +554,7 @@ class reportsAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
+                                                        <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                              <Dropdown
@@ -584,7 +584,7 @@ class reportsAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
+                                                        <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                   <Dropdown

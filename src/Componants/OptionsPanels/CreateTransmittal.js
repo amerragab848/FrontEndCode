@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
 import Api from '../../api'
 import Dropdown from "./DropdownMelcous";
-import InputMelcous from './InputMelcous'
 import Resources from '../../resources.json';
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 
-//const _ = require('lodash')
+const validationSchema_createTransmittal = Yup.object().shape({
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    toCompany: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]),
+    ToContact: Yup.string().required(Resources['selectContact'][currentLanguage]),
+    priority: Yup.string().required(Resources['priorityRequired'][currentLanguage])
+})
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class CreateTransmittal extends Component {
     constructor(props) {
@@ -16,12 +23,12 @@ class CreateTransmittal extends Component {
                 docId: this.props.docId,
                 docTypeId: this.props.docTypeId,
                 arrange: "",
-                priorityId: "",
-                toCompanyId: "",
-                Subject: "",
-                toContactId: "",
+                priorityId: null,
+                toCompanyId: null,
+                subject: "",
+                toContactId: null,
                 status: true,
-                submittFor: ""
+                submittFor: null
             },
             PriorityData: [],
             ToCompany: [],
@@ -31,16 +38,17 @@ class CreateTransmittal extends Component {
         }
         this.radioChange = this.radioChange.bind(this);
     }
+
     clickHandler = (e) => {
-        let inboxDto={...this.state.sendingData};      
-           console.log(inboxDto);
-           Api.post("CreateTransmittal", inboxDto)
+        let inboxDto = { ...this.state.sendingData };
+        Api.post("CreateTransmittal", inboxDto)
     }
+
     radioChange(e) {
-         
+
         this.setState({
-          selectedOption: e.currentTarget.value,
-          sendingData: { ...this.state.sendingData, status: e.currentTarget.value }
+            selectedOption: e.currentTarget.value,
+            sendingData: { ...this.state.sendingData, status: e.currentTarget.value }
         });
     }
 
@@ -49,14 +57,14 @@ class CreateTransmittal extends Component {
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
         this.GetData("GetAccountsDefaultList?listType=transmittalsubmittedfor&pageNumber=0&pageSize=10000", 'title', 'id', 'SubmittedForData')
-        
+
     }
 
     To_company_handleChange = (selectedOption) => {
-       let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
+        let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
-            sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },   
-         });     
+            sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },
+        });
         this.GetData(url, "contactName", "id", "AttentionData");
     }
 
@@ -67,7 +75,7 @@ class CreateTransmittal extends Component {
     }
 
     inputChangeHandler = (e) => {
-        this.setState({ sendingData: { ...this.state.sendingData, Subject: e.target.value } });
+        this.setState({ sendingData: { ...this.state.sendingData, subject: e.target.value } });
     }
 
     SubmittedFor_handelChange = (item) => {
@@ -83,54 +91,98 @@ class CreateTransmittal extends Component {
     }
 
     render() {
-            return (
-                        <div className="dropWrapper">   
-
-                            <InputMelcous  title='subject'
-                                           placeholderText='subject'
-                                           fullwidth='true' inputChangeHandler={this.inputChangeHandler} />
-
-                            <Dropdown title='toCompany'
-                                      data={this.state.ToCompany} handleChange={this.To_company_handleChange}
-                                      placeholder='selectCompany' />
-
-                            <Dropdown title='ToContact'
-                                      data={this.state.AttentionData} handleChange={this.Attention_handleChange} 
-                                      placeholder='selectContact'/>
-
-                            <Dropdown title='priority'
-                                      data={this.state.PriorityData} handleChange={this.Priority_handelChange} 
-                                      placeholder='prioritySelect'/>
-
-                            <Dropdown title='submittedFor'
-                                      data={this.state.SubmittedForData} handleChange={this.SubmittedFor_handelChange}
-                                      placeholder='submittedForSelect' />
-
-                            <form className="proForm">
-                                <div className="linebylineInput">
-                                    <label className="control-label"> {Resources['statusName'][currentLanguage]} </label>
-
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input type="radio"  className="hidden" name="Close-open" value="true" 
-                                                //   checked={this.state.selectedOption === "true"}
-                                                 onChange={this.radioChange} />
-                                            <label>{Resources['oppened'][currentLanguage]}</label>
-                                        </div>
-
-                                        <div className="ui checkbox radio radioBoxBlue checked">
-                                            <input type="radio"   name="Close-open" value="false"
-                                            // checked={this.state.selectedOption === "false"}
-                                             onChange={this.radioChange} />
-                                            <label> {Resources['closed'][currentLanguage]}</label>
-                                        </div> 
+        return (
+            <div className="dropWrapper">
+                <Formik key="create-trans-panel-form"
+                    validationSchema={validationSchema_createTransmittal}
+                    initialValues={{ ...this.state.sendingData }}
+                    onSubmit={(values) => {
+                        alert('create-trans-panel-form');
+                        this.clickHandler()
+                    }}                >
+                    {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched, handleBlur, handleChange }) => (
+                        <Form id="create-trans-panel-form" className="proForm customProform" noValidate="novalidate"  >
+                            <div className="proForm first-proform letterFullWidth">
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.subject[currentLanguage]}</label>
+                                    <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                        <input name='subject'
+                                            className="form-control fsadfsadsa"
+                                            id="subject"
+                                            placeholder={Resources.subject[currentLanguage]}
+                                            autoComplete='off'
+                                            defaultValue={this.state.sendingData.subject}
+                                            onBlur={(e) => {
+                                                handleBlur(e)
+                                                handleChange(e)
+                                            }}
+                                            onChange={(e) => this.inputChangeHandler} />
+                                        {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                    </div>
                                 </div>
-                            </form>
-
-                            <div className="fullWidthWrapper">
-                                <button className="primaryBtn-1 btn" onClick={this.clickHandler} >
-                                        {Resources['save'][currentLanguage]}</button>
+                                <div className="linebylineInput valid-input ">
+                                    <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="letter-status" checked value="true" onChange={e => this.radioChange} />
+                                        <label>{Resources.oppened[currentLanguage]}</label>
+                                    </div>
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="letter-status" value="false" onChange={e => this.radioChange} />
+                                        <label>{Resources.closed[currentLanguage]}</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="toCompany"
+                                    data={this.state.ToCompany}
+                                    handleChange={this.To_company_handleChange}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.toCompany}
+                                    touched={touched.toCompany}
+
+                                    name='toCompany'
+                                />
+                            </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="ToContact"
+                                    data={this.state.AttentionData}
+                                    handleChange={this.Attention_handleChange}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.ToContact}
+                                    touched={touched.ToContact}
+                                    name='ToContact'
+                                />
+                            </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="priority"
+                                    data={this.state.PriorityData}
+                                    handleChange={this.Priority_handelChange}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.priority}
+                                    touched={touched.priority}
+                                    name='priority'
+                                />
+                            </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="submittedFor"
+                                    data={this.state.PriorityData}
+                                    handleChange={this.SubmittedFor_handelChange}
+                                    name='submittedFor'
+                                />
+                            </div>
+                            <div className="fullWidthWrapper">
+                                <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={handleSubmit}>{Resources.save[currentLanguage]}</button>
+                            </div>
+                        </Form>)}
+                </Formik>
+            </div>
         )
     }
 

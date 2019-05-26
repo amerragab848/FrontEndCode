@@ -158,7 +158,10 @@ class LettersAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
- 
+
+        // if (this.state.showModal != this.props.showModal) {
+        //     this.setState({ showModal: this.props.showModal });
+        // }
     }
 
     checkDocumentIsView() {
@@ -436,7 +439,7 @@ class LettersAddEdit extends Component {
         }
         if (item.value != "0") {
             this.setState({
-                currentComponent: item.value,
+                currentComponantDocument: item.value,
                 currentTitle: item.title,
                 showModal: true
             })
@@ -482,9 +485,8 @@ class LettersAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            enableReinitialize={true}
+                                            enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
-                                                
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -494,11 +496,8 @@ class LettersAddEdit extends Component {
                                                 }
                                             }}  >
 
-                                            {  ({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                <Form id="letterForm" className="customProform" noValidate="novalidate"   onSubmit={e => {
-                                                    e.stopPropagation();
-                                                   // formikProps.handleSubmit(e);
-                                                  }}>
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                                <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="proForm first-proform">
 
@@ -717,6 +716,7 @@ class LettersAddEdit extends Component {
                                                                         </button> :
                                                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
                                                                     }
+                                                                    
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
                                                                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
@@ -760,10 +760,10 @@ class LettersAddEdit extends Component {
                         </div>
                     </div>
 
-                </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                </div> 
+                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActionsLetter">
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
+                        {this.state.currentComponantDocument}
                     </SkyLight>
                 </div>
             </div>

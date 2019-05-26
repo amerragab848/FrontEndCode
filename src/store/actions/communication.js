@@ -33,6 +33,14 @@ export function clearCashDocument() {
     }
 }
 
+export function showOptionPanel(show) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Show_OptionPanel,
+            showModal: show
+        });
+    }
+}
 
 export function GetDocumentCycle(urlAction) {
     return (dispatch, getState) => {

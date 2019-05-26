@@ -36,8 +36,8 @@ class rptCostCodingTree extends Component {
   }
 
 
-  GetNodeData = (id) => {
-    Api.get('GetSummaryOfCostCoding?id=' + id + '').then(
+  GetNodeData = (item) => {
+    Api.get('GetSummaryOfCostCoding?id=' + item.id + '').then(
       res => {
         this.setState({
           NodeData: res

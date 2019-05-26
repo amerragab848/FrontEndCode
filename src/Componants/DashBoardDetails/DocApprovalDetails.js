@@ -394,12 +394,32 @@ class DocApprovalDetails extends Component {
       });
   };
 
+  onRowClick = (obj) => {  
+      if(obj){
+        let objRout = {
+          docId: obj.docId,
+          projectId: obj.projectId,
+          projectName: obj.projectName,
+          arrange: obj.arrange,
+          docApprovalId: obj.accountDocWorkFlowId,
+          isApproveMode: true
+        }
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+        this.props.history.push({
+          pathname: "/" + obj.docLink,
+          search: "?id=" + encodedPaylod
+        }); 
+      }
+  }
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
         <GridSetup rows={this.state.rows}
           columns={this.state.columns}
-          showCheckbox={false} />
+          showCheckbox={false}
+          onRowClick={this.onRowClick} />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?

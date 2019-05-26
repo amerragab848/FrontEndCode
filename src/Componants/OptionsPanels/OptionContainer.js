@@ -51,6 +51,7 @@ class OptionContainer extends React.Component {
 
     handleChange = (item) => {
         if (item.value != "0") {
+            this.props.actions.showOptionPanel(true);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -83,8 +84,8 @@ class OptionContainer extends React.Component {
     render() {
         return (
             <div>
-                <DropDown data={this.state.selectedPanels} name="panel" handleChange={this.handleChange} index='panelIndex' selectedValue={this.state.defualtValue} />
-                <div className="largePopup" style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={this.handleChange} index='ddlActions' selectedValue={this.state.defualtValue} />
+                <div className="largePopup" style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActions">
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
                     </SkyLight>
