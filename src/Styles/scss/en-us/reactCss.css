@@ -189,7 +189,7 @@
 
 .customDatepicker .proForm .linebylineInput input {
     width: 100% !important;
-    text-align: left;
+    /* text-align: left;
     height: 40px;
     border-radius: 4px;
     border: solid 1px #DADEE6;
@@ -197,7 +197,7 @@
     letter-spacing: -0.2px;
     color: #3E4352;
     background-color: #ffffff;
-    font-size: 14px;
+    font-size: 14px; */
     outline: 0;
     padding: .67857143em 1em;
 }
@@ -258,17 +258,6 @@ table edition
     border-left-width: 1px;
 }
 
-.fullWidthWrapper .ReactTable>div,
-.fullWidthWrapper .ReactTable>div .rt-tbody {
-    overflow: visible;
-}
-
-.fullWidthWrapper .ReactTable>div .rt-tbody div {
-    overflow: visible;
-    white-space: pre-wrap;
-    align-items: center;
-}
-
 .ReactTable .rt-tr-group {
     width: 100%;
 }
@@ -280,7 +269,6 @@ table edition
 .attachmentPage {
     width: 100%;
 }
-
 
 /* sla7 22/1/2019*/
 
@@ -486,16 +474,17 @@ table edition
 }
 
 .pError {
-    position: absolute;
+    /* position: absolute;
     left: 0;
-    top: 100%;
+    top: 100%; */
     color: #e74c3c;
     font-size: 12px;
     max-width: 360px;
-    margin-top: -2px;
+    /* margin-top: -2px; */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: block;
 }
 
 
@@ -2198,16 +2187,22 @@ tfoot tr td p {
     width: 192px;
 }
 
-
 /* new css notabs */
-
-
 /* noTabs */
 
 .document__action--menu .customD_Menu .css-vj8t7z,
 .document__action--menu .customD_Menu .css-2o5izw {
     background: #E9ECF0;
     border: 1px solid #E9ECF0;
+    height: 40px;
+    min-width: 184px;
+    box-shadow: none;
+}
+
+.document__action--menu .customD_Menu .css-vj8t7z,
+.document__action--menu .customD_Menu .css-2o5izw {
+    background: #E9ECF0;
+    border: 1px solid #E9ECF0 !important;
     height: 40px;
     min-width: 184px;
     box-shadow: none;
@@ -2498,18 +2493,10 @@ button.companies_icon {
     }
 }
 
-
-/* .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-  width: 100%;
-} */
-
 .noTabs__document.one__tab.one_step .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
     width: 100%;
 }
-/* .react-grid-Cell--frozen:last-of-type, .react-grid-HeaderCell--frozen:last-of-type {
-  box-shadow: none !important;
-  border-right: 1px solid #E9ECF0 !important;
-} */
+
 .noTabs__document .approveDocument {
     z-index: 1000;
 }
@@ -2546,14 +2533,6 @@ button.companies_icon {
 .proForm .has-error label.control-label {
     color: #26344c !important;
 }
-
-
-/* .changeCompany__select .skylight-dialog {
-  min-height: 250px !important;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between
-} */
 
 .changeCompany__select .skylight-dialog .fillter-status.fillter-item-c {
     width: 100%;
@@ -2940,9 +2919,9 @@ button.companies_icon {
 }
 
 .dropdown__error {
-    position: absolute;
+    /* position: absolute;
     left: 0;
-    bottom: -20px;
+    bottom: -20px; */
     color: #e74c3c;
     font-size: 12px;
 }
@@ -3172,13 +3151,6 @@ button.companies_icon {
     max-width: 135px;
     text-overflow: ellipsis;
 }
-
-
-/* @media (min-width:1440px) {
-  .noTabs__document .doc-container .step-content {
-    width: 72%;
-  }
-} */
 
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
     cursor: pointer;
@@ -3487,6 +3459,8 @@ button.companies_icon {
     border-bottom: 1px solid rgba(34, 36, 38, .1);
     padding-left: 10px;
     text-overflow: ellipsis;
+    white-space: pre-wrap;
+    overflow: visible;
 }
 
 .ReactTable .rt-tbody .rt-td .btn {
@@ -3529,14 +3503,6 @@ button.companies_icon {
     position: relative;
 }
 
-
-/* .ui.modal.mediumModal, .ui.modal.largeModal, .ui.modal.smallModal {
-  max-width: 600px;
-  max-height: 500px;
-  overflow: auto;
-
-} */
-
 .ui.modal.largeModal {
     max-width: 600px;
     max-height: 500px;
@@ -3552,16 +3518,6 @@ button.companies_icon {
 .doc-pre-cycle {
     margin-bottom: 10px;
 }
-
-
-/* .tableBTnabs {
-  position: relative;
-}
-.tableBTnabs >button.btn {
-  position: absolute;
-  top: -54px;
-  left: 145px;
-} */
 
 .slider-Btns.fullWidthWrapper.textLeft {
     margin-top: 0
@@ -3604,16 +3560,6 @@ button.companies_icon {
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields {
     padding: 0;
 }
-
-
-/* .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
-  width : 100%;
-} */
-
-
-/* .skylight-dialog .document-fields .fullWidthWrapper.textLeft {
-  text-align: center;
-} */
 
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .datepickerContainer.proForm .ui.input.inputDev input,
 .documents-stepper .doc-container .step-content .skylight-dialog .document-fields .proForm .linebylineInput .ui.input.inputDev {
@@ -3961,11 +3907,10 @@ button.companies_icon {
     display: none;
 }
 
-.fullWidthWrapper .ReactTable>div .rt-tbody div {
-    overflow: visible;
-    align-items: unset;
+.ReactTable .rt-noData {
+    top: 60% !important;
+    color: rgba(0,0,0,0.4);
 }
-
 
 /* react table */
 
@@ -4339,21 +4284,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     flex-flow: column;
 }
 
-
-/*
-.highcharts-color-6 {
-  stroke: transparent;
-  fill: 
-}
-.highcharts-color-7 {
-  stroke: transparent;
-  fill: 
-}
-.highcharts-color-8 {
-  stroke: transparent;
-  fill: 
-} */
-
 .drop-item .remove {
     cursor: pointer;
 }
@@ -4362,34 +4292,16 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     margin-bottom: 10px;
 }
 
+.skylight-dialog .dropWrapper .letterFullWidth  .fillter-item-c {
+    margin-bottom: 0
+}
+
 .react-grid-HeaderCell .react-grid-HeaderCell-sortable {
     max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
-/* @media screen and (min-width: 1440px) {
-  .one__tab.one_step .doc-container .step-content, .noTabs__document .doc-container .step-content {
-    width: 70%;
-  }
-} */
-
-
-/* .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-  width: 100%;
-}
-.one__tab.one_step .doc-container .step-content {
-  padding: 0 70px 0 170px;
-  width: unset;
-}
-.linebylineInput .customD_Menu {
-  width: 100%;
-}
-.customDatepicker.fillter-status.fillter-item-c {
-  max-width: 200px;
-} */
 
 .react-grid-checkbox:checked+.react-grid-checkbox-label:before {
     content: url(../../images/checkmark.svg);
@@ -4402,12 +4314,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 .-padRow .rt-td {
     border-bottom: none !important;
 }
-
-
-/* .whiteBackground {
-  background: #fff;
-  padding: 40px;
-} */
 
 .doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell,
 .doc-pre-cycle.has__table .attachmentTable thead tr .headCell {
@@ -5210,23 +5116,18 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 
 .proForm.first-proform {
     flex-wrap: wrap !important;
-    margin-bottom: 33px !important
+    margin-bottom: 16px !important
 }
 
 .proForm.first-proform .linebylineInput:first-child {
     width: 100% !important;
     flex-shrink: 0 !important;
-    margin-bottom: 33px !important
+    margin-bottom: 16px !important
 }
 
 .proForm.first-proform .linebylineInput:first-child .inputDev.ui.input,
 .proForm.first-proform .linebylineInput:first-child .inputDev.ui.input input {
     width: 100% !important;
-}
-
-.proForm.first-proform .linebylineInput:first-child {
-    width: 100% !important;
-    flex-shrink: 0 !important
 }
 
 .notifiBar {
@@ -6052,4 +5953,8 @@ line.horizontal-grid-line {
 }
 .header__dropdown .custom__dropDown {
     min-width: 250px;
+}
+
+.skylight-dialog .ReactTable {
+    overflow: visible;
 }

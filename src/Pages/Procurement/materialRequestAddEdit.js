@@ -1134,35 +1134,33 @@ class materialRequestAddEdit extends Component {
                                 }
                             </React.Fragment>
                         </div>
-                        <div>
-                            <div className="docstepper-levels">
-                                <div className="step-content-foot">
-                                    <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                        "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                    <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
-                                        : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <div className="workflow-sliderSteps">
-                                    <div className="step-slider">
-                                        <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
-                                            <div className="steps-timeline">
-                                                <span>1</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6>{Resources.siteRequest[currentLanguage]}</h6>
-                                            </div>
+                        <div className="docstepper-levels">
+                            <div className="step-content-foot">
+                                <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
+                                <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
+                                    : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div className="workflow-sliderSteps">
+                                <div className="step-slider">
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>1</span>
                                         </div>
-                                        <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
-                                            <div className="steps-timeline">
-                                                <span>2</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6 >{Resources.items[currentLanguage]}</h6>
-                                            </div>
+                                        <div className="steps-info">
+                                            <h6>{Resources.siteRequest[currentLanguage]}</h6>
                                         </div>
-
                                     </div>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>2</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6 >{Resources.items[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
