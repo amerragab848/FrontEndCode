@@ -174,12 +174,12 @@ class UploadAttachment extends Component {
                     multiselect={true}
                     accessToken={"l7phamm2skocwwy"}
                     extensions={[".pdf", ".doc", ".docx", ".png"]}>
-                    <div class="drive__button--tooltip">
-                        <div class="drive__button Dbox">
+                    <div className="drive__button--tooltip">
+                        <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
 
                         </div>
-                        <div class="drive__toolTip">Dropbox</div>
+                        <div className="drive__toolTip">Dropbox</div>
                     </div>
                 </DropboxChooser>
             </Fragment>
@@ -217,11 +217,11 @@ class UploadAttachment extends Component {
 
                     picker.build().setVisible(true);
                 }}>
-                <div class="drive__button--tooltip">
-                    <div class="drive__button gDrive">
+                <div className="drive__button--tooltip">
+                    <div className="drive__button gDrive">
                         <img src={Drive} alt="googleDrive" />
                     </div>
-                    <div class="drive__toolTip">Google drive</div>
+                    <div className="drive__toolTip">Google drive</div>
                 </div>
             </GooglePicker>
         );
@@ -233,12 +233,12 @@ class UploadAttachment extends Component {
                 <div>
                     {this.props.changeStatus === false ? (Config.IsAllow(this.props.AddAttachments) ? this.renderAddAttachments() : null)
                         : (Config.IsAllow(this.props.EditAttachments) ? this.renderEditAttachments() : null)}
-                    <div class="drives__upload">
+                    <div className="drives__upload">
                         <form>
                             <input type="file" name="file" id="file" class="inputfile" />
-                            <label for="file">Open my folders</label>
+                            <label htmlFor="file">Open my folders</label>
                         </form>
-                        <span class="upload__border"></span>
+                        <span className="upload__border"></span>
                         <div className="drive__wrapper">
                             <h2 className="zero">Upload from</h2>
                             {Config.IsAllow(this.props.ShowGoogleDrive)

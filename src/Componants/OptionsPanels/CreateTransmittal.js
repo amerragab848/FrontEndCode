@@ -4,13 +4,14 @@ import Dropdown from "./DropdownMelcous";
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-//const _ = require('lodash')
-const validationSchema_s = Yup.object().shape({
+
+const validationSchema_createTransmittal = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     toCompany: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]),
     ToContact: Yup.string().required(Resources['selectContact'][currentLanguage]),
-    priority: Yup.string().required(Resources['priorityRequired'][currentLanguage]),
+    priority: Yup.string().required(Resources['priorityRequired'][currentLanguage])
 })
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class CreateTransmittal extends Component {
@@ -22,12 +23,12 @@ class CreateTransmittal extends Component {
                 docId: this.props.docId,
                 docTypeId: this.props.docTypeId,
                 arrange: "",
-                priorityId: "",
-                toCompanyId: "",
-                Subject: "",
-                toContactId: "",
+                priorityId: null,
+                toCompanyId: null,
+                subject: "",
+                toContactId: null,
                 status: true,
-                submittFor: ""
+                submittFor: null
             },
             PriorityData: [],
             ToCompany: [],
@@ -37,11 +38,12 @@ class CreateTransmittal extends Component {
         }
         this.radioChange = this.radioChange.bind(this);
     }
+
     clickHandler = (e) => {
         let inboxDto = { ...this.state.sendingData };
-        console.log(inboxDto);
         Api.post("CreateTransmittal", inboxDto)
     }
+
     radioChange(e) {
 
         this.setState({
@@ -73,7 +75,7 @@ class CreateTransmittal extends Component {
     }
 
     inputChangeHandler = (e) => {
-        this.setState({ sendingData: { ...this.state.sendingData, Subject: e.target.value } });
+        this.setState({ sendingData: { ...this.state.sendingData, subject: e.target.value } });
     }
 
     SubmittedFor_handelChange = (item) => {
@@ -91,28 +93,24 @@ class CreateTransmittal extends Component {
     render() {
         return (
             <div className="dropWrapper">
-                <Formik key="ss"
-                    validationSchema={validationSchema_s}
-                    initialValues={{
-                        toCompany:'',
-                        ToContact:'',
-                        priority:''
-                    }}
+                <Formik key="create-trans-panel-form"
+                    validationSchema={validationSchema_createTransmittal}
+                    initialValues={{ ...this.state.sendingData }}
                     onSubmit={(values) => {
-                        alert()
                         //this.clickHandler()
-                    }}
-                >
+                    }}                >
                     {({ errors, touched, setFieldValue, setFieldTouched, handleBlur, handleChange }) => (
-                        <Form id="signupForm1_s" className="proForm customProform" noValidate="novalidate" >
+                        <Form id="create-trans-panel-form" className="proForm customProform" noValidate="novalidate"  >
                             <div className="proForm first-proform letterFullWidth">
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                        <input name='subject' className="form-control fsadfsadsa" id="subject"
+                                        <input name='subject'
+                                            className="form-control fsadfsadsa"
+                                            id="subject"
                                             placeholder={Resources.subject[currentLanguage]}
                                             autoComplete='off'
-                                            defaultValue={'subject'}
+                                            defaultValue={this.state.sendingData.subject}
                                             onBlur={(e) => {
                                                 handleBlur(e)
                                                 handleChange(e)
@@ -137,12 +135,12 @@ class CreateTransmittal extends Component {
                                 <Dropdown
                                     title="toCompany"
                                     data={this.state.ToCompany}
-                                    //  selectedValue={this.state.selectedDiscpline}
                                     handleChange={this.To_company_handleChange}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
                                     error={errors.toCompany}
                                     touched={touched.toCompany}
+
                                     name='toCompany'
                                 />
                             </div>
@@ -150,7 +148,6 @@ class CreateTransmittal extends Component {
                                 <Dropdown
                                     title="ToContact"
                                     data={this.state.AttentionData}
-                                    //  selectedValue={this.state.selectedDiscpline}
                                     handleChange={this.Attention_handleChange}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
@@ -163,7 +160,6 @@ class CreateTransmittal extends Component {
                                 <Dropdown
                                     title="priority"
                                     data={this.state.PriorityData}
-                                    //  selectedValue={this.state.selectedDiscpline}
                                     handleChange={this.Priority_handelChange}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
@@ -176,16 +172,19 @@ class CreateTransmittal extends Component {
                                 <Dropdown
                                     title="submittedFor"
                                     data={this.state.PriorityData}
-                                    //  selectedValue={this.state.selectedDiscpline}
                                     handleChange={this.SubmittedFor_handelChange}
                                     name='submittedFor'
                                 />
                             </div>
+
                             <div className="fullWidthWrapper">
-                                <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+                                <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
                             </div>
-                        </Form>)}
+                        </Form>
+                    )}
+
                 </Formik>
+
             </div>
         )
     }

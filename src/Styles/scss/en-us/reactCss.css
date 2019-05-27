@@ -6032,6 +6032,9 @@ line.horizontal-grid-line {
     padding-left: 16px !important;
 }
 
+.table__wrapper {
+    text-align: left;
+}
 .table__overflow {
     overflow-x: auto
 }

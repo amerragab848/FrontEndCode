@@ -51,6 +51,7 @@ class OptionContainer extends React.Component {
 
     handleChange = (item) => {
         if (item.value != "0") {
+            this.props.actions.showOptionPanel(true);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
