@@ -235,7 +235,7 @@ class UploadAttachment extends Component {
                         : (Config.IsAllow(this.props.EditAttachments) ? this.renderEditAttachments() : null)}
                     <div className="drives__upload">
                         <form>
-                            <input type="file" name="file" id="file" class="inputfile" />
+                            <input type="file" name="file" id="file" className="inputfile" />
                             <label htmlFor="file">Open my folders</label>
                         </form>
                         <span className="upload__border"></span>

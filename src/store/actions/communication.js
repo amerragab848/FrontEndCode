@@ -440,6 +440,7 @@ function BuildWorkFlowCycleStracture(result) {
     });
 
     returnObj.cycles = cycles;
+    
     return returnObj;
 };
 

@@ -300,13 +300,19 @@ class MeetingMinutesAddEdit extends Component {
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
+        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        if (this.state.showModal != props.showModal) {
+            this.setState({ showModal: props.showModal });
+        }
     }
     //#region  editting
     editMeeting = () => {
+        
         this.setState({
             isLoading: true,
             firstComplete: true
         });
+
         let docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let document = Object.assign(this.state.document, { docDate: docDate })
         Api.post('EditCommunicationMeetingMinutes', document).then(result => {
@@ -558,7 +564,7 @@ class MeetingMinutesAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,

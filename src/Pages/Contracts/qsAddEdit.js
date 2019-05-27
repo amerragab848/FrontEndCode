@@ -172,6 +172,9 @@ class QsAddEdit extends Component {
 
       this.checkDocumentIsView();
     }
+    if (this.state.showModal != nextProps.showModal) {
+      this.setState({ showModal: nextProps.showModal });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -514,7 +517,7 @@ class QsAddEdit extends Component {
   }
 
   handleShowAction = item => {
-    if (item.value != "0") {
+    if (item.value != "0") { this.props.actions.showOptionPanel(false); 
       this.setState({
         currentComponent: item.value,
         currentTitle: item.title,
