@@ -70,28 +70,28 @@ class Tree extends Component {
         return (
             children.map((item, i) => {
                 return (
-                    <Fragment>
-                        <div className={"epsTitle" + (item.collapse === false ? ' active' : ' ')} key={item.id}>
-                            <div className="listTitle">
 
-                                <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }} onClick={() => this.viewChild(item)}>
-                                    <i className="dropdown icon" />
-                                </span>
+                     <Fragment>
+                         <div className={"epsTitle" + (item.collapse === false ? ' ' : ' ')} key={item.id}>
+                             <div className="listTitle">
 
-                                <span className="accordionTitle"   onClick={() => this.props.GetNodeData(item.id)}>{item.codeTreeTitle}</span>
-                            </div>
-                        </div>
-                        <div className="epsContent">
-                            {item.trees.length > 0 ? this.printChild(item.trees) : null}
-                        </div>
-                    </Fragment>
+                                 <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }} onClick={() => this.viewChild(item)}>
+                                     <i className="dropdown icon" />
+                                 </span>
+
+                                 <span className="accordionTitle"   onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle}</span>
+                             </div>
+                         </div>
+                         <div className="epsContent">
+                             {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                         </div>
+                     </Fragment>
                 )
             })
         )
     }
 
     viewChild(item) {
-
         let trees = [...this.state.trees];
 
         this.search(item.id, trees, [], item.parentId);
@@ -114,10 +114,10 @@ class Tree extends Component {
                                             <span className="dropArrow">
                                                 <i className="dropdown icon" />
                                             </span>
-                                            <span className="accordionTitle">{item.codeTreeTitle}</span>
+                                            <span className="accordionTitle" onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle}</span>
                                         </div> 
                                     </div>
-                                    <div class="epsContent">
+                                    <div className="epsContent">
                                         {item.trees.length > 0 ? this.printChild(item.trees) : null}
                                     </div>
                                 </Fragment>

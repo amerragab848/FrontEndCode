@@ -5844,6 +5844,10 @@ line.horizontal-grid-line {
     margin-left: 16px;
 }
 
+
+.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:only-child {
+    margin-bottom: 0px !important;
+}
 .export__pdf {
     display: flex;
     align-items: center;
@@ -6026,4 +6030,23 @@ line.horizontal-grid-line {
 
 .attachmentTable .headCell {
     padding-left: 16px !important;
+}
+
+.table__overflow {
+    overflow-x: auto
+}
+#allSelected {
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.header__dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+.header__dropdown .custom__dropDown {
+    min-width: 250px;
 }

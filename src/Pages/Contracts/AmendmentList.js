@@ -294,22 +294,17 @@ class AmendmentList extends Component {
 
     toggleRow(obj) {
 
-
         const newSelected = Object.assign({}, this.state.selected);
-
         newSelected[obj.id] = !this.state.selected[obj.id];
-
         let setIndex = selectedRows.findIndex(x => x.id === obj.id);
-
         if (setIndex > -1) {
             selectedRows.splice(setIndex, 1);
         } else {
             selectedRows.push(obj);
         }
-
         this.setState({
             selected: newSelected
-        });
+        })
 
     }
 
@@ -579,20 +574,20 @@ class AmendmentList extends Component {
 
                                         <div className="fullWidthWrapper slider-Btns">
                                             {this.state.isLoading === false ? (
-                                            <button className={ "primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.props.isViewMode}>
-                                                {Resources["save"][currentLanguage]}
-                                            </button>
+                                                <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "")} type="submit" disabled={this.props.isViewMode}>
+                                                    {Resources["save"][currentLanguage]}
+                                                </button>
                                             ) : (
-                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
-                                                <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                                </div>
-                                            </button>
-                                            )}
+                                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                )}
                                         </div>
-                                        
+
                                     </div>
                                 </Form>
                             )}
@@ -608,7 +603,7 @@ class AmendmentList extends Component {
                 <div className="filterBTNS  exbortBtn">
                     <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} onClick={e => this.setState({ ShowPopup: true })}>{Resources['assignAmendment'][currentLanguage]}</button>
                     <Export rows={this.state.AmendmentList}
-                            columns={this.state.columns.filter(s=>s.key !=='customBtn')} fileName={Resources['assignAmendment'][currentLanguage]} />
+                        columns={this.state.columns.filter(s => s.key !== 'customBtn')} fileName={Resources['assignAmendment'][currentLanguage]} />
                 </div>
 
                 <div className="grid-container">
