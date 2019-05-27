@@ -143,8 +143,7 @@ class ViewWorkFlow extends Component {
         })
         this.setState({
             visualCycle: cycles
-        });
-        console.log('renderCycles', cycles)
+        }); 
         return cycles
     }
 

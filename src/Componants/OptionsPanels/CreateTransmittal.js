@@ -5,6 +5,14 @@ import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
+import { toast } from "react-toastify";
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
+
 const validationSchema_createTransmittal = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     toCompany: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]),
@@ -35,13 +43,24 @@ class CreateTransmittal extends Component {
             SubmittedForData: [],
             AttentionData: [],
             selectedOption: 'true',
+            submitLoading: false
         }
         this.radioChange = this.radioChange.bind(this);
     }
 
     clickHandler = (e) => {
+        this.setState({ submitLoading: true })
+
         let inboxDto = { ...this.state.sendingData };
-        Api.post("CreateTransmittal", inboxDto)
+        Api.post("CreateTransmittal", inboxDto).then(res => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            this.setState({ submitLoading: false })
+            this.props.actions.showOptionPanel(false);
+        }).catch(() => {
+            this.setState({ submitLoading: false })
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.props.actions.showOptionPanel(false);
+        })
     }
 
     radioChange(e) {
@@ -97,7 +116,7 @@ class CreateTransmittal extends Component {
                     validationSchema={validationSchema_createTransmittal}
                     initialValues={{ ...this.state.sendingData }}
                     onSubmit={(values) => {
-                        //this.clickHandler()
+                        this.clickHandler()
                     }}                >
                     {({ errors, touched, setFieldValue, setFieldTouched, handleBlur, handleChange }) => (
                         <Form id="create-trans-panel-form" className="proForm customProform" noValidate="novalidate"  >
@@ -178,13 +197,21 @@ class CreateTransmittal extends Component {
                             </div>
 
                             <div className="fullWidthWrapper">
-                                <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
+                                {!this.state.submitLoading ?
+                                    <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
+                                    :
+                                    <button className="primaryBtn-1  btn mediumBtn disabled">
+                                        <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                        </div>
+                                    </button>
+                                }
                             </div>
                         </Form>
                     )}
-
                 </Formik>
-
             </div>
         )
     }
@@ -210,4 +237,21 @@ class CreateTransmittal extends Component {
     }
 
 }
-export default CreateTransmittal;
+
+function mapStateToProps(state) {
+
+    return {
+        showModal: state.communication.showModal
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)( CreateTransmittal);

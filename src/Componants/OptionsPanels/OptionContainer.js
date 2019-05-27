@@ -1,6 +1,7 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
 import DropDown from './DropdownMelcous'
+
 import SendTask from "./SendTask";
 import CreateTransmittal from "./CreateTransmittal";
 import ExportDetails from "./ExportDetails";
@@ -50,7 +51,7 @@ class OptionContainer extends React.Component {
     };
 
     handleChange = (item) => {
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
             this.props.actions.showOptionPanel(true);
             this.setState({
                 currentComponent: item.value,
@@ -59,6 +60,10 @@ class OptionContainer extends React.Component {
             })
             this.simpleDialog.show()
         }
+    }
+
+    executeBeforeModalClose = (e) => { 
+        this.props.actions.showOptionPanel(false);
     }
 
     IsAllow = (permission) => {
@@ -72,7 +77,7 @@ class OptionContainer extends React.Component {
                 if (item.title != 'export' && item.title != 'copyTo') {
                     return this.IsAllow(item.title)
                 } else {
-                  return  item
+                    return item
                 }
             } else {
                 return item;
@@ -86,7 +91,7 @@ class OptionContainer extends React.Component {
             <div>
                 <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={this.handleChange} index='ddlActions' selectedValue={this.state.defualtValue} />
                 <div className="largePopup" style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActions">
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]} beforeClose={() => {this.executeBeforeModalClose()}}>
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>

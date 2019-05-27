@@ -366,6 +366,10 @@ class meetingAgendaAddEdit extends Component {
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
+        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        if (this.state.showModal != props.showModal) {
+            this.setState({ showModal: props.showModal });
+        }
     }
 
     componentWillUnmount() {
@@ -629,7 +633,7 @@ class meetingAgendaAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,

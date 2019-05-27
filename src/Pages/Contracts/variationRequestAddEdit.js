@@ -139,11 +139,13 @@ class VariationRequestAdd extends Component {
         if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow,
-                //message: RichTextEditor.createValueFromString(nextProps.document.message, 'html')
+                hasWorkflow: nextProps.hasWorkflow 
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+        }
+        if (this.state.showModal != nextProps.showModal) {
+          this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -427,7 +429,7 @@ class VariationRequestAdd extends Component {
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
  
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,

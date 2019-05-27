@@ -531,7 +531,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   handleShowAction = item => {
-    if (item.value != "0") {
+    if (item.value != "0") { this.props.actions.showOptionPanel(false); 
       this.setState({
         currentComponent: item.value,
         currentTitle: item.title,
