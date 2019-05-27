@@ -6035,6 +6035,9 @@ line.horizontal-grid-line {
 .table__wrapper {
     text-align: left;
 }
+.table__overflow {
+    overflow-x: auto
+}
 #allSelected {
     height: 100%;
     align-items: center;
