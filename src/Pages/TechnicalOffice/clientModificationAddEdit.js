@@ -552,13 +552,8 @@ class clientModificationAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
-
-
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.clientModificationLog[currentLanguage]}
-                        moduleTitle={Resources['technicalOffice'][currentLanguage]} />
-
-
+                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.clientModificationLog[currentLanguage]}
+                        moduleTitle={Resources['technicalOffice'][currentLanguage]} /> 
 
                     <div className="doc-container">
                         {
@@ -582,6 +577,8 @@ class clientModificationAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {

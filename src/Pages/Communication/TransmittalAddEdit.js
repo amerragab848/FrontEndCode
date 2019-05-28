@@ -586,6 +586,8 @@ class TransmittalAddEdit extends Component {
                                         <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editTransmittal();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {

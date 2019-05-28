@@ -941,6 +941,8 @@ class pcoAddEdit extends Component {
                                                      validationSchema={validationSchema}
                                                      enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => { 
+                                                        if (this.props.showModal) { return; }
+        
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveVariationOrder();
                                                         } else {

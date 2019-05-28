@@ -1186,6 +1186,8 @@ class punchListAddEdit extends Component {
                     enableReinitialize={true}
                     validationSchema={validationSchemaForEditItem}
                     onSubmit={(values, actions) => {
+                        if (this.props.showModal) { return; }
+
                         //console.log(values)
                         this.EditItem(values)
                     }}>
