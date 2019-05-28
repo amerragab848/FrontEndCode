@@ -768,6 +768,8 @@ class NCRAddEdit extends Component {
                                         validationSchema={validationSchema}
                                         enableReinitialize={true}
                                         onSubmit={(values) => {
+                                            if (this.props.showModal) { return; }
+
                                             this.saveNCR();
                                         }}  >
 

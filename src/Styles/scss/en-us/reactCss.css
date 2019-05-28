@@ -6053,3 +6053,244 @@ line.horizontal-grid-line {
 .header__dropdown .custom__dropDown {
     min-width: 250px;
 }
+
+
+
+.gridfillter-container {
+    padding-top: 0;
+}
+
+.filter__warrper {
+    height: 124px;
+    border-radius: 2px;
+    background-color: #fafbfc;
+    padding-bottom: 31px; 
+    padding-top: 16px;
+}
+
+.filter__warrper .proForm {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.filter__warrper .proForm .linebylineInput {
+    padding: 0;
+    margin: 0 4px;
+}
+
+.filter__warrper .proForm .linebylineInput label {
+    margin: 0;
+    background: transparent;
+}
+
+.filter__warrper .proForm .linebylineInput .ui.input.inputDev input {
+    height: 36px !important;
+}
+
+.filter__warrper .proForm .small__input--width,
+.filter__warrper .proForm .small__input--width .ui.input.inputDev input {
+    width: 104px !important;
+}
+
+.filter__warrper .proForm .medium__input--width,
+.filter__warrper .proForm .medium__input--width .ui.input.inputDev input {
+    width: 216px !important;
+}
+
+.filter__warrper .proForm .large__input--width,
+.filter__warrper .proForm .large__input--width .ui.input.inputDev input {
+    width: 240px !important;
+}
+
+.filter__more .filter__more--btn {
+    font-family: font-b;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    text-align: right;
+    color: #252833;
+    float: right;
+    background: transparent;
+    border: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.filter__more {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    padding-right: 7px;
+}
+ 
+.filter__more span {
+    font-family: font-b;
+    font-size: 11px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.45;
+    letter-spacing: -0.2px;
+    color: #5e6475;
+    padding: 4px 8px;
+    border-radius: 100px;
+    border: solid 1px #5e6475;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.filter__warrper .proForm button {
+    margin-bottom: 5px;
+    margin-left: 8px;
+}
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon {
+    width: 100%;
+    height: 36px;
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    left: 0;
+    z-index: 9;
+    text-align: right;
+}
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon svg {
+    position: absolute;
+    right: 8px;
+    top: 11px;
+    background: #fff;
+}
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev {
+    padding-bottom: 4px !important;
+}
+
+.filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
+    margin-top: 0;
+}
+
+.filter__warrper .linebylineInput input::placeholder {
+    opacity: 0.4;
+}
+ 
+/* filter component popUp */
+.filterModal {
+    width: 1136px !important;
+    padding: 0 !important;
+    padding-bottom: 31px !important;
+}
+
+.filterModal .header-filter {
+    height: 128px;
+    display: flex;
+
+    /* align-items: center; */
+    justify-content: center;
+    border-bottom: 0.5px solid #ccd2db;
+    flex-direction: column;
+    padding-top: 39px;
+    padding-bottom: 19px;
+    position: relative;
+}
+ 
+.filterModal .header-filter h2 {
+    font-family: font-b;
+    font-size: 28px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.14;
+    letter-spacing: -0.5px;
+    text-align: center;
+    color: #252833;
+    margin-bottom: 10px;
+}
+
+.filterModal .header-filter span {
+    font-family: font-b;
+    font-size: 20px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    text-align: center;
+    color: #252833;
+}
+
+.filterModal .filter__warrper {
+    height: auto;
+    background: transparent;
+    margin-bottom: 50px;
+}
+
+.filterModal .filter__warrper {
+    height: auto;
+    background: transparent;
+}
+
+.filterModal .filter__warrper .linebylineInput {
+    margin-bottom: 16px;
+}
+
+.filterModal .filter__warrper .proForm {
+    justify-content: center;
+    width: 100%;
+}
+
+.filterModal .filter__actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.filterModal .filter__actions button:first-child {
+    width: 204px;
+    margin-bottom: 22px;
+}
+
+.filterModal .reset__filter {
+    background: transparent;
+    color: #3570e6;
+    text-decoration: underline;
+    height: auto;
+    font-family: font-b;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: -0.2px;
+    color: #3570e6;
+    border: none;
+    cursor: pointer;
+}
+
+.filterModal .reset__filter.reset__filter--header {
+    position: absolute;
+    right: 44px;
+    bottom: 21px;
+}
+
+.filter__input-wrapper .proForm .linebylineInput .ui.input.inputDev {
+    padding: 0;
+    border-radius: 4px;
+}
+.filter__input-wrapper .proForm .linebylineInput {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: flex-start; 
+    align-items: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    flex-flow: column;
+}
