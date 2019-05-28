@@ -44,31 +44,6 @@ class GridSetupWithFilter extends Component {
         this.scrolllll();
     }
 
-    onHeaderDrop = (source, target) => {
-        const stateCopy = Object.assign({}, this.state);
-
-        const columnSourceIndex = this.state.columns.findIndex(
-            i => i.key === source
-        );
-        const columnTargetIndex = this.state.columns.findIndex(
-            i => i.key === target
-        );
-
-        stateCopy.columns.splice(
-            columnTargetIndex,
-            0,
-            stateCopy.columns.splice(columnSourceIndex, 1)[0]
-        );
-
-        const emptyColumns = Object.assign({}, this.state, { columns: [] });
-        this.setState(emptyColumns);
-
-        const reorderedColumns = Object.assign({}, this.state, {
-            columns: stateCopy.columns
-        });
-        this.setState(reorderedColumns);
-    };
-
     sortRows = (initialRows, sortColumn, sortDirection) => {
         const comparer = (a, b) => {
             if (sortDirection === "ASC") {
@@ -265,16 +240,13 @@ class GridSetupWithFilter extends Component {
     }
 
     getRowsFilter = (rows, filters) => {
-        //let groups = [...this.state.groupBy];
+        console.log(rows, filters);
         let rowsList = selectors.getRows({ rows, filters });
-        // if (groups.length > 0) {
-        //     rowsList = Data.Selectors.getRows({ rowsList, groups });
-        //     this.setState({
-        //         filteredRows: rowsList
-        //     })
-        // }  
+
+        console.log(rows, filters, rowsList);
         this.setState({
-            filteredRows: rowsList
+            //filteredRows: rowsList,
+            rows: rowsList
         })
     }
 
@@ -301,7 +273,7 @@ class GridSetupWithFilter extends Component {
             delete newFilters[filter.column.key];
         }
 
-        let rows = [...this.state.rows]
+        let rows = [...this.state.filteredRows]
         this.getRowsFilter(rows, newFilters);
         this.setState({
             setFilters: newFilters
@@ -310,8 +282,9 @@ class GridSetupWithFilter extends Component {
 
     render() {
 
-        const { filteredRows, groupBy } = this.state;
-        const groupedRows = Data.Selectors.getRows({ filteredRows, groupBy });
+        const { filteredRows, groupBy, rows } = this.state;
+        console.log(groupBy);
+        const groupedRows = Data.Selectors.getRows({ rows, groupBy });
         const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
         const CustomToolbar = ({
@@ -398,11 +371,11 @@ class GridSetupWithFilter extends Component {
                         <DraggableContainer>
                             <ReactDataGrid
                                 rowKey="id"
-                                minHeight={this.state.filteredRows != undefined ? (this.state.filteredRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
+                                minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
                                 height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
                                 columns={this.state.columns}
-                                rowGetter={i => this.state.filteredRows[i] != null ? this.state.filteredRows[i] : ''}
-                                rowsCount={this.state.filteredRows != undefined ? this.state.filteredRows.length : 1}
+                                rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
+                                rowsCount={groupedRows != undefined ? groupedRows.length : 1}
                                 enableCellSelect={true}
                                 onGridRowsUpdated={this.onGridRowsUpdated}
                                 onCellSelected={this.onCellSelected}
@@ -411,7 +384,7 @@ class GridSetupWithFilter extends Component {
                                 }}
                                 onGridSort={(sortColumn, sortDirection) =>
                                     this.setState({
-                                        rows: this.sortRows(this.state.filteredRows, sortColumn, sortDirection)
+                                        rows: this.sortRows(groupedRows, sortColumn, sortDirection)
                                     })
                                 }
                                 enableDragAndDrop={true}
