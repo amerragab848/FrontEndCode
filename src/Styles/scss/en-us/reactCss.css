@@ -4444,6 +4444,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     display: flex;
 }
 
+
 .settings-container .settings-tabs-items {
     width: 256px;
     background-color: #FAFBFC;
@@ -4470,6 +4471,8 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     border-bottom: 1px solid #E9ECF0;
     position: sticky;
     top: 72px;
+    z-index: 11;
+    background: #FAFBFC;
 }
 
 .settings-container .settings-tabs-items ul {
@@ -4497,6 +4500,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 .settings-container .settings-tabs-items ul li.title {
     cursor: inherit;
     padding-left: 0;
+    width: 100%;
 }
 
 .settings-container .settings-tabs-items ul li.title h4 {
@@ -4525,8 +4529,8 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     letter-spacing: -0.2px;
     color: #252833;
     font-family: font-b;
-   }
-  .settings-container .settings-tabs-items ul li .subUlsubT {
+}
+.settings-container .settings-tabs-items ul li .subUlsubT {
     line-height: 1.33;
     letter-spacing: -0.2px;
     color: #A8B0BF;

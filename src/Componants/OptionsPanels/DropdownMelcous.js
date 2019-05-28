@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component , Fragment } from 'react'
 import Select from 'react-select';
 import Resources from '../../resources.json';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -58,7 +58,7 @@ class DropdownMelcous extends Component {
                             <span>{this.props.message}</span> : ""
                     }
                 </div>
-                <div>
+                <Fragment>
                     <div className={"customD_Menu " + (this.props.error && this.props.touched ? " errorClass" : '')} style={{ outline: "none", position: 'relative' }}>
                         <div>
                             <Select key={this.props.index} ref={this.props.index}
@@ -78,7 +78,7 @@ class DropdownMelcous extends Component {
                             {this.props.touched && (<em className="dropdown__error">{this.props.error }</em>)}
                         </div>
                     </div>
-                </div>
+                </Fragment>
             </div>
         )
     }
