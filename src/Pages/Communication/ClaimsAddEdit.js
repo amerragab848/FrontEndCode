@@ -461,7 +461,9 @@ class ClaimsAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
-                                            onSubmit={(values) => {
+                                            onSubmit={(values) => { 
+                                                 if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {

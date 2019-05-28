@@ -1477,6 +1477,8 @@ class bogAddEdit extends Component {
                             validationSchema={poqSchema}
                             enableReinitialize={this.props.changeStatus}
                             onSubmit={(values) => {
+                                if (this.props.showModal) { return; }
+
                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                     this.editBoq(values);
                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {

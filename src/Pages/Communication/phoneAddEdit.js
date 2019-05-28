@@ -388,6 +388,8 @@ class phoneAddEdit extends Component {
                                         enableReinitialize={true}
                                         validationSchema={validationSchema}
                                         onSubmit={(values) => {
+                                            if (this.props.showModal) { return; }
+
                                             if (this.props.changeStatus === true && this.state.docId > 0) {
                                                 this.editPhone();
                                             } else if (this.props.changeStatus === false && this.state.docId === 0) {

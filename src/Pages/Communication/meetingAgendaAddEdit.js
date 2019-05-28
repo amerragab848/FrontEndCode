@@ -941,6 +941,9 @@ class meetingAgendaAddEdit extends Component {
                     }}
                     enableReinitialize={true}
                     onSubmit={(values) => {
+                        
+                        if (this.props.showModal) { return; }
+
                         if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.addMeetingAgenda()
                         } else {

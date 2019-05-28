@@ -9,7 +9,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -253,7 +253,7 @@ class InternalMemoAddEdit extends Component {
 
     onChangeMessage = (value, field) => {
 
-        if (value != null) { 
+        if (value != null) {
             let original_document = { ...this.state.document };
 
             let updated_document = {};
@@ -264,7 +264,7 @@ class InternalMemoAddEdit extends Component {
 
             this.setState({
                 document: updated_document,
-                [field]: value 
+                [field]: value
             });
         }
     };
@@ -397,7 +397,8 @@ class InternalMemoAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -456,6 +457,8 @@ class InternalMemoAddEdit extends Component {
                                         <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editInternalMemo();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -652,12 +655,12 @@ class InternalMemoAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={841} EditAttachments={3229} ShowDropBox={3619} ShowGoogleDrive={3620} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={841} EditAttachments={3229} ShowDropBox={3619} ShowGoogleDrive={3620} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-                                           
+
                                             {this.props.changeStatus === true ?
-                                              <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null}
+                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                : null}
                                         </div>
                                     </div>
                                 </div>
