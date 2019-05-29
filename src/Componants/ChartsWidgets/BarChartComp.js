@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import Api from '../../api';
-import { Bar, GroupedBar, Tooltip, ResponsiveContainer, withResponsiveness } from 'britecharts-react'
+import { Bar, GroupedBar, Tooltip, ResponsiveContainer, withResponsiveness, Line, ResponsiveStackedArea } from 'britecharts-react'
 
 
 const marginObject = {
-    left: 40,
+    left: 0,
     right: 40,
     top: 50,
     bottom: 50,
 };
 const colorSchema = ["#39bd3d", "#dfe2e6"]
+
 class BarChartComp extends Component {
 
     constructor(props) {
@@ -25,7 +26,8 @@ class BarChartComp extends Component {
             },
             barData: [],
             isLoading: true,
-            groupedBarData: []
+            groupedBarData: [],
+            loadingState: false
         }
     }
 
@@ -37,6 +39,11 @@ class BarChartComp extends Component {
                 this.setState({
                     isLoading: true
                 });
+                if (results == null) {
+                    this.setState({ loadingState: true })
+                } else {
+                    this.setState({ loadingState: false })
+                }
                 results.map((item) => {
                     barData.push({ 'value': item[this.props.y], 'name': item[this.props.catagName] })
                     return null;
@@ -71,6 +78,32 @@ class BarChartComp extends Component {
     }
 
     render() {
+        const renderStackedArea = (props) => (
+            <ResponsiveContainer
+                render={
+                    ({ width }) =>
+                        <Bar
+                            isHorizontal={false}
+                            margin={marginObject}
+                            colorSchema={colorSchema}
+                            width={width}
+                            data={this.state.barData}
+                            customMouseOver={this.tooltip}
+                            customMouseMove={this.tooltip}
+                            customMouseOut={this.tooltip}
+                            shouldShowLoadingState={this.state.loadingState === true ? true : false}
+                        />
+                }
+            />
+        );
+
+        const TooltipWithStackedArea = ({ data }) => (
+            <Tooltip
+                data={this.state.barData}
+                render={renderStackedArea}
+            />
+        );
+        
         return (
             <Fragment>
                 {this.props.multiSeries !== 'no' ?
@@ -108,21 +141,24 @@ class BarChartComp extends Component {
                                     <h2>
                                         {this.props.title}
                                     </h2>
-                                    <ResponsiveContainer
-                                        render={
-                                            ({ width }) =>
-                                                <div>
-                                                    <Bar
-                                                        width={width}
-                                                        data={this.state.barData}
-                                                        isHorizontal={false}
-                                                        margin={marginObject}
-                                                        colorSchema={colorSchema}
+                                    <div>
+                                        <Fragment>
+                                            <ResponsiveContainer
+                                                render={
+                                                    ({ width }) =>
+                                                        // <Tooltip
+                                                        //     data={this.state.barData}
+                                                        //     render={renderLine}
+                                                        //     topicLabel="topics"
+                                                        //     title="Tooltip Title"
+                                                        // />
+                                                        <TooltipWithStackedArea
+                                                            data={this.state.barData}
+                                                        />
+                                                }
+                                            /> </Fragment>
+                                    </div>
 
-                                                    />
-                                                </div>
-                                        }
-                                    />
                                 </div>
                             </div>
                         </div >

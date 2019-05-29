@@ -5962,3 +5962,30 @@ line.horizontal-grid-line {
 .skylight-dialog .ReactTable {
     overflow: visible;
 }
+
+.nav-right li{
+    cursor: pointer
+}
+.nav-right li:hover  svg g g {
+    fill: #969eab;
+    transition: all 0.2s ease
+}
+
+.group__charts .y-axis-group path.domain {
+    display: none
+}
+
+.barChart__container .y-axis-group {
+    transform: translateX(27px) !important;
+}
+
+.barChart__container .y-axis-group g.tick tspan {
+    display: none;
+}
+
+.bar-container .x-axis-group .tick text, .group__charts .x-axis-group .tick text {
+    font-size: 1rem;
+    fill: #666a73;
+/* 
+    transform: translateY(6%) rotate(-80deg) translateX(11pX); */
+}
