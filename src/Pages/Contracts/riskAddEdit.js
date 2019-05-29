@@ -348,7 +348,7 @@ class riskAddEdit extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
 
-         dataservice.GetNextArrangeMainDocument(url).then(res => {
+        dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
             this.setState({
@@ -408,9 +408,12 @@ class riskAddEdit extends Component {
                 let disciplineId = this.props.document.discipline;
                 if (disciplineId) {
                     let discipline = result.find(i => i.label === parseInt(disciplineId));
-                    this.setState({
-                        selectedDiscpline: discipline
-                    });
+
+                    if (discipline) {
+                        this.setState({
+                            selectedDiscpline: discipline
+                        });
+                    }
                 }
             }
             this.setState({
@@ -427,9 +430,11 @@ class riskAddEdit extends Component {
 
                     let areaIdName = result.find(i => i.value === parseInt(areaId));
 
-                    this.setState({
-                        selectedArea: { label: areaIdName.label, value: areaId }
-                    });
+                    if (areaIdName) {
+                        this.setState({
+                            selectedArea: { label: areaIdName.label, value: areaId }
+                        });
+                    }
                 }
             }
             this.setState({
@@ -446,10 +451,11 @@ class riskAddEdit extends Component {
                 if (priorityId) {
 
                     let priorityName = result.find(i => i.value === parseInt(priorityId));
-
-                    this.setState({
-                        selectedPriorityId: { label: priorityName.label, value: priorityId }
-                    });
+                    if (priorityName) {
+                        this.setState({
+                            selectedPriorityId: { label: priorityName.label, value: priorityId }
+                        });
+                    }
                 }
             }
             this.setState({
@@ -511,7 +517,7 @@ class riskAddEdit extends Component {
 
         //consequences
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=consequences", "title", "id").then(result => {
-            if (isEdit) { 
+            if (isEdit) {
                 let riskConsquence = this.state.documentCycle.riskConsquence;
                 if (riskConsquence) {
                     let riskConsquenceObj = result.find(i => i.value === parseInt(riskConsquence));

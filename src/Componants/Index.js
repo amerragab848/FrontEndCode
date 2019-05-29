@@ -1,6 +1,6 @@
+import CryptoJS from 'crypto-js';
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CryptoJS from 'crypto-js';
 import { Widgets, WidgetsWithText } from "./CounterWidget";
 import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
@@ -9,7 +9,6 @@ import DashBoard from "./DashBoard";
 import _ from "lodash";
 import language from "../resources.json";
 import Api from "../api";
-
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Index extends Component {
@@ -81,7 +80,7 @@ class Index extends Component {
   }
 
   renderCharts() {
-    let chartWidgets = this.state.chartData.map((item, index) => {
+    let chartWidgets = this.state.chartData.map((item) => {
       if (item.type === "pie") {
         return (
           <div className="col-lg-4 col-md-6" key={item.id}>
@@ -106,8 +105,7 @@ class Index extends Component {
               yTitle={language[item.yTitle][currentLanguage]}
               catagName={item.catagName}
               multiSeries={item.multiSeries}
-              barContent={item.barContent}
-            />
+              barContent={item.barContent} />
           </Fragment>
         );
       }
@@ -164,7 +162,7 @@ class Index extends Component {
                                     api={panel.props.api}
                                     name={panel.props.name}
                                     y={panel.props.y}
-                                    title={panel.title}
+                                    title={language[panel.title][currentLanguage]}
                                     seriesName={panel.seriesName}
                                   />
                                 </div>
@@ -236,8 +234,8 @@ class Index extends Component {
                                   api={panel.props.api}
                                   name={panel.props.name}
                                   y={panel.props.y}
-                                  title={panel.title}
-                                    seriesName={panel.seriesName}
+                                  title={language[panel.title][currentLanguage]}
+                                  seriesName={panel.seriesName}
                                 />
                               </div>
                             );
@@ -306,7 +304,7 @@ class Index extends Component {
                                 api={panel.props.api}
                                 name={panel.props.name}
                                 y={panel.props.y}
-                                title={panel.title}
+                                title={language[panel.title][currentLanguage]}
                                 seriesName={panel.seriesName}
                               />
                             </div>
@@ -318,7 +316,7 @@ class Index extends Component {
                                 api={panel.props.api}
                                 name={panel.props.name}
                                 y={panel.props.data}
-                                title={panel.title}
+                                title={language[panel.title][currentLanguage]}
                                 stack={panel.stack}
                                 yTitle={panel.yTitle}
                                 catagName={panel.catagName}
