@@ -144,6 +144,9 @@ class projectPicturesAddEdit extends Component {
 
             this.checkDocumentIsView(); 
         }
+        if (this.state.showModal != nextProps.showModal) {
+          this.setState({ showModal: nextProps.showModal });
+        }
     }
 
     handleChange(e, field) {
@@ -265,7 +268,7 @@ class projectPicturesAddEdit extends Component {
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,
@@ -402,6 +405,9 @@ class projectPicturesAddEdit extends Component {
                                         validationSchema={validationSchema}
                                         enableReinitialize={true}
                                         onSubmit={(values) => {
+                                            
+                                            if (this.props.showModal) { return; }
+        
                                             this.AddEditProjectPic();
                                         }}  >
 

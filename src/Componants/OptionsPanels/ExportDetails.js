@@ -6,7 +6,7 @@ import jsPDF from 'jspdf';
 import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import Profile from '../../Styles/images/icons/person.svg'
- import LoadingSection from '../publicComponants/LoadingSection'
+import LoadingSection from '../publicComponants/LoadingSection'
 import Signature from '../../Styles/images/mySignature.png';
 
 import {
@@ -41,14 +41,14 @@ class ExportDetails extends Component {
             const input = document.getElementById('printPdf');
             input.style.height = 'auto'
             input.style.visibility = 'visible'
-           
+
             html2canvas(input).then((canvas) => {
                 var imgData = canvas.toDataURL('image/png');
                 var imgWidth = 210;
                 var pageHeight = 295;
                 var imgHeight = canvas.height * imgWidth / canvas.width;
                 var heightLeft = imgHeight;
-                var doc = new jsPDF('p', 'mm','letter');
+                var doc = new jsPDF('landscape', 'mm', 'letter');
                 var position = 0;
 
                 doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
@@ -60,6 +60,14 @@ class ExportDetails extends Component {
                     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
                     heightLeft -= pageHeight;
                 }
+                doc.setProperties({
+                    // title: 'Title',
+                    // subject: 'This is the subject',
+                    author: 'Procoor',
+                    keywords: 'Procoor V5',
+                    creator: 'Procoor Team Development'
+                   });
+
                 doc.save(Resources[this.props.documentTitle][currentLanguage] + '.pdf');
                 input.style.visibility = 'hidden';
                 input.style.height = '0';
@@ -172,41 +180,6 @@ class ExportDetails extends Component {
         )
     }
 
-    drawFields_pdf() {
-        let fields = DED[this.props.docTypeId]
-        let data = this.props.document
-        let rows = fields.fields.map((field, index) => {
-            let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
-
-            let notExist = _.find(filedsIgnor, function (x) { return x == field.name })
-            return (
-
-                !notExist ?
-                    <tr key={index}>
-                        <td>
-                            <h4 className="ui image header ">
-                                <img src={Profile} alt="Doc." />
-                                <div className="content">
-                                    {Resources[field.name][currentLanguage]}
-                                </div>
-                            </h4>
-                        </td>
-                        <td className="white mt5 tc f3">
-                            {formatData}
-                        </td>
-                    </tr>
-
-                    : null
-            )
-        });
-        return (
-            <table id="Fields"  >
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>
-        )
-    }
 
     drawItems() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
@@ -345,6 +318,46 @@ class ExportDetails extends Component {
         )
     }
 
+    drawFields_pdf() {
+        let fields = DED[this.props.docTypeId]
+        let data = this.props.document
+        let rows = fields.fields.map((field, index) => {
+            let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
+
+            let notExist = _.find(filedsIgnor, function (x) { return x == field.name })
+            return (
+
+                !notExist ?
+                    <tr key={index}>
+                        <td>
+                            <div className="table__wrapper">
+                            <h4 className="ui image header ">
+                                <img src={Profile} alt="Doc." />
+                                <div className="content">
+                                    {Resources[field.name][currentLanguage]}
+                                </div>
+                            </h4>
+                            </div>
+                        </td>
+                        <td className="white mt5 tc f3" >
+                        <div className="table__wrapper">
+
+                            {formatData}
+                            </div>
+                        </td>
+                    </tr>
+
+                    : null
+            )
+        });
+        return (
+            <table id="Fields"  >
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+        )
+    }
     drawItems_pdf() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
         let rows = this.props.items.length > 0 ?
@@ -396,7 +409,7 @@ class ExportDetails extends Component {
                     <p id="pdfLength">Attached files</p>
                     <table className="attachmentTable" id="attachmentTable">
                         <thead>
-                            <tr> 
+                            <tr>
                                 <th>
                                     <div className="headCell tableCell-2">
                                         <span>{Resources.fileName[currentLanguage]} </span>
@@ -418,7 +431,7 @@ class ExportDetails extends Component {
                             {this.props.files.map(file => {
                                 let formatData = moment(file.createdDate).format('DD/MM/YYYY')
                                 return (
-                                    <tr> 
+                                    <tr>
                                         <td>
                                             <div className="contentCell tableCell-2">
                                                 <a className="pdfPopup various zero">{file.fileNameDisplay}</a>
@@ -547,6 +560,7 @@ class ExportDetails extends Component {
     render() {
         let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY')
         let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
+        let cycle = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles : {}
         let exportPdf =
             <div>
                 <div id="printPdf" className="printWrapper" style={{ height: 0, visibility: "hidden" }} >
@@ -581,9 +595,10 @@ class ExportDetails extends Component {
 
 
                     {this.drawAttachments_pdf()}
-
-                    <p id="pdfLength"><span>{this.props.workFlowCycles[0].subject}</span><span>{" at Level: " + this.props.workFlowCycles[0].currentLevel}</span><span> {" Sent:" + moment(this.props.workFlowCycles[0].creationDate).format('DD-MM-YYYY')}</span></p>
-
+                    {cycle ?
+                        <p id="pdfLength"><span>{cycle.subject}</span><span>{" at Level: " + cycle.currentLevel}</span><span> {" Sent:" + moment(cycle.creationDate).format('DD-MM-YYYY')}</span></p>
+                        : null
+                    }
                     <div className=" printSecondPage">
                         {levels.map((cycle, index) => {
                             return (

@@ -148,7 +148,8 @@ import RejectedTimesheetsDetails from "./Componants/DashBoardDetails/RejectedTim
 import invoicesForPoAddEdit from "./Pages/Procurement/invoicesForPoAddEdit";
 import requestProposalAddEdit from "./Pages/Procurement/requestProposalAddEdit";
 import proposalAddEdit from "./Pages/Procurement/proposalAddEdit";
-import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit";
+import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit"; 
+import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit";
 
 import PaymentRequisitionList from "./Pages/Contracts/Schedule";
 
@@ -317,7 +318,8 @@ let originalRoutes = [
     , <Route path="/invoicesForPoAddEdit" component={invoicesForPoAddEdit} />
     , <Route path="/requestProposalAddEdit" component={requestProposalAddEdit} />
     , <Route path="/proposalAddEdit" component={proposalAddEdit} />
-    , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} />
+    , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} /> 
+    , <Route path="/materialDeliveryAddEdit" component={materialDeliveryAddEdit} />
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]

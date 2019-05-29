@@ -179,6 +179,9 @@ class DrawingSetsAddEdit extends Component {
 
       this.checkDocumentIsView();
     }
+    if (this.state.showModal != nextProps.showModal) {
+      this.setState({ showModal: nextProps.showModal });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -561,6 +564,7 @@ class DrawingSetsAddEdit extends Component {
   handleShowAction = item => {
 
     if (item.value != "0") {
+      this.props.actions.showOptionPanel(false);
 
       this.setState({
         currentComponent: item.value,
@@ -667,7 +671,8 @@ class DrawingSetsAddEdit extends Component {
     });
   }
 
-  componentWillUnmount() {   this.props.actions.clearCashDocument();
+  componentWillUnmount() {
+    this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
     });
@@ -770,7 +775,7 @@ class DrawingSetsAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
-          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.drawingSets[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.drawingSets[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
 
           <div className="doc-container">
             {/* Right Menu */}
@@ -783,6 +788,9 @@ class DrawingSetsAddEdit extends Component {
                         validationSchema={validationSchema}
                         enableReinitialize={this.props.changeStatus}
                         onSubmit={values => {
+                          
+                          if (this.props.showModal) { return; }
+        
                           if (this.props.changeStatus === true && this.state.docId > 0) {
                             this.editDrawing();
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -903,12 +911,12 @@ class DrawingSetsAddEdit extends Component {
                                 </label>
                                 <div className="supervisor__company">
                                   <div className="super_name">
-                                                                 <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                    <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                       handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                       onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId" />
                                   </div>
                                   <div className="super_company">
-                                  <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
+                                    <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
                                       handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedFromContact")}
                                       onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
                                       name="bicContactId" id="bicContactId" />
@@ -1042,7 +1050,7 @@ class DrawingSetsAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={895} EditAttachments={3237} ShowDropBox={3637} ShowGoogleDrive={3638} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={895} EditAttachments={3237} ShowDropBox={3637} ShowGoogleDrive={3638} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                       {this.state.CurrentStep === 1 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
@@ -1092,7 +1100,7 @@ class DrawingSetsAddEdit extends Component {
               </div>
               <div className="workflow-sliderSteps">
                 <div className="step-slider">
-                <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                  <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                     <div className="steps-timeline">
                       <span>1</span>
                     </div>

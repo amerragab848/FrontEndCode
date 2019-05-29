@@ -10,15 +10,21 @@ import moment from 'moment';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Resources from '../../resources.json';
+import { toast } from "react-toastify";
+
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
 const validationSchema = Yup.object().shape({
-
     DistributionValidation: Yup.string().required(Resources['distributionListRequired'][currentLanguage]).nullable(true),
-    PriorityValidation: Yup.string().required(Resources['prioritySelect'][currentLanguage]).nullable(true),
-
-
+    PriorityValidation: Yup.string().required(Resources['prioritySelect'][currentLanguage]).nullable(true)
 })
 class DistributionList extends Component {
     constructor(props) {
@@ -141,6 +147,12 @@ class DistributionList extends Component {
 
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.showModal !== this.props.showModal) {
+            this.setState({ submitLoading: false })
+        }
+    }
+
     DatehandleChange = (date) => {
         this.setState({ sendingData: { ...this.state.sendingData, RequiredDate: date } });
     }
@@ -159,23 +171,25 @@ class DistributionList extends Component {
                 Header: 'companyId',
                 accessor: 'companyId',
                 sortabel: true,
-                filterable: true,
-                width: 50, show: false
+                filterable: false,
+                width: 50,
+                show: false
             }, {
                 Header: Resources['CompanyName'][currentLanguage],
                 accessor: 'companyName',
                 width: 200,
                 sortabel: true,
-                filterable: true
+                filterable: false
             }, {
                 Header: 'contactId',
-                accessor: 'contactId', show: false
+                accessor: 'contactId',
+                show: false
             }, {
                 Header: Resources['ContactName'][currentLanguage],
                 accessor: 'contactName',
                 width: 250,
                 sortabel: true,
-                filterable: true
+                filterable: false 
             }, {
                 Header: Resources['action'][currentLanguage],
                 accessor: 'action',
@@ -235,20 +249,22 @@ class DistributionList extends Component {
                                 contactName: item['contactName'], action: this.state[item['contactId'] + '-drop'].value
                             }
                         })
-                        this.setState({
-                            sendingData: { ...this.state.sendingData, itemContacts: tempData }
-                        })
-                        setTimeout(() => {
-                            Api.post("SnedToDistributionList", this.state.sendingData).then(
-                                this.setState({ ApiResponse: true })
-                            ).then(this.setState({ companyLoading: false }),
-                                window.location.reload())
-                        }, 500)
 
+                        let sendingData = { ...this.state.sendingData, itemContacts: tempData }
+
+                        Api.post("SnedToDistributionList", sendingData).then(res => {
+                            toast.success(Resources["operationSuccess"][currentLanguage]);
+                            this.setState({ submitLoading: false })
+                            this.props.actions.showOptionPanel(false);
+                        }).catch(() => {
+                            this.setState({ submitLoading: false })
+                            toast.error(Resources["operationCanceled"][currentLanguage]);
+                            this.props.actions.showOptionPanel(false);
+                        })
                     }}
                 >
                     {({ errors, touched, setFieldValue, setFieldTouched }) => (
-                        <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
+                        <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
 
                             <div className={"ui input inputDev fillter-item-c "}>
                                 <Dropdown title="distributionList" data={this.state.DistributionListDate}
@@ -261,7 +277,7 @@ class DistributionList extends Component {
 
                             </div>
                             <DatePicker startDate={this.state.sendingData.RequiredDate} handleChange={this.DatehandleChange} />
-                            <div className={"ui input inputDev fillter-item-c "}                            >
+                            <div className={"ui input inputDev fillter-item-c "}>
                                 <Dropdown title="priority"
                                     data={this.state.PriorityData}
                                     handleChange={this.Priority_handelChange}
@@ -277,7 +293,7 @@ class DistributionList extends Component {
                             <div className="fullWidthWrapper">
 
                                 {!this.state.submitLoading ?
-                                        <button className="primaryBtn-1 btn mediumBtn" type="submit"  >{Resources['send'][currentLanguage]}</button>
+                                    <button className="primaryBtn-1 btn mediumBtn" type="submit"  >{Resources['send'][currentLanguage]}</button>
                                     : (
                                         <button className="primaryBtn-1  btn mediumBtn disabled">
                                             <div className="spinner">
@@ -287,13 +303,11 @@ class DistributionList extends Component {
                                             </div>
                                         </button>
                                     )}
-                                    </div>
+                            </div>
 
                         </Form>
                     )}
-                </Formik>
-
-
+                </Formik> 
             </div >
         );
     }
@@ -331,5 +345,20 @@ class DistributionList extends Component {
         });
     }
 }
+function mapStateToProps(state) {
 
-export default DistributionList;
+    return {
+        showModal: state.communication.showModal
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DistributionList);
