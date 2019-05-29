@@ -501,7 +501,7 @@ class invoicesForPoAddEdit extends Component {
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
-        // saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.items = this.state.InvoicesItems
         dataservice.addObject('EditContractsInvoicesForPo', saveDocument).then(result => {
             this.setState({
@@ -517,7 +517,7 @@ class invoicesForPoAddEdit extends Component {
         });
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         dataservice.addObject('AddContractsInvoicesForPo', saveDocument).then(result => {
             let itemsList = []
@@ -548,9 +548,8 @@ class invoicesForPoAddEdit extends Component {
             dataservice.addObject('AddContractsInvoicesForPoItemsList', saveDocument).then(
                 res => {
 
-                }
-            )
-
+                })
+            toast.success(Resources["operationSuccess"][currentLanguage]);
         })
 
     }
@@ -595,9 +594,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     ShowCostTree = () => {
-        this.setState({
-            ShowTree: true
-        })
+        this.setState({ShowTree: true })
     }
 
     GetNodeData = (item) => {
@@ -616,7 +613,6 @@ class invoicesForPoAddEdit extends Component {
     }
 
     OnBlurTaxesValue = (e, index) => {
-
     }
 
     HandleChangeTaxesValue = (e, index) => {

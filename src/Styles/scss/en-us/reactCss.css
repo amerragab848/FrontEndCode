@@ -2993,7 +2993,7 @@ button.companies_icon {
 }
 
 .letterFullWidth {
-    width: 100%;
+    width: 100% !important;
     margin-bottom: 16px;
 }
 
