@@ -6306,3 +6306,19 @@ line.horizontal-grid-line {
     justify-content: flex-start;
     flex-flow: column;
 }
+
+.line-chart .line {
+    fill: transparent;
+    /* stroke: #39bd3d */
+}
+.vertical-marker-container .vertical-marker {
+    stroke: #D2D6DF;
+    stroke-width: 1;
+    fill: none; 
+}
+  
+  .vertical-marker-container .data-point-highlighter {
+    fill: #ffffff;
+    stroke-width: 2; 
+}
+  
