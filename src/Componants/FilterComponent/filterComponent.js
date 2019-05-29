@@ -22,9 +22,7 @@ class FilterComponent extends Component {
       isCustom: true,
       isLoading: false
     };
-
-    let state = {};
-
+ 
   }
 
   componentDidMount() {
@@ -35,9 +33,9 @@ class FilterComponent extends Component {
       });
     }
   }
-  componentWillMount() {
 
-    console.log('componentWillMount in filter Componants');
+  componentWillMount() {
+ 
     let state = {};
     this._isMounted = false;
 

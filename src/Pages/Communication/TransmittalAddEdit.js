@@ -159,6 +159,10 @@ class TransmittalAddEdit extends Component {
             this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
+        }
     };
     
     componentDidUpdate(prevProps) {
@@ -533,7 +537,7 @@ class TransmittalAddEdit extends Component {
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -582,6 +586,8 @@ class TransmittalAddEdit extends Component {
                                         <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editTransmittal();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {

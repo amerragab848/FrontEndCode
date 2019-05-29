@@ -20,8 +20,7 @@ export default function (state = initialState.app.communication, action) {
                 items: action.items ? action.items : []
             }
 
-        case types.Document_for_Edit:
-            console.log('Document_for_Edit...', state.files, state.docId, state.changeStatus)
+        case types.Document_for_Edit: 
             return {
                 ...state,
                 document: action.document,
@@ -35,8 +34,7 @@ export default function (state = initialState.app.communication, action) {
             };
 
         case types.Clear_Cash_Document:
-            console.log('Clear_Cash_Document...', state.files, state.docId, state.changeStatus)
-
+            
             return {
                 ...state,
                 document: {},
@@ -46,6 +44,13 @@ export default function (state = initialState.app.communication, action) {
                 items: [],
                 workFlowCycles: []
             };
+
+            case types.Show_OptionPanel:
+            
+                return {
+                    ...state, 
+                    showModal: action.showModal
+                };
 
         case types.Document_Adding:
             return {

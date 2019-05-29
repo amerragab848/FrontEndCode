@@ -290,6 +290,9 @@ class punchListAddEdit extends Component {
 
             this.checkDocumentIsView();
         }
+        if (this.state.showModal != nextProps.showModal) {
+          this.setState({ showModal: nextProps.showModal });
+        }
     }
 
     componentWillUnmount() {
@@ -797,7 +800,7 @@ class punchListAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,
@@ -1183,6 +1186,8 @@ class punchListAddEdit extends Component {
                     enableReinitialize={true}
                     validationSchema={validationSchemaForEditItem}
                     onSubmit={(values, actions) => {
+                        if (this.props.showModal) { return; }
+
                         //console.log(values)
                         this.EditItem(values)
                     }}>

@@ -172,6 +172,9 @@ class QsAddEdit extends Component {
 
       this.checkDocumentIsView();
     }
+    if (this.state.showModal != nextProps.showModal) {
+      this.setState({ showModal: nextProps.showModal });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -514,7 +517,7 @@ class QsAddEdit extends Component {
   }
 
   handleShowAction = item => {
-    if (item.value != "0") {
+    if (item.value != "0") { this.props.actions.showOptionPanel(false); 
       this.setState({
         currentComponent: item.value,
         currentTitle: item.title,
@@ -860,6 +863,8 @@ class QsAddEdit extends Component {
                         validationSchema={validationSchema}
                         enableReinitialize={this.props.changeStatus}
                         onSubmit={values => {
+                          if (this.props.showModal) { return; }
+
                           if (this.props.changeStatus === true && this.state.docId > 0) {
                             this.editQs();
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {

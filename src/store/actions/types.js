@@ -10,6 +10,7 @@ export const Get_Attendees_Table = 'Get_Attendees_Table';
 export const Get_Topics_Table = 'Get_Topics_Table';
 export const Export_Document = 'Export_Document';
 export const Clear_Cash_Document = 'Clear_Cash_Document';
+export const Show_OptionPanel = 'Show_OptionPanel';
 
 export const Update_Field = 'Update_Field';
 export const Delete_File = 'Delete_File';

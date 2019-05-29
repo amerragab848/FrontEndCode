@@ -245,6 +245,9 @@ class SubmittalAddEdit extends Component {
 
       this.checkDocumentIsView();
     }
+    if (this.state.showModal != nextProps.showModal) {
+      this.setState({ showModal: nextProps.showModal });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -454,10 +457,11 @@ class SubmittalAddEdit extends Component {
 
         if (locationId) {
           let locationName = result.find(i => i.value === parseInt(locationId));
-
-          this.setState({
-            selectedLocation: { label: locationName.label, value: locationId }
-          });
+          if (locationName) {
+            this.setState({
+              selectedLocation: { label: locationName.label, value: locationId }
+            });
+          }
         }
       }
       this.setState({
@@ -471,14 +475,15 @@ class SubmittalAddEdit extends Component {
       if (isEdit) {
 
         let areaId = this.props.document.area;
-
+        let areaIdName = {};
         if (areaId) {
 
-          let areaIdName = result.find(i => i.value === parseInt(areaId));
-
-          this.setState({
-            selectedArea: { label: areaIdName.label, value: areaId }
-          });
+          areaIdName = result.find(i => i.value === parseInt(areaId));
+          if (areaIdName) {
+            this.setState({
+              selectedArea: { label: areaIdName.label, value: areaId }
+            });
+          }
         }
       }
       this.setState({
@@ -521,13 +526,14 @@ class SubmittalAddEdit extends Component {
 
         if (specsSectionId) {
           let specsSectionName = result.find(i => i.value === parseInt(specsSectionId));
-
-          this.setState({
-            selectedSpecsSection: {
-              label: specsSectionName.label,
-              value: specsSectionId
-            }
-          });
+          if (specsSectionName) {
+            this.setState({
+              selectedSpecsSection: {
+                label: specsSectionName.label,
+                value: specsSectionId
+              }
+            });
+          }
         }
       }
 
@@ -546,10 +552,11 @@ class SubmittalAddEdit extends Component {
         if (approval) {
 
           let approvalName = result.find(i => i.value === parseInt(approval));
-
-          this.setState({
-            selectedApprovalStatus: { label: approvalName.label, value: approval }
-          });
+          if (approvalName) {
+            this.setState({
+              selectedApprovalStatus: { label: approvalName.label, value: approval }
+            });
+          }
         }
       }
       this.setState({
@@ -569,10 +576,11 @@ class SubmittalAddEdit extends Component {
         if (contactId) {
 
           let contact = result.find(i => i.value === contactId);
-
-          this.setState({
-            selectedContract: { ...contact }
-          });
+          if (contact) {
+            this.setState({
+              selectedContract: { ...contact }
+            });
+          }
         }
       }
       this.setState({
@@ -1019,6 +1027,7 @@ class SubmittalAddEdit extends Component {
   handleShowAction = item => {
 
     if (item.value != "0") {
+      this.props.actions.showOptionPanel(false);
 
       this.setState({
         currentComponent: item.value,
@@ -1620,6 +1629,9 @@ class SubmittalAddEdit extends Component {
                         validationSchema={validationSchema}
                         enableReinitialize={this.props.changeStatus}
                         onSubmit={values => {
+
+                          if (this.props.showModal) { return; }
+
                           if (this.props.changeStatus === true && this.state.docId > 0) {
                             this.editSubmittal();
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -2233,7 +2245,7 @@ class SubmittalAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.Stepes === 1 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.Stepes === 1 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                       {this.state.Stepes === 1 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>

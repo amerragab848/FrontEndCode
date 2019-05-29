@@ -147,6 +147,10 @@ class RfiAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
+        }
     };
 
     componentDidUpdate(prevProps) { 
@@ -489,7 +493,7 @@ class RfiAddEdit extends Component {
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }  
 
-        if (item.value != "0") { 
+        if (item.value != "0") { this.props.actions.showOptionPanel(false);  
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -534,6 +538,8 @@ class RfiAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editRfi();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {

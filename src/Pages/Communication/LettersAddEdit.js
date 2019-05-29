@@ -130,16 +130,25 @@ class LettersAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        //console.log(this.props, nextProps)
+        if (nextProps.document.id !== this.props.document.id) {
             this.setState({
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
             });
+            // und 976 --1
+            //976 976 fire modal
+            //976 976 close modal
+            //alert('recieve....');
+            //console.log(this.props.document.id, nextProps.document.id);
+            //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
 
+        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
@@ -158,10 +167,6 @@ class LettersAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-
-        // if (this.state.showModal != this.props.showModal) {
-        //     this.setState({ showModal: this.props.showModal });
-        // }
     }
 
     checkDocumentIsView() {
@@ -431,22 +436,26 @@ class LettersAddEdit extends Component {
                 : null
         )
     }
-
+ 
     handleShowAction = (item) => {
-        console.log(item.value)
         if (item.title == "sendToWorkFlow") {
             this.props.actions.SendingWorkFlow(true);
         }
         if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponantDocument: item.value,
                 currentTitle: item.title,
                 showModal: true
             })
             this.simpleDialog.show()
+
         }
     }
 
+    executeBeforeModalClose = (e) => {
+        this.setState({ showModal: false });
+    }
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -485,8 +494,10 @@ class LettersAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            enableReinitialize={true}
-                                            onSubmit={(values) => {
+                                            enableReinitialize={this.props.changeStatus}
+                                            onSubmit={(values) => { if (this.props.showModal) { return; }
+                                                
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -716,7 +727,7 @@ class LettersAddEdit extends Component {
                                                                         </button> :
                                                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
                                                                     }
-                                                                    
+
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
                                                                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
@@ -760,9 +771,9 @@ class LettersAddEdit extends Component {
                         </div>
                     </div>
 
-                </div> 
+                </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActionsLetter">
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]} beforeClose={() => { this.executeBeforeModalClose() }}>
                         {this.state.currentComponantDocument}
                     </SkyLight>
                 </div>

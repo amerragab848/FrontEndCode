@@ -154,6 +154,9 @@ class siteInstructionsAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        if (this.state.showModal != nextProps.showModal) {
+          this.setState({ showModal: nextProps.showModal });
+        }
     };
 
     componentDidUpdate(prevProps) {
@@ -445,7 +448,7 @@ class siteInstructionsAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); } 
-        if (item.value != "0") { 
+        if (item.value != "0") { this.props.actions.showOptionPanel(false);  
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -511,6 +514,9 @@ class siteInstructionsAddEdit extends Component {
                                                 validationSchema={validationSchema}
                                                 enableReinitialize={this.props.changeStatus}
                                                 onSubmit={(values) => {
+                                                    
+                                                    if (this.props.showModal) { return; }
+        
                                                     if (this.props.changeStatus === true && this.state.docId > 0) {
                                                         this.editSiteInstruction();
                                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {
