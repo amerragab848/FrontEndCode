@@ -19,12 +19,14 @@ class Britecharts extends Component {
         super(props)
         this.state = {
             isLoading: true,
-            dataByTopic: [
-                {
-                    topic: -1,
-                    topicName: 'Vivid',
-                    dates: []
-                }]
+            data: {
+                dataByTopic: [
+                    {
+                        topic: -1,
+                        topicName: 'Vivid',
+                        dates: []
+                    }]
+            }
         }
     }
 
@@ -36,9 +38,7 @@ class Britecharts extends Component {
         />
     );
 
-    componentDidMount() {
-
-        alert(this.props);
+    componentDidMount() { 
         let dataByTopic = [];
         this.setState({
             isLoading: true
@@ -46,7 +46,11 @@ class Britecharts extends Component {
         Api.get(this.props.api).then(res => {
             if (res.length > 0) {
                 this.props.topicName.forEach((topic, index) => {
-                    let topics = _.filter(res, function (x) { return x.topicName == topic });
+                    let topics = _.filter(res, function (x) {
+                        if (x.topicName == topic) {
+                            return { date: x.date, value: x.value }
+                        }
+                    });
                     dataByTopic.push({
                         topic: index,
                         topicName: topic,
@@ -55,10 +59,14 @@ class Britecharts extends Component {
                 });
             }
 
+            let data = {
+                dataByTopic: dataByTopic
+            }
+            console.log('componentDidMount', data);
             this.setState({
+                data: data,
                 isLoading: false
             });
-            this.setState({ dataByTopic });
 
         }).catch((ex) => {
         });
@@ -66,9 +74,9 @@ class Britecharts extends Component {
     render() {
         return (
 
-            this.state.isLoading === true ?
+            this.state.isLoading === false ?
                 <Tooltip
-                    data={this.state.dataByTopic}
+                    data={this.state.data}
                     render={this.renderLine}
                     topicLabel="topics"
                     title="Tooltip Title"

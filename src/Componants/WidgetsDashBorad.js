@@ -419,7 +419,7 @@ var widgets = [
         type: 'pie',
         seriesName: "projectStatus"
       }, {
-        id: 'wt-Name13',
+        id: 'wt-Name03',
         key: "0-3-2",
         checked: false,
         title: 'percentageExpensesTypesOfTotal',
@@ -591,16 +591,16 @@ var widgets = [
         multiSeries: 'yes',
         barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
 
-      // }, {
-      //   id: 'wt-Name13',
-      //   key: "0-3-13",
-      //   checked: false,
-      //   title: 'riskStatusYearly',
-      //   props: {
-      //     'api': 'GetRiskDataChartLine'
-      //   },
-      //   topicNames:['Opened','Closed'],
-      //   type: 'line' 
+      }, {
+        id: 'wt-Name013',
+        key: "0-3-13",
+        checked: false,
+        title: 'riskStatusYearly',
+        props: {
+          'api': 'GetRiskDataChartLine'
+        }, 
+        topicNames:['Opened','Closed'],
+        type: 'line' 
       }
     ]
   },
