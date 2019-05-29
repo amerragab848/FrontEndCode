@@ -244,8 +244,7 @@ class GridSetupWithFilter extends Component {
         let rowsList = selectors.getRows({ rows, filters });
 
         console.log(rows, filters, rowsList);
-        this.setState({
-            //filteredRows: rowsList,
+        this.setState({ 
             rows: rowsList
         })
     }
@@ -282,7 +281,7 @@ class GridSetupWithFilter extends Component {
 
     render() {
 
-        const { filteredRows, groupBy, rows } = this.state;
+        const {  groupBy, rows } = this.state;
         console.log(groupBy);
         const groupedRows = Data.Selectors.getRows({ rows, groupBy });
         const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
@@ -332,7 +331,7 @@ class GridSetupWithFilter extends Component {
             <Fragment>
                 <div className="filter__warrper" style={{ paddingRight: '16px', paddingLeft: '24px' }}>
                     <div className="filter__more" style={{ padding: 0 }}>
-                        <span>6 filters applied</span>
+                        <span>5 filters applied</span>
 
                         {this.props.columns.length > 5 ? <button className="filter__more--btn" onClick={this.showFilterMore}>See all</button> : null}
                     </div>

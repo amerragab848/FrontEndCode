@@ -18213,17 +18213,18 @@
       "delete": "CommunicationRiskMultipleDelete"
     },
     "documentColumns": [
+      
       {
-        "field": "arrange",
-        "friendlyName": "numberAbb",
-        "minWidth": 65,
+        "field": "refDoc",
+        "friendlyName": "refDoc",
+        "minWidth": 85,
         "width": "3%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
         "isCustom": true,
-        "exportDataType": "n"
+        "exportDataType": "s"
       },
       {
         "field": "statusName",
@@ -18246,8 +18247,7 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\" class=\"table-item\" data-bind=\"css: { 'is-child-item': $parent.entity.isItem } \"><a data-bind=\"attr: { href: $parent.entity.isItem ? 'javascript:void(0);' : '#transmittalAddEdit/' +$parent.entity.id+ '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: ( $parent.entity.isItem ? '&#9679; ' : '') + $parent.entity.subject\"></span></a></div>",
-        "exportDataType": "s"
+          "exportDataType": "s"
       },
       {
         "field": "fromCompanyName",
@@ -18275,7 +18275,7 @@
       },
       {
         "field": "toCompanyName",
-        "friendlyName": "toCompany",
+        "friendlyName": "responsibleCompanyName",
         "minWidth": 150,
         "width": "15%",
         "dataType": "string",
@@ -18287,7 +18287,7 @@
       },
       {
         "field": "toContactName",
-        "friendlyName": "ToContact",
+        "friendlyName": "responsibleContactName",
         "minWidth": 150,
         "width": "15%",
         "dataType": "string",
@@ -18322,16 +18322,40 @@
         "exportDataType": "d"
       },
       {
-        "field": "docCloseDate",
-        "friendlyName": "docClosedate",
+        "field": "emv",
+        "friendlyName": "EMV",
         "minWidth": 85,
         "width": "15%",
-        "dataType": "date",
+        "dataType": "string",
         "isDate": true,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": false,
-        "exportDataType": "d"
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "riskRanking",
+        "friendlyName": "riskRanking10",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "likelihood",
+        "friendlyName": "likelihood",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
       },
       {
         "field": "discipline",
@@ -18346,16 +18370,16 @@
         "exportDataType": "s"
       },
       {
-        "field": "refDoc",
-        "friendlyName": "refDoc",
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
         "minWidth": 85,
-        "width": "3%",
-        "dataType": "string",
-        "isDate": false,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
+        "isCustom": false,
+        "exportDataType": "d"
       },
       {
         "field": "building",
