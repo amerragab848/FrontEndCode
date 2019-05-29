@@ -751,12 +751,8 @@ class LettersAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-
-                                            {this.state.docId > 0 ? this.props.changeStatus === false ?
-                                                (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
-                                                (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
-                                            }
-
+                                              {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={839} EditAttachments={3223} ShowDropBox={3607} ShowGoogleDrive={3608} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                               
                                             {this.viewAttachments()}
 
                                             {this.props.changeStatus === true ?

@@ -9,7 +9,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
@@ -164,14 +164,14 @@ class riskAddEdit extends Component {
             areas: [],
             IRCycles: [],
             priority: [],
-            permission: [{ name: 'sendByEmail', code: 1022 },
-            { name: 'sendByInbox', code: 1021 },
+            permission: [{ name: 'sendByEmail', code: 10006 },
+            { name: 'sendByInbox', code: 10005 },
             { name: 'sendTask', code: 0 },
-            { name: 'distributionList', code: 1026 },
-            { name: 'createTransmittal', code: 3027 },
-            { name: 'sendToWorkFlow', code: 1025 },
-            { name: 'viewAttachments', code: 3327 },
-            { name: 'deleteAttachments', code: 824 }],
+            { name: 'distributionList', code: 10010 },
+            { name: 'createTransmittal', code: 10011 },
+            { name: 'sendToWorkFlow', code: 10009 },
+            { name: 'viewAttachments', code: 10014 },
+            { name: 'deleteAttachments', code: 10015 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -186,7 +186,7 @@ class riskAddEdit extends Component {
             message: ''
         }
 
-        if (!Config.IsAllow(84) && !Config.IsAllow(85) && !Config.IsAllow(87)) {
+        if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/Risk/" + this.state.projectId);
         }
@@ -230,7 +230,7 @@ class riskAddEdit extends Component {
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -242,12 +242,12 @@ class riskAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(85))) {
+            if (!(Config.IsAllow(10001))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(85)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
-                    if (this.props.document.status == true && Config.IsAllow(85)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(10001)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(10001)) {
+                    if (this.props.document.status == true && Config.IsAllow(10001)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -509,16 +509,16 @@ class riskAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        if (value != null) { 
+        if (value != null) {
             let original_document = { ...this.state.document };
 
-            let updated_document = {}; 
-            updated_document.description = value; 
+            let updated_document = {};
+            updated_document.description = value;
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document,
-                description: value 
+                description: value
             });
         }
     };
@@ -675,14 +675,15 @@ class riskAddEdit extends Component {
 
     viewAttachments() {
         return (
-            this.props.document.id > 0 ? (Config.IsAllow(3327) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
+            this.props.document.id > 0 ? (Config.IsAllow(10014) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
         )
     }
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -1265,7 +1266,7 @@ class riskAddEdit extends Component {
 
                                                 onSubmit={(values) => {
                                                     if (this.props.showModal) { return; }
-    
+
                                                     if (this.props.changeStatus === false && this.state.docId === 0) {
                                                         this.saveRisk();
                                                     } else {
@@ -1446,9 +1447,11 @@ class riskAddEdit extends Component {
 
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
-                                                {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10012} EditAttachments={10013} ShowDropBox={10016} ShowGoogleDrive={10017} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
-                                                {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                                {this.props.changeStatus === true ?
+                                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    : null}
                                             </div>
                                         </div>
                                     </div>

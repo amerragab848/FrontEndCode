@@ -29,7 +29,7 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
 
     description: Yup.string().required(Resources['description'][currentLanguage]),
 
-     companyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]) ,
+    companyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
 
     profit: Yup.string().required(Resources['profit'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
@@ -192,10 +192,10 @@ class pcoAddEdit extends Component {
                 dueBack: moment()
             },
 
-            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            permission: [{ name: 'sendByEmail', code: 154 }, { name: 'sendByInbox', code: 153 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 976 },
+            { name: 'createTransmittal', code: 3062 }, { name: 'sendToWorkFlow', code: 724 },
+            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code:3020 }],
             selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             selectPco: { label: Resources.pco[currentLanguage], value: "0" },
             pcos: [],
@@ -204,7 +204,7 @@ class pcoAddEdit extends Component {
             CurrentStep: 1
         }
 
-        if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
+        if (!Config.IsAllow(148) && !Config.IsAllow(149) && !Config.IsAllow(151)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/pco/" + projectId
@@ -252,14 +252,14 @@ class pcoAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(367)) {
+            if (!Config.IsAllow(149)) {
                 this.setState({ isViewMode: true });
             }
 
-            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(149)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(149)) {
                     //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(367)) {
+                    if (this.props.document.status !== false && Config.IsAllow(149)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -511,7 +511,7 @@ class pcoAddEdit extends Component {
         });
     }
 
-    saveVariationOrder(event) { 
+    saveVariationOrder(event) {
         this.setState({
             isLoading: true
         });
@@ -551,7 +551,7 @@ class pcoAddEdit extends Component {
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
+                Config.IsAllow(3298) === true ?
                     <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
@@ -561,7 +561,8 @@ class pcoAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -574,9 +575,9 @@ class pcoAddEdit extends Component {
     }
 
     NextStep = () => {
-  
+
         if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) { 
+            if (this.props.changeStatus == true) {
                 this.editVariationOrder();
             }
             window.scrollTo(0, 0)
@@ -596,7 +597,7 @@ class pcoAddEdit extends Component {
         }
 
     }
- 
+
 
     NextTopStep = () => {
 
@@ -938,11 +939,11 @@ class pcoAddEdit extends Component {
                                             <div className="document-fields">
                                                 <Formik
                                                     initialValues={{ ...this.state.document }}
-                                                     validationSchema={validationSchema}
-                                                     enableReinitialize={this.props.changeStatus}
-                                                    onSubmit={(values) => { 
+                                                    validationSchema={validationSchema}
+                                                    enableReinitialize={this.props.changeStatus}
+                                                    onSubmit={(values) => {
                                                         if (this.props.showModal) { return; }
-        
+
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveVariationOrder();
                                                         } else {
@@ -966,7 +967,7 @@ class pcoAddEdit extends Component {
                                                                                 handleBlur(e)
                                                                                 handleChange(e)
                                                                             }}
-                                                                            onChange={(e) => this.handleChange(e, 'subject')} /> 
+                                                                            onChange={(e) => this.handleChange(e, 'subject')} />
                                                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
 
                                                                     </div>
@@ -1209,24 +1210,21 @@ class pcoAddEdit extends Component {
                                                                     </button>
                                                                     :
                                                                     this.showBtnsSaving()}
-                                                                    
+
                                                             </div>
                                                         </Form>
                                                     )}
                                                 </Formik>
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
-                                                <div>
-                                                    {this.state.docId > 0 ? this.props.changeStatus === false ?
-                                                        (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
-                                                        (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
-                                                    }
-                                                    {this.viewAttachments()}
 
+
+                                                <div>
+                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3019} EditAttachments={3257} ShowDropBox={3571} ShowGoogleDrive={3572} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                    {this.viewAttachments()}
                                                     {this.props.changeStatus === true ?
                                                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
-                                                    }
+                                                        : null}
                                                 </div>
                                             </div>
                                         </div>

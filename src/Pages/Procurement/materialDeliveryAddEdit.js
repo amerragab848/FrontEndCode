@@ -209,6 +209,10 @@ class materialDeliveryAddEdit extends Component {
                 }
             )
         }
+        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -284,6 +288,7 @@ class materialDeliveryAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -600,7 +605,9 @@ class materialDeliveryAddEdit extends Component {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
     }
-
+    executeBeforeModalClose = (e) => {
+        this.setState({ showModal: false });
+    }
     render() {
 
         let actions = [
@@ -623,6 +630,7 @@ class materialDeliveryAddEdit extends Component {
                         validationSchema={validationSchema}
                         enableReinitialize={true}
                         onSubmit={values => {
+                            if (this.props.showModal) { return; }
                             if (this.props.changeStatus === true && this.state.docId > 0) {
                                 this.SaveDoc('EditMood');
                                 this.NextStep();
@@ -1102,7 +1110,7 @@ class materialDeliveryAddEdit extends Component {
                                         <div>
                                             {this.state.docId > 0 ?
                                                 <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={891} EditAttachments={3242} ShowDropBox={3539}
-                                                 ShowGoogleDrive={3540} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    ShowGoogleDrive={3540} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                 : null
                                             }
                                             {this.viewAttachments()}
@@ -1153,7 +1161,7 @@ class materialDeliveryAddEdit extends Component {
 
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
+                        beforeClose={() => { this.executeBeforeModalClose() }}  {this.state.currentComponent}
                     </SkyLight>
                 </div>
 

@@ -160,7 +160,7 @@ class clientModificationAddEdit extends Component {
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -523,7 +523,8 @@ class clientModificationAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -552,8 +553,8 @@ class clientModificationAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.clientModificationLog[currentLanguage]}
-                        moduleTitle={Resources['technicalOffice'][currentLanguage]} /> 
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.clientModificationLog[currentLanguage]}
+                        moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
                     <div className="doc-container">
                         {
@@ -858,16 +859,11 @@ class clientModificationAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3143} EditAttachments={3227} ShowDropBox={3615} ShowGoogleDrive={3616} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-
                                             {this.props.changeStatus === true ?
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                                : null}
                                         </div>
                                     </div>
                                 </div>

@@ -72,7 +72,7 @@ const validationSchemaForAddCycle = Yup.object().shape({
         .required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 })
- 
+
 class NCRAddEdit extends Component {
 
     constructor(props) {
@@ -194,7 +194,7 @@ class NCRAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let NCRDoc = nextProps.document 
+            let NCRDoc = nextProps.document
             NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
             NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD/MM/YYYY')
             NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD/MM/YYYY')
@@ -208,7 +208,7 @@ class NCRAddEdit extends Component {
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -370,16 +370,16 @@ class NCRAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        if (value != null) { 
+        if (value != null) {
             let original_document = { ...this.state.document };
 
-            let updated_document = {}; 
-            updated_document.answer = value; 
+            let updated_document = {};
+            updated_document.answer = value;
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document,
-                answer: value 
+                answer: value
             });
         }
     };
@@ -530,7 +530,8 @@ class NCRAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -1022,19 +1023,14 @@ class NCRAddEdit extends Component {
                                                     </div>
 
                                                 </div>
-                                                
+
                                                 <div className="doc-pre-cycle letterFullWidth">
                                                     <div>
-                                                        {this.state.docId !== 0 ?
-                                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                            : null
-                                                        }
+                                                        {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={927} EditAttachments={3263} ShowDropBox={3585} ShowGoogleDrive={3586} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                         {this.viewAttachments()}
-
-                                                        {this.state.docId !== 0 ?
+                                                        {this.props.changeStatus === true ?
                                                             <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                            : null
-                                                        }
+                                                            : null}
                                                     </div>
                                                 </div>
 

@@ -291,7 +291,7 @@ class punchListAddEdit extends Component {
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -800,7 +800,8 @@ class punchListAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -998,17 +999,11 @@ class punchListAddEdit extends Component {
 
                         <div className="doc-pre-cycle letterFullWidth">
                             <div>
-                                {this.state.docId > 0 ?
-                                    <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    : null
-                                }
-
+                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={887} EditAttachments={3266} ShowDropBox={3591} ShowGoogleDrive={3592} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                 {this.viewAttachments()}
-
                                 {this.props.changeStatus === true ?
                                     <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    : null
-                                }
+                                    : null}
                             </div>
                         </div>
                     </div>
