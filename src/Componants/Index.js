@@ -100,7 +100,7 @@ class Index extends Component {
               topicName={item.topicNames} />
           </Fragment>
         );
-      } 
+      }
       else {
         return (
           <Fragment key={item.id}>
@@ -179,6 +179,7 @@ class Index extends Component {
                               <Fragment key={panel.id}>
                                 <Britecharts
                                   api={panel.props.api}
+                                  title={language[panel.title][currentLanguage]}
                                   topicName={panel.topicNames} />
                               </Fragment>
                             );
@@ -189,7 +190,7 @@ class Index extends Component {
                                   api={panel.props.api}
                                   name={panel.props.name}
                                   y={panel.props.data}
-                                  title={panel.title}
+                                  title={language[panel.title][currentLanguage]} 
                                   stack={panel.stack}
                                   yTitle={panel.yTitle}
                                   catagName={panel.catagName}
@@ -250,16 +251,17 @@ class Index extends Component {
                               />
                             </div>
                           );
-                        } 
+                        }
                         else if (panel.type === "line") {
                           return (
                             <Fragment key={panel.id}>
                               <Britecharts
                                 api={panel.props.api}
+                                title={language[panel.title][currentLanguage]}
                                 topicName={panel.topicNames} />
                             </Fragment>
                           );
-                        } 
+                        }
                         else {
                           return (
                             <Fragment key={panel.id}>
@@ -267,7 +269,7 @@ class Index extends Component {
                                 api={panel.props.api}
                                 name={panel.props.name}
                                 y={panel.props.data}
-                                title={panel.title}
+                                title={language[panel.title][currentLanguage]}
                                 stack={panel.stack}
                                 yTitle={panel.yTitle}
                                 catagName={panel.catagName}
@@ -325,14 +327,14 @@ class Index extends Component {
                             />
                           </div>
                         );
-                      } 
+                      }
                       else if (panel.type === "line") {
                         return (
                           <Fragment key={panel.id}>
                             <Britecharts
                               api={panel.props.api}
                               topicName={panel.topicNames}
-
+                              title={language[panel.title][currentLanguage]}
                             />
                           </Fragment>
                         );

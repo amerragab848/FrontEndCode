@@ -38,7 +38,7 @@ class Britecharts extends Component {
         />
     );
 
-    componentDidMount() { 
+    componentDidMount() {
         let dataByTopic = [];
         this.setState({
             isLoading: true
@@ -61,8 +61,7 @@ class Britecharts extends Component {
 
             let data = {
                 dataByTopic: dataByTopic
-            }
-            console.log('componentDidMount', data);
+            } 
             this.setState({
                 data: data,
                 isLoading: false
@@ -73,14 +72,23 @@ class Britecharts extends Component {
     }
     render() {
         return (
-
-            this.state.isLoading === false ?
-                <Tooltip
-                    data={this.state.data}
-                    render={this.renderLine}
-                    topicLabel="topics"
-                    title="Tooltip Title"
-                /> : null
+            <div className="col-md-12 col-lg-6">
+                <div className="panel barChart__container">
+                    <div className="panel-body">
+                        <h2>
+                            {this.props.title}
+                        </h2>
+                        {this.state.isLoading === false ?
+                            <Tooltip
+                                data={this.state.data}
+                                render={this.renderLine}
+                                topicLabel="topics"
+                                title="Tooltip Title"
+                            /> : null
+                        }
+                    </div>
+                </div>
+            </div>
         )
     }
 
