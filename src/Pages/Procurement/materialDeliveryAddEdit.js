@@ -616,7 +616,6 @@ class materialDeliveryAddEdit extends Component {
             }
         ]
 
-
         let StepOne = () => {
             return (
                 <div className="document-fields">
@@ -1102,7 +1101,8 @@ class materialDeliveryAddEdit extends Component {
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={891} EditAttachments={3242} ShowDropBox={3539}
+                                                 ShowGoogleDrive={3540} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                 : null
                                             }
                                             {this.viewAttachments()}
