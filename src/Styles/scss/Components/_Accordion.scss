@@ -16,6 +16,7 @@
 .ui.accordion.basic {
     max-width: 400px;
     width: 100%;
+
     > .title {
         height: 56px;
         display: -webkit-box;
@@ -24,6 +25,7 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
+
         .accordionTitle {
             font-family: $muli-b;
             line-height: 1.5;
@@ -31,25 +33,30 @@
             color: $grey-900;
             font-size: $heading4-font;
         }
+
         &:first-child {
             border-top: none;
         }
+
         > .dropdown.icon {
             margin-#{$right}: 5px;
         }
     }
+
     .title.active {
         .accordionTitle {
             color: $Primary-2;
         }
     }
+
     .title.disabled {
         pointer-events: none;
         opacity: 0.4;
     }
-     .content {
-         
+
+    .content {
         padding-bottom: 10px !important;
+
         a {
             font-family: $muli-r;
             font-size: $heading5-font;
@@ -65,16 +72,19 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
+
             &:hover {
                 background-color: $grey-100;
                 color: $grey-900;
                 text-decoration: underline;
             }
+
             .contentName {
                 -webkit-box-flex: 0.9;
                 -ms-flex: 0.9;
                 flex: 0.9;
             }
+
             .contentSpan {
                 -webkit-box-flex: 0.1;
                 -ms-flex: 0.1;
@@ -84,15 +94,18 @@
                 font-family: $muli-b;
             }
         }
+
         .contentDivLinks {
             display: flex;
             align-items: center;
             padding-#{$right}: 8px;
+
             .accordionTitle {
                 -webkit-box-flex: 0.9;
                 -ms-flex: 0.9;
                 flex: 0.9;
             }
+
             .contentSpan {
                 -webkit-box-flex: 0.1;
                 -ms-flex: 0.1;
@@ -101,30 +114,37 @@
                 font-family: $muli-b;
             }
         }
+
         .content {
             a {
                 &:hover {
                     background-color: #f2f6fa;
                 }
-                   .contentSpan {
+
+                .contentSpan {
                     font-family: $muli-r;
                 }
             }
         }
     }
+
     .accordion {
         margin: 0;
         padding-left: 35px;
         padding-bottom: 5px;
+
         .title.active {
             padding-bottom: 20px;
+
             .accordionTitle {
                 color: $grey-900;
             }
         }
+
         .content {
             position: relative;
             margin-bottom: 25px;
+
             &:before {
                 content: "";
                 position: absolute;
@@ -140,7 +160,6 @@
         height: 1px;
         background-color: $grey-100;
     }
-
 }
 
 .basic.ui.accordion .title:not(.ui) {

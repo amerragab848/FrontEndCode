@@ -192,7 +192,7 @@
 
 .customDatepicker .proForm .linebylineInput input {
     width: 100% !important;
-    text-align: left;
+    /* text-align: left;
     height: 40px;
     border-radius: 4px;
     border: solid 1px #DADEE6;
@@ -200,7 +200,7 @@
     letter-spacing: -0.2px;
     color: #3E4352;
     background-color: #ffffff;
-    font-size: 14px;
+    font-size: 14px; */
     outline: 0;
     padding: .67857143em 1em;
 }
@@ -261,17 +261,6 @@ table edition
     border-left-width: 1px;
 }
 
-.fullWidthWrapper .ReactTable>div,
-.fullWidthWrapper .ReactTable>div .rt-tbody {
-    overflow: visible;
-}
-
-.fullWidthWrapper .ReactTable>div .rt-tbody div {
-    overflow: visible;
-    white-space: pre-wrap;
-    align-items: center;
-}
-
 .ReactTable .rt-tr-group {
     width: 100%;
 }
@@ -283,7 +272,6 @@ table edition
 .attachmentPage {
     width: 100%;
 }
-
 
 /* sla7 22/1/2019*/
 
@@ -489,16 +477,17 @@ table edition
 }
 
 .pError {
-    position: absolute;
+    /* position: absolute;
     left: 0;
-    top: 100%;
+    top: 100%; */
     color: #e74c3c;
     font-size: 12px;
     max-width: 360px;
-    margin-top: -2px;
+    /* margin-top: -2px; */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: block;
 }
 
 
@@ -1875,13 +1864,16 @@ tfoot tr td p {
     border-bottom-right-radius: 86px;
 }
 
-.settings-container .settings-tabs-items ul li.react-tabs__tab--selected .subUlTitle {
-    color: #2557cc;
-    font-size: 14px
+.settings-tabs-items .react-tabs__tab:hover {
+    transition: all 0.3s ease-in-out;
+    background-color: #edf6ff !important;
+    border-top-right-radius: 86px !important;
+    border-bottom-right-radius: 86px !important;
 }
 
-.settings-container .settings-tabs-items ul li .subUlTitle {
-    font-size: 14px
+.settings-container .settings-tabs-items ul li.react-tabs__tab--selected .subUlTitle {
+    color: #2557cc;
+    /* font-size: 14px */
 }
 
 .settings-container .settings-tabs-items {
@@ -2201,16 +2193,22 @@ tfoot tr td p {
     width: 192px;
 }
 
-
 /* new css notabs */
-
-
 /* noTabs */
 
 .document__action--menu .customD_Menu .css-vj8t7z,
 .document__action--menu .customD_Menu .css-2o5izw {
     background: #E9ECF0;
     border: 1px solid #E9ECF0;
+    height: 40px;
+    min-width: 184px;
+    box-shadow: none;
+}
+
+.document__action--menu .customD_Menu .css-vj8t7z,
+.document__action--menu .customD_Menu .css-2o5izw {
+    background: #E9ECF0;
+    border: 1px solid #E9ECF0 !important;
     height: 40px;
     min-width: 184px;
     box-shadow: none;
@@ -2501,18 +2499,10 @@ button.companies_icon {
     }
 }
 
-
-/* .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-  width: 100%;
-} */
-
 .noTabs__document.one__tab.one_step .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
     width: 100%;
 }
-/* .react-grid-Cell--frozen:last-of-type, .react-grid-HeaderCell--frozen:last-of-type {
-  box-shadow: none !important;
-  border-right: 1px solid #E9ECF0 !important;
-} */
+
 .noTabs__document .approveDocument {
     z-index: 1000;
 }
@@ -2549,14 +2539,6 @@ button.companies_icon {
 .proForm .has-error label.control-label {
     color: #26344c !important;
 }
-
-
-/* .changeCompany__select .skylight-dialog {
-  min-height: 250px !important;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between
-} */
 
 .changeCompany__select .skylight-dialog .fillter-status.fillter-item-c {
     width: 100%;
@@ -2943,9 +2925,9 @@ button.companies_icon {
 }
 
 .dropdown__error {
-    position: absolute;
+    /* position: absolute;
     left: 0;
-    bottom: -20px;
+    bottom: -20px; */
     color: #e74c3c;
     font-size: 12px;
 }
@@ -3175,13 +3157,6 @@ button.companies_icon {
     max-width: 135px;
     text-overflow: ellipsis;
 }
-
-
-/* @media (min-width:1440px) {
-  .noTabs__document .doc-container .step-content {
-    width: 72%;
-  }
-} */
 
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
     cursor: pointer;
@@ -3490,6 +3465,8 @@ button.companies_icon {
     border-bottom: 1px solid rgba(34, 36, 38, .1);
     padding-left: 10px;
     text-overflow: ellipsis;
+    white-space: pre-wrap;
+    overflow: visible;
 }
 
 .ReactTable .rt-tbody .rt-td .btn {
@@ -3532,14 +3509,6 @@ button.companies_icon {
     position: relative;
 }
 
-
-/* .ui.modal.mediumModal, .ui.modal.largeModal, .ui.modal.smallModal {
-  max-width: 600px;
-  max-height: 500px;
-  overflow: auto;
-
-} */
-
 .ui.modal.largeModal {
     max-width: 600px;
     max-height: 500px;
@@ -3555,16 +3524,6 @@ button.companies_icon {
 .doc-pre-cycle {
     margin-bottom: 10px;
 }
-
-
-/* .tableBTnabs {
-  position: relative;
-}
-.tableBTnabs >button.btn {
-  position: absolute;
-  top: -54px;
-  left: 145px;
-} */
 
 .slider-Btns.fullWidthWrapper.textLeft {
     margin-top: 0
@@ -3607,16 +3566,6 @@ button.companies_icon {
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields {
     padding: 0;
 }
-
-
-/* .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .fillter-status.fillter-item-c , .noTabs__document .doc-container .step-content .skylight-dialog .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
-  width : 100%;
-} */
-
-
-/* .skylight-dialog .document-fields .fullWidthWrapper.textLeft {
-  text-align: center;
-} */
 
 .one__tab.one_step .doc-container .step-content .skylight-dialog .document-fields .datepickerContainer.proForm .ui.input.inputDev input,
 .documents-stepper .doc-container .step-content .skylight-dialog .document-fields .proForm .linebylineInput .ui.input.inputDev {
@@ -3964,11 +3913,10 @@ button.companies_icon {
     display: none;
 }
 
-.fullWidthWrapper .ReactTable>div .rt-tbody div {
-    overflow: visible;
-    align-items: unset;
+.ReactTable .rt-noData {
+    top: 60% !important;
+    color: rgba(0,0,0,0.4);
 }
-
 
 /* react table */
 
@@ -4008,6 +3956,7 @@ button.companies_icon {
 
 .editorCell span {
     color: #4382f9 !important;
+    text-decoration: underline;
 }
 
 .editableRows {
@@ -4024,7 +3973,8 @@ button.companies_icon {
     display: flex;
     flex-wrap: wrap;
     padding: 0 40px;
-    /* justify-content: center; */
+    overflow-x: hidden;
+    /*justify-content: center; */
 }
 
 .charts__row .highcharts-color-0,
@@ -4342,21 +4292,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     flex-flow: column;
 }
 
-
-/*
-.highcharts-color-6 {
-  stroke: transparent;
-  fill: 
-}
-.highcharts-color-7 {
-  stroke: transparent;
-  fill: 
-}
-.highcharts-color-8 {
-  stroke: transparent;
-  fill: 
-} */
-
 .drop-item .remove {
     cursor: pointer;
 }
@@ -4365,34 +4300,16 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     margin-bottom: 10px;
 }
 
+.skylight-dialog .dropWrapper .letterFullWidth  .fillter-item-c {
+    margin-bottom: 0
+}
+
 .react-grid-HeaderCell .react-grid-HeaderCell-sortable {
     max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
-/* @media screen and (min-width: 1440px) {
-  .one__tab.one_step .doc-container .step-content, .noTabs__document .doc-container .step-content {
-    width: 70%;
-  }
-} */
-
-
-/* .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-  width: 100%;
-}
-.one__tab.one_step .doc-container .step-content {
-  padding: 0 70px 0 170px;
-  width: unset;
-}
-.linebylineInput .customD_Menu {
-  width: 100%;
-}
-.customDatepicker.fillter-status.fillter-item-c {
-  max-width: 200px;
-} */
 
 .react-grid-checkbox:checked+.react-grid-checkbox-label:before {
     content: url(../../images/checkmark.svg);
@@ -4405,12 +4322,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 .-padRow .rt-td {
     border-bottom: none !important;
 }
-
-
-/* .whiteBackground {
-  background: #fff;
-  padding: 40px;
-} */
 
 .doc-pre-cycle.has__table .attachmentTable tbody tr .contentCell,
 .doc-pre-cycle.has__table .attachmentTable thead tr .headCell {
@@ -4541,6 +4452,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     display: flex;
 }
 
+
 .settings-container .settings-tabs-items {
     width: 256px;
     background-color: #FAFBFC;
@@ -4567,6 +4479,8 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     border-bottom: 1px solid #E9ECF0;
     position: sticky;
     top: 72px;
+    z-index: 11;
+    background: #FAFBFC;
 }
 
 .settings-container .settings-tabs-items ul {
@@ -4576,7 +4490,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 
 .settings-container .settings-tabs-items ul li {
     padding-left: 40px;
-    height: 64px;
+    height: 52px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -4594,6 +4508,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 .settings-container .settings-tabs-items ul li.title {
     cursor: inherit;
     padding-left: 0;
+    width: 100%;
 }
 
 .settings-container .settings-tabs-items ul li.title h4 {
@@ -4621,9 +4536,10 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.5;
     letter-spacing: -0.2px;
     color: #252833;
-    font-family: font-b;
-   }
-  .settings-container .settings-tabs-items ul li .subUlsubT {
+    font-family: font-sb;
+    font-size: 13px !important;
+}
+.settings-container .settings-tabs-items ul li .subUlsubT {
     line-height: 1.33;
     letter-spacing: -0.2px;
     color: #A8B0BF;
@@ -5213,23 +5129,18 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 
 .proForm.first-proform {
     flex-wrap: wrap !important;
-    margin-bottom: 33px !important
+    margin-bottom: 16px !important
 }
 
 .proForm.first-proform .linebylineInput:first-child {
     width: 100% !important;
     flex-shrink: 0 !important;
-    margin-bottom: 33px !important
+    margin-bottom: 16px !important
 }
 
 .proForm.first-proform .linebylineInput:first-child .inputDev.ui.input,
 .proForm.first-proform .linebylineInput:first-child .inputDev.ui.input input {
     width: 100% !important;
-}
-
-.proForm.first-proform .linebylineInput:first-child {
-    width: 100% !important;
-    flex-shrink: 0 !important
 }
 
 .notifiBar {
@@ -5384,10 +5295,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     margin: 0;
 }
 
-.settings-container .settings-tabs-items ul li .subUlTitle {
-    font-size: 14px;
-}
-
 .cardDeclined .Status__comment,
 .cardApproval .Status__comment {
     display: flex;
@@ -5448,11 +5355,11 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     justify-content: center;
 }
 
-.bar-container text {
+/* .bar-container text {
     font-size: 1rem;
     fill: #666a73;
     padding: 12px;
-}
+} */
 
 .filter__grid {
     position: absolute;
@@ -6057,23 +5964,43 @@ line.horizontal-grid-line {
     min-width: 250px;
 }
 
+.skylight-dialog .ReactTable {
+    overflow: visible;
+}
+
+.nav-right li{
+    cursor: pointer
+}
+.nav-right li:hover  svg g g {
+    fill: #969eab;
+    transition: all 0.2s ease
+}
+
+.group__charts .y-axis-group path.domain {
+    display: none
+}
+
+.barChart__container .y-axis-group {
+    transform: translateX(27px) !important;
+}
+
+.barChart__container .y-axis-group g.tick tspan {
+    display: none;
+}
+
+.bar-container .x-axis-group .tick text, .group__charts .x-axis-group .tick text {
+    fill: #3e4352;
+}
 .doc-pre-cycle.letterFullWidth {
     margin-top: 25px;
 }
-/* .editorCell {
-    position: relative;
-}*/
-/* .rdg-editor-container {
-    transform: translate(560px, 60px) !important;
-} */
-
 
 .gridfillter-container {
     padding-top: 0;
 }
 
 .filter__warrper {
-    height: 124px;
+    min-height: 124px;
     border-radius: 2px;
     background-color: #fafbfc;
     padding-bottom: 31px; 
@@ -6138,6 +6065,7 @@ line.horizontal-grid-line {
     justify-content: flex-end;
     position: relative;
     padding-right: 7px;
+    margin-bottom: 10px;
 }
  
 .filter__more span {
@@ -6297,6 +6225,7 @@ line.horizontal-grid-line {
     padding: 0;
     border-radius: 4px;
 }
+
 .filter__input-wrapper .proForm .linebylineInput {
     display: -webkit-flex;
     display: flex;
@@ -6305,4 +6234,14 @@ line.horizontal-grid-line {
     -webkit-justify-content: flex-start;
     justify-content: flex-start;
     flex-flow: column;
+}
+
+body.noScrolling {
+    overflow: hidden !important;
+}
+
+@media (min-width:1199px) and (max-width:1400px) {
+    .britechart text, .britechart tspan {
+        font-size: 9px;
+    }
 }

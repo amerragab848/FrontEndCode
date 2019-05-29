@@ -121,7 +121,7 @@ class CreateTransmittal extends Component {
                     {({ errors, touched, setFieldValue, setFieldTouched, handleBlur, handleChange }) => (
                         <Form id="create-trans-panel-form" className="proForm customProform" noValidate="novalidate"  >
                             <div className="proForm first-proform letterFullWidth">
-                                <div className="linebylineInput valid-input">
+                                <div className="fillter-status fillter-item-c">
                                     <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                         <input name='subject'
@@ -138,7 +138,7 @@ class CreateTransmittal extends Component {
                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                     </div>
                                 </div>
-                                <div className="linebylineInput valid-input ">
+                                <div className="fillter-status fillter-item-c">
                                     <label className="control-label">{Resources.status[currentLanguage]}</label>
                                     <div className="ui checkbox radio radioBoxBlue">
                                         <input type="radio" name="letter-status" checked value="true" onChange={e => this.radioChange} />
@@ -150,51 +150,43 @@ class CreateTransmittal extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="linebylineInput valid-input">
-                                <Dropdown
-                                    title="toCompany"
-                                    data={this.state.ToCompany}
-                                    handleChange={this.To_company_handleChange}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.toCompany}
-                                    touched={touched.toCompany}
+                            <Dropdown
+                                title="toCompany"
+                                data={this.state.ToCompany}
+                                handleChange={this.To_company_handleChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.toCompany}
+                                touched={touched.toCompany}
 
-                                    name='toCompany'
-                                />
-                            </div>
-                            <div className="linebylineInput valid-input">
-                                <Dropdown
-                                    title="ToContact"
-                                    data={this.state.AttentionData}
-                                    handleChange={this.Attention_handleChange}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.ToContact}
-                                    touched={touched.ToContact}
-                                    name='ToContact'
-                                />
-                            </div>
-                            <div className="linebylineInput valid-input">
-                                <Dropdown
-                                    title="priority"
-                                    data={this.state.PriorityData}
-                                    handleChange={this.Priority_handelChange}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.priority}
-                                    touched={touched.priority}
-                                    name='priority'
-                                />
-                            </div>
-                            <div className="linebylineInput valid-input">
-                                <Dropdown
-                                    title="submittedFor"
-                                    data={this.state.PriorityData}
-                                    handleChange={this.SubmittedFor_handelChange}
-                                    name='submittedFor'
-                                />
-                            </div>
+                                name='toCompany'
+                            />
+                            <Dropdown
+                                title="ToContact"
+                                data={this.state.AttentionData}
+                                handleChange={this.Attention_handleChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.ToContact}
+                                touched={touched.ToContact}
+                                name='ToContact'
+                            />
+                            <Dropdown
+                                title="priority"
+                                data={this.state.PriorityData}
+                                handleChange={this.Priority_handelChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.priority}
+                                touched={touched.priority}
+                                name='priority'
+                            />
+                            <Dropdown
+                                title="submittedFor"
+                                data={this.state.PriorityData}
+                                handleChange={this.SubmittedFor_handelChange}
+                                name='submittedFor'
+                            />
 
                             <div className="fullWidthWrapper">
                                 {!this.state.submitLoading ?
@@ -254,4 +246,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)( CreateTransmittal);
+)(CreateTransmittal);

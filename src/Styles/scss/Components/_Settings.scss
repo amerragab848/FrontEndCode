@@ -2,13 +2,15 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+
     .settings-tabs-items {
-        width: 322px;
+        width: 256px;
         background-color: $grey-50;
         position: relative;
         z-index: 1;
         height: calc(100vh - 72px);
         border-#{$right}: 1px solid $grey-100;
+
         h3 {
             height: 72px;
             padding-#{$left}: 40px;
@@ -25,12 +27,14 @@
             font-family: $muli-b;
             font-size: $heading3-font;
             border-bottom: 1px solid $grey-100;
+            background: #f2f8fc;
+            margin-bottom: 16px;
         }
 
         ul {
             li {
                 padding-#{$left}: 40px;
-                height: 64px;
+                height: 52px;
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
@@ -43,73 +47,101 @@
                 justify-content: center;
                 cursor: pointer;
                 position: relative;
+                transition: all 0.4s ease;
 
-                &::after {
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    width: 84%;
-                    height: 1px;
-                    background-color: $grey-100;
-                    left: 24px;
-                }
                 &.title {
                     cursor: inherit;
                     padding-#{$left}: 0;
+                    height: 40px;
+                    margin-bottom: 4px;
                     h4 {
-                        margin: 25px 0;
+                        margin-top: 8px;
                         padding-#{$left}: 40px;
-                        font-family: $muli-xb;
+                        font-family: $muli-b;
                         font-size: $heading6-font;
                         color: #a8b0bf;
                         line-height: 1.33;
                         letter-spacing: 1px;
                         text-transform: uppercase;
                     }
+
                     &::after {
-                        height: 0;
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        width: 100%;
+                        height: 1px;
+                        background-color: $grey-100;
+                        left: 0;
+                    }
+
+                    &:first-child {
+                        &::after {
+                            display: none;
+                        }
+                    }
+
+                    &:hover {
+                        background-color: transparent;
                     }
                 }
+
                 .subUlTitle {
                     line-height: 1.5;
                     letter-spacing: -0.2px;
-                    color: $grey-900;
-                    font-size: $heading4-font;
-                    font-family: $muli-b;
+                    color: $grey-700;
+                    font-size: 13px;
+                    font-family: $muli-sb;
                 }
+
                 .subUlsubT {
                     line-height: 1.33;
                     letter-spacing: -0.2px;
                     color: $grey-500;
                     font-size: $heading6-font;
                 }
+
                 .activeArrow {
                     position: absolute;
                     #{$right}: 15px;
                     display: none;
                     top: 40%;
                 }
+
+                &:hover {
+                    background-color: #edf6ff;
+                    border-top-#{$right}-radius: 86px;
+                    border-bottom-#{$right}-radius: 86px;
+                }
+
                 &.active {
-                    border-left: 6px solid $Primary-2;
-                    background-color: $grey-100;
-                    padding-#{$left}: 34px;
-                    &:after {
-                        position: absolute;
-                        content: "";
-                        background: url(../../images/active-arrow.png);
-                        height: 20px;
-                        width: 20px;
-                        background-repeat: no-repeat;
-                        #{$right}: 10px;
-                        #{$left}: inherit;
-                        top: 40%;
+                    background-color: #cce6ff;
+                    border-top-#{$right}-radius: 86px;
+                    border-bottom-#{$right}-radius: 86px;
+
+                    .subUlTitle {
+                        color: #2557cc;
                     }
+
+                    //                    &:after {
+                    //                        position: absolute;
+                    //                        content: "";
+                    //                        background: url(../../images/active-arrow.png);
+                    //                        height: 20px;
+                    //                        width: 20px;
+                    //                        background-repeat: no-repeat;
+                    //                        #{$right}: 10px;
+                    //                        #{$left}: inherit;
+                    //                        top: 40%;
+                    //                    }
+               
                 }
             }
         }
     }
+
     .setting-tabs-contant {
-        width: calc(100% - 322px);
+        width: calc(100% - 256px);
 
         .tab {
             .minisettings-header {
@@ -120,8 +152,10 @@
                 display: flex;
                 align-items: center;
                 padding: 0 46px 0 64px;
+
                 .title {
                     flex: 1;
+
                     h2 {
                         line-height: 1.4;
                         letter-spacing: -0.2px;
@@ -130,26 +164,31 @@
                         font-size: $heading3-font;
                     }
                 }
+
                 .action {
                     flex: 1;
                     display: flex;
                     justify-content: flex-end;
                 }
             }
+
             .has-tabs-in {
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
                 height: calc(100vh - 144px);
                 background-color: $white;
+
                 .setting-mini-tabs {
                     flex: 1.51;
-                    border-right: 1px solid $grey-100;
+                    border-#{$right}: 1px solid $grey-100;
                     min-width: 320px;
                     overflow: auto;
+
                     &::-webkit-scrollbar {
                         width: 0px;
                     }
+
                     li {
                         padding: 0px 40px;
                         cursor: pointer;
@@ -157,21 +196,25 @@
                         &.active {
                             background-color: #f2f5f7;
                         }
+
                         > div {
                             display: flex;
                             position: relative;
                             border-bottom: 1px solid $grey-100;
                             padding: 11px 0;
+
                             .user-image {
                                 width: 40px;
                                 height: 40px;
                                 margin-#{$right}: 16px;
+
                                 img {
                                     width: 100%;
                                     height: 100%;
                                     border-radius: 50%;
                                 }
                             }
+
                             .user-info {
                                 .name {
                                     line-height: 1.5;
@@ -180,6 +223,7 @@
                                     font-family: $muli-b;
                                     font-size: 16px;
                                 }
+
                                 .job-title {
                                     line-height: 1.43;
                                     letter-spacing: -0.2px;
@@ -188,6 +232,7 @@
                                     font-family: $muli-r;
                                     margin-bottom: 4px;
                                 }
+
                                 .status {
                                     line-height: 1.33;
                                     letter-spacing: -0.2px;
@@ -195,6 +240,7 @@
                                     font-family: $sans-r;
                                     font-size: 12px;
                                 }
+
                                 .date {
                                     line-height: 1.33;
                                     letter-spacing: -0.2px;
@@ -203,31 +249,35 @@
                                     #{$right}: 0;
                                     bottom: 12px;
                                 }
-
                             }
                         }
-
                     }
                 }
+
                 .mini-tabs-content {
                     flex: 2;
+
                     .tab {
                         padding: 30px 46px 30px 56px;
+
                         .top-content {
                             display: flex;
                             position: relative;
                             align-items: center;
                             margin-bottom: 40px;
+
                             .user-image {
                                 width: 112px;
                                 height: 112px;
                                 margin-#{$right}: 16px;
+
                                 img {
                                     width: 100%;
                                     height: 100%;
                                     border-radius: 50%;
                                 }
                             }
+
                             .user-info {
                                 .name {
                                     line-height: 1.5;
@@ -236,6 +286,7 @@
                                     font-family: $muli-b;
                                     font-size: 20px;
                                 }
+
                                 .job-title {
                                     line-height: 1.43;
                                     letter-spacing: -0.2px;
@@ -244,6 +295,7 @@
                                     font-family: $muli-r;
                                     margin-bottom: 9px;
                                 }
+
                                 .status {
                                     line-height: 1.33;
                                     letter-spacing: -0.2px;
@@ -251,6 +303,7 @@
                                     font-family: $sans-r;
                                     font-size: 12px;
                                 }
+
                                 .date {
                                     line-height: 1.33;
                                     letter-spacing: -0.2px;
@@ -259,13 +312,12 @@
                                     #{$right}: 0;
                                     bottom: 12px;
                                 }
-
                             }
                         }
+
                         .bottom-content {
                             padding-top: 40px;
                         }
-
                     }
                 }
             }

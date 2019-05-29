@@ -355,7 +355,8 @@ class LettersAddEdit extends Component {
 
         if (field == "fromContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-             dataservice.GetNextArrangeMainDocument(url).then(res => {
+             
+            dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
 

@@ -4117,6 +4117,170 @@
             }
           ]
         },
+
+
+        {
+          "title": {
+            "en": "Risk",
+            "ar": "مخاطرة"
+          },
+          "id": 100001,
+          "permissions": [
+            {
+              "code": 10000,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة أمر مخاطرة"
+              },
+              "value": false
+            },
+            {
+              "code": 10001,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل أمر مخاطرة"
+              },
+              "value": false
+            },
+            {
+              "code": 10002,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف أمر مخاطرة"
+              },
+              "value": false
+            },
+            {
+              "code": 10003,
+              "title": {
+                "en": "View",
+                "ar": "عرض أمر مخاطرة"
+              },
+              "value": false
+            },
+            {
+              "code": 10004,
+              "title": {
+                "en": "View All",
+                "ar": "عرض جميع أوامر المخاطرة"
+              },
+              "value": false
+            },
+            {
+              "code": 10005,
+              "title": {
+                "en": "Send By Inbox",
+                "ar": "ارسال الى البريد الداخلى"
+              },
+              "value": false
+            },
+            {
+              "code": 10006,
+              "title": {
+                "en": "Send By Mail",
+                "ar": "ارسال الى البريد الالكترونى"
+              },
+              "value": false
+            },
+            {
+              "code": 10007,
+              "title": {
+                "en": "Send To Correspondence Sent",
+                "ar": "ارسال الى صادر المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10008,
+              "title": {
+                "en": "Send To Correspondence Received",
+                "ar": "ارسال الى وارد المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10009,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            },
+            {
+              "code": 10010,
+              "title": {
+                "en": "Send To Distribution List",
+                "ar": "ارسال الى قائمةالتوزيع"
+              },
+              "value": false
+            },
+            {
+              "code": 10011,
+              "title": {
+                "en": "Create Transmittal",
+                "ar": "انشاء ارسالية"
+              },
+              "value": false
+            },
+            {
+              "code": 10012,
+              "title": {
+                "en": "Add Attachments",
+                "ar": "اضافة مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10013,
+              "title": {
+                "en": "Edit Attachments",
+                "ar": "تعديل مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10014,
+              "title": {
+                "en": "View Attachments",
+                "ar": "عرض مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10015,
+              "title": {
+                "en": "Delete Attachments",
+                "ar": "حذف مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10016,
+              "title": {
+                "en": "Show Drop Box",
+                "ar": "اظهار الدروب بوكس"
+              },
+              "value": false
+            },
+            {
+              "code": 10017,
+              "title": {
+                "en": "Show Google Drive",
+                "ar": "اظهار جوجل دريف"
+              },
+              "value": false
+            },
+            {
+              "code": 10018,
+              "title": {
+                "en": "Executed",
+                "ar": "المُنَفّذ"
+              },
+              "value": false
+            }
+          ]
+        },
+
         {
           "title": {
             "en": "Variation Orders",

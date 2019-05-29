@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import Api from '../../api';
-import { Bar, GroupedBar, Tooltip, ResponsiveContainer, withResponsiveness } from 'britecharts-react'
+import { Bar, GroupedBar, Tooltip, ResponsiveContainer, withResponsiveness, Line, ResponsiveStackedArea } from 'britecharts-react'
 
 
 const marginObject = {
-    left: 40,
+    left: 0,
     right: 40,
     top: 50,
     bottom: 50,
 };
 const colorSchema = ["#39bd3d", "#dfe2e6"]
+
 class BarChartComp extends Component {
 
     constructor(props) {
@@ -25,7 +26,7 @@ class BarChartComp extends Component {
             },
             barData: [],
             isLoading: true,
-            groupedBarData: []
+            groupedBarData: [],
         }
     }
 
@@ -71,10 +72,28 @@ class BarChartComp extends Component {
     }
 
     render() {
+        const renderLine = (props) => (
+            <ResponsiveContainer
+                render={
+                    ({ width }) =>
+                        <Bar
+                            isHorizontal={false}
+                            margin={marginObject}
+                            colorSchema={colorSchema}
+                            width={width}
+                            // data={this.state.barData}
+                            shouldShowLoadingState={this.state.barData.length ? false : true}
+                            {...props}
+                        />
+                }
+            />
+        );
+
+
         return (
             <Fragment>
                 {this.props.multiSeries !== 'no' ?
-                    <div className="col-md-8 col-lg-6">
+                    <div className="col-md-12 col-lg-6">
                         <div className="panel barChart__container">
                             <div className="panel-body">
                                 <h2>
@@ -92,6 +111,7 @@ class BarChartComp extends Component {
                                                         nameLabel='name'
                                                         valueLabel='total'
                                                         colorSchema={colorSchema}
+                                                        shouldShowLoadingState={this.state.groupedBarData.length ? false : true}
                                                     />
                                                 </div>
                                         }
@@ -102,27 +122,36 @@ class BarChartComp extends Component {
                     </div>
                     :
                     this.state.isLoading == false ?
-                        <div className="col-md-8 col-lg-6">
+                        <div className="col-md-12 col-lg-6">
                             <div className="panel barChart__container">
                                 <div className="panel-body">
                                     <h2>
                                         {this.props.title}
                                     </h2>
-                                    <ResponsiveContainer
-                                        render={
-                                            ({ width }) =>
-                                                <div>
-                                                    <Bar
-                                                        width={width}
-                                                        data={this.state.barData}
-                                                        isHorizontal={false}
-                                                        margin={marginObject}
-                                                        colorSchema={colorSchema}
+                                    <div>
+                                        <Fragment>
+                                            <ResponsiveContainer
+                                                render={
+                                                    ({ width }) =>
+                                                        // <Bar
+                                                        //     isHorizontal={false}
+                                                        //     margin={marginObject}
+                                                        //     colorSchema={colorSchema}
+                                                        //     width={width}
+                                                        //     data={this.state.barData}
+                                                        //     shouldShowLoadingState={this.state.barData.length ? false : true}
+                                                        // />
 
-                                                    />
-                                                </div>
-                                        }
-                                    />
+                                                        <Tooltip
+                                                            data={this.state.barData}
+                                                            render={renderLine}
+                                                            topicLabel="topics"
+                                                            title="Tooltip Title"
+                                                        />
+                                                }
+                                            /> </Fragment>
+                                    </div>
+
                                 </div>
                             </div>
                         </div >

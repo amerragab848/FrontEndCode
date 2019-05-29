@@ -69,11 +69,11 @@
 .radioBoxBlue.ui.checkbox {
     label {
         &::before {
-            border: 2.5px solid $grey-300;
+            border: 2px solid $grey-300;
         }
         &:hover {
             &::before {
-                border: 2.5px solid $grey-500;
+                border: 2px solid $grey-500;
             }
         }
     }
@@ -84,7 +84,7 @@
         &:focus {
             &:checked ~ label {
                 &:before {
-                    border: 2.5px solid $blue-600;
+                    border: 2px solid $blue-600;
                 }
                 &:after {
                     background-color: $blue-600;
@@ -93,7 +93,7 @@
         }
         &:checked ~ label {
             &:before {
-                border: 2.5px solid $blue-600;
+                border: 2px solid $blue-600;
             }
             &:after {
                 background-color: $blue-600;
@@ -101,7 +101,7 @@
 
             &:hover {
                 &::before {
-                    border: 2.5px solid $blue-700;
+                    border: 2px solid $blue-700;
                 }
                 &:after {
                     background-color: $blue-700;
@@ -122,7 +122,7 @@
 .radioBoxgreen.ui.checkbox {
     label {
         &::before {
-            border: 2.5px solid $grey-400;
+            border: 2px solid $grey-400;
         }
 
     }
@@ -135,7 +135,7 @@
         &:focus {
             &:checked ~ label {
                 &:before {
-                    border: 2.5px solid $lightgreen-500;
+                    border: 2px solid $lightgreen-500;
                 }
                 &:after {
                     background-color: $lightgreen-500;
@@ -144,7 +144,7 @@
         }
         &:checked ~ label {
             &:before {
-                border: 2.5px solid $lightgreen-500;
+                border: 2px solid $lightgreen-500;
             }
             &:after {
                 background-color: $lightgreen-500;
@@ -154,7 +154,7 @@
                     background-color: $lightgreen-700;
                 }
                 &:before {
-                    border: 2.5px solid $lightgreen-700;
+                    border: 2px solid $lightgreen-700;
                 }
             }
         }
@@ -170,7 +170,7 @@
     input {
         &:checked ~ label {
             &:before {
-                border: 2.5px solid $blue-200;
+                border: 2px solid $blue-200;
             }
             &:after {
                 background-color: $blue-200;

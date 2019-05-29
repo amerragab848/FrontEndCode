@@ -313,7 +313,7 @@ class InternalMemoAddEdit extends Component {
 
         if (field == "fromContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            this.props.actions.GetNextArrange(url);
+            // this.props.actions.GetNextArrange(url);
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
@@ -655,8 +655,10 @@ class InternalMemoAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
+
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={841} EditAttachments={3229} ShowDropBox={3619} ShowGoogleDrive={3620} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                                            {this.viewAttachments()}
+                                           
+                                             {this.viewAttachments()}
 
                                             {this.props.changeStatus === true ?
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

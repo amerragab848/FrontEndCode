@@ -1,0 +1,239 @@
+.epsTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+    width: 100%;
+    cursor: pointer;
+    padding: 0 16px;
+    border-bottom: 1px solid #e9ecf0;
+    transition: all 0.3s ease-in-out;
+}
+
+.epsTitle:hover {
+    background: #fafbfc;
+}
+
+.listTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accordionTitle {
+    font-family: font-b;
+    font-family: Muli;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #252833;
+}
+
+.epsTitle.active .accordionTitle {
+    color: #4382f9;
+}
+
+.epsTitle.active .dropArrow {
+    transform: rotate(180deg);
+}
+
+.epsContent {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+    padding-left: 44px;
+    position: relative;
+}
+
+.epsContent::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    top: 24px;
+    bottom: 24px;
+    left: 31px;
+    background-color: #e9ecf0;
+}
+
+.epsTitle.active + .epsContent {
+    height: inherit;
+}
+
+.dropArrow {
+    width: 32px;
+    height: 32px;
+    background-color: #e9ecf0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+.epsContent .epsTitle .dropArrow {
+    background: #fafbfc;
+}
+
+.dropArrow i.icon {
+    width: auto;
+    height: auto;
+    margin: 0;
+}
+
+.Project__num {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 370px;
+}
+
+.Project__num p {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-family: font-r;
+    font-family: Muli;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    margin-right: 88px;
+    color: #858d9e;
+    margin-bottom: 0;
+}
+
+.Project__num .project__num--span {
+    font-family: font-b;
+    font-family: Muli;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #252833;
+}
+
+.eps__actions {
+    display: flex;
+    justify-content: center;
+}
+
+.eps__actions a {
+    display: inline-block;
+    margin: 0 10px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.eps__actions a svg {
+    transition: all 0.3s ease-in-out;
+    opacity: 0.4;
+}
+
+.epsTitle:hover .eps__actions a svg {
+    opacity: 0.8;
+}
+
+.epsTitle:hover .eps__actions a svg g g {
+    opacity: 1;
+    fill: #a8b0bf
+    // fill: #ccd2db
+}
+
+.epsTitle:hover .eps__actions a:hover svg{
+    opacity: 1 !important;
+}
+.epsTitle:hover .eps__actions a:hover svg g g {
+    opacity: 1 !important;
+    fill: #a5acb7;
+    transition: all 0.1s ease
+}
+
+// color: #a8b0bf;
+// background: #a5acb7;
+
+// .eps__actions a::after {
+//     content: '';
+//     width: 30px;
+//     position: absolute;
+//     height: 20px;
+//     transition: all 0.3s ease-in-out;
+//     top: 0;
+//     bottom: 0;
+//     left: 0;
+//     right: 0;
+//     background-repeat: no-repeat;
+//     transform: translateY(-30px);
+// }
+
+// .eps__actions a.editIcon::after {
+//     background-image: url(../../images/epsActions/editHover.png);
+// }
+
+// .eps__actions a.plusIcon::after {
+//     background-image: url(../../images/epsActions/plusHover.png);
+// }
+
+// .eps__actions a.deleteIcon::after {
+//     background-image: url(../../images/epsActions/deleteHover.png);
+// }
+
+// .eps__actions a.addIcon::after {
+//     background-image: url(../../images/epsActions/eps__addHover.png);
+// }
+
+// .eps__actions a:hover::after {
+//     transform: translateY(0);
+// }
+
+@media screen and (max-width: 1200px) {
+    .Project__num {
+        min-width: inherit;
+    }
+
+    .Project__num p {
+        margin-right: 30px;
+    }
+}
+
+.Accordion__Containers {
+    padding-left: 25px;
+    padding-right: 40px;
+    padding-top: 30px;
+}
+
+.tree__header {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    border-bottom: 1px solid #e9ecf0;
+}
+
+.tree__header h2 {
+    font-family: font-b;
+    font-family: Muli;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    color: #252833;
+}
+
+.Eps__header h2 {
+    font-size: 16px;
+    font-family: font-r;
+    font-family: Muli;
+    font-weight: normal;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #252833;
+    padding-left: 4px;
+}
+
+.no__child .dropArrow {
+    visibility: hidden;
+}

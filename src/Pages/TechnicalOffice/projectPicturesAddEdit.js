@@ -142,10 +142,10 @@ class projectPicturesAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow,
             });
 
-            this.checkDocumentIsView(); 
+            this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -235,7 +235,7 @@ class projectPicturesAddEdit extends Component {
         this.setState({
             docId: 0
         });
-    
+
     }
 
     componentDidUpdate(prevProps) {
@@ -265,10 +265,11 @@ class projectPicturesAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -390,7 +391,7 @@ class projectPicturesAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectPictures[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.projectPictures[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
 
@@ -405,9 +406,9 @@ class projectPicturesAddEdit extends Component {
                                         validationSchema={validationSchema}
                                         enableReinitialize={true}
                                         onSubmit={(values) => {
-                                            
+
                                             if (this.props.showModal) { return; }
-        
+
                                             this.AddEditProjectPic();
                                         }}  >
 
@@ -521,16 +522,11 @@ class projectPicturesAddEdit extends Component {
                                 </div>
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
-                                        {this.state.docId !== 0 ?
-                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
+                                        {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={954} EditAttachments={3260} ShowDropBox={3579} ShowGoogleDrive={3580} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                         {this.viewAttachments()}
-
-                                        {this.props.changeStatus === true && docId !== 0 ?
+                                        {this.props.changeStatus === true ?
                                             <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
+                                            : null}
                                     </div>
                                 </div>
                             </div>

@@ -9,7 +9,7 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument' 
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import GridSetup from "../Communication/GridSetup";
@@ -422,7 +422,7 @@ class requestPaymentsAddEdit extends Component {
             });
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -512,7 +512,7 @@ class requestPaymentsAddEdit extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
-        this.props.actions.GetNextArrange(url);
+        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
@@ -552,20 +552,20 @@ class requestPaymentsAddEdit extends Component {
 
     onChangeMessage = (value) => {
 
-        if (value != null) { 
+        if (value != null) {
             let original_document = { ...this.state.document };
 
-            let updated_document = {}; 
-            updated_document.comment = value; 
+            let updated_document = {};
+            updated_document.comment = value;
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document,
-                comment: value 
+                comment: value
             });
         }
     };
-    
+
     handleChange(e, field) {
 
         let original_document = { ...this.state.document };
@@ -714,7 +714,8 @@ class requestPaymentsAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -1357,7 +1358,7 @@ class requestPaymentsAddEdit extends Component {
 
     render() {
 
-        
+
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -1593,7 +1594,7 @@ class requestPaymentsAddEdit extends Component {
                                                     enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
                                                         if (this.props.showModal) { return; }
-        
+
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveVariationOrder();
                                                         } else {
@@ -1848,17 +1849,11 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-
-                                            {this.state.docId > 0 ? this.props.changeStatus === false ? 
-                                                (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
-                                                (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
-                                            }
+                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={839} EditAttachments={3223} ShowDropBox={3607} ShowGoogleDrive={3608} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                     {this.viewAttachments()}
-
                                                     {this.props.changeStatus === true ?
                                                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
-                                                    }
+                                                        : null}
                                                 </div>
                                             </div>
                                         </div>
