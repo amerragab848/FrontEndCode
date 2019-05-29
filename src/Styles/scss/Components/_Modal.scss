@@ -1,12 +1,12 @@
 .modalContainerSS {
     padding: 20px 100px;
     display: flex;
+
     .modalBtn {
         margin-right: 20px;
         font-weight: bold;
         font-size: 18px;
     }
-
 }
 
 .modalBtnZ {
@@ -15,7 +15,7 @@
 }
 
 .ui.dimmer {
-    background-color: rgba(0, 0, 0, 0.60);
+    background-color: rgba(0, 0, 0, 0.6);
     overflow: auto;
     padding: 0;
 }
@@ -30,7 +30,6 @@
     padding: 0;
     color: $grey-900;
     font-family: $muli-b;
-
 }
 
 .ui.modal > .header:not(.ui) {
@@ -62,8 +61,8 @@
 /*Small Modal*/
 
 .ui.modal.smallModal {
-
     max-width: 430px;
+
     .actions {
         padding-#{$right}: 28px;
     }
@@ -73,10 +72,11 @@
 
 .ui.modal.mediumModal {
     max-width: 600px;
+
     .content {
         padding-bottom: 30px;
-
     }
+
     .actions {
         padding-#{$right}: 28px;
     }
@@ -87,12 +87,15 @@
 .ui.modal.largeModal {
     max-width: 600px;
     min-height: 460px;
+
     .header {
         padding-bottom: 30px;
     }
+
     .content {
         padding-bottom: 30px;
     }
+
     .actions {
         padding-#{$right}: 28px;
         position: absolute;
@@ -110,45 +113,46 @@
         -ms-flex-pack: end;
         justify-content: flex-end;
         background-color: $grey-100;
+
         button {
             margin: 0 2px;
         }
     }
 }
 
-
-
 .ui.modal.FullScreen {
     width: 100%;
-    
 }
+
 /*input Modal*/
 
 .ui.modal.smallInputModal {
     max-width: 408px;
     width: 100%;
     min-height: 320px;
+
     .header {
         padding-bottom: 30px;
     }
+
     .content {
         padding-bottom: 30px;
+
         .proForm {
             .ui.input.inputDev {
                 input {
                     width: 340px;
-
                 }
-
             }
         }
+
         .form-group {
             display: block;
             background-color: #ffffff !important;
             padding: 0;
-
         }
     }
+
     .actions {
         padding-#{$right}: 28px;
         position: absolute;
@@ -166,6 +170,7 @@
         -ms-flex-pack: end;
         justify-content: flex-end;
         background-color: $grey-100;
+
         button {
             margin: 0 2px;
         }
@@ -178,17 +183,21 @@
     max-width: 800px;
     width: 100%;
     min-height: 464px;
+
     .header {
         padding-bottom: 30px;
     }
+
     .content {
         padding-bottom: 30px;
+
         .form-group {
             display: block;
             background-color: #ffffff !important;
             padding: 0;
         }
     }
+
     .actions {
         padding-#{$right}: 28px;
         position: absolute;
@@ -206,6 +215,7 @@
         -ms-flex-pack: end;
         justify-content: flex-end;
         background-color: $grey-100;
+
         button {
             margin: 0 2px;
         }
@@ -219,9 +229,11 @@
     width: 100%;
     min-height: 384px;
     padding-right: 0;
+
     .step-progress {
         background-color: inherit;
     }
+
     .workflow-sliderSteps {
         padding-right: 15px;
     }
@@ -234,6 +246,7 @@
             font-size: $heading3-font;
         }
     }
+
     .actions {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -244,6 +257,7 @@
         -webkit-box-pack: end;
         -ms-flex-pack: end;
         justify-content: flex-end;
+
         button {
             margin: 0 2px;
         }
@@ -257,6 +271,7 @@
     max-width: 800px;
     width: 100%;
     min-height: 464px;
+
     .close {
         top: 16px;
         #{$right}: 16px;
@@ -264,9 +279,11 @@
         width: auto;
         opacity: 1;
     }
+
     > .header {
         padding-bottom: 17px;
     }
+
     .description {
         .header {
             font-size: $heading4-font;
@@ -274,9 +291,11 @@
             margin-bottom: 30px;
         }
     }
+
     .content {
         margin-bottom: 27px;
     }
+
     .actions {
         padding-#{$right}: 28px;
         position: absolute;
@@ -294,6 +313,7 @@
         -ms-flex-pack: end;
         justify-content: flex-end;
         background-color: $grey-100;
+
         button {
             margin: 0 2px;
         }
@@ -303,18 +323,19 @@
 /**/
 
 .ui.modal.xLargeModal {
-
     width: 60%;
     min-width: 600px;
     min-height: 670px;
     padding: 48px;
+
     .header {
         font-size: $heading1-font;
         padding-bottom: 40px;
+
         h2 {
             margin-bottom: 15px;
-
         }
+
         h3 {
             font-size: $heading3-font;
             font-family: $muli-r;
@@ -322,6 +343,7 @@
             letter-spacing: -0.2px;
         }
     }
+
     .content {
         p {
             font-family: $sans-r;
@@ -330,11 +352,11 @@
             font-size: $heading4-font;
         }
     }
+
     .actions {
         padding-#{$right}: 28px;
     }
 }
-
 
 /*Doc Approval*/
 
@@ -345,48 +367,61 @@
     background-color: transparent;
     padding: 56px;
     overflow: hidden;
+
     .close {
         #{$right}: 6px;
         #{$left}: inherit;
     }
+
     .docApprovalContainer {
         position: inherit;
+
         .Rectangle-2 {
             width: 234px;
             height: 8px;
             background-color: #ccd2db;
             margin: 8px 0;
+
             &:nth-child(3) {
                 width: 162px;
             }
+
             &:nth-child(4) {
                 width: 306px;
             }
+
             &:nth-child(5) {
                 width: 346px;
             }
+
             &:nth-child(6) {
                 width: 346px;
             }
+
             &:nth-child(7) {
                 width: 266px;
             }
+
             &:nth-child(8) {
                 width: 290px;
             }
+
             &:nth-child(9) {
                 width: 322px;
             }
+
             &:nth-child(10) {
                 width: 314px;
             }
+
             &:nth-child(11) {
                 width: 338px;
             }
-
         }
+
         .subiConHead {
             padding-right: 32px;
+
             h3 {
                 display: -webkit-box;
                 display: -ms-flexbox;
@@ -396,6 +431,7 @@
                 align-items: center;
                 font-size: $heading2-font;
                 flex: 1;
+
                 span {
                     font-size: $heading6-font;
                     line-height: 1.33;
@@ -404,6 +440,7 @@
                     margin-#{$left}: 24px;
                 }
             }
+
             .subofSubiConHead {
                 flex: 1;
                 display: -webkit-box;
@@ -416,12 +453,14 @@
                 -webkit-box-align: end;
                 -ms-flex-align: end;
                 align-items: flex-end;
+
                 p {
                     font-family: $sans-sb;
                     font-size: $heading6-font;
                     letter-spacing: -0.3px;
                     margin-bottom: 8px;
                 }
+
                 span {
                     letter-spacing: -0.2px;
                     color: $grey-500;
@@ -430,17 +469,21 @@
                 }
             }
         }
+
         .subitTabs {
             width: 355px;
             border-top-#{$left}-radius: 5px;
         }
+
         .step-progress {
             margin: 0 auto;
         }
+
         .step-content {
             position: relative;
             width: 100%;
         }
+
         .approveDocument {
             height: 70px;
             border-bottom-left-radius: 4px;
@@ -457,6 +500,7 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
+
             h2 {
                 flex: 0.5;
                 line-height: 1.17;
@@ -464,21 +508,23 @@
                 color: #252833;
                 opacity: 0.3;
                 font-family: $muli-b;
-
             }
+
             .approveDocumentBTNS {
                 flex: 1.5;
                 display: flex;
                 justify-content: flex-end;
+
                 .firstBtnApprov {
                     margin-#{$right}: 16px;
-
                 }
-                .menu  {
+
+                .menu {
                     top: inherit;
                     bottom: 40px;
                 }
             }
+
             .border {
                 display: block;
                 width: 1px;
@@ -486,8 +532,8 @@
                 background-color: #e9ecf0;
                 margin: 0 24px;
             }
-
         }
+
         .subiTabsContent {
             background-color: #ffffff;
             padding-bottom: 0;
@@ -500,6 +546,7 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
+
             div {
                 display: block;
                 width: 7px;
@@ -511,28 +558,38 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+
             &.active {
                 border: solid 1px #ffffff;
+
                 div {
                     background-color: #fff;
                 }
             }
         }
+
         .step-content-foot {
             -webkit-touch-callout: none;
+
             /* iOS Safari */
             -webkit-user-select: none;
+
             /* Safari */
             -khtml-user-select: none;
+
             /* Konqueror HTML */
             -moz-user-select: none;
+
             /* Firefox */
             -ms-user-select: none;
+
             /* Internet Explorer/Edge */
             user-select: none;
+
             /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
             margin: 0 auto;
+
             span {
                 cursor: pointer;
                 color: $white;
@@ -540,19 +597,19 @@
                 font-size: $heading6-font;
                 font-family: $muli-sb;
                 margin: 0 15px;
+
                 i {
                     margin: 0 5px;
                 }
-
             }
         }
 
         .step-content-btn.disabled,
-        .step-content-btn-prev.disabled,
-            {
+        .step-content-btn-prev.disabled {
             pointer-events: none;
             color: #ccc;
         }
+
         .step-content-body {
             transition: 1.3s all;
             border-radius: 4px;
@@ -561,12 +618,12 @@
             top: 0;
             width: 100%;
         }
+
         .step-content .step-content-body.out {
             position: absolute;
             top: 0;
             transform: translateX(300%);
         }
-
 
         /**/
         .workflow-sliderSteps {
@@ -577,15 +634,14 @@
             display: flex;
             align-items: center;
             margin: 0 auto;
+
             .step-slider {
                 display: none;
             }
+
             .slider-Btns {
                 flex: .4;
             }
         }
-
     }
-
-
 }

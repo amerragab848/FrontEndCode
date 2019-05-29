@@ -1096,6 +1096,21 @@ class materialRequestAddEdit extends Component {
     executeBeforeModalClose = (e) => {
         this.setState({ showModal: false });
     }
+
+    _executeAfterModalOpen() {
+        document.body.classList.add('noScrolling');
+        window.scrollTo(0, 0)
+    }
+
+    _executeBeforeModalOpen() {
+        document.body.classList.add('noScrolling');
+        window.scrollTo(0, 0);
+    }
+
+    _executeAfterModalClose() {
+        document.body.classList.remove('noScrolling');
+    }
+
     render() {
         const childerns =
             this.state.isLoading == false ?
@@ -1841,22 +1856,46 @@ class materialRequestAddEdit extends Component {
                                         <React.Fragment>
                                             {this.state.CurrStep == 1 ? Step_1 : Step_2}
                                             <div className="largePopup largeModal " style={{ display: this.state.showContractModal ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog1 = ref)} title={Resources.contract[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog1 = ref)}
+                                                    title={Resources.contract[currentLanguage]}>
                                                     {contractContent}
                                                 </SkyLight>
                                             </div>
                                             <div className="largePopup largeModal " style={{ display: this.state.showPoModal ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog2 = ref)} title={Resources.po[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog2 = ref)}
+                                                    title={Resources.po[currentLanguage]}>
                                                     {purchaseOrder}
                                                 </SkyLight>
                                             </div>
                                             <div className="largePopup largeModal " style={{ display: this.state.showMRModal ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog3 = ref)} title={Resources.materialRelease[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog3 = ref)}
+                                                    title={Resources.materialRelease[currentLanguage]}>
                                                     {materialRelease}
                                                 </SkyLight>
                                             </div>
                                             <div className="largePopup largeModal " style={{ display: this.state.showChildren ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog4 = ref)} title={Resources.materialRelease[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog4 = ref)}
+                                                    title={Resources.materialRelease[currentLanguage]}>
                                                     {childerns}
                                                 </SkyLight>
                                             </div>
@@ -1887,35 +1926,33 @@ class materialRequestAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <div className="docstepper-levels">
-                                <div className="step-content-foot">
-                                    <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                        "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                    <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
-                                        : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <div className="workflow-sliderSteps">
-                                    <div className="step-slider">
-                                        <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
-                                            <div className="steps-timeline">
-                                                <span>1</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6>{Resources.siteRequest[currentLanguage]}</h6>
-                                            </div>
+                        <div className="docstepper-levels">
+                            <div className="step-content-foot">
+                                <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
+                                <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
+                                    : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div className="workflow-sliderSteps">
+                                <div className="step-slider">
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>1</span>
                                         </div>
-                                        <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
-                                            <div className="steps-timeline">
-                                                <span>2</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6 >{Resources.items[currentLanguage]}</h6>
-                                            </div>
+                                        <div className="steps-info">
+                                            <h6>{Resources.siteRequest[currentLanguage]}</h6>
                                         </div>
-
                                     </div>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>2</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6 >{Resources.items[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

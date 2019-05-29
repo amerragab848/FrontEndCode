@@ -9,7 +9,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
@@ -138,6 +138,9 @@ class riskAddEdit extends Component {
             CycleAddLoading: false,
             DocLoading: false,
 
+            preMedigationCostEMV: 0,
+            medigationCost: 0,
+            preMedigation: 0,
             EMV: 0,
             likelihood: 0.1,
             documentCycle: {},
@@ -164,14 +167,14 @@ class riskAddEdit extends Component {
             areas: [],
             IRCycles: [],
             priority: [],
-            permission: [{ name: 'sendByEmail', code: 1022 },
-            { name: 'sendByInbox', code: 1021 },
+            permission: [{ name: 'sendByEmail', code: 10006 },
+            { name: 'sendByInbox', code: 10005 },
             { name: 'sendTask', code: 0 },
-            { name: 'distributionList', code: 1026 },
-            { name: 'createTransmittal', code: 3027 },
-            { name: 'sendToWorkFlow', code: 1025 },
-            { name: 'viewAttachments', code: 3327 },
-            { name: 'deleteAttachments', code: 824 }],
+            { name: 'distributionList', code: 10010 },
+            { name: 'createTransmittal', code: 10011 },
+            { name: 'sendToWorkFlow', code: 10009 },
+            { name: 'viewAttachments', code: 10014 },
+            { name: 'deleteAttachments', code: 10015 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -186,7 +189,7 @@ class riskAddEdit extends Component {
             message: ''
         }
 
-        if (!Config.IsAllow(84) && !Config.IsAllow(85) && !Config.IsAllow(87)) {
+        if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/Risk/" + this.state.projectId);
         }
@@ -216,21 +219,23 @@ class riskAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
-            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
-            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+        if (nextProps.document.id !== this.props.document.id) {
+            let sarverObject = nextProps.document;
+            sarverObject.docDate = moment(sarverObject.docDate).format('DD/MM/YYYY');
+            sarverObject.requiredDate = sarverObject.requiredDate !== null ? moment(sarverObject.requiredDate).format('DD/MM/YYYY') : moment();
 
             this.setState({
-                document: nextProps.document,
+                document: sarverObject,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: nextProps.document.description
+                message: sarverObject.description
             });
 
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            this.fillDropDowns(sarverObject.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -242,12 +247,12 @@ class riskAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(85))) {
+            if (!(Config.IsAllow(10001))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(85)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
-                    if (this.props.document.status == true && Config.IsAllow(85)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(10001)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(10001)) {
+                    if (this.props.document.status == true && Config.IsAllow(10001)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -273,6 +278,7 @@ class riskAddEdit extends Component {
                 this.setState({
                     IRCycles: [...result]
                 });
+
                 let data = { items: result };
                 this.props.actions.ExportingData(data);
             });
@@ -281,6 +287,7 @@ class riskAddEdit extends Component {
                 this.setState({
                     documentCycle: { ...result }
                 });
+
                 this.fillDropDownsCycle(true);
             });
 
@@ -297,8 +304,6 @@ class riskAddEdit extends Component {
                     });
                 }
             });
-
-
 
         } else {
             const riskDocument = {
@@ -333,10 +338,24 @@ class riskAddEdit extends Component {
             this.fillDropDowns(false);
             this.fillDropDownsCycle(false);
             this.props.actions.documentForAdding();
+            this.GetNextArrange();
         }
 
     }
 
+    GetNextArrange() {
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+
+         dataservice.GetNextArrangeMainDocument(url).then(res => {
+            updated_document.arrange = res;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
+        })
+    }
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -384,11 +403,11 @@ class riskAddEdit extends Component {
         });
 
         //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "title").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.discipline;
                 if (disciplineId) {
-                    let discipline = result.find(i => i.value === parseInt(disciplineId));
+                    let discipline = result.find(i => i.label === parseInt(disciplineId));
                     this.setState({
                         selectedDiscpline: discipline
                     });
@@ -461,7 +480,7 @@ class riskAddEdit extends Component {
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=riskCauses", "title", "id").then(result => {
             if (isEdit) {
 
-                let riskCauses = this.state.documentCycle.riskCauses;
+                let riskCauses = this.state.documentCycle.riskCause;
                 if (riskCauses) {
                     let priorityName = result.find(i => i.value === parseInt(riskCauses));
                     this.setState({
@@ -492,13 +511,12 @@ class riskAddEdit extends Component {
 
         //consequences
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=consequences", "title", "id").then(result => {
-            if (isEdit) {
-
+            if (isEdit) { 
                 let riskConsquence = this.state.documentCycle.riskConsquence;
                 if (riskConsquence) {
-                    let priorityName = result.find(i => i.value === parseInt(riskConsquence));
+                    let riskConsquenceObj = result.find(i => i.value === parseInt(riskConsquence));
                     this.setState({
-                        selectedconsequence: { label: priorityName.label, value: riskConsquence }
+                        selectedconsequence: { label: riskConsquenceObj.label, value: riskConsquence }
                     });
                 }
             }
@@ -509,16 +527,16 @@ class riskAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        if (value != null) { 
+        if (value != null) {
             let original_document = { ...this.state.document };
 
-            let updated_document = {}; 
-            updated_document.description = value; 
+            let updated_document = {};
+            updated_document.description = value;
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document,
-                description: value 
+                description: value
             });
         }
     };
@@ -565,17 +583,6 @@ class riskAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            this.props.actions.GetNextArrange(url);
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
-                updated_document = Object.assign(original_document, updated_document);
-                this.setState({
-                    document: updated_document
-                });
-            })
-        }
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -629,18 +636,21 @@ class riskAddEdit extends Component {
                     impact: null,
                     id: null
                 };
-                let items = []
-                let consequences = ['T', 'C', 'P', 'R', 'S']
-                for (var i = 0; i < 5; i++) {
 
-                    let consequenceItem = {
-                        conesquenceId: consequences[i],
-                        riskId: result.id,
-                        value: 0,
-                        id: null
-                    };
-                    items.push(consequenceItem)
-                }
+                let items = []
+                dataservice.GetDataGrid("GetRiskConsequenceByRiskId?riskId=" + result.id).then(result => {
+                    if (result) {
+                        let EMV = 0;
+                        let likelihood = this.state.likelihood;
+                        result.map(i => {
+                            EMV = (parseFloat(likelihood) * parseFloat(i.value)) + EMV;
+                        })
+                        this.setState({
+                            EMV: EMV,
+                            items: result
+                        });
+                    }
+                });
 
                 this.setState({
                     documentCycle: cycle,
@@ -675,14 +685,15 @@ class riskAddEdit extends Component {
 
     viewAttachments() {
         return (
-            this.props.document.id > 0 ? (Config.IsAllow(3327) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
+            this.props.document.id > 0 ? (Config.IsAllow(10014) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
         )
     }
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -873,35 +884,36 @@ class riskAddEdit extends Component {
             this.setState({ CycleAddLoading: true })
         }
 
-        dataservice.addObject(api, saveDocument).then(result => {
-            if (result) {
-                let cycle = {
-                    subject: result.subject,
-                    cycleDate: result.cycleDate,
-                    refNo: result.refNo,
-                    status: result.status,
-                    riskId: this.state.docId,
-                    riskCause: result.riskCause,
-                    notes: result.notes,
-                    riskLevel: result.riskLevel,
-                    impact: result.impact,
-                    id: result.id
-                };
+        dataservice.addObject(api, saveDocument)
+            .then(result => {
+                if (result) {
+                    let cycle = {
+                        subject: result.subject,
+                        cycleDate: result.cycleDate,
+                        refNo: result.refNo,
+                        status: result.status,
+                        riskId: this.state.docId,
+                        riskCause: result.riskCause,
+                        notes: result.notes,
+                        riskLevel: result.riskLevel,
+                        impact: result.impact,
+                        id: result.id
+                    };
 
+                    this.setState({
+                        documentCycle: cycle,
+                        CycleEditLoading: false,
+                        CycleAddLoading: false,
+                    });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }
+            }).catch(res => {
                 this.setState({
-                    documentCycle: cycle,
                     CycleEditLoading: false,
                     CycleAddLoading: false,
                 });
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            }
-        }).catch(res => {
-            this.setState({
-                CycleEditLoading: false,
-                CycleAddLoading: false,
+                toast.error(Resources["operationCanceled"][currentLanguage]);
             });
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-        });
     }
 
     AddNewCycle() {
@@ -1046,6 +1058,7 @@ class riskAddEdit extends Component {
                                 </div>
 
                                 <div className="slider-Btns">
+
                                     {this.state.CycleEditLoading ?
                                         <button className="primaryBtn-1 btn disabled">
                                             <div className="spinner">
@@ -1054,16 +1067,22 @@ class riskAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.editCycle}>{Resources['editCycle'][currentLanguage]}</button>}
-                                    {this.state.CycleAddLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>}
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.editCycle}>{Resources['save'][currentLanguage]}</button>}
+
+
+                                    {this.props.changeStatus === true ?
+                                        this.state.CycleAddLoading ?
+                                            <button className="primaryBtn-1 btn disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                            : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>
+                                        : null
+                                    }
+
                                 </div>
 
                             </div>
@@ -1083,6 +1102,14 @@ class riskAddEdit extends Component {
             items
         })
     }
+
+    HandleMitigationChangeValue = (e, field) => {
+        let value = parseInt(e.target.value);
+        this.setState({
+            [field]: value
+        })
+    }
+
     HandleChangeDb = (e, index, id) => {
         let items = this.state.items;
         let likelihood = this.state.likelihood;
@@ -1158,7 +1185,7 @@ class riskAddEdit extends Component {
                         </div>
 
                         <div className="linebylineInput valid-input">
-                            <label className="control-label">The Risk Ranking Is Calculated</label>
+                            <label className="control-label"> {Resources['riskRanking'][currentLanguage]}</label>
                             <div className='ui input inputDev '>
                                 <input autoComplete="off" readOnly
                                     value={this.state.EMV > 0 ? (Math.log10(this.state.EMV)).toFixed(2) : 0}
@@ -1168,6 +1195,45 @@ class riskAddEdit extends Component {
                         </div>
                     </div>
 
+                    <header>
+                        <h2 className="zero">{Resources['preMedigationRiskQuantification'][currentLanguage]}</h2>
+                    </header>
+
+                    <div className="Risk__input">
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label">{Resources['preMedigationCostEMV'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off"
+                                    value={this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV}
+                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'preMedigationCostEMV')}
+                                    type="number"
+                                    className="form-control" name="preMedigationCostEMV"
+                                    placeholder={Resources['preMedigationCostEMV'][currentLanguage]} />
+                            </div>
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label"> {Resources['medigationCost'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off"
+                                    value={this.state.medigationCost == null ? 0 : this.state.medigationCost}
+                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'medigationCost')}
+                                    type="number" pattern="[0-9]*"
+                                    className="form-control" name="medigationCost"
+                                    placeholder={Resources['medigationCost'][currentLanguage]} />
+                            </div>
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label"> {this.state.medigationCost == 0 ? Resources['preMedigation'][currentLanguage] : Resources['postMedigation'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off" readOnly
+                                    value={(this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV) + (this.state.medigationCost == null ? 0 : this.state.medigationCost)}
+                                    className="form-control" name="preMedigation"
+                                    placeholder={Resources['preMedigation'][currentLanguage]} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </Fragment >
         )
@@ -1247,11 +1313,8 @@ class riskAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
-
                     <div className="doc-container">
 
                         <div className="step-content">
@@ -1265,7 +1328,7 @@ class riskAddEdit extends Component {
 
                                                 onSubmit={(values) => {
                                                     if (this.props.showModal) { return; }
-    
+
                                                     if (this.props.changeStatus === false && this.state.docId === 0) {
                                                         this.saveRisk();
                                                     } else {
@@ -1446,9 +1509,11 @@ class riskAddEdit extends Component {
 
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
-                                                {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10012} EditAttachments={10013} ShowDropBox={10016} ShowGoogleDrive={10017} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
-                                                {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                                {this.props.changeStatus === true ?
+                                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    : null}
                                             </div>
                                         </div>
                                     </div>

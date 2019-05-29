@@ -215,7 +215,7 @@ class VariationRequestAdd extends Component {
 
     GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
-        this.props.actions.GetNextArrange(url);
+        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             let original_document = { ...this.state.document };
             let updated_document = {};

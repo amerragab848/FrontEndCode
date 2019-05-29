@@ -1,0 +1,288 @@
+.attachmentPage {
+    position: relative;
+    border: 1px solid #E9ECF0;
+
+    .attachmentHeader {
+        border-bottom: 2px solid #E9ECF0;
+        background-color: $background;
+        box-sizing: border-box;
+        height: 48px;
+        display: flex;
+
+        .headCell {
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-#{$left}: 10px;
+            color: #A8B0BF;
+            font-family: $muli-b;
+            font-size: 14px;
+        }
+    }
+
+    .rightHeader {
+        height: 46px;
+        border-right: 1px solid #E9ECF0;
+        display: flex;
+        width: 35%;
+        min-width: 230px;
+
+        .headCell {
+            &.tavbleCell-1 {
+                width: 50px;
+            }
+
+            &.tableCell-2 {
+                width: calc(100% - 50px);
+            }
+        }
+
+        .contentCell {
+            &.tableCell-1 {
+                width: 50px;
+            }
+
+            &.tableCell-2 {
+                width: calc(100% - 50px);
+            }
+        }
+    }
+
+    .leftHeader {
+        height: 46px;
+        display: flex;
+        padding-#{$right}: 85px;
+
+        .headCell {
+            min-width: 100px;
+
+            &.tableCell-3 {
+                width: 15%;
+            }
+
+            &.tableCell-4 {
+                width: 35%;
+                min-width: 120px;
+            }
+
+            &.tableCell-5 {
+                width: 20%;
+            }
+        }
+
+        .contentCell {
+            min-width: 100px;
+
+            &.tableCell-3 {
+                width: 15%;
+            }
+
+            &.tableCell-4 {
+                width: 35%;
+                min-width: 120px;
+            }
+
+            &.tableCell-5 {
+                width: 20%;
+            }
+        }
+    }
+
+    .attachmentContent {
+        background: #fff;
+
+        .mainContent {
+            display: flex;
+            height: 40px;
+            position: relative;
+            align-items: center;
+            border-bottom: 1px solid $grey-100;
+
+            .rightHeader {
+                height: 40px;
+
+                .contentCell {
+                    display: -webkit-inline-box;
+                    display: -ms-inline-flexbox;
+                    display: inline-flex;
+                    -webkit-box-pack: start;
+                    -ms-flex-pack: start;
+                    justify-content: flex-start;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    padding-#{$left}: 10px;
+                    font-family: $muli-b;
+                    font-size: 14px;
+
+                    &.tableCell-1 {
+                        span {
+                            width: 20px;
+                            height: 24px;
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+
+                    a {
+                        font-size: 14px;
+                        line-height: 1.71;
+                        letter-spacing: -0.2px;
+                        color: $grey-800;
+                        display: block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        padding: 0 5px;
+                        font-family: $sans-r;
+                    }
+                }
+            }
+
+            .leftHeader {
+                height: 40px;
+                position: relative;
+
+                .contentCell {
+                    display: -webkit-inline-box;
+                    display: -ms-inline-flexbox;
+                    display: inline-flex;
+                    -webkit-box-pack: start;
+                    -ms-flex-pack: start;
+                    justify-content: flex-start;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    padding-#{$left}: 10px;
+                    font-family: OpenSans;
+                    font-size: 14px;
+
+                    p {
+                        font-family: $sans-r;
+                        font-size: 14px;
+                        line-height: 1.71;
+                        letter-spacing: -0.2px;
+                        color: $grey-800;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+
+                .attachmentAction {
+                    display: flex;
+                    align-items: center;
+                    opacity: 0;
+                    transition: all 0.4s ease-in-out;
+                    position: absolute;
+                    #{$right}: 0;
+                    top: calc(50% - 8px);
+
+                    a {
+                        margin: 0 8px;
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        position: relative;
+                        overflow: hidden;
+                        cursor: pointer;
+
+                        img {
+                            transition: all 0.4s ease-in-out;
+                            transform: translateY(0);
+                        }
+
+                        &::after {
+                            content: '';
+                            width: 16px;
+                            position: absolute;
+                            height: 16px;
+                            background-size: 100% 100%;
+                            transform: translateY(-20px);
+                            top: 0;
+                            left: 0;
+                            transition: all 0.4s ease-in-out;
+                        }
+
+                        &.attachRecycle {
+                            &::after {
+                                background-image: url(../../images/afterDelete.png);
+                            }
+                        }
+
+                        &.attachPdf {
+                            &::after {
+                                background-image: url(../../images/afterDown.png);
+                            }
+                        }
+
+                        &.attachPend {
+                            &::after {
+                                background-image: url(../../images/afterPend.png);
+                            }
+                        }
+
+                        &:hover {
+                            img {
+                                transform: translateY(20px);
+                            }
+
+                            &::after {
+                                transform: translateY(0);
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:hover {
+                background-color: #edf0f2;
+                transition: 0.2s ease;
+
+                .attachmentAction {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+#pdfLength {
+    font-size: 14px;
+    letter-spacing: -0.2px;
+    color: $grey-800;
+    padding-#{$left}: 32px;
+    margin-bottom: 8px;
+}
+
+.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+    position: fixed;
+    height: auto;
+    width: 100% !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border: 0;
+
+    .dialog {
+        height: 100% !important;
+
+        > div {
+            height: 100% !important;
+
+            iframe {
+                width: 100% !important;
+                height: 100% !important;
+            }
+        }
+    }
+}
