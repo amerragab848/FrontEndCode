@@ -1430,6 +1430,8 @@ class materialInspectionRequestAddEdit extends Component {
                                                     }}
                                                     data={this.state.IRCycles}
                                                     columns={columns}
+                                                    pivotBy={['statusName']}
+
                                                     defaultPageSize={10}
                                                     minRows={2}
                                                     noDataText={Resources['noData'][currentLanguage]}

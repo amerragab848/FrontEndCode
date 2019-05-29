@@ -54,7 +54,7 @@ class PieChartComp extends Component {
         });
     }
 
-    _handleMouseOver = (e) => {
+    logMouseOver = (e) => {
         this.setState({
             data: e.data,
             highlightedSlice: e.data.id,
@@ -82,7 +82,7 @@ class PieChartComp extends Component {
                                         externalRadius={width / 4}
                                         internalRadius={width / 10}
                                         colorSchema={colorSchema}
-                                        customMouseOver={this._handleMouseOver}
+                                        // customMouseOver={this._handleMouseOver}
                                         customMouseMove={this.logMouseOver}
                                         highlightSliceById={this.state.highlightedSlice}
                                         isAnimated={false}

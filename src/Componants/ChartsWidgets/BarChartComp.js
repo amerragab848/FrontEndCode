@@ -27,7 +27,6 @@ class BarChartComp extends Component {
             barData: [],
             isLoading: true,
             groupedBarData: [],
-            loadingState: false
         }
     }
 
@@ -39,11 +38,6 @@ class BarChartComp extends Component {
                 this.setState({
                     isLoading: true
                 });
-                if (results == null) {
-                    this.setState({ loadingState: true })
-                } else {
-                    this.setState({ loadingState: false })
-                }
                 results.map((item) => {
                     barData.push({ 'value': item[this.props.y], 'name': item[this.props.catagName] })
                     return null;
@@ -78,7 +72,7 @@ class BarChartComp extends Component {
     }
 
     render() {
-        const renderStackedArea = (props) => (
+        const renderLine = (props) => (
             <ResponsiveContainer
                 render={
                     ({ width }) =>
@@ -87,27 +81,19 @@ class BarChartComp extends Component {
                             margin={marginObject}
                             colorSchema={colorSchema}
                             width={width}
-                            data={this.state.barData}
-                            customMouseOver={this.tooltip}
-                            customMouseMove={this.tooltip}
-                            customMouseOut={this.tooltip}
-                            shouldShowLoadingState={this.state.loadingState === true ? true : false}
+                            // data={this.state.barData}
+                            shouldShowLoadingState={this.state.barData.length ? false : true}
+                            {...props}
                         />
                 }
             />
         );
 
-        const TooltipWithStackedArea = ({ data }) => (
-            <Tooltip
-                data={this.state.barData}
-                render={renderStackedArea}
-            />
-        );
-        
+
         return (
             <Fragment>
                 {this.props.multiSeries !== 'no' ?
-                    <div className="col-md-8 col-lg-6">
+                    <div className="col-md-12 col-lg-6">
                         <div className="panel barChart__container">
                             <div className="panel-body">
                                 <h2>
@@ -125,6 +111,7 @@ class BarChartComp extends Component {
                                                         nameLabel='name'
                                                         valueLabel='total'
                                                         colorSchema={colorSchema}
+                                                        shouldShowLoadingState={this.state.groupedBarData.length ? false : true}
                                                     />
                                                 </div>
                                         }
@@ -135,7 +122,7 @@ class BarChartComp extends Component {
                     </div>
                     :
                     this.state.isLoading == false ?
-                        <div className="col-md-8 col-lg-6">
+                        <div className="col-md-12 col-lg-6">
                             <div className="panel barChart__container">
                                 <div className="panel-body">
                                     <h2>
@@ -146,14 +133,20 @@ class BarChartComp extends Component {
                                             <ResponsiveContainer
                                                 render={
                                                     ({ width }) =>
-                                                        // <Tooltip
+                                                        // <Bar
+                                                        //     isHorizontal={false}
+                                                        //     margin={marginObject}
+                                                        //     colorSchema={colorSchema}
+                                                        //     width={width}
                                                         //     data={this.state.barData}
-                                                        //     render={renderLine}
-                                                        //     topicLabel="topics"
-                                                        //     title="Tooltip Title"
+                                                        //     shouldShowLoadingState={this.state.barData.length ? false : true}
                                                         // />
-                                                        <TooltipWithStackedArea
+
+                                                        <Tooltip
                                                             data={this.state.barData}
+                                                            render={renderLine}
+                                                            topicLabel="topics"
+                                                            title="Tooltip Title"
                                                         />
                                                 }
                                             /> </Fragment>

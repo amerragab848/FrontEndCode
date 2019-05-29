@@ -36,6 +36,7 @@ const documentItemValidationSchema = Yup.object().shape({
     quantity: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
+
 class editItemDescription extends Component {
 
     constructor(props) {
@@ -210,11 +211,6 @@ class editItemDescription extends Component {
         return (
 
             <div className='dropWrapper'>
-                {/* <header className="main__header">
-                    <div className="main__header--div">
-                        <h2 className="zero">{Resources['addItems'][currentLanguage]}</h2>
-                    </div>
-                </header> */}
                 <Formik
                     initialValues={{ ...this.state.itemDescription }}
                     validationSchema={documentItemValidationSchema}
@@ -357,8 +353,7 @@ class editItemDescription extends Component {
 function mapStateToProps(state) {
     return {
         docId: state.communication.docId,
-        changeStatus: state.communication.changeStatus,
-        // projectId: state.communication.projectId,
+        changeStatus: state.communication.changeStatus
     }
 }
 

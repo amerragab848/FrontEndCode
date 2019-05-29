@@ -103,7 +103,7 @@ class bogAddEdit extends Component {
             }
             index++;
         }
-
+ 
         let editUnitPrice = ({ value, row }) => {
 
             if (row) {
