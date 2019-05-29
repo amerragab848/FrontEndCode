@@ -7805,9 +7805,25 @@
         "en": "Responsible Contact",
         "ar": "الشخص المسئول"
     },
-    "chooseExcelFormat": {
-        "en": "Please Choose Excel File Extention : .xlsx",
-        "ar": "برجاء اختيار ملف اكسيل"
+    "preMedigationCostEMV": {
+        "en": "Pre-mitigation risk EMV",
+        "ar": "Pre-mitigation risk EMV"
+    },
+    "medigationCost": {
+        "en": "Mitigation Cost",
+        "ar": "Mitigation Cost"
+    },
+    "preMedigation": {
+        "en": "Pre-mitigation ",
+        "ar": "Pre-mitigation "
+    },
+    "postMedigation": {
+        "en": "Post-mitigation ",
+        "ar": "Post-mitigation "
+    },
+    "preMedigationRiskQuantification": {
+        "en": "Post-Mitigation Risk Quantification",
+        "ar": "Pre-mitigation Risk Quantification"
     },
     "mergeProjects": {
         "en": "Merge Projects",
@@ -7844,6 +7860,14 @@
     "EMV": {
         "en": "Risk EMV",
         "ar": "EMV"
+    },
+    "riskRanking": {
+        "en": "The Risk Ranking Is Calculated",
+        "ar": "The Risk Ranking Is Calculated"
+    },
+    "riskRanking10": {
+        "en": "Risk Ranking",
+        "ar": "The Risk Ranking"
     },
     "toContactNameRequired": {
         "en": "Please select to Contact Name",
