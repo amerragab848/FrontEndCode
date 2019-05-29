@@ -391,7 +391,7 @@ class materialRequestAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id != this.state.document.id) {
+        if (nextProps.document.id != this.props.document.id) {
             let docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
             let requiredDate = nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format("DD/MM/YYYY") : moment();
             this.setState({
@@ -779,11 +779,12 @@ class materialRequestAddEdit extends Component {
         if (item.value != "0") {
             this.props.actions.showOptionPanel(false);
             this.setState({
-                currentComponent: item.value,
+                currentComponantDocument: item.value,
                 currentTitle: item.title,
-                showContractModal: true
-            });
-            this.simpleDialog.show();
+                showModal: true
+            })
+            this.simpleDialog.show()
+
         }
     };
 
@@ -1092,6 +1093,9 @@ class materialRequestAddEdit extends Component {
         this.setState({ showChildren: true, childerns })
         this.simpleDialog4.show()
     }
+    executeBeforeModalClose = (e) => {
+        this.setState({ showModal: false });
+    }
 
     _executeAfterModalOpen() {
         document.body.classList.add('noScrolling');
@@ -1181,25 +1185,14 @@ class materialRequestAddEdit extends Component {
                     key='MR'
                 /> : <LoadingSection />;
         let actions = [
+            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
+            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "distributionList",
-                value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-                label: Resources["distributionList"][currentLanguage]
-            },
-            {
-                title: "sendToWorkFlow",
-                value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-                label: Resources["sendToWorkFlow"][currentLanguage]
-            },
-            {
-                title: "documentApproval",
-                value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-                label: Resources["documentApproval"][currentLanguage]
-            },
-            {
-                title: "documentApproval",
-                value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-                label: Resources["documentApproval"][currentLanguage]
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }, {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ];
         let Step_1 = <Fragment>
@@ -1211,6 +1204,8 @@ class materialRequestAddEdit extends Component {
                 validationSchema={validationSchema}
                 enableReinitialize={true}
                 onSubmit={values => {
+                    if (this.props.showModal) { return; }
+                    if (this.props.showModal) { return; }
                     if (this.props.changeStatus === true && this.state.docId > 0) {
                         this.editMaterialRequest(values);
                     } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -1403,19 +1398,6 @@ class materialRequestAddEdit extends Component {
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
-                                    {/* {this.state.isLoading ? (
-                                            <button className="primaryBtn-1 btn disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button>
-                                        ) : (
-                                                <button className={ this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" :"primaryBtn-1 btn middle__btn"}>
-                                                    {Resources.save[currentLanguage]}
-                                                </button>
-                                            )} */}
                                     {this.state.isApproveMode === true ? (
                                         <div>
                                             <button className="primaryBtn-1 btn " type="button"
@@ -1546,6 +1528,7 @@ class materialRequestAddEdit extends Component {
                     }}
                     validationSchema={contractSchema}
                     onSubmit={(values) => {
+                        if (this.props.showModal) { return; }
                         this.addContract(values)
                     }}
                 >
@@ -1628,6 +1611,7 @@ class materialRequestAddEdit extends Component {
                     }}
                     validationSchema={contractSchema}
                     onSubmit={(values) => {
+                        if (this.props.showModal) { return; }
                         this.addPurchaseOrder(values)
                     }}
                 >
@@ -1723,6 +1707,7 @@ class materialRequestAddEdit extends Component {
                     }}
                     validationSchema={materialSchema}
                     onSubmit={(values) => {
+                        if (this.props.showModal) { return; }
                         this.addMR(values)
                     }}
                 >
@@ -1984,12 +1969,8 @@ class materialRequestAddEdit extends Component {
                     />
                 ) : null}
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
-                    <SkyLight hideOnOverlayClicked
-                        afterClose={this._executeAfterModalClose}
-                        afterOpen={this._executeAfterModalOpen}
-                        beforeOpen={this._executeBeforeModalOpen}
-                        ref={ref => this.simpleDialog = ref}
-                        title={Resources[this.state.currentTitle][currentLanguage]}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
+                     beforeClose={() => { this.executeBeforeModalClose() }}  >
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>

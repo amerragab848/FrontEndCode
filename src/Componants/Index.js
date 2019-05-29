@@ -2,7 +2,7 @@ import CryptoJS from 'crypto-js';
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { Widgets, WidgetsWithText } from "./CounterWidget";
-import { ChartWidgetsData, BarChartComp, PieChartComp } from "./ChartsWidgets";
+import { ChartWidgetsData, BarChartComp, PieChartComp, Britecharts } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
 import DashBoardWidgets from "./WidgetsDashBorad";
 import DashBoard from "./DashBoard";
@@ -167,7 +167,18 @@ class Index extends Component {
                                   />
                                 </div>
                               );
-                            } else {
+                            }
+                            else if (panel.type === "line") {
+                              return (
+                                <Fragment key={panel.id}>
+                                  <Britecharts
+                                    api={panel.props.api}
+                                    topicName={panel.props.topicName}
+
+                                  />
+                                </Fragment>
+                              );
+                            } else
                               return (
                                 <Fragment key={panel.id}>
                                   <BarChartComp
@@ -183,8 +194,6 @@ class Index extends Component {
                                   />
                                 </Fragment>
                               );
-                            }
-
                           }
                         }
                       })
@@ -239,7 +248,17 @@ class Index extends Component {
                                 />
                               </div>
                             );
-                          } else {
+                          } else if (panel.type === "line") {
+                            return (
+                              <Fragment key={panel.id}>
+                                <Britecharts
+                                  api={panel.props.api}
+                                  topicName={panel.props.topicName}
+
+                                />
+                              </Fragment>
+                            );
+                          } else
                             return (
                               <Fragment key={panel.id}>
                                 <BarChartComp
@@ -255,9 +274,8 @@ class Index extends Component {
                                 />
                               </Fragment>
                             );
-                          }
-
                         }
+
                       }) : null}
                   </div>
                 </Fragment>
@@ -309,7 +327,18 @@ class Index extends Component {
                               />
                             </div>
                           );
-                        } else {
+                        }
+                        else if (panel.type === "line") {
+                          return (
+                            <Fragment key={panel.id}>
+                              <Britecharts
+                                api={panel.props.api}
+                                topicName={panel.props.topicName}
+
+                              />
+                            </Fragment>
+                          );
+                        } else
                           return (
                             <Fragment key={panel.id}>
                               <BarChartComp
@@ -325,8 +354,6 @@ class Index extends Component {
                               />
                             </Fragment>
                           );
-                        }
-
                       }
                     }) : null}
                 </div>

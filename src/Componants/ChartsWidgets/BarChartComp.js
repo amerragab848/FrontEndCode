@@ -16,14 +16,7 @@ class BarChartComp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataByTopic: {
-                dataByTopic: [
-                    {
-                        topic: -1,
-                        topicName: 'Vivid',
-                        dates: []
-                    }]
-            },
+          
             barData: [],
             isLoading: true,
             groupedBarData: [],
@@ -80,8 +73,7 @@ class BarChartComp extends Component {
                             isHorizontal={false}
                             margin={marginObject}
                             colorSchema={colorSchema}
-                            width={width}
-                            // data={this.state.barData}
+                            width={width} 
                             shouldShowLoadingState={this.state.barData.length ? false : true}
                             {...props}
                         />
@@ -132,16 +124,7 @@ class BarChartComp extends Component {
                                         <Fragment>
                                             <ResponsiveContainer
                                                 render={
-                                                    ({ width }) =>
-                                                        // <Bar
-                                                        //     isHorizontal={false}
-                                                        //     margin={marginObject}
-                                                        //     colorSchema={colorSchema}
-                                                        //     width={width}
-                                                        //     data={this.state.barData}
-                                                        //     shouldShowLoadingState={this.state.barData.length ? false : true}
-                                                        // />
-
+                                                    ({ width }) => 
                                                         <Tooltip
                                                             data={this.state.barData}
                                                             render={renderLine}

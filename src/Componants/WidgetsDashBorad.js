@@ -591,6 +591,16 @@ var widgets = [
         multiSeries: 'yes',
         barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
 
+      // }, {
+      //   id: 'wt-Name13',
+      //   key: "0-3-13",
+      //   checked: false,
+      //   title: 'riskStatusYearly',
+      //   props: {
+      //     'api': 'GetRiskDataChartLine'
+      //   },
+      //   topicNames:['Opened','Closed'],
+      //   type: 'line' 
       }
     ]
   },
