@@ -84,8 +84,6 @@ class XSLfile extends Component {
             let id = this.props.docId
             let projectId = this.props.projectId
             Api.postFile('UploadSingleFile?scheduleId=' + id + '&projectId=' + projectId + '&fileName=[object%20FileList]&isEdit=true', formData, header).then(resp => {
-
-
                 if (this.props.afterUpload != undefined) {
                     this.props.afterUpload()
                 }
