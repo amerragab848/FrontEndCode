@@ -55,6 +55,9 @@
     min-width: 48%;
     margin-bottom: 10px;
 }
+.dropWrapper .fillter-item-c .ui.checkbox.radio.radioBoxBlue{
+    margin-right: 10px;
+}
 
 .dropWrapper .fillter-item-c label {
     font-family: font-opensb;
@@ -6047,3 +6050,13 @@ line.horizontal-grid-line {
 .header__dropdown .custom__dropDown {
     min-width: 250px;
 }
+
+.doc-pre-cycle.letterFullWidth {
+    margin-top: 25px;
+}
+/* .editorCell {
+    position: relative;
+}*/
+/* .rdg-editor-container {
+    transform: translate(560px, 60px) !important;
+} */
