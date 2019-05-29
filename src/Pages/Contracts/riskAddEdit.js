@@ -138,6 +138,9 @@ class riskAddEdit extends Component {
             CycleAddLoading: false,
             DocLoading: false,
 
+            preMedigationCostEMV: 0,
+            medigationCost: 0,
+            preMedigation: 0,
             EMV: 0,
             likelihood: 0.1,
             documentCycle: {},
@@ -384,11 +387,11 @@ class riskAddEdit extends Component {
         });
 
         //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "title").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.discipline;
                 if (disciplineId) {
-                    let discipline = result.find(i => i.value === parseInt(disciplineId));
+                    let discipline = result.find(i => i.label === parseInt(disciplineId));
                     this.setState({
                         selectedDiscpline: discipline
                     });
@@ -1084,6 +1087,14 @@ class riskAddEdit extends Component {
             items
         })
     }
+
+    HandleMitigationChangeValue = (e, field) => {
+        let value = parseInt(e.target.value);
+        this.setState({
+            [field]: value
+        })
+    }
+
     HandleChangeDb = (e, index, id) => {
         let items = this.state.items;
         let likelihood = this.state.likelihood;
@@ -1159,7 +1170,7 @@ class riskAddEdit extends Component {
                         </div>
 
                         <div className="linebylineInput valid-input">
-                            <label className="control-label">The Risk Ranking Is Calculated</label>
+                            <label className="control-label"> {Resources['riskRanking'][currentLanguage]}</label>
                             <div className='ui input inputDev '>
                                 <input autoComplete="off" readOnly
                                     value={this.state.EMV > 0 ? (Math.log10(this.state.EMV)).toFixed(2) : 0}
@@ -1169,6 +1180,45 @@ class riskAddEdit extends Component {
                         </div>
                     </div>
 
+                    <header>
+                        <h2 className="zero">{Resources['preMedigationRiskQuantification'][currentLanguage]}</h2>
+                    </header>
+
+                    <div className="Risk__input">
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label">{Resources['preMedigationCostEMV'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off"
+                                    value={this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV}
+                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'preMedigationCostEMV')}
+                                    type="number"
+                                    className="form-control" name="preMedigationCostEMV"
+                                    placeholder={Resources['preMedigationCostEMV'][currentLanguage]} />
+                            </div>
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label"> {Resources['medigationCost'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off"
+                                    value={this.state.medigationCost == null ? 0 : this.state.medigationCost}
+                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'medigationCost')}
+                                    type="number"  pattern="[0-9]*"
+                                    className="form-control" name="medigationCost"
+                                    placeholder={Resources['medigationCost'][currentLanguage]} />
+                            </div>
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label"> {this.state.medigationCost == 0 ? Resources['preMedigation'][currentLanguage] : Resources['postMedigation'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off" readOnly
+                                    value={(this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV) + (this.state.medigationCost == null ? 0 : this.state.medigationCost)}
+                                    className="form-control" name="preMedigation"
+                                    placeholder={Resources['preMedigation'][currentLanguage]} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </Fragment >
         )
@@ -1248,11 +1298,8 @@ class riskAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
-
                     <div className="doc-container">
 
                         <div className="step-content">

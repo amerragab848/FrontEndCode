@@ -222,7 +222,7 @@ class bogAddEdit extends Component {
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
-                width: 100,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
