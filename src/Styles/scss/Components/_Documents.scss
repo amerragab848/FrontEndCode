@@ -2,34 +2,36 @@
     .submittalHead {
         z-index: 2;
     }
+
     .doc-container {
-display: flex;
-          .subitTabs {
-                width: 25%;
-                height: 100vh;
-                border-#{$right}: 1px solid #e9ecf0;
+        display: flex;
 
-                header {
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    -webkit-box-pack: center;
-                    -ms-flex-pack: center;
-                    justify-content: center;
-                    border-bottom: 1px solid #e9ecf0;
-                }
+        .subitTabs {
+            width: 25%;
+            height: 100vh;
+            border-#{$right}: 1px solid #e9ecf0;
 
+            header {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                border-bottom: 1px solid #e9ecf0;
             }
+        }
 
         .subiTabContainer {
-          width: 50%;
+            width: 50%;
+
             .subiTabsContent {
                 width: 100%;
                 background-color: #fff;
                 min-height: 100vh;
+
                 > header {
                     height: 72px;
-
                     border-bottom: 1px solid #e9ecf0;
                     display: -webkit-box;
                     display: -ms-flexbox;
@@ -49,8 +51,10 @@ display: flex;
                         color: $grey-900;
                     }
                 }
+
                 .document-fields {
                     padding: 14px;
+
                     .doc-infohead {
                         font-family: $sans-r;
                         font-size: $heading6-font;
@@ -60,9 +64,11 @@ display: flex;
                         width: 100%;
                         text-align: $right;
                     }
+
                     .proForm {
                         .linebylineInput {
                             margin-bottom: 28px;
+
                             > label {
                                 width: 130px;
                                 text-align: $right;
@@ -73,38 +79,40 @@ display: flex;
                                 letter-spacing: -0.2px;
                                 color: $grey-900;
                             }
+
                             .ui.input.inputDev {
                                 padding: 0;
                             }
-                            .radioBoxBlue {
 
+                            .radioBoxBlue {
                                 label {
                                     padding-#{$left}: 35px;
                                     padding-#{$right}: 15px;
                                 }
                             }
                         }
+
                         &.datepickerContainer {
                             .control-label {
                                 padding-#{$right}: 0;
-
                             }
+
                             .selection {
                                 max-width: 360px;
                                 width: 100%;
+
                                 .text {
                                     background: none;
                                 }
                             }
                         }
-
                     }
-
                 }
 
                 .doc-pre-cycle {
                     header {
                         padding: 40px;
+
                         h2 {
                             border-bottom: 1px solid #e1e3e8;
                             width: 100%;
@@ -117,11 +125,14 @@ display: flex;
                             color: #252833;
                         }
                     }
+
                     .precycle-grid {
                         padding: 8px;
+
                         .table {
                             border-left: 0;
                             border-right: 0;
+
                             thead {
                                 th {
                                     font-family: $muli-b;
@@ -129,18 +140,22 @@ display: flex;
                                     line-height: 1.43;
                                     letter-spacing: -0.2px;
                                     color: #a8b0bf;
+
                                     &:nth-child(1) {
                                         padding: 0 13px;
                                         width: 40px;
                                     }
+
                                     &:nth-child(2) {
                                         border-right: 1px solid #e9ecf0;
                                     }
+
                                     &:nth-child(3) {
                                         padding-left: 30px;
                                     }
                                 }
                             }
+
                             /**/
                             tbody {
                                 td {
@@ -149,12 +164,15 @@ display: flex;
                                     line-height: 1.71;
                                     letter-spacing: -0.2px;
                                     color: #3e4352;
+
                                     &:nth-child(2) {
                                         border-right: 1px solid #e9ecf0;
                                     }
+
                                     &:nth-child(3) {
                                         padding-left: 30px;
                                     }
+
                                     &:last-child {
                                         text-align: right;
                                     }
@@ -162,19 +180,17 @@ display: flex;
                             }
                         }
                     }
-
                 }
-
             }
-
         }
+
         .submittalActions {
-           
             &.doc-submitt {
-                 width: 25%;
+                width: 25%;
                 border-#{$left}: 1px solid #e9ecf0;
                 padding: 0;
                 height: 100vh;
+
                 header {
                     border-bottom: 1px solid #e9ecf0;
                     padding: 21.3px 0;
@@ -182,7 +198,7 @@ display: flex;
                     margin-bottom: 28px;
                     height: 72px;
                 }
-          
+
                 .docsubmitt-group {
                     width: 100%;
                     display: -webkit-box;
@@ -195,21 +211,18 @@ display: flex;
                     padding: 20px;
                     padding-top: 30px;
                 }
-
             }
         }
     }
-
 }
 
-
 .documents-stepper {
-
     .submittalHead {
         justify-content: flex-start;
         padding-#{$left}: 175px;
         z-index: 2;
     }
+
     .doc-container {
         .subiTabsContent {
             width: 100%;
@@ -227,6 +240,7 @@ display: flex;
                 -webkit-box-pack: center;
                 -ms-flex-pack: center;
                 justify-content: center;
+
                 .doc-infohead {
                     font-family: $sans-r;
                     font-size: $heading6-font;
@@ -236,6 +250,7 @@ display: flex;
                     width: 100%;
                     text-align: $right;
                 }
+
                 h2 {
                     font-family: $muli-b;
                     font-size: $heading3-font;
@@ -244,24 +259,23 @@ display: flex;
                     color: $grey-900;
                 }
             }
-
         }
-
     }
+
     .doc-container {
         border-radius: 4px;
         border: solid 1px #e9ecf0;
         position: relative;
         display: flex;
 
-
         .step-content {
             width: calc(100% - 347px);
-            border-right: 1px solid #e9ecf0;
+            border-#{$right}: 0;
             background-color: #ffffff;
 
             .document-fields {
                 padding: 14px;
+
                 .doc-infohead {
                     font-family: $sans-r;
                     font-size: $heading6-font;
@@ -271,15 +285,18 @@ display: flex;
                     width: 100%;
                     text-align: $right;
                 }
+
                 .first-proform {
                     display: flex;
                     justify-content: space-between;
                     padding-#{$right}: 50px;
                     flex-wrap: wrap;
                 }
+
                 .proForm {
                     .linebylineInput {
                         margin-bottom: 28px;
+
                         > label {
                             width: 130px;
                             text-align: $right;
@@ -290,39 +307,42 @@ display: flex;
                             letter-spacing: -0.2px;
                             color: $grey-900;
                         }
+
                         .ui.input.inputDev {
                             padding: 0;
                         }
-                        .radioBoxBlue {
 
+                        .radioBoxBlue {
                             label {
                                 padding-#{$left}: 35px;
                                 padding-#{$right}: 15px;
                             }
                         }
                     }
+
                     &.datepickerContainer {
                         .control-label {
                             padding-#{$right}: 0;
-
                         }
+
                         .selection {
                             max-width: 360px;
                             width: 100%;
+
                             .text {
                                 background: none;
                             }
                         }
                     }
-
                 }
-
             }
 
             .doc-pre-cycle {
                 padding: 0 80px;
+
                 header {
                     padding: 40px;
+
                     h2 {
                         border-bottom: 1px solid #e1e3e8;
                         width: 100%;
@@ -335,12 +355,14 @@ display: flex;
                         color: #252833;
                     }
                 }
+
                 .precycle-grid {
                     padding: 8px;
 
                     .table {
                         border-left: 0;
                         border-right: 0;
+
                         thead {
                             th {
                                 font-family: $muli-b;
@@ -348,18 +370,22 @@ display: flex;
                                 line-height: 1.43;
                                 letter-spacing: -0.2px;
                                 color: #a8b0bf;
+
                                 &:nth-child(1) {
                                     padding: 0 13px;
                                     width: 40px;
                                 }
+
                                 &:nth-child(2) {
                                     border-right: 1px solid #e9ecf0;
                                 }
+
                                 &:nth-child(3) {
                                     padding-left: 30px;
                                 }
                             }
                         }
+
                         /**/
                         tbody {
                             td {
@@ -368,12 +394,15 @@ display: flex;
                                 line-height: 1.71;
                                 letter-spacing: -0.2px;
                                 color: #3e4352;
+
                                 &:nth-child(2) {
                                     border-right: 1px solid #e9ecf0;
                                 }
+
                                 &:nth-child(3) {
                                     padding-left: 30px;
                                 }
+
                                 &:last-child {
                                     text-align: right;
                                 }
@@ -381,19 +410,18 @@ display: flex;
                         }
                     }
                 }
+
                 .slider-Btns {
                     padding-top: 55px;
                     padding-left: 64px;
                 }
-
             }
-
-
         }
 
         .docstepper-levels {
             width: 347px;
             position: relative;
+
             .workflow-sliderSteps {
                 position: relative;
                 padding-top: 42px;
@@ -401,6 +429,7 @@ display: flex;
                 #{$left}: -25px;
                 display: flex;
                 align-items: center;
+
                 .step-slider {
                     display: -webkit-inline-box;
                     display: -ms-inline-flexbox;
@@ -413,9 +442,9 @@ display: flex;
                     -ms-flex-flow: column;
                     flex-flow: column;
 
-
                     .step-slider-item {
                         display: flex;
+
                         .steps-timeline {
                             position: relative;
                             margin-bottom: 15px;
@@ -436,7 +465,6 @@ display: flex;
                                 background-color: #e9ecf0;
                                 position: absolute;
                                 top: 48px;
-
                             }
 
                             > span {
@@ -446,13 +474,13 @@ display: flex;
                                 letter-spacing: -0.2px;
                                 color: #ccd2db;
                             }
-
                         }
 
                         .steps-info {
                             padding-#{$left}: 16px;
                             padding-#{$right}: 10px;
                             padding-top: 14px;
+
                             h6 {
                                 margin: 0;
                                 line-height: 1.5;
@@ -461,6 +489,7 @@ display: flex;
                                 font-size: 16px;
                                 font-family: $muli-b;
                             }
+
                             p {
                                 line-height: 1.33;
                                 letter-spacing: -0.2px;
@@ -469,8 +498,8 @@ display: flex;
                                 font-family: $sans-r;
                             }
                         }
-                        &.active {
 
+                        &.active {
                             /*
                             background-color: #5fd45f;
                             */
@@ -478,10 +507,13 @@ display: flex;
                                 > span {
                                     display: none;
                                 }
+
                                 &::before {
                                     position: absolute;
                                     content: "";
-                                    background: url(../../images/truesign.svg);
+
+                                    //background: url(../../images/truesign.svg);
+                                    background-image: url(../../images/approval.png);
                                     top: 0;
                                     bottom: 0;
                                     width: 100%;
@@ -489,16 +521,12 @@ display: flex;
                                     background-size: contain;
                                     border-radius: 50%;
                                 }
+
                                 &::after {
                                     background-color: #5fd45f;
-
                                 }
-
                             }
-
-
                         }
-
 
                         &:last-child {
                             .steps-timeline {
@@ -507,15 +535,10 @@ display: flex;
                                 }
                             }
                         }
-
                     }
                 }
-
             }
-
         }
-
-
 
         .step-content-foot {
             position: relative;
@@ -524,16 +547,22 @@ display: flex;
             align-items: center;
             justify-content: center;
             -webkit-touch-callout: none;
+
             /* iOS Safari */
             -webkit-user-select: none;
+
             /* Safari */
             -khtml-user-select: none;
+
             /* Konqueror HTML */
             -moz-user-select: none;
+
             /* Firefox */
             -ms-user-select: none;
+
             /* Internet Explorer/Edge */
             user-select: none;
+
             /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
             span {
@@ -543,17 +572,15 @@ display: flex;
                 font-size: $heading6-font;
                 font-family: $sans-sb;
                 margin: 0 12px;
+
                 i {
                     margin: 0 4px;
                 }
-
             }
-
         }
 
         .step-content-btn.disabled,
-        .step-content-btn-prev.disabled,
-            {
+        .step-content-btn-prev.disabled {
             pointer-events: none;
             color: #ccc;
         }
@@ -573,7 +600,90 @@ display: flex;
 
         /**/
     }
+}
 
+.customDropdown {
+    width: 100%;
+    padding: 0 40px;
 
+    .ui.buttons.primaryBtnGroup2.mediumBtn {
+        width: 100%;
 
+        .actionBtns {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .otherAction {
+                text-align: center;
+                width: 100%;
+            }
+        }
+
+        .SubmittalUL {
+            .item {
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+        }
+    }
+}
+
+.customSubActions {
+    .customDropdown {
+        width: 135px;
+        padding: 0;
+
+        .actionBtns {
+            .otherAction {
+                position: relative;
+
+                &::after {
+                    content: ' ';
+                    width: 1px;
+                    height: 28px;
+                    background-color: #dadee6;
+                    position: absolute;
+                    top: -4px;
+                    bottom: -6px;
+                    #{$right}: 8px;
+                }
+            }
+        }
+
+        .SubmittalUL {
+            display: block;
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            hr {
+                border: 0.5px solid #E9ECF0;
+                margin-top: 12px;
+                margin-bottom: 12px;
+                width: 100%;
+            }
+
+            li {
+                &.item {
+                    width: auto;
+                    margin: 0;
+                }
+
+                a {
+                    flex-flow: row;
+                    min-height: 40px;
+                    font-size: 13px;
+
+                    &:hover {
+                        font-size: 13px;
+                    }
+
+                    .svg {
+                        margin-#{$right}: 5px;
+                        transition: 0s;
+                    }
+                }
+            }
+        }
+    }
 }

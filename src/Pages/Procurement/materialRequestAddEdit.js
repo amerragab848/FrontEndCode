@@ -86,20 +86,21 @@ class materialRequestAddEdit extends Component {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.quantity != null ? row.quantity : 0}</span></a>;
             }
-            return null;
+            return 0;
         };
         let editStock = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.stock != null ? row.stock : 0}</span></a>;
             }
-            return null;
+            return 0;
         };
         let editRequestQty = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.requestedQuantity != null ? row.requestedQuantity : 0}</span></a>;
             }
-            return null;
+            return 0;
         };
+
         this.itemsColumns = [
             {
                 key: "arrange",
@@ -180,66 +181,7 @@ class materialRequestAddEdit extends Component {
                 sortDescendingFirst: true
             }
         ];
-        this.MRColumns = [
-            {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 140,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
 
-            }, {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            }, {
-                key: "stock",
-                name: Resources["stock"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "requestedVariance",
-                name: Resources["requestedVariance"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "requestedQuantity",
-                name: Resources["releasedQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editRequestQty,
-                editable: true
-            }
-        ];
         this.state = {
             updatedItems: [],
             updatedchilderns: [],
@@ -353,6 +295,33 @@ class materialRequestAddEdit extends Component {
         }
     }
 
+    renderEditableQuantity = (cellInfo) => {
+        return (
+            <div
+                style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer' }}
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={e => {
+                    const updatedItem = this.state.MRItems[cellInfo.index].quantity;
+                    const MRItems = [...this.state.MRItems];
+                    if (this.state.MRItems[cellInfo.index].quantity < parseInt(e.target.innerHTML, 10) || this.state.MRItems[cellInfo.index].stock < parseInt(e.target.innerHTML, 10)) {
+                        toast.error("Quantity Cannot more Than Quantity and Stock Quantity ")
+                    }
+                    else {
+                        MRItems[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+                        updatedItem = MRItems[cellInfo.index]
+                    }
+                    this.setState({ MRItems, updatedItem });
+
+                }}
+                dangerouslySetInnerHTML={{
+                    __html: this.state.MRItems[cellInfo.index].quantity
+                }}
+            />
+        );
+
+    }
+
     editChildren = (cellInfo) => {
         return (
             <div
@@ -391,7 +360,7 @@ class materialRequestAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id != this.state.document.id) {
+        if (nextProps.document.id != this.props.document.id) {
             let docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
             let requiredDate = nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format("DD/MM/YYYY") : moment();
             this.setState({
@@ -776,13 +745,15 @@ class materialRequestAddEdit extends Component {
         if (item.title == "sendToWorkFlow") {
             this.props.actions.SendingWorkFlow(true);
         }
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
-                currentComponent: item.value,
+                currentComponantDocument: item.value,
                 currentTitle: item.title,
-                showContractModal: true
-            });
-            this.simpleDialog.show();
+                showModal: true
+            })
+            this.simpleDialog.show()
+
         }
     };
 
@@ -868,15 +839,15 @@ class materialRequestAddEdit extends Component {
         this.state.updatedchilderns.forEach((item, index) => {
             if (item.quantity > 0) {
                 this.setState({ isLoading: true })
-                let updatedItem={...item};
+                let updatedItem = { ...item };
                 updatedItem.requestId = this.state.docId
                 Api.post('AddContractsSiteRequestItems', updatedItem).then(() => {
                     const _items = this.state._items;
                     _items.push(updatedItem);
-                    this.setState({ _items, isLoading: false})
+                    this.setState({ _items, isLoading: false })
                     if (index == length - 1) {
-                        let items=this.state.items 
-                        for (var i = 0; i < items.length; i++) 
+                        let items = this.state.items
+                        for (var i = 0; i < items.length; i++)
                             if (items[i].id == this.state.updatedchilderns[0].parentId) {
                                 items[i].childerns.forEach(child => {
                                     child.quantity = 0;
@@ -884,7 +855,7 @@ class materialRequestAddEdit extends Component {
                                 })
                                 this.setState({ items, showChildren: false })
                                 break;
-                            } 
+                            }
                     }
                 })
             }
@@ -959,48 +930,6 @@ class materialRequestAddEdit extends Component {
                     })
             }
         });
-    };
-
-    _onMRGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        console.log(updated)
-        console.log('this.state._items[fromRow]', this.state._items[fromRow])
-
-        // let updateRow = this.state._items[fromRow];
-        // if(updateRow.quantity<)
-        // this.setState(state => {
-        //     const _items = state._items.slice();
-        //     for (let i = fromRow; i <= toRow; i++) {
-        //         _items[i] = { ..._items[i], ...updated };
-        //     }
-        //     return { _items };
-        // }, function () {
-        //     if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]] && Object.keys(updated)[0] == 'quantity') {
-        //         updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-        //         this.setState({ isLoading: true })
-        //         Api.post('UpdateQuantitySiteRequestItems?id=' + this.state._items[fromRow].id + '&quantity=' + updated.quantity)
-        //             .then(() => {
-        //                 toast.success(Resources["operationSuccess"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //             .catch(() => {
-        //                 toast.error(Resources["operationCanceled"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //     }
-        //     if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]] && Object.keys(updated)[0] == 'stock') {
-        //         updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-        //         this.setState({ isLoading: true })
-        //         Api.post('UpdateQuantitySiteRequestItems?id=' + this.state._items[fromRow].id + '&stock=' + updated.stock)
-        //             .then(() => {
-        //                 toast.success(Resources["operationSuccess"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //             .catch(() => {
-        //                 toast.error(Resources["operationCanceled"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //     }
-        // });
     };
 
     onRowClick = (value, index, column) => {
@@ -1091,6 +1020,45 @@ class materialRequestAddEdit extends Component {
         this.setState({ showChildren: true, childerns })
         this.simpleDialog4.show()
     }
+    executeBeforeModalClose = (e) => {
+        this.setState({ showModal: false });
+    }
+
+    _executeAfterModalOpen() {
+        document.body.classList.add('noScrolling');
+        window.scrollTo(0, 0)
+    }
+
+    _executeBeforeModalOpen() {
+        document.body.classList.add('noScrolling');
+        window.scrollTo(0, 0);
+    }
+
+    _executeAfterModalClose() {
+        document.body.classList.remove('noScrolling');
+    }
+
+    StepOneLink = () => {
+        if ( this.state.docId !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1  
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if ( this.state.docId !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2 
+
+            })
+        }
+    }
+
     render() {
         const childerns =
             this.state.isLoading == false ?
@@ -1155,35 +1123,86 @@ class materialRequestAddEdit extends Component {
                     key='items'
                 /> : <LoadingSection />;
         const MRGrid =
-            this.state.isLoading == false ?
-                <GridSetupWithFilter
-                    rows={this.state.MRItems}
-                    pageSize={this.state.pageSize}
-                    columns={this.MRColumns}
-                    showCheckbox={false}
-                    onGridRowsUpdated={this._onMRGridRowsUpdated}
-                    key='MR'
-                /> : <LoadingSection />;
+            <ReactTable
+                data={this.state.MRItems}
+                columns={[
+                    {
+                        Header: Resources.resourceCode[currentLanguage],
+                        accessor: 'resourceCode'
+
+                    }, {
+                        Header: Resources.itemCode[currentLanguage],
+                        accessor: 'itemCode'
+                    }, {
+                        Header: Resources.quantity[currentLanguage],
+                        accessor: 'quantity'
+                    }, {
+                        Header: Resources.stock[currentLanguage],
+                        accessor: 'stock'
+                    }, {
+                        Header: Resources.requestedVariance[currentLanguage],
+                        accessor: 'requestedVariance',
+                        Cell: (value, row) => {
+                            console.log('value', value)
+                            console.log('row', row)
+                            return (<span  >  {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}</span>)
+                        }
+                    }, {
+                        Header: Resources.releasedQuantity[currentLanguage],
+                        accessor: 'releasedQuantity',
+                        Cell: this.renderEditableQuantity
+                    }
+                ]
+                }
+                defaultPageSize={5}
+                className="-striped -highlight"
+            />
+        // <ReactTable
+        //     data={this.state.MRItems}
+        //     columns={
+        //         [
+        //             {
+        //                 Header: Resources.resourceCode[currentLanguage],
+        //                 accessor: 'resourceCode'
+
+        //             }, {
+        //                 Header: Resources.itemCode[currentLanguage],
+        //                 accessor: 'itemCode'
+        //             }, {
+        //                 Header: Resources.quantity[currentLanguage],
+        //                 accessor: 'quantity'
+        //             }, {
+        //                 Header: Resources.stock[currentLanguage],
+        //                 accessor: 'stock'
+        //             }, {
+        //                 Header: Resources.requestedVariance[currentLanguage],
+        //                 accessor: 'requestedVariance',
+        //                 Cell: (value, row) => {
+        //                     return (<span  >  {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}</span>)
+        //                 }
+        //             }, {
+        //                 Header: Resources.releasedQuantity[currentLanguage],
+        //                 accessor: 'releasedQuantity',
+        //                 Cell: (value, row) => {
+        //                     return (<a className="editorCell "><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>
+        //                         {value.original.quantity != null ? value.original.quantity : 0}</span></a>)
+
+        //                 }
+        //             }
+        //         ]
+        //     }
+        //     defaultPageSize={3}
+        //     className="-striped -highlight" />
+
         let actions = [
+            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
+            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "distributionList",
-                value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-                label: Resources["distributionList"][currentLanguage]
-            },
-            {
-                title: "sendToWorkFlow",
-                value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-                label: Resources["sendToWorkFlow"][currentLanguage]
-            },
-            {
-                title: "documentApproval",
-                value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-                label: Resources["documentApproval"][currentLanguage]
-            },
-            {
-                title: "documentApproval",
-                value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-                label: Resources["documentApproval"][currentLanguage]
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }, {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ];
         let Step_1 = <Fragment>
@@ -1195,6 +1214,8 @@ class materialRequestAddEdit extends Component {
                 validationSchema={validationSchema}
                 enableReinitialize={true}
                 onSubmit={values => {
+                    if (this.props.showModal) { return; }
+                    if (this.props.showModal) { return; }
                     if (this.props.changeStatus === true && this.state.docId > 0) {
                         this.editMaterialRequest(values);
                     } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -1387,19 +1408,6 @@ class materialRequestAddEdit extends Component {
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
-                                    {/* {this.state.isLoading ? (
-                                            <button className="primaryBtn-1 btn disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button>
-                                        ) : (
-                                                <button className={ this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" :"primaryBtn-1 btn middle__btn"}>
-                                                    {Resources.save[currentLanguage]}
-                                                </button>
-                                            )} */}
                                     {this.state.isApproveMode === true ? (
                                         <div>
                                             <button className="primaryBtn-1 btn " type="button"
@@ -1530,6 +1538,7 @@ class materialRequestAddEdit extends Component {
                     }}
                     validationSchema={contractSchema}
                     onSubmit={(values) => {
+                        if (this.props.showModal) { return; }
                         this.addContract(values)
                     }}
                 >
@@ -1612,6 +1621,7 @@ class materialRequestAddEdit extends Component {
                     }}
                     validationSchema={contractSchema}
                     onSubmit={(values) => {
+                        if (this.props.showModal) { return; }
                         this.addPurchaseOrder(values)
                     }}
                 >
@@ -1707,6 +1717,7 @@ class materialRequestAddEdit extends Component {
                     }}
                     validationSchema={materialSchema}
                     onSubmit={(values) => {
+                        if (this.props.showModal) { return; }
                         this.addMR(values)
                     }}
                 >
@@ -1855,22 +1866,46 @@ class materialRequestAddEdit extends Component {
                                         <React.Fragment>
                                             {this.state.CurrStep == 1 ? Step_1 : Step_2}
                                             <div className="largePopup largeModal " style={{ display: this.state.showContractModal ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog1 = ref)} title={Resources.contract[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog1 = ref)}
+                                                    title={Resources.contract[currentLanguage]}>
                                                     {contractContent}
                                                 </SkyLight>
                                             </div>
                                             <div className="largePopup largeModal " style={{ display: this.state.showPoModal ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog2 = ref)} title={Resources.po[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog2 = ref)}
+                                                    title={Resources.po[currentLanguage]}>
                                                     {purchaseOrder}
                                                 </SkyLight>
                                             </div>
                                             <div className="largePopup largeModal " style={{ display: this.state.showMRModal ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog3 = ref)} title={Resources.materialRelease[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog3 = ref)}
+                                                    title={Resources.materialRelease[currentLanguage]}>
                                                     {materialRelease}
                                                 </SkyLight>
                                             </div>
                                             <div className="largePopup largeModal " style={{ display: this.state.showChildren ? "block" : "none" }}>
-                                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog4 = ref)} title={Resources.materialRelease[currentLanguage]}>
+                                                <SkyLight
+                                                    afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
+                                                    hideOnOverlayClicked
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog4 = ref)}
+                                                    title={Resources.materialRelease[currentLanguage]}>
                                                     {childerns}
                                                 </SkyLight>
                                             </div>
@@ -1901,35 +1936,33 @@ class materialRequestAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <div className="docstepper-levels">
-                                <div className="step-content-foot">
-                                    <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                        "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
-                                    <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
-                                        : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <div className="workflow-sliderSteps">
-                                    <div className="step-slider">
-                                        <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
-                                            <div className="steps-timeline">
-                                                <span>1</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6>{Resources.siteRequest[currentLanguage]}</h6>
-                                            </div>
+                        <div className="docstepper-levels">
+                            <div className="step-content-foot">
+                                <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
+                                <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
+                                    : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div className="workflow-sliderSteps">
+                                <div className="step-slider">
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>1</span>
                                         </div>
-                                        <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
-                                            <div className="steps-timeline">
-                                                <span>2</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6 >{Resources.items[currentLanguage]}</h6>
-                                            </div>
+                                        <div className="steps-info">
+                                            <h6>{Resources.siteRequest[currentLanguage]}</h6>
                                         </div>
-
                                     </div>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
+                                        <div className="steps-timeline">
+                                            <span>2</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6 >{Resources.items[currentLanguage]}</h6>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -1946,7 +1979,8 @@ class materialRequestAddEdit extends Component {
                     />
                 ) : null}
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
+                        beforeClose={() => { this.executeBeforeModalClose() }}  >
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>

@@ -15,8 +15,7 @@ class PaymentRequisitionList extends Component {
         super(props)
         this.state = {
             paymentRequistionList: [],
-            contractId: this.props.contractId
-            // contractId: 5667
+            contractId: this.props.contractId 
         }
     }
 

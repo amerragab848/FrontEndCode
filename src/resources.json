@@ -5132,6 +5132,10 @@
         "en": "Budget Variance",
         "ar": "الفرق عن الميزانيه"
     },
+    "riskStatusYearly": {
+        "en": "Risk Status Yearly",
+        "ar": "Risk Status Yearly"
+    },
     "code": {
         "en": "Code",
         "ar": "الكود "

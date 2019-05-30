@@ -18212,8 +18212,18 @@
       "getCustom": "GetCommunicationRiskCustom",
       "delete": "CommunicationRiskMultipleDelete"
     },
-    "documentColumns": [
-      
+    "documentColumns": [ 
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+          "exportDataType": "s"
+      },
       {
         "field": "refDoc",
         "friendlyName": "refDoc",
@@ -18237,17 +18247,6 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "s"
-      },
-      {
-        "field": "subject",
-        "friendlyName": "subject",
-        "minWidth": 200,
-        "width": "20%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": true,
-          "exportDataType": "s"
       },
       {
         "field": "fromCompanyName",

@@ -239,7 +239,7 @@ class clientSelectionAddEdit extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        this.props.actions.GetNextArrange(url);
+        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);

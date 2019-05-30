@@ -1,31 +1,25 @@
 import React, { Component, Fragment } from 'react';
 import Api from '../../api';
-import { Bar, GroupedBar, Tooltip, ResponsiveContainer, withResponsiveness } from 'britecharts-react'
-
-
+// import * as d3 from 'd3';
+import { Bar, GroupedBar, Tooltip, ResponsiveContainer } from 'britecharts-react'
+import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 const marginObject = {
-    left: 40,
+    left: 0,
     right: 40,
     top: 50,
     bottom: 50,
 };
+
 const colorSchema = ["#39bd3d", "#dfe2e6"]
+
 class BarChartComp extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dataByTopic: {
-                dataByTopic: [
-                    {
-                        topic: -1,
-                        topicName: 'Vivid',
-                        dates: []
-                    }]
-            },
             barData: [],
             isLoading: true,
-            groupedBarData: []
+            groupedBarData: [],
         }
     }
 
@@ -69,12 +63,33 @@ class BarChartComp extends Component {
             });
         });
     }
+    // logMouseOver = (e) => {
+    //     Tooltip.show
+    // };
 
     render() {
+        const renderLine = (props) => (
+            <ResponsiveContainer
+                render={
+                    ({ width }) =>
+                        <Bar
+                            isHorizontal={false}
+                            margin={marginObject}
+                            colorSchema={colorSchema}
+                            width={width}
+                             
+                            // percentageAxisToMaxRatio={1.3}
+
+                            shouldShowLoadingState={this.state.barData.length ? false : true}
+                            {...props}
+                        />
+                }
+            />
+        );
         return (
             <Fragment>
                 {this.props.multiSeries !== 'no' ?
-                    <div className="col-md-8 col-lg-6">
+                    <div className="col-md-12 col-lg-6">
                         <div className="panel barChart__container">
                             <div className="panel-body">
                                 <h2>
@@ -92,7 +107,7 @@ class BarChartComp extends Component {
                                                         nameLabel='name'
                                                         valueLabel='total'
                                                         colorSchema={colorSchema}
-                                                    />
+                                                        shouldShowLoadingState={this.state.groupedBarData.length ? false : true} />
                                                 </div>
                                         }
                                     />
@@ -102,34 +117,30 @@ class BarChartComp extends Component {
                     </div>
                     :
                     this.state.isLoading == false ?
-                        <div className="col-md-8 col-lg-6">
+                        <div className="col-md-12 col-lg-6">
                             <div className="panel barChart__container">
                                 <div className="panel-body">
                                     <h2>
                                         {this.props.title}
                                     </h2>
-                                    <ResponsiveContainer
-                                        render={
-                                            ({ width }) =>
-                                                <div>
-                                                    <Bar
-                                                        width={width}
-                                                        data={this.state.barData}
-                                                        isHorizontal={false}
-                                                        margin={marginObject}
-                                                        colorSchema={colorSchema}
-
-                                                    />
-                                                </div>
-                                        }
-                                    />
+                                    <div>
+                                        <Fragment>
+                                            <ResponsiveContainer
+                                                render={
+                                                    ({ width }) =>
+                                                        <Tooltip
+                                                            data={this.state.barData}
+                                                            render={renderLine}
+                                                            topicLabel="topics"
+                                                            title="Tooltip Title" />
+                                                }
+                                            /> </Fragment>
+                                    </div>
                                 </div>
                             </div>
                         </div >
                         : null
                 }
-
-
             </Fragment>
         );
     }

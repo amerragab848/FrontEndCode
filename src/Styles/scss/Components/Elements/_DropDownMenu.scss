@@ -17,8 +17,8 @@
 .ui.dropdown.classico {
     text-align: center;
     padding: 5px 0;
-    width: 45px;
-    margin-left: -15px;
+    width: auto;
+    margin-left: 0;
     .dropdown.icon {
         font-size: 16px;
         top: 2.5px;
@@ -246,8 +246,8 @@
             .item-content {
                 .dropIcon {
                     display: inline-block;
-                    width: 20px;
-                    margin-right: 20px;
+                    width: 16px;
+                    margin-right: 16px;
                 }
                 p {
                     max-width: 220px;
@@ -326,8 +326,8 @@
     .menu {
         .item {
 
-            padding-#{$right}: 16px !important;
-            padding-#{$left}: 24px !important;
+            padding-#{$right}: 32px !important;
+            padding-#{$left}: 24px  !important;
             > i {
                 width: inherit;
                 display: -webkit-inline-box;
@@ -385,9 +385,9 @@
 
 .ui.selection.dropdown {
     user-select: none;
-    height: 40px;
+    height: 48px;
     min-height: inherit;
-    border: solid 1px $grey-300;
+    border: solid 2px #E9ECF0;
     hr {
         border-top: 1px solid $grey-100;
         margin: 15px 0;
@@ -542,4 +542,9 @@
 
 .ui.selection.dropdown .menu > .item {
     border: none;
+}
+
+.ui.dropdown.active.visible > .dropdown.icon {
+    transform: rotate(180deg);
+    transition: all 0.2s ease
 }
