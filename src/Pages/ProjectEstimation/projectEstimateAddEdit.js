@@ -521,7 +521,7 @@ class projectEstimateAddEdit extends Component {
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,

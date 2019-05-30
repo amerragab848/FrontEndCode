@@ -154,6 +154,9 @@ class siteInstructionsAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        if (this.state.showModal != nextProps.showModal) {
+          this.setState({ showModal: nextProps.showModal });
+        }
     };
 
     componentDidUpdate(prevProps) {
@@ -234,7 +237,7 @@ class siteInstructionsAddEdit extends Component {
         let updated_document = {};
         this.setState({ loadingPage: true })
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        this.props.actions.GetNextArrange(url);
+        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
@@ -445,7 +448,7 @@ class siteInstructionsAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); } 
-        if (item.value != "0") { 
+        if (item.value != "0") { this.props.actions.showOptionPanel(false);  
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -511,6 +514,9 @@ class siteInstructionsAddEdit extends Component {
                                                 validationSchema={validationSchema}
                                                 enableReinitialize={this.props.changeStatus}
                                                 onSubmit={(values) => {
+                                                    
+                                                    if (this.props.showModal) { return; }
+        
                                                     if (this.props.changeStatus === true && this.state.docId > 0) {
                                                         this.editSiteInstruction();
                                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {

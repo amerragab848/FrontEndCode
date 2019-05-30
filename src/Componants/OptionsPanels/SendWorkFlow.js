@@ -79,7 +79,6 @@ class SendWorkFlow extends Component {
         workFlowObj.workFlowId = this.state.selectedWorkFlow.value;
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.props.docId + '&docType=' + this.props.docTypeId + '&projectId=' + this.props.projectId;
         this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
-
     }
 
     render() {

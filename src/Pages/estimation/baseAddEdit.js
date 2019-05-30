@@ -349,7 +349,7 @@ class BaseAddEdit extends Component {
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,
@@ -414,6 +414,8 @@ class BaseAddEdit extends Component {
                                         <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema}
                                                 enableReinitialize={this.props.changeStatus}
                                                 onSubmit={(values) => {
+                                                    if (this.props.showModal) { return; }
+                                  
                                                     if (this.props.changeStatus === true && this.state.docId > 0) {
                                                         this.editBase();
                                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {

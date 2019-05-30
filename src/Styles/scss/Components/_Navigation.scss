@@ -4,10 +4,12 @@
     float: left;
     width: 88px;
     z-index: 99;
+
     .header-logo-menu {
         z-index: 999;
         position: fixed;
         width: 256px;
+
         .header-logocontent {
             -webkit-box-shadow: 0px 0 12px #888888;
             box-shadow: 0px 0 12px #888888;
@@ -16,13 +18,16 @@
             -webkit-transition: 0.3s ease;
             transition: 0.3s ease;
             background-color: #fff;
+
             &.hover {
                 width: 256px;
             }
+
             &.active {
                 width: 256px;
             }
         }
+
         .content-collapse {
             width: 256px;
             height: 72px;
@@ -38,6 +43,7 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
+
             .procoorLogo {
                 font-size: 25px;
                 font-family: $muli-xb;
@@ -50,6 +56,7 @@
                 user-select: none;
                 padding-#{$left}: 5px;
             }
+
             .mainProjectsList {
                 -webkit-user-select: none;
                 -moz-user-select: none;
@@ -69,10 +76,13 @@
                 align-items: center;
                 cursor: pointer;
                 position: relative;
+
                 .mainProjectName {
                     width: 32px;
                     height: 32px;
+
                     @include border-radius(8px);
+
                     background-color: $Primary-2;
                     display: -webkit-box;
                     display: -ms-flexbox;
@@ -88,6 +98,7 @@
                     font-size: 14px;
                     margin-right: 10px;
                     position: relative;
+
                     &::after {
                         content: "\f0d7";
                         position: absolute;
@@ -97,6 +108,7 @@
                         font-size: 16px;
                         top: 7px;
                     }
+
                     &.activeClass {
                         &::after {
                             content: "\f0d8";
@@ -104,7 +116,6 @@
                     }
                 }
             }
-
         }
     }
 
@@ -114,6 +125,7 @@
         z-index: 98;
         position: relative;
         top: 72px;
+
         .mainSidenavContent {
             width: 88px;
             overflow: hidden;
@@ -127,6 +139,7 @@
                 min-height: calc(100vh - 72px);
                 width: 256px;
                 background-color: #fff;
+
                 /*projectsUL LIst*/
                 .ProjectsUlList {
                     -webkit-user-select: none;
@@ -135,9 +148,11 @@
                     user-select: none;
                     padding-top: 8px;
                     display: none;
+
                     &.active {
                         display: block;
                     }
+
                     &.hidden {
                         display: none;
                     }
@@ -162,9 +177,11 @@
                                 align-items: center;
                                 width: 100%;
                                 border-#{$left}: 4px solid transparent;
+
                                 &:hover {
                                     background-color: #f5f5f6;
                                 }
+
                                 p {
                                     font-family: $muli-b;
                                     font-size: 16px;
@@ -172,10 +189,13 @@
                                     letter-spacing: -0.2px;
                                     display: none;
                                 }
+
                                 span {
                                     min-width: 48px;
                                     height: 48px;
+
                                     @include border-radius(12px);
+
                                     display: -webkit-inline-box;
                                     display: -ms-inline-flexbox;
                                     display: inline-flex;
@@ -199,9 +219,11 @@
                             }
                         }
                     }
+
                     .activeMainPlist {
                         background-color: #f5f5f6;
                     }
+
                     /*projectMange-li*/
                     .projectMange-li {
                         &.activeMainPlist {
@@ -209,10 +231,12 @@
                                 border-#{$left}: 4px solid $Primary-2;
                             }
                         }
+
                         span {
                             background-color: $Primary-2;
                         }
                     }
+
                     /*facilityMange-li*/
                     .facilityMange-li {
                         &.activeMainPlist {
@@ -220,10 +244,12 @@
                                 border-#{$left}: 4px solid #39bd3d;
                             }
                         }
+
                         span {
                             background-color: #39bd3d;
                         }
                     }
+
                     /*humanResources-li*/
                     .humanResources-li {
                         &.activeMainPlist {
@@ -231,10 +257,12 @@
                                 border-#{$left}: 4px solid #e74c3c;
                             }
                         }
+
                         span {
                             background-color: #e74c3c;
                         }
                     }
+
                     /*accounting-li*/
                     .accounting-li {
                         &.activeMainPlist {
@@ -242,10 +270,12 @@
                                 border-#{$left}: 4px solid #009688;
                             }
                         }
+
                         span {
                             background-color: #009688;
                         }
                     }
+
                     /*realEstate-li*/
                     .realEstate-li {
                         &.activeMainPlist {
@@ -253,11 +283,13 @@
                                 border-#{$left}: 4px solid #ffc107;
                             }
                         }
+
                         span {
                             background-color: #ffc107;
                         }
                     }
                 }
+
                 /*Menu of the projects List*/
                 .MainProjectsMenu {
                     display: none;
@@ -279,30 +311,36 @@
                             transition: .2s ease;
                             cursor: pointer;
                             border-bottom: 1px solid $grey-100;
+
                             span {
                                 display: inline-block;
                             }
+
                             i {
                                 margin-right: 4px;
                                 display: inline-block;
                                 font-size: 14px;
                                 padding-left: 10px;
                             }
+
                             &:hover {
                                 background-color: $Primary-2;
                                 color: #fff;
                             }
                         }
                     }
+
                     .MainProjectsMenuUL {
                         &.hidden {
                             display: none !important;
                         }
+
                         a {
                             display: -webkit-box;
                             display: -ms-flexbox;
                             display: flex;
                         }
+
                         .EastWestProject {
                             .EastMainLi {
                                 font-size: 12px;
@@ -312,6 +350,7 @@
                                 padding: 13px 32px;
                                 font-family: $muli-b;
                                 cursor: pointer;
+
                                 &::after {
                                     content: "\f0d8";
                                     position: absolute;
@@ -321,15 +360,18 @@
                                     font-size: 16px;
                                     top: 12px;
                                 }
+
                                 i {
                                     color: #000;
                                 }
                             }
+
                             .EastMainLiArrow {
                                 &::after {
                                     content: "\f0d7";
                                 }
                             }
+
                             ul {
                                 display: -webkit-box;
                                 display: -ms-flexbox;
@@ -340,6 +382,7 @@
                                 flex-flow: column;
                                 -ms-flex-direction: column-reverse;
                                 flex-direction: column-reverse;
+
                                 li {
                                     a {
                                         color: #252833;
@@ -355,36 +398,42 @@
                                         cursor: pointer;
                                         -webkit-transition: 0.2s ease;
                                         transition: 0.2s ease;
+
                                         &:hover {
                                             background-color: #f5f5f6;
                                         }
                                     }
+
                                     &.active {
                                         order: 1;
+
                                         a {
                                             border-#{$left}: 4px solid $Primary-2;
                                             background-color: #f5f5f6;
                                         }
                                     }
-
                                 }
                             }
                         }
                     }
+
                     &.active {
                         display: block;
                     }
+
                     &.hidden {
                         display: none;
                     }
-
                 }
+
                 /*modulesMenuIcons*/
                 .modulesMenuIcons {
                     display: none;
+
                     &.active {
                         display: block;
                     }
+
                     &.hidden {
                         display: none;
                     }
@@ -409,9 +458,11 @@
                         transition: .2s ease;
                         cursor: pointer;
                         border-bottom: 1px solid $grey-100;
+
                         &:hover {
                             background-color: $Primary-2;
                             color: #fff;
+
                             svg {
                                 path {
                                     fill: white;
@@ -423,12 +474,13 @@
                                     color: $white;
                                 }
                             }
-
                         }
+
                         i {
                             margin-right: 4px;
                             display: inline-block;
                         }
+
                         .backtoProjectsOne {
                             display: -webkit-box;
                             display: -ms-flexbox;
@@ -438,16 +490,18 @@
                             align-items: center;
                             font-size: 11px;
                             font-family: $sans-r;
+
                             svg {
                                 height: 36px;
                                 width: 36px;
                                 display: inline-block;
-
                             }
+
                             .backToModulesBK {
                                 display: none;
                             }
                         }
+
                         .backToModulesName {
                             h2 {
                                 font-size: 16px;
@@ -456,23 +510,26 @@
                                 padding-left: 10px;
                                 display: none;
                             }
-
                         }
                     }
+
                     /**/
                     /*start Small Menu*/
                     /* BigMenuUL */
                     .MenuUl {
                         position: relative;
                         padding: 5px 0;
+
                         &::-webkit-scrollbar {
                             width: 5px;
                         }
+
                         &::-webkit-scrollbar-thumb {
-                            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+                            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
                             background: #fff;
                             border: none;
                         }
+
                         &::-webkit-scrollbar-track {
                             background: white;
                             border: none;
@@ -499,6 +556,7 @@
                                 display: none;
                                 margin-#{$left}: 16px;
                             }
+
                             .ULimg {
                                 width: 36px;
                                 height: 36px;
@@ -511,6 +569,7 @@
                                 -webkit-box-pack: center;
                                 -ms-flex-pack: center;
                                 justify-content: center;
+
                                 path {
                                     fill: #A8B0BF;
                                 }
@@ -518,6 +577,7 @@
 
                             .subBigMenuUl {
                                 display: none;
+
                                 li {
                                     a {
                                         padding: 14px 10px;
@@ -528,26 +588,26 @@
                                         letter-spacing: 0.3px;
                                         padding-#{$left}: 78px;
                                         transition: 0.3s;
+
                                         &:hover {
                                             color: $grey-900;
                                         }
                                     }
+
                                     &.active {
                                         a {
                                             color: $blue-600;
                                             font-family: $muli-b;
                                         }
                                     }
-
                                 }
-
                             }
-
 
                             &.ActiveSubLi {
                                 > a {
                                     border-#{$left}: 4px solid $Primary-2;
                                     background-color: #f5f5f6;
+
                                     span {
                                         font-family: $muli-b;
                                         color: $grey-700;
@@ -560,10 +620,12 @@
                                     }
                                 }
                             }
+
                             &:nth-child(2) {
                                 border-bottom: 1px solid $grey-100;
                             }
                         }
+
                         &.PM-color {
                             > li {
                                 > a {
@@ -577,22 +639,25 @@
                         .ui.accordion .title:not(.ui) {
                             padding: 14px 20px;
                         }
-
                     }
                 }
             }
+
             /*with active class*/
             /*hover*/
             &.hover {
                 width: 256px;
+
                 .sidenavHeader {
                     width: 256px;
                 }
+
                 .MenuUl {
                     .UlName {
                         display: inline-block;
                     }
                 }
+
                 .sidenavinner {
                     .ProjectsUlList {
                         ul {
@@ -605,9 +670,9 @@
                             }
                         }
                     }
+
                     .modulesMenuIcons {
                         .MenuUl {
-
                             .subBigMenuUl.active {
                                 display: block;
                             }
@@ -616,12 +681,14 @@
                                 display: inline-block;
                             }
                         }
+
                         .backtoProjects {
                             .backtoProjectsOne {
                                 .backToModulesBK {
                                     display: inline-block;
                                 }
                             }
+
                             .backtoProjectsOne {
                                 svg {
                                     height: 25px;
@@ -630,6 +697,7 @@
                                     padding-top: 3px;
                                 }
                             }
+
                             .backToModulesName {
                                 h2 {
                                     display: inline-block;
@@ -638,6 +706,7 @@
                         }
                     }
                 }
+
                 .ProjectsUlList {
                     li {
                         a {
@@ -646,11 +715,10 @@
                             }
                         }
                     }
+
                     &.show {}
                 }
-
             }
         }
-
     }
 }

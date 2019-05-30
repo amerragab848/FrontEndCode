@@ -99,6 +99,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
             ActionByCompanyData: [],
             TotalPages: 0,
         }
+        if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push("/projectPrimaveraSchedule/" + this.state.projectId);
+          }
     }
 
     checkDocumentIsView() {
@@ -217,7 +221,8 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -248,10 +253,11 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -377,25 +383,25 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     StepOneLink = () => {
         if (docId !== 0) {
-          this.setState({
-            FirstStep: true,
-            SecondStepComplate: false,
-            CurrStep: 1,
-          })
+            this.setState({
+                FirstStep: true,
+                SecondStepComplate: false,
+                CurrStep: 1,
+            })
         }
-      }
-    
-      StepTwoLink = () => {
+    }
+
+    StepTwoLink = () => {
         if (docId !== 0) {
-          this.setState({
-            FirstStep: false,
-            SecondStep: true,
-            SecondStepComplate: true,
-            CurrStep: 2,
-          })
+            this.setState({
+                FirstStep: false,
+                SecondStep: true,
+                SecondStepComplate: true,
+                CurrStep: 2,
+            })
         }
-      }
-      
+    }
+
     render() {
 
         console.log(this.state.ActionByCompanyData)
@@ -514,7 +520,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
 
 
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.primaveraLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.primaveraLog[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
 
@@ -636,16 +642,11 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId !== 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={871} EditAttachments={3250} ShowDropBox={3557} ShowGoogleDrive={3558} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-
-                                            {this.props.changeStatus === true && docId !== 0 ?
+                                            {this.props.changeStatus === true ?
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                                : null}
                                         </div>
                                     </div>
                                 </div>

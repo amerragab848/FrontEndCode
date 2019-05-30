@@ -102,12 +102,12 @@ class clientSelectionAddEdit extends Component {
             companies: [],
             ToContacts: [],
             fromContacts: [],
-            locations: [],
+            locations: [], 
             clientSelections: [],
             permission: [{ name: 'sendByEmail', code: 3153 }, { name: 'sendByInbox', code: 3152 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 3159 },
             { name: 'createTransmittal', code: 3160 }, { name: 'sendToWorkFlow', code: 3156 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            { name: 'viewAttachments', code: 3293 }, { name: 'deleteAttachments', code: 3158 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -155,6 +155,9 @@ class clientSelectionAddEdit extends Component {
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+        }
+        if (this.state.showModal != nextProps.showModal) {
+          this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -236,7 +239,7 @@ class clientSelectionAddEdit extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        this.props.actions.GetNextArrange(url);
+        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
@@ -520,7 +523,7 @@ class clientSelectionAddEdit extends Component {
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
+                Config.IsAllow(3293) === true ?
                     <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
@@ -530,7 +533,7 @@ class clientSelectionAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,
@@ -585,6 +588,9 @@ class clientSelectionAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
+                                                
+                                                if (this.props.showModal) { return; }
+        
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -924,17 +930,12 @@ class clientSelectionAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
-                                        <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                    <div>
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3157} EditAttachments={3252} ShowDropBox={3561} ShowGoogleDrive={3562} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-
                                             {this.props.changeStatus === true ?
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                                : null}
                                         </div>
                                     </div>
                                 </div>

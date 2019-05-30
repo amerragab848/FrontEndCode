@@ -126,7 +126,8 @@ class clientModificationAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -146,14 +147,20 @@ class clientModificationAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document != this.state.document) {
+            let docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY')
+            let doc = nextProps.document
+            doc.docDate = docDate
             this.setState({
-                document: nextProps.document,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
                 answer: nextProps.document.answer
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
+        }
+        if (this.state.showModal != nextProps.showModal) {
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -362,7 +369,7 @@ class clientModificationAddEdit extends Component {
         });
 
         if (isEdit === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+            dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
                 this.setState({
                     contractsPos: [...result]
                 });
@@ -371,16 +378,16 @@ class clientModificationAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        if (value != null) { 
+        if (value != null) {
             let original_document = { ...this.state.document };
 
-            let updated_document = {}; 
-            updated_document.answer = value; 
+            let updated_document = {};
+            updated_document.answer = value;
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document,
-                answer: value 
+                answer: value
             });
         }
     };
@@ -429,7 +436,7 @@ class clientModificationAddEdit extends Component {
 
         if (field == "fromContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            this.props.actions.GetNextArrange(url);
+            // this.props.actions.GetNextArrange(url);
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
@@ -455,7 +462,10 @@ class clientModificationAddEdit extends Component {
             isLoading: true
         });
 
-        dataservice.addObject('EditContractsClientModifications', this.state.document).then(result => {
+        let saveDocument = { ...this.state.document };
+
+        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        dataservice.addObject('EditContractsClientModifications', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -510,10 +520,11 @@ class clientModificationAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
         if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -542,13 +553,8 @@ class clientModificationAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
-
-
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.clientModificationLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.clientModificationLog[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
-
-
 
                     <div className="doc-container">
                         {
@@ -572,6 +578,8 @@ class clientModificationAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -669,7 +677,7 @@ class clientModificationAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -686,7 +694,7 @@ class clientModificationAddEdit extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
@@ -709,7 +717,7 @@ class clientModificationAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                             <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
@@ -722,7 +730,7 @@ class clientModificationAddEdit extends Component {
                                                                         name="toCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
@@ -741,13 +749,23 @@ class clientModificationAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown
-                                                                title="contractPo"
-                                                                data={this.state.contractsPos}
-                                                                selectedValue={this.state.selectedContract}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                index="contractId" />
+                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                            {this.props.changeStatus == true ?
+                                                                <React.Fragment>
+                                                                    <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                    <div className="ui input inputDev "  >
+                                                                        <input type="text" className="form-control" id="contractPo"
+                                                                            value={this.state.document.contractName}
+                                                                            name="contractPo"
+                                                                            placeholder={Resources.contractPo[currentLanguage]} />
+                                                                    </div>
+                                                                </React.Fragment> :
+                                                                <Dropdown
+                                                                    title="contractPo"
+                                                                    data={this.state.contractsPos}
+                                                                    selectedValue={this.state.selectedContract}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                    index="contractId" />}
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
@@ -841,16 +859,11 @@ class clientModificationAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3143} EditAttachments={3227} ShowDropBox={3615} ShowGoogleDrive={3616} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-
                                             {this.props.changeStatus === true ?
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                                : null}
                                         </div>
                                     </div>
                                 </div>

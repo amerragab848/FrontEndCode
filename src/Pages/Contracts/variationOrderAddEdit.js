@@ -184,6 +184,9 @@ class variationOrderAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        if (this.state.showModal != nextProps.showModal) {
+          this.setState({ showModal: nextProps.showModal });
+        }
     };
 
     componentDidUpdate(prevProps) {
@@ -267,7 +270,7 @@ class variationOrderAddEdit extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        this.props.actions.GetNextArrange(url);
+        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
@@ -451,7 +454,7 @@ class variationOrderAddEdit extends Component {
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,

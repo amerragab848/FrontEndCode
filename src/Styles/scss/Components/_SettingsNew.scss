@@ -1,0 +1,265 @@
+.settings-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    .setting-tabs-contant {
+        .tab__header {
+            border: 1px solid #e9ecf0;
+            border-right: 0;
+            border-left: 0;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            padding:  0 40px;
+            p {
+                font-family: $muli-b ;
+                font-size: 20px;
+                line-height: 1.4;
+                letter-spacing: -0.2px;
+                color: $header;
+            }
+        }
+        .company__logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 41px;
+            span {
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                padding: 30px;
+                border: solid 1px #eceff1;
+                background-color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-#{$right} : 16px; 
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            }
+            .company__logo--change {
+                h3 {
+                    font-family: $muli-b ;
+                    font-size: 14px;
+                    line-height: 1.43;
+                    letter-spacing: -0.2px;
+                    color: #252833;
+                }
+                form {
+                    display: inline-block;
+                    input {
+                        width: 0.1px;
+                        height: 0.1px;
+                        opacity: 0;
+                        overflow: hidden;
+                        position: absolute;
+                        z-index: -1;
+                    }
+                    label {
+                        display: flex;
+                        width: 88px;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+        .owner__info {
+            p {
+                opacity: 0.4;
+                font-family: $muli-r;
+                font-size: 16px;
+                line-height: 1.5;
+                letter-spacing: -0.2px;
+                color: #252833;
+                padding-#{$left} : 16px; 
+            }
+        }
+        .proForm {
+            .admin_form {
+                button {
+                    margin-#{$left} : 16px; 
+                }
+            }
+            .admin__checkbox {
+                padding: 4px 16px;
+                .ui.checkbox {
+                    label {    
+                        color: #3e4352   
+                    }
+                }
+            }
+            .sub__admin {
+                .input__btns {
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+                button {
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    span {
+                        display: flex;
+                        align-items: center;
+                        font-family: $muli-b;
+                        font-size: 14px;
+                        line-height: 1.43;
+                        letter-spacing: -0.2px;
+                        text-align: center;
+                        color: #858d9e;
+                        img {
+                            margin-#{$right} : 4px; 
+                        }
+                    }
+                }
+            }
+            .add__new--admin {
+                button {
+                    margin-top: 8px;
+                }
+            }
+            &.flex__proform {
+                display: flex;
+                flex-flow: column;
+                .form-group {
+                    .ui.selection.dropdown.singleDropDown {
+                        max-width: 360px;
+                    }
+                }
+                .datepickerContainer {
+                    .form-group {
+                        .ui.selection.dropdown.singleDropDown {
+                            max-width: 192px;
+                        }
+                    }
+                }
+            }
+        }
+        .delete__admin {
+            margin-top: 68px;
+            padding: 0 16px;
+            button {
+                background: transparent;
+                border: none;
+                height: 40px;
+                font-family: $muli-b;
+                font-size: 13px;
+                line-height: 1.54;
+                letter-spacing: 0.4px;
+                color: #858d9e;
+                cursor: pointer;
+            }
+        }
+        .overview__info {
+            .overview__info--content {
+                display: flex;
+                align-items: center;
+                margin-bottom: 37px;
+                p {
+                    font-family: $muli-b;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    letter-spacing: -0.2px;
+                    color: #252833;
+                    margin-#{$right} : 12px;
+                    min-width: 70px;
+                }
+                .overview__info--projects {
+                    display: flex;
+                    align-items: center;
+                    span {
+                        &.border_span {
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 12px;
+                            margin: 0 8px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-family: $muli-xb;
+                            font-size: 18px;
+                            line-height: 1.11;
+                            letter-spacing: -0.7px;
+                            color: #ffffff;
+                            &.pm {
+                                background-color: #4382f9;
+                            }
+                            &.hr {
+                                background-color: #e74c3c;
+                            }
+                            &.fm {
+                                background-color: #39bd3d;
+                            }
+                            &.number_span {
+                                border: solid 1px #ccd2db;
+                                background-color: rgba(67, 130, 249, 0);
+                                font-family: $muli-b;
+                                font-size: 24px;
+                                line-height: 1.17;
+                                letter-spacing: -0.5px;
+                                color: #252833;
+                            }
+                        }
+                        &.text_span {
+                            font-family: $sans-r;
+                            font-size: 14px;
+                            line-height: 1.71;
+                            letter-spacing: -0.2px;
+                            color: #3e4352;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.two__content--style {
+    display: flex;
+    padding-top: 26px;
+    padding-#{$left} : 40px;
+    padding-#{$right} :68px;
+    padding-#{$right} :40px;
+    position: relative;
+    padding-bottom: 32px;
+    margin-bottom: 20px;
+    @include max1200 {
+         padding-#{$right} :0;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        #{$left} : 40px;
+        #{$right} :68px;
+        height: 1px;
+        background-color: #e1e3e8;
+    }
+    .left__column {
+        width: 234px;
+        @include max1200 {
+            width: 110px;
+        }
+        h2 {
+            font-family: $muli-r;
+            font-size: 20px;
+            line-height: 1.4;
+            letter-spacing: -0.2px;
+            color: #252833;
+            @include max1200 {
+                font-size: 14px;
+            } 
+        }
+    }
+    .right__column {
+        width: calc(100% - 234px);
+        @include max1200 {
+            width: calc(100% - 110px);
+        }
+    }
+    &:last-of-type {
+        &::after {
+            display: none;
+        }
+    }
+}

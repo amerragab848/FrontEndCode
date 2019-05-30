@@ -376,7 +376,7 @@ class reportsAddEdit extends Component {
 
     handleShowAction = (item) => { 
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,
@@ -433,6 +433,8 @@ class reportsAddEdit extends Component {
                                             enableReinitialize={true}
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editReport();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -554,7 +556,7 @@ class reportsAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
+                                                        <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                              <Dropdown
@@ -584,7 +586,7 @@ class reportsAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
+                                                        <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                   <Dropdown

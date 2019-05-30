@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
-import { Donut, Legend, ResponsiveContainer, withResponsiveness } from 'britecharts-react'
+import { Donut,  ResponsiveContainer } from 'britecharts-react'
 
 import Api from '../../api';
 
@@ -69,7 +69,7 @@ class PieChartComp extends Component {
             <div className="panel">
                 <div className="panel-body">
                     <h2>
-                        {this.props.title}
+                        { this.props.title}
                     </h2>
                     <ResponsiveContainer
                         render={
@@ -81,8 +81,8 @@ class PieChartComp extends Component {
                                         width={width / 2}
                                         externalRadius={width / 4}
                                         internalRadius={width / 10}
-                                        colorSchema={colorSchema}
-                                        customMouseOver={this.logMouseOver}
+                                        colorSchema={colorSchema} 
+                                        customMouseMove={this.logMouseOver}
                                         highlightSliceById={this.state.highlightedSlice}
                                         isAnimated={false}
                                     />

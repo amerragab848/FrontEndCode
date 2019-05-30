@@ -277,6 +277,10 @@ class phoneAddEdit extends Component {
 
             this.fillDropDowns(true);
         }
+        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        if (this.state.showModal != props.showModal) {
+            this.setState({ showModal: props.showModal });
+        }
     }
 
     editPhone = () => {
@@ -320,7 +324,7 @@ class phoneAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -384,6 +388,8 @@ class phoneAddEdit extends Component {
                                         enableReinitialize={true}
                                         validationSchema={validationSchema}
                                         onSubmit={(values) => {
+                                            if (this.props.showModal) { return; }
+
                                             if (this.props.changeStatus === true && this.state.docId > 0) {
                                                 this.editPhone();
                                             } else if (this.props.changeStatus === false && this.state.docId === 0) {

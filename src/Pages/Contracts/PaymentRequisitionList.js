@@ -3,8 +3,7 @@ import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import ReactTable from "react-table";
 import moment from "moment";
-import dataservice from "../../Dataservice";
-import Config from "../../Services/Config.js";
+import dataservice from "../../Dataservice"; 
 import CryptoJS from "crypto-js";
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -16,8 +15,7 @@ class PaymentRequisitionList extends Component {
         super(props)
         this.state = {
             paymentRequistionList: [],
-            contractId: this.props.contractId
-            // contractId: 5667
+            contractId: this.props.contractId 
         }
     }
 

@@ -1,0 +1,164 @@
+.admin__avatar {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+
+    .sbigAvatar {
+        margin: 34px 0 21px 0;
+    }
+
+    h3 {
+        font-family: $muli-b;
+        font-size: 34px;
+        line-height: 1.18;
+        letter-spacing: -1.1px;
+        text-align: center;
+        color: #252833;
+        margin-bottom: 4px;
+    }
+
+    span {
+        font-family: $muli-r;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+        color: #252833;
+    }
+}
+
+.admin__profile {
+    width: calc(100% - 324px);
+    margin: auto;
+    padding-bottom: 50px;
+
+    .admin__profile--content {
+        border-radius: 6px;
+        border: solid 1px #e9ecf0;
+        background-color: rgba(128, 203, 196, 0);
+        padding: 35px 32px 60px 32px;
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
+        position: relative;
+        min-height: 250px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            border: solid 4px #4382f9;
+            border-radius: 6px;
+            opacity: 0;
+            transition: all 0.4s ease-in-out;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: 16px;
+            #{$right}: 16px;
+            width: 32px;
+            height: 32px;
+            background-image: url(../../images/blue-base@2x.png);
+            transform: rotate(180deg);
+        }
+
+        &:hover {
+            &::after {
+                opacity: 1;
+            }
+        }
+
+        h3 {
+            font-family: $muli-r;
+            font-size: 24px;
+            line-height: 1.17;
+            letter-spacing: -0.5px;
+            color: #252833;
+            margin-bottom: 25px;
+        }
+
+        p {
+            font-family: $sans-r;
+            font-size: 14px;
+            line-height: 1.71;
+            letter-spacing: -0.2px;
+            color: #3e4352;
+            max-width: 75%;
+        }
+
+        &.big_admin {
+            p {
+                max-width: 50%;
+            }
+        }
+    }
+
+    .admin__profile--action {
+        h3 {
+            font-family: $muli-b;
+            font-size: 20px;
+            line-height: 1.4;
+            letter-spacing: -0.2px;
+            color: #252833;
+            padding-bottom: 20px;
+            border-bottom: 4px solid #5e6475;
+            margin-bottom: 40px;
+        }
+
+        ul {
+            li {
+                margin-bottom: 16px;
+
+                a {
+                    font-family: $sans-sb;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    letter-spacing: -0.2px;
+                    color: #3570e6;
+                    display: block;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        &.action__li {
+            ul {
+                li {
+                    padding-#{$left}: 48px;
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        width: 24px;
+                        height: 27px;
+                        #{$left}: 0;
+                        top: 2px;
+                        background-image: url(../../images/q-mark.png);
+                        background-size: 100%;
+                    }
+
+                    span {
+                        font-family: $sans-r;
+                        font-size: 12px;
+                        line-height: 1.33;
+                        letter-spacing: -0.2px;
+                        color: #a8b0bf;
+                        margin-top: -5px;
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}

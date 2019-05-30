@@ -1,0 +1,291 @@
+.login__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    flex-flow: column;
+
+    .login__page--form {
+        width: 439px;
+        border-radius: 8px;
+        border: solid 1px $grey-100;
+        background-color: $background;
+        padding: 28px 72px;
+
+        .login__logo {
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                width: 48px;
+                height: 35.7px;
+                margin-bottom: 14px;
+            }
+
+            p {
+                width: 62px;
+                height: 19px;
+                // font-family: Montserrat;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 16px;
+                font-weight: 600;
+                letter-spacing: -0.4px;
+                text-align: center;
+                color: $Primary-2;
+            }
+        }
+
+        .select__project {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 31px;
+            margin-bottom: 24px;
+            padding-bottom: 28px;
+            position: relative;
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                height: 2px;
+                right: 7px;;
+                left: -6px;
+                background: $grey-100
+            }
+
+            li {
+                margin: 0 6px;
+                border: solid 2px transparent;
+                border-radius: 12px;
+                padding: 2px;
+                position: relative;
+
+                //                &::after {
+                //                    content: "\f0d7";
+                //                    position: absolute;
+                //                    bottom: -20px;
+                //                    left: calc(50% - 8px);
+                //                    transform: rotate(180deg);
+                //                    height: 16px;
+                //                    width: 16px;
+                //                    font-family: 'FontAwesome';
+                //                    text-align: center;
+                //                    color: #3E4352;
+                //                    display: none;
+                //                }
+                //                &.active {
+                //                    //border-color: $Primary-2;
+                //                    &::after {
+                //                        display: block;
+                //                    }
+                //                }
+                p {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 8px;
+                    font-family: $muli-b;
+                    font-size: 14px;
+                    font-weight: 800;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 1.43;
+                    letter-spacing: -0.5px;
+                    color: #ffffff;
+                    text-transform: capitalize;
+                    cursor: pointer;
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        background: transparent;
+                        border: 2px solid transparent;
+                        position: absolute;
+                        top: -4px;
+                        right: -4px;
+                        left: -4px;
+                        bottom: -4px;
+                        border-radius: 12px;
+                    }
+
+                    &::before {
+                        content: "\f0d7";
+                        position: absolute;
+                        bottom: -24px;
+                        left: calc(50% - 8px);
+                        transform: rotate(180deg);
+                        height: 16px;
+                        width: 16px;
+                        font-family: 'FontAwesome';
+                        text-align: center;
+                        color: #3E4352;
+                        display: none;
+                    }
+
+                    &.active {
+                        &::after {
+                            border-color: $Primary-2;
+                        }
+
+                        &::before {
+                            display: block;
+                        }
+                    }
+                }
+
+                &:first-of-type {
+                    margin-#{$left}: 0;
+                }
+
+                &:last-of-type {
+                    margin-#{$right}: 0;
+                }
+
+                &.pm {
+                    p {
+                        background: $Primary-2;
+                    }
+                }
+
+                &.fm {
+                    p {
+                        background: $Secondary-1;
+                    }
+                }
+
+                &.ac {
+                    p {
+                        background: $selection-color;
+                    }
+                }
+
+                &.hr {
+                    p {
+                        background: $Secondary-3;
+                    }
+                }
+            }
+        }
+
+        .login__heading {
+            opacity: 0.4;
+            font-family: $muli-b;
+            font-size: 16px;
+            line-height: 1.4;
+            letter-spacing: -0.2px;
+            text-align: center;
+            color: $header;
+            margin-top: 24px;
+        }
+
+        .proForm {
+            margin-top: 41px;
+
+            .form-group {
+                display: block;
+                padding: 0;
+            }
+
+            .ui.input.inputDev {
+                display: block;
+
+                input {
+                    width: 100%;
+                }
+
+                button {
+                    width: 100%;
+                }
+
+                .inputsideNote.togglePW {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            .loginChecked {
+                margin: 16px 0 32px;
+
+                label {
+                    font-family: $sans-r;
+                    font-size: 14px;
+                    line-height: 1.71;
+                    letter-spacing: -0.2px;
+                    color: $grey-800;
+                }
+            }
+
+            &.login__loading {
+                .form-group {
+                    display: block;
+                    padding: 0;
+
+                    label {
+                        opacity: 0.6;
+                        pointer-events: none;
+                    }
+                }
+
+                .ui.input.inputDev {
+                    input {
+                        opacity: 0.6;
+                        pointer-events: none;
+                    }
+
+                    button {}
+                }
+            }
+        }
+
+        .register__link {
+            text-align: center;
+            margin-top: 16px;
+
+            p {
+                font-family: $sans-r;
+                font-size: 12px;
+                line-height: 1.33;
+                letter-spacing: -0.2px;
+                color: $grey-800;
+
+                a {
+                    font-family: $sans-sb;
+                    font-size: 12px;
+                    line-height: 1.33;
+                    letter-spacing: -0.3px;
+                    color: $Primary-2;
+                    text-decoration: underline;
+                    margin-#{$left}: 4px;
+                }
+            }
+        }
+    }
+
+    .access__acc {
+        text-align: center;
+
+        p {
+            font-family: $sans-r;
+            font-size: 12px;
+            line-height: 1.33;
+            letter-spacing: -0.2px;
+            text-align: center;
+            color: $sub-header;
+            margin: 16px 0;
+        }
+    }
+}
+
+.proForm .togglePW .hide {
+    display: none;
+}
+
+.proForm .showPasswordArea .togglePW.active-pw .show {
+    display: none;
+}
+
+.proForm .showPasswordArea .togglePW.active-pw .hide {
+    display: block;
+}

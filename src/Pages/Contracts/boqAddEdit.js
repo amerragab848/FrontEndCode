@@ -103,7 +103,7 @@ class bogAddEdit extends Component {
             }
             index++;
         }
-
+ 
         let editUnitPrice = ({ value, row }) => {
 
             if (row) {
@@ -143,7 +143,7 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "boqSubType",
@@ -188,7 +188,7 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "unit",
@@ -197,7 +197,7 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "unitPrice",
@@ -207,7 +207,7 @@ class bogAddEdit extends Component {
                 sortable: true,
                 editable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true,
                 formatter: editUnitPrice
             }, {
@@ -217,12 +217,12 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
-                width: 100,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -504,7 +504,8 @@ class bogAddEdit extends Component {
     }
 
     componentWillReceiveProps(props, state) {
-        if (props.document && props.document.id > 0) {
+        if (props.document.id !== this.props.document.id) {
+ 
             let docDate = moment(props.document.documentDate)
             props.document.statusName = props.document.status ? 'Opened' : 'Closed'
             let document = Object.assign(props.document, { documentDate: docDate })
@@ -517,7 +518,10 @@ class bogAddEdit extends Component {
             this.setState({ isLoading: true })
             this.setState({ _items }, () => this.setState({ isLoading: false }));
         }
-
+ 
+        if (this.state.showModal != props.showModal) {
+            this.setState({ showModal: props.showModal });
+        }
     }
 
     viewAttachments() {
@@ -750,7 +754,7 @@ class bogAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
+        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
 
             this.setState({
                 currentComponent: item.value,
@@ -798,7 +802,6 @@ class bogAddEdit extends Component {
             selectedRow: []
         });
     }
-
     assign = () => {
         this.setState({ showBoqModal: true })
         this.boqTypeModal.show()
@@ -1474,6 +1477,8 @@ class bogAddEdit extends Component {
                             validationSchema={poqSchema}
                             enableReinitialize={this.props.changeStatus}
                             onSubmit={(values) => {
+                                if (this.props.showModal) { return; }
+
                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                     this.editBoq(values);
                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
