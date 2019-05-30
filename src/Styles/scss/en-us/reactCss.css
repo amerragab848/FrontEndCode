@@ -6260,3 +6260,6 @@ body.noScrolling {
         font-size: 9px;
     }
 }
+.britechart-tooltip {
+z-index: 9999;
+}
