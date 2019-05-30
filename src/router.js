@@ -151,7 +151,7 @@ import proposalAddEdit from "./Pages/Procurement/proposalAddEdit";
 import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit"; 
 import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit"; 
 import PaymentRequisitionList from "./Pages/Contracts/Schedule";
- import chart from './Componants/ChartsWidgets/Britecharts'
+  import chart from './Componants/ChartsWidgets/BarChartComp'
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
@@ -319,7 +319,7 @@ let originalRoutes = [
     , <Route path="/proposalAddEdit" component={proposalAddEdit} />
     , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} /> 
     , <Route path="/materialDeliveryAddEdit" component={materialDeliveryAddEdit} />
-    , <Route path="/chart" component={chart} />
+    , <Route path="/BarChartComp" component={chart} />
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]

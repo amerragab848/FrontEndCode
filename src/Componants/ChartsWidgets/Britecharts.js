@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Api from '../../api';
-import { Line, Tooltip, withResponsiveness } from 'britecharts-react'
+import { Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 const ResponsiveLineChart = withResponsiveness(Line);
 
@@ -24,17 +24,27 @@ class Britecharts extends Component {
                     {
                         topic: -1,
                         topicName: 'Vivid',
-                        dates: []
+                        dates: [{
+                            date: null,
+                            value: null
+                        }
+                        ]
                     }]
             }
         }
     }
 
     renderLine = (props) => (
-        <ResponsiveLineChart
-            margin={marginObject}
-            lineCurve="basis"
-            {...props} />
+        <ResponsiveContainer
+            render={
+                ({ width }) => <ResponsiveLineChart
+                    margin={marginObject}
+                    lineCurve="basis"
+                    height={width / 2}
+                    width={width}
+                    {...props} />
+            }
+        />
     );
 
     componentDidMount() {
@@ -69,7 +79,7 @@ class Britecharts extends Component {
                 isLoading: false
             });
 
-        }).catch((ex) => { 
+        }).catch((ex) => {
             this.setState({
                 isLoading: false
             });
@@ -84,12 +94,16 @@ class Britecharts extends Component {
                             {this.props.title}
                         </h2>
                         {this.state.isLoading === false ?
+
                             <Tooltip
                                 data={this.state.data}
                                 render={this.renderLine}
+
                                 topicLabel="topics"
                                 title="Tooltip Title"
-                            /> : null
+                            />
+
+                            : null
                         }
                     </div>
                 </div>
