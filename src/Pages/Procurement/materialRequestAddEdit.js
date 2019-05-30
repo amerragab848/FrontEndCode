@@ -1285,11 +1285,12 @@ class materialRequestAddEdit extends Component {
                                     {touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                                 </div>
                             </div>
-                            <div className="linebylineInput valid-input">
-
-                                <div id="allSelected" className={"ui checkbox checkBoxGray300 checked"} checked={this.state.document.useQntyRevised} onClick={e => this.handleCheckBox(e)}>
-                                    <input name="CheckBox" type="checkbox" id="allPermissionInput" defaultChecked={this.state.document.useQntyRevised} />
-                                    <label>{Resources.revQuantity[currentLanguage]}</label>
+                            <div className="linebylineInput valid-input ">
+                                <div id="allSelected">
+                                    <div className={"ui checkbox checkBoxGray300 checked"} checked={this.state.document.useQntyRevised} onClick={e => this.handleCheckBox(e)}>
+                                        <input name="CheckBox" type="checkbox" id="allPermissionInput" defaultChecked={this.state.document.useQntyRevised} />
+                                        <label>{Resources.revQuantity[currentLanguage]}</label>
+                                    </div>
                                 </div>
                             </div>
                             <div className="linebylineInput valid-input">
@@ -1518,7 +1519,7 @@ class materialRequestAddEdit extends Component {
             <div className="header__dropdown">
                 <header><h2 className="zero">{Resources.AddedItems[currentLanguage]}</h2></header>
                 {this.state.isViewMode == true ? null :
-                    <div className="linebylineInput valid-input custom__dropDown">
+                    <div className="default__dropdown">
                         <Dropdown
                             title=""
                             data={this.state.materialTypes}
