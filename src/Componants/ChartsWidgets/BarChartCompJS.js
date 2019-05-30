@@ -7,7 +7,7 @@ import Api from '../../api';
 //https://github.com/eventbrite/britecharts/blob/master/demos/src/demo-bar.js
 
 
-const miniTooltip = require('../../../node_modules/britecharts/src/charts/mini-tooltip');
+const miniTooltip = require('britecharts/src/charts/mini-tooltip');
 
 const d3 = require('d3-selection');
 

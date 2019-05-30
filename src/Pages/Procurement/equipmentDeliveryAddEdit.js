@@ -44,28 +44,20 @@ let selectedRows = [];
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    contractId: Yup.string().required(Resources['contractPoSelection'][currentLanguage]),
+    docId: Yup.string().required(Resources['contractPoSelection'][currentLanguage]),
+    orderFromCompanyId: Yup.string().required(Resources['selectCompany'][currentLanguage]),
+    equipmentCodeId: Yup.string().required(Resources['equipmentCodeSelection'][currentLanguage]),
+    selectedProjects: Yup.string().required(Resources['projectSelection'][currentLanguage]),
 })
 
 const documentItemValidationSchema = Yup.object().shape({
 
-    itemId: Yup.string().required(Resources['itemDescription'][currentLanguage]),
-
-    approvedQuantity: Yup.number().required(Resources['approvedQuantity'][currentLanguage])
+    quantity: Yup.number().required(Resources['quantity'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 
+    arrangeItem: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 
-    rejectedQuantity: Yup.number().required(Resources['rejectedQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    pendingQuantity: Yup.number().required(Resources['pendingQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    arrangeItem: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
-
-    unitPrice: Yup.number().required(Resources['unitPrice'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
+    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
 })
 
 let ApproveOrRejectData = [
@@ -73,7 +65,7 @@ let ApproveOrRejectData = [
     { label: Resources.rejected[currentLanguage], value: 'false' }
 ]
 
-class materialDeliveryAddEdit extends Component {
+class equipmentDeliveryAddEdit extends Component {
 
     constructor(props) {
         super(props)
@@ -109,38 +101,32 @@ class materialDeliveryAddEdit extends Component {
             isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 49,
+            docTypeId: 57,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            itemDocument: {},
-            addItemDocument: {},
             selected: {},
-            specsSectionData: [],
-            disciplines: [],
+            AllItems: [],
+            companiesData: [],
+            projectsData: [],
             contractPoData: [],
-            materialTypeData: [],
-            descriptionList: [],
-            descriptionDropData: [],
-            MaterialCodeData: [],
+            EquipmentCodesData: [],
             Items: [],
             permission: [
-                { name: "sendByEmail", code: 244 },
-                { name: "sendByInbox", code: 243 },
+                { name: "sendByEmail", code: 262 },
+                { name: "sendByInbox", code: 261 },
                 { name: "sendTask", code: 0 },
-                { name: "distributionList", code: 986 },
-                { name: "createTransmittal", code: 3072 },
-                { name: "sendToWorkFlow", code: 734 },
-                { name: "viewAttachments", code: 3283 },
-                { name: "deleteAttachments", code: 892 }
+                { name: "distributionList", code: 989 },
+                { name: "createTransmittal", code: 3075 },
+                { name: "sendToWorkFlow", code: 736 },
+                { name: "viewAttachments", code: 3285 },
+                { name: "deleteAttachments", code: 894 }
             ],
             selectedContractId: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
-            selectedMaterialType: { label: Resources.selectMaterialDeliveryType[currentLanguage], value: "0" },
-            selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
-
-            selectedItemId: { label: Resources.itemDescription[currentLanguage], value: "0" },
-            selectedMaterialCode: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
+            selectedCompany: { label: Resources.selectCompany[currentLanguage], value: "0" },
+            selectedProject: [],
+            selectedEquipmentId: { label: Resources.equipmentCodeSelection[currentLanguage], value: "0" },
             unitPrice: 0,
             approvedQuantity: 0,
             rejectedQuantity: 0,
@@ -153,12 +139,12 @@ class materialDeliveryAddEdit extends Component {
             BtnLoading: false,
             ShowPopup: false,
             objItem: {},
-            selectedApproveOrRejectData: { label: Resources.approved[currentLanguage], value: 'true' },
-            PendingQuantityCheck: false,
-            LastPendingQuantity: 0,
+            seletedItem: {},
+            receivedDateItem: moment(),
+            dueBackItem: moment(),
         }
 
-        if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
+        if (!Config.IsAllow(256) && !Config.IsAllow(257) && !Config.IsAllow(259)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/materialDelivery/" + this.state.projectId);
         }
@@ -178,12 +164,19 @@ class materialDeliveryAddEdit extends Component {
             }
         )
         if (this.state.docId !== 0) {
-            dataservice.GetDataGrid('GetLogsMaterialDeliveryTickets?deliveryId=' + this.state.docId).then(
+            dataservice.GetDataGrid('GetLogsEquipmentsDeliveryTickets?projectId=' + this.state.docId).then(
                 res => {
-                    this.setState({ Items: res, arrangeItem: res.length + 1 })
+                    this.setState({ Items: res })
                 }
             )
         }
+        Api.get('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId).then(
+            res => {
+                this.setState({
+                    arrangeItem: res
+                })
+            }
+        )
 
     }
 
@@ -191,6 +184,8 @@ class materialDeliveryAddEdit extends Component {
         if (nextProps.document.id) {
             let doc = nextProps.document
             doc.docDate = doc.docDate != null ? moment(doc.docDate).format("DD/MM/YYYY") : moment();
+            doc.ticketDate = doc.ticketDate != null ? moment(doc.ticketDate).format("DD/MM/YYYY") : moment();
+            doc.deliveryDate = doc.deliveryDate != null ? moment(doc.deliveryDate).format("DD/MM/YYYY") : moment();
             this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
             let isEdit = nextProps.document.id > 0 ? true : false
             this.fillDropDowns(isEdit);
@@ -223,15 +218,27 @@ class materialDeliveryAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetMaterialDeliveryForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialDelivery')
+            let url = "GetLogsEquipmentsDeliverysById?id=" + this.state.docId;
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'equipmentDelivery')
         }
         else {
             dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
                 res => {
-                    const Document = {
-                        projectId: projectId, arrange: res, status: "true", contractId: "", subject: "",
-                        docDate: moment(), specsSectionId: '', materialDeliveryTypeId: '', orderType: ''
+                    let Document = {
+
+                        projectId: projectId,
+                        orderFromCompanyId: '',
+                        arrange: res,
+                        equipmentCodeId: '',
+                        docId: '',
+                        orderType: '',
+                        deliveryDate: moment(),
+                        docDate: moment(),
+                        status: true,
+                        subject: '',
+                        docCloseDate: moment(),
+                        ticketDate: moment(),
+                        'selectedProjects[]': '2'
                     }
                     this.setState({ document: Document })
                 }
@@ -245,7 +252,7 @@ class materialDeliveryAddEdit extends Component {
 
         dataservice.GetDataList('GetPoContractForList?projectId= ' + this.state.projectId, 'subject', 'id').then(result => {
             if (isEdit) {
-                let id = this.props.document.contractId;
+                let id = this.props.document.orderId;
                 let selectedValue = {};
                 if (id) {
                     selectedValue = _.find(result, function (i) { return i.value === id });
@@ -255,34 +262,52 @@ class materialDeliveryAddEdit extends Component {
             this.setState({ contractPoData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataList('GetAccountsDefaultList?listType=equipmentcode&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
             if (isEdit) {
-                let id = this.props.document.specsSectionId;
+                let id = this.props.document.equipmentCodeId;
                 let selectedValue = {};
                 if (id) {
                     selectedValue = _.find(result, function (i) { return i.value == id });
-                    this.setState({ selectedSpecsSection: selectedValue })
+                    this.setState({ selectedEquipmentId: selectedValue })
                 }
             }
-            this.setState({ specsSectionData: [...result] })
+            this.setState({ EquipmentCodesData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataList('GetAccountsProjects', 'projectName', 'id').then(result => {
             if (isEdit) {
-                let id = this.props.document.materialDeliveryTypeId;
+                let id = this.props.document.selectedProjects;
                 let selectedValue = {};
                 if (id) {
                     selectedValue = _.find(result, function (i) { return i.value == id });
 
                     this.setState({
-                        selectedMaterialType: selectedValue
+                        selectedProject: selectedValue
                     });
                 }
             }
             this.setState({
-                materialTypeData: [...result]
+                projectsData: [...result]
             });
         })
+
+        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
+            if (isEdit) {
+                let id = this.props.document.orderFromCompanyId;
+                let selectedValue = {};
+                if (id) {
+                    selectedValue = _.find(result, function (i) { return i.value == id });
+
+                    this.setState({
+                        selectedCompany: selectedValue
+                    });
+                }
+            }
+            this.setState({
+                companiesData: [...result]
+            });
+        })
+
     }
 
     handleShowAction = (item) => {
@@ -299,22 +324,28 @@ class materialDeliveryAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return
-        let original_document = { ...this.state.document }
-        let updated_document = {};
-        updated_document[field] = event.value;
-        updated_document = Object.assign(original_document, updated_document);
-        this.setState({ document: updated_document, [selectedValue]: event })
+        if (field == 'selectedProject') {
+
+        }
+        else {
+
+            if (event == null) return
+            let original_document = { ...this.state.document }
+            let updated_document = {};
+            updated_document[field] = event.value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({ document: updated_document, [selectedValue]: event })
+        }
     }
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(239)) {
+            if (!Config.IsAllow(257)) {
                 this.setState({ isViewMode: true })
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(239)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(239)) {
-                    if (this.props.document.status !== false && Config.IsAllow(239)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(257)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(257)) {
+                    if (this.props.document.status !== false && Config.IsAllow(257)) {
                         this.setState({ isViewMode: false })
                     }
                     else { this.setState({ isViewMode: true }) }
@@ -350,18 +381,19 @@ class materialDeliveryAddEdit extends Component {
 
     viewAttachments() {
         return this.state.docId > 0 ? (
-            Config.IsAllow(891) === true ?
+            Config.IsAllow(3285) === true ?
                 (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
     NextStep() {
         if (this.state.CurrentStep === 1) {
+
             this.setState({
                 CurrentStep: this.state.CurrentStep + 1, FirstStep: false,
                 SecondStep: true, SecondStepComplate: true,
             })
         }
-        else { this.props.history.push("/materialDelivery/" + this.state.projectId) }
+        else { this.props.history.push("/equipmentDelivery/" + this.state.projectId) }
     }
 
     PreviousStep() {
@@ -396,10 +428,16 @@ class materialDeliveryAddEdit extends Component {
         this.setState({ isLoading: true })
 
         if (Mood === 'EditMood') {
-
+            // let projectIds = []
+            // this.state.selectedProjects.map(i =>
+            //     projectIds.push[i.value]
+            // )
+            // console.log(projectIds)
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            dataservice.addObject('EditMaterialDelivery', doc).then(result => {
+            doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            dataservice.addObject('EditLogsEquipmentsDelivery', doc).then(result => {
 
                 this.setState({ isLoading: false })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -412,31 +450,27 @@ class materialDeliveryAddEdit extends Component {
         } else {
 
             let doc = { ...this.state.document };
-
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            dataservice.addObject('AddMaterialDelivery', doc).then(result => {
+            doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            //doc.docId =this.state.
+            dataservice.addObject('AddLogsEquipmentsDelivery', doc).then(result => {
 
                 this.setState({ isLoading: false, docId: result.id })
                 toast.success(Resources["operationSuccess"][currentLanguage])
-                dataservice.GetDataGrid('GetPoContractItemMaterial?id=' + result.id).then(
-                    res => {
-                        let Data = res
-                        let ListData = []
-                        Data.map(i => {
-                            let obj = {}
-                            obj.value = i.id
-                            obj.label = i.details
-                            ListData.push(obj)
-                        })
-                        this.setState({ descriptionDropData: ListData, descriptionList: res })
-                    }
-                )
             }).catch(ex => {
                 this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
 
         }
+        dataservice.GetDataGrid('GetPoContractItemForEquipment?projectId=1004-2').then(
+            res => {
+                this.setState({
+                    AllItems: res
+                })
+            }
+        )
     }
 
     toggleRow(obj) {
@@ -459,7 +493,7 @@ class materialDeliveryAddEdit extends Component {
         selectedRows.map(s => {
             ids.push(s.id)
         })
-        Api.post('DeleteMultipleLogsMaterialDeliveryTickets', ids).then(
+        Api.post('DeleteMultipleLogsEquipmentsDeliveryTicketsById', ids).then(
             res => {
                 let originalRows = this.state.Items
 
@@ -486,50 +520,39 @@ class materialDeliveryAddEdit extends Component {
     }
 
     SaveItem = (values) => {
-        let Qty = parseInt(this.state.approvedQuantity) + parseInt(this.state.rejectedQuantity) + parseInt(this.state.pendingQuantity)
-        let ActaulQty = parseInt(this.state.ItemDescriptionInfo.quantity)
-        if (Qty <= ActaulQty) {
-            this.setState({ isLoading: true })
-            let obj = {
-                projectId: this.state.projectId,
-                materialDeliveryId: this.state.docId,
-                details: this.state.ItemDescriptionInfo.details,
-                arrange: this.state.arrangeItem,
-                description: this.state.ItemDescriptionInfo.description,
-                receivedDate: moment(this.state.receivedDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-                nextDeliveryDate: moment(this.state.nextDeliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-                approvedQuantity: this.state.approvedQuantity,
-                rejectedQuantity: this.state.rejectedQuantity,
-                pendingQuantity: this.state.pendingQuantity,
-                materialCode: this.state.selectedMaterialCode.value !== '0' ? this.state.selectedMaterialCode.value : '',
-                resourceCode: this.state.ItemDescriptionInfo.resourceCode,
-                unitPrice: this.state.unitPrice,
-                itemId: this.state.selectedItemId.value,
-                unit: this.state.ItemDescriptionInfo.unit,
-                quantity: this.state.ItemDescriptionInfo.quantity,
-                maxQnty: Qty,
-                maxQuantity: this.state.ItemDescriptionInfo.quantity,
-                remarks: this.state.remarks
-            }
-            dataservice.addObject('AddLogsMaterialDeliveryTickets', obj).then(result => {
-                let Items = this.state.Items
-                Items.push(result)
-                this.setState({
-                    Items, arrangeItem: Items.length + 1,
-                    approvedQuantity: 0, rejectedQuantity: 0,
-                    pendingQuantity: 0, remarks: '', isLoading: false,
-                    selectedMaterialCode: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
-                })
-                toast.success(Resources["operationSuccess"][currentLanguage])
-
-            }).catch(ex => {
-                this.setState({ Loading: false })
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        this.setState({ isLoading: true })
+        let obj = {
+            equipmentDeliveryId: this.state.docId,
+            receivedDate: moment(this.state.receivedDateItem, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+            deliveryTime: '',
+            quantity: this.state.seletedItem.quantity,
+            description: this.state.seletedItem.details,
+            remarks: this.state.remarks,
+            nextDeliveryDate: moment(this.state.dueBackItem, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+            resourceCode: this.state.seletedItem.resourceCode,
+            itemId: this.state.seletedItem.id,
+            arrange: this.state.arrangeItem,
+        }
+        dataservice.addObject('AddLogsEquipmentsDeliveryTickets', obj).then(result => {
+            let Items = this.state.Items
+            Items.push(result)
+            this.setState({
+                seletedItem: {}, Items, isLoading: false,
             })
-        }
-        else {
-            toast.error('Approved, Pending, and Rejected Quantity Greater than ' + ActaulQty + ' And Greater Than 0')
-        }
+            Api.get('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId).then(
+                res => {
+                    this.setState({
+                        arrangeItem: res
+                    })
+                }
+            )
+            toast.success(Resources["operationSuccess"][currentLanguage])
+
+        }).catch(ex => {
+            this.setState({ Loading: false })
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        })
+
     }
 
     handleChangeItemId = (e) => {
@@ -546,71 +569,31 @@ class materialDeliveryAddEdit extends Component {
     }
 
     HandelChangeItems = (e, name) => {
-        // switch (name) {
-        //     case 'approvedQuantity':
-        //         // code block
-        //         break;
-        //     case 'rejectedQuantity':
-        //         // code block
-        //         break;
-        //     case 'pendingQuantity':
-        //         // code block
-        //         break;
-        //     default:
-        //   }
-        this.setState({ [name]: e.target.value })
-    }
-
-    PendingQuantityHandelChange = (e) => {
-        let value = e.target.value
-        let originalValue = this.state.objItem.pendingQuantity
-        if (value <= originalValue) {
-            this.setState({
-                PendingQuantityCheck: false
-            })
+        if (name === 'arrangeItem') {
+            this.setState({ arrangeItem: e.target.value })
         }
         else {
-            this.setState({
-                PendingQuantityCheck: true
-            })
+            let original_document = { ...this.state.seletedItem }
+            let updated_document = {};
+            updated_document[name] = e.target.value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({ seletedItem: updated_document })
         }
-    }
-
-    EditPendingQty = () => {
-        if (this.state.PendingQuantityCheck) {
-            this.setState({ isLoading: true })
-            Api.post('UpdateQuantityMaterialDelivery?materialDeliveryId=' + this.state.objItem.id + '&quantity=' + this.state.LastPendingQuantity + '&status=' + this.state.selectedApproveOrRejectData.value).then(
-                result => {
-                    dataservice.GetDataGrid('GetLogsMaterialDeliveryTickets?deliveryId=' + this.state.docId).then(
-                        res => {
-                            this.setState({ Items: res, arrangeItem: res.length + 1, isLoading: false, ShowPopup: false })
-                            toast.success(Resources["operationSuccess"][currentLanguage])
-
-                        }).catch(ex => {
-                            this.setState({ isLoading: false, ShowPopup: false })
-                            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                        })
-                }
-            )
-
-        }
-    }
-
-    fillTable = () => {
-        this.setState({ isLoading: true })
-        dataservice.GetDataGrid('GetLogsMaterialDeliveryTickets?deliveryId=' + this.state.docId).then(
-            res => {
-                this.setState({ Items: res, arrangeItem: res.length + 1, isLoading: false })
-                toast.success(Resources["operationSuccess"][currentLanguage])
-
-            }).catch(ex => {
-                this.setState({ isLoading: false, ShowPopup: false })
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-            })
     }
 
     executeBeforeModalClose = (e) => {
         this.setState({ showModal: false });
+    }
+
+    ChooesItem = (row, type) => {
+        if (type != "checkbox") {
+            console.log(row)
+            this.setState({
+                ShowPopup: false,
+                seletedItem: row,
+                arrangeItem: this.state.Items.length ? this.state.Items.length + 1 : 1
+            })
+        }
     }
 
     render() {
@@ -638,7 +621,7 @@ class materialDeliveryAddEdit extends Component {
                             if (this.props.showModal) { return; }
                             if (this.props.changeStatus === true && this.state.docId > 0) {
                                 this.SaveDoc('EditMood');
-                                this.NextStep();
+                                //this.NextStep();
                             } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                 this.SaveDoc('AddMood');
                             } else {
@@ -683,32 +666,51 @@ class materialDeliveryAddEdit extends Component {
                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                     </div>
 
+                                    <div className="linebylineInput valid-input alternativeDate">
+                                        <DatePicker title='recievedDate' startDate={this.state.document.deliveryDate}
+                                            handleChange={e => this.handleChangeDate(e, 'deliveryDate')} />
+                                    </div>
+
+                                    <div className="linebylineInput valid-input alternativeDate">
+                                        <DatePicker title='dueBack' startDate={this.state.document.ticketDate}
+                                            handleChange={e => this.handleChangeDate(e, 'ticketDate')} />
+                                    </div>
+
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                         <div className="ui input inputDev">
                                             <input type="text" className="form-control" readOnly value={this.state.document.arrange}
-                                                onBlur={(e) => {
-                                                    handleChange(e)
-                                                    handleBlur(e)
-                                                }} onChange={(e) => this.handleChange(e, 'arrange')} />
+                                                onChange={(e) => this.handleChange(e, 'arrange')} />
                                         </div>
                                     </div>
 
                                     <div className="linebylineInput valid-input">
+                                        <Dropdown title="equipmentCode" data={this.state.EquipmentCodesData} selectedValue={this.state.selectedEquipmentId}
+                                            handleChange={event => this.handleChangeDropDown(event, "equipmentCodeId", false, "", "", "", "selectedEquipmentId")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.equipmentCodeId}
+                                            touched={touched.equipmentCodeId} name="equipmentCodeId" id="equipmentCodeId" />
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="orderFrom" data={this.state.companiesData} selectedValue={this.state.selectedCompany}
+                                            handleChange={event => this.handleChangeDropDown(event, "orderFromCompanyId", false, "", "", "", "selectedCompany")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.orderFromCompanyId}
+                                            touched={touched.orderFromCompanyId} name="orderFromCompanyId" id="orderFromCompanyId" />
+                                    </div>
+
+                                    <div className="linebylineInput valid-input letterFullWidth">
                                         <Dropdown title="contractPo" data={this.state.contractPoData} selectedValue={this.state.selectedContractId}
-                                            handleChange={event => this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContractId")}
-                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.contractId} isDisabled={this.props.changeStatus}
-                                            touched={touched.contractId} name="contractId" id="contractId" />
+                                            handleChange={event => this.handleChangeDropDown(event, "docId", false, "", "", "", "selectedContractId")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.docId} isDisabled={this.props.changeStatus}
+                                            touched={touched.docId} name="docId" id="docId" />
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown title="specsSection" data={this.state.specsSectionData} selectedValue={this.state.selectedSpecsSection}
-                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedSpecsSection')} />
-                                    </div>
 
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown title="materialDeliveryType" data={this.state.materialTypeData} selectedValue={this.state.selectedMaterialType}
-                                            handleChange={event => this.handleChangeDropDown(event, 'materialDeliveryTypeId', false, '', '', '', 'selectedMaterialType')} />
+                                    <div className="linebylineInput letterFullWidth dropdownMulti">
+                                        <Dropdown title="otherProjects" data={this.state.projectsData} value={this.state.selectedProject}
+                                            handleChange={event => this.handleChangeDropDown(event, "selectedProjects", false, "", "", "", "selectedProject")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.selectedProjects}
+                                            touched={touched.selectedProjects} name="selectedProjects" id="selectedProjects" isMulti={true} />
                                     </div>
 
                                 </div>
@@ -745,8 +747,8 @@ class materialDeliveryAddEdit extends Component {
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
                                         {this.state.docId > 0 ?
-                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={891} EditAttachments={3242} ShowDropBox={3539}
-                                                ShowGoogleDrive={3540} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={893} EditAttachments={3244} ShowDropBox={3543}
+                                                ShowGoogleDrive={3544} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null}
                                         {this.viewAttachments()}
                                         {this.props.changeStatus === true ?
@@ -807,41 +809,8 @@ class materialDeliveryAddEdit extends Component {
                     width: 100,
                 },
                 {
-                    Header: Resources['unitPrice'][currentLanguage],
-                    accessor: 'unitPrice',
-                    width: 100,
-                }, {
-                    Header: Resources['approvedQuantity'][currentLanguage],
-                    accessor: 'approvedQuantity',
-                    width: 100,
-                },
-                {
-                    Header: Resources['rejectedQuantity'][currentLanguage],
-                    accessor: 'rejectedQuantity',
-                    width: 100,
-                }, {
-                    Header: Resources['pendingQuantity'][currentLanguage],
-                    accessor: 'pendingQuantity',
-                    width: 100,
-                    Cell: row => (
-                        <span>
-                            <a className="editorCell" onClick={() => this.setState({
-                                ShowPopup: row.value !== 0 ? true : false, objItem: row.original, LastPendingQuantity: row.original.pendingQuantity
-                            })} >
-                                <span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>
-                                    {row.value}
-                                </span>
-                            </a>
-                        </span>
-                    )
-                }, {
-                    Header: Resources['remainingQuantity'][currentLanguage],
-                    accessor: 'remaining',
-                    width: 100,
-                },
-                {
-                    Header: Resources['recievedDate'][currentLanguage],
-                    accessor: 'receivedDate',
+                    Header: Resources['dueBack'][currentLanguage],
+                    accessor: 'nextDeliveryDate',
                     width: 100,
                     Cell: row => (
                         <span>
@@ -849,8 +818,8 @@ class materialDeliveryAddEdit extends Component {
                         </span>
                     )
                 }, {
-                    Header: Resources['nextDate'][currentLanguage],
-                    accessor: 'nextDeliveryDate',
+                    Header: Resources['recievedDate'][currentLanguage],
+                    accessor: 'receivedDate',
                     width: 100,
                     Cell: row => (
                         <span>
@@ -870,19 +839,11 @@ class materialDeliveryAddEdit extends Component {
 
             return (
                 <div className="step-content">
-
-                    <XSLfile key='materialDeliveryitem' docId={this.state.docId} docType={this.state.docType} link={IPConfig.downloads + '/DownLoads/Excel/MaterialDelivery.xlsx'} header='addManyItems'
-                        disabled={this.props.changeStatus ? (this.props.docId === 0 ? true : false) : false} afterUpload={() => this.fillTable()} />
-
                     <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
                         <Formik
                             initialValues={{
-                                itemId: this.state.selectedItemId.value !== '0' ? this.state.selectedItemId : '',
-                                unitPrice: this.state.unitPrice,
-                                approvedQuantity: this.state.approvedQuantity,
-                                rejectedQuantity: this.state.rejectedQuantity,
-                                pendingQuantity: this.state.pendingQuantity,
-                                arrangeItem: this.state.arrangeItem,
+                                quantity: 0,
+                                resourceCode: 0
                             }}
                             validationSchema={documentItemValidationSchema}
                             enableReinitialize={true}
@@ -896,31 +857,38 @@ class materialDeliveryAddEdit extends Component {
                                             <h2 className="zero">{Resources['addItems'][currentLanguage]}</h2>
                                         </div>
                                     </header>
+                                    <div className="slider-Btns fullWidthWrapper textLeft ">
+                                        <button className="primaryBtn-1 btn" type='button' onClick={e => this.setState({ ShowPopup: true })}>{Resources["items"][currentLanguage]}</button>
+                                    </div>
+
                                     <div className='document-fields'>
-
-                                        <div className="proForm datepickerContainer">
-
-                                            <div className="linebylineInput valid-input letterFullWidth ">
-
-                                                <Dropdown title="itemDescription" data={this.state.descriptionDropData} selectedValue={this.state.selectedItemId}
-                                                    handleChange={event => this.handleChangeItemId(event)} onBlur={setFieldTouched} error={errors.itemId}
-                                                    onChange={setFieldValue} touched={touched.itemId} name="itemId" id="itemId" />
-
-                                            </div>
-
-                                            <div className="linebylineInput valid-input alternativeDate">
-                                                <DatePicker title='recievedDate' startDate={this.state.receivedDate}
-                                                    handleChange={e => this.setState({ receivedDate: e })} />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input alternativeDate">
-                                                <DatePicker title='nextDate' startDate={this.state.nextDeliveryDate}
-                                                    handleChange={e => this.setState({ nextDeliveryDate: e })} />
-                                            </div>
-
+                                        <div className="proForm first-proform">
                                             <div className="linebylineInput valid-input">
+                                                <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                                <div className="inputDev ui input" >
+                                                    <input className="form-control fsadfsadsa" placeholder={Resources.description[currentLanguage]}
+                                                        value={this.state.seletedItem.details} autoComplete='off' onChange={(e) => this.HandelChangeItems(e, 'details')}
+                                                        onBlur={(e) => {
+                                                            handleBlur(e)
+                                                            handleChange(e)
+                                                        }} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="proForm datepickerContainer">
+                                            <div className="linebylineInput valid-input alternativeDate">
+                                                <DatePicker title='receivedDate' startDate={this.state.receivedDateItem}
+                                                    handleChange={e => this.setState({ receivedDateItem: e })} />
+                                            </div>
+
+                                            <div className="linebylineInput valid-input alternativeDate">
+                                                <DatePicker title='dueBack' startDate={this.state.dueBackItem}
+                                                    handleChange={e => this.setState({ dueBackItem: e })} />
+                                            </div>
+
+                                            <div className="linebylineInput valid-input fullInputWidth">
                                                 <label className="control-label">{Resources['no'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.arrange ? 'has-error' : !errors.arrange && touched.arrange ? (" has-success") : " ")}>
+                                                <div className={"inputDev ui input " + (errors.arrangeItem ? 'has-error' : !errors.arrangeItem && touched.arrangeItem ? (" has-success") : " ")}>
                                                     <input className="form-control" name='arrangeItem'
                                                         placeholder={Resources['no'][currentLanguage]}
                                                         value={this.state.arrangeItem} onChange={e => this.HandelChangeItems(e, 'arrangeItem')}
@@ -928,67 +896,35 @@ class materialDeliveryAddEdit extends Component {
                                                             handleBlur(e)
                                                             handleChange(e)
                                                         }} />
-                                                    {errors.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                                                    {errors.arrangeItem ? (<em className="pError">{errors.arrangeItem}</em>) : null}
                                                 </div>
                                             </div>
 
-                                            <div className="linebylineInput valid-input ">
-                                                <Dropdown title="materialCode" data={this.state.MaterialCodeData} name="materialCode"
-                                                    selectedValue={this.state.selectedMaterialCode}
-                                                    handleChange={e => this.setState({ selectedMaterialCode: e })} />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
-                                                    <input name='unitPrice' className="form-control" autoComplete='off' placeholder={Resources['unitPrice'][currentLanguage]}
-                                                        value={this.state.unitPrice} onChange={e => this.HandelChangeItems(e, 'unitPrice')}
+                                            <div className="linebylineInput valid-input fullInputWidth">
+                                                <label className="control-label">{Resources['resourceCode'][currentLanguage]} </label>
+                                                <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
+                                                    <input className="form-control" name='resourceCode'
+                                                        placeholder={Resources['resourceCode'][currentLanguage]}
+                                                        value={this.state.seletedItem.resourceCode} onChange={e => this.HandelChangeItems(e, 'resourceCode')}
                                                         onBlur={(e) => {
                                                             handleBlur(e)
                                                             handleChange(e)
                                                         }} />
-                                                    {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                                                    {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
                                                 </div>
                                             </div>
 
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['approvedQuantity'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.approvedQuantity ? 'has-error' : !errors.approvedQuantity && touched.approvedQuantity ? (" has-success") : " ")}>
-                                                    <input name='approvedQuantity' className="form-control" autoComplete='off' placeholder={Resources['approvedQuantity'][currentLanguage]}
-                                                        value={this.state.approvedQuantity} onChange={e => this.HandelChangeItems(e, 'approvedQuantity')}
+                                            <div className="linebylineInput valid-input fullInputWidth">
+                                                <label className="control-label">{Resources['quantity'][currentLanguage]} </label>
+                                                <div className={"inputDev ui input " + (errors.quantity ? 'has-error' : !errors.quantity && touched.quantity ? (" has-success") : " ")}>
+                                                    <input name='quantity' className="form-control" autoComplete='off' placeholder={Resources['quantity'][currentLanguage]}
+                                                        value={this.state.seletedItem.quantity} onChange={e => this.HandelChangeItems(e, 'quantity')}
                                                         onBlur={(e) => {
                                                             handleBlur(e)
                                                             handleChange(e)
                                                         }}
                                                     />
-                                                    {errors.approvedQuantity ? (<em className="pError">{errors.approvedQuantity}</em>) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['pendingQuantity'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.pendingQuantity ? 'has-error' : !errors.pendingQuantity && touched.pendingQuantity ? (" has-success") : " ")}>
-                                                    <input name='pendingQuantity' className="form-control" autoComplete='off' placeholder={Resources['pendingQuantity'][currentLanguage]}
-                                                        value={this.state.pendingQuantity} onChange={e => this.HandelChangeItems(e, 'pendingQuantity')}
-                                                        onBlur={(e) => {
-                                                            handleBlur(e)
-                                                            handleChange(e)
-                                                        }}
-                                                    />
-                                                    {errors.pendingQuantity ? (<em className="pError">{errors.pendingQuantity}</em>) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['rejectedQuantity'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.rejectedQuantity ? 'has-error' : !errors.rejectedQuantity && touched.rejectedQuantity ? (" has-success") : " ")}>
-                                                    <input name='rejectedQuantity' className="form-control" autoComplete='off' placeholder={Resources['rejectedQuantity'][currentLanguage]}
-                                                        value={this.state.rejectedQuantity} onChange={e => this.HandelChangeItems(e, 'rejectedQuantity')}
-                                                        onBlur={(e) => {
-                                                            handleBlur(e)
-                                                            handleChange(e)
-                                                        }} />
-                                                    {errors.rejectedQuantity ? (<em className="pError">{errors.rejectedQuantity}</em>) : null}
+                                                    {errors.quantity ? (<em className="pError">{errors.quantity}</em>) : null}
                                                 </div>
                                             </div>
 
@@ -1062,36 +998,64 @@ class materialDeliveryAddEdit extends Component {
             )
         }
 
-        let EditItem = () => {
+        let ShowAllItems = () => {
+
+            let columnsIte = [
+                {
+                    Header: Resources['arrange'][currentLanguage],
+                    accessor: 'arrange',
+                    width: 50,
+                },
+                {
+                    Header: Resources['description'][currentLanguage],
+                    accessor: 'details',
+                    width: 300,
+                },
+                {
+                    Header: Resources['quantity'][currentLanguage],
+                    accessor: 'quantity',
+                    width: 100,
+                },
+                {
+                    Header: Resources['unit'][currentLanguage],
+                    accessor: 'unit',
+                    width: 100,
+                }, {
+                    Header: Resources['unitPrice'][currentLanguage],
+                    accessor: 'unitPrice',
+                    width: 100,
+                },
+                {
+                    Header: Resources['total'][currentLanguage],
+                    accessor: 'total',
+                    width: 100,
+                },
+                {
+                    Header: Resources['resourceCode'][currentLanguage],
+                    accessor: 'resourceCode',
+                    width: 100,
+                }
+            ]
+
             return (
-                <div className="doc-pre-cycle">
-                    <div className="subiTabsContent feilds__top">
-                        <div className='document-fields'>
-                            <div className="proForm datepickerContainer">
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">{Resources.quantity[currentLanguage]}</label>
-                                    <div className={"inputDev ui input" + (this.state.PendingQuantityCheck ? " has-error" : '')} >
-                                        <input name='description' className="form-control" type='number'
-                                            defaultValue={this.state.objItem.pendingQuantity} onBlur={e => this.PendingQuantityHandelChange(e)}
-                                            onChange={e => this.setState({ LastPendingQuantity: e.target.value })} />
-                                        {this.state.PendingQuantityCheck ? (<em className="pError">Please enter a value greater than or equal to {this.state.objItem.pendingQuantity}.</em>) : null}
-                                    </div>
-                                </div>
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown title="approveOrReject"
-                                        data={ApproveOrRejectData}
-                                        selectedValue={this.state.selectedApproveOrRejectData}
-                                        handleChange={e => this.setState({ selectedApproveOrRejectData: e })} />
-                                </div>
-
-                            </div> <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.EditPendingQty()} >{Resources['save'][currentLanguage]}</button>
-                            </div>
-
-                        </div>
-
+                <div className="precycle-grid">
+                    <div className="reactTableActions">
+                        <ReactTable
+                            filterable
+                            ref={(r) => {
+                                this.selectTable = r;
+                            }}
+                            getTrProps={(state, rowInfo, column, instance) => {
+                                return { onClick: e => { this.ChooesItem(rowInfo.original, e.target.type); } };
+                            }}
+                            data={this.state.AllItems}
+                            columns={columnsIte}
+                            defaultPageSize={5}
+                            minRows={2}
+                            noDataText={Resources['noData'][currentLanguage]}
+                        />
                     </div>
-                </div >
+                </div>
             )
         }
 
@@ -1102,13 +1066,13 @@ class materialDeliveryAddEdit extends Component {
                     <SkyLightStateless onOverlayClicked={e => this.setState({ ShowPopup: false })}
                         title={Resources['editTitle'][currentLanguage]}
                         onCloseClicked={e => this.setState({ ShowPopup: false })} isVisible={this.state.ShowPopup}>
-                        {EditItem()}
+                        {ShowAllItems()}
                     </SkyLightStateless>
                 </div>
 
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialDelivery[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.equipmentDelivery[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">
@@ -1146,7 +1110,7 @@ class materialDeliveryAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources["materialDelivery"][currentLanguage]}</h6>
+                                            <h6>{Resources["equipmentDelivery"][currentLanguage]}</h6>
                                         </div>
                                     </div>
                                     <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
@@ -1203,4 +1167,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(materialDeliveryAddEdit))
+)(withRouter(equipmentDeliveryAddEdit))

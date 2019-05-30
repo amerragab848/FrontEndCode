@@ -11,9 +11,9 @@
     "exportStatic": "https://demov4.procoor.com",
     "fmApp": "FM",
     "hrApp": "HR",
-    "local": "https://demov4services.procoor.com/pm",
+    "local": "https://newgizaservices.procoor.com/pm",
     "loginServer": "https://procoorauthorization.procoor.com",
     "pmApp": "PM",
-    "static": "https://demov4services.procoor.com/pm",
-    "downloads": "https://demov4services.procoor.com"
+    "static": "https://newgizaservices.procoor.com/pm",
+    "downloads": "https://newgizaservices.procoor.com"
 }
