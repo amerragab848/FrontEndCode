@@ -151,6 +151,9 @@ import requestProposalAddEdit from "./Pages/Procurement/requestProposalAddEdit";
 import proposalAddEdit from "./Pages/Procurement/proposalAddEdit";
 import PaymentRequisitionList from "./Pages/Contracts/Schedule";
 import purchaseOrderAddEdit from "./Pages/Procurement/purchaseOrderAddEdit";
+import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit"; 
+import equipmentDeliveryAddEdit from "./Pages/Procurement/equipmentDeliveryAddEdit";
+import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit"; 
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -319,6 +322,9 @@ let originalRoutes = [
     , <Route path="/requestProposalAddEdit" component={requestProposalAddEdit} />
     , <Route path="/proposalAddEdit" component={proposalAddEdit} />
     , <Route path="/purchaseOrderAddEdit" component={purchaseOrderAddEdit} />
+    , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} /> 
+    , <Route path="/materialDeliveryAddEdit" component={materialDeliveryAddEdit} />
+    , <Route path="/equipmentDeliveryAddEdit" component={equipmentDeliveryAddEdit} /> 
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
