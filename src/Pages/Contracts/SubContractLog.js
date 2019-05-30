@@ -9,13 +9,16 @@ import 'react-table/react-table.css'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import SubContract from '../Contracts/SubContract';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
   };
   
 class SubContractLog extends Component {
+   
     constructor(props) {
         super(props)
+      
         this.itemsColumns = [
             {
                 key: "arrange",
@@ -104,16 +107,20 @@ class SubContractLog extends Component {
                 formatter:dateFormate
             }
         ];
+     
         this.state = {
+            ApiGet:this.props.ApiGet,
             rows: [],
             isLoading: true,
-            contractId: this.props.contractId,
+            docId: this.props.docId,
             viewModel : false,
-            projectId:this.props.projectId
+            projectId:this.props.projectId,
+            isViewMode:this.props.isViewMode
         }
     }
+
     componentWillMount() {
-        Api.get('GetSubContractsByContractId?contractId=' + this.state.contractId).then(result => {
+        Api.get(this.state.ApiGet).then(result => {
             this.setState({ isLoading: false, rows: result })
         }).catch(() => {
             this.setState({ isLoading: false, rows: [] })
@@ -124,30 +131,34 @@ class SubContractLog extends Component {
         this.setState({viewModel:true});
     }
 
-    hidePopUp=(type)=>{
-        this.setState({viewModel:type});
+    FillTable=()=>{
+
+        Api.get(this.state.ApiGet).then(result => {
+            this.setState({ 
+                isLoading: false,
+                rows: result,
+                viewModel:false
+             })
+        }).catch(() => {
+            this.setState({ isLoading: false, rows: [] })
+        });
     }
 
     render() {
-        const dataGrid = this.state.isLoading === false ? (
-            <GridSetupWithFilter
-                rows={this.state.rows}
-                showCheckbox={false}
-                columns={this.itemsColumns}
-                key='items'
-            />) : <LoadingSection />;
+        const dataGrid = this.state.isLoading === false ? 
+        (<GridSetupWithFilter rows={this.state.rows} showCheckbox={false} columns={this.itemsColumns} key='items' />) : <LoadingSection />;
         return (
             <Fragment>
             {this.state.viewModel === false ? 
             <div className="doc-pre-cycle">
                 <header className="doc-pre-btn">
                     <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
-                    <button  className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} onClick={this.viewSubContract}><i className="fa fa-file-text"></i></button>
+                    <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? 'disNone' : '')} disabled={this.state.isViewMode} onClick={this.viewSubContract}><i className="fa fa-file-text"></i></button>
                 </header>
                 {dataGrid}
             </div>
             :
-            <SubContract projectId={this.state.projectId} contractId={this.state.contractId} hidePopUp={this.hidePopUp}/>
+            <SubContract projectId={this.state.projectId} type={this.props.type} items={this.props.items} docId={this.state.docId} FillTable={this.FillTable}  />
             }
         </Fragment>
              )

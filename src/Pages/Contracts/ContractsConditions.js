@@ -183,7 +183,7 @@ class ContractsConditions extends Component {
                             </a>
                         </div>
                     </td>
-                    <td colspan={6}>
+                    <td colSpan={6}>
                         <div className="contentCell tableCell-2">
                             <span>{item.details} </span>
                         </div>
@@ -300,7 +300,7 @@ class ContractsConditions extends Component {
                                         <span>{Resources.delete[currentLanguage]} </span>
                                     </div>
                                 </th>
-                                <th colspan={6}>
+                                <th colSpan={6}>
                                     <div className="headCell tableCell-2">
                                         <span>{Resources['description'][currentLanguage]} </span>
                                     </div>
@@ -312,7 +312,7 @@ class ContractsConditions extends Component {
                         </tbody>
                     </table>
                 </div>
-            </React.Fragment >
+            </React.Fragment>
         return (
             <React.Fragment>
                 <div>

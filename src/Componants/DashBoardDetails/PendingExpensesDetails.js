@@ -7,8 +7,9 @@ import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import {  Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import CryptoJS from "crypto-js";
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -252,11 +253,28 @@ class PendingExpensesDetails extends Component {
       });
   };
  
+  onRowClick = (obj) => {
+    if (this.state.RouteEdit !== '') {
+      let objRout = {
+        expenseId: obj.expenseId,
+        workFlowId: obj.workFlowId,
+        workFlowItemId: obj.workFlowItemId,
+        arrangeLevel:obj.arrangeLevel,
+        cycleId: obj.cycleId 
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/expensesUserAddEdit" ,
+        search: "?id=" + encodedPaylod
+      });
+    }
+  }
 
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+        <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false} />
       ) : <LoadingSection/>;
 
       const btnExport = this.state.isLoading === false ? 

@@ -32,50 +32,34 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 class SubContract extends Component {
+    
     constructor(props) {
+
         super(props)
 
         window.scrollTo(0, 0);
 
-        const query = new URLSearchParams(this.props.location.search);
-    
-        let index = 0;
-    
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                }
-                catch{
-                    this.props.history.goBack();
-                }
-            }
-            index++;
-        }
         let editQuntity = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.quantity}</span></a>;
             }
             return null;
         };
+
         let editUnitPrice = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.unitPrice}</span></a>;
             }
             return null;
         };
+
         let editDefaultQuntity = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.defaultQuantity}</span></a>;
             }
             return null;
         };
+
         this.itemsColumns = [
             {
                 key: "details",
@@ -193,19 +177,27 @@ class SubContract extends Component {
     }
 
     componentWillMount() {
-        this.setState({ isLoading: true })
+        
+        this.setState({ isLoading: true });
+        
         DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId='+this.props.projectId, 'companyName', 'companyId').then(res => {
             this.setState({ companies: res, isLoading: false })
         }).catch(() => {
             this.setState({ isLoading: false })
         })
-        this.setState({ isLoading: true })
-        Api.get('ShowContractItemsByContractId?contractId='+this.props.contractId+'&pageNumber=0&pageSize=2000').then((res) => {
-            if (res) {
-                let itemsColumns = _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity')
-                this.setState({ rows: res, itemsColumns, isLoading: false })
-            }
-        }) 
+
+        this.setState({ isLoading: true });
+
+        if(!this.props.items){
+            Api.get('ShowContractItemsByContractId?contractId='+this.props.docId+'&pageNumber=0&pageSize=2000').then((res) => {
+                if (res) {
+                    let itemsColumns = _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity')
+                    this.setState({ rows: res, itemsColumns, isLoading: false })
+                }
+            }); 
+        }else{
+            this.setState({ rows: this.props.items , isLoading: false })
+        } 
     }
 
     componentWillReceiveProps(props, state) {
@@ -217,6 +209,7 @@ class SubContract extends Component {
         this.setState({ selectedRows });
 
     }
+
     onRowsDeselected = () => {
         this.setState({
             selectedRows: []
@@ -241,12 +234,10 @@ class SubContract extends Component {
                         completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                         actualExceuted: 0,
                         originalContactSum: 0,
-                        parentId:this.props.contractId,
-                        parentType: 'Contract',
+                        parentId:this.props.docId,
+                        parentType: this.props.type,
                         tax: 0,
-                        vat: 0,
-                        contractId:this.props.contractId
-
+                        vat: 0, 
                     }
                     DataService.addObject('AddContracts', contract).then((data) => {
                         let count = 0;
@@ -261,6 +252,8 @@ class SubContract extends Component {
                             item.projectId = this.props.projectId
                             item.docId = data["id"];
                             item.contractId = data["id"];
+                            item.orderType = this.props.type;
+
                             Api.post('AddContractsOrder', item).then(() => {
                                 if (count == this.state.selectedRows.length - 1){
                                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -271,7 +264,8 @@ class SubContract extends Component {
                             })
                         })
 
-                        this.props.hidePopUp(false);
+                        this.props.FillTable(); 
+
                     }).catch(() => {
                         toast.error(Resources["operationCanceled"][currentLanguage]);
                         this.setState({ isLoading: false })
@@ -285,7 +279,9 @@ class SubContract extends Component {
     }
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        this.setState({ isLoading: true })
+      
+        this.setState({ isLoading: true });
+      
         this.setState(state => {
             const rows = state.rows.slice();
             for (let i = fromRow; i <= toRow; i++) {
@@ -293,13 +289,16 @@ class SubContract extends Component {
             }
             return { rows };
         });
+
         setTimeout(() => {
             this.setState({ isLoading: false })
         }, 300)
     };
 
     ChangeContract = (event) => {
+
         this.setState({ contractTo: event, isLoading: true })
+        
         DataService.GetDataList('GetContactsByCompanyId?companyId=' + event.value, 'contactName', 'id').then(res => {
             this.setState({
                 contracts: res, isLoading: false,
@@ -309,13 +308,17 @@ class SubContract extends Component {
             this.setState({ isLoading: false })
         })
     }
+
     setupColumns(value) {
-        this.setState({ isLoading: true })
+
+        this.setState({ isLoading: true });
+      
         let itemsColumns = value == 'quantity' ? _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity') : _.filter(this.itemsColumns, (col) => col.key != 'quantity')
         setTimeout(() => {
             this.setState({ itemsColumns, isLoading: false })
         }, 200)
     }
+
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <GridSetupWithFilter
@@ -329,12 +332,12 @@ class SubContract extends Component {
                 showToolBar={false}
                 key='items'
             />) : <LoadingSection />;
+
         let Step_1 = <Fragment>
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                     <div className="document-fields">
-                        <Formik
-                            initialValues={{
+                        <Formik initialValues={{
                                 subject: '',
                                 fromCompany: '',
                                 contractWithContact: '',
@@ -342,11 +345,11 @@ class SubContract extends Component {
                                 refDoc: '',
                                 docDate: moment(),
                                 completionDate: moment()
-                            }}
-                            validationSchema={poqSchema}
+                            }} 
+                            validationSchema={poqSchema} 
                             onSubmit={(values) => {
                                 this.addContract(values)
-                            }}  >
+                            }}> 
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                 <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                     <div className="proForm first-proform">
@@ -442,7 +445,7 @@ class SubContract extends Component {
                                     </div>
                                     <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                         {this.state.saveLoading === false ? (
-                                            <button className="primaryBtn-1 btn " type="submit"  >{Resources['save'][currentLanguage]}</button>
+                                            <button className={ "primaryBtn-1 btn " + (this.state.isViewMode === true ? "disNone" : "") } disabled={this.state.isViewMode} type="submit"  >{Resources['save'][currentLanguage]}</button>
                                         ) :
                                             (
                                                 <button className="primaryBtn-1 btn  disabled" disabled="disabled">

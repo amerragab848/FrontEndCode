@@ -6839,7 +6839,7 @@
   "purchaseOrder": {
     "documentTitle": "purchaseOrder",
     "docTyp": 70,
-    "documentAddEditLink": "purchaseOrderAddEdit/",
+    "documentAddEditLink": "purchaseOrderAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 175,
     "documentEditPermission": 176,
@@ -18529,7 +18529,7 @@
   "WorkFlow": {
     "documentTitle": "workFlow",
     "docTyp": 16,
-    "documentAddEditLink": "projectWorkFlowAddEdit/",
+    "documentAddEditLink": "projectWorkFlowAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 600,
     "documentEditPermission": 601,

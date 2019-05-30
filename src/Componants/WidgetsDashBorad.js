@@ -113,7 +113,7 @@ var widgets = [
         props: {
           api: "GetWorkFlowAlertCount",
           apiDetails: "",
-          route: "",
+          route: "workFlowAlerts",
           value: "total",
           listType: "item",
           action: "action",
