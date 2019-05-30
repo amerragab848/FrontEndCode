@@ -11,8 +11,8 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
-import GridSetup from "../Communication/GridSetup";
+ 
+import GridSetup from "../Communication/GridSetupWithFilter";
 
 import { withRouter } from "react-router-dom";
 
@@ -240,7 +240,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "boqSubType",
@@ -285,7 +285,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "unitPrice",
@@ -303,7 +303,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
 
             }, {
@@ -313,7 +313,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "oldPaymentPercent",
@@ -322,7 +322,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "sitePercentComplete",
@@ -331,7 +331,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true,
                 formatter: editSitePercentComplete,
                 editable: !this.props.changeStatus
@@ -342,7 +342,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true,
                 formatter: editSiteQuantityComplete,
                 editable: !this.props.changeStatus
@@ -353,7 +353,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true,
                 formatter: editPercentComplete,
                 editable: this.props.changeStatus,
@@ -1496,8 +1496,7 @@ class requestPaymentsAddEdit extends Component {
                 <tr key={i.id}>
                     <Fragment>
                         <td><div className="contentCell">{i.title}</div> </td>
-                        <td><div className="contentCell">{i.deductionValue}</div> </td>
-                        {/* <td><div className="contentCell"></div></td> */}
+                        <td><div className="contentCell">{i.deductionValue}</div> </td> 
                     </Fragment>
 
                 </tr>

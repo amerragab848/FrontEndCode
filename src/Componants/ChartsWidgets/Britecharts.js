@@ -34,15 +34,16 @@ class Britecharts extends Component {
         <ResponsiveLineChart
             margin={marginObject}
             lineCurve="basis"
-            {...props}
-        />
+            {...props} />
     );
 
     componentDidMount() {
         let dataByTopic = [];
+
         this.setState({
             isLoading: true
         });
+
         Api.get(this.props.api).then(res => {
             if (res.length > 0) {
                 this.props.topicName.forEach((topic, index) => {
@@ -61,13 +62,17 @@ class Britecharts extends Component {
 
             let data = {
                 dataByTopic: dataByTopic
-            } 
+            }
+
             this.setState({
                 data: data,
                 isLoading: false
             });
 
-        }).catch((ex) => {
+        }).catch((ex) => { 
+            this.setState({
+                isLoading: false
+            });
         });
     }
     render() {

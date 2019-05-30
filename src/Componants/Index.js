@@ -97,6 +97,7 @@ class Index extends Component {
           <Fragment key={item.id}>
             <Britecharts
               api={item.props.api}
+              title={language[item.title][currentLanguage]}
               topicName={item.topicNames} />
           </Fragment>
         );
