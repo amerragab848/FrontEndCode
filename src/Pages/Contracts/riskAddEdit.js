@@ -219,19 +219,21 @@ class riskAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
-            nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
-            nextProps.document.requiredDate = moment(nextProps.document.requiredDate).format('DD/MM/YYYY');
+        if (nextProps.document.id !== this.props.document.id) {
+            let sarverObject = nextProps.document;
+            sarverObject.docDate = moment(sarverObject.docDate).format('DD/MM/YYYY');
+            sarverObject.requiredDate = sarverObject.requiredDate !== null ? moment(sarverObject.requiredDate).format('DD/MM/YYYY') : moment();
 
             this.setState({
-                document: nextProps.document,
+                document: sarverObject,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: nextProps.document.description
+                message: sarverObject.description
             });
 
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            this.fillDropDowns(sarverObject.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
@@ -276,6 +278,7 @@ class riskAddEdit extends Component {
                 this.setState({
                     IRCycles: [...result]
                 });
+
                 let data = { items: result };
                 this.props.actions.ExportingData(data);
             });
@@ -284,6 +287,7 @@ class riskAddEdit extends Component {
                 this.setState({
                     documentCycle: { ...result }
                 });
+
                 this.fillDropDownsCycle(true);
             });
 
@@ -300,8 +304,6 @@ class riskAddEdit extends Component {
                     });
                 }
             });
-
-
 
         } else {
             const riskDocument = {
@@ -336,10 +338,24 @@ class riskAddEdit extends Component {
             this.fillDropDowns(false);
             this.fillDropDownsCycle(false);
             this.props.actions.documentForAdding();
+            this.GetNextArrange();
         }
 
     }
 
+    GetNextArrange() {
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+
+        dataservice.GetNextArrangeMainDocument(url).then(res => {
+            updated_document.arrange = res;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
+        })
+    }
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -392,9 +408,12 @@ class riskAddEdit extends Component {
                 let disciplineId = this.props.document.discipline;
                 if (disciplineId) {
                     let discipline = result.find(i => i.label === parseInt(disciplineId));
-                    this.setState({
-                        selectedDiscpline: discipline
-                    });
+
+                    if (discipline) {
+                        this.setState({
+                            selectedDiscpline: discipline
+                        });
+                    }
                 }
             }
             this.setState({
@@ -411,9 +430,11 @@ class riskAddEdit extends Component {
 
                     let areaIdName = result.find(i => i.value === parseInt(areaId));
 
-                    this.setState({
-                        selectedArea: { label: areaIdName.label, value: areaId }
-                    });
+                    if (areaIdName) {
+                        this.setState({
+                            selectedArea: { label: areaIdName.label, value: areaId }
+                        });
+                    }
                 }
             }
             this.setState({
@@ -430,10 +451,11 @@ class riskAddEdit extends Component {
                 if (priorityId) {
 
                     let priorityName = result.find(i => i.value === parseInt(priorityId));
-
-                    this.setState({
-                        selectedPriorityId: { label: priorityName.label, value: priorityId }
-                    });
+                    if (priorityName) {
+                        this.setState({
+                            selectedPriorityId: { label: priorityName.label, value: priorityId }
+                        });
+                    }
                 }
             }
             this.setState({
@@ -464,7 +486,7 @@ class riskAddEdit extends Component {
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=riskCauses", "title", "id").then(result => {
             if (isEdit) {
 
-                let riskCauses = this.state.documentCycle.riskCauses;
+                let riskCauses = this.state.documentCycle.riskCause;
                 if (riskCauses) {
                     let priorityName = result.find(i => i.value === parseInt(riskCauses));
                     this.setState({
@@ -496,12 +518,11 @@ class riskAddEdit extends Component {
         //consequences
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=consequences", "title", "id").then(result => {
             if (isEdit) {
-
                 let riskConsquence = this.state.documentCycle.riskConsquence;
                 if (riskConsquence) {
-                    let priorityName = result.find(i => i.value === parseInt(riskConsquence));
+                    let riskConsquenceObj = result.find(i => i.value === parseInt(riskConsquence));
                     this.setState({
-                        selectedconsequence: { label: priorityName.label, value: riskConsquence }
+                        selectedconsequence: { label: riskConsquenceObj.label, value: riskConsquence }
                     });
                 }
             }
@@ -568,17 +589,6 @@ class riskAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            this.props.actions.GetNextArrange(url);
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
-                updated_document = Object.assign(original_document, updated_document);
-                this.setState({
-                    document: updated_document
-                });
-            })
-        }
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -632,18 +642,21 @@ class riskAddEdit extends Component {
                     impact: null,
                     id: null
                 };
-                let items = []
-                let consequences = ['T', 'C', 'P', 'R', 'S']
-                for (var i = 0; i < 5; i++) {
 
-                    let consequenceItem = {
-                        conesquenceId: consequences[i],
-                        riskId: result.id,
-                        value: 0,
-                        id: null
-                    };
-                    items.push(consequenceItem)
-                }
+                let items = []
+                dataservice.GetDataGrid("GetRiskConsequenceByRiskId?riskId=" + result.id).then(result => {
+                    if (result) {
+                        let EMV = 0;
+                        let likelihood = this.state.likelihood;
+                        result.map(i => {
+                            EMV = (parseFloat(likelihood) * parseFloat(i.value)) + EMV;
+                        })
+                        this.setState({
+                            EMV: EMV,
+                            items: result
+                        });
+                    }
+                });
 
                 this.setState({
                     documentCycle: cycle,
@@ -877,35 +890,36 @@ class riskAddEdit extends Component {
             this.setState({ CycleAddLoading: true })
         }
 
-        dataservice.addObject(api, saveDocument).then(result => {
-            if (result) {
-                let cycle = {
-                    subject: result.subject,
-                    cycleDate: result.cycleDate,
-                    refNo: result.refNo,
-                    status: result.status,
-                    riskId: this.state.docId,
-                    riskCause: result.riskCause,
-                    notes: result.notes,
-                    riskLevel: result.riskLevel,
-                    impact: result.impact,
-                    id: result.id
-                };
+        dataservice.addObject(api, saveDocument)
+            .then(result => {
+                if (result) {
+                    let cycle = {
+                        subject: result.subject,
+                        cycleDate: result.cycleDate,
+                        refNo: result.refNo,
+                        status: result.status,
+                        riskId: this.state.docId,
+                        riskCause: result.riskCause,
+                        notes: result.notes,
+                        riskLevel: result.riskLevel,
+                        impact: result.impact,
+                        id: result.id
+                    };
 
+                    this.setState({
+                        documentCycle: cycle,
+                        CycleEditLoading: false,
+                        CycleAddLoading: false,
+                    });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }
+            }).catch(res => {
                 this.setState({
-                    documentCycle: cycle,
                     CycleEditLoading: false,
                     CycleAddLoading: false,
                 });
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            }
-        }).catch(res => {
-            this.setState({
-                CycleEditLoading: false,
-                CycleAddLoading: false,
+                toast.error(Resources["operationCanceled"][currentLanguage]);
             });
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-        });
     }
 
     AddNewCycle() {
@@ -1050,6 +1064,7 @@ class riskAddEdit extends Component {
                                 </div>
 
                                 <div className="slider-Btns">
+
                                     {this.state.CycleEditLoading ?
                                         <button className="primaryBtn-1 btn disabled">
                                             <div className="spinner">
@@ -1058,16 +1073,22 @@ class riskAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.editCycle}>{Resources['editCycle'][currentLanguage]}</button>}
-                                    {this.state.CycleAddLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>}
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.editCycle}>{Resources['save'][currentLanguage]}</button>}
+
+
+                                    {this.props.changeStatus === true ?
+                                        this.state.CycleAddLoading ?
+                                            <button className="primaryBtn-1 btn disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                            : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>
+                                        : null
+                                    }
+
                                 </div>
 
                             </div>
@@ -1203,7 +1224,7 @@ class riskAddEdit extends Component {
                                 <input autoComplete="off"
                                     value={this.state.medigationCost == null ? 0 : this.state.medigationCost}
                                     onChange={(e) => this.HandleMitigationChangeValue(e, 'medigationCost')}
-                                    type="number"  pattern="[0-9]*"
+                                    type="number" pattern="[0-9]*"
                                     className="form-control" name="medigationCost"
                                     placeholder={Resources['medigationCost'][currentLanguage]} />
                             </div>

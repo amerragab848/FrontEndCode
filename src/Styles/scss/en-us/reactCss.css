@@ -5968,6 +5968,14 @@ line.horizontal-grid-line {
     min-width: 250px;
 }
 
+.header__dropdown header h2 {
+    font-size: 20px !important;
+    font-family: font-r !important;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    color: #252833;
+}
+
 .skylight-dialog .ReactTable {
     overflow: visible;
 }
@@ -6240,6 +6248,21 @@ line.horizontal-grid-line {
     flex-flow: column;
 }
 
+.line-chart .line {
+    fill: transparent;
+    /* stroke: #39bd3d */
+}
+.vertical-marker-container .vertical-marker {
+    stroke: #D2D6DF;
+    stroke-width: 1;
+    fill: none; 
+}
+  
+  .vertical-marker-container .data-point-highlighter {
+    fill: #ffffff;
+    stroke-width: 2; 
+}
+  
 body.noScrolling {
     overflow: hidden !important;
 }
@@ -6375,4 +6398,8 @@ body.noScrolling {
 .default__dropdown .css-10nd86i .css-1ep9fjw:last-child svg,
 .default__dropdown .css-10nd86i .css-1uq0kb5:last-child svg {
     display: none;
+}
+
+.britechart-tooltip {
+z-index: 9999;
 }

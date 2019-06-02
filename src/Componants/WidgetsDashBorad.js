@@ -412,47 +412,57 @@ var widgets = [
         key: "0-3-1",
         title: 'projectStatus',
         props: {
-            'api': 'GetProjectsStatusSummaryCount',
-            'name': 'item',
-            'y': 'total'
+          'api': 'GetProjectsStatusSummaryCount',
+          'name': 'item',
+          'y': 'total'
         },
         type: 'pie',
         seriesName: "projectStatus"
-    }, {
-        id: 'wt-Name13',
+      }, {
+        id: 'wt-Name03',
         key: "0-3-2",
         checked: false,
         title: 'percentageExpensesTypesOfTotal',
         props: {
-            'api': 'GetPercentageExpensesType',
-            'name': 'projectName',
-            'y': 'total'
-        }, 
+          'api': 'GetPercentageExpensesType',
+          'name': 'projectName',
+          'y': 'total'
+        },
         type: 'pie',
         seriesName: "expensesAllProject"
-    
-    },{
+
+      }, {
         id: 'wt-Name02',
         key: "0-3-3",
         checked: false,
         title: 'expensesAllProject',
         props: {
-            'api': 'GetExpensesByTypeForAllProjects',
-            'name': 'expenseTypeName',
-            'y': 'total'
+          'api': 'GetExpensesByTypeForAllProjects',
+          'name': 'expenseTypeName',
+          'y': 'total'
         },
         type: 'pie',
         seriesName: "expensesAllProject"
-    
-    }, {
+
+      }, {
+        id: 'wt-Name013',
+        key: "0-3-13",
+        checked: false,
+        title: 'riskStatusYearly',
+        props: {
+          'api': 'GetRiskDataChartLine'
+        }, 
+        topicNames:['Opened','Closed'],
+        type: 'line' 
+      }, {
         id: 'wt-Name05',
         key: "0-3-4",
         checked: false,
         title: 'percentOfMaterialRequestPerProject',
         props: {
-            'api': 'GetTopFiveRequests',
-            'name': 'projectName',
-            'data': 'percentage'
+          'api': 'GetTopFiveRequests',
+          'name': 'projectName',
+          'data': 'percentage'
         },
         type: 'column',
         stack: 'normal',
@@ -460,15 +470,15 @@ var widgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, {
+      }, {
         id: 'wt-Name06',
         key: "0-3-5",
         checked: false,
         title: 'percentOfMaterialRequestPerProject',
         props: {
-            'api': 'GetTopFiveApprovedSubmittal?status=true',
-            'name': 'projectName',
-            'data': 'percentage'
+          'api': 'GetTopFiveApprovedSubmittal?status=true',
+          'name': 'projectName',
+          'data': 'percentage'
         },
         type: 'column',
         stack: 'normal',
@@ -476,15 +486,15 @@ var widgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, { 
+      }, {
         id: 'wt-Name07',
         key: "0-3-6",
         checked: false,
         title: 'percentOfRejectedSubmittalPerProject',
         props: {
-            'api': 'GetTopFiveApprovedSubmittal?status=false',
-            'name': 'projectName',
-            'data': 'percentage'
+          'api': 'GetTopFiveApprovedSubmittal?status=false',
+          'name': 'projectName',
+          'data': 'percentage'
         },
         type: 'column',
         stack: 'normal',
@@ -492,15 +502,15 @@ var widgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, {
+      }, {
         id: 'wt-Name08',
         key: "0-3-7",
         checked: false,
         title: 'countinspectionApproved',
         props: {
-            'api': 'GetStatusIspectionRequest?status=true',
-            'name': 'projectName',
-            'data': 'percentage'
+          'api': 'GetStatusIspectionRequest?status=true',
+          'name': 'projectName',
+          'data': 'percentage'
         },
         type: 'column',
         stack: 'normal',
@@ -508,47 +518,15 @@ var widgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, {
-        id: 'wt-Name09',
-        key: "0-3-8",
-        checked: false,
-        title: 'rejectedInspectionRequest',
-        props: {
-            'api': 'GetStatusIspectionRequest?status=false',
-            'name': 'projectName',
-            'data': 'percentage'
-        },
-        type: 'column',
-        stack: 'normal',
-        yTitle: 'sum',
-        catagName: 'projectName',
-        multiSeries: 'no',
-        barContent: []
-    }, {
-        id: 'wt-Name10',
-        key: "0-3-9",
-        checked: false,
-        title: 'pendingItemInWorkFlow',
-        props: {
-            'api': 'GetPendingItemInWorkFlowTopFive',
-            'name': 'docName',
-            'data': 'count'
-        },
-        type: 'column',
-        stack: 'normal',
-        yTitle: 'total',
-        catagName: 'docName',
-        multiSeries: 'no',
-        barContent: []
-    }, {
+      }, { 
         id: 'wt-Name11',
         key: "0-3-10",
         checked: false,
         title: 'contractsPerProject',
         props: {
-            'api': 'GetTopFiveContracts',
-            'name': 'docName',
-            'data': 'count'
+          'api': 'GetTopFiveContracts',
+          'name': 'docName',
+          'data': 'count'
         },
         type: 'column',
         stack: '',
@@ -556,34 +534,16 @@ var widgets = [
         catagName: 'projectName',
         multiSeries: 'yes',
         barContent: [{ name: 'Contracted', value: 'percentageContract' }, { name: 'Contracts Under Review', value: 'countUnderContract' }]
-    
-    }
-        , {
-        id: 'wt-Name12',
-        key: "0-3-11",
-        checked: false,
-        title: 'contractsSummaryAllProjectProject',
-        props: {
-            'api': 'GetTopFiveContractsForAllProjects',
-            'name': 'docName',
-            'data': 'count'
-        },
-        type: 'column',
-        stack: '',
-        yTitle: 'total',
-        catagName: 'projectName',
-        multiSeries: 'yes',
-        barContent: [{ name: 'Contracts Under Review', value: 'countUnderContract' }, { name: 'Contracted', value: 'countContract' }]
-    
-    }, { 
+
+      }, { 
         id: 'wt-Name14',
         key: "0-3-12",
         checked: false,
         title: 'budgetVariance',
         props: {
-            'api': 'GetTopFiveBudgetVariance',
-            'name': 'projectName',
-            'data': 'total'
+          'api': 'GetTopFiveBudgetVariance',
+          'name': 'projectName',
+          'data': 'total'
         },
         type: 'column',
         stack: '',
@@ -591,8 +551,8 @@ var widgets = [
         catagName: 'expenseTypeName',
         multiSeries: 'yes',
         barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
-    
-    }
+
+      }
     ]
   },
   {
@@ -659,7 +619,8 @@ var widgets = [
           isModal: false,
           key: "1-1-3"
         }
-      }, {
+      },
+       {
         title: "monthlyPaymentRequisitions",
         permission: 0,
         key: "1-1-4",
@@ -896,7 +857,8 @@ var widgets = [
         }
       }
     ]
-  }, {
+  }, 
+  {
     widgetCategory: "respondTime",
     refrence: 1,
     key: "1-5",

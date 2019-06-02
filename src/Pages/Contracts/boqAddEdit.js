@@ -143,7 +143,7 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "boqSubType",
@@ -188,7 +188,7 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "unit",
@@ -197,7 +197,7 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "unitPrice",
@@ -207,7 +207,7 @@ class bogAddEdit extends Component {
                 sortable: true,
                 editable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true,
                 formatter: editUnitPrice
             }, {
@@ -217,7 +217,7 @@ class bogAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true
             }, {
                 key: "resourceCode",
