@@ -86,20 +86,21 @@ class materialRequestAddEdit extends Component {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.quantity != null ? row.quantity : 0}</span></a>;
             }
-            return null;
+            return 0;
         };
         let editStock = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.stock != null ? row.stock : 0}</span></a>;
             }
-            return null;
+            return 0;
         };
         let editRequestQty = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.requestedQuantity != null ? row.requestedQuantity : 0}</span></a>;
             }
-            return null;
+            return 0;
         };
+
         this.itemsColumns = [
             {
                 key: "arrange",
@@ -180,66 +181,7 @@ class materialRequestAddEdit extends Component {
                 sortDescendingFirst: true
             }
         ];
-        this.MRColumns = [
-            {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 140,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
 
-            }, {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            }, {
-                key: "stock",
-                name: Resources["stock"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "requestedVariance",
-                name: Resources["requestedVariance"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "requestedQuantity",
-                name: Resources["releasedQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editRequestQty,
-                editable: true
-            }
-        ];
         this.state = {
             updatedItems: [],
             updatedchilderns: [],
@@ -351,6 +293,33 @@ class materialRequestAddEdit extends Component {
                 />
             );
         }
+    }
+
+    renderEditableQuantity = (cellInfo) => {
+        return (
+            <div
+                style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer' }}
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={e => {
+                    const updatedItem = this.state.MRItems[cellInfo.index].quantity;
+                    const MRItems = [...this.state.MRItems];
+                    if (this.state.MRItems[cellInfo.index].quantity < parseInt(e.target.innerHTML, 10) || this.state.MRItems[cellInfo.index].stock < parseInt(e.target.innerHTML, 10)) {
+                        toast.error("Quantity Cannot more Than Quantity and Stock Quantity ")
+                    }
+                    else {
+                        MRItems[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+                        updatedItem = MRItems[cellInfo.index]
+                    }
+                    this.setState({ MRItems, updatedItem });
+
+                }}
+                dangerouslySetInnerHTML={{
+                    __html: this.state.MRItems[cellInfo.index].quantity
+                }}
+            />
+        );
+
     }
 
     editChildren = (cellInfo) => {
@@ -963,48 +932,6 @@ class materialRequestAddEdit extends Component {
         });
     };
 
-    _onMRGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        console.log(updated)
-        console.log('this.state._items[fromRow]', this.state._items[fromRow])
-
-        // let updateRow = this.state._items[fromRow];
-        // if(updateRow.quantity<)
-        // this.setState(state => {
-        //     const _items = state._items.slice();
-        //     for (let i = fromRow; i <= toRow; i++) {
-        //         _items[i] = { ..._items[i], ...updated };
-        //     }
-        //     return { _items };
-        // }, function () {
-        //     if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]] && Object.keys(updated)[0] == 'quantity') {
-        //         updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-        //         this.setState({ isLoading: true })
-        //         Api.post('UpdateQuantitySiteRequestItems?id=' + this.state._items[fromRow].id + '&quantity=' + updated.quantity)
-        //             .then(() => {
-        //                 toast.success(Resources["operationSuccess"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //             .catch(() => {
-        //                 toast.error(Resources["operationCanceled"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //     }
-        //     if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]] && Object.keys(updated)[0] == 'stock') {
-        //         updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-        //         this.setState({ isLoading: true })
-        //         Api.post('UpdateQuantitySiteRequestItems?id=' + this.state._items[fromRow].id + '&stock=' + updated.stock)
-        //             .then(() => {
-        //                 toast.success(Resources["operationSuccess"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //             .catch(() => {
-        //                 toast.error(Resources["operationCanceled"][currentLanguage]);
-        //                 this.setState({ isLoading: false })
-        //             })
-        //     }
-        // });
-    };
-
     onRowClick = (value, index, column) => {
         if (!Config.IsAllow(3751)) {
             toast.warning("you don't have permission");
@@ -1111,6 +1038,27 @@ class materialRequestAddEdit extends Component {
         document.body.classList.remove('noScrolling');
     }
 
+    StepOneLink = () => {
+        if ( this.state.docId !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1  
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if ( this.state.docId !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2 
+
+            })
+        }
+    }
+
     render() {
         const childerns =
             this.state.isLoading == false ?
@@ -1175,15 +1123,77 @@ class materialRequestAddEdit extends Component {
                     key='items'
                 /> : <LoadingSection />;
         const MRGrid =
-            this.state.isLoading == false ?
-                <GridSetupWithFilter
-                    rows={this.state.MRItems}
-                    pageSize={this.state.pageSize}
-                    columns={this.MRColumns}
-                    showCheckbox={false}
-                    onGridRowsUpdated={this._onMRGridRowsUpdated}
-                    key='MR'
-                /> : <LoadingSection />;
+            <ReactTable
+                data={this.state.MRItems}
+                columns={[
+                    {
+                        Header: Resources.resourceCode[currentLanguage],
+                        accessor: 'resourceCode'
+
+                    }, {
+                        Header: Resources.itemCode[currentLanguage],
+                        accessor: 'itemCode'
+                    }, {
+                        Header: Resources.quantity[currentLanguage],
+                        accessor: 'quantity'
+                    }, {
+                        Header: Resources.stock[currentLanguage],
+                        accessor: 'stock'
+                    }, {
+                        Header: Resources.requestedVariance[currentLanguage],
+                        accessor: 'requestedVariance',
+                        Cell: (value, row) => {
+                            console.log('value', value)
+                            console.log('row', row)
+                            return (<span  >  {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}</span>)
+                        }
+                    }, {
+                        Header: Resources.releasedQuantity[currentLanguage],
+                        accessor: 'releasedQuantity',
+                        Cell: this.renderEditableQuantity
+                    }
+                ]
+                }
+                defaultPageSize={5}
+                className="-striped -highlight"
+            />
+        // <ReactTable
+        //     data={this.state.MRItems}
+        //     columns={
+        //         [
+        //             {
+        //                 Header: Resources.resourceCode[currentLanguage],
+        //                 accessor: 'resourceCode'
+
+        //             }, {
+        //                 Header: Resources.itemCode[currentLanguage],
+        //                 accessor: 'itemCode'
+        //             }, {
+        //                 Header: Resources.quantity[currentLanguage],
+        //                 accessor: 'quantity'
+        //             }, {
+        //                 Header: Resources.stock[currentLanguage],
+        //                 accessor: 'stock'
+        //             }, {
+        //                 Header: Resources.requestedVariance[currentLanguage],
+        //                 accessor: 'requestedVariance',
+        //                 Cell: (value, row) => {
+        //                     return (<span  >  {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}</span>)
+        //                 }
+        //             }, {
+        //                 Header: Resources.releasedQuantity[currentLanguage],
+        //                 accessor: 'releasedQuantity',
+        //                 Cell: (value, row) => {
+        //                     return (<a className="editorCell "><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>
+        //                         {value.original.quantity != null ? value.original.quantity : 0}</span></a>)
+
+        //                 }
+        //             }
+        //         ]
+        //     }
+        //     defaultPageSize={3}
+        //     className="-striped -highlight" />
+
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -1971,7 +1981,7 @@ class materialRequestAddEdit extends Component {
                 ) : null}
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
-                     beforeClose={() => { this.executeBeforeModalClose() }}  >
+                        beforeClose={() => { this.executeBeforeModalClose() }}  >
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>

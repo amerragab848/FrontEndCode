@@ -1099,7 +1099,7 @@ ul {
       width: 123px;
       height: 123px;
       margin-right: 28px;
-      font-family: font-openb;
+      font-family: 'Open Sans';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 18px;
       text-align: center;
       color: #ffffff; }
@@ -1334,7 +1334,7 @@ ul {
       float: right; }
       .Basics-Typography .right-Side .block-blue a {
         padding-left: 40px;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 14px;
         color: #ffffff; }
         .Basics-Typography .right-Side .block-blue a:hover {
@@ -1343,7 +1343,7 @@ ul {
         color: #ffffff;
         margin-top: 60px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading1, .Basics-Typography .right-Side .block-blue .Typography .heading2, .Basics-Typography .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .Typography .heading6, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s {
-          font-family: font-b;
+          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
           font-size: 28px;
           margin: 10px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading2 {
@@ -1351,11 +1351,11 @@ ul {
         .Basics-Typography .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .Typography .heading3s {
           font-size: 20px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading3s {
-          font-family: font-r; }
+          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
         .Basics-Typography .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .Typography .heading4s {
           font-size: 16px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading4s {
-          font-family: font-r; }
+          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
         .Basics-Typography .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s {
           font-size: 14px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading6 {
@@ -1364,10 +1364,10 @@ ul {
       float: left; }
       .Basics-Typography .right-Side .links-block a {
         text-decoration: underline;
-        font-family: font-opens;
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         font-size: 14px; }
       .Basics-Typography .right-Side .links-block .lastlink {
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 14px;
         text-decoration: none;
         text-transform: uppercase; }
@@ -1375,7 +1375,7 @@ ul {
     float: left;
     width: 50%;
     max-width: 394px;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     font-size: 14px;
     color: #3E4352; }
     .Basics-Typography .left-Side .body2 {
@@ -1388,36 +1388,36 @@ ul {
     .Basics-Typography .left-Side .Typography {
       color: #252833; }
       .Basics-Typography .left-Side .Typography .heading1, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading2, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading2, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading6, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading6, .Basics-Typography .left-Side .Typography .heading2, .Basics-Typography .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading5, .Basics-Typography .left-Side .Typography .heading5s, .Basics-Typography .left-Side .Typography .heading6 {
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 28px; }
       .Basics-Typography .left-Side .Typography .heading2 {
         font-size: 24px; }
       .Basics-Typography .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading3s {
         font-size: 20px; }
       .Basics-Typography .left-Side .Typography .heading3s {
-        font-family: font-r; }
+        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
       .Basics-Typography .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading4s {
         font-size: 16px; }
       .Basics-Typography .left-Side .Typography .heading4s {
-        font-family: font-r; }
+        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
       .Basics-Typography .left-Side .Typography .heading5, .Basics-Typography .left-Side .Typography .heading5s {
         font-size: 14px; }
       .Basics-Typography .left-Side .Typography .heading5s {
-        font-family: font-r; }
+        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
       .Basics-Typography .left-Side .Typography .heading6 {
         font-size: 12px; }
     .Basics-Typography .left-Side .subtitles {
       margin-top: 50px;
       color: #858D9E; }
       .Basics-Typography .left-Side .subtitles p {
-        font-family: font-r; }
+        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
         .Basics-Typography .left-Side .subtitles p span {
           font-family: font-l; }
   .Basics-Typography .Typography-bottom {
     padding-top: 100px;
     clear: both; }
     .Basics-Typography .Typography-bottom h2 {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       color: #252833; }
       .Basics-Typography .Typography-bottom h2:nth-child(1) {
         font-size: 112px; }
@@ -1455,7 +1455,7 @@ ul {
     -ms-flex-align: center;
     align-items: center; }
     .ui.accordion.basic > .title .accordionTitle {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       line-height: 1.5;
       letter-spacing: -0.2px;
       color: #252833;
@@ -1472,7 +1472,7 @@ ul {
   .ui.accordion.basic .content {
     padding-bottom: 10px !important; }
     .ui.accordion.basic .content a {
-      font-family: font-r;
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 14px;
       letter-spacing: -0.2px;
       color: #858D9E;
@@ -1500,7 +1500,7 @@ ul {
         flex: 0.1;
         text-align: right;
         color: #252833;
-        font-family: font-b; }
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
     .ui.accordion.basic .content .contentDivLinks {
       display: flex;
       align-items: center;
@@ -1514,11 +1514,11 @@ ul {
         -ms-flex: 0.1;
         flex: 0.1;
         text-align: right;
-        font-family: font-b; }
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
     .ui.accordion.basic .content .content a:hover {
       background-color: #f2f6fa; }
     .ui.accordion.basic .content .content a .contentSpan {
-      font-family: font-r; }
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
   .ui.accordion.basic .accordion {
     margin: 0;
     padding-left: 35px;
@@ -1544,7 +1544,7 @@ ul {
 .basic.ui.accordion .title:not(.ui) {
   font-size: 14px;
   color: #252833;
-  font-family: font-r; }
+  font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
 
 /**/
 /*Start Sidenav CSS*/
@@ -1703,7 +1703,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .ProjectsUlList ul li a:hover {
               background-color: #f5f5f6; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .ProjectsUlList ul li a p {
-              font-family: font-b;
+              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
               font-size: 16px;
               color: #252833;
               letter-spacing: -0.2px;
@@ -1758,7 +1758,7 @@ ul {
           display: none; }
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .backToModules a {
             padding: 0 32px;
-            font-family: font-opens;
+            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
             font-size: 11px;
             color: #5e6475;
             height: 56px;
@@ -1794,7 +1794,7 @@ ul {
             position: relative;
             display: block;
             padding: 13px 32px;
-            font-family: font-b;
+            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
             cursor: pointer; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .EastWestProject .EastMainLi::after {
               content: "\f0d8";
@@ -1821,7 +1821,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .EastWestProject ul li a {
               color: #252833;
               font-size: 16px;
-              font-family: font-b;
+              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
               height: 56px;
               border-left: 4px solid transparent;
               padding: 0 36px;
@@ -1855,7 +1855,7 @@ ul {
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects {
             padding: 11.5px 24px;
             height: 80px;
-            font-family: font-opens;
+            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
             font-size: 11px;
             color: #5e6475;
             display: -webkit-box;
@@ -1890,7 +1890,7 @@ ul {
               -ms-flex-align: center;
               align-items: center;
               font-size: 11px;
-              font-family: font-opens; }
+              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects .backtoProjectsOne svg {
                 height: 36px;
                 width: 36px;
@@ -1900,7 +1900,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects .backToModulesName h2 {
               font-size: 16px;
               color: #252833;
-              font-family: font-b;
+              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
               padding-left: 10px;
               display: none; }
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl {
@@ -1928,7 +1928,7 @@ ul {
               border-left: 4px solid transparent; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li .UlName {
               font-size: 14px;
-              font-family: font-sb;
+              font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
               color: #858d9e;
               display: none;
               margin-left: 16px; }
@@ -1953,7 +1953,7 @@ ul {
                 display: block;
                 font-size: 14px;
                 color: #A8B0BF;
-                font-family: font-r;
+                font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
                 letter-spacing: 0.3px;
                 padding-left: 78px;
                 transition: 0.3s; }
@@ -1961,12 +1961,12 @@ ul {
                   color: #252833; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li .subBigMenuUl li.active a {
                 color: #3570E6;
-                font-family: font-b; }
+                font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi > a {
               border-left: 4px solid #4382f9;
               background-color: #f5f5f6; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi > a span {
-                font-family: font-b;
+                font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
                 color: #5E6475; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi .ULimg path {
               fill: #858D9E; }
@@ -2036,7 +2036,7 @@ ul {
   padding: 0; }
 
 .datepicker {
-  font-family: font-opensb;
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
   font-size: 14px;
   color: #3e4352;
   line-height: 1.71;
@@ -2250,13 +2250,13 @@ ul {
     color: #252833;
     line-height: 1.18;
     letter-spacing: -1.1px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 34px; }
     .submittalHead h2 span {
       color: #858D9E;
       line-height: 1.43;
       letter-spacing: -0.2px;
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 14px;
       display: block;
       margin-top: 5px; }
@@ -2287,7 +2287,7 @@ ul {
       letter-spacing: -0.2px;
       color: #252833;
       margin-bottom: 50px;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       text-align: center;
       font-size: 20px; }
     .submittalActions .title > .mediumBtn {
@@ -2338,7 +2338,7 @@ ul {
         line-height: 1.43;
         letter-spacing: 0.2px;
         color: #858d9e;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         text-transform: uppercase; }
         .submittalActions .SubmittalUL li a .svg {
           width: 40px;
@@ -2419,7 +2419,7 @@ ul {
           color: #A8B0BF;
           line-height: normal;
           text-align: center;
-          font-family: font-sb; }
+          font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal; }
           .horizSubActions .horizSubUlContainer .SubmittalUL li a .svg {
             width: 32px;
             height: 32px;
@@ -2482,14 +2482,14 @@ ul {
       text-transform: uppercase;
       margin-right: 8px; }
     .submittalFilter .subFilter > span {
-      font-family: font-sb;
+      font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: 0.6px;
       color: #A8B0BF;
       margin-right: 24px; }
     .submittalFilter .subFilter .text {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 12px;
       line-height: 1.67;
       letter-spacing: 0.2px;
@@ -2599,7 +2599,7 @@ ul {
     letter-spacing: -0.5px;
     text-align: center;
     color: #252833;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 24px; }
   .subitTabs ul li {
     padding-left: 40px;
@@ -2630,7 +2630,7 @@ ul {
       letter-spacing: -0.2px;
       color: #252833;
       font-size: 16px;
-      font-family: font-b; }
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
     .subitTabs ul li .subUlsubT {
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -2669,7 +2669,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #252833;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 20px; }
 
 .subiGrid {
@@ -2691,7 +2691,7 @@ ul {
         line-height: 1.5;
         letter-spacing: -0.2px;
         color: #252833;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 16px;
         padding-bottom: 9px; }
       .subiGrid .subiTaskTitle .divhead .divspans {
@@ -2719,12 +2719,12 @@ ul {
             letter-spacing: -0.2px;
             color: #3E4352;
             font-size: 12px;
-            font-family: font-opens; }
+            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
           .subiGrid .subiTaskTitle .divhead .divspans div:nth-child(2) .subiPriority {
             line-height: 1.33;
             letter-spacing: -0.3px;
             color: #3E4352;
-            font-family: font-opensb;
+            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
             font-size: 12px;
             position: relative; }
             .subiGrid .subiTaskTitle .divhead .divspans div:nth-child(2) .subiPriority.redsSPan::before {
@@ -2759,11 +2759,11 @@ ul {
       letter-spacing: -0.2px;
       color: #3E4352;
       font-size: 14px;
-      font-family: font-opens; }
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
       .subiGrid .subiTable td h4 {
         display: flex; }
       .subiGrid .subiTable td span {
-        font-family: font-opensb; }
+        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
   .subiGrid .subiRefContainer {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2779,13 +2779,13 @@ ul {
         letter-spacing: -0.2px;
         color: #252833;
         font-size: 14px;
-        font-family: font-opensb; }
+        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
       .subiGrid .subiRefContainer div span {
         line-height: 1.71;
         letter-spacing: -0.2px;
         color: #3E4352;
         font-size: 14px;
-        font-family: font-opens; }
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
     .subiGrid .subiRefContainer .subiRefNo {
       margin-right: 56px; }
       .subiGrid .subiRefContainer .subiRefNo h4 {
@@ -2799,7 +2799,7 @@ ul {
     line-height: 1.71;
     letter-spacing: -0.2px;
     color: #3E4352;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     font-size: 14px; }
 
 .modals.dimmer .ui.scrolling.modal.subiModalNoTabs {
@@ -2861,7 +2861,7 @@ ul {
   border-bottom: 0;
   padding: 0;
   color: #252833;
-  font-family: font-b; }
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.modal > .header:not(.ui) {
   letter-spacing: -0.2px;
@@ -3010,7 +3010,7 @@ ul {
     padding-right: 15px; }
   .ui.modal.stepperModal .header h2 {
     color: #252833;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     letter-spacing: -0.2px;
     font-size: 20px; }
   .ui.modal.stepperModal .actions {
@@ -3042,7 +3042,7 @@ ul {
     padding-bottom: 17px; }
   .ui.modal.subjectModal .description .header {
     font-size: 16px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     margin-bottom: 30px; }
   .ui.modal.subjectModal .content {
     margin-bottom: 27px; }
@@ -3079,11 +3079,11 @@ ul {
       margin-bottom: 15px; }
     .ui.modal.xLargeModal .header h3 {
       font-size: 20px;
-      font-family: font-r;
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       line-height: 1.4;
       letter-spacing: -0.2px; }
   .ui.modal.xLargeModal .content p {
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     line-height: 1.5;
     letter-spacing: -0.2px;
     font-size: 16px; }
@@ -3142,7 +3142,7 @@ ul {
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.3px;
-          font-family: font-opensb;
+          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
           margin-left: 24px; }
       .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead {
         flex: 1;
@@ -3157,14 +3157,14 @@ ul {
         -ms-flex-align: end;
         align-items: flex-end; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead p {
-          font-family: font-opensb;
+          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
           font-size: 12px;
           letter-spacing: -0.3px;
           margin-bottom: 8px; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead span {
           letter-spacing: -0.2px;
           color: #A8B0BF;
-          font-family: font-opens;
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 12px; }
     .ui.modal.submiModalBig.docApproval .docApprovalContainer .subitTabs {
       width: 355px;
@@ -3196,7 +3196,7 @@ ul {
         letter-spacing: -0.5px;
         color: #252833;
         opacity: 0.3;
-        font-family: font-b; }
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
       .ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument .approveDocumentBTNS {
         flex: 1.5;
         display: flex;
@@ -3256,7 +3256,7 @@ ul {
         color: #ffffff;
         letter-spacing: -0.2px;
         font-size: 12px;
-        font-family: font-sb;
+        font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
         margin: 0 15px; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot span i {
           margin: 0 5px; }
@@ -3300,7 +3300,7 @@ ul {
   background-color: #fafbfc;
   border-bottom: 0; }
   .gridfillter-container .control-label {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     margin-bottom: 4px;
     letter-spacing: -0.2px;
     color: #26344c;
@@ -3338,7 +3338,7 @@ ul {
           letter-spacing: -0.2px;
           color: #a8b0bf;
           opacity: 0.4;
-          font-family: font-opens; }
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
       .gridfillter-container .fillter-status-container .fillter-status.status-from {
         min-width: 184px; }
     .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
@@ -3364,7 +3364,7 @@ ul {
       letter-spacing: -0.2px;
       color: #a8b0bf;
       opacity: 0.4;
-      font-family: font-opens; }
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
   .gridfillter-container .primaryBtn-2.btn.smallBtn {
     margin-left: 8px;
     margin-top: 22px;
@@ -3396,7 +3396,7 @@ ul {
       height: 20px;
       overflow: hidden; }
       .mainGridSystem .ui.dropdown.classico .uiDropName p {
-        font-family: font-opensb;
+        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
         line-height: 1.5; }
       .mainGridSystem .ui.dropdown.classico .uiDropName .dropdown.icon {
         padding-top: 2px;
@@ -3424,7 +3424,7 @@ ul {
       align-items: center;
       padding-left: 10px;
       color: #A8B0BF;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 14px; }
       .mainGridSystem .gridSystemTables .headCell .V-tableSize,
       .mainGridSystem .gridSystemTables .headCell .H-tableSize {
@@ -3544,13 +3544,13 @@ ul {
         color: #3E4352;
         letter-spacing: -0.2px;
         font-size: 14px;
-        font-family: font-opensb;
+        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
         overflow: hidden;
         height: 20px;
         text-align: left; }
       .mainGridSystem .gridSystemTables .contentCell span {
         font-size: 13px;
-        font-family: font-opens;
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         color: #A8B0BF;
         letter-spacing: -0.3px;
         overflow: hidden;
@@ -3560,7 +3560,7 @@ ul {
         color: #3E4352;
         letter-spacing: -0.2px;
         font-size: 14px;
-        font-family: font-opens; }
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
     .mainGridSystem .gridSystemTables .normalContent {
       height: 60px;
       min-width: 858px;
@@ -3647,7 +3647,7 @@ ul {
       min-width: 91px;
       width: 91px; }
     .mainGridSystem .gridSystemTables .gridTableContent {
-      font-family: font-opens; }
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
       .mainGridSystem .gridSystemTables .gridTableContent .gridMainRow {
         background-color: #ffffff;
         border-bottom: 1px solid #E9ECF0;
@@ -3730,7 +3730,7 @@ ul {
       display: -ms-flexbox;
       display: flex; }
     .mainGridSystem .gridSystemSelected .tableselcted-items {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       color: #ffffff;
       line-height: 1.5;
       letter-spacing: -0.2px;
@@ -3821,7 +3821,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #A8B0BF;
-      font-family: font-r;
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 14px; }
     .mainGridSystem .datagrid-grouping .drop-item {
       min-width: 77px;
@@ -3958,7 +3958,7 @@ ul {
       position: relative;
       margin-left: 8px;
       color: #3e4352;
-      font-family: font-opensb;
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
       font-size: 12px;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -3967,7 +3967,7 @@ ul {
       -ms-flex-align: center;
       align-items: center; }
     .main-header .header-content .titleproject1 a {
-      font-family: font-sb;
+      font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
       color: #858D9E;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -3975,7 +3975,7 @@ ul {
         transition: 0.5s ease-in-out;
         color: #252833; }
     .main-header .header-content .titleproject2 {
-      font-family: font-sb;
+      font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
       color: #adbccc;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -4015,7 +4015,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #252833;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 20px;
       border-bottom: 1px solid #E9ECF0; }
     .settings-container .settings-tabs-items ul li {
@@ -4058,7 +4058,7 @@ ul {
         letter-spacing: -0.2px;
         color: #252833;
         font-size: 16px;
-        font-family: font-b; }
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
       .settings-container .settings-tabs-items ul li .subUlsubT {
         line-height: 1.33;
         letter-spacing: -0.2px;
@@ -4091,7 +4091,7 @@ ul {
           line-height: 1.4;
           letter-spacing: -0.2px;
           color: #252833;
-          font-family: font-b;
+          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
           font-size: 20px; }
       .settings-container .setting-tabs-contant .tab .minisettings-header .action {
         flex: 1;
@@ -4132,20 +4132,20 @@ ul {
               line-height: 1.5;
               letter-spacing: -0.2px;
               color: #252833;
-              font-family: font-b;
+              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
               font-size: 16px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .job-title {
               line-height: 1.43;
               letter-spacing: -0.2px;
               color: #858d9e;
               font-size: 14px;
-              font-family: font-r;
+              font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
               margin-bottom: 4px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .status {
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #3e4352;
-              font-family: font-opens;
+              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
               font-size: 12px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .date {
               line-height: 1.33;
@@ -4175,20 +4175,20 @@ ul {
               line-height: 1.5;
               letter-spacing: -0.2px;
               color: #252833;
-              font-family: font-b;
+              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
               font-size: 20px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .job-title {
               line-height: 1.43;
               letter-spacing: -0.2px;
               color: #858d9e;
               font-size: 14px;
-              font-family: font-r;
+              font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
               margin-bottom: 9px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .status {
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #3e4352;
-              font-family: font-opens;
+              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
               font-size: 12px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .date {
               line-height: 1.33;
@@ -4235,7 +4235,7 @@ ul {
         -ms-flex-pack: center;
         justify-content: center; }
         .documents-temp .doc-container .subiTabContainer .subiTabsContent > header h2 {
-          font-family: font-b;
+          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
           font-size: 20px;
           line-height: 1.4;
           letter-spacing: -0.2px;
@@ -4243,7 +4243,7 @@ ul {
       .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields {
         padding: 14px; }
         .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .doc-infohead {
-          font-family: font-opens;
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.2px;
@@ -4256,7 +4256,7 @@ ul {
             width: 130px;
             text-align: right;
             margin-right: 16px;
-            font-family: font-opensb;
+            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: -0.2px;
@@ -4280,7 +4280,7 @@ ul {
           width: 100%;
           padding-bottom: 12px;
           padding-left: 100px;
-          font-family: font-r;
+          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 20px;
           line-height: 1.4;
           letter-spacing: -0.2px;
@@ -4292,7 +4292,7 @@ ul {
           border-right: 0;
           /**/ }
           .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
-            font-family: font-b;
+            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: -0.2px;
@@ -4305,7 +4305,7 @@ ul {
             .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
               padding-left: 30px; }
           .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td {
-            font-family: font-opens;
+            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
@@ -4359,7 +4359,7 @@ ul {
     -ms-flex-pack: center;
     justify-content: center; }
     .documents-stepper .doc-container .subiTabsContent > header .doc-infohead {
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -4367,7 +4367,7 @@ ul {
       width: 100%;
       text-align: right; }
     .documents-stepper .doc-container .subiTabsContent > header h2 {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
@@ -4385,7 +4385,7 @@ ul {
     .documents-stepper .doc-container .step-content .document-fields {
       padding: 14px; }
       .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
-        font-family: font-opens;
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.2px;
@@ -4403,7 +4403,7 @@ ul {
           width: 130px;
           text-align: right;
           margin-right: 16px;
-          font-family: font-opensb;
+          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
@@ -4429,7 +4429,7 @@ ul {
           width: 100%;
           padding-bottom: 12px;
           padding-left: 100px;
-          font-family: font-r;
+          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 20px;
           line-height: 1.4;
           letter-spacing: -0.2px;
@@ -4441,7 +4441,7 @@ ul {
           border-right: 0;
           /**/ }
           .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
-            font-family: font-b;
+            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: -0.2px;
@@ -4454,7 +4454,7 @@ ul {
             .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
               padding-left: 30px; }
           .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
-            font-family: font-opens;
+            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
@@ -4512,7 +4512,7 @@ ul {
               top: 48px; }
             .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline > span {
               font-size: 20px;
-              font-family: font-b;
+              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
               line-height: 1.4;
               letter-spacing: -0.2px;
               color: #ccd2db; }
@@ -4526,13 +4526,13 @@ ul {
               letter-spacing: -0.2px;
               color: #252833;
               font-size: 16px;
-              font-family: font-b; }
+              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
             .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info p {
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #a8b0bf;
               font-size: 12px;
-              font-family: font-opens; }
+              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
           .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
             /*
             background-color: #5fd45f;
@@ -4577,7 +4577,7 @@ ul {
       color: #3E4352;
       letter-spacing: -0.2px;
       font-size: 12px;
-      font-family: font-opensb;
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
       margin: 0 12px; }
       .documents-stepper .doc-container .step-content-foot span i {
         margin: 0 4px; }
@@ -4589,7 +4589,7 @@ ul {
     letter-spacing: -0.2px;
     font-size: 16px;
     color: #252833;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
   .documents-stepper .doc-container .step-content .step-content-body.out {
     display: none; }
 
@@ -4648,7 +4648,7 @@ ul {
   padding-top: 90px; }
   .dashboard-container .welcome-title {
     font-size: 34px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     line-height: 1.18;
     letter-spacing: -1.1px;
     text-align: center;
@@ -4678,7 +4678,7 @@ ul {
       -ms-flex-align: center;
       align-items: center;
       color: #A8B0BF;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 12px;
       cursor: pointer;
       border-bottom: 2px solid transparent;
@@ -4694,7 +4694,7 @@ ul {
         border-bottom: 2px solid #4382F9; }
 
 .chart h2 {
-  font-family: font-r;
+  font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
   color: #252833;
   padding-left: 55px;
   padding-bottom: 20px;
@@ -4729,7 +4729,7 @@ ul {
     top: 15px;
     margin: 0;
     display: flex;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     font-size: 12px; }
     .linebar .years li {
       margin: 0 10px;
@@ -4758,7 +4758,7 @@ ul {
     top: 15px;
     margin: 0;
     display: flex;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     font-size: 12px; }
     .group-barchart .years li {
       margin: 0 10px;
@@ -4779,7 +4779,7 @@ ul {
       background-color: #CCD2DB;
       display: inline-block; }
   .group-barchart .x-axis-group .x.axis {
-    font-family: font-opens; }
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
   .group-barchart svg:not(:root) {
     overflow: visible; }
 
@@ -4896,13 +4896,13 @@ ul {
       .bar-Star .star-rating-container .ratingresult .ratingresult-numbers {
         margin-top: 33px; }
         .bar-Star .star-rating-container .ratingresult .ratingresult-numbers .below-average {
-          font-family: font-b;
+          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
           color: #252833; }
           .bar-Star .star-rating-container .ratingresult .ratingresult-numbers .below-average span {
-            font-family: font-opens;
+            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
             font-size: 12px;
             line-height: 1.33;
             letter-spacing: -0.2px;
@@ -4949,7 +4949,7 @@ ul {
   padding-bottom: 40px; }
   .SparkTabs .sparktab-title h2 {
     padding-right: 35px;
-    font-family: font-r;
+    font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -4965,7 +4965,7 @@ ul {
       letter-spacing: -0.3px;
       text-align: center;
       color: #a8b0bf;
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       border-radius: 2px;
       border: solid 1px #E9ECF0;
       margin: 0 1px;
@@ -5001,7 +5001,7 @@ ul {
     -ms-flex-align: center;
     align-items: center; }
     .SparkTabs .ui.tab > div .spark-percentage .num {
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 12px;
       font-weight: normal;
       font-style: normal;
@@ -5030,14 +5030,14 @@ ul {
       flex-flow: column;
       padding: 0 32px; }
       .SparkTabs .ui.tab > div .sparktask-count ul li .num {
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 24px;
         line-height: 1.17;
         letter-spacing: -0.5px;
         text-align: center;
         color: #252833; }
       .SparkTabs .ui.tab > div .sparktask-count ul li .text {
-        font-family: font-opens;
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         font-size: 14px;
         line-height: 1.71;
         letter-spacing: -0.2px;
@@ -5062,10 +5062,10 @@ ul {
 .dount-container .donut-text .value {
   fill: #39bd3d;
   font-size: 16px !important;
-  font-family: font-b; }
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 .dount-container .donut-text .label {
   font-size: 56px !important;
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   fill: #252833; }
   .dount-container .donut-text .label:nth-child(3) {
     font-size: 20px !important; }
@@ -5091,7 +5091,7 @@ ul {
   font-size: 14px;
   color: #a8b0bf;
   bottom: 0;
-  font-family: font-opens; }
+  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
 
 .linebar70-dount .card--chart {
   float: right;
@@ -5105,7 +5105,7 @@ ul {
 
 .SummeriesContainer .SummeriesTitle {
   font-size: 28px;
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   padding-left: 90px;
   padding-bottom: 58px;
   margin: 0; }
@@ -5153,7 +5153,7 @@ ul {
         overflow: hidden; }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
         font-size: 45px;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         color: #252833;
         margin: 0;
         overflow: hidden;
@@ -5172,7 +5172,7 @@ ul {
         letter-spacing: -0.2px;
         font-size: 14px;
         margin: 0;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         transition: all 0.3s ease-in-out; }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL {
         display: flex;
@@ -5200,7 +5200,7 @@ ul {
         justify-content: center;
         width: 100%; }
         .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
-          font-family: font-b;
+          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
           font-size: 12px;
           letter-spacing: -0.2px;
           color: #ccd2db; }
@@ -5247,7 +5247,7 @@ ul {
       background-color: #f5f5f6;
       margin: 0 4px; }
       .SummeriesContainer.numbersOnly .SummeriesContainerContent .summerisItem .content .number {
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 56px;
         line-height: 1.14;
         letter-spacing: -1.1px;
@@ -5280,7 +5280,7 @@ ul {
     border-radius: 50%;
     animation: rotate 1s linear infinite; }
   .dashboard-container .dashboardLoading h3 {
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 45px;
     line-height: 1.16;
     letter-spacing: -1.1px;
@@ -5361,7 +5361,7 @@ ul {
           flex: 1 0;
           text-align: center; }
           .dashboard__Project .dash__content .project__content .project__select .project__title h3 {
-            font-family: font-r;
+            font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: -0.2px;
@@ -5391,7 +5391,7 @@ ul {
   justify-content: center;
   border-bottom: 1px solid #e9ecf0; }
   .modalTitle h2 {
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 24px;
     line-height: 1.17;
     letter-spacing: -0.5px;
@@ -5414,14 +5414,14 @@ ul {
     height: 144px;
     position: relative; }
     .dashboard__numbers .dashboard__numbers--info p {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 45px;
       line-height: 1.16;
       letter-spacing: -1.1px;
       color: #252833;
       margin: 0 0 8px; }
     .dashboard__numbers .dashboard__numbers--info h6 {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 12px;
       line-height: 1.67;
       letter-spacing: 0.2px;
@@ -5561,7 +5561,7 @@ ul {
     align-items: center;
     padding-left: 10px;
     color: #A8B0BF;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     max-width: 140px;
     white-space: nowrap;
@@ -5659,7 +5659,7 @@ ul {
     -ms-flex-align: center;
     align-items: center;
     padding-left: 10px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     max-width: 140px; }
     @media screen and (max-width: 1300px) {
@@ -5684,12 +5684,12 @@ ul {
       text-overflow: ellipsis;
       white-space: nowrap;
       padding: 0 5px;
-      font-family: font-opens; }
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
       @media screen and (max-width: 1300px) {
         .attachmentTable tbody tr .contentCell a {
           font-size: 11px; } }
     .attachmentTable tbody tr .contentCell p {
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 14px;
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -5773,7 +5773,7 @@ ul {
       letter-spacing: -0.2px;
       color: #A8B0BF;
       margin-top: 14px;
-      font-family: font-b; }
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
     .notifiBar .smallNotifiBar .notifiContent {
       display: flex;
       align-items: center;
@@ -5802,7 +5802,7 @@ ul {
             letter-spacing: -0.2px;
             color: #252833;
             margin: 0;
-            font-family: font-b; }
+            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
           .notifiBar .smallNotifiBar .notifiContent .notfiText .notifiName p {
             opacity: 0.4;
             font-size: 12px;
@@ -5810,18 +5810,18 @@ ul {
             letter-spacing: -0.2px;
             color: #858d9e;
             margin-left: 4px;
-            font-family: font-r; }
+            font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
         .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow {
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.2px;
           color: #858d9e;
-          font-family: font-r; }
+          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
           .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a {
             font-size: 12px;
             color: #5E6475;
             font-weight: 600;
-            font-family: font-sb;
+            font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
             transition: all 0.2s; }
             .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a:hover {
               color: #3570e6;
@@ -5884,7 +5884,7 @@ ul {
           .notifiBar .smallNotifiBar .notifi__tabs ul li .tabNAme {
             margin-left: 16px;
             opacity: 0.6;
-            font-family: font-b;
+            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: normal;
@@ -5969,7 +5969,7 @@ ul {
     letter-spacing: -0.2px;
     color: #3e4352;
     font-size: 12px;
-    font-family: font-opens; }
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
     .printGrid .subiTable td h4 .content {
       font-size: 12px; }
 
@@ -6136,7 +6136,7 @@ ul {
       width: 13px;
       height: 10px; }
     .notificationPage .noti__header h3 {
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 24px;
       line-height: 1.17;
       letter-spacing: -0.5px;
@@ -6144,7 +6144,7 @@ ul {
       margin-right: 12px;
       margin-left: 18px; }
     .notificationPage .noti__header span {
-      font-family: font-r;
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 16px;
       opacity: 0.6;
       color: #858d9e;
@@ -6199,7 +6199,7 @@ ul {
       .notificationPage .notifi__tabs ul li .tabNAme {
         margin-left: 16px;
         opacity: 0.6;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: normal;
@@ -6243,7 +6243,7 @@ ul {
         background: #fafbfc;
         height: 48px; }
         .notificationPage .notifi__tabs--content .table_notify table thead tr th p {
-          font-family: font-b;
+          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
@@ -6260,7 +6260,7 @@ ul {
               margin: 0;
               flex-shrink: 0; }
             .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notiDrid__avatar h3 {
-              font-family: font-opensb;
+              font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
               font-size: 14px;
               line-height: 1.71;
               letter-spacing: -0.2px;
@@ -6278,26 +6278,26 @@ ul {
               display: flex;
               align-items: center;
               justify-content: center;
-              font-family: font-sb;
+              font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
               font-size: 12px;
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #ffffff; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .title_name h3 {
             text-transform: capitalize;
-            font-family: font-opensb;
+            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
             color: #3e4352; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notifiDate p {
-            font-family: font-opens;
+            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
             color: #3e4352; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notifistate p {
-            font-family: font-opensb;
+            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
@@ -6315,11 +6315,11 @@ ul {
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notifi__status span {
           display: none; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .title_name h3 {
-          font-family: font-opens; }
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notifistate p {
-          font-family: font-opens; }
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notiDrid__avatar h3 {
-          font-family: font-opens; }
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr:hover {
           background: #f2f5f7;
           cursor: pointer; }
@@ -6372,7 +6372,7 @@ ul {
           width: 32px;
           height: 32px;
           border-radius: 8px;
-          font-family: font-b;
+          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
           font-size: 14px;
           font-weight: 800;
           display: flex;
@@ -6424,7 +6424,7 @@ ul {
           background: #ffc107; }
     .login__page .login__page--form .login__heading {
       opacity: 0.4;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
@@ -6447,7 +6447,7 @@ ul {
       .login__page .login__page--form .proForm .loginChecked {
         margin: 16px 0 32px; }
         .login__page .login__page--form .proForm .loginChecked label {
-          font-family: font-opens;
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 14px;
           line-height: 1.71;
           letter-spacing: -0.2px;
@@ -6465,13 +6465,13 @@ ul {
       text-align: center;
       margin-top: 16px; }
       .login__page .login__page--form .register__link p {
-        font-family: font-opens;
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.2px;
         color: #3E4352; }
         .login__page .login__page--form .register__link p a {
-          font-family: font-opensb;
+          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.3px;
@@ -6481,7 +6481,7 @@ ul {
   .login__page .access__acc {
     text-align: center; }
     .login__page .access__acc p {
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -6522,7 +6522,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #252833;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 20px;
       border-bottom: 1px solid #E9ECF0; }
     .settings-container .settings-tabs-items ul li {
@@ -6567,7 +6567,7 @@ ul {
         letter-spacing: -0.2px;
         color: #252833;
         font-size: 16px;
-        font-family: font-b; }
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
       .settings-container .settings-tabs-items ul li .subUlsubT {
         line-height: 1.33;
         letter-spacing: -0.2px;
@@ -6597,7 +6597,7 @@ ul {
       align-items: center;
       padding: 0 40px; }
       .settings-container .setting-tabs-contant .tab__header p {
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 20px;
         line-height: 1.4;
         letter-spacing: -0.2px;
@@ -6621,7 +6621,7 @@ ul {
           max-width: 100%;
           max-height: 100%; }
       .settings-container .setting-tabs-contant .company__logo .company__logo--change h3 {
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: -0.2px;
@@ -6641,7 +6641,7 @@ ul {
           align-items: center; }
     .settings-container .setting-tabs-contant .owner__info p {
       opacity: 0.4;
-      font-family: font-r;
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 16px;
       line-height: 1.5;
       letter-spacing: -0.2px;
@@ -6663,7 +6663,7 @@ ul {
       .settings-container .setting-tabs-contant .proForm .sub__admin button span {
         display: flex;
         align-items: center;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: -0.2px;
@@ -6687,7 +6687,7 @@ ul {
         background: transparent;
         border: none;
         height: 40px;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 13px;
         line-height: 1.54;
         letter-spacing: 0.4px;
@@ -6698,7 +6698,7 @@ ul {
       align-items: center;
       margin-bottom: 37px; }
       .settings-container .setting-tabs-contant .overview__info .overview__info--content p {
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         font-size: 16px;
         line-height: 1.5;
         letter-spacing: -0.2px;
@@ -6730,13 +6730,13 @@ ul {
           .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.number_span {
             border: solid 1px #ccd2db;
             background-color: rgba(67, 130, 249, 0);
-            font-family: font-b;
+            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
             font-size: 24px;
             line-height: 1.17;
             letter-spacing: -0.5px;
             color: #252833; }
         .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.text_span {
-          font-family: font-opens;
+          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 14px;
           line-height: 1.71;
           letter-spacing: -0.2px;
@@ -6768,7 +6768,7 @@ ul {
       .two__content--style .left__column {
         width: 110px; } }
     .two__content--style .left__column h2 {
-      font-family: font-r;
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
@@ -6793,7 +6793,7 @@ ul {
   .admin__avatar .sbigAvatar {
     margin: 34px 0 21px 0; }
   .admin__avatar h3 {
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 34px;
     line-height: 1.18;
     letter-spacing: -1.1px;
@@ -6801,7 +6801,7 @@ ul {
     color: #252833;
     margin-bottom: 4px; }
   .admin__avatar span {
-    font-family: font-r;
+    font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -6844,14 +6844,14 @@ ul {
     .admin__profile .admin__profile--content:hover::after {
       opacity: 1; }
     .admin__profile .admin__profile--content h3 {
-      font-family: font-r;
+      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 24px;
       line-height: 1.17;
       letter-spacing: -0.5px;
       color: #252833;
       margin-bottom: 25px; }
     .admin__profile .admin__profile--content p {
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 14px;
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -6860,7 +6860,7 @@ ul {
     .admin__profile .admin__profile--content.big_admin p {
       max-width: 50%; }
   .admin__profile .admin__profile--action h3 {
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -6871,7 +6871,7 @@ ul {
   .admin__profile .admin__profile--action ul li {
     margin-bottom: 16px; }
     .admin__profile .admin__profile--action ul li a {
-      font-family: font-opensb;
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
       font-size: 16px;
       line-height: 1.5;
       letter-spacing: -0.2px;
@@ -6893,7 +6893,7 @@ ul {
       background-image: url(../../images/q-mark.png);
       background-size: 100%; }
     .admin__profile .admin__profile--action.action__li ul li span {
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -6921,7 +6921,7 @@ ul {
   align-items: center; }
 
 .accordionTitle {
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -6980,7 +6980,7 @@ ul {
   display: flex;
   flex-flow: column;
   align-items: center;
-  font-family: font-r;
+  font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
@@ -6989,7 +6989,7 @@ ul {
   margin-bottom: 0; }
 
 .Project__num .project__num--span {
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -7058,7 +7058,7 @@ ul {
 .button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   font-size: 13px;
   border: 1px solid transparent;
   padding: 0 16px;
@@ -7176,7 +7176,7 @@ ul {
     line-height: 1.8;
     font-size: 16px; }
 .primaryBtnGroup1 > .ui.button.normal {
-  font-family: font-b; }
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 .primaryBtnGroup1 .button {
   background-color: #4382f9;
   color: #ffffff; }
@@ -7217,7 +7217,7 @@ ul {
     line-height: 1.8;
     font-size: 16px; }
 .primaryBtnGroup2 > .ui.button.normal {
-  font-family: font-b; }
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 .primaryBtnGroup2 .button {
   background-color: #E9ECF0;
   color: #5E6475; }
@@ -7372,7 +7372,7 @@ ul {
 
 .ui.checkbox label {
   font-size: 14px;
-  font-family: font-opens;
+  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
   color: #5E6475; }
   .ui.checkbox label:hover {
     color: #252833; }
@@ -7385,7 +7385,7 @@ ul {
   .toggleWithText span {
     color: #252833;
     font-size: 14px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     display: inline-block;
     position: relative;
     top: -6px; }
@@ -7396,7 +7396,7 @@ ul {
   margin-right: 4px; }
 .form.ui .grouped.fields > label {
   font-size: 14px;
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   color: #252833;
   margin-bottom: 4px;
   letter-spacing: -0.2px;
@@ -7406,7 +7406,7 @@ ul {
   align-items: center; }
   .form.ui .grouped.fields > label span {
     color: #adbccc;
-    font-family: font-r;
+    font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     font-size: 12px;
     margin-left: 4px; }
 .form.ui .grouped.fields .field {
@@ -7425,7 +7425,7 @@ ul {
 .form.ui .grouped.fields p {
   color: #E74C3C;
   font-size: 12px;
-  font-family: font-opens;
+  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
   padding-left: 3px; }
 
 .ui.checkbox .box:after,
@@ -7491,13 +7491,13 @@ ul {
     color: #3E4352;
     font-size: 14px;
     position: relative;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     overflow: hidden;
     margin-bottom: 8px; }
     .choiceCardsUL li span {
       color: #858d9e;
       font-size: 12px;
-      font-family: font-opens; }
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
     .choiceCardsUL li svg {
       position: absolute;
       top: 5px;
@@ -7519,7 +7519,7 @@ ul {
     color: #A8B0BF; }
   .choiceCardsUL .activeChiceCard {
     border: solid 2px #4382f9;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     color: #3E4352;
     background-color: #f7f9fa; }
     .choiceCardsUL .activeChiceCard:hover {
@@ -7564,7 +7564,7 @@ ul {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2); }
 
 .notfiSpan {
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   font-size: 16px;
   -webkit-box-flex: 6;
   -ms-flex: 6;
@@ -7576,7 +7576,7 @@ ul {
   -ms-flex: 1;
   flex: 1;
   text-align: right;
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   font-size: 14px;
   letter-spacing: 0.4px; }
 
@@ -7666,7 +7666,7 @@ ul {
     display: inline-block;
     font-size: 12px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     letter-spacing: -0.3px;
     margin-left: 4px; }
 
@@ -7707,7 +7707,7 @@ ul {
     display: inline-block;
     font-size: 12px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     letter-spacing: -0.3px;
     margin-left: 4px; }
   .chipImgNameClose svg {
@@ -7750,7 +7750,7 @@ ul {
       display: inline-block;
       font-size: 12px;
       color: #3E4352;
-      font-family: font-opensb;
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
       letter-spacing: -0.3px;
       margin-left: 4px; }
     .chipImgNameTextX .chipImgText:hover {
@@ -7824,7 +7824,7 @@ ul {
     display: inline-block;
     font-size: 14px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     letter-spacing: -0.2px;
     margin-left: 4px; }
 
@@ -7865,7 +7865,7 @@ ul {
     display: inline-block;
     font-size: 14px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     letter-spacing: -0.3px;
     margin-left: 4px; }
   .chipImgNameCloseLarge svg {
@@ -7890,7 +7890,7 @@ ul {
   color: #3E4352;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
 
 .darkGrayTagIcon {
   height: 24px;
@@ -7904,7 +7904,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
 
 .blueTagIcon {
   height: 24px;
@@ -7918,7 +7918,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
 
 .greenTagIcon {
   height: 24px;
@@ -7932,7 +7932,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
 
 .redTagIcon {
   height: 24px;
@@ -7946,7 +7946,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
 
 .Labelssss {
   padding: 15px; }
@@ -7969,7 +7969,7 @@ ul {
   .mailBoxLabel .FirstSpAn {
     margin-right: 8px; }
   .mailBoxLabel span {
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 12px; }
 
 .mailBoxLabelGray {
@@ -8027,7 +8027,7 @@ ul {
     .workflowLabel:active path {
       fill: #858d9e; }
   .workflowLabel span {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     font-size: 12px; }
   .workflowLabel svg {
     margin-left: 8px; }
@@ -8041,7 +8041,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowBlue {
   height: 28px;
@@ -8051,7 +8051,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowGreen {
   height: 28px;
@@ -8061,7 +8061,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowBorder.basic {
   height: 28px;
@@ -8071,7 +8071,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 /**/
 .ui.label.labelWithArrowGrayS {
@@ -8082,7 +8082,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowRedS {
   height: 24px;
@@ -8092,7 +8092,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowGreenS {
   height: 24px;
@@ -8102,7 +8102,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowBorderS.basic {
   height: 24px;
@@ -8112,7 +8112,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowRedBasic.basic {
   border: solid 1px #e74c3c;
@@ -8122,7 +8122,7 @@ ul {
     color: #e74c3c;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 .ui.label.labelWithArrowGreenBasic {
   height: 24px;
@@ -8132,13 +8132,13 @@ ul {
     color: #47cc4a;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
 
 /**/
 .inboxNotif {
   background-color: #E74C3C;
   color: #f9fbfc;
-  font-family: font-b;
+  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
   font-size: 12px;
   display: inline-block;
   cursor: pointer;
@@ -8322,7 +8322,7 @@ ul {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: font-opensb;
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
   font-size: 13px; }
   .rowsPaginations .ui.selection.dropdown.rowsPagiDrop {
     padding: 15px 30px 15px 5px;
@@ -8330,7 +8330,7 @@ ul {
     border: none;
     font-size: 13px; }
     .rowsPaginations .ui.selection.dropdown.rowsPagiDrop .text {
-      font-family: font-opensb;
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
       font-size: 13px; }
     .rowsPaginations .ui.selection.dropdown.rowsPagiDrop:hover {
       background-color: transparent;
@@ -8386,7 +8386,7 @@ ul {
     background-color: #E9ECF0;
     margin: 5px 2px;
     border-radius: 50%;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     color: #3e4352;
     font-size: 12px;
     letter-spacing: -0.2px; }
@@ -8428,7 +8428,7 @@ ul {
     align-items: center;
     letter-spacing: -0.2px;
     font-size: 11px;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     color: #4382F9;
     -webkit-transition: 0.3s;
     transition: 0.3s; }
@@ -8442,7 +8442,7 @@ ul {
 
 .ui.breadcrumb.proBreadcrumb a {
   color: #4382F9;
-  font-family: font-opens;
+  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
   font-size: 11px;
   letter-spacing: -0.2px;
   -webkit-transition: 0.3s;
@@ -8457,7 +8457,7 @@ ul {
 .ui.breadcrumb.proBreadcrumb .active {
   color: #5E6475;
   font-size: 11px;
-  font-family: font-opens;
+  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
   letter-spacing: -0.2px; }
 
 .Elements-popups {
@@ -8478,7 +8478,7 @@ ul {
   display: inline-block;
   max-width: 310px; }
   .popUp h3 {
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     letter-spacing: -0.2px;
     color: #f9fbfc;
@@ -8501,7 +8501,7 @@ ul {
     color: #4382f9;
     font-size: 12px;
     letter-spacing: 0.2px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     display: block;
     text-align: right; }
 
@@ -8592,7 +8592,7 @@ ul {
         justify-content: flex-start;
         color: #252833;
         font-size: 14px;
-        font-family: font-b; }
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
         .popUpClickContainer .popupClickContent .popupMenu .popupMenuTitile svg {
           width: 24px;
           height: 24px;
@@ -8610,11 +8610,11 @@ ul {
             letter-spacing: -0.2px;
             font-size: 14px;
             color: #858D9E;
-            font-family: font-r; }
+            font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
           .popUpClickContainer .popupClickContent .popupMenu ul li a {
             flex: 0.2;
             text-decoration: underline;
-            font-family: font-b;
+            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
             color: #4382f9; }
             .popUpClickContainer .popupClickContent .popupMenu ul li a:hover {
               text-decoration: none; }
@@ -8705,13 +8705,13 @@ ul {
         background: #DADEE6; }
       .StepperNum .StepNumber .StepNum p {
         font-size: 20px;
-        font-family: font-b;
+        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
         color: #adbccc; }
       .StepperNum .StepNumber .StepNum .StepTrue {
         display: none; }
     .StepperNum .StepNumber .stepWord {
       color: #adbccc;
-      font-family: font-b;
+      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
       font-size: 12px;
       margin: 0 8px;
       position: relative; }
@@ -8719,7 +8719,7 @@ ul {
         position: absolute;
         top: 100%;
         left: 0;
-        font-family: font-opens; }
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
     .StepperNum .StepNumber .Step-Line {
       width: 48px;
       height: 2px;
@@ -8802,7 +8802,7 @@ ul {
     line-height: 1.45;
     letter-spacing: -0.2px;
     top: 120%;
-    font-family: font-opens; }
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
 .StepperNum.StepperNum3 .StepNumber.activea .stepWord {
   color: #4382F9; }
 
@@ -8964,7 +8964,7 @@ ul {
       color: #3E4352;
       letter-spacing: -0.2px;
       font-size: 12px;
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       margin: 0 12px; }
       .StepperWorkFlow .step-content-foot span i {
         margin: 0 4px; }
@@ -8976,7 +8976,7 @@ ul {
     letter-spacing: -0.2px;
     font-size: 16px;
     color: #252833;
-    font-family: font-b; }
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
   .StepperWorkFlow .step-content .step-content-body.out {
     display: none; }
   .StepperWorkFlow .workflow-sliderSteps {
@@ -9040,7 +9040,7 @@ ul {
     border-radius: 4px;
     margin-bottom: 8px; }
     .proForm .form-group label {
-      font-family: font-opensb;
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
       margin-bottom: 4px; }
     .proForm .form-group .ui.labeled.input {
       height: 40px; }
@@ -9066,7 +9066,7 @@ ul {
     letter-spacing: -0.2px;
     color: #A8B0BF;
     font-size: 12px;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     margin-top: 4px; }
   .proForm .linebylineInput {
     display: -webkit-box;
@@ -9080,7 +9080,7 @@ ul {
     justify-content: flex-start; }
     .proForm .linebylineInput label {
       margin-right: 4px;
-      font-family: font-opensb; }
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
     .proForm .linebylineInput .ui.input.inputDev {
       padding: 12px 16px;
       -webkit-border-radius: 4px;
@@ -9096,14 +9096,14 @@ ul {
   .proForm .has-error.radio-inline label,
   .proForm .has-error.checkbox-inline label {
     color: #E74C3C;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     letter-spacing: -0.3px;
     font-size: 12px;
     font-style: normal; }
   .proForm .control-label {
     letter-spacing: -0.2px;
     color: #26344c;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     display: block; }
   .proForm .ui.input .ui.svg-input {
     display: flex;
@@ -9142,7 +9142,7 @@ ul {
     .proForm .ui.input.inputDev .error {
       display: block;
       color: #E74C3C;
-      font-family: font-opensb;
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
       letter-spacing: -0.3px;
       font-size: 12px;
       font-style: normal; }
@@ -9152,14 +9152,14 @@ ul {
       right: 0;
       letter-spacing: -0.2px;
       color: #858D9E;
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       font-size: 12px; }
     .proForm .ui.input.inputDev input {
       height: 40px;
       border-radius: 4px;
       width: 360px;
       border: solid 1px #DADEE6;
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       letter-spacing: -0.2px;
       color: #3E4352;
       background-color: #ffffff;
@@ -9187,7 +9187,7 @@ ul {
         box-shadow: none;
         background-color: #ffffff; }
   .proForm .showPasswordArea .inputsideNote {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     color: #3e4352;
     display: inline-flex;
     align-items: center; }
@@ -9258,7 +9258,7 @@ ul {
       .proForm .inputPassContainer .inputsPassLev .spansWord {
         color: #3e4352;
         letter-spacing: -0.2px;
-        font-family: font-opens;
+        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         font-size: 12px; }
   .proForm .dropdown.large {
     min-width: 88px;
@@ -9385,7 +9385,7 @@ ul {
     .ui.dropdown.classico > .menu .item-content {
       height: 40px;
       width: 100%;
-      font-family: font-opens;
+      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
       letter-spacing: -0.2px;
       color: #3E4352;
       font-size: 14px;
@@ -9552,7 +9552,7 @@ ul {
   .ui.dropdown.classico.withimages.withHeader .dropdownHeader span {
     letter-spacing: 0.6px;
     padding-left: 8px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     color: #A8B0BF; }
 
 /*Base Menu*/
@@ -9568,7 +9568,7 @@ ul {
   align-items: center; }
   .ui.dropdown.classico.baseMenu .dropdownHeader span {
     letter-spacing: 0.6px;
-    font-family: font-b;
+    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
     color: #A8B0BF; }
 .ui.dropdown.classico.baseMenu .menu .item {
   padding-right: 16px !important;
@@ -9605,7 +9605,7 @@ ul {
 
 .dropdownTitle {
   font-size: 14px;
-  font-family: font-opensb;
+  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
   margin-bottom: 4px;
   letter-spacing: -0.2px;
   color: #26344c; }
@@ -9620,17 +9620,17 @@ ul {
     margin: 15px 0; }
   .ui.selection.dropdown > .text {
     font-size: 12px;
-    font-family: font-opensb; }
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
   .ui.selection.dropdown > .text.default {
     font-size: 14px;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     letter-spacing: -0.2px;
     color: #A8B0BF; }
   .ui.selection.dropdown .selectionimg {
     margin-right: 7px; }
   .ui.selection.dropdown .item {
     font-size: 14px;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
     color: #3e4352;
     line-height: 1.6; }
     .ui.selection.dropdown .item .closeIcon {
@@ -9699,7 +9699,7 @@ ul {
     align-items: center;
     box-shadow: none;
     font-size: 12px;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     color: #3e4352; }
     .ui.selection.dropdown.multiDropDown > .label img {
       margin-right: .78571429rem; }
@@ -9818,7 +9818,7 @@ ul {
       .card-status .card-box .signature-h .avatarName {
         margin-left: 10px; }
         .card-status .card-box .signature-h .avatarName h6 {
-          font-family: font-r;
+          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 12px;
           font-weight: bold;
           line-height: 1.33;
@@ -9826,7 +9826,7 @@ ul {
           color: #252833;
           margin: 0; }
         .card-status .card-box .signature-h .avatarName p {
-          font-family: font-r;
+          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
           font-size: 12px;
           font-weight: normal;
           line-height: 1.33;
@@ -9844,14 +9844,14 @@ ul {
       position: relative; }
       .card-status .card-box .box-statue h5 {
         margin: 0;
-        font-family: font-r;
+        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         font-size: 14px;
         font-weight: bold;
         line-height: 1.43;
         letter-spacing: -0.2px;
         color: #252833; }
       .card-status .card-box .box-statue p {
-        font-family: font-r;
+        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
         font-size: 12px;
         font-weight: normal;
         line-height: 1.33;

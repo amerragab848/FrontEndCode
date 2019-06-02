@@ -6,16 +6,11 @@ import dataservice from "../../Dataservice";
 import SkyLight from "react-skylight";
 import { withRouter } from "react-router-dom";
 import SubPurchaseOrders from "./subPurchaseOrders";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import ReactTable from "react-table"; 
 import "react-table/react-table.css";
 import { toast } from "react-toastify";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"); 
+
 
 class subPurchaseOrderLog extends Component {
   constructor(props) {
@@ -23,7 +18,7 @@ class subPurchaseOrderLog extends Component {
     this.state = {
       rows: [],
       isLoading: true,
-      contractId: this.props.contractId,
+      docId: this.props.docId,
       isViewMode: this.props.isViewMode,
       projectId: this.props.projectId,
       showSubPurchaseOrders: false,
@@ -31,11 +26,9 @@ class subPurchaseOrderLog extends Component {
     };
   }
   componentWillMount() {
-    dataservice
-      .GetDataGrid("GetSubPOsByContractId?contractId=" + this.state.contractId)
-      .then(data => {
+    dataservice.GetDataGrid(this.props.ApiGet).then(data => {
         this.setState({
-          purchaseOrderData: data
+          purchaseOrderData: data.length > 0 ? data : []
         });
       })
       .catch(ex => {
@@ -49,9 +42,29 @@ class subPurchaseOrderLog extends Component {
 
     this.simpleDialog.show();
   };
+ 
+  FillTable = (data) =>{
+    if(this.state.purchaseOrderData.length > 0){
+      
+      let originalData = this.state.purchaseOrderData;
+      
+      originalData.push(data);
+      
+      this.setState({ 
+        purchaseOrderData: originalData ,
+        showSubPurchaseOrders:false
+      });
+      }else{
 
-  hidePopUp = (type) =>{
-    this.setState({ showSubPurchaseOrders: type });
+        let originalData =[] ;
+        
+        originalData.push(data);
+        
+        this.setState({ 
+          purchaseOrderData: originalData ,
+          showSubPurchaseOrders:false
+        });
+      }
   }
 
   render() {
@@ -131,38 +144,24 @@ class subPurchaseOrderLog extends Component {
       <Fragment>
         <header className="doc-pre-btn">
           <h2 className="zero">{Resources["subPOsList"][currentLanguage]}</h2>
-          <button
-            className={
-              "primaryBtn-1 btn " +
-              (this.props.isViewMode === true ? "disNone" : "")
-            }
-            onClick={this.viewSubPurchaseOrder}
-          >
+          <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? "disNone" : "")} onClick={this.viewSubPurchaseOrder} disabled={this.state.isViewMode}>
             <i className="fa fa-file-text" />
           </button>
         </header>
-        <ReactTable
-          data={this.state.purchaseOrderData}
-          columns={columns}
-          defaultPageSize={5}
-          noDataText={Resources["noData"][currentLanguage]}
-          className="-striped -highlight"
-        />
+        <ReactTable data={this.state.purchaseOrderData} columns={columns} defaultPageSize={5}
+                    noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight"/>
 
-        <div
-          className="largePopup largeModal "
-          style={{
-            display: this.state.showSubPurchaseOrders ? "block" : "none"
-          }}
-        >
+        <div className="largePopup largeModal " style={{ display: this.state.showSubPurchaseOrders ? "block" : "none" }}>
           <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)}>
             <Fragment>
-              <SubPurchaseOrders
-                contractId={this.state.contractId}
+              <SubPurchaseOrders  
+                ApiAdd={this.props.ApiAdd}
+                type={this.props.type}
+                items={this.props.items}
+                docId={this.state.docId}
                 projectId={this.state.projectId}
-                isViewMode={this.state.isViewMode}
-                hidePopUp={this.hidePopUp}
-              />
+                isViewMode={this.state.isViewMode} 
+                FillTable={this.FillTable} />
             </Fragment>
           </SkyLight>
         </div>

@@ -60,7 +60,7 @@
 }
 
 .dropWrapper .fillter-item-c label {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
 }
 
 .dropWrapper .filterWrapper {
@@ -95,7 +95,7 @@
     width: 360px;
     width: 100%;
     border: solid 1px #DADEE6;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     letter-spacing: -0.2px;
     color: #3E4352;
     background-color: #ffffff;
@@ -127,7 +127,7 @@
 }
 
 .dropWrapper .spanValidation label {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
 }
 
 .dropWrapper .spanValidation span {
@@ -196,7 +196,7 @@
     height: 40px;
     border-radius: 4px;
     border: solid 1px #DADEE6;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     letter-spacing: -0.2px;
     color: #3E4352;
     background-color: #ffffff;
@@ -287,19 +287,19 @@ table edition
     padding: 0;
 }
 
-.mainContainer .customD_Menu>div>div>div {
+/* .mainContainer .customD_Menu>div>div>div {
     padding: 0;
 }
 
 .mainContainer .customD_Menu>div>div>div>div {
     white-space: nowrap;
-}
+} */
 
 .mainContainer .customD_Menu {
     width: 100%;
 }
 
-.mainContainer .customD_Menu>div {
+/* .mainContainer .customD_Menu>div {
     border-color: hsl(0, 0%, 80%) !important;
     outline: 0;
     box-shadow: none !important
@@ -309,7 +309,7 @@ table edition
     border-color: hsl(0, 0%, 80%) !important;
     box-shadow: none;
     outline: 0;
-}
+} */
 
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
     display: block;
@@ -585,6 +585,10 @@ table edition
     overflow: visible !important;
 }
 
+/* .ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td {
+    border-right: transparent !important;
+} */
+
 .uploadForm.dragHover {
     border-color: #83B4FC;
     background: #E8F4FC;
@@ -689,7 +693,7 @@ table edition
     margin-bottom: 4px;
     letter-spacing: -0.2px;
     color: #26344c;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     display: block;
     font-size: 16px;
     font-weight: bold;
@@ -839,6 +843,12 @@ table edition
     padding: 0 20px;
 }
 
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+}
+
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
     position: absolute;
     bottom: 15px;
@@ -854,13 +864,7 @@ table edition
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .title {
-    height: 50px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    text-transform: uppercase;
-    font-size: 12px;
-    transition: all 0.5s ease-in-out;
+   margin-bottom: 0;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number,
@@ -898,7 +902,7 @@ table edition
   -ms-flex-align: center;
   align-items: center;
   color: #A8B0BF;
-  font-family: font-xb;
+  font-family: 'Muli';  font-weight: 800;   font-style: normal;   font-stretch: normal;
   font-size: 12px;
   cursor: pointer;
   border-bottom: 2px solid transparent !important;
@@ -1140,7 +1144,7 @@ table edition
 }
 
 .dashboardLoading h3 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     margin-top: 30px;
     font-size: 34px;
     line-height: 1.18;
@@ -1210,6 +1214,9 @@ table edition
 
 .panel {
     margin-bottom: 25px;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .donut-container {
@@ -1295,7 +1302,7 @@ table edition
 
 .customD_Menu .css-15k3avv {
     z-index: 155;
-    min-width: 400px !important;
+    /* min-width: 400px !important; */
 }
 
 
@@ -1315,7 +1322,7 @@ table edition
     line-height: 1.4;
     letter-spacing: 0.6px;
     color: #252833;
-    font-family: font-xb;
+    font-family: 'Muli';  font-weight: 800;   font-style: normal;   font-stretch: normal;
     text-transform: uppercase;
     margin: 0;
 }
@@ -1748,7 +1755,7 @@ tfoot tr td p {
 
 .dashboard__name .welcome-title {
     font-size: 34px;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     line-height: 1.18;
     letter-spacing: -1.1px;
     color: #252833;
@@ -1763,6 +1770,9 @@ tfoot tr td p {
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
     cursor: pointer;
+    font-size: 56px;
+    line-height: 1.14;
+    letter-spacing: -1.1px;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content {
@@ -1775,8 +1785,10 @@ tfoot tr td p {
 }
 
 .SummeriesContainer .SummeriesTitle {
-    padding-top: 30px;
+    padding-top: 54px;
     padding-bottom: 59px;
+    line-height: 1.14;
+    letter-spacing: -0.5px;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList .first {
@@ -1910,14 +1922,19 @@ tfoot tr td p {
     display: flex;
 }
 
-.dropdownMulti .fillter-status.fillter-item-c .spanValidation {
+.dropdownMulti.letterFullWidth .fillter-status.fillter-item-c {
+    display: flex;
+    flex-flow: column;
+}
+
+/* .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
     width: 130px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     margin-right: 15px;
-}
+} */
 
 .document-fields.userProject .proForm.datepickerContainer .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
     width: auto;
@@ -1997,7 +2014,7 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .main__header h2,
 .main__header h2 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -2006,7 +2023,7 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .main__header p,
 .main__header p {
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 12px;
     line-height: 1.33;
     letter-spacing: -0.2px;
@@ -2066,7 +2083,7 @@ tfoot tr td p {
     width: auto;
     text-align: left;
     margin-right: 32px;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -2139,7 +2156,7 @@ tfoot tr td p {
     letter-spacing: -0.5px;
     color: #252833;
     opacity: 0.3;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
 }
 
 .noTabs__document .approveDocument .approveDocumentBTNS {
@@ -2167,7 +2184,7 @@ tfoot tr td p {
     width: auto;
     text-align: left;
     margin-right: 32px;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -2249,7 +2266,7 @@ tfoot tr td p {
 }
 
 .shareLinks a {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     font-size: 12px;
     line-height: 1.33;
     letter-spacing: -0.3px;
@@ -2326,7 +2343,7 @@ button.companies_icon {
 }
 
 .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 12px;
     line-height: 1.33;
     letter-spacing: -0.2px;
@@ -2389,7 +2406,7 @@ button.companies_icon {
     letter-spacing: -0.5px;
     color: #252833;
     opacity: 0.3;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
 }
 
 .one__tab .approveDocument .approveDocumentBTNS {
@@ -2599,7 +2616,7 @@ button.companies_icon {
 .showMore__btn button span {
     background: transparent;
     border: none;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 12px;
     line-height: 1.67;
     letter-spacing: 0.2px;
@@ -2679,7 +2696,7 @@ button.companies_icon {
 }
 
 .Toastify__toast-body {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 16px;
     -webkit-box-flex: 6;
     -ms-flex: 6;
@@ -2762,17 +2779,24 @@ button.companies_icon {
 }
 
 .summerisItem__number .content__number .number {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 56px;
-    line-height: 1.4;
+    line-height: 1.14;
     letter-spacing: -1.1px;
     color: #252833;
     margin: 0;
     cursor: pointer;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .summerisItem__number .content__number .title {
     font-family: font-xb;
+    font-family: 'Muli';
+    font-weight: 800; 
+    font-style: normal;
+    font-stretch: normal;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: 0.2px;
@@ -2855,7 +2879,7 @@ button.companies_icon {
 }
 
 .workingHours__cycle header h3 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -2970,7 +2994,7 @@ button.companies_icon {
 .proForm .has-error .control-label {
     letter-spacing: -0.2px;
     color: #26344c;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     display: block;
     font-size: 14px;
 }
@@ -3006,7 +3030,7 @@ button.companies_icon {
 }
 
 .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.71;
     letter-spacing: -0.2px;
@@ -3049,7 +3073,7 @@ button.companies_icon {
 }
 
 .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -3090,7 +3114,7 @@ button.companies_icon {
 }
 
 .proForm .mix_dropdown label {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
 }
 
 .css-2o5izw,
@@ -3182,7 +3206,7 @@ button.companies_icon {
 }
 
 .main-header.dashboard__header {
-    padding-left: 60px;
+    padding-left: 40px;
 }
 
 .main-header.dashboard__header .header-content .nav-left {
@@ -3219,7 +3243,7 @@ button.companies_icon {
 }
 
 .dashboard__selectMenu .css-10nd86i .css-1492t68 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 13px;
     font-weight: bold;
     line-height: 1.54;
@@ -3230,7 +3254,7 @@ button.companies_icon {
 }
 
 .dashboard__selectMenu .css-10nd86i .css-xp4uvy {
-  font-family: font-b;
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 13px;
   line-height: 1.54;
   letter-spacing: 0.4px;
@@ -3431,7 +3455,7 @@ button.companies_icon {
 }
 
 .ReactTable .rt-thead .rt-resizable-header {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -3459,7 +3483,7 @@ button.companies_icon {
 
 .ReactTable .rt-tbody .rt-td {
     border-right: 1px solid rgba(0, 0, 0, 0.02);
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.71;
     letter-spacing: -0.2px;
@@ -3497,7 +3521,7 @@ button.companies_icon {
 
 .ReactTable .-pagination .-btn {
     color: #a8b0bf;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -3598,7 +3622,7 @@ button.companies_icon {
     display: block;
     letter-spacing: -0.2px;
     color: #26344c;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     margin-bottom: 4px;
 }
 
@@ -3636,7 +3660,7 @@ button.companies_icon {
     top: -24px;
     letter-spacing: -0.2px;
     color: #26344c;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     display: block;
 }
 
@@ -3688,7 +3712,7 @@ button.companies_icon {
     cursor: pointer;
     font-size: 14px;
     color: #26344c;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     margin: 0 10px;
     border-bottom: 4px solid transparent;
     display: flex;
@@ -3744,7 +3768,7 @@ button.companies_icon {
 .fileDownUp a:hover {
     font-size: 14px;
     margin-bottom: 10px;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -3865,7 +3889,7 @@ button.companies_icon {
     text-align: left;
     border-bottom: 1px solid #e1e3e8;
     padding-bottom: 14px;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -4114,7 +4138,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .accordionTitle {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: -0.2px;
@@ -4193,7 +4217,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .Project__num .project__num--span {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: -0.2px;
@@ -4477,7 +4501,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     letter-spacing: -0.2px;
     text-align: center;
     color: #252833;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     border-bottom: 1px solid #E9ECF0;
     position: sticky;
@@ -4517,7 +4541,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 .settings-container .settings-tabs-items ul li.title h4 {
     margin: 25px 0;
     padding-left: 40px;
-    font-family: font-xb;
+    font-family: 'Muli';  font-weight: 800;   font-style: normal;   font-stretch: normal;
     font-size: 12px;
     color: #a8b0bf;
     line-height: 1.33;
@@ -4539,7 +4563,10 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.5;
     letter-spacing: -0.2px;
     color: #252833;
-    font-family: font-sb;
+    font-weight: bold; 
+    font-family: 'Muli';
+    font-style: normal;
+    font-stretch: normal;
     font-size: 13px !important;
 }
 .settings-container .settings-tabs-items ul li .subUlsubT {
@@ -4588,7 +4615,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.4;
     letter-spacing: -0.2px;
     color: #252833;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
 }
 
@@ -4649,7 +4676,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.5;
     letter-spacing: -0.2px;
     color: #252833;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 16px;
 }
 
@@ -4658,7 +4685,8 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     letter-spacing: -0.2px;
     color: #858d9e;
     font-size: 14px;
-    font-family: font-r;
+    font-family: 'Muli';
+    font-weight: normal;
     margin-bottom: 4px;
 }
 
@@ -4666,7 +4694,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.33;
     letter-spacing: -0.2px;
     color: #3e4352;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 12px;
 }
 
@@ -4710,7 +4738,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.5;
     letter-spacing: -0.2px;
     color: #252833;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
 }
 
@@ -4727,7 +4755,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.33;
     letter-spacing: -0.2px;
     color: #3e4352;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 12px;
 }
 
@@ -4754,7 +4782,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 
 .reports__menu label {
     margin-right: 24px;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -5038,7 +5066,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .project__Permissions--type .ui.checkbox label {
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -5071,7 +5099,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     width: auto;
     text-align: left;
     margin-right: 32px;
-    font-family: font-opensb;
+    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -5120,7 +5148,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .tree__header h2 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -5213,7 +5241,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
 }
 
 .gridBtn {
@@ -5279,7 +5307,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .workflowWrapper .workflow-header h4 p span:last-child {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: -0.2px;
@@ -5288,7 +5316,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .workflowWrapper .workflow-header h4 span:last-child {
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.71;
     letter-spacing: -0.2px;
@@ -5320,7 +5348,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 .card-status .card-box .signature-h .avatarName h6 {
   max-width: 145px;
   overflow: hidden;
-  font-family: font-b
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;
 }
 
 .ui.radio.checkbox {
@@ -5347,7 +5375,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     line-height: 1.33;
     letter-spacing: -0.2px;
     fill: #3e4352;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     max-width: 90px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -5423,7 +5451,7 @@ line.horizontal-grid-line {
   overflow: hidden;
 }
 #legenbd__teext .chartName {
-  font-family: font-b;
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -5431,7 +5459,7 @@ line.horizontal-grid-line {
   display: block;
 }
 #legenbd__teext .percentage {
-  font-family: font-b;
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 56px;
   line-height: 1.14;
   letter-spacing: -1.1px;
@@ -5439,7 +5467,7 @@ line.horizontal-grid-line {
   display: block;
 }
 #legenbd__teext .totalAmount {
-  font-family: font-b;
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -5515,7 +5543,7 @@ line.horizontal-grid-line {
     border-bottom: 1px solid #e9ecf0;
 }
 .tree__header h2{
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -5570,7 +5598,7 @@ line.horizontal-grid-line {
 }
 
 .workflowComment h2 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -5580,7 +5608,7 @@ line.horizontal-grid-line {
 }
 
 .workflowComment p {
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 14px;
     line-height: 1.71;
     letter-spacing: -0.2px;
@@ -5655,7 +5683,7 @@ line.horizontal-grid-line {
 }
 
 .documents-stepper .doc-container .step-content-body .pdf__action--btns h2 {
-  font-family: font-b;
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 20px;
   letter-spacing: -0.2px;
   color: #f9fbfc;
@@ -5736,7 +5764,7 @@ line.horizontal-grid-line {
 .mgrpdf-navigation.mgrpdf-navigation__controls.mgrpdf-navigation__controls--pages {
   position: absolute;
   top: 27px;
-  font-family: font-b;
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -5820,7 +5848,7 @@ line.horizontal-grid-line {
     white-space: nowrap;
     cursor: pointer;
     display: inline-block;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 14px;
     line-height: 1.14;
     letter-spacing: 0.2px;
@@ -5848,7 +5876,7 @@ line.horizontal-grid-line {
 }
 
 .drive__wrapper h2 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.2px;
@@ -5913,7 +5941,7 @@ line.horizontal-grid-line {
     border-radius: 2px;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     background-color: #252833;
-    font-family: font-opens;
+    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
     font-size: 12px;
     line-height: 1.33;
     letter-spacing: -0.2px;
@@ -6056,7 +6084,7 @@ line.horizontal-grid-line {
 }
 
 .filter__more .filter__more--btn {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 12px;
     font-weight: bold;
     font-style: normal;
@@ -6081,7 +6109,7 @@ line.horizontal-grid-line {
 }
  
 .filter__more span {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 11px;
     font-weight: bold;
     font-style: normal;
@@ -6154,7 +6182,7 @@ line.horizontal-grid-line {
 }
  
 .filterModal .header-filter h2 {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 28px;
     font-weight: bold;
     font-style: normal;
@@ -6167,7 +6195,7 @@ line.horizontal-grid-line {
 }
 
 .filterModal .header-filter span {
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 20px;
     font-weight: normal;
     font-style: normal;
@@ -6215,7 +6243,7 @@ line.horizontal-grid-line {
     color: #3570e6;
     text-decoration: underline;
     height: auto;
-    font-family: font-b;
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -6276,24 +6304,27 @@ body.noScrolling {
 
 
 .default__dropdown {
-    width: 204px;
-    margin-left: 64px;
+    min-width: 166px;
+    margin-left: 88px;
 }
 
 .default__dropdown .css-10nd86i {
-    max-width: 204px;
+    min-width: 166px;
 }
 
 .default__dropdown .css-10nd86i .css-vj8t7z {
     background-color: rgba(255,255,255,0)!important;
     border-radius: 4px;
     border: solid 1px #5f98fa !important;
-    min-height: 40px;
+    min-height: 36px;
     border-radius: 4px;
 }
 
 .default__dropdown .css-10nd86i .css-1492t68 {
-    font-family: font-b;
+    font-family: 'Muli';
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;;
     font-size: 13px;
     font-weight: bold;
     line-height: 1.54;
@@ -6304,7 +6335,10 @@ body.noScrolling {
 }
 
 .default__dropdown .css-10nd86i .css-xp4uvy {
-  font-family: font-b;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;;
   font-size: 13px;
   line-height: 1.54;
   letter-spacing: 0.4px;
@@ -6402,4 +6436,62 @@ body.noScrolling {
 
 .britechart-tooltip {
 z-index: 9999;
+}
+/* 
+.britechart-tooltip {
+z-index: 9999;
+} */
+
+.document__action--menu {
+    height: 40px;
+}
+
+.document__action--menu .spanValidation{
+    display: none;
+}
+
+.document__action--menu .skylight-dialog .spanValidation{
+    display: block;
+}
+
+.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z, .document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
+    box-shadow: none
+}
+
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label , button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg , button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg {
+    display: none;
+} 
+
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
+    background-image: url(../../images/tt.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.ck.ck-toolbar {
+    height: 40px !important;
+    border-top-right-radius: 4px !important;
+    border-top-left-radius: 4px !important;
+    background-color: #ffffff !important;
+    padding-left: 8px !important;
+    padding-right: 12px !important; 
+}
+
+.ck.ck-toolbar__separator{
+    width: 1px !important;
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+    background-color: #e9ecf0 !important;
+}
+
+.ck.ck-editor__main {
+    min-height: 79px;
+}
+
+.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
+    min-height: 80px;
 }

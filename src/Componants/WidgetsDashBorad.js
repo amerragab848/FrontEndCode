@@ -113,7 +113,7 @@ var widgets = [
         props: {
           api: "GetWorkFlowAlertCount",
           apiDetails: "",
-          route: "",
+          route: "workFlowAlerts",
           value: "total",
           listType: "item",
           action: "action",
@@ -451,6 +451,36 @@ var widgets = [
         title: 'riskStatusYearly',
         props: {
           'api': 'GetRiskDataChartLine'
+        }, 
+        topicNames:['Opened','Closed'],
+        type: 'line' 
+      }, {
+        id: 'wt-Name0120',
+        key: "0-3-14",
+        checked: false,
+        title: 'riskStatusYearly',
+        props: {
+          'api': 'GetChartLineDataByDocType?docType=17'
+        }, 
+        topicNames:['Opened','Closed'],
+        type: 'line' 
+      }, {
+        id: 'wt-Name0120',
+        key: "0-3-14",
+        checked: false,
+        title: 'riskStatusYearly',
+        props: {
+          'api': 'GetChartLineDataByDocType?docType=28'
+        }, 
+        topicNames:['Opened','Closed'],
+        type: 'line' 
+      }, {
+        id: 'wt-Name0120',
+        key: "0-3-14",
+        checked: false,
+        title: 'riskStatusYearly',
+        props: {
+          'api': 'GetChartLineDataByDocType?docType=42'
         }, 
         topicNames:['Opened','Closed'],
         type: 'line' 

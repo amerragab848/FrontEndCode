@@ -94,28 +94,25 @@ class Index extends Component {
       }
       else if (item.type === "line") {
         return (
-          <Fragment key={item.id}>
-            <Britecharts
-              api={item.props.api}
-              title={language[item.title][currentLanguage]}
-              topicName={item.topicNames} />
-          </Fragment>
+          <Britecharts
+            api={item.props.api}
+            title={language[item.title][currentLanguage]}
+            topicName={item.topicNames} />
         );
       }
       else {
         return (
-          <Fragment key={item.id}>
-            <BarChartComp
-              api={item.props.api}
-              name={item.props.name}
-              y={item.props.data}
-              title={language[item.title][currentLanguage]}
-              stack={item.stack}
-              yTitle={language[item.yTitle][currentLanguage]}
-              catagName={item.catagName}
-              multiSeries={item.multiSeries}
-              barContent={item.barContent} />
-          </Fragment>
+          <BarChartComp
+            api={item.props.api}
+            ukey={item.id}
+            name={item.props.name}
+            y={item.props.data}
+            title={language[item.title][currentLanguage]}
+            stack={item.stack}
+            yTitle={language[item.yTitle][currentLanguage]}
+            catagName={item.catagName}
+            multiSeries={item.multiSeries}
+            barContent={item.barContent} />
         );
       }
     });
@@ -186,20 +183,19 @@ class Index extends Component {
                             );
                           } else {
                             return (
-                              <Fragment key={panel.id}>
-                                <BarChartComp
-                                  api={panel.props.api}
-                                  name={panel.props.name}
-                                  y={panel.props.data}
-                                  title={language[panel.title][currentLanguage]} 
-                                  stack={panel.stack}
-                                  yTitle={panel.yTitle}
-                                  catagName={panel.catagName}
-                                  multiSeries={panel.multiSeries}
-                                  barContent={panel.barContent}
-                                />
-                              </Fragment>
-                            );
+
+                              <BarChartComp
+                                api={panel.props.api}
+                                ukey={panel.id}
+                                name={panel.props.name}
+                                y={panel.props.data}
+                                title={language[panel.title][currentLanguage]}
+                                stack={panel.stack}
+                                yTitle={panel.yTitle}
+                                catagName={panel.catagName}
+                                multiSeries={panel.multiSeries}
+                                barContent={panel.barContent}
+                              />);
                           }
                         }
                       })
@@ -265,19 +261,18 @@ class Index extends Component {
                         }
                         else {
                           return (
-                            <Fragment key={panel.id}>
-                              <BarChartComp
-                                api={panel.props.api}
-                                name={panel.props.name}
-                                y={panel.props.data}
-                                title={language[panel.title][currentLanguage]}
-                                stack={panel.stack}
-                                yTitle={panel.yTitle}
-                                catagName={panel.catagName}
-                                multiSeries={panel.multiSeries}
-                                barContent={panel.barContent}
-                              />
-                            </Fragment>
+                            <BarChartComp
+                              ukey={panel.id}
+                              api={panel.props.api}
+                              name={panel.props.name}
+                              y={panel.props.data}
+                              title={language[panel.title][currentLanguage]}
+                              stack={panel.stack}
+                              yTitle={panel.yTitle}
+                              catagName={panel.catagName}
+                              multiSeries={panel.multiSeries}
+                              barContent={panel.barContent}
+                            />
                           );
                         }
                       }) : null}
@@ -341,19 +336,18 @@ class Index extends Component {
                         );
                       } else {
                         return (
-                          <Fragment key={panel.id}>
-                            <BarChartComp
-                              api={panel.props.api}
-                              name={panel.props.name}
-                              y={panel.props.data}
-                              title={language[panel.title][currentLanguage]}
-                              stack={panel.stack}
-                              yTitle={panel.yTitle}
-                              catagName={panel.catagName}
-                              multiSeries={panel.multiSeries}
-                              barContent={panel.barContent}
-                            />
-                          </Fragment>
+                          <BarChartComp
+                            ukey={panel.id}
+                            api={panel.props.api}
+                            name={panel.props.name}
+                            y={panel.props.data}
+                            title={language[panel.title][currentLanguage]}
+                            stack={panel.stack}
+                            yTitle={panel.yTitle}
+                            catagName={panel.catagName}
+                            multiSeries={panel.multiSeries}
+                            barContent={panel.barContent}
+                          />
                         );
                       }
                     }) : null}

@@ -1,6 +1,6 @@
+
 import React, { Component, Fragment } from 'react';
-import Api from '../../api';
-// import * as d3 from 'd3';
+import Api from '../../api'; 
 import { Bar, GroupedBar, Tooltip, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 const marginObject = {
@@ -62,30 +62,21 @@ class BarChartComp extends Component {
                 isLoading: false
             });
         });
-    }
-    // logMouseOver = (e) => {
-    //     Tooltip.show
-    // };
+    } 
 
     render() {
         const renderLine = (props) => (
             <ResponsiveContainer
                 render={
                     ({ width }) =>
-                        <div className="js-bar-chart-container-tooltip-container">
-
-                            <Bar
-                                isHorizontal={false}
-                                margin={marginObject}
-                                colorSchema={colorSchema}
-                                width={width}
-
-                                // percentageAxisToMaxRatio={1.3}
-
-                                shouldShowLoadingState={this.state.barData.length ? false : true}
-                                {...props}
-                            />
-                        </div>
+                        <Bar
+                            isHorizontal={false}
+                            margin={marginObject}
+                            colorSchema={colorSchema}
+                            width={width} 
+                            shouldShowLoadingState={this.state.barData.length ? false : true}
+                            {...props}
+                        />
                 }
             />
         );

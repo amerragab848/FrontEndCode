@@ -30,9 +30,11 @@ class Schedule extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
+        this.state = { 
+            ApiDelete:this.props.ApiDelete,
+            Api: this.props.Api,
             ScheduleLsit: [],
-            contractId: this.props.contractId,
+            docId: this.props.contractId,
             ProjectScheduleDrop: [],
             ProjectScheduleFillData: [],
             projectId: this.props.projectId,
@@ -49,15 +51,18 @@ class Schedule extends Component {
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
 
-        Api.post('DeleteContractsScheduleById?id=' + this.state.selectedId + '').then((res) => {
+        dataservice.addObject(this.state.ApiDelete + this.state.selectedId ).then((res) => {
 
             let originalRows = this.state.ScheduleLsit
+
             let data = originalRows.filter(r => r.id !== this.state.selectedId);
+            
             this.setState({
                 ScheduleLsit: data,
                 showDeleteModal: false,
                 isLoading: false,
-            })
+            });
+            
             toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
 
         }).catch(ex => {
@@ -65,44 +70,33 @@ class Schedule extends Component {
             this.setState({
                 isLoading: false,
             })
-        });
-
-
+        }); 
     }
 
     componentWillMount = () => {
 
-        dataservice.GetDataGrid('GetScheduleItemsByContractId?contractId=' + this.state.contractId + '').then(
-            res => {
+    dataservice.GetDataGrid(this.props.ApiGet).then(result => {
                 this.setState({
-                    ScheduleLsit: res
+                    ScheduleLsit: result
                 })
-            }
-        )
+            })
+ 
+    dataservice.GetDataGrid('ProjectScheduleGetForList?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000').then(result => {
+        
+            let data = [];
 
-        Api.get('ProjectScheduleGet?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000').then(
-            result => {
-                let Data = []
-                result.data.map(i => {
-                    var obj = {};
-                    obj.label = i.subject;
-                    obj.value = i.id;
-                    Data.push(obj);
-                })
-                this.setState({
-                    ProjectScheduleFillData: result.data,
-                    ProjectScheduleDrop: Data
-                })
-            }
-        )
-
-        dataservice.GetDataList('ProjectScheduleGet?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', '', '').then(
-            res => {
-                this.setState({
-                    SelectedProjectSchedule: res
-                })
-            }
-        )
+            result.forEach(item => {
+                var obj = {};
+                obj.label = item["subject"];
+                obj.value = item["id"];
+                data.push(obj);
+            });
+         
+        this.setState({
+            ProjectScheduleDrop: data,
+            ProjectScheduleFillData:result
+        })
+      })
     }
 
     onCloseModal() {
@@ -123,17 +117,23 @@ class Schedule extends Component {
     SaveSchedule = (values) => {
         this.setState({
             BtnLoading: true
-        })
+        });
+        
+        let typeColumn = this.props.type;
+        
         if (this.state.TabActive === 0) {
+          
+
             let AddObj = {
-                contractId: this.state.contractId,
+                [typeColumn]: this.state.docId,
                 arrange: values.arrange,
                 taskId: values.taskId,
                 description: values.description,
                 startDate: this.state.StartDate,
                 finishDate: this.state.FinishDate,
             }
-            dataservice.addObject('AddScheduleItem', AddObj).then(
+
+            dataservice.addObject(this.state.Api, AddObj).then(
                 res => {
                     this.setState({
                         ScheduleLsit: res,
@@ -150,14 +150,20 @@ class Schedule extends Component {
                 });
         }
         else {
-            let selectedProjectScheduleItem = this.state.ProjectScheduleFillData.filter(s => s.id === this.state.selectedProjectSchedule.value)[0];
-            let AddObj = {
-                contractId: this.state.contractId,
+
+            let selectedProjectScheduleItem = this.state.ProjectScheduleFillData.find(s => s.id === this.state.selectedProjectSchedule.value);
+ 
+            const objDocument = {
+                //field
+                id: 0,  
+                [typeColumn] :this.state.docId,
                 projectTaskId: selectedProjectScheduleItem.id,
                 startDate: selectedProjectScheduleItem.startDate,
-                finishDate: selectedProjectScheduleItem.finishDate,
-            }
-            dataservice.addObject('AddScheduleItem', AddObj).then(
+                finishDate: selectedProjectScheduleItem.finishDate ,
+                description : selectedProjectScheduleItem.subject 
+            };
+
+            dataservice.addObject(this.state.Api, objDocument).then(
                 res => {
                     this.setState({
                         ScheduleLsit: res,
@@ -172,8 +178,7 @@ class Schedule extends Component {
                         isLoading: false,
                         BtnLoading: false,
                     })
-                });
-            console.log(selectedProjectScheduleItem)
+                }); 
         }
     }
 
@@ -312,33 +317,26 @@ class Schedule extends Component {
                                                     }}
                                                     onChange={handleChange} />
                                                 {touched.taskId ? (<em className="pError">{errors.taskId}</em>) : null}
-
                                             </div>
-                                        </div>
-
-
-
+                                        </div> 
                                         <div className="linebylineInput valid-input">
                                             <div className="inputDev ui input">
                                                 <DatePicker title='startDate' handleChange={e => this.setState({ StartDate: e })} startDate={this.state.StartDate} />
                                             </div>
-                                        </div>
-
+                                        </div> 
                                         <div className="linebylineInput valid-input">
                                             <div className="inputDev ui input">
                                                 <DatePicker title='finishDate' handleChange={e => this.setState({ FinishDate: e })} startDate={this.state.FinishDate} />
                                             </div>
-                                        </div>
-
-                                    </div> :
-
+                                        </div> 
+                                    </div> : 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title='projectSchedule' data={this.state.ProjectScheduleDrop} selectedValue={this.state.selectedProjectSchedule}
                                             handleChange={e => this.setState({ selectedProjectSchedule: e })}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.ProjectSchedule} touched={touched.ProjectSchedule}
                                             name="ProjectSchedule" index="ProjectSchedule" />
-                                    </div>}
-
+                                    </div>
+                                    } 
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                     {this.state.BtnLoading === false ?
                                         <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources['add'][currentLanguage]}</button>
@@ -350,13 +348,11 @@ class Schedule extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                    }
-
+                                    } 
                                 </div>
                             </Form>
                         )}
-                    </Formik>
-
+                    </Formik> 
                     <header>
                         <h2 className="zero">{Resources['scheduleList'][currentLanguage]}</h2>
                     </header>
@@ -366,12 +362,10 @@ class Schedule extends Component {
                     </div>
                     <ReactTable ref={(r) => { this.selectTable = r; }} filterable
                         data={this.state.ScheduleLsit} columns={columns} defaultPageSize={10}
-                        minRows={2} noDataText={Resources['noData'][currentLanguage]} />
-
+                        minRows={2} noDataText={Resources['noData'][currentLanguage]} /> 
                 </div>
 
-                {this.state.showDeleteModal == true ? (
-
+                {this.state.showDeleteModal == true ? ( 
                     <ConfirmationModal
                         title={Resources['smartDeleteMessage'][currentLanguage].content}
                         closed={this.onCloseModal}

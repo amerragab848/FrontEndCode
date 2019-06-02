@@ -1109,8 +1109,7 @@ class DashBoard extends Component {
 
     var paneChild = "";
 
-    if (this.state.viewChild) {
-      console.log('in this.state.childRef ', this.state.childRef);
+    if (this.state.viewChild) { 
       paneChild = this.state.childRef.map((widget, index) => {
         return (
           <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>

@@ -3,7 +3,7 @@ import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export"; 
 import Filter from "../FilterComponent/filterComponent";
- 
+import CryptoJS from 'crypto-js';
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
@@ -199,10 +199,29 @@ class AlertingQuantitySummaryDetails extends Component {
       });
   };
 
+  onRowClick = (obj) => {  
+    if(obj){
+      let objRout = {
+        docId: obj.boqId,
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/boqAddEdit"  ,
+        search: "?id=" + encodedPaylod
+      }); 
+    }
+}
+
   render() {
     const dataGrid =
     this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+      <GridSetup rows={this.state.rows} columns={this.state.columns}  onRowClick={this.onRowClick} showCheckbox={false}/>
     ) : <LoadingSection/>;
 
     const btnExport = this.state.isLoading === false ? 
