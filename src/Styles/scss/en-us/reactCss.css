@@ -1908,14 +1908,19 @@ tfoot tr td p {
     display: flex;
 }
 
-.dropdownMulti .fillter-status.fillter-item-c .spanValidation {
+.dropdownMulti.letterFullWidth .fillter-status.fillter-item-c {
+    display: flex;
+    flex-flow: column;
+}
+
+/* .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
     width: 130px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     margin-right: 15px;
-}
+} */
 
 .document-fields.userProject .proForm.datepickerContainer .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
     width: auto;
@@ -6260,6 +6265,19 @@ body.noScrolling {
         font-size: 9px;
     }
 }
+/* 
 .britechart-tooltip {
 z-index: 9999;
+} */
+
+.document__action--menu {
+    height: 40px;
+}
+
+.document__action--menu .spanValidation{
+    display: none;
+}
+
+.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
 }

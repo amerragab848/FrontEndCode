@@ -7,6 +7,8 @@ import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import {   Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
+import CryptoJS from 'crypto-js';
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -220,10 +222,29 @@ class NotCodedInvoicesSummaryDetails extends Component {
       });
   };
 
+  onRowClick = (obj) => {  
+    if(obj){
+      let objRout = {
+        docId: obj.boqId,
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/invoicesForPoAddEdit"  ,
+        search: "?id=" + encodedPaylod
+      }); 
+    }
+}
+
   render() {
     const dataGrid =
     this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+      <GridSetup rows={this.state.rows} onRowClick={this.onRowClick} columns={this.state.columns} showCheckbox={false}/>
     ) : <LoadingSection/>;
 
     const btnExport = this.state.isLoading === false ? 
