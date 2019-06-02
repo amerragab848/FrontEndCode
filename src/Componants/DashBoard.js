@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js';
 import { SortablePane, Pane } from "react-sortable-pane";
@@ -11,7 +11,12 @@ let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require('lodash');
-
+const checkAllObj = {
+  key: "0",
+  selectAll: true,
+  checked: false,
+  title: 'selectAll'
+}
 class DashBoard extends Component {
   constructor(props) {
     super(props);
@@ -174,6 +179,7 @@ class DashBoard extends Component {
 
         updated_state.childRef = [...widgetChild.widgets];
 
+
       } else {
 
         thirdChild.widgets.forEach(item => {
@@ -186,7 +192,6 @@ class DashBoard extends Component {
       }
     } else {
 
-      console.log('thirdChild....', thirdChild);
       let order = [];
 
       let poolThirdWidgets = [];
@@ -202,6 +207,7 @@ class DashBoard extends Component {
       updated_state.child_widgets_order = order;
     }
 
+    updated_state.childRef.push(checkAllObj)
     this.setState(updated_state);
   }
 
@@ -324,7 +330,7 @@ class DashBoard extends Component {
                     api: val.props.api,
                     name: val.props.name,
                     data: val.props.data,
-                    multiSeries:val.props.multiSeries
+                    multiSeries: val.props.multiSeries
                   }
                 });
               }
@@ -435,7 +441,7 @@ class DashBoard extends Component {
                   api: val.props.api,
                   name: val.props.name,
                   data: val.props.data,
-                  multiSeries:val.props.multiSeries
+                  multiSeries: val.props.multiSeries
                 }
               });
             }
@@ -576,7 +582,7 @@ class DashBoard extends Component {
                     api: val.props.api,
                     name: val.props.name,
                     data: val.props.data,
-                    multiSeries:val.props.multiSeries
+                    multiSeries: val.props.multiSeries
                   }
                 });
               }
@@ -679,7 +685,7 @@ class DashBoard extends Component {
                   api: val.props.api,
                   name: val.props.name,
                   data: val.props.data,
-                  multiSeries:val.props.multiSeries
+                  multiSeries: val.props.multiSeries
                 }
               });
             }
@@ -728,203 +734,217 @@ class DashBoard extends Component {
     });
   }
 
-  toggleChildCheck(event, id) {
+  toggleChildCheck = (event, id, checkedValue) => {
 
-    var getfirstKey = id.split("-");
+    if (id === "0") {
 
-    let parentKey = getfirstKey[0];
+      let originalData = this.state.childRef;
 
-    let parent = getfirstKey[0] + "-" + getfirstKey[1];
-
-    let original_widgets = [...this.state.widgets];
-
-    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
-
-    widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
-
-    let obj = widgets_Order[parentKey];
-
-    // if key in local Storage
-    if (obj != undefined) {
-
-      let child = obj.find(function (i) {
-        return i.key === parent
+      originalData.forEach(item => {
+        item.checked = !item.checked;
       });
-
-      let parentIndex = obj.findIndex(function (i) {
-        return i.key === parent
-      });
-
-      let widget = child.widgets.find(function (i) {
-        return i.key === id
-      });
-
-      if (widget) {
-        widget.checked = !widget.checked;
-      }
-
-      let indexxx = child.widgets.findIndex(function (i) {
-        return i.key === id
-      });
-
-      widgets_Order[parentKey][parentIndex].widgets[indexxx] = widget;
-
-      let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(widgets_Order));
-      let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
-
-      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
 
       this.setState({
-        childRef: widgets_Order[parentKey][parentIndex].widgets
+        childRef: originalData
       });
-    }
-    else {
-      // لو العنصر مش موجود
-      let setOrder = [];
+    } else {
+      var getfirstKey = id.split("-");
 
-      let checkList = original_widgets.filter(function (i) {
-        return i.refrence === parseInt(parentKey);
-      });
+      let parentKey = getfirstKey[0];
 
-      let getIndexx = checkList.findIndex(function (i) {
-        return i.key === parent;
-      });
+      let parent = getfirstKey[0] + "-" + getfirstKey[1];
 
-      if (checkList.length > 0) {
+      let original_widgets = [...this.state.widgets];
 
-        checkList.forEach((value, index) => {
+      let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
 
-          let widgets = [];
+      widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
 
-          value.widgets.forEach((val, i) => {
-            if (val.type === "twoWidget") {
-              if (val.key === id) {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: !val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    total: val.props.total,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              } else {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    listType: val.props.listType,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              }
-            } else if (val.type === "pie") {
+      let obj = widgets_Order[parentKey];
 
-              widgets.push({
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                parentId: value.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  y: val.props.y
-                }
-              });
-            }
-            else if (val.type === "column") {
+      // if key in local Storage
+      if (obj != undefined) {
 
-              widgets.push({
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                parentId: value.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  data: val.props.data,
-                  multiSeries:val.props.multiSeries
-                }
-              });
-            }
+        let child = obj.find(function (i) {
+          return i.key === parent
+        });
 
-            else {
-              if (val.key === id) {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: !val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    listType: val.props.listType,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              } else {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    listType: val.props.listType,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              }
-            }
-          });
+        let parentIndex = obj.findIndex(function (i) {
+          return i.key === parent
+        });
 
-          setOrder.push({
-            widgetCategory: value.widgetCategory,
-            key: value.key,
-            order: index + 1,
-            checked: value.checked,
-            parentId: "ref" + parentKey,
-            widgets: widgets
-          });
+        let widget = child.widgets.find(function (i) {
+          return i.key === id
+        });
+
+        if (widget) {
+          let checked = checkedValue ? checkedValue : !widget.checked
+          widget.checked = checked;
+        }
+
+        let indexxx = child.widgets.findIndex(function (i) {
+          return i.key === id
+        });
+
+        widgets_Order[parentKey][parentIndex].widgets[indexxx] = widget;
+
+        let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(widgets_Order));
+        let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
+
+        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+
+        this.setState({
+          childRef: widgets_Order[parentKey][parentIndex].widgets
         });
       }
+      else {
+        // لو العنصر مش موجود
+        let setOrder = [];
 
-      var objChild = {};
+        let checkList = original_widgets.filter(function (i) {
+          return i.refrence === parseInt(parentKey);
+        });
 
-      objChild[parentKey] = setOrder;
+        let getIndexx = checkList.findIndex(function (i) {
+          return i.key === parent;
+        });
 
-      let allObj = Object.assign(objChild, widgets_Order);
+        if (checkList.length > 0) {
 
-      let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
-      let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
+          checkList.forEach((value, index) => {
 
-      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+            let widgets = [];
 
-      this.setState({
-        childRef: objChild[parentKey][getIndexx].widgets
-      });
+            value.widgets.forEach((val, i) => {
+              if (val.type === "twoWidget") {
+                if (val.key === id) {
+                  widgets.push({
+                    key: val.key,
+                    order: i + 1,
+                    checked: !val.checked,
+                    parentId: value.key,
+                    title: val.title,
+                    type: val.type,
+                    props: {
+                      api: val.props.api,
+                      value: val.props.value,
+                      total: val.props.total,
+                      route: val.props.route,
+                      key: val.props.key
+                    }
+                  });
+                } else {
+                  widgets.push({
+                    key: val.key,
+                    order: i + 1,
+                    checked: val.checked,
+                    parentId: value.key,
+                    title: val.title,
+                    type: val.type,
+                    props: {
+                      api: val.props.api,
+                      value: val.props.value,
+                      listType: val.props.listType,
+                      route: val.props.route,
+                      key: val.props.key
+                    }
+                  });
+                }
+              } else if (val.type === "pie") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api,
+                    name: val.props.name,
+                    y: val.props.y
+                  }
+                });
+              }
+              else if (val.type === "column") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api,
+                    name: val.props.name,
+                    data: val.props.data,
+                    multiSeries: val.props.multiSeries
+                  }
+                });
+              }
+
+              else {
+                if (val.key === id) {
+                  widgets.push({
+                    key: val.key,
+                    order: i + 1,
+                    checked: checkedValue ? checkedValue : !val.checked,
+                    parentId: value.key,
+                    title: val.title,
+                    type: val.type,
+                    props: {
+                      api: val.props.api,
+                      value: val.props.value,
+                      listType: val.props.listType,
+                      route: val.props.route,
+                      key: val.props.key
+                    }
+                  });
+                } else {
+                  widgets.push({
+                    key: val.key,
+                    order: i + 1,
+                    checked: val.checked,
+                    parentId: value.key,
+                    title: val.title,
+                    type: val.type,
+                    props: {
+                      api: val.props.api,
+                      value: val.props.value,
+                      listType: val.props.listType,
+                      route: val.props.route,
+                      key: val.props.key
+                    }
+                  });
+                }
+              }
+            });
+
+            setOrder.push({
+              widgetCategory: value.widgetCategory,
+              key: value.key,
+              order: index + 1,
+              checked: value.checked,
+              parentId: "ref" + parentKey,
+              widgets: widgets
+            });
+          });
+        }
+
+        var objChild = {};
+
+        objChild[parentKey] = setOrder;
+
+        let allObj = Object.assign(objChild, widgets_Order);
+
+        let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
+        let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
+
+        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
+
+        this.setState({
+          childRef: objChild[parentKey][getIndexx].widgets
+        });
+      }
     }
   }
 
@@ -1082,6 +1102,33 @@ class DashBoard extends Component {
       child_widgets_order: order
     });
   }
+  checkAllChildrens(event, key, checked) {
+    this.viewCurrentMenu(event, key)
+    if (key === '0') {
+      this.checkAll(event, key)
+    }
+    else {
+      let index = this.state.widgets.findIndex(w => w.key == key)
+      if (index != -1) {
+        let childrens = this.state.widgets[index]['widgets']
+        childrens.forEach(child => {
+          child.checked = !checked
+          this.toggleChildCheck(undefined, child.key, !checked)
+        })
+        this.setState({ childRef: childrens })
+      }
+    }
+  }
+  checkAll(event, key) { 
+    let childrens = [...this.state.childRef]
+    if (childrens.length > 0) {
+      childrens.forEach(child => {
+        child.checked = true
+        this.toggleChildCheck(undefined, child.key, true)
+      })
+      this.setState({ childRef: childrens })
+    }
+  }
 
   render() {
 
@@ -1093,7 +1140,7 @@ class DashBoard extends Component {
               <img src={dashBoardLogo} />
               <div
                 className={widget.checked === true ? "ui checkbox checkBoxGray300 count checked" : "ui checkbox checkBoxGray300 count"}
-                onClick={event => this.toggleParentCheck(event, widget.key, index)}>
+                onClick={event => { this.checkAllChildrens(event, widget.key, widget.checked); this.toggleParentCheck(event, widget.key, index); }}>
                 <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" checked={widget.checked} />
                 <label />
               </div>
@@ -1109,13 +1156,13 @@ class DashBoard extends Component {
 
     var paneChild = "";
 
-    if (this.state.viewChild) { 
+    if (this.state.viewChild) {
       paneChild = this.state.childRef.map((widget, index) => {
         return (
           <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
             <div className="secondTabs project__select ui-state-default">
               <img src={dashBoardLogo} />
-              <div className={"ui checkbox checkBoxGray300 count" + (widget.checked === true ? " checked" : "")} onClick={event => this.toggleChildCheck(event, widget.key)}>
+              <div className={"ui checkbox checkBoxGray300 count" + (widget.checked === true ? " checked" : "")} onClick={event =>  this.toggleChildCheck(event, widget.key)}>
                 <input name="CheckBox" type="checkbox" id="terms" tabIndex={index} className="hidden" checked={widget.checked} />
                 <label />
               </div>
@@ -1125,11 +1172,13 @@ class DashBoard extends Component {
             </div>
           </Pane>
         );
+
+
       });
     }
 
     return (
-      <div className="customeTabs">
+      <div className="customeTabs" >
         <Rodal visible={this.props.opened} onClose={this.props.closed}>
           <div className="dashboard__modal">
             <div className="dashboard__container">
