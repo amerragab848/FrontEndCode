@@ -94,10 +94,10 @@ class UploadAttachment extends Component {
                                             <div className="dragUpload">
                                                 <p>Drag and drop your files here</p>
 
-                                                <form>
+                                                {/* <form>
                                                     <input type="file" name="file" id="file" className="inputfile" />
                                                     <label>Upload</label>
-                                                </form>
+                                                </form> */}
                                             </div>
                                         </div>
                                         <div className="dragHoverDiv">

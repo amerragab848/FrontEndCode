@@ -994,7 +994,7 @@ class HeaderMenu extends Component {
                         <img src={Logo} alt="logo" />
                       </NavLink>
                     </li>
-                    <li className="dashboard__selectMenu">
+                    <li className="default__dropdown">
                       <Select key="dash-selectproject" ref="dash-selectproject" options={this.state.projects}
                         isSearchable="true" defaultValue={this.state.value} value={this.state.selectedValue}
                         isMulti={false} onChange={this.handleChangeSelectProject} />
