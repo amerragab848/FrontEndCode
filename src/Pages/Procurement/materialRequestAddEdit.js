@@ -415,6 +415,7 @@ class materialRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
+            Api.get('GetChartLineDataByDocType?docType='+this.state.docType)
             let url = "GetContractsSiteRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, "procurement");
             Api.get('GetContractsSiteRequestItemsByRequestId?requestId=' + this.state.docId).then(res => {
@@ -660,8 +661,7 @@ class materialRequestAddEdit extends Component {
         saveDocument.buildingNoId = this.state.buildingNumber.value;
         saveDocument.apartmentNoId = this.state.apartmentNo.value;
         saveDocument.companyName = this.state.fromCompany.value;
-        saveDocument.id = this.state.docId;
-        console.log('document=>', saveDocument)
+        saveDocument.id = this.state.docId; 
         dataservice.addObject("EditContractsSiteRequest", saveDocument).then(result => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             let CurrStep = this.state.CurrStep + 1
@@ -752,14 +752,14 @@ class materialRequestAddEdit extends Component {
                 currentTitle: item.title,
                 showModal: true
             })
-            this.simpleDialog.show()
-
+            this.simpleDialog.show() 
         }
     };
 
     actionsChange(event) {
         switch (event.value) {
             case 1:
+                this.setState({isLoading:true})
                 Api.post('AddNewBoq?id=' + this.state.docId).then(() => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.props.history.push({ pathname: '/siteRequest/' + this.state.projectId })
@@ -831,8 +831,7 @@ class materialRequestAddEdit extends Component {
                     }
                 })
             }
-        })
-
+        }) 
     }
     addChild = () => {
         let length = this.state.updatedchilderns.length
@@ -859,8 +858,7 @@ class materialRequestAddEdit extends Component {
                     }
                 })
             }
-        })
-
+        }) 
     }
 
     onCloseModal() {
@@ -1006,8 +1004,7 @@ class materialRequestAddEdit extends Component {
                 })
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-        });
-
+        }); 
     }
     handleChangeDropDown(event) {
         this.setState({ isLoading: true })
@@ -1090,9 +1087,7 @@ class materialRequestAddEdit extends Component {
                             }, {
                                 Header: Resources.itemCode[currentLanguage],
                                 accessor: 'itemCode'
-                            }
-                        ]
-                        }
+                            } ]  }
                         defaultPageSize={5}
                         className="-striped -highlight"
                     />
@@ -1142,9 +1137,7 @@ class materialRequestAddEdit extends Component {
                     }, {
                         Header: Resources.requestedVariance[currentLanguage],
                         accessor: 'requestedVariance',
-                        Cell: (value, row) => {
-                            console.log('value', value)
-                            console.log('row', row)
+                        Cell: (value, row) => { 
                             return (<span  >  {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}</span>)
                         }
                     }, {
@@ -1157,43 +1150,7 @@ class materialRequestAddEdit extends Component {
                 defaultPageSize={5}
                 className="-striped -highlight"
             />
-        // <ReactTable
-        //     data={this.state.MRItems}
-        //     columns={
-        //         [
-        //             {
-        //                 Header: Resources.resourceCode[currentLanguage],
-        //                 accessor: 'resourceCode'
-
-        //             }, {
-        //                 Header: Resources.itemCode[currentLanguage],
-        //                 accessor: 'itemCode'
-        //             }, {
-        //                 Header: Resources.quantity[currentLanguage],
-        //                 accessor: 'quantity'
-        //             }, {
-        //                 Header: Resources.stock[currentLanguage],
-        //                 accessor: 'stock'
-        //             }, {
-        //                 Header: Resources.requestedVariance[currentLanguage],
-        //                 accessor: 'requestedVariance',
-        //                 Cell: (value, row) => {
-        //                     return (<span  >  {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}</span>)
-        //                 }
-        //             }, {
-        //                 Header: Resources.releasedQuantity[currentLanguage],
-        //                 accessor: 'releasedQuantity',
-        //                 Cell: (value, row) => {
-        //                     return (<a className="editorCell "><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>
-        //                         {value.original.quantity != null ? value.original.quantity : 0}</span></a>)
-
-        //                 }
-        //             }
-        //         ]
-        //     }
-        //     defaultPageSize={3}
-        //     className="-striped -highlight" />
-
+       
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
