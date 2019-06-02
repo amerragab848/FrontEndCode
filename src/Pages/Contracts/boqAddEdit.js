@@ -802,6 +802,7 @@ class bogAddEdit extends Component {
             selectedRow: []
         });
     }
+    
     assign = () => {
         this.setState({ showBoqModal: true })
         this.boqTypeModal.show()
