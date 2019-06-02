@@ -7,20 +7,16 @@ import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
+import CryptoJS from 'crypto-js';
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
+const { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter } = Filters;
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
- 
 
 const statusButton = ({ value, row }) => {
   let doc_view = "";
@@ -253,10 +249,29 @@ class DocNotifyLogDetails extends Component {
       });
   };
 
+  onRowClick = (obj) => {  
+    if(obj){
+      let objRout = {
+        docId: obj.docId,
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" + obj.docLink,
+        search: "?id=" + encodedPaylod
+      }); 
+    }
+}
+
   render() {
     const dataGrid =
     this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
+      <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false}/>
     ) : <LoadingSection/>;
 
     const btnExport = this.state.isLoading === false ? 

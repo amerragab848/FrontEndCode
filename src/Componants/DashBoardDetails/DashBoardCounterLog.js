@@ -105,7 +105,7 @@ class DashBoardCounterLog extends Component {
       let objRout = {
         docId: obj.id,
         projectId: obj.projectId,
-        projectName: localStorage.getItem("lastSelectedprojectName"),
+        projectName: obj.projectName,
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false

@@ -1,4 +1,4 @@
-import React, { Component } from "react"; 
+import React, { Component ,Fragment} from "react"; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'; 
 import dataservice from "../../Dataservice";
@@ -11,6 +11,8 @@ import { bindActionCreators } from 'redux';
 import moment from "moment"; 
 import * as communicationActions from '../../store/actions/communication'; 
 import { toast } from "react-toastify"; 
+import ReactTable from "react-table";
+import "react-table/react-table.css";
  
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -31,9 +33,10 @@ class SubPurchaseOrders extends Component {
         super(props);
   
         this.state = {
+            items:this.props.items,
             isLoading:false,
             currentTitle: "sendToWorkFlow", 
-            contractId: this.props.contractId, 
+            docId: this.props.docId, 
             projectId: this.props.projectId,  
             isViewMode:this.props.isViewMode,
             document:   {},
@@ -63,6 +66,8 @@ class SubPurchaseOrders extends Component {
     }
   
     componentWillMount() {
+
+            let type=this.props.type;
       
             const objDocument = {
                 //field
@@ -77,8 +82,8 @@ class SubPurchaseOrders extends Component {
                 docDate: moment(),
                 status: "true",
                 refDoc: "",  
-                parentId:this.state.contractId,
-                parentType:"Contract"
+                parentId:this.state.docId,
+                parentType:this.props.type
             };
 
             this.setState({
@@ -172,10 +177,8 @@ class SubPurchaseOrders extends Component {
     } 
  
     savePO() {
-
-        let saveDocument = {
-            ...this.state.document 
-        };
+ 
+        let saveDocument = { ...this.state.document };
 
         this.setState({
           isLoading:true 
@@ -184,11 +187,15 @@ class SubPurchaseOrders extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.completionDate = moment(saveDocument.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddContractsPurchaseOrders', saveDocument).then(result => {
+        dataservice.addObject("AddContractsPurchaseOrders", saveDocument).then(result => {
 
-            originalData = this.state.purchaseOrderData;
-            
-            originalData.push(result);
+            if(this.props.items.length > 0){ 
+              this.props.items.forEach(item => { 
+                item.docId = result.id;
+                item.orderType = "PurchaseOrder"; 
+                dataservice.addObject("AddContractsOrderForPo", item);
+              });
+            } 
 
             const objDocument = {
               //field
@@ -203,29 +210,90 @@ class SubPurchaseOrders extends Component {
               docDate: moment(),
               status: "true",
               refDoc: "",  
-              parentId:this.state.contractId,
-              parentType:"Contract"
+              parentId:this.state.docId,
+              parentType:this.props.type
           };
 
             this.setState({
                 isLoading:false,
-                purchaseOrderData : originalData,
-                document: objDocument,
+                 document: objDocument,
                 selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
                 selectedContract: { label: Resources.toContactRequired[currentLanguage], value: "0" } ,
                 selectedContractWithContact: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" }, 
             });
 
-            this.props.hidePopUp(false);
+            this.props.FillTable(result); 
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     }
+
+    renderEditable(cellInfo) {
+      return (
+        <div
+          style={{ backgroundColor: "#fafafa" }}
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={e => {
+            const items = [...this.state.items];
+            items[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+            this.setState({ items });
+          }}
+          dangerouslySetInnerHTML={{
+            __html: this.state.items[cellInfo.index][cellInfo.column.id]
+          }}
+        />
+      );
+    }
  
-    render() { 
+    render() {  
  
- 
-        return ( 
+      let columns  = [
+        {
+          Header: Resources["numberAbb"][currentLanguage],
+          accessor: "arrange",
+          sortabel: true,
+          width: 80
+        }, 
+        {
+          Header: Resources["description"][currentLanguage],
+          accessor: "details",
+          width: 200,
+          sortabel: true
+        },{
+          Header: Resources["resourceCode"][currentLanguage],
+          accessor: "resourceCode",
+          width: 100,
+          sortabel: true
+        },
+        {
+          Header: Resources["unit"][currentLanguage],
+          accessor: "unit",
+          width: 100 
+        },
+        {
+          Header: Resources["quantity"][currentLanguage],
+          accessor: "quantity",
+          width: 100 ,
+          Cell: this.renderEditable.bind(this)
+        },
+        {
+          Header: Resources["unitPrice"][currentLanguage],
+          accessor: "unitPrice",
+          width: 100,
+          sortabel: true,
+          Cell: this.renderEditable.bind(this)
+        },
+        {
+          Header: Resources["total"][currentLanguage],
+          accessor: "total",
+          width: 100,
+          sortabel: true
+        } 
+      ];
+
+
+      return ( 
         <div className={this.props.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
         <div className="doc-pre-cycle letterFullWidth">
           <header>
@@ -238,9 +306,10 @@ class SubPurchaseOrders extends Component {
                <div className="subiTabsContent">
                <div className="document-fields">
                <Formik initialValues={{  ...this.state.document }}
+                                enableReinitialize={true}
                                 validationSchema={validationSchema}
                                 onSubmit={values => {
-                                if (this.state.contractId > 0 ) {
+                                if (this.state.docId > 0 ) {
                                     this.savePO();
                                  } 
                                 }}>
@@ -281,7 +350,7 @@ class SubPurchaseOrders extends Component {
                                 </div>
                               </div>
                        </div>
-               
+                       
                       <div className="linebylineInput valid-input">
                         <div className="inputDev ui input input-group date NormalInputDate">
                             <div className="customDatepicker fillter-status fillter-item-c ">
@@ -387,7 +456,7 @@ class SubPurchaseOrders extends Component {
                       </div> 
                       <div className={"slider-Btns fullWidthWrapper textLeft "}>
                         {this.state.isLoading === false ? (
-                          <button className={ "primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.props.isViewMode}>
+                          <button className={ "primaryBtn-1 btn " + (this.state.isViewMode === true ? "disNone" : "") } type="submit" disabled={this.state.isViewMode}>
                             {Resources["save"][currentLanguage]}
                           </button>
                         ) : (
@@ -405,7 +474,23 @@ class SubPurchaseOrders extends Component {
                 )}
               </Formik> 
             </div> 
-            
+            {
+              this.props.type === "PurchaseOrder" ?
+                                       <Fragment>
+                                        <header className="main__header">
+                                        <div className="main__header--div">
+                                            <h2 className="zero">
+                                            {Resources["items"][currentLanguage]}
+                                            </h2>
+                                        </div>
+                                        </header>
+                                        <ReactTable data={this.props.items}
+                                        columns={columns}
+                                        defaultPageSize={5}
+                                        noDataText={Resources["noData"][currentLanguage]}
+                                        className="-striped -highlight" /> 
+                                        </Fragment> : null
+            }
           </div>
         </div> 
       </div>
@@ -418,8 +503,7 @@ class SubPurchaseOrders extends Component {
 function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,
-        isLoading: state.communication.isLoading,
-        changeStatus: state.communication.changeStatus,
+        isLoading: state.communication.isLoading, 
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,

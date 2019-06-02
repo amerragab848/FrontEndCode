@@ -46,7 +46,7 @@ const validationSchema = Yup.object().shape({
 const validationCycleSubmital = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
   arrange: Yup.number().required(Resources["arrange"][currentLanguage]),
-  fromContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
+  flowContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
   approvalStatusId: Yup.string().required(Resources["approvalStatusSelection"][currentLanguage]).nullable(true)
 });
 
@@ -61,7 +61,7 @@ const validationSchemaForCyclePopUp = Yup.object().shape({
   description: Yup.string().required(Resources["description"][currentLanguage]),
   arrange: Yup.number().required(Resources["onlyNumbers"][currentLanguage]),
   refDoc: Yup.string().max(450, Resources["selectRefNo"][currentLanguage]),
-  reviewResult: Yup.string().required(Resources["selectResult"][currentLanguage]).nullable(true)
+  approvalStatusId: Yup.string().required(Resources["selectResult"][currentLanguage]).nullable(true)
 });
 
 let docId = 0;
@@ -224,7 +224,8 @@ class SubmittalAddEdit extends Component {
 
           this.setState({
             documentCycle: { ...result },
-            addCycleSubmital: { ...result }
+            addCycleSubmital: { ...result },
+            selectedFromContactCycles:{label :result.flowContactName , value: result.flowContactId }
           });
         }
 
@@ -438,9 +439,15 @@ class SubmittalAddEdit extends Component {
 
           let disciplineName = result.find(i => i.value === disciplineId);
 
-          this.setState({
-            selectedDiscpline: { label: disciplineName.label, value: disciplineId }
-          });
+          if(disciplineName){
+            this.setState({
+              selectedDiscpline: { label: disciplineName.label, value: disciplineId }
+            });            
+          }else{
+            this.setState({
+              selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0"  }
+            });
+          } 
         }
       }
       this.setState({
@@ -456,14 +463,19 @@ class SubmittalAddEdit extends Component {
         let locationId = this.props.document.location;
 
         if (locationId) {
-          let locationName = result.find(i => i.value === parseInt(locationId));
+          
+          let locationName = result.find(i => i.value === parseInt(locationId)); 
+
           if (locationName) {
+
             this.setState({
               selectedLocation: { label: locationName.label, value: locationId }
             });
+          
           }
         }
       }
+
       this.setState({
         locations: [...result]
       });
@@ -475,14 +487,19 @@ class SubmittalAddEdit extends Component {
       if (isEdit) {
 
         let areaId = this.props.document.area;
+
         let areaIdName = {};
+        
         if (areaId) {
 
           areaIdName = result.find(i => i.value === parseInt(areaId));
+
           if (areaIdName) {
+
             this.setState({
               selectedArea: { label: areaIdName.label, value: areaId }
             });
+          
           }
         }
       }
@@ -498,11 +515,19 @@ class SubmittalAddEdit extends Component {
 
         let reasonFor = this.props.document.reasonForIssueId;
 
+        let reasonForName = {};
+        
         if (reasonFor) {
-          this.setState({
-            selectedReasonForIssue: { label: this.props.document.reasonForIssueName, value: this.props.document.reasonForIssueId }
-          });
-        }
+        
+          reasonForName = result.find(i => i.value === parseInt(reasonFor));
+        
+          if(reasonForName){
+
+            this.setState({
+              selectedReasonForIssue: { label: reasonForName.label, value: this.props.document.reasonForIssueId }
+            });
+          }
+        } 
       }
       this.setState({
         reasonForIssue: [...result]
@@ -525,13 +550,12 @@ class SubmittalAddEdit extends Component {
         let specsSectionId = this.props.document.specsSectionId;
 
         if (specsSectionId) {
+          
           let specsSectionName = result.find(i => i.value === parseInt(specsSectionId));
+          
           if (specsSectionName) {
             this.setState({
-              selectedSpecsSection: {
-                label: specsSectionName.label,
-                value: specsSectionId
-              }
+              selectedSpecsSection: {label: specsSectionName.label,value: specsSectionId}
             });
           }
         }
@@ -552,6 +576,7 @@ class SubmittalAddEdit extends Component {
         if (approval) {
 
           let approvalName = result.find(i => i.value === parseInt(approval));
+
           if (approvalName) {
             this.setState({
               selectedApprovalStatus: { label: approvalName.label, value: approval }
@@ -576,6 +601,7 @@ class SubmittalAddEdit extends Component {
         if (contactId) {
 
           let contact = result.find(i => i.value === contactId);
+
           if (contact) {
             this.setState({
               selectedContract: { ...contact }
@@ -583,6 +609,7 @@ class SubmittalAddEdit extends Component {
           }
         }
       }
+
       this.setState({
         contracts: [...result]
       });
@@ -879,7 +906,6 @@ class SubmittalAddEdit extends Component {
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-
   }
 
   addSubmittalCycle() {
@@ -1096,7 +1122,6 @@ class SubmittalAddEdit extends Component {
       });
     }
   }
-
 
   addSubmittalItems() {
 
@@ -1479,8 +1504,7 @@ class SubmittalAddEdit extends Component {
         SecondStep: false,
       })
     }
-  }
-
+  } 
 
   render() {
 
@@ -1628,10 +1652,8 @@ class SubmittalAddEdit extends Component {
                       <Formik initialValues={this.state.document}
                         validationSchema={validationSchema}
                         enableReinitialize={this.props.changeStatus}
-                        onSubmit={values => {
-
-                          if (this.props.showModal) { return; }
-
+                        onSubmit={values => { 
+                          if (this.props.showModal) { return; } 
                           if (this.props.changeStatus === true && this.state.docId > 0) {
                             this.editSubmittal();
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -1749,10 +1771,6 @@ class SubmittalAddEdit extends Component {
                                   <div className="super_name">
                                     <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                       handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
-                                      // onChange={setFieldValue}
-                                      // onBlur={setFieldTouched}
-                                      // error={errors.fromCompanyId}
-                                      // touched={touched.fromCompanyId}
                                       name="fromCompanyId" id="fromCompanyId" />
                                   </div>
                                   <div className="super_company">
@@ -1944,7 +1962,7 @@ class SubmittalAddEdit extends Component {
                                             !errors.subject && touched.subject ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                                           {errors.subject && touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
                                         </div>
-                                      </div>
+                                      </div>  
                                       <div className="linebylineInput valid-input">
                                         <label className="control-label">
                                           {Resources.status[currentLanguage]}
@@ -2013,8 +2031,7 @@ class SubmittalAddEdit extends Component {
                                           {Resources.toCompany[currentLanguage]}
                                         </label>
                                         <div className="supervisor__company">
-                                          <div className="super_name">
-
+                                          <div className="super_name"> 
                                             <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
                                               handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContact"); }}
                                               id="fromCompanyIdCycle" />
@@ -2025,10 +2042,10 @@ class SubmittalAddEdit extends Component {
                                               handleChange={event => this.handleChangeDropDownCycles(event, "flowContactId", false, "", "", "", "selectedFromContactCycles")}
                                               onChange={setFieldValue}
                                               onBlur={setFieldTouched}
-                                              error={errors.fromContactId}
-                                              touched={touched.fromContactId}
-                                              name="fromContactId"
-                                              id="fromContactId" />
+                                              error={errors.flowContactId}
+                                              touched={touched.flowContactId}
+                                              name="flowContactId"
+                                              id="flowContactId" />
                                           </div>
                                         </div>
                                       </div>
@@ -2337,6 +2354,7 @@ class SubmittalAddEdit extends Component {
                 <div className="ui modal largeModal ">
                   <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
                     validationSchema={validationSchemaForCyclePopUp}
+                    enableReinitialize={true}
                     onSubmit={values => { this.editItems(); }}>
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                       <Form className="dropWrapper" onSubmit={handleSubmit}>
@@ -2432,6 +2450,7 @@ class SubmittalAddEdit extends Component {
                 <div className="ui modal largeModal ">
                   <Formik initialValues={{ ...this.state.addCycleSubmital }}
                     validationSchema={validationSchemaForCyclePopUp}
+                    enableReinitialize={true}
                     onSubmit={values => { this.saveNewCycle(); }}>
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                       <Form className="dropWrapper" onSubmit={handleSubmit}>
@@ -2444,15 +2463,15 @@ class SubmittalAddEdit extends Component {
                         </div>
                         <div className="fillter-status fillter-item-c">
                           <label className="control-label">
-                            {Resources.subject[currentLanguage]}
+                            {Resources.description[currentLanguage]}
                           </label>
-                          <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
-                            <input name="subject" className="form-control fsadfsadsa"
-                              placeholder={Resources.subject[currentLanguage]} autoComplete="off"
-                              value={this.state.addCycleSubmital.subject} onBlur={e => { handleBlur(e); handleChange(e); }}
-                              onChange={e => this.handleChangeCyclesPopUp(e, "subject")} />
-                            {errors.subject && touched.subject ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.subject && touched.subject ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                            {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                          <div className={"ui input inputDev fillter-item-c " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
+                            <input name="description" className="form-control fsadfsadsa"
+                              placeholder={Resources.description[currentLanguage]} autoComplete="off"
+                              value={this.state.addCycleSubmital.description} onBlur={e => { handleBlur(e); handleChange(e); }}
+                              onChange={e => this.handleChangeCyclesPopUp(e, "description")} />
+                            {errors.description && touched.description ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.description && touched.description ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                            {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                           </div>
                         </div>
                         <div className="fillter-status fillter-item-c radioBtnDrop">
@@ -2497,7 +2516,7 @@ class SubmittalAddEdit extends Component {
                                 (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                             {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                           </div>
-                        </div>
+                        </div> 
                         <div className="fillter-status fillter-item-c">
                           <Dropdown title="approvalStatus" data={this.state.approvales}
                             selectedValue={this.state.selectedCycleAprrovalStatus}

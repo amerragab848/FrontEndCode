@@ -6265,9 +6265,10 @@ body.noScrolling {
         font-size: 9px;
     }
 }
+/* 
 .britechart-tooltip {
 z-index: 9999;
-}
+}*/
 
 .filterModal__container {
     position: fixed;
@@ -6317,6 +6318,15 @@ z-index: 9999;
     z-index: 999;
 }
 
+.document__action--menu {
+    height: 40px;
+}
 
+.document__action--menu .spanValidation{
+    display: none;
+}
 
+.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
 

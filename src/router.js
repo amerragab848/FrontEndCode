@@ -13,6 +13,7 @@ import OpenedSummaryDetails from "./Componants/DashBoardDetails/OpenedSummaryDet
 import SchedualActionByDetails from "./Componants/DashBoardDetails/SchedualActionByDetails";
 import ScheduleAlertsSummaryDetails from "./Componants/DashBoardDetails/ScheduleAlertsSummaryDetails";
 import TimeSheetDetails from "./Componants/DashBoardDetails/TimeSheetDetails";
+import WorkFlowAlerts from "./Componants/DashBoardDetails/workFlowAlerts";
 import DocApprovalDetails from "./Componants/DashBoardDetails/DocApprovalDetails";
 import PendingExpensesDetails from "./Componants/DashBoardDetails/PendingExpensesDetails";
 import CommonLog from "./Pages/Communication/CommonLog";
@@ -148,10 +149,13 @@ import RejectedTimesheetsDetails from "./Componants/DashBoardDetails/RejectedTim
 import invoicesForPoAddEdit from "./Pages/Procurement/invoicesForPoAddEdit";
 import requestProposalAddEdit from "./Pages/Procurement/requestProposalAddEdit";
 import proposalAddEdit from "./Pages/Procurement/proposalAddEdit";
+import PaymentRequisitionList from "./Pages/Contracts/Schedule";
+import purchaseOrderAddEdit from "./Pages/Procurement/purchaseOrderAddEdit";
 import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit"; 
 import equipmentDeliveryAddEdit from "./Pages/Procurement/equipmentDeliveryAddEdit";
-import PaymentRequisitionList from "./Pages/Contracts/Schedule";
 import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit"; 
+// import PaymentRequisitionList from "./Pages/Contracts/Schedule";
+import chart from './Componants/ChartsWidgets/BarChartComp';
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -179,6 +183,7 @@ let originalRoutes = [
     , <Route path="/SchedualActionByDetails" component={SchedualActionByDetails} />
     , <Route path="/ScheduleAlertsSummaryDetails" component={ScheduleAlertsSummaryDetails} />
     , <Route path="/TimeSheetDetails" component={TimeSheetDetails} />
+    , <Route path="/WorkFlowAlerts" component={WorkFlowAlerts} />
     , <Route path="/DocApprovalDetails" component={DocApprovalDetails} />
     , <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />
     , <Route path="/PrivacySetting" component={PrivacySetting} />
@@ -318,8 +323,10 @@ let originalRoutes = [
     , <Route path="/invoicesForPoAddEdit" component={invoicesForPoAddEdit} />
     , <Route path="/requestProposalAddEdit" component={requestProposalAddEdit} />
     , <Route path="/proposalAddEdit" component={proposalAddEdit} />
+    , <Route path="/purchaseOrderAddEdit" component={purchaseOrderAddEdit} />
     , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} /> 
     , <Route path="/materialDeliveryAddEdit" component={materialDeliveryAddEdit} />
+    , <Route path="/BarChartComp" component={chart} />
     , <Route path="/equipmentDeliveryAddEdit" component={equipmentDeliveryAddEdit} /> 
 ];
     

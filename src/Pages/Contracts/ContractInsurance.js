@@ -14,14 +14,12 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+ 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
     policyType: Yup.string().required(Resources['policyType'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    //policyLimit: Yup.number().required(Resources['arrange'][currentLanguage]),
     companyId: Yup.string().required(Resources['pleaseSelectYourCompany'][currentLanguage]).nullable(true) 
 });
    
@@ -35,6 +33,9 @@ class ContractInsurance extends Component {
   
         this.state = {
             isLoading:false, 
+            Api:this.props.Api,
+            ApiGet:this.props.ApiGet,
+            ApiDelete :this.props.ApiDelete,
             contractId: this.props.contractId, 
             projectId: this.props.projectId,  
             document:   {},
@@ -64,11 +65,13 @@ class ContractInsurance extends Component {
   
     componentWillMount() {
       
+           let typeColumn =this.props.type;
+
             const objDocument = {
                 //field
                 id: 0, 
                 companyId: null,  
-                contractId:this.state.contractId,
+                [typeColumn] :this.state.contractId,
                 arrange: "1",
                 policyType:"",
                 policyLimit:"",
@@ -82,26 +85,17 @@ class ContractInsurance extends Component {
 
             this.fillDropDowns(false);
 
-        dataservice.GetDataGrid("GetInsuranceItemsByContractId?contractId=" + this.state.contractId).then(data => {
+        dataservice.GetDataGrid(this.state.ApiGet + this.state.contractId).then(data => {
            
           let maxArrange =Math.max(...data.map(s => s.arrange));
 
-          const objDocument = {
-            //field
-            id: 0, 
-            companyId: null,  
-            contractId:this.state.contractId,
-            arrange: maxArrange + 1,
-            policyType:"",
-            policyLimit:"",
-            effectiveDate:moment(),
-            expirationDate:moment() 
-        };
+          let originalData = this.state.document;
 
-
+          originalData.arrange = data.length > 0 ? (maxArrange + 1) : 1;
+ 
             this.setState({
                 insuranceData: data,
-                document :objDocument
+                document :originalData
             });
         }).catch(ex => {
             this.setState({insuranceData:[]});
@@ -111,7 +105,8 @@ class ContractInsurance extends Component {
     }
  
     fillDropDowns(isEdit) {
-        //from Companies
+        //from Companies 
+
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" +this.state.projectId, "companyName", "companyId").then(result => {
  
             this.setState({
@@ -173,13 +168,15 @@ class ContractInsurance extends Component {
         saveDocument.effectiveDate = moment(saveDocument.effectiveDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.expirationDate = moment(saveDocument.expirationDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-        dataservice.addObject('AddInurance', saveDocument).then(result => {
+        dataservice.addObject(this.state.Api, saveDocument).then(result => {
   
+          let typeColumn =this.props.type;
+
             const objDocument = {
                 //field
                 id: 0, 
                 companyId: null,  
-                contractId:this.state.contractId,
+                [typeColumn]:this.state.contractId,
                 arrange: this.state.document.arrange + 1,
                 policyType:"",
                 policyLimit:"",
@@ -188,7 +185,7 @@ class ContractInsurance extends Component {
             };
 
             this.setState({
-                insuranceData : result,
+                insuranceData : result != null ? result : [],
                 document: objDocument,
                 isLoading:false, 
                 selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
@@ -200,12 +197,11 @@ class ContractInsurance extends Component {
  
     ConfirmDelete = (id) => {
         this.setState({ showDeleteModal: true ,currentId :id});  
-      };
-
-      
+    };
+   
   clickHandlerCancelMain = () => {
     this.setState({ showDeleteModal: false });
-  };
+    };
 
   
   clickHandlerContinueMain()
@@ -217,7 +213,7 @@ class ContractInsurance extends Component {
 
     let id= this.state.currentId;
  
-    dataservice.addObject("DeleteContractsInsuranceById?id="+ id ).then(result => {
+    dataservice.addObject(this.state.ApiDelete + id ).then(result => {
  
       let originalData = this.state.insuranceData;
 
