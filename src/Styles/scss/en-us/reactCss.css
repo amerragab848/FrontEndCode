@@ -6268,3 +6268,55 @@ body.noScrolling {
 .britechart-tooltip {
 z-index: 9999;
 }
+
+.filterModal__container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    z-index: 99999;
+    overflow: auto;
+}
+
+.filterModal__container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+.filterModal__container .filterModal {
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    border-radius: 4px;
+}
+
+.filterModal__container.active {
+    display: block;
+}
+
+.filterModal__container .filter__close {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #fff;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 999;
+}
+
+
+
+

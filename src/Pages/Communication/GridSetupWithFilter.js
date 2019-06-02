@@ -18,6 +18,7 @@ const selectors = Data.Selectors;
 let arrColumn = ['arrange', 'quantity', 'itemCode'];
 
 class GridSetupWithFilter extends Component {
+
     constructor(props) {
         super(props);
 
@@ -32,7 +33,9 @@ class GridSetupWithFilter extends Component {
             selectedRows: [],
             selectedRow: [],
             copmleteRows: [],
-            expandedRows: {}
+            expandedRows: {},
+            ShowModelFilter: false,
+            ClearFilter: ''
         };
 
         this.groupColumn = this.groupColumn.bind(this);
@@ -54,11 +57,11 @@ class GridSetupWithFilter extends Component {
         };
 
         return sortDirection === "NONE" ? initialRows : [...this.state.rows].sort(comparer);
-    };
+    }
 
     getRows = (rows, filters) => {
         return selectors.getRows({ rows, filters });
-    };
+    }
 
     getRowsGrouping = (rows, groups) => {
         return Data.Selectors.getRows({ rows, groups });
@@ -142,7 +145,7 @@ class GridSetupWithFilter extends Component {
             this.props.selectedRows(this.state.selectedRows);
         }
 
-    };
+    }
 
     onRowsDeselected = rows => {
         if (this.props.IsActiv !== undefined) {
@@ -185,7 +188,7 @@ class GridSetupWithFilter extends Component {
 
             this.props.DeSelectedRows(oldSelectedRows);
         }
-    };
+    }
 
     onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
         let expandedRows = Object.assign({}, this.state.expandedRows);
@@ -204,27 +207,27 @@ class GridSetupWithFilter extends Component {
                 this.setState({ selectedRow: value })
             }
         }
-    };
+    }
 
     clickHandlerDeleteRows = e => {
         this.props.clickHandlerDeleteRows(this.state.selectedRows);
-    };
+    }
 
     onCellSelected = ({ rowIdx, idx }) => {
         if (this.props.cellClick)
             this.props.cellClick(rowIdx, idx)
-    };
+    }
 
     onselectRowEven = ({ selectedRows }) => {
         if (this.props.onselectRowEven)
             this.props.onselectRowEven(selectedRows)
-    };
+    }
 
     onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
         if (this.props.onGridRowsUpdated != undefined) {
             this.props.onGridRowsUpdated({ fromRow, toRow, updated })
         }
-    };
+    }
 
     scrolllll() {
         document.getElementById('top__scroll').addEventListener('scroll', function () {
@@ -242,15 +245,16 @@ class GridSetupWithFilter extends Component {
     getRowsFilter = (rows, filters) => {
         console.log(rows, filters);
         let rowsList = selectors.getRows({ rows, filters });
-
         console.log(rows, filters, rowsList);
-        this.setState({ 
+        this.setState({
             rows: rowsList
         })
     }
 
     showFilterMore = () => {
-
+        this.setState({
+            ShowModelFilter: true
+        })
     }
 
     saveFilter(event, index, name) {
@@ -279,14 +283,26 @@ class GridSetupWithFilter extends Component {
         })
     }
 
+    ClearFilters = () => {
+        var filterArray = Array.from(document.querySelectorAll('.filterModal input'));
+        filterArray.map(input => input.value = "");
+        this.setState({ rows: this.props.rows })
+    }
+
+    CloseModeFilter = () => {
+        var filterArray = Array.from(document.querySelectorAll('.filterModal input'));
+        filterArray.map(input => input.value = "");
+        this.setState({ rows: this.props.rows, ShowModelFilter: false })
+    }
+
     render() {
 
-        const {  groupBy, rows } = this.state;
+        const { groupBy, rows } = this.state;
         console.log(groupBy);
         const groupedRows = Data.Selectors.getRows({ rows, groupBy });
         const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
-        const CustomToolbar = ({
+        let CustomToolbar = ({
             groupBy,
             onColumnGroupAdded,
             onColumnGroupDeleted
@@ -335,7 +351,9 @@ class GridSetupWithFilter extends Component {
 
                         {this.props.columns.length > 5 ? <button className="filter__more--btn" onClick={this.showFilterMore}>See all</button> : null}
                     </div>
+
                     <div className="filter__input-wrapper">
+
                         <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
                             {this.props.columns.map((column, index) => {
                                 let classX = arrColumn.findIndex(x => x == column.key) > -1 ? 'small__input--width ' : 'medium__input--width'
@@ -343,24 +361,54 @@ class GridSetupWithFilter extends Component {
                                     <div className={"form-group linebylineInput " + classX} key={index}>
                                         <label className="control-label" htmlFor={column.key}>{column.name}</label>
                                         <div className="ui input inputDev">
-                                            <input autoComplete="off"
-                                                key={index}
-                                                type="text"
-                                                className="form-control"
-                                                id={column.key}
-                                                name={column.key}
-                                                onChange={e => this.saveFilter(e, index, column.name)}
-                                                placeholder={column.name} />
+                                            <input autoComplete="off" placeholder={column.name} key={index} type="text"
+                                                className="form-control" id={column.key} name={column.key}
+                                                onChange={e => this.saveFilter(e, index, column.name)} />
                                         </div>
                                     </div>
-                                    : null
-                                )
+                                    : null)
                             })}
-                            {/* <button className="defaultBtn btn" onClick={this.filterData}>Filter</button> */}
-
                         </form>
                     </div>
+                    <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"} >
+                        <button className="filter__close" onClick={this.CloseModeFilter}>x</button>
+                        <div className="filterModal" id="largeModal"  >
+                            <div className="header-filter">
+                                <h2 className="zero">Filter results</h2>
+                                {/* <span>256 Results</span> */}
+                                <button className="reset__filter reset__filter--header" onClick={this.ClearFilters}>Reset all</button>
+                            </div>
+                            <div className="content">
+                                <div className="filter__warrper" >
+                                    <div className="filter__input-wrapper">
+
+                                        <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
+                                            {this.props.columns.map((column, index) => {
+                                                let classX = arrColumn.findIndex(x => x == column.key) > -1 ? 'small__input--width ' : 'medium__input--width'
+                                                return (column.key !== 'customBtn' ?
+                                                    <div className={"form-group linebylineInput " + classX} key={index}>
+                                                        <label className="control-label" htmlFor={column.key}>{column.name}</label>
+                                                        <div className="ui input inputDev">
+                                                            <input autoComplete="off" key={index} id={column.key} placeholder={column.name}
+                                                                type="text" className="form-control" name={column.key}
+                                                                onChange={e => this.saveFilter(e, index, column.name)} />
+                                                        </div>
+                                                    </div>
+                                                    : null)
+                                            })}
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="filter__actions">
+                                <button className="largeBtn primaryBtn-1 btn approve" onClick={() => this.setState({ ShowModelFilter: false })}>Filter</button>
+                                <button className="reset__filter"onClick={this.ClearFilters}>Reset all</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div className="grid-container">
                     <div id="top__scroll">
                         <div id="empty__div--scroll">
@@ -417,7 +465,7 @@ class GridSetupWithFilter extends Component {
                         </DraggableContainer >
                     </div>
                 </div>
-            </Fragment>
+            </Fragment >
         );
     }
 }
