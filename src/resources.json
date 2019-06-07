@@ -5136,6 +5136,18 @@
         "en": "Risk Status Yearly",
         "ar": "Risk Status Yearly"
     },
+    "letterStatusYearly": {
+        "en": "Letter Status Yearly",
+        "ar": "Letter Status Yearly"
+    },
+    "transmittalStatusYearly": {
+        "en": "Transmittal Status Yearly",
+        "ar": "transmittal Status Yearly"
+    },
+    "submittalStatusYearly": {
+        "en": "Submittal Status Yearly",
+        "ar": "submittal Status Yearly"
+    },
     "code": {
         "en": "Code",
         "ar": "الكود "
