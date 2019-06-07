@@ -7813,10 +7813,14 @@
         "en": "Pre-mitigation risk EMV",
         "ar": "Pre-mitigation risk EMV"
     },
+    "postMedigationCostEMV": {
+        "en": "post-mitigation risk EMV",
+        "ar": "post-mitigation risk EMV"
+    },
     "medigationCost": {
         "en": "Mitigation Cost",
         "ar": "Mitigation Cost"
-    },
+    } ,
     "preMedigation": {
         "en": "Pre-mitigation ",
         "ar": "Pre-mitigation "
@@ -7826,8 +7830,12 @@
         "ar": "Post-mitigation "
     },
     "preMedigationRiskQuantification": {
-        "en": "Post-Mitigation Risk Quantification",
+        "en": "pre-Mitigation Risk Quantification",
         "ar": "Pre-mitigation Risk Quantification"
+    },
+    "postMedigationRiskQuantification": {
+        "en": "Post-Mitigation Risk Quantification",
+        "ar": "Post-mitigation Risk Quantification"
     },
     "mergeProjects": {
         "en": "Merge Projects",

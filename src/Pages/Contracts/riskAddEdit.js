@@ -1240,6 +1240,47 @@ class riskAddEdit extends Component {
                             </div>
                         </div>
                     </div>
+             
+                    <header>
+                        <h2 className="zero">{Resources['postMedigationRiskQuantification'][currentLanguage]}</h2>
+                    </header>
+
+                    <div className="Risk__input">
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label">{Resources['postMedigationCostEMV'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off"
+                                    value={this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV}
+                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'preMedigationCostEMV')}
+                                    type="number"
+                                    className="form-control" name="postMedigationCostEMV"
+                                    placeholder={Resources['postMedigationCostEMV'][currentLanguage]} />
+                            </div>
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label"> {Resources['medigationCost'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off"
+                                    value={this.state.medigationCost == null ? 0 : this.state.medigationCost}
+                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'medigationCost')}
+                                    type="number" pattern="[0-9]*"
+                                    className="form-control" name="medigationCost"
+                                    placeholder={Resources['medigationCost'][currentLanguage]} />
+                            </div>
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                            <label className="control-label"> { Resources['postMedigation'][currentLanguage]}</label>
+                            <div className='ui input inputDev '>
+                                <input autoComplete="off" readOnly
+                                    value={(this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV) + (this.state.medigationCost == null ? 0 : this.state.medigationCost)}
+                                    className="form-control" name="preMedigation"
+                                    placeholder={Resources['preMedigation'][currentLanguage]} />
+                            </div>
+                        </div>
+                    </div>
+             
                 </div>
             </Fragment >
         )
