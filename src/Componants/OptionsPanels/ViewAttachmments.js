@@ -73,6 +73,32 @@ class ViewAttachmments extends Component {
             this.getPDFblob(item.attachFile);
         }
     }
+
+    goEditPdf = (item, ext) => {
+        console.log('item', item)
+        var stamp = new Date().getTime();
+        var data = JSON.stringify({
+            refer: window.location.href.replace('#', '-hashfill-'),
+            docTypeId: this.props.docTypeId,
+            docId: this.props.docId,
+            name: localStorage.getItem("contactName") !== null ? localStorage.getItem('contactName') : 'Procoor User',
+            photo: IP_Configrations.static + "/public/img/signature.png",
+            file: item.parentAttachFile,
+            fileName: item.parentAttachFile.split('/')[4],
+            fileId: item.id,
+            stamp: stamp,
+            server: "api/procoor"
+        });
+
+        window.open(IP_Configrations.exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#/public/edit-pdf/" + stamp + item.parentAttachFile.split('/')[4]);
+    };
+    b64EncodeUnicode = (str) => {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+            function toSolidBytes(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+    }
+
     getPDFblob = (fileLink) => {
         //   Send filename (text string) to server and then retrieves file as a blob back. 
         //   using blob as input, converts it to a fileURL that is a link that loads the pdf
@@ -189,6 +215,13 @@ class ViewAttachmments extends Component {
                             {Config.IsAllow(this.props.deleteAttachments) ?
                                 <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
                                     <img src={Pending} alt="pend" width="100%" height="100%" />
+                                </a> :
+                                null
+                            }
+
+                            {Config.IsAllow(this.props.deleteAttachments) && ext === 'pdf'?
+                                <a className="rootIcon" onClick={() => this.goEditPdf(item, ext)}>
+                                    <i className=" fa fa-link" width="100%" height="100%" />
                                 </a> :
                                 null
                             }

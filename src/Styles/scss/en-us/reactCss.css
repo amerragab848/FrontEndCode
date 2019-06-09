@@ -6546,3 +6546,13 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 .ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
     min-height: 80px;
 }
+
+.rootIcon {
+    color: #b3bac7;
+    transition: all 0.s ease;
+    font-size: 15px
+}
+
+.rootIcon:hover {
+    color: #4382F9;
+}
