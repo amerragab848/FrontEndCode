@@ -571,7 +571,6 @@ var widgets = [
         catagName: 'expenseTypeName',
         multiSeries: 'yes',
         barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
-
       }, {
         id: 'wt-Name0121',
         key: "0-3-15",

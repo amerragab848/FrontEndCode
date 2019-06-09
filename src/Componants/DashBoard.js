@@ -230,19 +230,19 @@ class DashBoard extends Component {
     return ls;
   }
 
-  toggleParentCheck(event, id, index, checked) { 
-      let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == id)
-      if (index_checked != -1) {
-        let checked = this.state.checkAllWidgets[index_checked].value
-        let checkAllWidgets = this.state.checkAllWidgets
-        checkAllWidgets[index_checked].value =checked
-        this.setState({ checkAllWidgets, currentCheck:checked })
-      }
-      else {
-        let checkAllWidgets = this.state.checkAllWidgets
-        checkAllWidgets.push({ key: id, value: true })
-        this.setState({ checkAllWidgets, currentCheck: true })
-      } 
+  toggleParentCheck(event, id, index, checked) {
+    let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == id)
+    if (index_checked != -1) {
+      let checked = this.state.checkAllWidgets[index_checked].value
+      let checkAllWidgets = this.state.checkAllWidgets
+      checkAllWidgets[index_checked].value = checked
+      this.setState({ checkAllWidgets, currentCheck: checked })
+    }
+    else {
+      let checkAllWidgets = this.state.checkAllWidgets
+      checkAllWidgets.push({ key: id, value: true })
+      this.setState({ checkAllWidgets, currentCheck: true })
+    }
     let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
@@ -263,7 +263,7 @@ class DashBoard extends Component {
         });
 
         if (setChecked) {
-          setChecked.checked =checked?checked: !setChecked.checked
+          setChecked.checked = checked ? checked : !setChecked.checked
         }
 
         let setIndex = widgets_Order[refrenceValue].findIndex((i) => {
@@ -344,7 +344,24 @@ class DashBoard extends Component {
                     api: val.props.api,
                     name: val.props.name,
                     data: val.props.data,
-                    multiSeries: val.props.multiSeries
+                  },
+                  multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                  catagName: val.catagName,
+                  barContent: val.barContent,
+                });
+              }
+              else if (val.type === "line") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  topicNames: val.topicNames,
+                  id: val.id,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api
                   }
                 });
               }
@@ -366,6 +383,7 @@ class DashBoard extends Component {
                 });
               }
             });
+
             setOrder.push({
               widgetCategory: value.widgetCategory,
               key: value.key,
@@ -406,7 +424,7 @@ class DashBoard extends Component {
         list.forEach((value, index) => {
 
           if (value.key === id) {
-            value.checked = checked?checked:!value.checked;
+            value.checked = checked ? checked : !value.checked;
           }
 
           let widgets = [];
@@ -443,6 +461,21 @@ class DashBoard extends Component {
                 }
               });
             }
+            else if (val.type === "line") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                topicNames: val.topicNames,
+                id: val.id,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api
+                }
+              });
+            }
             else if (val.type === "column") {
 
               widgets.push({
@@ -455,8 +488,10 @@ class DashBoard extends Component {
                   api: val.props.api,
                   name: val.props.name,
                   data: val.props.data,
-                  multiSeries: val.props.multiSeries
-                }
+                },
+                multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                catagName: val.catagName,
+                barContent: val.barContent,
               });
             }
             else {
@@ -596,11 +631,27 @@ class DashBoard extends Component {
                     api: val.props.api,
                     name: val.props.name,
                     data: val.props.data,
-                    multiSeries: val.props.multiSeries
+                  },
+                  multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                  catagName: val.catagName,
+                  barContent: val.barContent,
+                });
+              }
+              else if (val.type === "line") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  topicNames: val.topicNames,
+                  id: val.id,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api
                   }
                 });
               }
-
               else {
                 widgets.push({
                   title: val.title,
@@ -699,11 +750,27 @@ class DashBoard extends Component {
                   api: val.props.api,
                   name: val.props.name,
                   data: val.props.data,
-                  multiSeries: val.props.multiSeries
+                },
+                multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                catagName: val.catagName,
+                barContent: val.barContent,
+              });
+            }
+            else if (val.type === "line") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                topicNames: val.topicNames,
+                id: val.id,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api
                 }
               });
             }
-
             else {
               widgets.push({
                 key: val.key,
@@ -820,43 +887,46 @@ class DashBoard extends Component {
           let widgets = [];
 
           value.widgets.forEach((val, i) => {
+            // if (val.key === id) {
             if (val.type === "twoWidget") {
-              if (val.key === id) {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: !val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    total: val.props.total,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              } else {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    listType: val.props.listType,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              }
+              //  if (val.key === id) {
+              widgets.push({
+                key: val.key,
+                order: i + 1,
+                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+                parentId: value.key,
+                title: val.title,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  value: val.props.value,
+                  total: val.props.total,
+                  route: val.props.route,
+                  key: val.props.key
+                }
+              });
+              // } else {
+              //   widgets.push({
+              //     key: val.key,
+              //     order: i + 1,
+              //     checked: val.checked,
+              //     parentId: value.key,
+              //     title: val.title,
+              //     type: val.type,
+              //     props: {
+              //       api: val.props.api,
+              //       value: val.props.value,
+              //       listType: val.props.listType,
+              //       route: val.props.route,
+              //       key: val.props.key
+              //     }
+              //   });
+              // }
             } else if (val.type === "pie") {
 
               widgets.push({
+                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+
                 title: val.title,
                 key: val.key,
                 order: i + 1,
@@ -872,8 +942,10 @@ class DashBoard extends Component {
             else if (val.type === "column") {
 
               widgets.push({
+
                 title: val.title,
                 key: val.key,
+                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
                 order: i + 1,
                 parentId: value.key,
                 type: val.type,
@@ -881,46 +953,64 @@ class DashBoard extends Component {
                   api: val.props.api,
                   name: val.props.name,
                   data: val.props.data,
-                  multiSeries: val.props.multiSeries
+                },
+                multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                catagName: val.catagName,
+                barContent: val.barContent,
+              });
+            }
+            else if (val.type === "line") {
+
+              widgets.push({
+                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                topicNames: val.topicNames,
+                id: val.id,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api
                 }
               });
             }
-
             else {
-              if (val.key === id) {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: checkedValue ? checkedValue : !val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    listType: val.props.listType,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              } else {
-                widgets.push({
-                  key: val.key,
-                  order: i + 1,
-                  checked: val.checked,
-                  parentId: value.key,
-                  title: val.title,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    value: val.props.value,
-                    listType: val.props.listType,
-                    route: val.props.route,
-                    key: val.props.key
-                  }
-                });
-              }
+              widgets.push({
+                key: val.key,
+                order: i + 1,
+                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+                parentId: value.key,
+                title: val.title,
+                type: val.type,
+                props: {
+                  api: val.props.api,
+                  value: val.props.value,
+                  listType: val.props.listType,
+                  route: val.props.route,
+                  key: val.props.key
+                }
+              });
             }
+            // } else {
+
+            //   widgets.push({
+            //     key: val.key,
+            //     order: i + 1,
+            //     checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+            //     parentId: value.key,
+            //     title: val.title,
+            //     type: val.type,
+            //     props: {
+            //       api: val.props.api,
+            //       value: val.props.value,
+            //       listType: val.props.listType,
+            //       route: val.props.route,
+            //       key: val.props.key
+            //     }
+            //   });
+            // }
           });
 
           setOrder.push({
@@ -950,12 +1040,12 @@ class DashBoard extends Component {
       });
     }
     if (widgetCheck == false) {
-       let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == this.state.currentParent)
-        if (index_checked != -1) {
-          let checkAllWidgets = this.state.checkAllWidgets
-          checkAllWidgets[index_checked].value = widgetCheck
-          this.setState({ checkAllWidgets, currentCheck: widgetCheck })
-        }
+      let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == this.state.currentParent)
+      if (index_checked != -1) {
+        let checkAllWidgets = this.state.checkAllWidgets
+        checkAllWidgets[index_checked].value = widgetCheck
+        this.setState({ checkAllWidgets, currentCheck: widgetCheck })
+      }
     }
   }
 
@@ -1021,7 +1111,7 @@ class DashBoard extends Component {
 
         let setChildOrder = [];
 
-        order.forEach((value, index) => {
+        order.forEach((value, i) => {
 
           let listWidget = widget.widgets.find(function (i) {
             return i.key === value
@@ -1031,7 +1121,7 @@ class DashBoard extends Component {
 
             setChildOrder.push({
               key: listWidget.key,
-              order: index + 1,
+              order: i + 1,
               checked: listWidget.checked != undefined ? listWidget.checked : false,
               parentId: getKey,
               title: listWidget.title,
@@ -1044,10 +1134,55 @@ class DashBoard extends Component {
                 key: listWidget.props.key
               }
             });
+          } else if (listWidget.type === "pie") {
+
+            widgets.push({
+              title: listWidget.title,
+              key: listWidget.key,
+              order: i + 1,
+              parentId: value.key,
+              type: listWidget.type,
+              props: {
+                api: listWidget.props.api,
+                name: listWidget.props.name,
+                y: listWidget.props.y
+              }
+            });
+          } else if (listWidget.type === "column") {
+
+            widgets.push({
+              title: listWidget.title,
+              key: listWidget.key,
+              order: i + 1,
+              parentId: value.key,
+              type: listWidget.type,
+              props: {
+                api: listWidget.props.api,
+                name: listWidget.props.name,
+                data: listWidget.props.data
+              },
+              multiSeries: listWidget.multiSeries, yTitle: listWidget.yTitle, stack: listWidget.stack,
+              catagName: listWidget.catagName,
+              barContent: listWidget.barContent,
+            });
+          } else if (listWidget.type === "line") {
+
+            widgets.push({
+              title: listWidget.title,
+              key: listWidget.key,
+              order: i + 1,
+              topicNames: listWidget.topicNames,
+              id: listWidget.id,
+              parentId: value.key,
+              type: listWidget.type,
+              props: {
+                api: listWidget.props.api
+              }
+            });
           } else {
             setChildOrder.push({
               key: listWidget.key,
-              order: index + 1,
+              order: i + 1,
               checked: listWidget.checked != undefined ? listWidget.checked : false,
               parentId: getKey,
               title: listWidget.title,
@@ -1113,6 +1248,7 @@ class DashBoard extends Component {
       child_widgets_order: order
     });
   }
+
   checkAllChildrens(event, key, checked) {
     this.viewCurrentMenu(event, key)
     let index = this.state.widgets.findIndex(w => w.key == key)
@@ -1120,12 +1256,14 @@ class DashBoard extends Component {
       let childrens = this.state.widgets[index]['widgets']
       childrens.forEach(child => {
         child.checked = !checked
+        console.log(child);
         this.toggleChildCheck(undefined, child.key, !checked)
       })
       this.setState({ childRef: childrens })
     }
 
   }
+
   selectAll(event, widget) {
     let key = this.state.currentParent
     let checked = false
@@ -1148,6 +1286,7 @@ class DashBoard extends Component {
       this.toggleParentCheck(event, parent.key, 1, !checked)
     }
   }
+
   render() {
 
     var pane = this.state["refrence"].map((widget, index) => {
@@ -1157,7 +1296,7 @@ class DashBoard extends Component {
             <div className="secondTabs project__select ui-state-default">
               <img src={dashBoardLogo} />
 
-              <div style={{ background: '#555' }}
+              <div
                 className={widget.checked === true ? "ui checkbox checkBoxGray300 count checked" : "ui checkbox checkBoxGray300 count"}
                 onClick={event => { this.checkAllChildrens(event, widget.key, widget.checked); this.toggleParentCheck(event, widget.key, index); }}>
                 <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" checked={widget.checked} />

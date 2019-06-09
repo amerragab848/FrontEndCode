@@ -41,7 +41,7 @@ class Britecharts extends Component {
                     <ResponsiveLineChart
                         margin={marginObject}
                         lineCurve="basis"
-                        height={width / 2}
+                        height={400}
                         width={width}
                         {...props} />
             }
