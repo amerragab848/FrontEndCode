@@ -465,7 +465,7 @@ var widgets = [
         topicNames:['Opened','Closed'],
         type: 'line' 
       }, {
-        id: 'wt-Name0120',
+        id: 'wt-Name0121',
         key: "0-3-15",
         checked: false,
         title: 'transmittalStatusYearly',
@@ -475,7 +475,7 @@ var widgets = [
         topicNames:['Opened','Closed'],
         type: 'line' 
       }, {
-        id: 'wt-Name0120',
+        id: 'wt-Name0122',
         key: "0-3-16",
         checked: false,
         title: 'submittalStatusYearly',
