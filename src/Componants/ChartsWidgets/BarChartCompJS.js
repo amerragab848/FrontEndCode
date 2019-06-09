@@ -27,7 +27,8 @@ class BarChartCompJS extends Component {
         super(props);
         this.state = {
             barData: [],
-            isLoading: true,
+            isLoadingGrouped: true,
+            isLoadingBar: true,
             groupedBarData: [],
         }
     }
@@ -43,6 +44,16 @@ class BarChartCompJS extends Component {
     componentDidMount = () => {
 
         let barData = [];
+        if (this.props.multiSeries === 'no') {
+            this.setState({
+                isLoadingBar: true
+            });
+        } else {
+            this.setState({
+                isLoadingGrouped: true
+            });
+        }
+
         Api.get(this.props.api).then(results => {
             if (this.props.multiSeries === 'no') {
 
@@ -51,29 +62,26 @@ class BarChartCompJS extends Component {
                     return null;
                 });
 
-                this.setState({
-                    isLoading: false
-                });
 
                 let BarData = { data: barData }
                 let contDiv = '.js-bar-chart-container-tooltip-container.' + this.props.ukey;
                 let barChart = britecharts.bar(),
                     chartBarTooltip = miniTooltip(),
                     barContainer = d3.select(contDiv),
-                    containerBarWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false;
+                    containerBarWidth = '100';// barContainer.node() ? barContainer.node().getBoundingClientRect().width : false;
 
                 if (containerBarWidth) {
                     d3.select('.js-download-button').on('click', function () {
                         barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
                     });
                 }
-
-                barChart.width(containerBarWidth) 
-                    //.shouldShowLoadingState(barData.length ? false : true)
+                console.log('no', containerBarWidth, barContainer.node().getBoundingClientRect());
+                barChart
+                    .width(containerBarWidth + '%')
                     .margin(marginObject)
                     .colorSchema(colorSchema)
                     .isAnimated(true)
-                    .height(containerBarWidth / 2)
+                    .height((containerBarWidth / 2) + '%')
                     .hasPercentage(true)
                     .on('customMouseOver', function () {
                         chartBarTooltip.show();
@@ -84,9 +92,13 @@ class BarChartCompJS extends Component {
                     .on('customMouseOut', function (e) {
                         chartBarTooltip.hide();
                     });
+
                 barContainer.datum(BarData.data).call(barChart);
                 barContainer = d3.select('.js-bar-chart-container-tooltip-container .metadata-group');
                 barContainer.datum([]).call(chartBarTooltip);
+                this.setState({
+                    isLoadingBar: false
+                });
 
             }
             else {
@@ -105,14 +117,14 @@ class BarChartCompJS extends Component {
                 var groupedBarChart = britecharts.groupedBar(),
                     chartTooltip = britecharts.tooltip(),
                     container = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey),
-                    containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+                    containerWidth = '100',// container.node() ? container.node().getBoundingClientRect().width : false,
                     tooltipContainer;
 
-                groupedBarChart.width(containerWidth)
+                console.log('yes', containerWidth, container.node().getBoundingClientRect());
+                groupedBarChart.width(containerWidth + '%')
                     .tooltipThreshold(600)
-                   // .shouldShowLoadingState(groupedBarData.length ? false : true)
                     .colorSchema(colorSchema)
-                    .height(containerWidth / 2)
+                    .height((containerWidth / 2) + '%')
                     .isAnimated(true)
                     .groupLabel('stack')
                     .nameLabel('name')
@@ -139,7 +151,7 @@ class BarChartCompJS extends Component {
                 tooltipContainer.datum([]).call(chartTooltip);
 
                 this.setState({
-                    isLoading: false
+                    isLoadingGrouped: false
                 });
             }
 
@@ -149,6 +161,7 @@ class BarChartCompJS extends Component {
 
     render() {
         return (
+
             this.props.multiSeries !== 'no' ?
                 <div className="col-md-12 col-lg-6">
                     <div className="panel barChart__container">
@@ -161,6 +174,7 @@ class BarChartCompJS extends Component {
                         </div>
                     </div>
                 </div>
+
                 :
                 <div className="col-md-12 col-lg-6">
                     <div className="panel barChart__container">
@@ -172,7 +186,6 @@ class BarChartCompJS extends Component {
                         </div>
                     </div>
                 </div>
-
 
         );
     }
