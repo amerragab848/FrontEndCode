@@ -458,7 +458,7 @@ var widgets = [
         id: 'wt-Name0120',
         key: "0-3-14",
         checked: false,
-        title: 'riskStatusYearly',
+        title: 'letterStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=17'
         }, 
@@ -466,9 +466,9 @@ var widgets = [
         type: 'line' 
       }, {
         id: 'wt-Name0120',
-        key: "0-3-14",
+        key: "0-3-15",
         checked: false,
-        title: 'riskStatusYearly',
+        title: 'transmittalStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=28'
         }, 
@@ -476,9 +476,9 @@ var widgets = [
         type: 'line' 
       }, {
         id: 'wt-Name0120',
-        key: "0-3-14",
+        key: "0-3-16",
         checked: false,
-        title: 'riskStatusYearly',
+        title: 'submittalStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=42'
         }, 

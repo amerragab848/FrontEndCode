@@ -790,22 +790,25 @@ class drawingListAddEdit extends Component {
     }
 
     StepOneLink = () => {
-        if (docId !== 0) {
+        if (this.state.IsEditMode ) {
           this.setState({
             FirstStep: true,
             SecondStepComplate: false,
             CurrStep: 1,
+            SecondStep:false,
+            
           })
         }
       }
     
       StepTwoLink = () => {
-        if (docId !== 0) {
+        if (this.state.IsEditMode) {
           this.setState({
-            FirstStep: true,
+            FirstStep: false,
             SecondStepComplate: true,
             CurrStep: 2,
-          })
+            SecondStep:true,
+                  })
         }
       }
 

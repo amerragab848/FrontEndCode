@@ -93,7 +93,7 @@ class BarChartComp extends Component {
                                     <ResponsiveContainer
                                         render={
                                             ({ width }) =>
-                                                <div className="group__charts">
+                                                <div className="group__charts ">
                                                     <GroupedBar
                                                         data={this.state.groupedBarData}
                                                         width={width}

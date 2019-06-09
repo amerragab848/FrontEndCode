@@ -862,13 +862,13 @@ class postitNotificationsDetail extends Component {
         Cell: ({ row }) => {
           if (row._original.readUnread === "Un-Read") {
             return (
-              <div onClick={() => this.updateStatus(row._original)} style={{ cursor: "pointer",textAlign: "center", padding: "4px 10px", margin: "4px auto", borderRadius: "26px", backgroundColor: "#E74C3C", width: "100%", color: "#FFF", fontSize: "12px" }}>
+              <div onClick={() => this.updateStatus(row._original)} style={{ cursor: "pointer", padding: "4px 8px", margin: "4px auto", borderRadius: "100px", backgroundColor: "#E74C3C", width: "auto", color: "#FFF", minWidth: ' 61px',height: '24px', fontFamily: 'Muli', fontSize: '11px',fontWeight: 'bold', fontStyle: 'normal',fontStretch: 'normal',lineHeight: '1.45',letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 {Resources["unRead"][currentLanguage]}
               </div>
             );
           } else {
             return (
-              <div style={{ textAlign: "center", margin: "4px auto", padding: "4px 10px", borderRadius: "26px", backgroundColor: "#5FD45F", width: "100%", color: "#fff", fontSize: "12px" }}>
+              <div style={{margin: "4px auto", padding: "4px 8px", borderRadius: '100px', backgroundColor: "#e9ecf0", width: "auto",minWidth: ' 43px',height: '24px' ,fontFamily: 'Muli', fontSize: '11px',fontWeight: 'bold', fontStyle: 'normal',fontStretch: 'normal',lineHeight: '1.45',letterSpacing: '-0.2px', color: '#858d9e', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 {Resources["read"][currentLanguage]}
               </div>
             );
