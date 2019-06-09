@@ -5136,6 +5136,18 @@
         "en": "Risk Status Yearly",
         "ar": "Risk Status Yearly"
     },
+    "letterStatusYearly": {
+        "en": "Letter Status Yearly",
+        "ar": "Letter Status Yearly"
+    },
+    "transmittalStatusYearly": {
+        "en": "Transmittal Status Yearly",
+        "ar": "transmittal Status Yearly"
+    },
+    "submittalStatusYearly": {
+        "en": "Submittal Status Yearly",
+        "ar": "submittal Status Yearly"
+    },
     "code": {
         "en": "Code",
         "ar": "الكود "
@@ -7813,10 +7825,14 @@
         "en": "Pre-mitigation risk EMV",
         "ar": "Pre-mitigation risk EMV"
     },
+    "postMedigationCostEMV": {
+        "en": "post-mitigation risk EMV",
+        "ar": "post-mitigation risk EMV"
+    },
     "medigationCost": {
         "en": "Mitigation Cost",
         "ar": "Mitigation Cost"
-    },
+    } ,
     "preMedigation": {
         "en": "Pre-mitigation ",
         "ar": "Pre-mitigation "
@@ -7826,8 +7842,12 @@
         "ar": "Post-mitigation "
     },
     "preMedigationRiskQuantification": {
-        "en": "Post-Mitigation Risk Quantification",
+        "en": "pre-Mitigation Risk Quantification",
         "ar": "Pre-mitigation Risk Quantification"
+    },
+    "postMedigationRiskQuantification": {
+        "en": "Post-Mitigation Risk Quantification",
+        "ar": "Post-mitigation Risk Quantification"
     },
     "mergeProjects": {
         "en": "Merge Projects",
