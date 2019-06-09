@@ -37,12 +37,13 @@ class Britecharts extends Component {
     renderLine = (props) => (
         <ResponsiveContainer
             render={
-                ({ width }) => <ResponsiveLineChart
-                    margin={marginObject}
-                    lineCurve="basis"
-                    height={width / 2}
-                    width={width}
-                    {...props} />
+                ({ width }) =>
+                    <ResponsiveLineChart
+                        margin={marginObject}
+                        lineCurve="basis"
+                        height={width / 2}
+                        width={width}
+                        {...props} />
             }
         />
     );
