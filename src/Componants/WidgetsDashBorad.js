@@ -404,7 +404,7 @@ var widgets = [
     key: "0-3",
     canView: false,
     checked: false,
-    order: 3,
+    order: 3, 
     widgets: [
       {
         id: 'wt-Name01',
@@ -455,32 +455,28 @@ var widgets = [
         topicNames:['Opened','Closed'],
         type: 'line' 
       }, {
+        id: 'wt-Name06',
+        key: "0-3-5",
+        checked: false,
+        title: 'percentOfMaterialRequestPerProject',
+        props: {
+          'api': 'GetTopFiveApprovedSubmittal?status=true',
+          'name': 'projectName',
+          'data': 'percentage'
+        },
+        type: 'column',
+        stack: 'normal',
+        yTitle: 'total',
+        catagName: 'projectName',
+        multiSeries: 'no',
+        barContent: []
+      }, {
         id: 'wt-Name0120',
         key: "0-3-14",
         checked: false,
         title: 'letterStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=17'
-        }, 
-        topicNames:['Opened','Closed'],
-        type: 'line' 
-      }, {
-        id: 'wt-Name0120',
-        key: "0-3-15",
-        checked: false,
-        title: 'transmittalStatusYearly',
-        props: {
-          'api': 'GetChartLineDataByDocType?docType=28'
-        }, 
-        topicNames:['Opened','Closed'],
-        type: 'line' 
-      }, {
-        id: 'wt-Name0120',
-        key: "0-3-16",
-        checked: false,
-        title: 'submittalStatusYearly',
-        props: {
-          'api': 'GetChartLineDataByDocType?docType=42'
         }, 
         topicNames:['Opened','Closed'],
         type: 'line' 
@@ -501,21 +497,15 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, {
-        id: 'wt-Name06',
-        key: "0-3-5",
+        id: 'wt-Name0122',
+        key: "0-3-16",
         checked: false,
-        title: 'percentOfMaterialRequestPerProject',
+        title: 'submittalStatusYearly',
         props: {
-          'api': 'GetTopFiveApprovedSubmittal?status=true',
-          'name': 'projectName',
-          'data': 'percentage'
-        },
-        type: 'column',
-        stack: 'normal',
-        yTitle: 'total',
-        catagName: 'projectName',
-        multiSeries: 'no',
-        barContent: []
+          'api': 'GetChartLineDataByDocType?docType=42'
+        }, 
+        topicNames:['Opened','Closed'],
+        type: 'line' 
       }, {
         id: 'wt-Name07',
         key: "0-3-6",
@@ -582,6 +572,16 @@ var widgets = [
         multiSeries: 'yes',
         barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
 
+      }, {
+        id: 'wt-Name0121',
+        key: "0-3-15",
+        checked: false,
+        title: 'transmittalStatusYearly',
+        props: {
+          'api': 'GetChartLineDataByDocType?docType=28'
+        }, 
+        topicNames:['Opened','Closed'],
+        type: 'line' 
       }
     ]
   },

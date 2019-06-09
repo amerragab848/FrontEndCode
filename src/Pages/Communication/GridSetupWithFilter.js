@@ -343,12 +343,12 @@ class GridSetupWithFilter extends Component {
                 </Toolbar>
             );
         };
+
         return (
             <Fragment>
                 <div className="filter__warrper" style={{ paddingRight: '16px', paddingLeft: '24px' }}>
                     <div className="filter__more" style={{ padding: 0 }}>
                         <span>5 filters applied</span>
-
                         {this.props.columns.length > 5 ? <button className="filter__more--btn" onClick={this.showFilterMore}>See all</button> : null}
                     </div>
 
@@ -375,17 +375,16 @@ class GridSetupWithFilter extends Component {
                         <div className="filterModal" id="largeModal"  >
                             <div className="header-filter">
                                 <h2 className="zero">Filter results</h2>
-                                {/* <span>256 Results</span> */}
+                                <span>{groupedRows.length} Results</span>
                                 <button className="reset__filter reset__filter--header" onClick={this.ClearFilters}>Reset all</button>
                             </div>
                             <div className="content">
                                 <div className="filter__warrper" >
                                     <div className="filter__input-wrapper">
-
                                         <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
                                             {this.props.columns.map((column, index) => {
                                                 let classX = arrColumn.findIndex(x => x == column.key) > -1 ? 'small__input--width ' : 'medium__input--width'
-                                                return (column.key !== 'customBtn' ?
+                                                return (column.filterable === true && column.key !== 'customBtn' ?
                                                     <div className={"form-group linebylineInput " + classX} key={index}>
                                                         <label className="control-label" htmlFor={column.key}>{column.name}</label>
                                                         <div className="ui input inputDev">
@@ -401,9 +400,8 @@ class GridSetupWithFilter extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="filter__actions">
-                                <button className="largeBtn primaryBtn-1 btn approve" onClick={() => this.setState({ ShowModelFilter: false })}>Filter</button>
-                                <button className="reset__filter"onClick={this.ClearFilters}>Reset all</button>
+                            <div className="filter__actions"> 
+                                <button className="reset__filter" onClick={this.ClearFilters}>Reset all</button>
                             </div>
                         </div>
                     </div>

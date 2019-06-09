@@ -1,12 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Api from '../../api';
-//import { Bar, GroupedBar, Tooltip, ResponsiveContainer } from 'britecharts-react'
-//import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
-//import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.min.css'
-
-//https://github.com/eventbrite/britecharts/blob/master/demos/src/demo-bar.js
-
-
+import { Bar } from 'britecharts-react'
 const miniTooltip = require('britecharts/src/charts/mini-tooltip');
 
 const d3 = require('d3-selection');
@@ -27,22 +21,25 @@ class BarChartCompJS extends Component {
         super(props);
         this.state = {
             barData: [],
-            isLoading: true,
+            isLoadingGrouped: true,
+            isLoadingBar: true,
             groupedBarData: [],
         }
     }
-
-    drawBarChart(barData) {
-
-    }
-
-    drawGroupedBarChart(groupedBarData) {
-
-    }
-
+ 
     componentDidMount = () => {
 
         let barData = [];
+        if (this.props.multiSeries === 'no') {
+            this.setState({
+                isLoadingBar: true
+            });
+        } else {
+            this.setState({
+                isLoadingGrouped: true
+            });
+        }
+
         Api.get(this.props.api).then(results => {
             if (this.props.multiSeries === 'no') {
 
@@ -51,9 +48,6 @@ class BarChartCompJS extends Component {
                     return null;
                 });
 
-                this.setState({
-                    isLoading: false
-                });
 
                 let BarData = { data: barData }
                 let contDiv = '.js-bar-chart-container-tooltip-container.' + this.props.ukey;
@@ -67,13 +61,12 @@ class BarChartCompJS extends Component {
                         barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
                     });
                 }
-
-                barChart.width(containerBarWidth) 
-                    //.shouldShowLoadingState(barData.length ? false : true)
+                barChart
+                    .width(containerBarWidth)
                     .margin(marginObject)
                     .colorSchema(colorSchema)
                     .isAnimated(true)
-                    .height(containerBarWidth / 2)
+                    .height(400)
                     .hasPercentage(true)
                     .on('customMouseOver', function () {
                         chartBarTooltip.show();
@@ -84,9 +77,13 @@ class BarChartCompJS extends Component {
                     .on('customMouseOut', function (e) {
                         chartBarTooltip.hide();
                     });
+
                 barContainer.datum(BarData.data).call(barChart);
-                barContainer = d3.select('.js-bar-chart-container-tooltip-container .metadata-group');
+                barContainer = d3.select('.js-bar-chart-container-tooltip-container.' + this.props.ukey + ' .metadata-group');
                 barContainer.datum([]).call(chartBarTooltip);
+                this.setState({
+                    isLoadingBar: false
+                });
 
             }
             else {
@@ -110,9 +107,8 @@ class BarChartCompJS extends Component {
 
                 groupedBarChart.width(containerWidth)
                     .tooltipThreshold(600)
-                   // .shouldShowLoadingState(groupedBarData.length ? false : true)
                     .colorSchema(colorSchema)
-                    .height(containerWidth / 2)
+                    .height(400)
                     .isAnimated(true)
                     .groupLabel('stack')
                     .nameLabel('name')
@@ -135,11 +131,11 @@ class BarChartCompJS extends Component {
                     .nameLabel('stack')
                     .title('Procoor tooltip');
 
-                tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container .metadata-group');
+                tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey + '  .metadata-group');
                 tooltipContainer.datum([]).call(chartTooltip);
 
                 this.setState({
-                    isLoading: false
+                    isLoadingGrouped: false
                 });
             }
 
@@ -149,6 +145,7 @@ class BarChartCompJS extends Component {
 
     render() {
         return (
+
             this.props.multiSeries !== 'no' ?
                 <div className="col-md-12 col-lg-6">
                     <div className="panel barChart__container">
@@ -157,10 +154,14 @@ class BarChartCompJS extends Component {
                                 {this.props.title}
                             </h2>
                             <div className={"britechart js-grouped-bar-chart-tooltip-container " + this.props.ukey + " card--chart"}></div>
+                            {this.state.isLoadingGrouped === true ?
+                                <Bar shouldShowLoadingState={true} /> : null
+                            }
 
                         </div>
                     </div>
                 </div>
+
                 :
                 <div className="col-md-12 col-lg-6">
                     <div className="panel barChart__container">
@@ -169,11 +170,12 @@ class BarChartCompJS extends Component {
                                 {this.props.title}
                             </h2>
                             <div className={"js-bar-chart-container-tooltip-container " + this.props.ukey + ' card--chart '}></div>
+                            {this.state.isLoadingBar === true ?
+                                <Bar shouldShowLoadingState={true} /> : null
+                            }
                         </div>
                     </div>
                 </div>
-
-
         );
     }
 }

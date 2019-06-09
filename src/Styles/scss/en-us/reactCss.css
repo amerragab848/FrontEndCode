@@ -1215,8 +1215,8 @@ table edition
 .panel {
     margin-bottom: 25px;
     height: 100%;
-    display: flex;
-    align-items: center;
+   /*  display: flex;
+    align-items: center; */
 }
 
 .donut-container {
@@ -2776,6 +2776,7 @@ button.companies_icon {
   align-items: center;
   justify-content: center;
   flex-flow: column;
+  padding: 0 10px;
 }
 
 .summerisItem__number .content__number .number {
@@ -2803,6 +2804,7 @@ button.companies_icon {
     color: #858d9e;
     margin: 0;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .customeTabs {
@@ -6318,6 +6320,7 @@ body.noScrolling {
     border: solid 1px #5f98fa !important;
     min-height: 36px;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .default__dropdown .css-10nd86i .css-1492t68 {
