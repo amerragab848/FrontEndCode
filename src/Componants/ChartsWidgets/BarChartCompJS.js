@@ -1,12 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Api from '../../api';
-//import { Bar, GroupedBar, Tooltip, ResponsiveContainer } from 'britecharts-react'
-//import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
-//import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.min.css'
-
-//https://github.com/eventbrite/britecharts/blob/master/demos/src/demo-bar.js
-
-
+import { Bar } from 'britecharts-react'
 const miniTooltip = require('britecharts/src/charts/mini-tooltip');
 
 const d3 = require('d3-selection');
@@ -32,15 +26,7 @@ class BarChartCompJS extends Component {
             groupedBarData: [],
         }
     }
-
-    drawBarChart(barData) {
-
-    }
-
-    drawGroupedBarChart(groupedBarData) {
-
-    }
-
+ 
     componentDidMount = () => {
 
         let barData = [];
@@ -75,7 +61,6 @@ class BarChartCompJS extends Component {
                         barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
                     });
                 }
-                console.log('no', containerBarWidth, barContainer.node().getBoundingClientRect());
                 barChart
                     .width(containerBarWidth)
                     .margin(marginObject)
@@ -120,9 +105,7 @@ class BarChartCompJS extends Component {
                     containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
                     tooltipContainer;
 
-                console.log('yes', containerWidth, container.node().getBoundingClientRect());
-                groupedBarChart
-                    .width(containerWidth)
+                groupedBarChart.width(containerWidth)
                     .tooltipThreshold(600)
                     .colorSchema(colorSchema)
                     .height(400)
@@ -149,7 +132,7 @@ class BarChartCompJS extends Component {
                     .nameLabel('stack')
                     .title('Procoor tooltip');
 
-                tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey + ' .metadata-group');
+                tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey + '  .metadata-group');
                 tooltipContainer.datum([]).call(chartTooltip);
 
                 this.setState({
@@ -172,6 +155,9 @@ class BarChartCompJS extends Component {
                                 {this.props.title}
                             </h2>
                             <div className={"britechart js-grouped-bar-chart-tooltip-container " + this.props.ukey + " card--chart"}></div>
+                            {this.state.isLoadingGrouped === true ?
+                                <Bar shouldShowLoadingState={true} /> : null
+                            }
 
                         </div>
                     </div>
@@ -185,10 +171,12 @@ class BarChartCompJS extends Component {
                                 {this.props.title}
                             </h2>
                             <div className={"js-bar-chart-container-tooltip-container " + this.props.ukey + ' card--chart '}></div>
+                            {this.state.isLoadingBar === true ?
+                                <Bar shouldShowLoadingState={true} /> : null
+                            }
                         </div>
                     </div>
                 </div>
-
         );
     }
 }

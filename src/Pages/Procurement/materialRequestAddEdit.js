@@ -415,7 +415,6 @@ class materialRequestAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            Api.get('GetChartLineDataByDocType?docType='+this.state.docType)
             let url = "GetContractsSiteRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, "procurement");
             Api.get('GetContractsSiteRequestItemsByRequestId?requestId=' + this.state.docId).then(res => {
