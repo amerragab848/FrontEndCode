@@ -230,8 +230,7 @@ class DashBoard extends Component {
     return ls;
   }
 
-  toggleParentCheck(event, id, index, checked) {
-  //  if (called == undefined) {
+  toggleParentCheck(event, id, index, checked) { 
       let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == id)
       if (index_checked != -1) {
         let checked = this.state.checkAllWidgets[index_checked].value
@@ -243,8 +242,7 @@ class DashBoard extends Component {
         let checkAllWidgets = this.state.checkAllWidgets
         checkAllWidgets.push({ key: id, value: true })
         this.setState({ checkAllWidgets, currentCheck: true })
-      }
- //  }
+      } 
     let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
