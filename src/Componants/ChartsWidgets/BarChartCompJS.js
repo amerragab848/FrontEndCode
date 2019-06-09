@@ -26,7 +26,7 @@ class BarChartCompJS extends Component {
             groupedBarData: [],
         }
     }
- 
+
     componentDidMount = () => {
 
         let barData = [];
@@ -88,14 +88,17 @@ class BarChartCompJS extends Component {
             }
             else {
                 let groupedBarData = []
+                console.log(this.props.api);
 
-                this.props.barContent.map((bar) => {
-                    results.map((obj) => {
-                        groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
+                // if (this.props.barContent) {
+                    this.props.barContent.map((bar) => {
+                        results.map((obj) => {
+                            groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
+                            return null;
+                        })
                         return null;
                     })
-                    return null;
-                })
+                // }
 
                 let groupedData = { data: groupedBarData }
 
@@ -113,6 +116,7 @@ class BarChartCompJS extends Component {
                     .groupLabel('stack')
                     .nameLabel('name')
                     .valueLabel('total')
+                    .grid('horizontal')
                     .on('customMouseOver', function () {
                         chartTooltip.show();
                     })

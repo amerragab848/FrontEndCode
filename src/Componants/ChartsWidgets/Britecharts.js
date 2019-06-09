@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Api from '../../api';
-import {Bar, Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
+import { Bar, Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 const ResponsiveLineChart = withResponsiveness(Line);
 
@@ -12,6 +12,8 @@ const marginObject = {
     top: 100,
     bottom: 50,
 };
+
+const colorSchema = ["#39bd3d", "#dfe2e6"]
 
 class Britecharts extends Component {
 
@@ -41,8 +43,10 @@ class Britecharts extends Component {
                     <ResponsiveLineChart
                         margin={marginObject}
                         lineCurve="basis"
-                        height={width / 2}
+                        height={400}
                         width={width}
+                        colorSchema={colorSchema}
+                        grid='horizontal'
                         {...props} />
             }
         />
@@ -89,20 +93,19 @@ class Britecharts extends Component {
     render() {
         return (
             <div className="col-md-12 col-lg-6">
-                <div className="panel barChart__container">
+                <div className="panel barChart__container lineCharts">
                     <div className="panel-body">
                         <h2>
                             {this.props.title}
                         </h2>
                         {this.state.isLoading === false ?
-
                             <Tooltip
                                 data={this.state.data}
                                 render={this.renderLine}
                                 topicLabel="topics"
-                                title={this.props.title} /> 
+                                title={this.props.title} />
                             :
-                            <Bar shouldShowLoadingState={true} />
+                            <Line shouldShowLoadingState={true} />
                         }
                     </div>
                 </div>

@@ -6556,3 +6556,65 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 .rootIcon:hover {
     color: #4382F9;
 }
+.tooltip-background, .tooltip-text-container {
+    border-radius: 2px !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
+    fill: #252833 !important;
+    stroke:  #252833 !important;
+}
+
+.tooltip-text {
+    padding: 0 12px;
+}
+
+.tooltip-text .mini-tooltip-name, .tooltip-title {
+    font-family: 'Muli'  !important;
+    font-size: 14px  !important;
+    font-weight: bold  !important;
+    font-style: normal  !important;
+    font-stretch: normal  !important;
+    line-height: 1.43  !important;
+    letter-spacing: -0.2px  !important;
+    fill: #f9fbfc  !important;
+    margin: 4px 0;
+    padding:4px 0;
+}
+
+.tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-left-text tspan, .tooltip-body .tooltip-right-text {
+    font-family: 'Open Sans' !important;
+    font-size: 12px !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-stretch: normal !important;
+    line-height: 1.33 !important;
+    letter-spacing: -0.2px !important;
+    fill: #ffffff !important;
+}
+.tooltip-divider {
+    stroke: #ffffff !important;
+    opacity: 0.1 !important;
+    stroke-width: 1px !important;
+}
+
+.tick text {
+    font-size: 12px !important;
+    fill: #3e4352 !important;
+    padding: 12px !important;
+}
+
+.lineCharts.barChart__container .y-axis-group {
+    -webkit-transform: translateX(0) !important;
+    transform: translateX(0) !important;
+}
+
+.line-chart .topic .line {
+    stroke-width: 3px  !important;
+}
+
+.chart-group {
+    fill: url(#grad1) !important
+}
+
+.lineCharts .vertical-marker-container .vertical-marker {
+    stroke: transparent
+}
