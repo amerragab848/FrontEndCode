@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Api from '../../api';
 import { Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
@@ -12,6 +12,8 @@ const marginObject = {
     top: 100,
     bottom: 50,
 };
+
+const colorSchema = ["#39bd3d", "#dfe2e6"]
 
 class Britecharts extends Component {
 
@@ -43,6 +45,8 @@ class Britecharts extends Component {
                         lineCurve="basis"
                         height={width / 2}
                         width={width}
+                        colorSchema={colorSchema}
+                        grid='horizontal'
                         {...props} />
             }
         />
@@ -89,21 +93,32 @@ class Britecharts extends Component {
     render() {
         return (
             <div className="col-md-12 col-lg-6">
-                <div className="panel barChart__container">
+                <div className="panel barChart__container lineCharts">
                     <div className="panel-body">
                         <h2>
                             {this.props.title}
                         </h2>
                         {this.state.isLoading === false ?
-
-                            <Tooltip
-                                data={this.state.data}
-                                render={this.renderLine}
-
-                                topicLabel="topics"
-                                title="Tooltip Title"
-                            />
-
+                            <Fragment>
+                                <Tooltip
+                                    data={this.state.data}
+                                    render={this.renderLine}
+                                    
+                                    topicLabel="topics"
+                                    title="Tooltip Title"
+                                />
+                                <svg height="150" width="400">
+                                    <defs>
+                                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style={{ stopColor: '#DBFBDC', stopOpacity: '1' }} />
+                                            <stop offset="20%" style={{ stopColor: '#BCF0B4', stopOpacity: '1' }} />
+                                            <stop offset="50%" style={{ stopColor: '#7CDB79', stopOpacity: '1' }} />
+                                            <stop offset="80%" style={{ stopColor: '#BCF0B4', stopOpacity: '1' }} />
+                                            <stop offset="100%" style={{ stopColor: '#DBFBDC', stopOpacity: '1' }} />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </Fragment>
                             : null
                         }
                     </div>
