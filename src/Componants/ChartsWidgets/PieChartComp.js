@@ -81,6 +81,7 @@ class PieChartComp extends Component {
                     <h2>
                         {this.props.title}
                     </h2>
+
                     <ResponsiveContainer
                         render={
                             ({ width }) =>
@@ -108,6 +109,11 @@ class PieChartComp extends Component {
                         }
 
                     />
+                    {this.state.isLoading === true ?
+                        <Donut
+                            data={[]}
+                            shouldShowLoadingState={true}
+                        /> : null}
 
                 </div>
             </div>

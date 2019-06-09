@@ -6602,9 +6602,9 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     stroke-width: 3px  !important;
 }
 
-.chart-group {
+/* .chart-group {
     fill: url(#grad1) !important
-}
+} */
 
 .lineCharts .vertical-marker-container .vertical-marker {
     stroke: transparent

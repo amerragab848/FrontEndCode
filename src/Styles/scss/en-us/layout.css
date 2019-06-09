@@ -4399,7 +4399,7 @@ ul {
         flex-wrap: wrap; }
       .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput {
         margin-bottom: 28px; }
-        .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput > label {
+        /* .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput > label {
           width: 130px;
           text-align: right;
           margin-right: 16px;
@@ -4407,7 +4407,7 @@ ul {
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
-          color: #252833; }
+          color: #252833; } */
         .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
           padding: 0; }
         .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .radioBoxBlue label {
@@ -9078,9 +9078,10 @@ ul {
     -webkit-box-pack: start;
     -ms-flex-pack: start;
     justify-content: flex-start; }
-    .proForm .linebylineInput label {
+    /* .proForm .linebylineInput label {
       margin-right: 4px;
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+       } */
     .proForm .linebylineInput .ui.input.inputDev {
       padding: 12px 16px;
       -webkit-border-radius: 4px;
