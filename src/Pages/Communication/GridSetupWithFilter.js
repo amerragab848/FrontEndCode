@@ -370,6 +370,7 @@ class GridSetupWithFilter extends Component {
                             })}
                         </form>
                     </div>
+
                     <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"} >
                         <button className="filter__close" onClick={this.CloseModeFilter}>x</button>
                         <div className="filterModal" id="largeModal"  >
@@ -403,7 +404,7 @@ class GridSetupWithFilter extends Component {
                             </div>
                             <div className="filter__actions">
                                 <button className="largeBtn primaryBtn-1 btn approve" onClick={() => this.setState({ ShowModelFilter: false })}>Filter</button>
-                                <button className="reset__filter"onClick={this.ClearFilters}>Reset all</button>
+                                <button className="reset__filter" onClick={this.ClearFilters}>Reset all</button>
                             </div>
                         </div>
                     </div>
