@@ -851,8 +851,7 @@ class DashBoard extends Component {
           }
           else if (val.type === "column") {
 
-            widgets.push({
-
+            widgets.push({ 
               title: val.title,
               key: val.key,
               id: val.id,
