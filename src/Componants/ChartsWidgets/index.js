@@ -1,5 +1,5 @@
 import ChartWidgetsData from './ChartWidgetsData';
-import BarChartComp from './BarChartComp';
+import BarChartComp from './BarChartCompJS';
 import PieChartComp from './PieChartComp'; 
 import Britecharts from './Britecharts';
 

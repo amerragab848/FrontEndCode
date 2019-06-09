@@ -225,8 +225,8 @@ class Index extends Component {
                     </h2>
                   }
                   <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
-                    {widget.widgets.length > 0
-                      ? widget.widgets.map(panel => {
+                    {widget.widgets.length > 0?
+                     widget.widgets.map(panel => {
                         if (panel.type === "threeWidget") {
                           return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
                         }
@@ -300,8 +300,8 @@ class Index extends Component {
                   {language[widget.widgetCategory][currentLanguage]}
                 </h2>
                 <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
-                  {widget.widgets.length > 0
-                    ? widget.widgets.map(panel => {
+                  {widget.widgets.length > 0 ?
+                   widget.widgets.map(panel => {
                       if (panel.type === "threeWidget") {
                         return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
                       }

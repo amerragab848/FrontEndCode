@@ -27,7 +27,7 @@ import * as communicationActions from '../../store/actions/communication';
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import 'react-table/react-table.css'
+// import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
@@ -40,16 +40,16 @@ const poqSchema = Yup.object().shape({
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
 });
 
-const itemsValidationSchema = Yup.object().shape({
-    description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
-    unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
-    itemCode: Yup.string().required(Resources['itemCodeRequired'][currentLanguage]),
-    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
-    itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
-    days: Yup.number().required(Resources['daysRequired'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
-    quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
-    unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
-});
+// const itemsValidationSchema = Yup.object().shape({
+//     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
+//     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
+//     itemCode: Yup.string().required(Resources['itemCodeRequired'][currentLanguage]),
+//     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
+//     itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
+//     days: Yup.number().required(Resources['daysRequired'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+//     quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+//     unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
+// });
 
 const contractSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),

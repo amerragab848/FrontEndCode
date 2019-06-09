@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Api from '../../api';
-import { Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
+import {Bar, Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 const ResponsiveLineChart = withResponsiveness(Line);
 
@@ -99,12 +99,10 @@ class Britecharts extends Component {
                             <Tooltip
                                 data={this.state.data}
                                 render={this.renderLine}
-
                                 topicLabel="topics"
-                                title="Tooltip Title"
-                            />
-
-                            : null
+                                title={this.props.title} /> 
+                            :
+                            <Bar shouldShowLoadingState={true} />
                         }
                     </div>
                 </div>

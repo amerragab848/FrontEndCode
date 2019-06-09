@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
-import { Donut,  ResponsiveContainer } from 'britecharts-react'
-
+import { Donut, ResponsiveContainer } from 'britecharts-react'
 import Api from '../../api';
 
 const colorSchema = [
@@ -13,8 +11,6 @@ const colorSchema = [
     '#119015',
     '#07bc0cbb',
 ]
-
-let data = {};
 
 class PieChartComp extends Component {
 
@@ -37,19 +33,33 @@ class PieChartComp extends Component {
         this.setState({ isLoading: true });
         Api.get(this.props.api).then(res => {
             if (res) {
+                let total = 0;
                 res.map((obj, index) => {
                     dataChart.push({
                         quantity: obj[this.props.y],
                         name: obj[this.props.name],
                         id: index
                     });
+                    total = total + obj[this.props.y];
                     return null;
                 })
+                let index = 0;//res.length - 1;
+
+                let data = {
+                    percentage: ((dataChart[index].quantity / total) * 100).toFixed(1),
+                    name: dataChart[index].name,
+                    quantity: dataChart[index].quantity,
+                    id: dataChart[index].id
+                }
+                this.setState({
+                    data: data,
+                    highlightedSlice: dataChart[index].id,
+                    showLegend: true
+                });
             }
             this.setState({ isLoading: false, dataChart: dataChart });
 
         }).catch((ex) => {
-            console.log(ex);
             this.setState({ isLoading: false });
         });
     }
@@ -60,7 +70,7 @@ class PieChartComp extends Component {
             highlightedSlice: e.data.id,
             showLegend: true
         });
-        data = e.data;
+        // data = e.data;
     };
 
     render() {
@@ -69,7 +79,7 @@ class PieChartComp extends Component {
             <div className="panel">
                 <div className="panel-body">
                     <h2>
-                        { this.props.title}
+                        {this.props.title}
                     </h2>
                     <ResponsiveContainer
                         render={
@@ -81,14 +91,14 @@ class PieChartComp extends Component {
                                         width={width / 2}
                                         externalRadius={width / 4}
                                         internalRadius={width / 10}
-                                        colorSchema={colorSchema} 
+                                        colorSchema={colorSchema}
                                         customMouseMove={this.logMouseOver}
                                         highlightSliceById={this.state.highlightedSlice}
                                         isAnimated={false}
                                     />
 
                                     {this.state.showLegend === true ?
-                                        <p id="legenbd__teext" style={{width: width / 2}}>
+                                        <p id="legenbd__teext" style={{ width: width / 2 }}>
                                             <span className="chartName"> {this.state.data.name}</span>
                                             <span className="percentage">{this.state.data.percentage + '%'}</span>
                                             <span className="totalAmount">{this.state.data.quantity + 'LE'}</span>
