@@ -11,12 +11,7 @@ let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require('lodash');
-const checkAllObj = {
-  key: "0",
-  selectAll: true,
-  checked: false,
-  title: 'selectAll'
-}
+
 class DashBoard extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +24,10 @@ class DashBoard extends Component {
       viewChild: false,
       currentChild: 0,
       child_widgets_order: [],
-      childRef: []
+      childRef: [],
+      currentParent: 0,
+      currentCheck: false,
+      checkAllWidgets: []
     };
   }
 
@@ -141,8 +139,8 @@ class DashBoard extends Component {
     });
   }
 
-  viewCurrentMenu(event, key) {
-
+  viewCurrentMenu(event, key, checked) {
+    this.setState({ currentParent: key })
     let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
@@ -206,8 +204,13 @@ class DashBoard extends Component {
       updated_state.childRef = poolThirdWidgets;
       updated_state.child_widgets_order = order;
     }
-
-    updated_state.childRef.push(checkAllObj)
+    let index = this.state.checkAllWidgets.findIndex(w => w.key == key)
+    if (index != -1) {
+      let checked = this.state.checkAllWidgets[index].value
+      this.setState({ currentCheck: checked })
+    }
+    else
+      this.setState({ currentCheck: false })
     this.setState(updated_state);
   }
 
@@ -227,8 +230,19 @@ class DashBoard extends Component {
     return ls;
   }
 
-  toggleParentCheck(event, id, index) {
-
+  toggleParentCheck(event, id, index, checked) {
+    let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == id)
+    if (index_checked != -1) {
+      let checked = this.state.checkAllWidgets[index_checked].value
+      let checkAllWidgets = this.state.checkAllWidgets
+      checkAllWidgets[index_checked].value = checked
+      this.setState({ checkAllWidgets, currentCheck: checked })
+    }
+    else {
+      let checkAllWidgets = this.state.checkAllWidgets
+      checkAllWidgets.push({ key: id, value: true })
+      this.setState({ checkAllWidgets, currentCheck: true })
+    }
     let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
@@ -249,7 +263,7 @@ class DashBoard extends Component {
         });
 
         if (setChecked) {
-          setChecked.checked = !setChecked.checked
+          setChecked.checked = checked ? checked : !setChecked.checked
         }
 
         let setIndex = widgets_Order[refrenceValue].findIndex((i) => {
@@ -323,6 +337,7 @@ class DashBoard extends Component {
                 widgets.push({
                   title: val.title,
                   key: val.key,
+                  id: val.id,
                   order: i + 1,
                   parentId: value.key,
                   type: val.type,
@@ -330,7 +345,24 @@ class DashBoard extends Component {
                     api: val.props.api,
                     name: val.props.name,
                     data: val.props.data,
-                    multiSeries: val.props.multiSeries
+                  },
+                  multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                  catagName: val.catagName,
+                  barContent: val.barContent,
+                });
+              }
+              else if (val.type === "line") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  topicNames: val.topicNames,
+                  id: val.id,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api
                   }
                 });
               }
@@ -352,6 +384,7 @@ class DashBoard extends Component {
                 });
               }
             });
+
             setOrder.push({
               widgetCategory: value.widgetCategory,
               key: value.key,
@@ -392,7 +425,7 @@ class DashBoard extends Component {
         list.forEach((value, index) => {
 
           if (value.key === id) {
-            value.checked = !value.checked;
+            value.checked = checked ? checked : !value.checked;
           }
 
           let widgets = [];
@@ -429,11 +462,27 @@ class DashBoard extends Component {
                 }
               });
             }
+            else if (val.type === "line") {
+
+              widgets.push({
+                title: val.title,
+                key: val.key,
+                order: i + 1,
+                topicNames: val.topicNames,
+                id: val.id,
+                parentId: value.key,
+                type: val.type,
+                props: {
+                  api: val.props.api
+                }
+              });
+            }
             else if (val.type === "column") {
 
               widgets.push({
                 title: val.title,
                 key: val.key,
+                id: val.id,
                 order: i + 1,
                 parentId: value.key,
                 type: val.type,
@@ -441,8 +490,10 @@ class DashBoard extends Component {
                   api: val.props.api,
                   name: val.props.name,
                   data: val.props.data,
-                  multiSeries: val.props.multiSeries
-                }
+                },
+                multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                catagName: val.catagName,
+                barContent: val.barContent,
               });
             }
             else {
@@ -501,7 +552,7 @@ class DashBoard extends Component {
     let original_widgets = [...this.state.widgets];
 
     if (widgets_Order) {
-      //edit of order 
+      //edit of order
       let refrenceList = widgets_Order[refrenceValue[0]];
 
       if (refrenceList) {
@@ -526,7 +577,7 @@ class DashBoard extends Component {
         this.saveToLS("Widgets_Order", encodedsetLocalStorage);
 
       } else {
-        // if key not Exists  
+        // if key not Exists
         let setOrder = [];
 
         order.forEach((value, index) => {
@@ -575,6 +626,7 @@ class DashBoard extends Component {
                 widgets.push({
                   title: val.title,
                   key: val.key,
+                  id: val.id,
                   order: i + 1,
                   parentId: getValueKey.key,
                   type: val.type,
@@ -582,11 +634,27 @@ class DashBoard extends Component {
                     api: val.props.api,
                     name: val.props.name,
                     data: val.props.data,
-                    multiSeries: val.props.multiSeries
+                  },
+                  multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+                  catagName: val.catagName,
+                  barContent: val.barContent,
+                });
+              }
+              else if (val.type === "line") {
+
+                widgets.push({
+                  title: val.title,
+                  key: val.key,
+                  order: i + 1,
+                  topicNames: val.topicNames,
+                  id: val.id,
+                  parentId: value.key,
+                  type: val.type,
+                  props: {
+                    api: val.props.api
                   }
                 });
               }
-
               else {
                 widgets.push({
                   title: val.title,
@@ -629,96 +697,10 @@ class DashBoard extends Component {
 
       }
     } else {
-      // if no localStorage 
+      // if no localStorage
       let setOrder = [];
 
-      order.forEach((value, index) => {
-        let getValueKey = original_widgets.find(function (i) {
-          return i.key === value;
-        });
-
-        if (getValueKey) {
-
-          let widgets = [];
-
-          getValueKey.widgets.forEach((val, i) => {
-            if (val.type === "twoWidget") {
-              widgets.push({
-                key: val.key,
-                order: i + 1,
-                checked: val.checked != undefined ? val.checked : false,
-                parentId: getValueKey.key,
-                title: val.title,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  value: val.props.value,
-                  total: val.props.total,
-                  route: val.props.route,
-                  key: val.props.key
-                }
-              });
-            } else if (val.type === "pie") {
-
-              widgets.push({
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                parentId: getValueKey.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  y: val.props.y
-                }
-              });
-            }
-            else if (val.type === "column") {
-
-              widgets.push({
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                parentId: getValueKey.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  data: val.props.data,
-                  multiSeries: val.props.multiSeries
-                }
-              });
-            }
-
-            else {
-              widgets.push({
-                key: val.key,
-                order: i + 1,
-                checked: val.checked != undefined ? val.checked : false,
-                parentId: getValueKey.key,
-                title: val.title,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  value: val.props.value,
-                  listType: val.props.listType,
-                  route: val.props.route,
-                  key: val.props.key
-                }
-              });
-            }
-          });
-
-          setOrder.push({
-            widgetCategory: getValueKey.widgetCategory,
-            key: value,
-            order: index + 1,
-            checked: value.checked != undefined ? value.checked : false,
-            parentId: "ref" + refrenceValue[0],
-            widgets: widgets
-          });
-        }
-      });
+      setOrder = this.iterateWidgetsDynamic(order, null, null, null);
 
       var obj = {};
       obj[refrenceValue[0]] = setOrder;
@@ -732,220 +714,208 @@ class DashBoard extends Component {
     this.setState({
       parent_widgets_order: order
     });
+
   }
 
   toggleChildCheck = (event, id, checkedValue) => {
 
-    if (id === "0") {
+    var getfirstKey = id.split("-");
 
-      let originalData = this.state.childRef;
+    let parentKey = getfirstKey[0];
 
-      originalData.forEach(item => {
-        item.checked = !item.checked;
+    let parent = getfirstKey[0] + "-" + getfirstKey[1];
+
+    let original_widgets = [...this.state.widgets];
+
+    let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+
+    widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
+
+    let obj = widgets_Order[parentKey];
+
+    let widgetCheck = true;
+    // if key in local Storage
+    if (obj != undefined) {
+
+      let child = obj.find(function (i) {
+        return i.key === parent
       });
+
+      let parentIndex = obj.findIndex(function (i) {
+        return i.key === parent
+      });
+
+      let widget = child.widgets.find(function (i) {
+        return i.key === id
+      });
+
+      if (widget) {
+        let checked = checkedValue ? checkedValue : !widget.checked;
+        widgetCheck = checked;
+        widget.checked = checked;
+      }
+
+      let indexxx = child.widgets.findIndex(function (i) {
+        return i.key === id
+      });
+
+      widgets_Order[parentKey][parentIndex].widgets[indexxx] = widget;
+
+      let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(widgets_Order));
+      let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
+
+      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
 
       this.setState({
-        childRef: originalData
+        childRef: widgets_Order[parentKey][parentIndex].widgets
       });
-    } else {
-      var getfirstKey = id.split("-");
+    }
+    else {
+      // لو العنصر مش موجود
+      let setOrder = [];
 
-      let parentKey = getfirstKey[0];
+      let checkList = original_widgets.filter(function (i) {
+        return i.refrence === parseInt(parentKey);
+      });
 
-      let parent = getfirstKey[0] + "-" + getfirstKey[1];
+      let getIndexx = checkList.findIndex(function (i) {
+        return i.key === parent;
+      });
 
-      let original_widgets = [...this.state.widgets];
+      setOrder = this.iterateWidgetsDynamic(checkList, id, checkedValue, parentKey);
 
-      let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Order")).toString(CryptoJS.enc.Utf8)
+      var objChild = {};
 
-      widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
+      objChild[parentKey] = setOrder;
 
-      let obj = widgets_Order[parentKey];
+      let allObj = Object.assign(objChild, widgets_Order);
 
-      // if key in local Storage
-      if (obj != undefined) {
+      let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
+      let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
 
-        let child = obj.find(function (i) {
-          return i.key === parent
-        });
+      this.saveToLS("Widgets_Order", encodedsetLocalStorage);
 
-        let parentIndex = obj.findIndex(function (i) {
-          return i.key === parent
-        });
-
-        let widget = child.widgets.find(function (i) {
-          return i.key === id
-        });
-
-        if (widget) {
-          let checked = checkedValue ? checkedValue : !widget.checked
-          widget.checked = checked;
-        }
-
-        let indexxx = child.widgets.findIndex(function (i) {
-          return i.key === id
-        });
-
-        widgets_Order[parentKey][parentIndex].widgets[indexxx] = widget;
-
-        let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(widgets_Order));
-        let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
-
-        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
-
-        this.setState({
-          childRef: widgets_Order[parentKey][parentIndex].widgets
-        });
-      }
-      else {
-        // لو العنصر مش موجود
-        let setOrder = [];
-
-        let checkList = original_widgets.filter(function (i) {
-          return i.refrence === parseInt(parentKey);
-        });
-
-        let getIndexx = checkList.findIndex(function (i) {
-          return i.key === parent;
-        });
-
-        if (checkList.length > 0) {
-
-          checkList.forEach((value, index) => {
-
-            let widgets = [];
-
-            value.widgets.forEach((val, i) => {
-              if (val.type === "twoWidget") {
-                if (val.key === id) {
-                  widgets.push({
-                    key: val.key,
-                    order: i + 1,
-                    checked: !val.checked,
-                    parentId: value.key,
-                    title: val.title,
-                    type: val.type,
-                    props: {
-                      api: val.props.api,
-                      value: val.props.value,
-                      total: val.props.total,
-                      route: val.props.route,
-                      key: val.props.key
-                    }
-                  });
-                } else {
-                  widgets.push({
-                    key: val.key,
-                    order: i + 1,
-                    checked: val.checked,
-                    parentId: value.key,
-                    title: val.title,
-                    type: val.type,
-                    props: {
-                      api: val.props.api,
-                      value: val.props.value,
-                      listType: val.props.listType,
-                      route: val.props.route,
-                      key: val.props.key
-                    }
-                  });
-                }
-              } else if (val.type === "pie") {
-
-                widgets.push({
-                  title: val.title,
-                  key: val.key,
-                  order: i + 1,
-                  parentId: value.key,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    name: val.props.name,
-                    y: val.props.y
-                  }
-                });
-              }
-              else if (val.type === "column") {
-
-                widgets.push({
-                  title: val.title,
-                  key: val.key,
-                  order: i + 1,
-                  parentId: value.key,
-                  type: val.type,
-                  props: {
-                    api: val.props.api,
-                    name: val.props.name,
-                    data: val.props.data,
-                    multiSeries: val.props.multiSeries
-                  }
-                });
-              }
-
-              else {
-                if (val.key === id) {
-                  widgets.push({
-                    key: val.key,
-                    order: i + 1,
-                    checked: checkedValue ? checkedValue : !val.checked,
-                    parentId: value.key,
-                    title: val.title,
-                    type: val.type,
-                    props: {
-                      api: val.props.api,
-                      value: val.props.value,
-                      listType: val.props.listType,
-                      route: val.props.route,
-                      key: val.props.key
-                    }
-                  });
-                } else {
-                  widgets.push({
-                    key: val.key,
-                    order: i + 1,
-                    checked: val.checked,
-                    parentId: value.key,
-                    title: val.title,
-                    type: val.type,
-                    props: {
-                      api: val.props.api,
-                      value: val.props.value,
-                      listType: val.props.listType,
-                      route: val.props.route,
-                      key: val.props.key
-                    }
-                  });
-                }
-              }
-            });
-
-            setOrder.push({
-              widgetCategory: value.widgetCategory,
-              key: value.key,
-              order: index + 1,
-              checked: value.checked,
-              parentId: "ref" + parentKey,
-              widgets: widgets
-            });
-          });
-        }
-
-        var objChild = {};
-
-        objChild[parentKey] = setOrder;
-
-        let allObj = Object.assign(objChild, widgets_Order);
-
-        let setLocalStorage = CryptoJS.enc.Utf8.parse(JSON.stringify(allObj));
-        let encodedsetLocalStorage = CryptoJS.enc.Base64.stringify(setLocalStorage);
-
-        this.saveToLS("Widgets_Order", encodedsetLocalStorage);
-
-        this.setState({
-          childRef: objChild[parentKey][getIndexx].widgets
-        });
+      this.setState({
+        childRef: objChild[parentKey][getIndexx].widgets
+      });
+    }
+    if (widgetCheck == false) {
+      let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == this.state.currentParent)
+      if (index_checked != -1) {
+        let checkAllWidgets = this.state.checkAllWidgets
+        checkAllWidgets[index_checked].value = widgetCheck
+        this.setState({ checkAllWidgets, currentCheck: widgetCheck })
       }
     }
+  }
+
+  iterateWidgetsDynamic(checkList, id, checkedValue, parentKey) {
+    let setOrder = [];
+    if (checkList.length > 0) {
+
+      checkList.forEach((value, index) => {
+        let widgets = [];
+        value.widgets.forEach((val, i) => {
+          if (val.type === "twoWidget") {
+            widgets.push({
+              key: val.key,
+              order: i + 1,
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+              parentId: value.key,
+              title: val.title,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                value: val.props.value,
+                total: val.props.total,
+                route: val.props.route,
+                key: val.props.key
+              }
+            });
+          } else if (val.type === "pie") {
+
+            widgets.push({
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+
+              title: val.title,
+              key: val.key,
+              order: i + 1,
+              parentId: value.key,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                name: val.props.name,
+                y: val.props.y
+              }
+            });
+          }
+          else if (val.type === "column") {
+
+            widgets.push({ 
+              title: val.title,
+              key: val.key,
+              id: val.id,
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+              order: i + 1,
+              parentId: value.key,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                name: val.props.name,
+                data: val.props.data,
+              },
+              multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+              catagName: val.catagName,
+              barContent: val.barContent,
+            });
+          }
+          else if (val.type === "line") {
+
+            widgets.push({
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+
+              title: val.title,
+              key: val.key,
+              order: i + 1,
+              topicNames: val.topicNames,
+              id: val.id,
+              parentId: value.key,
+              type: val.type,
+              props: {
+                api: val.props.api
+              }
+            });
+          }
+          else {
+            widgets.push({
+              key: val.key,
+              order: i + 1,
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+              parentId: value.key,
+              title: val.title,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                value: val.props.value,
+                listType: val.props.listType,
+                route: val.props.route,
+                key: val.props.key
+              }
+            });
+          }
+        });
+
+        setOrder.push({
+          widgetCategory: value.widgetCategory,
+          key: value.key,
+          order: index + 1,
+          checked: value.checked,
+          parentId: "ref" + parentKey,
+          widgets: widgets
+        });
+      });
+    }
+    return setOrder;
   }
 
   ChildchageOrder(order) {
@@ -1003,14 +973,14 @@ class DashBoard extends Component {
       });
 
       if (getListRef) {
-        //get object of key 
+        //get object of key
         let widget = getListRef.find(function (i) {
           return i.key === getKey
         });
 
         let setChildOrder = [];
 
-        order.forEach((value, index) => {
+        order.forEach((value, i) => {
 
           let listWidget = widget.widgets.find(function (i) {
             return i.key === value
@@ -1020,7 +990,7 @@ class DashBoard extends Component {
 
             setChildOrder.push({
               key: listWidget.key,
-              order: index + 1,
+              order: i + 1,
               checked: listWidget.checked != undefined ? listWidget.checked : false,
               parentId: getKey,
               title: listWidget.title,
@@ -1033,10 +1003,55 @@ class DashBoard extends Component {
                 key: listWidget.props.key
               }
             });
+          } else if (listWidget.type === "pie") {
+
+            widgets.push({
+              title: listWidget.title,
+              key: listWidget.key,
+              order: i + 1,
+              parentId: value.key,
+              type: listWidget.type,
+              props: {
+                api: listWidget.props.api,
+                name: listWidget.props.name,
+                y: listWidget.props.y
+              }
+            });
+          } else if (listWidget.type === "column") {
+
+            widgets.push({
+              title: listWidget.title,
+              key: listWidget.key,
+              order: i + 1,
+              parentId: value.key,
+              type: listWidget.type,
+              props: {
+                api: listWidget.props.api,
+                name: listWidget.props.name,
+                data: listWidget.props.data
+              },
+              multiSeries: listWidget.multiSeries, yTitle: listWidget.yTitle, stack: listWidget.stack,
+              catagName: listWidget.catagName,
+              barContent: listWidget.barContent,
+            });
+          } else if (listWidget.type === "line") {
+
+            widgets.push({
+              title: listWidget.title,
+              key: listWidget.key,
+              order: i + 1,
+              topicNames: listWidget.topicNames,
+              id: listWidget.id,
+              parentId: value.key,
+              type: listWidget.type,
+              props: {
+                api: listWidget.props.api
+              }
+            });
           } else {
             setChildOrder.push({
               key: listWidget.key,
-              order: index + 1,
+              order: i + 1,
               checked: listWidget.checked != undefined ? listWidget.checked : false,
               parentId: getKey,
               title: listWidget.title,
@@ -1102,31 +1117,42 @@ class DashBoard extends Component {
       child_widgets_order: order
     });
   }
+
   checkAllChildrens(event, key, checked) {
     this.viewCurrentMenu(event, key)
-    if (key === '0') {
-      this.checkAll(event, key)
-    }
-    else {
-      let index = this.state.widgets.findIndex(w => w.key == key)
-      if (index != -1) {
-        let childrens = this.state.widgets[index]['widgets']
-        childrens.forEach(child => {
-          child.checked = !checked
-          this.toggleChildCheck(undefined, child.key, !checked)
-        })
-        this.setState({ childRef: childrens })
-      }
-    }
-  }
-  checkAll(event, key) { 
-    let childrens = [...this.state.childRef]
-    if (childrens.length > 0) {
+    let index = this.state.widgets.findIndex(w => w.key == key)
+    if (index != -1) {
+      let childrens = this.state.widgets[index]['widgets']
       childrens.forEach(child => {
-        child.checked = true
-        this.toggleChildCheck(undefined, child.key, true)
+        child.checked = !checked
+        console.log(child);
+        this.toggleChildCheck(undefined, child.key, !checked)
       })
       this.setState({ childRef: childrens })
+    }
+
+  }
+
+  selectAll(event, widget) {
+    let key = this.state.currentParent
+    let checked = false
+    let index_checked = this.state.checkAllWidgets.findIndex(w => w.key == this.state.currentParent)
+    if (index_checked != -1) {
+      checked = this.state.checkAllWidgets[index_checked].value
+      let checkAllWidgets = this.state.checkAllWidgets
+      checkAllWidgets[index_checked].value = !checked
+      this.setState({ checkAllWidgets, currentCheck: !checked })
+    }
+    else {
+      let checkAllWidgets = this.state.checkAllWidgets
+      checkAllWidgets.push({ key: this.state.currentParent, value: true })
+      this.setState({ checkAllWidgets, currentCheck: true })
+    }
+    this.checkAllChildrens(event, this.state.currentParent, checked)
+    let index = this.state.widgets.findIndex(w => w.key == key)
+    if (index != -1) {
+      let parent = this.state.widgets[index]
+      this.toggleParentCheck(event, parent.key, 1, !checked)
     }
   }
 
@@ -1138,6 +1164,7 @@ class DashBoard extends Component {
           <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
             <div className="secondTabs project__select ui-state-default">
               <img src={dashBoardLogo} />
+
               <div
                 className={widget.checked === true ? "ui checkbox checkBoxGray300 count checked" : "ui checkbox checkBoxGray300 count"}
                 onClick={event => { this.checkAllChildrens(event, widget.key, widget.checked); this.toggleParentCheck(event, widget.key, index); }}>
@@ -1155,14 +1182,13 @@ class DashBoard extends Component {
     });
 
     var paneChild = "";
-
     if (this.state.viewChild) {
       paneChild = this.state.childRef.map((widget, index) => {
         return (
           <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
             <div className="secondTabs project__select ui-state-default">
               <img src={dashBoardLogo} />
-              <div className={"ui checkbox checkBoxGray300 count" + (widget.checked === true ? " checked" : "")} onClick={event =>  this.toggleChildCheck(event, widget.key)}>
+              <div className={"ui checkbox checkBoxGray300 count" + (widget.checked === true ? " checked" : "")} onClick={event => this.toggleChildCheck(event, widget.key)}>
                 <input name="CheckBox" type="checkbox" id="terms" tabIndex={index} className="hidden" checked={widget.checked} />
                 <label />
               </div>
@@ -1172,8 +1198,6 @@ class DashBoard extends Component {
             </div>
           </Pane>
         );
-
-
       });
     }
 
@@ -1214,9 +1238,24 @@ class DashBoard extends Component {
                     </div>
                     <div className="project__content">
                       {this.state.viewChild ? (
-                        <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
-                          {paneChild}
-                        </SortablePane>
+                        <Fragment>
+                          <Pane>
+                            <div className="secondTabs project__select ui-state-default">
+                              <img src={dashBoardLogo} />
+                              <div className={"ui checkbox checkBoxGray300 count" + (this.state.currentCheck == true ? " checked" : '')} onClick={event => this.selectAll(event, 0)}>
+                                <input name="CheckBox" type="checkbox" id="terms" tabIndex={0} className="hidden" checked={this.state.currentCheck} />
+                                <label />
+                              </div>
+                              <div className="project__title">
+                                <h3>Select All</h3>
+                              </div>
+                            </div>
+                          </Pane>
+                          <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
+                            {paneChild}
+                          </SortablePane>
+                        </Fragment>
+
                       ) : null}
                     </div>
                   </div>

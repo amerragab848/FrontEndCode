@@ -155,6 +155,7 @@ import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit";
 import equipmentDeliveryAddEdit from "./Pages/Procurement/equipmentDeliveryAddEdit";
 import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit"; 
 // import PaymentRequisitionList from "./Pages/Contracts/Schedule";
+import materialInventoryAddEdit from './Pages/Procurement/materialInventoryAddEdit';
 import chart from './Componants/ChartsWidgets/BarChartComp';
 import requestsTransferItems from "./Pages/Procurement/requestsTransferItems"; 
 import TransferInventory from "./Pages/Procurement/TransferInventory"; 
@@ -336,6 +337,7 @@ let originalRoutes = [
     , <Route path="/requestsTransferItems" component={requestsTransferItems} /> 
     , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} /> 
     
+    , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
