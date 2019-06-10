@@ -241,7 +241,7 @@ class equipmentDeliveryAddEdit extends Component {
                         subject: '',
                         docCloseDate: moment(),
                         ticketDate: moment(),
-                        'selectedProjects[]': '2'
+                        selectedProjects: []
                     }
                     this.setState({ document: Document })
                 }
@@ -280,10 +280,13 @@ class equipmentDeliveryAddEdit extends Component {
         dataservice.GetDataList('GetAccountsProjects', 'projectName', 'id').then(result => {
             if (isEdit) {
                 let id = this.props.document.selectedProjects;
-                let selectedValue = {};
-                if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                let selectedValue = [];
 
+                if (id) {
+                    id.map(w => {
+                        let element = _.find(result, function (i) { return i.value === w });
+                        selectedValue.push(element)
+                    })
                     this.setState({
                         selectedProject: selectedValue
                     });
@@ -329,6 +332,16 @@ class equipmentDeliveryAddEdit extends Component {
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         if (field == 'selectedProject') {
 
+            this.setState({
+                selectedProject: event
+            })
+            // console.log(this.state.selectedProject)
+            // if (event == null) return
+            // let original_document = { ...this.state.document }
+            // let updated_document = {};
+            // updated_document[field] = event.value;
+            // updated_document = Object.assign(original_document, updated_document);
+            // this.setState({ document: updated_document, [selectedValue]: event })
         }
         else {
 
@@ -429,7 +442,11 @@ class equipmentDeliveryAddEdit extends Component {
     SaveDoc = (Mood) => {
 
         this.setState({ isLoading: true })
-
+        let ProjectIds = []
+        this.state.selectedProject.forEach(function (item) {
+            ProjectIds.push(item.value)
+        })
+        console.log(ProjectIds)
         if (Mood === 'EditMood') {
             // let projectIds = []
             // this.state.selectedProjects.map(i =>
@@ -437,6 +454,7 @@ class equipmentDeliveryAddEdit extends Component {
             // )
             // console.log(projectIds)
             let doc = { ...this.state.document };
+            doc.selectedProjects = ProjectIds
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
@@ -456,6 +474,7 @@ class equipmentDeliveryAddEdit extends Component {
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.selectedProjects = ProjectIds
             //doc.docId =this.state.
             dataservice.addObject('AddLogsEquipmentsDelivery', doc).then(result => {
 
@@ -711,7 +730,7 @@ class equipmentDeliveryAddEdit extends Component {
 
                                     <div className="linebylineInput letterFullWidth dropdownMulti">
                                         <Dropdown title="otherProjects" data={this.state.projectsData} value={this.state.selectedProject}
-                                            handleChange={event => this.handleChangeDropDown(event, "selectedProjects", false, "", "", "", "selectedProject")}
+                                            handleChange={event => this.handleChangeDropDown(event, "selectedProject", false, "", "", "", "selectedProjects")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.selectedProjects}
                                             touched={touched.selectedProjects} name="selectedProjects" id="selectedProjects" isMulti={true} />
                                     </div>

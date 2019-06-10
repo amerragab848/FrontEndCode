@@ -337,6 +337,7 @@ class DashBoard extends Component {
                 widgets.push({
                   title: val.title,
                   key: val.key,
+                  id: val.id,
                   order: i + 1,
                   parentId: value.key,
                   type: val.type,
@@ -481,6 +482,7 @@ class DashBoard extends Component {
               widgets.push({
                 title: val.title,
                 key: val.key,
+                id: val.id,
                 order: i + 1,
                 parentId: value.key,
                 type: val.type,
@@ -624,6 +626,7 @@ class DashBoard extends Component {
                 widgets.push({
                   title: val.title,
                   key: val.key,
+                  id: val.id,
                   order: i + 1,
                   parentId: getValueKey.key,
                   type: val.type,
@@ -697,109 +700,7 @@ class DashBoard extends Component {
       // if no localStorage
       let setOrder = [];
 
-      order.forEach((value, index) => {
-        let getValueKey = original_widgets.find(function (i) {
-          return i.key === value;
-        });
-
-        if (getValueKey) {
-
-          let widgets = [];
-
-          getValueKey.widgets.forEach((val, i) => {
-            if (val.type === "twoWidget") {
-              widgets.push({
-                key: val.key,
-                order: i + 1,
-                checked: val.checked != undefined ? val.checked : false,
-                parentId: getValueKey.key,
-                title: val.title,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  value: val.props.value,
-                  total: val.props.total,
-                  route: val.props.route,
-                  key: val.props.key
-                }
-              });
-            } else if (val.type === "pie") {
-
-              widgets.push({
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                parentId: getValueKey.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  y: val.props.y
-                }
-              });
-            }
-            else if (val.type === "column") {
-
-              widgets.push({
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                parentId: getValueKey.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  data: val.props.data,
-                },
-                multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
-                catagName: val.catagName,
-                barContent: val.barContent,
-              });
-            }
-            else if (val.type === "line") {
-
-              widgets.push({
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                topicNames: val.topicNames,
-                id: val.id,
-                parentId: value.key,
-                type: val.type,
-                props: {
-                  api: val.props.api
-                }
-              });
-            }
-            else {
-              widgets.push({
-                key: val.key,
-                order: i + 1,
-                checked: val.checked != undefined ? val.checked : false,
-                parentId: getValueKey.key,
-                title: val.title,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  value: val.props.value,
-                  listType: val.props.listType,
-                  route: val.props.route,
-                  key: val.props.key
-                }
-              });
-            }
-          });
-
-          setOrder.push({
-            widgetCategory: getValueKey.widgetCategory,
-            key: value,
-            order: index + 1,
-            checked: value.checked != undefined ? value.checked : false,
-            parentId: "ref" + refrenceValue[0],
-            widgets: widgets
-          });
-        }
-      });
+      setOrder = this.iterateWidgetsDynamic(order, null, null, null);
 
       var obj = {};
       obj[refrenceValue[0]] = setOrder;
@@ -813,6 +714,7 @@ class DashBoard extends Component {
     this.setState({
       parent_widgets_order: order
     });
+
   }
 
   toggleChildCheck = (event, id, checkedValue) => {
@@ -880,149 +782,7 @@ class DashBoard extends Component {
         return i.key === parent;
       });
 
-      if (checkList.length > 0) {
-
-        checkList.forEach((value, index) => {
-
-          let widgets = [];
-
-          value.widgets.forEach((val, i) => {
-            // if (val.key === id) {
-            if (val.type === "twoWidget") {
-              //  if (val.key === id) {
-              widgets.push({
-                key: val.key,
-                order: i + 1,
-                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
-                parentId: value.key,
-                title: val.title,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  value: val.props.value,
-                  total: val.props.total,
-                  route: val.props.route,
-                  key: val.props.key
-                }
-              });
-              // } else {
-              //   widgets.push({
-              //     key: val.key,
-              //     order: i + 1,
-              //     checked: val.checked,
-              //     parentId: value.key,
-              //     title: val.title,
-              //     type: val.type,
-              //     props: {
-              //       api: val.props.api,
-              //       value: val.props.value,
-              //       listType: val.props.listType,
-              //       route: val.props.route,
-              //       key: val.props.key
-              //     }
-              //   });
-              // }
-            } else if (val.type === "pie") {
-
-              widgets.push({
-                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
-
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                parentId: value.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  y: val.props.y
-                }
-              });
-            }
-            else if (val.type === "column") {
-
-              widgets.push({
-
-                title: val.title,
-                key: val.key,
-                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
-                order: i + 1,
-                parentId: value.key,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  name: val.props.name,
-                  data: val.props.data,
-                },
-                multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
-                catagName: val.catagName,
-                barContent: val.barContent,
-              });
-            }
-            else if (val.type === "line") {
-
-              widgets.push({
-                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
-
-                title: val.title,
-                key: val.key,
-                order: i + 1,
-                topicNames: val.topicNames,
-                id: val.id,
-                parentId: value.key,
-                type: val.type,
-                props: {
-                  api: val.props.api
-                }
-              });
-            }
-            else {
-              widgets.push({
-                key: val.key,
-                order: i + 1,
-                checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
-                parentId: value.key,
-                title: val.title,
-                type: val.type,
-                props: {
-                  api: val.props.api,
-                  value: val.props.value,
-                  listType: val.props.listType,
-                  route: val.props.route,
-                  key: val.props.key
-                }
-              });
-            }
-            // } else {
-
-            //   widgets.push({
-            //     key: val.key,
-            //     order: i + 1,
-            //     checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
-            //     parentId: value.key,
-            //     title: val.title,
-            //     type: val.type,
-            //     props: {
-            //       api: val.props.api,
-            //       value: val.props.value,
-            //       listType: val.props.listType,
-            //       route: val.props.route,
-            //       key: val.props.key
-            //     }
-            //   });
-            // }
-          });
-
-          setOrder.push({
-            widgetCategory: value.widgetCategory,
-            key: value.key,
-            order: index + 1,
-            checked: value.checked,
-            parentId: "ref" + parentKey,
-            widgets: widgets
-          });
-        });
-      }
+      setOrder = this.iterateWidgetsDynamic(checkList, id, checkedValue, parentKey);
 
       var objChild = {};
 
@@ -1047,6 +807,115 @@ class DashBoard extends Component {
         this.setState({ checkAllWidgets, currentCheck: widgetCheck })
       }
     }
+  }
+
+  iterateWidgetsDynamic(checkList, id, checkedValue, parentKey) {
+    let setOrder = [];
+    if (checkList.length > 0) {
+
+      checkList.forEach((value, index) => {
+        let widgets = [];
+        value.widgets.forEach((val, i) => {
+          if (val.type === "twoWidget") {
+            widgets.push({
+              key: val.key,
+              order: i + 1,
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+              parentId: value.key,
+              title: val.title,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                value: val.props.value,
+                total: val.props.total,
+                route: val.props.route,
+                key: val.props.key
+              }
+            });
+          } else if (val.type === "pie") {
+
+            widgets.push({
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+
+              title: val.title,
+              key: val.key,
+              order: i + 1,
+              parentId: value.key,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                name: val.props.name,
+                y: val.props.y
+              }
+            });
+          }
+          else if (val.type === "column") {
+
+            widgets.push({ 
+              title: val.title,
+              key: val.key,
+              id: val.id,
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+              order: i + 1,
+              parentId: value.key,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                name: val.props.name,
+                data: val.props.data,
+              },
+              multiSeries: val.multiSeries, yTitle: val.yTitle, stack: val.stack,
+              catagName: val.catagName,
+              barContent: val.barContent,
+            });
+          }
+          else if (val.type === "line") {
+
+            widgets.push({
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+
+              title: val.title,
+              key: val.key,
+              order: i + 1,
+              topicNames: val.topicNames,
+              id: val.id,
+              parentId: value.key,
+              type: val.type,
+              props: {
+                api: val.props.api
+              }
+            });
+          }
+          else {
+            widgets.push({
+              key: val.key,
+              order: i + 1,
+              checked: val.key === id ? (checkedValue ? checkedValue : !val.checked) : val.checked,
+              parentId: value.key,
+              title: val.title,
+              type: val.type,
+              props: {
+                api: val.props.api,
+                value: val.props.value,
+                listType: val.props.listType,
+                route: val.props.route,
+                key: val.props.key
+              }
+            });
+          }
+        });
+
+        setOrder.push({
+          widgetCategory: value.widgetCategory,
+          key: value.key,
+          order: index + 1,
+          checked: value.checked,
+          parentId: "ref" + parentKey,
+          widgets: widgets
+        });
+      });
+    }
+    return setOrder;
   }
 
   ChildchageOrder(order) {
@@ -1312,8 +1181,6 @@ class DashBoard extends Component {
         return null;
     });
 
-
-
     var paneChild = "";
     if (this.state.viewChild) {
       paneChild = this.state.childRef.map((widget, index) => {
@@ -1333,9 +1200,6 @@ class DashBoard extends Component {
         );
       });
     }
-
-
-
 
     return (
       <div className="customeTabs" >

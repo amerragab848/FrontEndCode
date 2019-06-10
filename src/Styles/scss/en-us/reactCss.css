@@ -6547,6 +6547,12 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     min-height: 80px;
 }
 
+.border_bottom {
+    margin-top: 15px;
+    padding-bottom : 25px;
+    border-bottom: 1px solid #e9ecf0; 
+}
+
 .rootIcon {
     color: #b3bac7;
     transition: all 0.s ease;

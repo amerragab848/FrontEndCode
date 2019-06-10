@@ -1474,7 +1474,7 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "paymentRequisitions" ? (<PaymentRequisitionList contractId={this.state.docId}/>) : null}
           {this.state.activeTab == "contractsDeductions" ? (<ContractsDeductions contractId={this.state.docId}/>) : null}
           {this.state.activeTab == "conditions" ? (<ContractsConditions contractId={this.state.docId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "schedule" ? (<Schedule type="contractId" contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} ApiGet={"GetSubContractsByContractId?contractId="+this.state.docId} Api='AddScheduleItem' ApiDelete='DeleteContractsScheduleById?id='/>) : null}
+          {this.state.activeTab == "schedule" ? (<Schedule type="contractId" contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} ApiGet={"GetScheduleItemsByContractId?contractId="+this.state.docId} Api='AddScheduleItem' ApiDelete='DeleteContractsScheduleById?id='/>) : null}
           {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} Api='AddInurance' type="contractId" ApiDelete="DeleteContractsInsuranceById?id=" ApiGet="GetInsuranceItemsByContractId?contractId=" projectId={projectId} isViewMode={this.state.isViewMode}/>):null}
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId='+this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}

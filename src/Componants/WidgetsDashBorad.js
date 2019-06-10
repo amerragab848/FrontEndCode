@@ -419,7 +419,7 @@ var widgets = [
         type: 'pie',
         seriesName: "projectStatus"
       }, {
-        id: 'wt-Name03',
+        id: 'wt-Name02',
         key: "0-3-2",
         checked: false,
         title: 'percentageExpensesTypesOfTotal',
@@ -432,7 +432,7 @@ var widgets = [
         seriesName: "expensesAllProject"
 
       }, {
-        id: 'wt-Name02',
+        id: 'wt-Name03',
         key: "0-3-3",
         checked: false,
         title: 'expensesAllProject',
@@ -455,7 +455,7 @@ var widgets = [
         topicNames:['Opened','Closed'],
         type: 'line' 
       }, {
-        id: 'wt-Name06',
+        id: 'wt-Name05',
         key: "0-3-5",
         checked: false,
         title: 'percentOfMaterialRequestPerProject',
@@ -471,7 +471,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, {
-        id: 'wt-Name0120',
+        id: 'wt-Name14',
         key: "0-3-14",
         checked: false,
         title: 'letterStatusYearly',
@@ -481,7 +481,7 @@ var widgets = [
         topicNames:['Opened','Closed'],
         type: 'line' 
       }, {
-        id: 'wt-Name05',
+        id: 'wt-Name4',
         key: "0-3-4",
         checked: false,
         title: 'percentOfMaterialRequestPerProject',
@@ -497,7 +497,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, {
-        id: 'wt-Name0122',
+        id: 'wt-Name16',
         key: "0-3-16",
         checked: false,
         title: 'submittalStatusYearly',
@@ -507,7 +507,7 @@ var widgets = [
         topicNames:['Opened','Closed'],
         type: 'line' 
       }, {
-        id: 'wt-Name07',
+        id: 'wt-Name06',
         key: "0-3-6",
         checked: false,
         title: 'percentOfRejectedSubmittalPerProject',
@@ -523,7 +523,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, {
-        id: 'wt-Name08',
+        id: 'wt-Name07',
         key: "0-3-7",
         checked: false,
         title: 'countinspectionApproved',
@@ -539,7 +539,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, { 
-        id: 'wt-Name11',
+        id: 'wt-Name10',
         key: "0-3-10",
         checked: false,
         title: 'contractsPerProject',
@@ -556,7 +556,7 @@ var widgets = [
         barContent: [{ name: 'Contracted', value: 'percentageContract' }, { name: 'Contracts Under Review', value: 'countUnderContract' }]
 
       }, { 
-        id: 'wt-Name14',
+        id: 'wt-Name12',
         key: "0-3-12",
         checked: false,
         title: 'budgetVariance',
@@ -572,7 +572,7 @@ var widgets = [
         multiSeries: 'yes',
         barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
       }, {
-        id: 'wt-Name0121',
+        id: 'wt-Name15',
         key: "0-3-15",
         checked: false,
         title: 'transmittalStatusYearly',
