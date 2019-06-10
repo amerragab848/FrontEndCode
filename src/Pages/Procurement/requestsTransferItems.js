@@ -1,12 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import Api from '../../api';
 import Resources from '../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import Filter from '../../Componants/FilterComponent/filterComponent'
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup"
-import { SkyLightStateless } from 'react-skylight';
 import Config from "../../Services/Config";
 import CryptoJS from 'crypto-js';
 import { withRouter } from "react-router-dom";
@@ -16,9 +12,6 @@ import * as communicationActions from '../../store/actions/communication';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from "moment";
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import euroSymbol from 'material-ui/svg-icons/action/euro-symbol';
-let docId = 0;
 const _ = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -176,6 +169,7 @@ class requestsTransferItems extends Component {
             });
         }
     }
+    
     render() {
 
         const dataGrid =

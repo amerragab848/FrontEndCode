@@ -158,6 +158,9 @@ import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit
 import chart from './Componants/ChartsWidgets/BarChartComp';
 import requestsTransferItems from "./Pages/Procurement/requestsTransferItems"; 
 import TransferInventory from "./Pages/Procurement/TransferInventory"; 
+import materialReturnedAddEdit from "./Pages/Procurement/materialReturnedAddEdit"; 
+
+
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
@@ -331,6 +334,8 @@ let originalRoutes = [
     , <Route path="/equipmentDeliveryAddEdit" component={equipmentDeliveryAddEdit} /> 
     , <Route path="/TransferInventory" component={TransferInventory} /> 
     , <Route path="/requestsTransferItems" component={requestsTransferItems} /> 
+    , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} /> 
+    
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
