@@ -97,7 +97,8 @@ class Index extends Component {
           <Britecharts
             api={item.props.api}
             title={language[item.title][currentLanguage]}
-            topicName={item.topicNames} />
+            topicName={item.topicNames}
+          />
         );
       }
       else {
@@ -112,7 +113,8 @@ class Index extends Component {
             yTitle={language[item.yTitle][currentLanguage]}
             catagName={item.catagName}
             multiSeries={item.multiSeries}
-            barContent={item.barContent} />
+            barContent={item.barContent ? item.barContent : []}
+          />
         );
       }
     });
@@ -194,7 +196,7 @@ class Index extends Component {
                                 yTitle={panel.yTitle}
                                 catagName={panel.catagName}
                                 multiSeries={panel.multiSeries}
-                                barContent={panel.barContent}
+                                barContent={panel.barContent ? panel.barContent : []}
                               />);
                           }
                         }
@@ -225,8 +227,8 @@ class Index extends Component {
                     </h2>
                   }
                   <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
-                    {widget.widgets.length > 0
-                      ? widget.widgets.map(panel => {
+                    {widget.widgets.length > 0 ?
+                      widget.widgets.map(panel => {
                         if (panel.type === "threeWidget") {
                           return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
                         }
@@ -271,7 +273,7 @@ class Index extends Component {
                               yTitle={panel.yTitle}
                               catagName={panel.catagName}
                               multiSeries={panel.multiSeries}
-                              barContent={panel.barContent}
+                              barContent={panel.barContent ? panel.barContent : []}
                             />
                           );
                         }
@@ -300,8 +302,8 @@ class Index extends Component {
                   {language[widget.widgetCategory][currentLanguage]}
                 </h2>
                 <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
-                  {widget.widgets.length > 0
-                    ? widget.widgets.map(panel => {
+                  {widget.widgets.length > 0 ?
+                    widget.widgets.map(panel => {
                       if (panel.type === "threeWidget") {
                         return (<ApprovedWidget key={panel.key} {...panel} title={language[panel.title][currentLanguage]} />);
                       }
@@ -346,7 +348,7 @@ class Index extends Component {
                             yTitle={panel.yTitle}
                             catagName={panel.catagName}
                             multiSeries={panel.multiSeries}
-                            barContent={panel.barContent}
+                            barContent={panel.barContent ? panel.barContent : []}
                           />
                         );
                       }
