@@ -6547,12 +6547,12 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     min-height: 80px;
 }
 
-<<<<<<< HEAD
 .border_bottom {
     margin-top: 15px;
     padding-bottom : 25px;
     border-bottom: 1px solid #e9ecf0; 
-=======
+}
+
 .rootIcon {
     color: #b3bac7;
     transition: all 0.s ease;
@@ -6623,5 +6623,4 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 
 .lineCharts .vertical-marker-container .vertical-marker {
     stroke: transparent
->>>>>>> 6afa29ccf2e60094d46d90d6c9d206c9e2f11357
 }
