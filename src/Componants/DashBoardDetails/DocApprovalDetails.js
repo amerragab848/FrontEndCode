@@ -47,7 +47,8 @@ let subjectLink = ({ value, row }) => {
       projectName: row.projectName,
       arrange: row.arrange,
       docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true
+      isApproveMode: true,
+      perviousRoute:window.location.pathname+window.location.search
     };
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
@@ -402,7 +403,8 @@ class DocApprovalDetails extends Component {
           projectName: obj.projectName,
           arrange: obj.arrange,
           docApprovalId: obj.accountDocWorkFlowId,
-          isApproveMode: true
+          isApproveMode: true,
+          perviousRoute:window.location.pathname+window.location.search
         }
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);

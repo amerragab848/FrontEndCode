@@ -133,7 +133,8 @@ class CommonLog extends Component {
         projectName: this.state.projectName,
         arrange: 0,
         docApprovalId: 0,
-        isApproveMode: false
+        isApproveMode: false,
+        perviousRoute:window.location.pathname+window.location.search
       };
 
       if (
@@ -163,7 +164,8 @@ class CommonLog extends Component {
         projectName: this.state.projectName,
         arrange: 0,
         docApprovalId: 0,
-        isApproveMode: false
+        isApproveMode: false,
+        perviousRoute:window.location.pathname+window.location.search
       };
 
       if (
@@ -330,7 +332,8 @@ class CommonLog extends Component {
           projectName: row.projectName,
           arrange: 0,
           docApprovalId: 0,
-          isApproveMode: false
+          isApproveMode: false,
+          perviousRoute:window.location.pathname+window.location.search
         };
 
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -440,7 +443,8 @@ class CommonLog extends Component {
             projectName: this.state.projectName,
             arrange: 0,
             docApprovalId: 0,
-            isApproveMode: false
+            isApproveMode: false,
+            perviousRoute:window.location.pathname+window.location.search
           };
 
           if (
