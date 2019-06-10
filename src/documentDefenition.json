@@ -7556,7 +7556,7 @@
   "requestPayments": {
     "documentTitle": "paymentRequistionLog",
     "docTyp": 71,
-    "documentAddEditLink": "requestPaymentsAddEdit/",
+    "documentAddEditLink": "requestPaymentsAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 184,
     "documentEditPermission": 185,
@@ -15280,7 +15280,7 @@
   "materialInventory": {
     "documentTitle": "materialInventory",
     "docTyp": 50,
-    "documentAddEditLink": "materialInventoryAddEdit/",
+    "documentAddEditLink": "materialInventoryAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 614,
     "documentEditPermission": 615,
@@ -15302,18 +15302,20 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "<div class=\"btn-group\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\" role=\"group\" style=\"margin-top: 15px;\"><button class=\"transfer\" type=\"button\" data-bind=\"click: $parent.$userViewModelRoot.showTransFer\" class=\"btn table-btn-tooltip btn-xs btn-default\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Transfer To Project\"><i class=\"fa fa-stack-exchange\"></i></button></div>",
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "isCustom":true
       },
       {
         "field": "resourceCode",
         "friendlyName": "resourceCode",
         "minWidth": 85,
-        "width": "8%",
+        "width": "15%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#000000\" class=\"table-item\" data-bind=\"css: { 'is-child-item': $parent.entity.isItem } \"><span data-bind=\"text:  ( $parent.entity.isItem ? '&#9679; ' : '') + $parent.entity.resourceCode\"></span></div>",
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "isCustom":true
       },
       {
         "field": "description",
@@ -15325,7 +15327,7 @@
         "isTime": false,
         "isCustom": true,
         "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\" class=\"table-item\" data-bind=\"css: { 'is-child-item': $parent.entity.isItem } \"><a data-bind=\"attr: { href: $parent.entity.isItem ? 'javascript:void(0);' :'#materialInventoryAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text:  ( $parent.entity.isItem ? '&#9679; ' : '') + $parent.entity.description\"></span></a></div>",
-        "exportDataType": "s"
+        "exportDataType": "s" 
       },
       {
         "field": "disciplineName",
@@ -15336,8 +15338,8 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": false,
-        "exportDataType": "s"
+        "isCustom": true,
+        "exportDataType": "s" 
       },
       {
         "field": "remainingQuantity",
@@ -15348,8 +15350,8 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": false,
-        "exportDataType": "n"
+        "isCustom": true,
+        "exportDataType": "n" 
       },
       {
         "field": "unitPrice",
@@ -15360,8 +15362,8 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": false,
-        "exportDataType": "n"
+        "isCustom": true,
+        "exportDataType": "n" 
       },
       {
         "field": "total",
@@ -15372,7 +15374,7 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": false,
+        "isCustom": true,
         "exportDataType": "n"
       },
       {
@@ -15432,7 +15434,8 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "<div data-bind=\"attr: { 'class': 'kgCellText colt' + $index() }\" style=\"text-align: center;\"><a class=\"editable-click reject\" style=\"text-decoration: none; color: #333\" data-bind=\"text: $parent.entity.rejectedQuantity\"></a></div>",
-        "exportDataType": "n"
+        "exportDataType": "n",
+        "isCustom":false
       },
       {
         "field": "pendingQuantity",
@@ -15443,7 +15446,8 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "<div data-bind=\"attr: { 'class': 'kgCellText colt' + $index() }\" style=\"text-align: center;\"><a class=\"editable-click approval\" style=\"text-decoration: none; color: #333\" data-bind=\"text: $parent.entity.pendingQuantity\"></a></div>",
-        "exportDataType": "n"
+        "exportDataType": "n",
+        "isCustom":false
       },
       {
         "field": "releasePrice",
@@ -15455,7 +15459,7 @@
         "isTime": false,
         "cellTemplate": "",
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s" 
       },
       {
         "field": "lastDeliveryDate",
@@ -15515,7 +15519,7 @@
         "isTime": true,
         "cellTemplate": "",
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s" 
       }
     ],
     "filterApi": "LogsMaterialInventoryFilter",
