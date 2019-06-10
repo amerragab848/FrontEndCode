@@ -10,7 +10,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -46,6 +46,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 class reportsAddEdit extends Component {
@@ -66,6 +67,7 @@ class reportsAddEdit extends Component {
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 }
                 catch{
                     this.props.history.goBack();
@@ -80,6 +82,7 @@ class reportsAddEdit extends Component {
             showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 20,
@@ -105,9 +108,9 @@ class reportsAddEdit extends Component {
 
         if (!Config.IsAllow(423) && !Config.IsAllow(424) && !Config.IsAllow(426)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/Reports/" + projectId
-            });
+            this.props.history.push(
+                this.state.perviousRoute
+            );
         }
     }
 
@@ -122,7 +125,7 @@ class reportsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
-    
+
     }
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document && nextProps.document.id > 0) {
@@ -131,9 +134,9 @@ class reportsAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow,
                 selectedReportType: { label: nextProps.document.reportTypeName, value: nextProps.document.reportTypeId },
                 message: nextProps.document.message
-            },function(){
+            }, function () {
                 let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
-                this.setState({document:{...this.state.document,docDate:docDate}})
+                this.setState({ document: { ...this.state.document, docDate: docDate } })
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -172,13 +175,14 @@ class reportsAddEdit extends Component {
         }
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url,this.state.docTypeId,'Reports').then(() => {
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'Reports').then(() => {
                 this.setState({ isLoading: false })
             })
 
@@ -218,8 +222,8 @@ class reportsAddEdit extends Component {
 
             this.setState({
                 document: updated_document
-            });  
-        } 
+            });
+        }
     };
 
     fillDropDowns(isEdit) {
@@ -321,25 +325,26 @@ class reportsAddEdit extends Component {
         this.setState({
             isLoading: true
         });
-        let docDate =moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        let document=Object.assign(this.state.document,{ docDate:docDate})
+        let docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let document = Object.assign(this.state.document, { docDate: docDate })
         dataservice.addObject('EditCommunicationReport', document).then(result => {
             this.setState({
                 isLoading: true
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-
-            this.props.history.push({
-                pathname: "/Reports/" + this.state.projectId
-            });
+            if (this.state.isApproveMode === false) {
+                this.props.history.push( 
+                    this.state.perviousRoute
+                  );
+            }
         });
     }
 
     saveReport() {
         let reportTypeId = this.state.document.reportType.value
         let report = Object.assign({ ...this.state.document }, { reportTypeId: reportTypeId })
-        report.docDate =moment(report.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        report.docDate = moment(report.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         dataservice.addObject('AddCommunicationReport', report).then(result => {
             this.setState({
                 docId: result.id
@@ -374,9 +379,10 @@ class reportsAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -392,10 +398,10 @@ class reportsAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
 
@@ -403,7 +409,7 @@ class reportsAddEdit extends Component {
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.Reports[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.Reports[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -556,10 +562,10 @@ class reportsAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input mix_dropdown">
-                                                        <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                             <Dropdown
+                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -569,7 +575,7 @@ class reportsAddEdit extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         name="fromContact"
                                                                         data={this.state.fromContacts}
                                                                         handleChange={e => this.handleChange('fromContact', e)}
@@ -586,10 +592,10 @@ class reportsAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input mix_dropdown">
-                                                        <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                  <Dropdown
+                                                                    <Dropdown
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event => this.handleChange('toCompany', event)}
@@ -597,7 +603,7 @@ class reportsAddEdit extends Component {
                                                                         id="toCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         name='toContact'
                                                                         data={this.state.toContacts}
                                                                         handleChange={(e) => this.handleChange("toContact", e)}
@@ -613,7 +619,7 @@ class reportsAddEdit extends Component {
 
                                                         <div className="fullWidthWrapper textLeft">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
-                                                        
+
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
                                                                     value={this.state.message}
@@ -634,8 +640,8 @@ class reportsAddEdit extends Component {
 
                                                                     {this.state.isApproveMode === true ?
                                                                         <div >
-                                                                            <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
                                                                         </div>
                                                                         : null
@@ -657,11 +663,11 @@ class reportsAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                        {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={821} EditAttachments={3232} ShowDropBox={3625} ShowGoogleDrive={3626} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={821} EditAttachments={3232} ShowDropBox={3625} ShowGoogleDrive={3626} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ?
-                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null}
+                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                : null}
                                         </div>
                                     </div>
                                 </div>

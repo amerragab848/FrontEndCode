@@ -299,7 +299,8 @@ class FollowUpsSummaryDetails extends Component {
         projectName: obj.projectName,
         arrange: 0,
         docApprovalId: 0,
-        isApproveMode: false
+        isApproveMode: false,
+        perviousRoute:window.location.pathname+window.location.search
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);

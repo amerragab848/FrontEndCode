@@ -44,6 +44,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 let specsId="";
 let boqId="";
@@ -3195,7 +3196,7 @@ renderEditable(cellInfo) {
         {this.state.IsLoadingCheckCode ? <LoadingSection /> : null}
 
         <div className={ this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step" }>
-          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.purchaseOrder[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.purchaseOrder[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
               {this.state.FirstStep ? (

@@ -69,6 +69,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 
 class SubmittalAddEdit extends Component {
@@ -90,6 +91,7 @@ class SubmittalAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
+          perviousRoute=obj.perviousRoute
           arrange = obj.arrange;
 
         } catch {
@@ -109,6 +111,7 @@ class SubmittalAddEdit extends Component {
       showModal: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
+      perviousRoute:perviousRoute,
       isView: false,
       docId: docId,
       docTypeId: 42,
@@ -1629,12 +1632,12 @@ class SubmittalAddEdit extends Component {
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId}  previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       }
     ];
@@ -1642,7 +1645,7 @@ class SubmittalAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one_step one__tab readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
-          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.Submittal[currentLanguage]} moduleTitle={Resources['technicalOffice'][currentLanguage]} />
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.Submittal[currentLanguage]} moduleTitle={Resources['technicalOffice'][currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
               <div id="step1" className="step-content-body">

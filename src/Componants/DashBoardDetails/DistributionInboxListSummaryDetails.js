@@ -36,7 +36,8 @@ let subjectLink = ({ value, row }) => {
       projectName: row.projectName,
       arrange: row.arrange,
       docApprovalId: 0,
-      isApproveMode: false
+      isApproveMode: false,
+      perviousRoute:window.location.pathname+window.location.search
     };
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
@@ -63,9 +64,8 @@ const statusButton = ({ value, row }) => {
 };
 
 class DistributionInboxListSummaryDetails extends Component {
-  constructor(props) {
-    super(props);
-
+  constructor(props) { 
+    super(props); 
     var columnsGrid = [
       {
         key: "statusText",
@@ -137,7 +137,7 @@ class DistributionInboxListSummaryDetails extends Component {
         formatter:dateFormate
       }
     ];
-
+ 
     const filtersColumns = [
       {
         field: "statusText",
@@ -287,7 +287,8 @@ class DistributionInboxListSummaryDetails extends Component {
       projectName: obj.projectName,
       arrange: obj.arrange,
       docApprovalId: 0,
-      isApproveMode: false
+      isApproveMode: false,
+      perviousRoute:window.location.pathname+window.location.search
     }
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
