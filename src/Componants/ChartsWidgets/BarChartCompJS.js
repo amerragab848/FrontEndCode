@@ -27,9 +27,7 @@ class BarChartCompJS extends Component {
         }
     }
 
-    componentDidMount = () => {
-
-        console.log(this.props.uKey,this.props.title);
+    componentDidMount = () => { 
         let barData = [];
         if (this.props.multiSeries === 'no') {
             this.setState({

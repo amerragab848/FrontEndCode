@@ -69,8 +69,7 @@ class PieChartComp extends Component {
             data: e.data,
             highlightedSlice: e.data.id,
             showLegend: true
-        });
-        // data = e.data;
+        }); 
     };
 
     render() {
@@ -94,14 +93,13 @@ class PieChartComp extends Component {
                                         colorSchema={colorSchema}
                                         customMouseMove={this.logMouseOver}
                                         highlightSliceById={this.state.highlightedSlice}
-                                        isAnimated={false}
-                                    />
+                                        isAnimated={false} />
 
                                     {this.state.showLegend === true ?
                                         <p id="legenbd__teext" style={{ width: width / 2 }}>
                                             <span className="chartName"> {this.state.data.name}</span>
                                             <span className="percentage">{this.state.data.percentage + '%'}</span>
-                                            <span className="totalAmount">{this.state.data.quantity + 'LE'}</span>
+                                            <span className="totalAmount">{this.state.data.quantity + ' LE'}</span>
                                         </p>
                                         : null}
                                 </div>
