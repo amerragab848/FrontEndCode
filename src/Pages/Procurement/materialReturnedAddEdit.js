@@ -38,6 +38,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute ='';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -103,6 +104,7 @@ class materialReturnedAddEdit extends Component {
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
+                    perviousRoute=obj.perviousRoute;
                     arrange = obj.arrange;
                 } catch { this.props.history.goBack(); }
             }
@@ -121,6 +123,7 @@ class materialReturnedAddEdit extends Component {
             showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
+            perviousRoute:perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 51,
@@ -178,7 +181,9 @@ class materialReturnedAddEdit extends Component {
 
         if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialDelivery/" + this.state.projectId);
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
 
@@ -741,13 +746,12 @@ class materialReturnedAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
+                  projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+              }, {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
+                  projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+              }
         ]
 
         let StepOne = () => {
@@ -1303,7 +1307,7 @@ class materialReturnedAddEdit extends Component {
                 </div>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialReturned[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationProposalAdd[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">

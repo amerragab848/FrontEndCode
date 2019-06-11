@@ -42,6 +42,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute = '';
 let arrange = 0;
 
 const _ = require('lodash');
@@ -72,6 +73,7 @@ class MaterialInventoryAddEdit extends Component {
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
+                    perviousRoute=obj.perviousRoute;
                     arrange = obj.arrange;
                 }
                 catch{
@@ -329,6 +331,7 @@ class MaterialInventoryAddEdit extends Component {
             docTypeId: 50,
             projectId: projectId,
             docApprovalId: docApprovalId,
+            perviousRoute:perviousRoute,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             discplines: [],
@@ -355,9 +358,9 @@ class MaterialInventoryAddEdit extends Component {
 
         if (!Config.IsAllow(615) && !Config.IsAllow(616) && !Config.IsAllow(634)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/materialInventory/" + projectId
-            });
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
 
@@ -622,11 +625,12 @@ class MaterialInventoryAddEdit extends Component {
                 isLoading: false
             });
 
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-
-            this.props.history.push({
-                pathname: "/materialInventory/" + this.state.projectId
-            });
+            toast.success(Resources["operationSuccess"][currentLanguage]); 
+            if (this.state.isApproveMode === false) {
+                this.props.history.push( 
+                    this.state.perviousRoute
+                  );
+                }
         });
     }
 
@@ -812,9 +816,13 @@ class MaterialInventoryAddEdit extends Component {
             
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] } 
-        ];
+            {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }, {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            } ];
     
         const columns = [ 
             {
@@ -852,8 +860,8 @@ class MaterialInventoryAddEdit extends Component {
         return (
             <div className="mainContainer" id='mainContainer'> 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialInventory[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
-                    <div className="doc-container">
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.materialInventory[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                       <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
                                 <header className="main__header">

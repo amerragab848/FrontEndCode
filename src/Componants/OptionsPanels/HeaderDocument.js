@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-
+import { withRouter } from "react-router-dom"; 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as dashboardComponantActions from "../../store/actions/communication";
 class HeaderDocument extends Component {
     constructor(props) {
         super(props);
     }
     routeToPrevious=()=>{
+        this.props.actions.RouteToTemplate();
         this.props.history.push( 
             this.props.perviousRoute
           );
@@ -18,7 +21,7 @@ class HeaderDocument extends Component {
                     <h2 className="zero">{this.props.docTitle}
                         <span>{this.props.projectName} · {this.props.moduleTitle}</span>
                     </h2>
-                    <div className="SubmittalHeadClose" onClick={ this.routeToPrevious}>
+                    <div className="SubmittalHeadClose" onClick={ ()=>this.routeToPrevious()}>
                         <svg  width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                             <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                                 <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
@@ -53,5 +56,16 @@ class HeaderDocument extends Component {
         )
     }
 }
-
-export default withRouter(HeaderDocument);
+function mapStateToProps(state, ownProps) {
+    return {
+      showLeftMenu: state.communication.showLeftMenu,
+      showSelectProject: state.communication.showSelectProject,
+      showLeftReportMenu: state.communication.showLeftReportMenu
+    };
+  }
+  function mapDispatchToProps(dispatch) {
+    return {
+      actions: bindActionCreators(dashboardComponantActions, dispatch)
+    };
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderDocument));
