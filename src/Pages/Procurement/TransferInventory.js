@@ -37,6 +37,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -69,12 +70,12 @@ class TransferInventory extends Component {
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
+                    perviousRoute = obj.perviousRoute;
                     arrange = obj.arrange;
                 } catch { this.props.history.goBack(); }
             }
             index++;
         }
-
         this.state = {
             isLoading: false,
             isEdit: false,
@@ -82,6 +83,7 @@ class TransferInventory extends Component {
             showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 113,
@@ -107,7 +109,9 @@ class TransferInventory extends Component {
 
         if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialDelivery/" + this.state.projectId);
+            this.props.history.push(
+                this.state.perviousRoute
+            );
         }
     }
 
@@ -231,7 +235,11 @@ class TransferInventory extends Component {
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.props.history.push("/materialInventory/" + this.state.projectId)
+                if (this.state.isApproveMode === false) {
+                    this.props.history.push(
+                        this.state.perviousRoute
+                    );
+                }
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)

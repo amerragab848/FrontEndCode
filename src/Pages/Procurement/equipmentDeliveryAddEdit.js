@@ -149,7 +149,9 @@ class equipmentDeliveryAddEdit extends Component {
 
         if (!Config.IsAllow(256) && !Config.IsAllow(257) && !Config.IsAllow(259)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialDelivery/" + this.state.projectId);
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
 

@@ -95,7 +95,8 @@ class materialDeliveryAddEdit extends Component {
                 } catch { this.props.history.goBack(); }
             }
             index++;
-        }
+            
+        } 
         this.state = {
             selectedRows: [],
             CurrentStep: 1,
@@ -163,7 +164,9 @@ class materialDeliveryAddEdit extends Component {
 
         if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialDelivery/" + this.state.projectId);
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
 

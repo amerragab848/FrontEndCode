@@ -321,7 +321,7 @@ class riskAddEdit extends Component {
                 subject: "",
                 requiredDate: moment(),
                 docDate: moment(),
-                status: "true",
+                status: false,
                 refDoc: "",
                 discipline: null,
                 area: "",
@@ -627,6 +627,7 @@ class riskAddEdit extends Component {
     saveRisk(event) {
         let saveDocument = { ...this.state.document };
 
+        saveDocument.projectId =projectId;
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
@@ -638,7 +639,7 @@ class riskAddEdit extends Component {
                     subject: this.state.document.subject,
                     status: '1',
                     cycleDate: this.state.document.docDate,
-                    refNo: '',
+                    refNo: this.state.document.refDoc,
                     riskId: result.id,
                     riskCause: null,
                     notes: '',
