@@ -37,6 +37,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -84,12 +85,13 @@ class materialDeliveryAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
+                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 } catch { this.props.history.goBack(); }
             }
             index++;
@@ -106,7 +108,8 @@ class materialDeliveryAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode,
+            isApproveMode: isApproveMode, 
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 49,
@@ -619,11 +622,11 @@ class materialDeliveryAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ]
@@ -1108,7 +1111,7 @@ class materialDeliveryAddEdit extends Component {
 
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialDelivery[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.materialDelivery[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">

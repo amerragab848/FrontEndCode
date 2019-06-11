@@ -58,6 +58,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 
 class QsAddEdit extends Component {
@@ -81,6 +82,7 @@ class QsAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
+          perviousRoute = obj.perviousRoute; 
           arrange = obj.arrange;
 
         } catch {
@@ -107,6 +109,7 @@ class QsAddEdit extends Component {
       docTypeId: 98,
       projectId: projectId,
       docApprovalId: docApprovalId,
+      perviousRoute:perviousRoute,
       arrange: arrange,
       document: this.props.document ? Object.assign({}, this.props.document) : {},
       itemDocument: {},
@@ -137,7 +140,9 @@ class QsAddEdit extends Component {
     if (!Config.IsAllow(765) && !Config.IsAllow(766) && !Config.IsAllow(768)) {
 
       toast.warn(Resources["missingPermissions"][currentLanguage]);
-      this.props.history.push("/qs/" + this.state.projectId);
+      this.props.history.push( 
+        this.state.perviousRoute
+      );
     }
   }
 
@@ -838,12 +843,12 @@ class QsAddEdit extends Component {
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval previousRoute={this.state.perviousRoute} docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval previousRoute={this.state.perviousRoute} docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       }
     ];
@@ -851,7 +856,7 @@ class QsAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
-        <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.contractsQs[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+        <HeaderDocument projectName={projectName} perviousRoute={this.state.perviousRoute}  isViewMode={this.state.isViewMode} docTitle={Resources.contractsQs[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
           <div className="doc-container">
             {/* Right Menu */}
             <div className="step-content">

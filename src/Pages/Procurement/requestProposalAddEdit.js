@@ -37,6 +37,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 const _ = require("lodash");
 
@@ -450,7 +451,7 @@ class RequestProposalAddEdit extends Component {
     return (
       <div className="mainContainer" id={"mainContainer"}>
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document" }>
-          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.communicationProposalAdd[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationProposalAdd[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
           <div className="doc-container">
             {this.props.changeStatus == true ? (
               <header className="main__header">
