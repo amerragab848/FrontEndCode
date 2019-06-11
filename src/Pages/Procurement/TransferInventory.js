@@ -37,6 +37,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -69,12 +70,12 @@ class TransferInventory extends Component {
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
+                    perviousRoute = obj.perviousRoute;
                     arrange = obj.arrange;
                 } catch { this.props.history.goBack(); }
             }
             index++;
         }
-
         this.state = {
             isLoading: false,
             isEdit: false,
@@ -82,6 +83,7 @@ class TransferInventory extends Component {
             showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 113,
@@ -107,7 +109,9 @@ class TransferInventory extends Component {
 
         if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialDelivery/" + this.state.projectId);
+            this.props.history.push(
+                this.state.perviousRoute
+            );
         }
     }
 
@@ -179,7 +183,7 @@ class TransferInventory extends Component {
         let updated_document = {};
         updated_document['fromProjectId'] = this.state.document.toProjectId;
         updated_document = Object.assign(original_document, updated_document);
-        this.setState({ document: updated_document,selectedProject:event})
+        this.setState({ document: updated_document, selectedProject: event })
     }
 
     checkDocumentIsView() {
@@ -249,7 +253,11 @@ class TransferInventory extends Component {
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.props.history.push("/materialInventory/" + this.state.projectId)
+                if (this.state.isApproveMode === false) {
+                    this.props.history.push(
+                        this.state.perviousRoute
+                    );
+                }
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -262,11 +270,11 @@ class TransferInventory extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ]
@@ -403,7 +411,7 @@ class TransferInventory extends Component {
         return (
             <div className="mainContainer">
                 <div className={"documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.transferToProject[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.transferToProject[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">

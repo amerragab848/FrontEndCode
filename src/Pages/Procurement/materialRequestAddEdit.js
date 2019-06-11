@@ -255,9 +255,9 @@ class materialRequestAddEdit extends Component {
         };
         if (!Config.IsAllow(116) && !Config.IsAllow(117) && !Config.IsAllow(118)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/siteRequest/" + projectId
-            });
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -9,19 +9,19 @@ import TextEditor from "../../Componants/OptionsPanels/TextEditor";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as communicationActions from "../../store/actions/communication"; 
+import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
-import moment from "moment"; 
+import moment from "moment";
 import SkyLight from "react-skylight";
 import Distribution from "../../Componants/OptionsPanels/DistributionList";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval"; 
+import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -37,7 +37,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require("lodash");
 
@@ -58,6 +58,7 @@ class RequestProposalAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
+          perviousRoute = obj.perviousRoute;
           arrange = obj.arrange;
         } catch {
           this.props.history.goBack();
@@ -67,7 +68,7 @@ class RequestProposalAddEdit extends Component {
     }
 
     this.state = {
-      isEdit:false,
+      isEdit: false,
       currentTitle: "sendToWorkFlow",
       showModal: false,
       isViewMode: false,
@@ -77,6 +78,7 @@ class RequestProposalAddEdit extends Component {
       docTypeId: 21,
       projectId: projectId,
       docApprovalId: docApprovalId,
+      perviousRoute: perviousRoute,
       arrange: arrange,
       document: this.props.document ? Object.assign({}, this.props.document) : {},
       companies: [],
@@ -125,7 +127,7 @@ class RequestProposalAddEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.document.id) {
-     
+
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
 
       this.setState({
@@ -151,7 +153,7 @@ class RequestProposalAddEdit extends Component {
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus ) {
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
     }
 
@@ -183,12 +185,12 @@ class RequestProposalAddEdit extends Component {
 
   componentWillMount() {
     if (this.state.docId > 0) {
-      
-        let url = "GetRequestProposalById?id=" + this.state.docId;
-       this.props.actions.documentForEdit(url,this.state.docTypeId,"procurement");
-        this.setState({
-            isEdit:true
-        });
+
+      let url = "GetRequestProposalById?id=" + this.state.docId;
+      this.props.actions.documentForEdit(url, this.state.docTypeId, "procurement");
+      this.setState({
+        isEdit: true
+      });
     } else {
       let letter = {
         subject: "",
@@ -198,7 +200,7 @@ class RequestProposalAddEdit extends Component {
         fromCompanyId: "",
         fromContactId: "",
         toCompanyId: "",
-        toContactId: "", 
+        toContactId: "",
         docDate: moment(),
         status: false,
         refDoc: "",
@@ -210,14 +212,14 @@ class RequestProposalAddEdit extends Component {
     }
   }
 
-  fillSubDropDownInEdit(url,param,value,subField,subSelectedValue,subDatasource) {
+  fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
 
     let action = url + "?" + param + "=" + value;
-    
+
     dataservice.GetDataList(action, "contactName", "id").then(result => {
       if (this.props.changeStatus === true) {
         let toSubField = this.state.document[subField];
-        let targetFieldSelected = _.find(result, function(i) {
+        let targetFieldSelected = _.find(result, function (i) {
           return i.value == toSubField;
         });
         console.log(targetFieldSelected);
@@ -230,40 +232,40 @@ class RequestProposalAddEdit extends Component {
   }
 
   fillDropDowns(isEdit) {
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId,"companyName","companyId").then(result => {
-        
-        if (isEdit) {
-          let companyId = this.props.document.fromCompanyId;
-          if (companyId) {
-            this.setState({
-              selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-            });
-            this.fillSubDropDownInEdit("GetContactsByCompanyId","companyId",companyId,"fromContactId","selectedFromContact","fromContacts");
-          }
+    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
 
-          let toCompanyId = this.props.document.toCompanyId;
-
-          if (toCompanyId) {
-            this.setState({
-              selectedToCompany: {label: this.props.document.toCompanyName,value: toCompanyId}
-            });
-
-            this.fillSubDropDownInEdit("GetContactsByCompanyId","companyId",toCompanyId,"toContactId","selectedToContact","ToContacts");
-          }
+      if (isEdit) {
+        let companyId = this.props.document.fromCompanyId;
+        if (companyId) {
+          this.setState({
+            selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
+          });
+          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
         }
-        this.setState({
-          companies: [...result]
-        });
-      }); 
+
+        let toCompanyId = this.props.document.toCompanyId;
+
+        if (toCompanyId) {
+          this.setState({
+            selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
+          });
+
+          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts");
+        }
+      }
+      this.setState({
+        companies: [...result]
+      });
+    });
   }
 
   onChangeMessage = value => {
     if (value != null) {
-      
-        this.setState({ message: value });
+
+      this.setState({ message: value });
 
       let original_document = { ...this.state.document };
-      
+
       let updated_document = {};
 
       updated_document.message = value;
@@ -276,7 +278,7 @@ class RequestProposalAddEdit extends Component {
     }
   };
 
-  handleChange(e, field) { 
+  handleChange(e, field) {
 
     let original_document = { ...this.state.document };
 
@@ -291,7 +293,7 @@ class RequestProposalAddEdit extends Component {
     });
   }
 
-  handleChangeDate(e, field) { 
+  handleChangeDate(e, field) {
     let original_document = { ...this.state.document };
 
     let updated_document = {};
@@ -305,23 +307,23 @@ class RequestProposalAddEdit extends Component {
     });
   }
 
-  handleChangeDropDown(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
     if (event == null) return;
-    
+
     let original_document = { ...this.state.document };
-    
+
     let updated_document = {};
-    
+
     updated_document[field] = event.value;
-    
+
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
       document: updated_document,
       [selectedValue]: event
     });
- 
+
     if (isSubscrib) {
       let action = url + "?" + param + "=" + event.value;
       dataservice.GetDataList(action, "contactName", "id").then(result => {
@@ -343,16 +345,17 @@ class RequestProposalAddEdit extends Component {
 
     dataservice.addObject("EditRequestProposalById", saveDocument).then(result => {
 
-        this.setState({
-          isLoading: false
-        });
-
-        toast.success(Resources["operationSuccess"][currentLanguage]);
-
-        this.props.history.push({
-          pathname: "/RequestProposal/" + this.state.projectId
-        });
+      this.setState({
+        isLoading: false
       });
+
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+      if (this.state.isApproveMode === false) {
+        this.props.history.push(
+          this.state.perviousRoute
+        );
+      }
+    });
   }
 
   saveProposal(event) {
@@ -414,7 +417,8 @@ class RequestProposalAddEdit extends Component {
     if (item.title == "sendToWorkFlow") {
       this.props.actions.SendingWorkFlow(true);
     }
-    if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+    if (item.value != "0") {
+      this.props.actions.showOptionPanel(false);
       this.setState({
         currentComponent: item.value,
         currentTitle: item.title,
@@ -437,20 +441,17 @@ class RequestProposalAddEdit extends Component {
         label: Resources["sendToWorkFlow"][currentLanguage]
       },
       {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} /> ),
-        label: Resources["documentApproval"][currentLanguage]
+        title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
+          projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+      }, {
+        title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
+          projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
       }
     ];
 
     return (
       <div className="mainContainer" id={"mainContainer"}>
-        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document" }>
+        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
           <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationProposalAdd[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
           <div className="doc-container">
             {this.props.changeStatus == true ? (
@@ -458,7 +459,7 @@ class RequestProposalAddEdit extends Component {
                 <div className="main__header--div">
                   <h2 className="zero">{Resources.goEdit[currentLanguage]}</h2>
                   <p className="doc-infohead">
-                    <span> {this.state.document.refDoc}</span> - 
+                    <span> {this.state.document.refDoc}</span> -
                     <span> {this.state.document.arrange}</span> -
                     <span>
                       {moment(this.state.document.docDate).format("DD/MM/YYYY")}
@@ -476,9 +477,9 @@ class RequestProposalAddEdit extends Component {
                       validationSchema={validationSchema}
                       enableReinitialize={true}
                       onSubmit={values => {
-                        if ( this.props.changeStatus === true && this.state.docId > 0 ) {
+                        if (this.props.changeStatus === true && this.state.docId > 0) {
                           this.editProposal();
-                        } else if ( this.props.changeStatus === false && this.state.docId === 0 ) {
+                        } else if (this.props.changeStatus === false && this.state.docId === 0) {
                           this.saveProposal();
                         } else {
                           this.saveAndExit();
@@ -491,16 +492,16 @@ class RequestProposalAddEdit extends Component {
                               <label className="control-label">
                                 {Resources.subject[currentLanguage]}
                               </label>
-                              <div className={ "inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
+                              <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
                                 <input name="subject" className="form-control fsadfsadsa" id="subject"
-                                  placeholder={ Resources.subject[currentLanguage] }
+                                  placeholder={Resources.subject[currentLanguage]}
                                   autoComplete="off"
                                   value={this.state.document.subject}
                                   onBlur={e => { handleBlur(e); handleChange(e); }}
                                   onChange={e =>
                                     this.handleChange(e, "subject")
-                                  }/>
-                                {touched.subject ? ( <em className="pError">{errors.subject}</em> ) : null}
+                                  } />
+                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                               </div>
                             </div>
 
@@ -509,15 +510,15 @@ class RequestProposalAddEdit extends Component {
                                 {Resources.status[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="proposal-status" defaultChecked={ this.state.document.status === false ? null : "checked" }
-                                       value="true" onChange={e => this.handleChange(e, "status")} />
+                                <input type="radio" name="proposal-status" defaultChecked={this.state.document.status === false ? null : "checked"}
+                                  value="true" onChange={e => this.handleChange(e, "status")} />
                                 <label>
                                   {Resources.oppened[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="proposal-status" defaultChecked={ this.state.document.status === false ? "checked" : null }
-                                       value="false" onChange={e => this.handleChange(e, "status")} />
+                                <input type="radio" name="proposal-status" defaultChecked={this.state.document.status === false ? "checked" : null}
+                                  value="false" onChange={e => this.handleChange(e, "status")} />
                                 <label>
                                   {Resources.closed[currentLanguage]}
                                 </label>
@@ -528,25 +529,25 @@ class RequestProposalAddEdit extends Component {
                           <div className="proForm datepickerContainer">
                             <div className="linebylineInput valid-input alternativeDate">
                               <DatePicker title="docDate" startDate={this.state.document.docDate}
-                                          handleChange={e => this.handleChangeDate(e, "docDate") } />
+                                handleChange={e => this.handleChangeDate(e, "docDate")} />
                             </div>
 
-                          {
-                              this.state.isEdit === true ? 
-                              <div className="linebylineInput valid-input">
-                              <label className="control-label">
-                                {Resources.arrange[currentLanguage]}
-                              </label>
-                              <div className="ui input inputDev">
-                                <input type="text" className="form-control" id="arrange" readOnly
-                                       value={this.state.document.arrange} name="arrange"
-                                       placeholder={ Resources.arrange[currentLanguage]}
-                                       onBlur={e => { handleChange(e); handleBlur(e); }}
-                                       onChange={e => this.handleChange(e, "arrange") } />
-                              </div>
-                            </div>
-                              : null
-                          }
+                            {
+                              this.state.isEdit === true ?
+                                <div className="linebylineInput valid-input">
+                                  <label className="control-label">
+                                    {Resources.arrange[currentLanguage]}
+                                  </label>
+                                  <div className="ui input inputDev">
+                                    <input type="text" className="form-control" id="arrange" readOnly
+                                      value={this.state.document.arrange} name="arrange"
+                                      placeholder={Resources.arrange[currentLanguage]}
+                                      onBlur={e => { handleChange(e); handleBlur(e); }}
+                                      onChange={e => this.handleChange(e, "arrange")} />
+                                  </div>
+                                </div>
+                                : null
+                            }
 
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
@@ -554,8 +555,8 @@ class RequestProposalAddEdit extends Component {
                               </label>
                               <div className="ui input inputDev">
                                 <input type="text" className="form-control" id="refDoc"
-                                       value={this.state.document.refDoc} name="refDoc" placeholder={ Resources.refDoc[currentLanguage]}
-                                       onChange={e => this.handleChange(e, "refDoc")}/>
+                                  value={this.state.document.refDoc} name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
+                                  onChange={e => this.handleChange(e, "refDoc")} />
                               </div>
                             </div>
 
@@ -565,29 +566,30 @@ class RequestProposalAddEdit extends Component {
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                  <Dropdown data={this.state.companies} isMulti={false} selectedValue={ this.state.selectedFromCompany }
-                                            handleChange={event => { 
-                                             this.handleChangeDropDown( event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact" ); }}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.fromCompanyId}
-                                            touched={touched.fromCompanyId}
-                                            index="fromCompanyId"
-                                            name="fromCompanyId"
-                                            id="fromCompanyId" />
+                                  <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                    handleChange={event => {
+                                      this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                    }}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.fromCompanyId}
+                                    touched={touched.fromCompanyId}
+                                    index="fromCompanyId"
+                                    name="fromCompanyId"
+                                    id="fromCompanyId" />
                                 </div>
                                 <div className="super_company">
-                                  <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={ this.state.selectedFromContact }
-                                            handleChange={event => 
-                                             this.handleChangeDropDown( event, "fromContactId", false, "", "", "", "selectedFromContact" )}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.fromContactId}
-                                            touched={touched.fromContactId}
-                                            isClear={false}
-                                            index="proposal-fromContactId"
-                                            name="fromContactId"
-                                            id="fromContactId" />
+                                  <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
+                                    handleChange={event =>
+                                      this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.fromContactId}
+                                    touched={touched.fromContactId}
+                                    isClear={false}
+                                    index="proposal-fromContactId"
+                                    name="fromContactId"
+                                    id="fromContactId" />
                                 </div>
                               </div>
                             </div>
@@ -598,27 +600,27 @@ class RequestProposalAddEdit extends Component {
                               <div className="supervisor__company">
                                 <div className="super_name">
                                   <Dropdown isMulti={false} data={this.state.companies} selectedValue={this.state.selectedToCompany}
-                                            handleChange={event =>
-                                             this.handleChangeDropDown(event,"toCompanyId",true,"ToContacts","GetContactsByCompanyId","companyId","selectedToCompany","selectedToContact")}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.toCompanyId}
-                                            touched={touched.toCompanyId}
-                                            index="proposal-toCompany"
-                                            name="toCompanyId"
-                                            id="toCompanyId" />
+                                    handleChange={event =>
+                                      this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.toCompanyId}
+                                    touched={touched.toCompanyId}
+                                    index="proposal-toCompany"
+                                    name="toCompanyId"
+                                    id="toCompanyId" />
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                            handleChange={event =>
-                                             this.handleChangeDropDown( event, "toContactId", false, "", "", "", "selectedToContact")}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.toContactId}
-                                            touched={touched.toContactId}
-                                            index="proposal-toContactId"
-                                            name="toContactId"
-                                            id="toContactId"/>
+                                    handleChange={event =>
+                                      this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.toContactId}
+                                    touched={touched.toContactId}
+                                    index="proposal-toContactId"
+                                    name="toContactId"
+                                    id="toContactId" />
                                 </div>
                               </div>
                             </div>
@@ -636,18 +638,18 @@ class RequestProposalAddEdit extends Component {
                           </div>
                           <div className="slider-Btns">
                             {
-                            this.state.isEdit === true ? null :
-                             this.state.isLoading ? (
-                              <button className="primaryBtn-1 btn disabled">
-                                <div className="spinner">
-                                  <div className="bounce1" />
-                                  <div className="bounce2" />
-                                  <div className="bounce3" />
-                                </div>
-                              </button>
-                            ) : (
-                              this.showBtnsSaving()
-                            )}
+                              this.state.isEdit === true ? null :
+                                this.state.isLoading ? (
+                                  <button className="primaryBtn-1 btn disabled">
+                                    <div className="spinner">
+                                      <div className="bounce1" />
+                                      <div className="bounce2" />
+                                      <div className="bounce3" />
+                                    </div>
+                                  </button>
+                                ) : (
+                                    this.showBtnsSaving()
+                                  )}
                           </div>
                           {this.props.changeStatus === true ? (
                             <div className="approveDocument">
@@ -661,24 +663,24 @@ class RequestProposalAddEdit extends Component {
                                     </div>
                                   </button>
                                 ) : (
-                                  <button className={ this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
-                                    {Resources.save[currentLanguage]}
-                                  </button>
-                                )}
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                      {Resources.save[currentLanguage]}
+                                    </button>
+                                  )}
                                 {this.state.isApproveMode === true ? (
                                   <div>
                                     <button className="primaryBtn-1 btn " type="button"
-                                            onClick={e => this.handleShowAction(actions[2]) }>
+                                      onClick={e => this.handleShowAction(actions[2])}>
                                       {Resources.approvalModalApprove[currentLanguage]}
                                     </button>
                                     <button className="primaryBtn-2 btn middle__btn" type="button"
-                                            onClick={e => this.handleShowAction(actions[3])}>
-                                      { Resources.approvalModalReject[currentLanguage]}
+                                      onClick={e => this.handleShowAction(actions[3])}>
+                                      {Resources.approvalModalReject[currentLanguage]}
                                     </button>
                                   </div>
                                 ) : null}
                                 <button type="button" className="primaryBtn-2 btn middle__btn"
-                                        onClick={e => this.handleShowAction(actions[1])}>
+                                  onClick={e => this.handleShowAction(actions[1])}>
                                   {Resources.sendToWorkFlow[currentLanguage]}
                                 </button>
                                 <button type="button" className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
@@ -697,9 +699,9 @@ class RequestProposalAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                    {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={829} EditAttachments={3247} ShowDropBox={3551} ShowGoogleDrive={3552} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
-                    {this.viewAttachments()}
-                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={829} EditAttachments={3247} ShowDropBox={3551} ShowGoogleDrive={3552} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.viewAttachments()}
+                      {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
                   </div>
                 </div>
