@@ -627,6 +627,7 @@ class riskAddEdit extends Component {
     saveRisk(event) {
         let saveDocument = { ...this.state.document };
 
+        saveDocument.projectId =projectId;
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
