@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -8,7 +7,6 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -84,7 +82,7 @@ let ApproveOrRejectData = [
     { label: Resources.rejected[currentLanguage], value: 'false' }
 ]
 
-class materialReturnedAddEdit extends Component {
+class materialReleaseAddEdit extends Component {
 
     constructor(props) {
         super(props)
@@ -129,14 +127,14 @@ class materialReturnedAddEdit extends Component {
             descriptionDropData: [],
             Items: [],
             permission: [
-                { name: "sendByEmail", code: 10025 },
-                { name: "sendByInbox", code: 10024 },
+                { name: "sendByEmail", code: 253 },
+                { name: "sendByInbox", code: 252 },
                 { name: "sendTask", code: 0 },
-                { name: "distributionList", code: 10033 },
-                { name: "createTransmittal", code: 10034 },
-                { name: "sendToWorkFlow", code: 10028 },
-                { name: "viewAttachments", code: 10031 },
-                { name: "deleteAttachments", code: 10032 }
+                { name: "distributionList", code: 987 },
+                { name: "createTransmittal", code: 3073 },
+                { name: "sendToWorkFlow", code: 735 },
+                { name: "viewAttachments", code: 3284 },
+                { name: "deleteAttachments", code: 890 }
             ],
             selectedFromCompany: { label: Resources.fromCompany[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -168,13 +166,15 @@ class materialReturnedAddEdit extends Component {
             BtnLoading: false,
             ShowPopup: false,
             objItemForEdit: {},
-            quantityEdit: 0 ,
-            IsAddMood:false
+            quantityEdit: 0,
+            IsAddMood: false,
+            MaterialReleaseType: [],
+            SelectedMaterialReleaseType: { label: Resources.itemDescription[currentLanguage], value: "0" },
         }
 
-        if (!Config.IsAllow(10019) && !Config.IsAllow(10020) && !Config.IsAllow(10022)) {
+        if (!Config.IsAllow(247) && !Config.IsAllow(248) && !Config.IsAllow(250)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialDelivery/" + this.state.projectId);
+            this.props.history.push("/materialRelease/" + this.state.projectId);
         }
     }
 
@@ -204,7 +204,7 @@ class materialReturnedAddEdit extends Component {
             let isEdit = nextProps.document.id > 0 ? true : false
             this.fillDropDowns(isEdit);
             this.checkDocumentIsView();
-            dataservice.GetDataGrid('GetLogsMaterialReleaseTickets?releaseId=' + doc.materialReleaseId).then(
+            dataservice.GetDataGrid('GetItemBySiteRequestId?requestId=' + doc.siteRequestId).then(
                 res => {
                     let Data = res
                     let ListData = []
@@ -217,9 +217,7 @@ class materialReturnedAddEdit extends Component {
                     this.setState({ descriptionDropData: ListData, descriptionList: res })
                 }
             )
-            dataservice.GetDataList('GetContractsBoqItems?boqId=' + doc.boqId, 'details', 'id').then(result => {
-                this.setState({ BoqItemData: result })
-            })
+
 
             dataservice.GetDataGrid('GetLogsMaterialReleaseTickets?releaseId=' + doc.id).then(
                 res => {
@@ -242,15 +240,15 @@ class materialReturnedAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetLogsMaterialRetuenForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialReturned')
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialRelease')
         }
         else {
             dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
                 res => {
                     const Document = {
                         projectId: projectId, arrange: res, status: "true", specsSectionId: "", subject: "",
-                        docDate: moment(), boqId: '', materialDeliveryTypeId: '', orderFromContactId: '',
-                        orderFromCompanyId: '', docCloseDate: moment(), materialReleaseId: '', strictNumber: '',
+                        docDate: moment(), boqId: '', orderFromContactId: '',
+                        orderFromCompanyId: '', docCloseDate: moment(), materialReleaseId: '', strictNumber: 0, siteRequestId: ''
                     }
                     this.setState({ document: Document })
                 }
@@ -301,21 +299,16 @@ class materialReturnedAddEdit extends Component {
             this.setState({ SpecsSectionData: [...result] })
         })
 
-        dataservice.GetDataList('GetLogsMaterialReleaseForList?projectId=' + this.state.projectId, 'subject', 'id').then(result => {
+        dataservice.GetDataListWithNewVersion('GetContractsSiteRequestByProjectId?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000', 'subject', 'id').then(result => {
             if (isEdit) {
-                let id = this.props.document.materialReleaseId;
+                let id = this.props.document.siteRequestId;
                 let selectedValue = {};
                 if (id) {
                     selectedValue = _.find(result, function (i) { return i.value == id });
-
-                    this.setState({
-                        selectedMaterialRelease: selectedValue
-                    });
+                    this.setState({ selectedMaterialRelease: selectedValue })
                 }
             }
-            this.setState({
-                MaterialReleaseData: [...result]
-            });
+            this.setState({ MaterialReleaseData: [...result] })
         })
 
         dataservice.GetDataListWithNewVersion('GetContractsBoq?projectId=2&pageNumber=0&pageSize=1000000000', 'subject', 'id').then(result => {
@@ -324,15 +317,10 @@ class materialReturnedAddEdit extends Component {
                 let selectedValue = {};
                 if (id) {
                     selectedValue = _.find(result, function (i) { return i.value == id });
-
-                    this.setState({
-                        selectedCostCoding: selectedValue
-                    });
+                    this.setState({ selectedCostCoding: selectedValue })
                 }
             }
-            this.setState({
-                CostCodingData: [...result]
-            });
+            this.setState({ CostCodingData: [...result] })
         })
 
         dataservice.GetDataList('GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
@@ -342,6 +330,19 @@ class materialReturnedAddEdit extends Component {
         dataservice.GetDataList('GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
             this.setState({ LocationData: result })
         })
+
+        dataservice.GetDataList('GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+            if (isEdit) {
+                let id = this.props.document.materialReleaseId;
+                let selectedValue = {};
+                if (id) {
+                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    this.setState({ SelectedMaterialReleaseType: selectedValue })
+                }
+            }
+            this.setState({ MaterialReleaseType: [...result] })
+        })
+
     }
 
     handleShowAction = (item) => {
@@ -371,12 +372,12 @@ class materialReturnedAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(10020)) {
+            if (!Config.IsAllow(248)) {
                 this.setState({ isViewMode: true })
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(10020)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(10020)) {
-                    if (this.props.document.status !== false && Config.IsAllow(10020)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(248)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(248)) {
+                    if (this.props.document.status !== false && Config.IsAllow(248)) {
                         this.setState({ isViewMode: false })
                     }
                     else { this.setState({ isViewMode: true }) }
@@ -397,7 +398,7 @@ class materialReturnedAddEdit extends Component {
 
     saveAndExit(event) {
         if (this.state.CurrentStep === 1) { this.setState({ CurrentStep: this.state.CurrentStep + 1 }) }
-        else { this.props.history.push("/materialReturned/" + this.state.projectId) }
+        else { this.props.history.push("/materialRelease/" + this.state.projectId) }
     }
 
     showBtnsSaving() {
@@ -412,7 +413,7 @@ class materialReturnedAddEdit extends Component {
 
     viewAttachments() {
         return this.state.docId > 0 ? (
-            Config.IsAllow(10031) === true ?
+            Config.IsAllow(3284) === true ?
                 (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
@@ -423,7 +424,7 @@ class materialReturnedAddEdit extends Component {
                 SecondStep: true, SecondStepComplate: true,
             })
         }
-        else { this.props.history.push("/materialReturned/" + this.state.projectId) }
+        else { this.props.history.push("/materialRelease/" + this.state.projectId) }
     }
 
     PreviousStep() {
@@ -454,12 +455,12 @@ class materialReturnedAddEdit extends Component {
     }
 
     SaveDoc = (Mood) => {
-        this.setState({ isLoading: true ,IsAddMood:false})
+        this.setState({ isLoading: true, IsAddMood: false })
         if (Mood === 'EditMood') {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            dataservice.addObject('EditLogsMaterialReturne', doc).then(result => {
-                this.setState({ isLoading: false,IsAddMood:false })
+            dataservice.addObject('EditLogsMaterialRelease', doc).then(result => {
+                this.setState({ isLoading: false, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
             }).catch(ex => {
                 this.setState({ Loading: false })
@@ -468,8 +469,8 @@ class materialReturnedAddEdit extends Component {
         } else {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            dataservice.addObject('AddLogsMaterialReturn', doc).then(result => {
-                this.setState({ isLoading: false, docId: result.id })
+            dataservice.addObject('AddLogsMaterialRelease', doc).then(result => {
+                this.setState({ isLoading: false, docId: result.id, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
             }).catch(ex => {
                 this.setState({ Loading: false })
@@ -499,7 +500,7 @@ class materialReturnedAddEdit extends Component {
         selectedRows.map(s => {
             ids.push(s.id)
         })
-        Api.post('DeleteMultipleLogsMaterialReturnedById', ids).then(
+        Api.post('DeleteMultipleLogsMaterialReleaseTicketsById', ids).then(
             res => {
                 let originalRows = this.state.Items
 
@@ -535,16 +536,17 @@ class materialReturnedAddEdit extends Component {
                 itemId: this.state.ItemDescriptionInfo.itemId,
                 areaId: this.state.SelectedArea.value === '0' ? undefined : this.state.SelectedArea.value,
                 locationId: this.state.SelectedLocation.value === '0' ? undefined : this.state.SelectedLocation.value,
-                boqItemId: this.state.SelectedBoqItem.value === '0' ? undefined : this.state.SelectedBoqItem.value,
+                boqItemId: this.state.ItemDescriptionInfo.boqItemId,
                 arrange: this.state.arrangeItem,
                 quantity: this.state.quantity,
+                requestedQuantity: this.state.ItemDescriptionInfo.quantity,
                 unitPrice: this.state.unitPrice,
                 description: this.state.ItemDescriptionInfo.description,
                 remarks: this.state.remarks,
                 costCodeTreeId: this.state.costCodeTreeId === 0 ? undefined : this.state.costCodeTreeId,
                 resourceCode: this.state.ItemDescriptionInfo.resourceCode,
             }
-            dataservice.addObject('addLogsMaterialReturned', obj).then(result => {
+            dataservice.addObject('AddLogsMaterialReleaseTickets', obj).then(result => {
                 let Items = this.state.Items
                 Items.push(result)
                 let ItemDescriptionInfo = this.state.ItemDescriptionInfo
@@ -617,7 +619,7 @@ class materialReturnedAddEdit extends Component {
 
     AfterSaveDoc = () => {
 
-        dataservice.GetDataGrid('GetLogsMaterialReleaseTickets?releaseId=' + this.state.document.materialReleaseId).then(
+        dataservice.GetDataGrid('GetItemBySiteRequestId?requestId=' + this.state.document.siteRequestId).then(
             res => {
                 let Data = res
                 let ListData = []
@@ -631,10 +633,6 @@ class materialReturnedAddEdit extends Component {
             }
         )
 
-        dataservice.GetDataList('GetContractsBoqItems?boqId=' + this.state.document.boqId, 'details', 'id').then(result => {
-            this.setState({ BoqItemData: result })
-        })
-
         dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId).then(
             result => {
                 this.setState({ arrangeItem: result })
@@ -647,7 +645,6 @@ class materialReturnedAddEdit extends Component {
         if (this.state.isViewMode === false) {
 
             if (type != "checkbox") {
-
                 if (id) {
                     dataservice.GetDataGrid("GetLogsMaterialReleaseTicketsForEdit?id=" + id).then(
                         result => {
@@ -673,9 +670,6 @@ class materialReturnedAddEdit extends Component {
     }
 
     SaveEditItem = () => {
-        let Qty = parseInt(this.state.quantityEdit)
-        let ActaulQty = parseInt(this.state.objItemForEdit.quantity)
-        if (Qty <= ActaulQty) {
             this.setState({ isLoading: true })
             let obj = {
                 id: this.state.objItemForEdit.id,
@@ -690,6 +684,7 @@ class materialReturnedAddEdit extends Component {
                 remarks: this.state.objItemForEdit.remarks,
                 costCodeTreeId: this.state.objItemForEdit.costCodeTreeId,
                 resourceCode: this.state.objItemForEdit.resourceCode,
+                requestedQuantity: this.state.objItemForEdit.requestedQuantity,
                 total: parseInt(this.state.objItemForEdit.quantity) * parseInt(this.state.objItemForEdit.unitPrice)
             }
             dataservice.addObject('EditLogsMaterialReleaseTickets', obj).then(result => {
@@ -697,7 +692,7 @@ class materialReturnedAddEdit extends Component {
                 console.log(Items)
                 Items.push(this.state.objItemForEdit)
                 this.setState({
-                    isLoading: false, Items,ShowPopup:false
+                    isLoading: false, Items ,ShowPopup:false
                 })
                 toast.success(Resources["operationSuccess"][currentLanguage])
 
@@ -705,10 +700,7 @@ class materialReturnedAddEdit extends Component {
                 this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-        }
-        else {
-            toast.error(' ' + ActaulQty + ' Is Max Quantit')
-        }
+        
     }
 
     render() {
@@ -734,13 +726,17 @@ class materialReturnedAddEdit extends Component {
                         enableReinitialize={true}
                         onSubmit={values => {
                             if (this.props.showModal) { return; }
-                            if (this.props.changeStatus === true && this.state.docId > 0) {
-                                this.SaveDoc('EditMood');
-                                this.NextStep();
-                            } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                this.SaveDoc('AddMood');
-                            } else {
 
+                            if (this.state.IsAddMood) {
+                                this.NextStep();
+                            }
+                            else {
+                                if (this.props.changeStatus === true && this.state.docId > 0) {
+                                    this.SaveDoc('EditMood');
+                                    this.NextStep();
+                                } else if (this.props.changeStatus === false && this.state.docId === 0) {
+                                    this.SaveDoc('AddMood');
+                                }
                             }
                         }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -803,15 +799,18 @@ class materialReturnedAddEdit extends Component {
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="materialRelease" data={this.state.MaterialReleaseData} selectedValue={this.state.selectedMaterialRelease}
-                                            handleChange={event => this.handleChangeDropDown(event, "materialReleaseId", false, "selectedMaterialRelease")}
+                                        <Dropdown title="siteRequest" data={this.state.MaterialReleaseData} selectedValue={this.state.selectedMaterialRelease}
+                                            handleChange={event => this.handleChangeDropDown(event, "siteRequestId", false, "selectedMaterialRelease")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.materialReleaseId}
                                             touched={touched.materialReleaseId} name="materialReleaseId" id="materialReleaseId" />
                                     </div>
-
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="materialReleaseType" data={this.state.MaterialReleaseType} selectedValue={this.state.SelectedMaterialReleaseType}
+                                            handleChange={event => this.handleChangeDropDown(event, 'materialReleaseId', false, 'SelectedMaterialReleaseType')} />
+                                    </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="costCoding" data={this.state.CostCodingData} selectedValue={this.state.selectedCostCoding}
+                                        <Dropdown title="boqLog" data={this.state.CostCodingData} selectedValue={this.state.selectedCostCoding}
                                             handleChange={event => this.handleChangeDropDown(event, 'boqId', false, 'selectedCostCoding')} />
                                     </div>
 
@@ -849,8 +848,8 @@ class materialReturnedAddEdit extends Component {
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
                                         {this.state.docId > 0 ?
-                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10029} EditAttachments={10030} ShowDropBox={10035}
-                                                ShowGoogleDrive={10036} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={889} EditAttachments={3243} ShowDropBox={3541}
+                                                ShowGoogleDrive={3542} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null}
                                         {this.viewAttachments()}
                                         {this.props.changeStatus === true ?
@@ -875,7 +874,6 @@ class materialReturnedAddEdit extends Component {
                         )}
                     </Formik>
                 </div>
-
             )
         }
 
@@ -1026,11 +1024,6 @@ class materialReturnedAddEdit extends Component {
                                                     <input type="text" className="form-control" placeholder={Resources.remarks[currentLanguage]}
                                                         value={this.state.remarks} onChange={(e) => this.setState({ remarks: e.target.value })} />
                                                 </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input ">
-                                                <Dropdown data={this.state.BoqItemData} selectedValue={this.state.SelectedBoqItem}
-                                                    title="boqItem" handleChange={e => this.setState({ SelectedBoqItem: e })} />
                                             </div>
 
                                             <div className="linebylineInput valid-input">
@@ -1277,7 +1270,7 @@ class materialReturnedAddEdit extends Component {
                 </div>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialReturned[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialRelease[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">
@@ -1315,7 +1308,7 @@ class materialReturnedAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources["materialReturned"][currentLanguage]}</h6>
+                                            <h6>{Resources["materialRelease"][currentLanguage]}</h6>
                                         </div>
                                     </div>
                                     <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
@@ -1372,4 +1365,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(materialReturnedAddEdit))
+)(withRouter(materialReleaseAddEdit))

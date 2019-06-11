@@ -117,7 +117,7 @@ class TransferInventory extends Component {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
             else { links[i].classList.add("odd") }
         }
-        this.checkDocumentIsView()
+//        this.checkDocumentIsView()
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
@@ -126,7 +126,7 @@ class TransferInventory extends Component {
             this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
             let isEdit = nextProps.document.id > 0 ? true : false
             this.fillDropDowns(isEdit);
-            this.checkDocumentIsView();
+//            this.checkDocumentIsView();
         }
         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
         if (this.state.showModal != nextProps.showModal) {
@@ -136,7 +136,7 @@ class TransferInventory extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            this.checkDocumentIsView();
+//            this.checkDocumentIsView();
         }
     }
 
@@ -179,25 +179,7 @@ class TransferInventory extends Component {
         let updated_document = {};
         updated_document['fromProjectId'] = this.state.document.toProjectId;
         updated_document = Object.assign(original_document, updated_document);
-        this.setState({ document: updated_document,selectedProject:event})
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(239)) {
-                this.setState({ isViewMode: true })
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(239)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(239)) {
-                    if (this.props.document.status !== false && Config.IsAllow(239)) {
-                        this.setState({ isViewMode: false })
-                    }
-                    else { this.setState({ isViewMode: true }) }
-                }
-                else { this.setState({ isViewMode: true }) }
-            }
-        }
-        else { this.setState({ isViewMode: false }) }
+        this.setState({ document: updated_document, selectedProject: event })
     }
 
     HandelChangeInputs = (e, field) => {
@@ -259,16 +241,7 @@ class TransferInventory extends Component {
     render() {
 
         let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
+            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.props.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
         ]
 
 
@@ -286,13 +259,6 @@ class TransferInventory extends Component {
                         enableReinitialize={true}
                         onSubmit={values => {
                             if (this.props.showModal) { return; }
-                            // if (this.props.changeStatus === true && this.state.docId > 0) {
-                            //     this.SaveDoc('EditMood');
-                            //     this.NextStep();
-                            // } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                            //     this.SaveDoc('AddMood');
-                            // } else {
-                            // }
                             this.saveDoc()
                         }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -362,18 +328,11 @@ class TransferInventory extends Component {
                                                 </button> :
                                                 <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
                                             }
-                                            {this.state.isApproveMode === true ?
-                                                <div >
-                                                    <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                    <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                </div>
-                                                : null}
-                                            <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                            <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+
+                                            <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                                          
                                             <span className="border"></span>
-                                            <div className="document__action--menu">
-                                                <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                     : null}
@@ -402,8 +361,8 @@ class TransferInventory extends Component {
 
         return (
             <div className="mainContainer">
-                <div className={"documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.transferToProject[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
+                <div className="documents-stepper noTabs__document">
+                    <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.transferToProject[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">
