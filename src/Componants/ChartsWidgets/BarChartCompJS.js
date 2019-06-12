@@ -29,7 +29,6 @@ class BarChartCompJS extends Component {
 
     componentDidMount = () => {
 
-        console.log(this.props.uKey,this.props.title);
         let barData = [];
         if (this.props.multiSeries === 'no') {
             this.setState({
@@ -89,14 +88,17 @@ class BarChartCompJS extends Component {
             }
             else {
                 let groupedBarData = []
+                console.log(this.props.api);
 
-                this.props.barContent.map((bar) => {
-                    results.map((obj) => {
-                        groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
+                // if (this.props.barContent) {
+                    this.props.barContent.map((bar) => {
+                        results.map((obj) => {
+                            groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
+                            return null;
+                        })
                         return null;
                     })
-                    return null;
-                })
+                // }
 
                 let groupedData = { data: groupedBarData }
 

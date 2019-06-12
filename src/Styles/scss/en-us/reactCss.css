@@ -6547,15 +6547,6 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     min-height: 80px;
 }
 
-.rootIcon {
-    color: #b3bac7;
-    transition: all 0.s ease;
-    font-size: 15px
-}
-
-.rootIcon:hover {
-    color: #4382F9;
-}
 .tooltip-background, .tooltip-text-container {
     border-radius: 2px !important;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
