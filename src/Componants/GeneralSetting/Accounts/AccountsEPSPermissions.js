@@ -74,9 +74,11 @@ class AccountsEPSPermissions extends Component {
             Api.post("AddAccountsEps", obj)
         })
     }
+    
     goBack=()=>{
         this.props.history.goBack()
     }
+
     render() {
         return (
             <div className="mainContainer dropdownMulti">

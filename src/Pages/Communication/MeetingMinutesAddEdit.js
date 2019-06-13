@@ -52,6 +52,7 @@ let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
+let perviousRoute=0;
 class MeetingMinutesAddEdit extends Component {
     constructor(props) {
         super(props)
@@ -61,12 +62,13 @@ class MeetingMinutesAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
+                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 }
                 catch{
                     this.props.history.goBack();
@@ -87,7 +89,8 @@ class MeetingMinutesAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode,
+            isApproveMode: isApproveMode, 
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 33,
@@ -132,8 +135,10 @@ class MeetingMinutesAddEdit extends Component {
             topics: [],
         }
         if (!Config.IsAllow(504) && !Config.IsAllow(505) && !Config.IsAllow(507)) {
-            toast.warning(Resources['missingPermissions'][currentLanguage])
-            this.props.history.push({ pathname: "/InternalMeetingMinutes/" + projectId });
+            toast.warning(Resources['missingPermissions'][currentLanguage]) 
+                this.props.history.push( 
+                    this.state.perviousRoute
+                  ); 
         }
     }
 
@@ -616,10 +621,10 @@ class MeetingMinutesAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
 
@@ -1042,7 +1047,7 @@ class MeetingMinutesAddEdit extends Component {
                 <div className="mainContainer">
                     <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper one__tab one_step noTabs__document"}>
 
-                        <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                        <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.meetingMinutesLog[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
 
                         <div className="doc-container">
                             <div className="step-content">

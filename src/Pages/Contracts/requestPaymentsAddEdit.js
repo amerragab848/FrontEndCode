@@ -1,69 +1,47 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Component, Fragment } from "react"; 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
- 
-import GridSetup from "../Communication/GridSetupWithFilter";
-
-import { withRouter } from "react-router-dom";
-
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
+import GridSetup from "../Communication/GridSetupWithFilter"; 
+import { withRouter } from "react-router-dom"; 
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
-import * as communicationActions from '../../store/actions/communication';
-
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-
+import { bindActionCreators } from 'redux';
+import * as communicationActions from '../../store/actions/communication'; 
+import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-
+import moment from "moment"; 
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
+import Distribution from '../../Componants/OptionsPanels/DistributionList';
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
 import { func } from "prop-types";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const validationSchema = Yup.object().shape({
-
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-
-    contractId: Yup.string().required(Resources['selectContract'][currentLanguage])
-        .nullable(true),
-
-    vat: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    tax: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    insurance: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    advancePaymentPercent: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    retainagePercent: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+const validationSchema = Yup.object().shape({ 
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
+    contractId: Yup.string().required(Resources['selectContract'][currentLanguage]).nullable(true),
+    vat: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    tax: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    insurance: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    advancePaymentPercent: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    retainagePercent: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
 
-const validationDeductionSchema = Yup.object().shape({
-
-    title: Yup.string().required(Resources['description'][currentLanguage]),
-
-    deductionValue: Yup.string()
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+const validationDeductionSchema = Yup.object().shape({ 
+    title: Yup.string().required(Resources['description'][currentLanguage]), 
+    deductionValue: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
 })
 
 const BoqTypeSchema = Yup.object().shape({
@@ -77,6 +55,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 const _ = require('lodash')
 let itemsColumns = [];
@@ -93,12 +72,13 @@ class requestPaymentsAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                    docId = obj.docId;
+                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 }
                 catch{
                     this.props.history.goBack();
@@ -107,12 +87,10 @@ class requestPaymentsAddEdit extends Component {
             index++;
         }
 
-        this.state = {
-
+        this.state = { 
             selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
-
+            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" }, 
             boqTypes: [],
             BoqTypeChilds: [],
             BoqSubTypes: [],
@@ -127,30 +105,26 @@ class requestPaymentsAddEdit extends Component {
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
-            FourthStep: false,
-
+            FourthStep: false, 
             SecondStepComplate: false,
             ThirdStepComplate: false,
-            FourthStepComplate: false,
-
+            FourthStepComplate: false, 
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode,
+            isApproveMode: isApproveMode, 
+            perviousRoute: perviousRoute,
             isView: false,
 
             pageNumber: 0,
-            pageSize: 2000,
-
+            pageSize: 2000, 
             docId: docId,
             docTypeId: 71,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            arrange: arrange,
-
+            arrange: arrange, 
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            voItem: {},
-
+            voItem: {}, 
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
@@ -160,15 +134,16 @@ class requestPaymentsAddEdit extends Component {
             paymentsItems: [],
             CurrentStep: 1,
             editRows: [],
-            comment: ''
-
+            comment: '',
+            viewPopUpRows : false ,
+            currentObject:{}
         }
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/requestPayments/" + projectId
-            });
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
         this.editRowsClick = this.editRowsClick.bind(this);
         this.GetCellActions = this.GetCellActions.bind(this);
@@ -382,8 +357,7 @@ class requestPaymentsAddEdit extends Component {
                 formatter: editPaymentPercent,
                 editable: true
             }
-        ];
-
+        ]; 
     }
 
     componentDidMount() {
@@ -734,6 +708,7 @@ class requestPaymentsAddEdit extends Component {
         if (this.props.changeStatus == true) {
 
             let paymentsItems = [...this.state.paymentsItems];
+
             if (paymentsItems.length == 0) {
                 this.buildColumns();
 
@@ -742,7 +717,6 @@ class requestPaymentsAddEdit extends Component {
                         paymentsItems: result,
                         isLoading: false
                     });
-
                 });
             }
         }
@@ -900,8 +874,7 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     }
-
-
+ 
     saveVariationOrderItem(event) {
         let saveDocument = { ...this.state.voItem };
 
@@ -961,6 +934,16 @@ class requestPaymentsAddEdit extends Component {
     onRowClick = (value, index, column) => {
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
+        }else{
+            if(this.props.changeStatus){
+                if(this.state.document.editable=== true){
+                    this.setState({
+                        viewPopUpRows:true,
+                        currentObject : value
+                    });
+                    this.addCommentModal.show();
+                }
+          }
         }
     }
 
@@ -1061,8 +1044,7 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        //  this.setState({ isLoading: true })
+    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => { 
         let rows = [...this.state.paymentsItems];
         let updateRow = rows[fromRow];
 
@@ -1098,6 +1080,7 @@ class requestPaymentsAddEdit extends Component {
                         }
                         break;
                 }
+
                 let editRows = [...this.state.editRows];
 
                 let sameRow = _.find(editRows, function (x) { return x.id === updateRow.id });
@@ -1128,8 +1111,7 @@ class requestPaymentsAddEdit extends Component {
             i.sitePercentComplete = ((parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100);
             i.contractId = this.state.document.contractId;
             i.requestId = this.state.docId;
-            i.projectId = projectId;
-
+            i.projectId = projectId; 
         })
 
         let api = this.props.changeStatus === true ? 'EditContractsRequestPaymentsItems' : 'AddContractsRequestPaymentsItemsNewScenario';
@@ -1252,8 +1234,7 @@ class requestPaymentsAddEdit extends Component {
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
-        }
-
+        } 
     }
 
     PreviousStep = () => {
@@ -1305,8 +1286,7 @@ class requestPaymentsAddEdit extends Component {
                 CurrentStep: 1,
                 ThirdStepComplate: false,
                 FourthStepComplate: false,
-            })
-
+            }) 
         }
     }
 
@@ -1348,29 +1328,76 @@ class requestPaymentsAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: false,
                 FourthStepComplate: true,
-                CurrentStep: 4,
-
+                CurrentStep: 4, 
                 ThirdStepComplate: true,
                 SecondStepComplate: true
             })
         }
     }
 
+    handleChangeForEdit = (e,updated) => {
+
+        let updateRow = this.state.currentObject;
+
+        let originalData = this.state.paymentsItems;
+
+        switch (updated) {
+            case 'quantityComplete':
+                updateRow.percentComplete = ((parseFloat(e.target.value) / updateRow.revisedQuantity) * 100);
+                break;
+            case 'percentComplete':
+                updateRow.quantityComplete = ((parseFloat(e.target.value) / 100) * updateRow.revisedQuantity);
+                break;
+            case 'sitePercentComplete':
+                updateRow.siteQuantityComplete = ((parseFloat(e.target.value) / 100) * updateRow.revisedQuantity);
+                break;
+            case 'siteQuantityComplete':
+                updateRow.sitePercentComplete = ((parseFloat(e.target.value) / updateRow.revisedQuantity) * 100);
+                if (this.props.changeStatus == false) {
+                    updateRow.percentComplete = ((parseFloat(e.target.value) / updateRow.revisedQuantity) * 100);
+                }
+                break;
+         
+         let getIndex = originalData.findIndex(x=>x.id === updateRow.id);
+ 
+         originalData.splice(getIndex,1);
+
+            this.setState({
+                paymentsItems:originalData,
+                currentObject:updateRow
+            }); 
+        }
+    }
+
+    editPaymentRequistionItems = () =>{
+
+        let mainDoc = this.state.currentObject;
+        mainDoc.requestId = this.state.docId;
+
+        dataservice.addObject("EditRequestPaymentItem",mainDoc).then(result => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+            this.setState({
+                viewPopUpRows:false
+            });
+        });
+    }
+
     render() {
-
-
+ 
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
 
         ];
+   
         const ItemsGrid = this.state.isLoading === false && this.state.CurrentStep === 2 && itemsColumns.length > 0 ? (
             <GridSetup
                 rows={this.state.paymentsItems}
@@ -1575,10 +1602,9 @@ class requestPaymentsAddEdit extends Component {
             : <LoadingSection />
 
         return (
-            <div className="mainContainer">
-
+            <div className="mainContainer"> 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">
@@ -1603,9 +1629,7 @@ class requestPaymentsAddEdit extends Component {
 
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
-                                                            <div className="proForm first-proform">
-
+                                                            <div className="proForm first-proform"> 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -1839,8 +1863,7 @@ class requestPaymentsAddEdit extends Component {
                                                                                 <div className="bounce3" />
                                                                             </div>
                                                                         </button>
-                                                                    )}
-
+                                                                    )} 
                                                             </div>
                                                         </Form>
                                                     )}
@@ -1873,24 +1896,19 @@ class requestPaymentsAddEdit extends Component {
                                                     <div className="slider-Btns editableRows">
                                                         <span>No.Update Rows.{this.state.editRows.length}</span>
                                                         <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>{Resources['edit'][currentLanguage]}</button>
-
-                                                    </div>
-
+                                                    </div> 
                                                 </div>
                                                 : null}
                                             {ItemsGrid}
                                         </div>
-                                    </div>
-
+                                    </div> 
                                 </Fragment>
                                 : null
                             }
 
-                            {this.state.ThirdStep ?
-
+                            {this.state.ThirdStep ? 
                                 <Fragment>
-                                    <div className="subiTabsContent feilds__top">
-
+                                    <div className="subiTabsContent feilds__top"> 
                                         <div className="doc-pre-cycle">
                                             <header>
                                                 <h2 className="zero">{Resources['interimPaymentCertificate'][currentLanguage]}</h2>
@@ -1918,8 +1936,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 {Resources['total'][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
-
+                                                        <th> 
                                                             <div className="headCell">
                                                                 {Resources['comments'][currentLanguage]}
                                                             </div>
@@ -1932,21 +1949,17 @@ class requestPaymentsAddEdit extends Component {
                                             </table>
                                             {approvedSummaries}
                                         </div>
-
-                                    </div>
-
+                                    </div> 
                                 </Fragment>
                                 : null
                             }
 
-                            {this.state.FourthStep ?
-
+                            {this.state.FourthStep ? 
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
                                         <header>
                                             <h2 className="zero">{Resources['deductions'][currentLanguage]}</h2>
-                                        </header>
-
+                                        </header> 
                                         <div className="document-fields">
                                             <Formik
                                                 initialValues={{ ...this.state.documentDeduction }}
@@ -1954,8 +1967,7 @@ class requestPaymentsAddEdit extends Component {
                                                 enableReinitialize={true}
                                                 onSubmit={(values) => {
                                                     this.addDeduction();
-                                                }}  >
-
+                                                }}> 
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                     <Form id="deductionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                         <div className="proForm datepickerContainer">
@@ -1973,8 +1985,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     {touched.title ? (<em className="pError">{errors.title}</em>) : null}
 
                                                                 </div>
-                                                            </div>
-
+                                                            </div> 
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.deductions[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev" + (errors.deductionValue && touched.deductionValue ? (" has-error") : "ui input inputDev")} >
@@ -1987,7 +1998,6 @@ class requestPaymentsAddEdit extends Component {
                                                                         }}
                                                                         onChange={(e) => this.handleChangeItem(e, 'deductionValue')} />
                                                                     {touched.deductionValue ? (<em className="pError">{errors.deductionValue}</em>) : null}
-
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2030,7 +2040,6 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                         </div>
                                     </div>
-
                                 </Fragment>
                                 : null
                             }
@@ -2093,7 +2102,7 @@ class requestPaymentsAddEdit extends Component {
                                     <div className="approveDocumentBTNS">
 
                                         {this.state.isApproveMode === true ?
-                                            <div >
+                                            <div>
                                                 <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                                 <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                             </div>
@@ -2111,6 +2120,7 @@ class requestPaymentsAddEdit extends Component {
                         }
                     </div>
                 </div>
+           
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
@@ -2122,11 +2132,11 @@ class requestPaymentsAddEdit extends Component {
                         {BoqTypeContent}
                     </SkyLight>
                 </div>
+            
                 <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.addCommentModal = ref} title={Resources.comments[currentLanguage]}>
                         <div className="proForm datepickerContainer">
-                            <div className="linebylineInput valid-input mix_dropdown">
-
+                            <div className="linebylineInput valid-input mix_dropdown"> 
                                 <div className="letterFullWidth">
                                     <label className="control-label">{Resources.comment[currentLanguage]}</label>
                                     <div className="inputDev ui input">
@@ -2139,7 +2149,48 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         </div>
                         <button className="primaryBtn-1 btn " onClick={(e) => this.addCommentClick(e)} >{Resources.save[currentLanguage]}</button>
+                    </SkyLight>
+                </div>
 
+                <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.addCommentModal = ref}>
+                        <div className="dropWrapper">
+                         <div className="fillter-item-c fullInputWidth">
+                            <label className="control-label">{Resources.percentComplete[currentLanguage]}</label>
+                            <div className={"inputDev ui input"} >
+                                <input name='percentComplete' className="form-control fsadfsadsa" id="percentComplete"
+                                    placeholder={Resources.percentComplete[currentLanguage]}
+                                    autoComplete='off'
+                                    value={this.state.document.percentComplete} 
+                                    onChange={(e) => this.handleChangeForEdit(e, 'percentComplete')} /> 
+                            </div>
+                         </div>
+                         <div className="fillter-item-c fullInputWidth">
+                            <label className="control-label">{Resources.quantityComplete[currentLanguage]}</label>
+                            <div className={"inputDev ui input" } >
+                                <input name='quantityComplete' className="form-control fsadfsadsa" id="quantityComplete"
+                                    placeholder={Resources.quantityComplete[currentLanguage]}
+                                    autoComplete='off'
+                                    value={this.state.document.quantityComplete} 
+                                    onChange={(e) => this.handleChangeForEdit(e, 'quantityComplete')} /> 
+
+                            </div>
+                         </div>
+                         <div className="fillter-item-c fullInputWidth">
+                            <label className="control-label">{Resources.paymentPercent[currentLanguage]}</label>
+                            <div className={"inputDev ui input"} >
+                                <input name='paymentPercent' className="form-control fsadfsadsa" id="paymentPercent"
+                                    placeholder={Resources.paymentPercent[currentLanguage]}
+                                    autoComplete='off'
+                                    value={this.state.document.paymentPercent} 
+                                    onChange={(e) => this.handleChangeForEdit(e, 'paymentPercent')} /> 
+                            </div>
+                         </div>
+                        <div className="fullWidthWrapper">
+                            <button className="primaryBtn-1 btn " onClick={(e) => this.editPaymentRequistionItems(e)} >{Resources.save[currentLanguage]}</button>
+
+                        </div>
+                        </div>
                     </SkyLight>
                 </div>
 
@@ -2172,7 +2223,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(requestPaymentsAddEdit))
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(requestPaymentsAddEdit))

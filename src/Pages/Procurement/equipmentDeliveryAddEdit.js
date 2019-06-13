@@ -37,6 +37,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -76,12 +77,13 @@ class equipmentDeliveryAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
+                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 } catch { this.props.history.goBack(); }
             }
             index++;
@@ -98,7 +100,8 @@ class equipmentDeliveryAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode,
+            isApproveMode: isApproveMode, 
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 57,
@@ -146,7 +149,9 @@ class equipmentDeliveryAddEdit extends Component {
 
         if (!Config.IsAllow(256) && !Config.IsAllow(257) && !Config.IsAllow(259)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialDelivery/" + this.state.projectId);
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
 
@@ -238,7 +243,7 @@ class equipmentDeliveryAddEdit extends Component {
                         subject: '',
                         docCloseDate: moment(),
                         ticketDate: moment(),
-                        'selectedProjects[]': '2'
+                        selectedProjects: []
                     }
                     this.setState({ document: Document })
                 }
@@ -277,10 +282,13 @@ class equipmentDeliveryAddEdit extends Component {
         dataservice.GetDataList('GetAccountsProjects', 'projectName', 'id').then(result => {
             if (isEdit) {
                 let id = this.props.document.selectedProjects;
-                let selectedValue = {};
-                if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                let selectedValue = [];
 
+                if (id) {
+                    id.map(w => {
+                        let element = _.find(result, function (i) { return i.value === w });
+                        selectedValue.push(element)
+                    })
                     this.setState({
                         selectedProject: selectedValue
                     });
@@ -326,6 +334,16 @@ class equipmentDeliveryAddEdit extends Component {
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         if (field == 'selectedProject') {
 
+            this.setState({
+                selectedProject: event
+            })
+            // console.log(this.state.selectedProject)
+            // if (event == null) return
+            // let original_document = { ...this.state.document }
+            // let updated_document = {};
+            // updated_document[field] = event.value;
+            // updated_document = Object.assign(original_document, updated_document);
+            // this.setState({ document: updated_document, [selectedValue]: event })
         }
         else {
 
@@ -426,7 +444,11 @@ class equipmentDeliveryAddEdit extends Component {
     SaveDoc = (Mood) => {
 
         this.setState({ isLoading: true })
-
+        let ProjectIds = []
+        this.state.selectedProject.forEach(function (item) {
+            ProjectIds.push(item.value)
+        })
+        console.log(ProjectIds)
         if (Mood === 'EditMood') {
             // let projectIds = []
             // this.state.selectedProjects.map(i =>
@@ -434,6 +456,7 @@ class equipmentDeliveryAddEdit extends Component {
             // )
             // console.log(projectIds)
             let doc = { ...this.state.document };
+            doc.selectedProjects = ProjectIds
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
@@ -453,6 +476,7 @@ class equipmentDeliveryAddEdit extends Component {
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.selectedProjects = ProjectIds
             //doc.docId =this.state.
             dataservice.addObject('AddLogsEquipmentsDelivery', doc).then(result => {
 
@@ -602,11 +626,11 @@ class equipmentDeliveryAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ]
@@ -708,7 +732,7 @@ class equipmentDeliveryAddEdit extends Component {
 
                                     <div className="linebylineInput letterFullWidth dropdownMulti">
                                         <Dropdown title="otherProjects" data={this.state.projectsData} value={this.state.selectedProject}
-                                            handleChange={event => this.handleChangeDropDown(event, "selectedProjects", false, "", "", "", "selectedProject")}
+                                            handleChange={event => this.handleChangeDropDown(event, "selectedProject", false, "", "", "", "selectedProjects")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.selectedProjects}
                                             touched={touched.selectedProjects} name="selectedProjects" id="selectedProjects" isMulti={true} />
                                     </div>
@@ -1072,7 +1096,7 @@ class equipmentDeliveryAddEdit extends Component {
 
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.equipmentDelivery[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.equipmentDelivery[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">

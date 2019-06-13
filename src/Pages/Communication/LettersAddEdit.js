@@ -50,6 +50,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute=''; 
 let arrange = 0;
 const _ = require('lodash')
 class LettersAddEdit extends Component {
@@ -64,12 +65,13 @@ class LettersAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                    docId = obj.docId;
+                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute; 
                 }
                 catch{
                     this.props.history.goBack();
@@ -82,7 +84,8 @@ class LettersAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode,
+            isApproveMode: isApproveMode, 
+            perviousRoute: perviousRoute,  
             isView: false,
             docId: docId,
             docTypeId: 19,
@@ -110,9 +113,9 @@ class LettersAddEdit extends Component {
 
         if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/Letters/" + projectId
-            });
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
     componentDidMount() {
@@ -355,7 +358,7 @@ class LettersAddEdit extends Component {
 
         if (field == "fromContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-             
+
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
@@ -384,12 +387,13 @@ class LettersAddEdit extends Component {
             this.setState({
                 isLoading: false
             });
+            toast.success(Resources["operationSuccess"][currentLanguage]); 
+             if (this.state.isApproveMode === false) {
+                this.props.history.push( 
+                    this.state.perviousRoute
+                  );
+            } 
 
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-
-            this.props.history.push({
-                pathname: "/Letters/" + this.state.projectId
-            });
         });
     }
 
@@ -411,9 +415,9 @@ class LettersAddEdit extends Component {
     }
 
     saveAndExit(event) {
-        this.props.history.push({
-            pathname: "/Letters/" + this.state.projectId
-        });
+        this.props.history.push( 
+            this.state.perviousRoute
+          );
     }
 
     showBtnsSaving() {
@@ -436,7 +440,7 @@ class LettersAddEdit extends Component {
                 : null
         )
     }
- 
+
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") {
             this.props.actions.SendingWorkFlow(true);
@@ -461,10 +465,10 @@ class LettersAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
 
@@ -473,7 +477,7 @@ class LettersAddEdit extends Component {
             <div className="mainContainer" id={'mainContainer'}>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -495,8 +499,9 @@ class LettersAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
-                                            onSubmit={(values) => { if (this.props.showModal) { return; }
-                                                
+                                            onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
+
 
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
