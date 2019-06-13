@@ -1337,8 +1337,8 @@ class materialReturnedAddEdit extends Component {
                 </div>
 
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        beforeClose={() => { this.executeBeforeModalClose() }}  {this.state.currentComponent}
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
+                        beforeClose={() => { this.executeBeforeModalClose() }}>  {this.state.currentComponent}
                     </SkyLight>
                 </div>
 

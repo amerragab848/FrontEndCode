@@ -1,18 +1,11 @@
 import React, { Component, Fragment } from "react";
-
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import IPConfig from '../../IP_Configrations'
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
@@ -20,16 +13,10 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import Api from "../../api";
-import ReactTable from "react-table";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import { SkyLightStateless } from 'react-skylight';
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
@@ -59,12 +46,12 @@ class TransferInventory extends Component {
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
-
         let index = 0;
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
@@ -87,27 +74,20 @@ class TransferInventory extends Component {
             isView: false,
             docId: docId,
             docTypeId: 113,
-            projectId: projectId,
+            projectId: this.props.projectId === 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId,
             docApprovalId: docApprovalId,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             selectedProject: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
             ProjectsData: [],
             permission: [
-                { name: "sendByEmail", code: 244 },
-                { name: "sendByInbox", code: 243 },
-                { name: "sendTask", code: 0 },
-                { name: "distributionList", code: 986 },
-                { name: "createTransmittal", code: 3072 },
-                { name: "sendToWorkFlow", code: 734 },
-                { name: "viewAttachments", code: 3283 },
-                { name: "deleteAttachments", code: 892 }
+                { name: "sendToWorkFlow", code: 3775 },
             ],
             approvedQuantity: 0,
             rejectedQuantity: 0,
             pendingQuantity: 0,
         }
 
-        if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
+        if (!Config.IsAllow(3773) && !Config.IsAllow(3774)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(
                 this.state.perviousRoute
@@ -121,7 +101,7 @@ class TransferInventory extends Component {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
             else { links[i].classList.add("odd") }
         }
-//        this.checkDocumentIsView()
+        //        this.checkDocumentIsView()
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
@@ -130,7 +110,11 @@ class TransferInventory extends Component {
             this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
             let isEdit = nextProps.document.id > 0 ? true : false
             this.fillDropDowns(isEdit);
-//            this.checkDocumentIsView();
+            //            this.checkDocumentIsView();
+        }
+        if (nextProps.projectId !== this.props.projectId) {
+          
+            this.setState({ projectId: nextProps.projectId, })
         }
         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
         if (this.state.showModal != nextProps.showModal) {
@@ -140,7 +124,7 @@ class TransferInventory extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-//            this.checkDocumentIsView();
+            //            this.checkDocumentIsView();
         }
     }
 
@@ -151,7 +135,7 @@ class TransferInventory extends Component {
 
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.props.projectId, 'projectName', 'projectId').then(result => {
+        dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.state.projectId, 'projectName', 'projectId').then(result => {
             if (isEdit) {
                 let id = this.props.document.toProjectId;
                 let selectedValue = {};
@@ -235,11 +219,8 @@ class TransferInventory extends Component {
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-                if (this.state.isApproveMode === false) {
-                    this.props.history.push(
-                        this.state.perviousRoute
-                    );
-                }
+
+                this.props.history.push("/materialInventory/" + this.state.projectId);
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -249,7 +230,7 @@ class TransferInventory extends Component {
     render() {
 
         let actions = [
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.props.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
+            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
         ]
 
 
@@ -338,9 +319,9 @@ class TransferInventory extends Component {
                                             }
 
                                             <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                          
+
                                             <span className="border"></span>
-                                            
+
                                         </div>
                                     </div>
                                     : null}
@@ -386,8 +367,8 @@ class TransferInventory extends Component {
 
                         </div>
                         <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                                beforeClose={() => { this.executeBeforeModalClose() }}  {this.state.currentComponent}
+                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
+                                beforeClose={() => { this.executeBeforeModalClose() }}>  {this.state.currentComponent}
                             </SkyLight>
                         </div>
                     </div>
