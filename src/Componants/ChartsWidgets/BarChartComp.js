@@ -1,6 +1,6 @@
 
 import React, { Component, Fragment } from 'react';
-import Api from '../../api'; 
+import Api from '../../api';
 import { Bar, GroupedBar, Tooltip, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 const marginObject = {
@@ -62,7 +62,7 @@ class BarChartComp extends Component {
                 isLoading: false
             });
         });
-    } 
+    }
 
     render() {
         const renderLine = (props) => (
@@ -73,7 +73,7 @@ class BarChartComp extends Component {
                             isHorizontal={false}
                             margin={marginObject}
                             colorSchema={colorSchema}
-                            width={width} 
+                            width={width}
                             shouldShowLoadingState={this.state.barData.length ? false : true}
                             {...props}
                         />
