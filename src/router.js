@@ -161,6 +161,7 @@ import requestsTransferItems from "./Pages/Procurement/requestsTransferItems";
 import TransferInventory from "./Pages/Procurement/TransferInventory"; 
 import materialReturnedAddEdit from "./Pages/Procurement/materialReturnedAddEdit"; 
 import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit"; 
+import procurementAddEdit from "./Pages/Procurement/procurementAddEdit"; 
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -337,6 +338,7 @@ let originalRoutes = [
     , <Route path="/requestsTransferItems" component={requestsTransferItems} /> 
     , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} /> 
     , <Route path="/materialReleaseAddEdit" component={materialReleaseAddEdit} /> 
+    , <Route path="/procurementAddEdit" component={procurementAddEdit} /> 
     
     , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
 ];

@@ -1101,6 +1101,61 @@
             }
           ]
         },
+
+        
+        {
+          "title": {
+            "en": "Material Transfer",
+            "ar": "تحويل خامات"
+          },
+          "id": 100,
+          "permissions": [
+            {
+              "code": 3773,
+              "title": {
+                "en": "View",
+                "ar": "عرض تفاصيل"
+              },
+              "value": false
+            },
+            {
+              "code": 3772,
+              "title": {
+                "en": "View All",
+                "ar": "عرض"
+              },
+              "value": false
+            },
+            {
+              "code": 3774,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل"
+              },
+              "value": false
+            },
+            {
+              "code": 3775,
+              "title": {
+                "en": "Send To Workflow",
+                "ar": "إرسال إلى الدورةالمستنديه"
+              },
+              "value": false
+            },
+            {
+              "code": 3776,
+              "title": {
+                "en": "Send To Expenses Work Flow",
+                "ar": "ارسال للدوره المستنديه لاذن الصرف"
+              },
+              "value": false
+            }
+          ]
+        },
+
+
+
+
         {
           "title": {
             "en": "Material Delivery",
