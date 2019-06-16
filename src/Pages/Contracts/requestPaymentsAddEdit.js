@@ -64,6 +64,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 let type =1;
 const _ = require('lodash')
@@ -82,12 +83,13 @@ class requestPaymentsAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                    docId = obj.docId;
+                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 }
                 catch{
                     this.props.history.goBack();
@@ -129,8 +131,10 @@ class requestPaymentsAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode,
-            isView: false, 
+            isApproveMode: isApproveMode, 
+            perviousRoute: perviousRoute,
+            isView: false,
+
             pageNumber: 0,
             pageSize: 2000, 
             docId: docId,
@@ -159,9 +163,9 @@ class requestPaymentsAddEdit extends Component {
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/requestPayments/" + projectId
-            });
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
         this.editRowsClick = this.editRowsClick.bind(this);
         this.GetCellActions = this.GetCellActions.bind(this);
@@ -1583,8 +1587,14 @@ class requestPaymentsAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]}
+            {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }, {
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
+                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+            }
+
         ];
         
         let columns = [];
@@ -1819,8 +1829,9 @@ class requestPaymentsAddEdit extends Component {
         return (
             <div className="mainContainer"> 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
-                    <div className="doc-container"> 
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <div className="doc-container">
+
                         <div className="step-content">
                             {this.state.FirstStep ?
                                 <Fragment>
@@ -2478,7 +2489,7 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
     }
-}
+} 
 
 function mapStateToProps(state) {
     return {

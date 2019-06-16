@@ -6,7 +6,7 @@ import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
 import { toast } from "react-toastify";
 import dataservice from "../../Dataservice";
-
+import { withRouter } from "react-router-dom";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class wfApproval extends Component {
@@ -102,8 +102,11 @@ class wfApproval extends Component {
               if (result === true) {
                 this.setState({ submitLoading: true });
                 Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
-                  this.setState({ submitLoading: true });
-                  toast.success(Resources["successAlert"][currentLanguage]);
+                  this.setState({ submitLoading: true }); 
+                  console.log('this.props.perviousRoute',this.props.perviousRoute)
+                  this.props.history.push( 
+                    this.props.previousRoute
+                  );
 
                 });
 
@@ -178,4 +181,4 @@ class wfApproval extends Component {
     );
   }
 }
-export default wfApproval;
+export default withRouter(wfApproval);

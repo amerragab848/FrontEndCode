@@ -30,9 +30,10 @@ class Schedule extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { 
-            ApiDelete:this.props.ApiDelete,
+        this.state = {
+            ApiDelete: this.props.ApiDelete,
             Api: this.props.Api,
+            ApiGet: this.props.ApiGet,
             ScheduleLsit: [],
             docId: this.props.contractId,
             ProjectScheduleDrop: [],
@@ -51,18 +52,18 @@ class Schedule extends Component {
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
 
-        dataservice.addObject(this.state.ApiDelete + this.state.selectedId ).then((res) => {
+        dataservice.addObject(this.state.ApiDelete + this.state.selectedId).then((res) => {
 
             let originalRows = this.state.ScheduleLsit
 
             let data = originalRows.filter(r => r.id !== this.state.selectedId);
-            
+
             this.setState({
                 ScheduleLsit: data,
                 showDeleteModal: false,
                 isLoading: false,
             });
-            
+
             toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
 
         }).catch(ex => {
@@ -70,19 +71,19 @@ class Schedule extends Component {
             this.setState({
                 isLoading: false,
             })
-        }); 
+        });
     }
 
     componentWillMount = () => {
 
-    dataservice.GetDataGrid(this.props.ApiGet).then(result => {
-                this.setState({
-                    ScheduleLsit: result
-                })
+        dataservice.GetDataGrid(this.state.ApiGet).then(result => {
+            this.setState({
+                ScheduleLsit: result
             })
- 
-    dataservice.GetDataGrid('ProjectScheduleGetForList?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000').then(result => {
-        
+        })
+
+        dataservice.GetDataGrid('ProjectScheduleGetForList?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000').then(result => {
+
             let data = [];
 
             result.forEach(item => {
@@ -91,12 +92,12 @@ class Schedule extends Component {
                 obj.value = item["id"];
                 data.push(obj);
             });
-         
-        this.setState({
-            ProjectScheduleDrop: data,
-            ProjectScheduleFillData:result
+
+            this.setState({
+                ProjectScheduleDrop: data,
+                ProjectScheduleFillData: result
+            })
         })
-      })
     }
 
     onCloseModal() {
@@ -118,11 +119,11 @@ class Schedule extends Component {
         this.setState({
             BtnLoading: true
         });
-        
+
         let typeColumn = this.props.type;
-        
+
         if (this.state.TabActive === 0) {
-          
+
 
             let AddObj = {
                 [typeColumn]: this.state.docId,
@@ -152,15 +153,15 @@ class Schedule extends Component {
         else {
 
             let selectedProjectScheduleItem = this.state.ProjectScheduleFillData.find(s => s.id === this.state.selectedProjectSchedule.value);
- 
+
             const objDocument = {
                 //field
-                id: 0,  
-                [typeColumn] :this.state.docId,
+                id: 0,
+                [typeColumn]: this.state.docId,
                 projectTaskId: selectedProjectScheduleItem.id,
                 startDate: selectedProjectScheduleItem.startDate,
-                finishDate: selectedProjectScheduleItem.finishDate ,
-                description : selectedProjectScheduleItem.subject 
+                finishDate: selectedProjectScheduleItem.finishDate,
+                description: selectedProjectScheduleItem.subject
             };
 
             dataservice.addObject(this.state.Api, objDocument).then(
@@ -178,7 +179,7 @@ class Schedule extends Component {
                         isLoading: false,
                         BtnLoading: false,
                     })
-                }); 
+                });
         }
     }
 
@@ -318,25 +319,25 @@ class Schedule extends Component {
                                                     onChange={handleChange} />
                                                 {touched.taskId ? (<em className="pError">{errors.taskId}</em>) : null}
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div className="linebylineInput valid-input">
                                             <div className="inputDev ui input">
                                                 <DatePicker title='startDate' handleChange={e => this.setState({ StartDate: e })} startDate={this.state.StartDate} />
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div className="linebylineInput valid-input">
                                             <div className="inputDev ui input">
                                                 <DatePicker title='finishDate' handleChange={e => this.setState({ FinishDate: e })} startDate={this.state.FinishDate} />
                                             </div>
-                                        </div> 
-                                    </div> : 
+                                        </div>
+                                    </div> :
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title='projectSchedule' data={this.state.ProjectScheduleDrop} selectedValue={this.state.selectedProjectSchedule}
                                             handleChange={e => this.setState({ selectedProjectSchedule: e })}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.ProjectSchedule} touched={touched.ProjectSchedule}
                                             name="ProjectSchedule" index="ProjectSchedule" />
                                     </div>
-                                    } 
+                                }
                                 <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                     {this.state.BtnLoading === false ?
                                         <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? 'disNone' : '')} type="submit" disabled={this.state.isApproveMode}  >{Resources['add'][currentLanguage]}</button>
@@ -348,11 +349,11 @@ class Schedule extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                    } 
+                                    }
                                 </div>
                             </Form>
                         )}
-                    </Formik> 
+                    </Formik>
                     <header>
                         <h2 className="zero">{Resources['scheduleList'][currentLanguage]}</h2>
                     </header>
@@ -362,10 +363,10 @@ class Schedule extends Component {
                     </div>
                     <ReactTable ref={(r) => { this.selectTable = r; }} filterable
                         data={this.state.ScheduleLsit} columns={columns} defaultPageSize={10}
-                        minRows={2} noDataText={Resources['noData'][currentLanguage]} /> 
+                        minRows={2} noDataText={Resources['noData'][currentLanguage]} />
                 </div>
 
-                {this.state.showDeleteModal == true ? ( 
+                {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources['smartDeleteMessage'][currentLanguage].content}
                         closed={this.onCloseModal}

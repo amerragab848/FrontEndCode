@@ -15,8 +15,7 @@ class Widgets extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log(this.props.props.api);
+  componentDidMount() { 
 
     Api.get(this.props.props.api).then(result => {
       if (result) {

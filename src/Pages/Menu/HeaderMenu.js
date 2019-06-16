@@ -1,11 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link, withRouter, NavLink } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import Notif from "../../Styles/images/notif-icon.png";
 import Img from "../../Styles/images/avatar.png";
-import Chart from "../../Styles/images/icons/chart-nav.svg";
-import Setting from "../../Styles/images/icons/setting-nav.svg";
-// import Message from "../../Styles/images/icons/message-nav.svg";
 import CryptoJS from "crypto-js";
 import config from "../../Services/Config";
 import dataservice from "../../Dataservice";
@@ -49,11 +45,12 @@ class HeaderMenu extends Component {
     };
     config.contactName = this.props.contactName;
     this.handleChange = this.handleChange.bind(this);
+    this.handleClearCach = this.handleClearCach.bind(this);
+    this.handleClearSettings = this.handleClearSettings.bind(this);
     this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
     this.handleChangeSelectProject = this.handleChangeSelectProject.bind(this);
     this.ReportCenterMenu = this.ReportCenterMenu.bind(this);
 
-    //this.viewNotifications = this.handleClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
   }
@@ -105,6 +102,34 @@ class HeaderMenu extends Component {
     });
 
     window.location.reload();
+  }
+
+  handleClearCach(event) {
+
+    var res = [];
+
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+
+      if (key.indexOf("DFL_") > -1) {
+        res.push(key);
+        localStorage.removeItem(key);
+      }
+    }
+  }
+
+  handleClearSettings(event) {
+
+    var res = [];
+
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key.indexOf("KO-Grid-") > -1 || key.indexOf("Widgets_Order") > -1 || key.indexOf("DFL_") > -1) {
+        res.push(key);
+        localStorage.removeItem(key);
+      }
+    }
+
   }
 
   logOutHandler() {
@@ -1014,7 +1039,6 @@ class HeaderMenu extends Component {
               <ul className="nav-right">
                 <li>
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
-                    {/* <img alt="" title="" src={Chart} /> */}
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                       <g fill="none" fillRule="evenodd" transform="translate(3 3)">
                         <g fill="#A8B0BF">
@@ -1027,7 +1051,6 @@ class HeaderMenu extends Component {
                 </li>
                 <li>
                   <NavLink to="/TemplatesSettings" onClick={this.handleChangeTemplate}>
-                    {/* <img alt="" title="" src={Setting} /> */}
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                       <g fill="none" fillRule="evenodd" transform="translate(3 3)">
                         <g fill="#A8B0BF">
@@ -1040,7 +1063,6 @@ class HeaderMenu extends Component {
                 </li>
                 <li ref={node => { this.node = node }} className="notifi-icon">
                   <a id="notiClicked" onClick={this.viewNotifications.bind(this)}>
-                    {/* <img alt="" title="" src={Notif} /> */}
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                       <g fill="none" fillRule="evenodd" transform="translate(4 2)">
                         <g fill="#A8B0BF" mask="url(#b)">
@@ -1160,18 +1182,6 @@ class HeaderMenu extends Component {
                     </div>
                   ) : null}
                 </li>
-                {/* <li>
-                  <a>
-                    // <img alt="" title="" src={Message} />
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                          <g fill="none" fillRule="evenodd" transform="translate(1 3)">
-                              <g fill="#A8B0BF" mask="url(#b)">
-                                  <path id="a" d="M5.554 9.537v2.059H4.72l-2.388 2.343a1.378 1.378 0 0 1-1.487.29A1.34 1.34 0 0 1 0 12.985V4.671C0 2.094 2.136 0 4.76 0h5.379c1.551 0 2.978.738 3.869 1.96.13.185.289.47.377.665l.187.41h-.453c-.086 0-.2.002-.837.011l-.059.001c-.475.007-.73.01-.862.01h-.132l-.087-.099a2.667 2.667 0 0 0-2.004-.898H4.759c-1.471 0-2.668 1.173-2.668 2.612v6.598l1.366-1.34c.258-.253.6-.392.964-.392l1.133-.001zm11.686-4.87c2.624 0 4.76 2.095 4.76 4.673v8.316c0 .546-.333 1.034-.844 1.24a1.377 1.377 0 0 1-1.487-.289l-2.388-2.343h-5.42c-2.578 0-4.686-2.028-4.747-4.565V9.617l-.01-.292c.008-2.57 2.14-4.656 4.757-4.655h.947l4.432-.002zm2.67 4.672c0-1.44-1.197-2.613-2.67-2.613h-5.873c-.934 0-2.175 1.35-2.175 2.613v2.254c0 1.44 1.197 2.613 2.67 2.613h5.718c.363 0 .705.139.964.392l1.365 1.34v-6.6z"></path>
-                              </g>
-                          </g>
-                      </svg>
-                  </a>
-                </li> */}
                 <li className="UserImg" ref={profile => { this.profile = profile; }}>
                   <div className={this.state.activeClass === false ? "dropdownContent" : "dropdownContent active"} onClick={this.openProfile} >
                     <figure className="zero avatarProfile onlineAvatar">
@@ -1197,12 +1207,12 @@ class HeaderMenu extends Component {
                             {Resources["privacySettings"][currentLanguage]}
                           </Link>
                         </div>
-                        <div className="item">
+                        <div className="item" onClick={event => this.setState({ clearSettings: true })} >
                           <div className="item-content">
                             {Resources["clearSettings"][currentLanguage]}
                           </div>
                         </div>
-                        <div className="item">
+                        <div className="item" onClick={event => this.setState({ clearCach: true })}>
                           <div className="item-content">
                             {Resources["clearCach"][currentLanguage]}
                           </div>
@@ -1234,117 +1244,23 @@ class HeaderMenu extends Component {
         {
           this.state.logOut ? (
             <ConfirmationModal closed={this.onCloseModal} showDeleteModal={this.state.logOut} clickHandlerCancel={this.onCloseModal}
-              clickHandlerContinue={() => this.logOutHandler()} title="You Will Be Missed, Are You Sure Want to Leave US?" buttonName="submit" />
+              clickHandlerContinue={() => this.logOutHandler()} title="You Will Be Missed, Are You Sure Want to Leave US?" buttonName='logout' />
           ) : null
         }
-        {/*         
-        {this.state.viewNotification ? (
-          <div className="notifiBar">
-            <div className="smallNotifiBar">
-              <div className="notifi__tabs">
-                <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.onClickTabItem(tabIndex)}>
-                  <TabList className="zero">
-                    <Tab className={this.state.tabNotifi ? "active" : ""}>
-                      <span className="imgWrapper not__icon">
-                        <img className="activeImg" src={iconActive} />
-                        <img className="normalImg" src={notifIcon} />
-                      </span>
-                      <span className="tabNAme">
-                        {Resources["general"][currentLanguage]}
-                      </span>
-                    </Tab>
-                    <Tab className={this.state.tabTask ? "active" : ""}>
-                      <span className="imgWrapper base__icon">
-                        <img className="activeImg" src={baseActive} />
-                        <img className="normalImg" src={greyBase} />
-                      </span>
-                      <span className="tabNAme">
-                        {Resources["myTasks"][currentLanguage]}
-                      </span>
-                    </Tab>
-                  </TabList>
-                  <TabPanel>
-                    <Fragment>
-                      {this.state.notifications.map(item => {
-                        let now = moment(new Date());
-                        let sentDate = moment(item.sentDate);
-                        let duration = moment.duration(now.diff(sentDate));
-                        let diffDays = duration.asDays();
 
-                        let obj = {
-                          docId: item.id,
-                          projectId: window.localStorage.getItem("lastSelectedProject"),
-                          projectName: window.localStorage.getItem("lastSelectedprojectName"),
-                          arrange: 0,
-                          docApprovalId: 0,
-                          isApproveMode: false
-                        };
-
-                        let currentLink = item.description.split("/");
-
-                        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-                        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-                        let link = currentLink[0] + "?id=" + encodedPaylod;
-
-                        return (
-                          <div className="notifiContent" key={item.id} onClick={() => this.updateStatus(item)}>
-                            <div className="notfiText">
-                              <div className="notifiName">
-                                <h3>{item.fromContactName}</h3>
-                                <p>{diffDays.toFixed(0) + " Days"}</p>
-                              </div>
-                              <p className="notofoWorkflow">
-                                <span>{item.documentName}</span>
-                                {currentLink[0] != "" ? <a data-toggle="tooltip" title={item.title} href={link}
-                                  onClick={() => this.navigateLink(currentLink[0], encodedPaylod).bind(this)}>
-                                  “{item.title}”
-                                </a> : <span>“{item.title}”</span>}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                      <div className="fullWidthWrapper">
-                        <button className="primaryBtn-1 btn smallBtn" onClick={ this.showDetails.bind(this) }>
-                          {Resources["showMore"][currentLanguage]}
-                        </button>
-                      </div>
-                    </Fragment>
-                  </TabPanel>
-                  <TabPanel>
-                    {this.state.taskes.map(item => {
-                      let now = moment(new Date());
-                      let docDate = moment(item.docDate);
-                      let duration = moment.duration(now.diff(docDate));
-                      let diffDays = duration.asDays();
-
-                      let link = "/taskDetails?id="+item.id; 
-
-                      return (
-                        <div className="notifiContent" key={item.id} onClick={this.navigateMyTasks.bind(this)}>
-                          <figure className="avatarProfile smallAvatarSize">
-                            <img src={item.userImage} />
-                          </figure>
-                          <div className="notfiText">
-                            <div className="notifiName">
-                              <h3>{item.fromContactName}</h3>
-                              <p>{diffDays.toFixed(0) + " Days"}</p>
-                            </div>
-                            <p className="notofoWorkflow">
-                              {item.projectName + " - " + item.statusName}
-                              <a href={link}>“{item.subject}”</a>
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </TabPanel>
-                </Tabs>
-              </div>
-            </div>
-          </div>
-        ) : null} */}
-
+        {
+          this.state.clearCach ? (
+            <ConfirmationModal closed={event => this.setState({ clearCach: false })} showDeleteModal={this.state.clearCach} clickHandlerCancel={event => this.setState({ clearCach: false })}
+              clickHandlerContinue={() => this.handleClearCach()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearCach' />
+          ) : null
+        }
+        
+        {
+          this.state.clearSettings ? (
+            <ConfirmationModal closed={event => this.setState({ clearSettings: false })} showDeleteModal={this.state.clearSettings} clickHandlerCancel={event => this.setState({ clearSettings: false })}
+              clickHandlerContinue={() => this.handleClearSettings()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearSettings' />
+          ) : null
+        }
       </div >
     );
   }

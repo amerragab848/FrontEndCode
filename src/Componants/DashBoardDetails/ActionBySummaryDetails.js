@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
-import Filter from "../FilterComponent/filterComponent"; 
+import Export from "../OptionsPanels/Export";
+import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import {    Filters } from "react-data-grid-addons";
+import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -23,12 +24,11 @@ const dateFormate = ({ value }) => {
 
 class ActionBySummaryDetails extends Component {
   constructor(props) {
-    super(props);
-
+    super(props); 
     var columnsGrid = [
       {
         key: "docNo",
-        name:  Resources["numberAbb"][currentLanguage],
+        name: Resources["numberAbb"][currentLanguage],
         width: 100,
         draggable: true,
         sortable: true,
@@ -39,7 +39,7 @@ class ActionBySummaryDetails extends Component {
       },
       {
         key: "projectName",
-        name:  Resources["projectName"][currentLanguage],
+        name: Resources["projectName"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
@@ -50,7 +50,7 @@ class ActionBySummaryDetails extends Component {
       },
       {
         key: "actionBy",
-        name:  Resources["actionByContact"][currentLanguage],
+        name: Resources["actionByContact"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
@@ -84,14 +84,14 @@ class ActionBySummaryDetails extends Component {
       {
         key: "requiredDate",
         name: Resources["requiredDate"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
 
@@ -135,7 +135,7 @@ class ActionBySummaryDetails extends Component {
     ];
 
     this.state = {
-      pageTitle:Resources["actionBySummary"][currentLanguage],
+      pageTitle: Resources["actionBySummary"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
@@ -144,8 +144,11 @@ class ActionBySummaryDetails extends Component {
       isCustom: true
     };
   }
+   
+  
 
   componentDidMount() {
+
     const query = new URLSearchParams(this.props.location.search);
 
     let action = null;
@@ -157,7 +160,7 @@ class ActionBySummaryDetails extends Component {
       Api.get("GetActionsBySummaryDetails?action=" + action).then(result => {
 
         this.setState({
-          rows: result != null ?result : [],
+          rows: result != null ? result : [],
           isLoading: false
         });
       });
@@ -179,17 +182,17 @@ class ActionBySummaryDetails extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -199,24 +202,22 @@ class ActionBySummaryDetails extends Component {
       });
   };
 
-
-
   render() {
     const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+      this.state.isLoading === false ? (
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+      ) : <LoadingSection />;
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain}
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
@@ -285,22 +286,22 @@ class ActionBySummaryDetails extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
             {btnExport}
-          </div> 
+          </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
             {ComponantFilter}
           </div>
@@ -311,5 +312,5 @@ class ActionBySummaryDetails extends Component {
     );
   }
 }
-
-export default ActionBySummaryDetails;
+ 
+export default  ActionBySummaryDetails ;

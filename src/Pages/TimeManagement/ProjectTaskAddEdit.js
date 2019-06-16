@@ -67,6 +67,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 
 const _ = require("lodash");
@@ -90,6 +91,7 @@ class ProjectTaskAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
+          perviousRoute =obj.perviousRoute ;
           arrange = obj.arrange;
         } catch {
           this.props.history.goBack();
@@ -108,6 +110,7 @@ class ProjectTaskAddEdit extends Component {
       docTypeId: 17,
       projectId: projectId,
       docApprovalId: docApprovalId,
+      perviousRoute:perviousRoute,
       arrange: arrange,
       document: this.props.document ? Object.assign({}, this.props.document) : {},
       cycleDocument: null,
@@ -139,7 +142,9 @@ class ProjectTaskAddEdit extends Component {
 
     if (!Config.IsAllow(357) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
-      this.props.history.push("/ProjectTasks/" + this.state.projectId);
+      this.props.history.push( 
+        this.state.perviousRoute
+      );
     }
   }
 
@@ -466,8 +471,11 @@ class ProjectTaskAddEdit extends Component {
       });
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
-
-      this.props.history.push("/ProjectTasks/" + this.state.projectId);
+      if (this.state.isApproveMode === false) {
+        this.props.history.push( 
+            this.state.perviousRoute
+          );
+    } 
     });
   }
 
@@ -622,12 +630,12 @@ class ProjectTaskAddEdit extends Component {
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId}  previousRoute={this.state.perviousRoute}  approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId}  previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       }
     ];
@@ -635,7 +643,7 @@ class ProjectTaskAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectTask[currentLanguage]}
+          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode}  perviousRoute={this.state.perviousRoute}  docTitle={Resources.projectTask[currentLanguage]}
             moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
 

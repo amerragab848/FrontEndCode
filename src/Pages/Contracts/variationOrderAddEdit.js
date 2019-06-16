@@ -104,33 +104,70 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
-const _ = require("lodash");
-class variationOrderAddEdit extends Component {
-  constructor(props) {
-    super(props);
-    const query = new URLSearchParams(this.props.location.search);
-    let index = 0;
-    for (let param of query.entries()) {
-      if (index == 0) {
-        try {
-          let obj = JSON.parse(
-            CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8)
-          );
+const _ = require('lodash')
+class variationOrderAddEdit extends Component { 
+    constructor(props) { 
+        super(props);
+        const query = new URLSearchParams(this.props.location.search);
+        let index = 0;
+        for (let param of query.entries()) {
+            if (index == 0) {
+                try {
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-          docId = obj.docId;
-          projectId = obj.projectId;
-          projectName = obj.projectName;
-          isApproveMode = obj.isApproveMode;
-          docApprovalId = obj.docApprovalId;
-          arrange = obj.arrange;
-        } catch {
-          this.props.history.goBack();
+                     docId = obj.docId;
+                    projectId = obj.projectId;
+                    projectName = obj.projectName;
+                    isApproveMode = obj.isApproveMode;
+                    docApprovalId = obj.docApprovalId;
+                    arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
+                }
+                catch{
+                    this.props.history.goBack();
+                }
+            }
+            index++;
         }
-      }
-      index++;
-    }
 
+        this.state = {
+            FirstStep: true,
+            SecondStep: false, 
+            SecondStepComplate: false,
+            currentTitle: "sendToWorkFlow",
+            showModal: false,
+            isViewMode: false,
+            isApproveMode: isApproveMode, 
+            perviousRoute: perviousRoute,
+            isView: false, 
+            docId: docId,
+            docTypeId: 66,
+            projectId: projectId,
+            docApprovalId: docApprovalId,
+            arrange: arrange, 
+            document: this.props.document ? Object.assign({}, this.props.document) : {},
+            voItem: {}, 
+            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
+            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
+            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code: 3280 }],
+            selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
+            selectPco: { label: Resources.pco[currentLanguage], value: "0" },
+            pcos: [],
+            contractsPos: [],
+            voItems: [],
+            CurrentStep: 1
+        }
+
+        if (!Config.IsAllow(159) && !Config.IsAllow(158) && !Config.IsAllow(160)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
+        }
+      
     this.state = { 
       FirstStep: true,
       SecondStep: false,
@@ -176,6 +213,8 @@ class variationOrderAddEdit extends Component {
         pathname: "/changeOrder/" + projectId
       });
     }
+ 
+    index++;
   }
 
   componentDidMount() {

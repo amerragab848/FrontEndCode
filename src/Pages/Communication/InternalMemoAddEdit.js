@@ -39,6 +39,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute = '';
 let arrange = 0;
 
 const _ = require('lodash');
@@ -64,6 +65,7 @@ class InternalMemoAddEdit extends Component {
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 }
                 catch{
                     this.props.history.goBack();
@@ -77,6 +79,7 @@ class InternalMemoAddEdit extends Component {
             showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 30,
@@ -106,7 +109,9 @@ class InternalMemoAddEdit extends Component {
 
         if (!Config.IsAllow(98) && !Config.IsAllow(99) && !Config.IsAllow(101)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/InternalMemo/" + this.state.projectId);
+            this.props.history.push(
+                this.state.perviousRoute
+            );
         }
     }
 
@@ -349,8 +354,11 @@ class InternalMemoAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-
-            this.props.history.push("/InternalMemo/" + this.state.projectId);
+            if (this.state.isApproveMode === false) {
+                this.props.history.push(
+                    this.state.perviousRoute
+                );
+            }
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
@@ -425,10 +433,10 @@ class InternalMemoAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }];
 
@@ -436,7 +444,7 @@ class InternalMemoAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.communicationInternalMemo[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationInternalMemo[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
 
                     <div className="doc-container">
                         {
@@ -657,8 +665,8 @@ class InternalMemoAddEdit extends Component {
                                         <div>
 
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={841} EditAttachments={3229} ShowDropBox={3619} ShowGoogleDrive={3620} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                                           
-                                             {this.viewAttachments()}
+
+                                            {this.viewAttachments()}
 
                                             {this.props.changeStatus === true ?
                                                 <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

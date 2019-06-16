@@ -103,10 +103,8 @@ class GridSetupWithFilter extends Component {
         }
         let prevRows = this.state.selectedIndexes;
         let prevRowsId = this.state.selectedRows;
-        let copmleteRows = this.state.copmleteRows;
 
-
-        if (this.props.single == true) {
+        if (this.props.single === true) {
             prevRows = [];
             prevRowsId = [];
             prevRows.push(rows[0].rowIdx);
@@ -121,7 +119,7 @@ class GridSetupWithFilter extends Component {
 
             let exist = prevRows.indexOf(rows[0].rowIdx) === -1 ? false : true;
             if (exist === false) {
-                if (this.props.selectedCopmleteRow != undefined) {
+                if (this.props.selectedCopmleteRow !== undefined) {
                     if (rows[0].row.type !== "Distribution List") {
                         prevRows.push(rows[0].rowIdx);
                         prevRowsId.push(rows[0].row.id);
@@ -141,7 +139,7 @@ class GridSetupWithFilter extends Component {
             selectedRows: prevRowsId
         });
 
-        if (this.props.selectedRows != undefined) {
+        if (this.props.selectedRows !== undefined) {
             this.props.selectedRows(this.state.selectedRows);
         }
 
@@ -164,12 +162,8 @@ class GridSetupWithFilter extends Component {
         } else {
             let rowIndexes = rows.map(r => r.rowIdx);
             let currRows = rows.map(r => r.row.id);
-            prevRows = this.state.selectedIndexes.filter(
-                i => rowIndexes.indexOf(i) === -1
-            );
-            prevRowsId = this.state.selectedRows.filter(
-                i => currRows.indexOf(i) === -1
-            );
+            prevRows = this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1);
+            prevRowsId = this.state.selectedRows.filter(i => currRows.indexOf(i) === -1);
         }
 
         this.setState({
@@ -177,7 +171,7 @@ class GridSetupWithFilter extends Component {
             selectedRows: prevRowsId
         });
 
-        if (this.props.DeSelectedRows != undefined) {
+        if (this.props.DeSelectedRows !== undefined) {
             let currentRows = rows.map(r => r.row.id);
 
             var oldSelectedRows = this.state.selectedRows;
@@ -202,7 +196,7 @@ class GridSetupWithFilter extends Component {
 
     onRowClick = (index, value, column) => {
         if (value) {
-            if (this.props.onRowClick != undefined) {
+            if (this.props.onRowClick !== undefined) {
                 this.props.onRowClick(value, index, column);
                 this.setState({ selectedRow: value })
             }
@@ -224,7 +218,7 @@ class GridSetupWithFilter extends Component {
     }
 
     onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        if (this.props.onGridRowsUpdated != undefined) {
+        if (this.props.onGridRowsUpdated !== undefined) {
             this.props.onGridRowsUpdated({ fromRow, toRow, updated })
         }
     }
@@ -236,7 +230,7 @@ class GridSetupWithFilter extends Component {
         });
         document.getElementById('empty__div--scroll').style.width = document.getElementById('scrollWidthDiv').style.width;
         document.getElementById('bottom__scroll').querySelector('.react-grid-Canvas').addEventListener('scroll', function () {
-            if (document.getElementById('top__scroll') != null) {
+            if (document.getElementById('top__scroll') !== null) {
                 document.getElementById('top__scroll').scrollLeft = this.scrollLeft;
             }
         });
@@ -370,6 +364,7 @@ class GridSetupWithFilter extends Component {
                             })}
                         </form>
                     </div>
+
                     <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"} >
                         <button className="filter__close" onClick={this.CloseModeFilter}>x</button>
                         <div className="filterModal" id="largeModal"  >
@@ -399,7 +394,7 @@ class GridSetupWithFilter extends Component {
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> 
                             <div className="filter__actions"> 
                                 <button className="reset__filter" onClick={this.ClearFilters}>Reset all</button>
                             </div>

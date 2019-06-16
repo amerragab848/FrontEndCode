@@ -44,6 +44,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 let specsId="";
 let boqId="";
@@ -110,6 +111,7 @@ class PurchaseOrderAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
+          perviousRoute=obj.perviousRoute;
           arrange = obj.arrange;
         } catch {
           this.props.history.goBack();
@@ -223,6 +225,7 @@ class PurchaseOrderAddEdit extends Component {
       showModalForEdit: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
+      perviousRoute:perviousRoute,
       docId: docId,
       docTypeId: 70,
       projectId: projectId,
@@ -291,9 +294,9 @@ class PurchaseOrderAddEdit extends Component {
 
     if (!Config.IsAllow(175) && !Config.IsAllow(176) && !Config.IsAllow(178)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
-      this.props.history.push({
-        pathname: "/purchaseOrder/" + projectId
-      });
+      this.props.history.push(
+        this.state.perviousRoute
+      );
     }
   }
 
@@ -2254,14 +2257,11 @@ renderEditable(cellInfo) {
         label: Resources["sendToWorkFlow"][currentLanguage]
       },
       {
-        title: "documentApproval",
-        value: ( <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} /> ),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: ( <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} /> ),
-        label: Resources["documentApproval"][currentLanguage]
+        title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
+          projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
+      }, {
+        title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
+          projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
       }
     ];
 
@@ -3195,7 +3195,7 @@ renderEditable(cellInfo) {
         {this.state.IsLoadingCheckCode ? <LoadingSection /> : null}
 
         <div className={ this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step" }>
-          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.purchaseOrder[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.purchaseOrder[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
               {this.state.FirstStep ? (

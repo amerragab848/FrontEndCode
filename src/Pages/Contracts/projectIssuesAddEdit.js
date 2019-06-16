@@ -34,6 +34,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let perviousRoute='';
 let arrange = 0;
 
 const _ = require('lodash');
@@ -53,12 +54,13 @@ class ProjectIssuesAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                    docId = obj.docId;
+                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 }
                 catch{
                     this.props.history.goBack();
@@ -78,6 +80,7 @@ class ProjectIssuesAddEdit extends Component {
             docTypeId: 18,
             projectId: projectId,
             docApprovalId: docApprovalId,
+            perviousRoute:perviousRoute,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             permission: [{ name: 'sendByEmail', code: 26 },
@@ -92,7 +95,9 @@ class ProjectIssuesAddEdit extends Component {
 
         if (!Config.IsAllow(20) && !Config.IsAllow(21) && !Config.IsAllow(23)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/projectIssues/" + this.state.projectId);
+            this.props.history.push( 
+                this.state.perviousRoute
+              );
         }
     }
 
@@ -234,8 +239,11 @@ class ProjectIssuesAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-
-            this.props.history.push("/projectIssues/" + this.state.projectId);
+            if (this.state.isApproveMode === false) {
+                this.props.history.push( 
+                    this.state.perviousRoute
+                  );
+            } 
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
@@ -300,17 +308,17 @@ class ProjectIssuesAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }];
 
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} docTitle={Resources.projectIssuesLog[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectIssuesLog[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
