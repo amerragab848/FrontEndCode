@@ -1,4 +1,5 @@
-{"BlobStorageContainerName": "project-files-demov4",
+{
+    "BlobStorageContainerName": "project-files-demov4",
     "acApp": "AC",
     "accountCompanyId": "2",
     "azureStorage": true,
@@ -14,4 +15,5 @@
     "loginServer": "http://172.30.1.17:8901",
     "pmApp": "PM",
     "static":  "http://172.30.1.17:8900",
-    "downloads":  "http://172.30.1.17:8900"}
+    "downloads":  "http://172.30.1.17:8900"
+}

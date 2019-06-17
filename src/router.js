@@ -160,7 +160,7 @@ import chart from './Componants/ChartsWidgets/BarChartComp';
 import requestsTransferItems from "./Pages/Procurement/requestsTransferItems"; 
 import TransferInventory from "./Pages/Procurement/TransferInventory"; 
 import materialReturnedAddEdit from "./Pages/Procurement/materialReturnedAddEdit"; 
-
+import autoDeskViewer from "./Componants/OptionsPanels/AutoDeskViewer"; 
 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -338,6 +338,7 @@ let originalRoutes = [
     , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} /> 
     
     , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
+    , <Route path="/autoDeskViewer" component={autoDeskViewer} /> 
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
