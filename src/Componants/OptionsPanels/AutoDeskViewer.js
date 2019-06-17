@@ -105,7 +105,7 @@ class AutoDeskViewer extends Component {
             }
             Api.post("translateAutoDesk", obj).then(data => {
                 this.showModel(data,markups);
-                //this.modeIdToggle(2);
+               this.modeIdToggle(3);
             })
         })
     }
@@ -163,8 +163,7 @@ class AutoDeskViewer extends Component {
     }
 
     editingMarkUps = () => {
-        this.setState({ isViewEdit: true, viewEditMarkUps: true })
-
+        this.setState({ isViewEdit: true, viewEditMarkUps: true }) 
         if (this.state.markups.length > 0) {
             this.state.markups.forEach(item => {
                 this.state.viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(markupsExt => {
@@ -194,8 +193,8 @@ class AutoDeskViewer extends Component {
             refreshToken: this.getAccessToken
         };
         var documentId = 'urn:' + urn;
-        Autodesk.Viewing.Initializer(options, function onInitialized() {
-            Autodesk.Viewing.Document.load(documentId, function(doc)  {
+        Autodesk.Viewing.Initializer(options, ()=> {
+            Autodesk.Viewing.Document.load(documentId,  (doc) => {
          
                 var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), { 'type': 'geometry' }, true);
                 if (viewables.length === 0) {
@@ -210,17 +209,16 @@ class AutoDeskViewer extends Component {
                 };
                 var viewerDiv = document.getElementById('forgeViewer');
                 let viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
-                viewer.start(svfUrl, modelOptions, function() {
-                    //      this.setState({ loaded: true }) 
-                 
+                viewer.start(svfUrl, modelOptions, ()=> {
+                    //      this.setState({ loaded: true })  
                     markups.forEach(item => {
                         this.restoreState(item.svg, item.viewerState);
                     });
                 }, function () {
                     console.error('onLoadModelError() - errorCode:');
                 });
-                // this.setState({ viewer })
-            }, alert("onDocumentLoadFailure"));
+                  this.setState({ viewer })
+            });
         }); 
     }
 
@@ -232,40 +230,9 @@ class AutoDeskViewer extends Component {
         return xmlHttp.responseText;
 
     }
-    onDocumentLoadSuccess = (doc) => {
-        // A document contains references to 3D and 2D viewables.
+ 
 
-    }
-
-    /**
-     * Autodesk.Viewing.Document.load() failuire callback.
-     */
-    onDocumentLoadFailure = (viewerErrorCode) => {
-        console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
-    }
-
-    /**
-     * viewer.loadModel() success callback.
-     * Invoked after the model's SVF has been initially loaded.
-     * It may trigger before any geometry has been downloaded and displayed on-screen.
-     */
-    onLoadModelSuccess(model) {
-        console.log('onLoadModelSuccess()!');
-        console.log('Validate model loaded: ' + (this.state.viewer.model === model));
-        console.log(model);
-        this.setState({ loaded: true })
-        this.state.markups.forEach(item => {
-            this.restoreState(item.svg, item.viewerState);
-        });
-    }
-
-    /**
-     * viewer.loadModel() failure callback.
-     * Invoked when there's an error fetching the SVF file.
-     */
-    onLoadModelError(viewerErrorCode) {
-        console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
-    }
+ 
 
 
     handleChangeItemDropDown = () => {
