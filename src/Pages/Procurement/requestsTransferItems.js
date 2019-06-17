@@ -152,7 +152,7 @@ class requestsTransferItems extends Component {
     }
 
     GoEdit = (obj) => {
-        if (Config.IsAllow(3773)) {
+        if (Config.IsAllow(3774)) {
             let objRout = {
                 docId: obj.id,
                 projectId: obj.projectId,

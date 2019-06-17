@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -8,8 +7,6 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import IPConfig from '../../IP_Configrations'
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -31,38 +28,49 @@ import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import { SkyLightStateless } from 'react-skylight';
 
+import Tree from '../../Componants/OptionsPanels/Tree'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
 let arrange = 0;
 const _ = require('lodash')
 
 let selectedRows = [];
 
+
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    contractId: Yup.string().required(Resources['contractPoSelection'][currentLanguage]),
+    orderFromCompanyId: Yup.string().required(Resources['fromCompany'][currentLanguage]),
+    specsSectionId: Yup.string().required(Resources['specsSectionSelection'][currentLanguage]),
+    orderFromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+    materialReleaseId: Yup.string().required(Resources['materialReleaseTypeSelection'][currentLanguage]),
 })
 
 const documentItemValidationSchema = Yup.object().shape({
 
     itemId: Yup.string().required(Resources['itemDescription'][currentLanguage]),
 
-    approvedQuantity: Yup.number().required(Resources['approvedQuantity'][currentLanguage])
+    returnedQuantity: Yup.number().required(Resources['returnedQuantity'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 
-
-    rejectedQuantity: Yup.number().required(Resources['rejectedQuantity'][currentLanguage])
+    arrangeItem: Yup.number().required(Resources['resourceCodeRequired'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 
-    pendingQuantity: Yup.number().required(Resources['pendingQuantity'][currentLanguage])
+    unitPrice: Yup.number().required(Resources['unitPrice'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 
-    arrangeItem: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
+})
+
+const documentItemValidationSchemaForEdit = Yup.object().shape({
+
+    returnedQuantity: Yup.number().required(Resources['returnedQuantity'][currentLanguage])
+        .typeError(Resources['onlyNumbers'][currentLanguage]),
+
+    arrangeItem: Yup.number().required(Resources['resourceCodeRequired'][currentLanguage])
+        .typeError(Resources['onlyNumbers'][currentLanguage]),
 
     unitPrice: Yup.number().required(Resources['unitPrice'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -74,7 +82,7 @@ let ApproveOrRejectData = [
     { label: Resources.rejected[currentLanguage], value: 'false' }
 ]
 
-class materialDeliveryAddEdit extends Component {
+class materialReleaseAddEdit extends Component {
 
     constructor(props) {
         super(props)
@@ -85,18 +93,16 @@ class materialDeliveryAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
-                    perviousRoute = obj.perviousRoute;
                 } catch { this.props.history.goBack(); }
             }
             index++;
-            
-        } 
+        }
         this.state = {
             selectedRows: [],
             CurrentStep: 1,
@@ -109,64 +115,66 @@ class materialDeliveryAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
-            perviousRoute: perviousRoute,
+            isApproveMode: isApproveMode,
             isView: false,
             docId: docId,
-            docTypeId: 49,
+            docTypeId: 51,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            itemDocument: {},
-            addItemDocument: {},
             selected: {},
-            specsSectionData: [],
-            disciplines: [],
-            contractPoData: [],
-            materialTypeData: [],
-            descriptionList: [],
             descriptionDropData: [],
-            MaterialCodeData: [],
             Items: [],
             permission: [
-                { name: "sendByEmail", code: 244 },
-                { name: "sendByInbox", code: 243 },
+                { name: "sendByEmail", code: 253 },
+                { name: "sendByInbox", code: 252 },
                 { name: "sendTask", code: 0 },
-                { name: "distributionList", code: 986 },
-                { name: "createTransmittal", code: 3072 },
-                { name: "sendToWorkFlow", code: 734 },
-                { name: "viewAttachments", code: 3283 },
-                { name: "deleteAttachments", code: 892 }
+                { name: "distributionList", code: 987 },
+                { name: "createTransmittal", code: 3073 },
+                { name: "sendToWorkFlow", code: 735 },
+                { name: "viewAttachments", code: 3284 },
+                { name: "deleteAttachments", code: 890 }
             ],
-            selectedContractId: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
-            selectedMaterialType: { label: Resources.selectMaterialDeliveryType[currentLanguage], value: "0" },
+            selectedFromCompany: { label: Resources.fromCompany[currentLanguage], value: "0" },
+            selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
-
-            selectedItemId: { label: Resources.itemDescription[currentLanguage], value: "0" },
-            selectedMaterialCode: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
+            selectedMaterialRelease: { label: Resources.materialReleaseTypeSelection[currentLanguage], value: "0" },
+            selectedCostCoding: { label: Resources.costCodingSelection[currentLanguage], value: "0" },
+            SpecsSectionData: [],
+            FromCompaniesData: [],
+            FromContactsData: [],
+            MaterialReleaseData: [],
+            CostCodingData: [],
+            ShowTree: false,
+            SelectedAreaForEdit: { label: Resources.selectArea[currentLanguage], value: "0" },
+            SelectedLocationForEdit: { label: Resources.locationRequired[currentLanguage], value: "0" },
+            SelectedBoqItem: { label: Resources.boqItemSelection[currentLanguage], value: "0" },
+            SelectedArea: { label: Resources.selectArea[currentLanguage], value: "0" },
+            SelectedLocation: { label: Resources.locationRequired[currentLanguage], value: "0" },
+            BoqItemData: [],
+            AreaData: [],
+            LocationData: [],
+            quantity: 0,
             unitPrice: 0,
-            approvedQuantity: 0,
-            rejectedQuantity: 0,
-            pendingQuantity: 0,
+            costCodeTreeId: 0,
+            costCodingTreeName: '',
+            selectedItemId: { label: Resources.itemDescription[currentLanguage], value: "0" },
             remarks: '',
             arrangeItem: 1,
-            receivedDate: moment(),
-            nextDeliveryDate: moment(),
             ItemDescriptionInfo: {},
             BtnLoading: false,
             ShowPopup: false,
-            objItem: {},
-            selectedApproveOrRejectData: { label: Resources.approved[currentLanguage], value: 'true' },
-            PendingQuantityCheck: false,
-            LastPendingQuantity: 0,
+            objItemForEdit: {},
+            quantityEdit: 0,
+            IsAddMood: false,
+            MaterialReleaseType: [],
+            SelectedMaterialReleaseType: { label: Resources.itemDescription[currentLanguage], value: "0" },
         }
 
-        if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
+        if (!Config.IsAllow(247) && !Config.IsAllow(248) && !Config.IsAllow(250)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
-                this.state.perviousRoute
-              );
+            this.props.history.push("/materialRelease/" + this.state.projectId);
         }
     }
 
@@ -178,15 +186,10 @@ class materialDeliveryAddEdit extends Component {
         }
         this.checkDocumentIsView()
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=materialcode&pageNumber=0&pageSize=10000', 'title', 'id').then(
-            res => {
-                this.setState({ MaterialCodeData: res })
-            }
-        )
         if (this.state.docId !== 0) {
-            dataservice.GetDataGrid('GetLogsMaterialDeliveryTickets?deliveryId=' + this.state.docId).then(
-                res => {
-                    this.setState({ Items: res, arrangeItem: res.length + 1 })
+            dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId).then(
+                result => {
+                    this.setState({ arrangeItem: result })
                 }
             )
         }
@@ -201,17 +204,24 @@ class materialDeliveryAddEdit extends Component {
             let isEdit = nextProps.document.id > 0 ? true : false
             this.fillDropDowns(isEdit);
             this.checkDocumentIsView();
-            dataservice.GetDataGrid('GetPoContractItemMaterial?id=' + doc.id).then(
+            dataservice.GetDataGrid('GetItemBySiteRequestId?requestId=' + doc.siteRequestId).then(
                 res => {
                     let Data = res
                     let ListData = []
                     Data.map(i => {
                         let obj = {}
                         obj.value = i.id
-                        obj.label = i.details
+                        obj.label = i.description
                         ListData.push(obj)
                     })
                     this.setState({ descriptionDropData: ListData, descriptionList: res })
+                }
+            )
+
+
+            dataservice.GetDataGrid('GetLogsMaterialReleaseTickets?releaseId=' + doc.id).then(
+                res => {
+                    this.setState({ Items: res })
                 }
             )
         }
@@ -229,15 +239,16 @@ class materialDeliveryAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetMaterialDeliveryForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialDelivery')
+            let url = "GetLogsMaterialRetuenForEdit?id=" + this.state.docId;
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialRelease')
         }
         else {
             dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
                 res => {
                     const Document = {
-                        projectId: projectId, arrange: res, status: "true", contractId: "", subject: "",
-                        docDate: moment(), specsSectionId: '', materialDeliveryTypeId: '', orderType: ''
+                        projectId: projectId, arrange: res, status: "true", specsSectionId: "", subject: "",
+                        docDate: moment(), boqId: '', orderFromContactId: '',
+                        orderFromCompanyId: '', docCloseDate: moment(), materialReleaseId: '', strictNumber: 0, siteRequestId: ''
                     }
                     this.setState({ document: Document })
                 }
@@ -247,18 +258,33 @@ class materialDeliveryAddEdit extends Component {
         }
     }
 
+    fillSubDropDown = (value, isEdit) => {
+        let action = 'GetContactsByCompanyId?companyId=' + value
+        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            if (isEdit) {
+                let toSubField = this.state.document.orderFromContactId;
+                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                this.setState({
+                    selectedFromContact: targetFieldSelected,
+                })
+            }
+            this.setState({ FromContactsData: result });
+        });
+    }
+
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList('GetPoContractForList?projectId= ' + this.state.projectId, 'subject', 'id').then(result => {
+        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
             if (isEdit) {
-                let id = this.props.document.contractId;
+                let id = this.props.document.orderFromCompanyId;
                 let selectedValue = {};
                 if (id) {
                     selectedValue = _.find(result, function (i) { return i.value === id });
-                    this.setState({ selectedContractId: selectedValue })
+                    this.setState({ selectedFromCompany: selectedValue })
+                    this.fillSubDropDown(id, isEdit)
                 }
             }
-            this.setState({ contractPoData: [...result] })
+            this.setState({ FromCompaniesData: [...result] })
         })
 
         dataservice.GetDataList('GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
@@ -270,25 +296,53 @@ class materialDeliveryAddEdit extends Component {
                     this.setState({ selectedSpecsSection: selectedValue })
                 }
             }
-            this.setState({ specsSectionData: [...result] })
+            this.setState({ SpecsSectionData: [...result] })
+        })
+
+        dataservice.GetDataListWithNewVersion('GetContractsSiteRequestByProjectId?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000', 'subject', 'id').then(result => {
+            if (isEdit) {
+                let id = this.props.document.siteRequestId;
+                let selectedValue = {};
+                if (id) {
+                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    this.setState({ selectedMaterialRelease: selectedValue })
+                }
+            }
+            this.setState({ MaterialReleaseData: [...result] })
+        })
+
+        dataservice.GetDataListWithNewVersion('GetContractsBoq?projectId=2&pageNumber=0&pageSize=1000000000', 'subject', 'id').then(result => {
+            if (isEdit) {
+                let id = this.props.document.boqId;
+                let selectedValue = {};
+                if (id) {
+                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    this.setState({ selectedCostCoding: selectedValue })
+                }
+            }
+            this.setState({ CostCodingData: [...result] })
+        })
+
+        dataservice.GetDataList('GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+            this.setState({ AreaData: result })
+        })
+
+        dataservice.GetDataList('GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+            this.setState({ LocationData: result })
         })
 
         dataservice.GetDataList('GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
             if (isEdit) {
-                let id = this.props.document.materialDeliveryTypeId;
+                let id = this.props.document.materialReleaseId;
                 let selectedValue = {};
                 if (id) {
                     selectedValue = _.find(result, function (i) { return i.value == id });
-
-                    this.setState({
-                        selectedMaterialType: selectedValue
-                    });
+                    this.setState({ SelectedMaterialReleaseType: selectedValue })
                 }
             }
-            this.setState({
-                materialTypeData: [...result]
-            });
+            this.setState({ MaterialReleaseType: [...result] })
         })
+
     }
 
     handleShowAction = (item) => {
@@ -304,23 +358,26 @@ class materialDeliveryAddEdit extends Component {
         }
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+    handleChangeDropDown(event, field, isSubscrib, selectedValue) {
         if (event == null) return
         let original_document = { ...this.state.document }
         let updated_document = {};
         updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ document: updated_document, [selectedValue]: event })
+        if (isSubscrib) {
+            this.fillSubDropDown(event.value, false)
+        }
     }
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(239)) {
+            if (!Config.IsAllow(248)) {
                 this.setState({ isViewMode: true })
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(239)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(239)) {
-                    if (this.props.document.status !== false && Config.IsAllow(239)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(248)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(248)) {
+                    if (this.props.document.status !== false && Config.IsAllow(248)) {
                         this.setState({ isViewMode: false })
                     }
                     else { this.setState({ isViewMode: true }) }
@@ -341,7 +398,7 @@ class materialDeliveryAddEdit extends Component {
 
     saveAndExit(event) {
         if (this.state.CurrentStep === 1) { this.setState({ CurrentStep: this.state.CurrentStep + 1 }) }
-        else { this.props.history.push("/materialDelivery/" + this.state.projectId) }
+        else { this.props.history.push("/materialRelease/" + this.state.projectId) }
     }
 
     showBtnsSaving() {
@@ -356,7 +413,7 @@ class materialDeliveryAddEdit extends Component {
 
     viewAttachments() {
         return this.state.docId > 0 ? (
-            Config.IsAllow(891) === true ?
+            Config.IsAllow(3284) === true ?
                 (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
@@ -367,7 +424,7 @@ class materialDeliveryAddEdit extends Component {
                 SecondStep: true, SecondStepComplate: true,
             })
         }
-        else { this.props.history.push("/materialDelivery/" + this.state.projectId) }
+        else { this.props.history.push("/materialRelease/" + this.state.projectId) }
     }
 
     PreviousStep() {
@@ -398,51 +455,29 @@ class materialDeliveryAddEdit extends Component {
     }
 
     SaveDoc = (Mood) => {
-
-        this.setState({ isLoading: true })
-
+        this.setState({ isLoading: true, IsAddMood: false })
         if (Mood === 'EditMood') {
-
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            dataservice.addObject('EditMaterialDelivery', doc).then(result => {
-
-                this.setState({ isLoading: false })
+            dataservice.addObject('EditLogsMaterialRelease', doc).then(result => {
+                this.setState({ isLoading: false, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
-
             }).catch(ex => {
                 this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-
         } else {
-
             let doc = { ...this.state.document };
-
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            dataservice.addObject('AddMaterialDelivery', doc).then(result => {
-
-                this.setState({ isLoading: false, docId: result.id })
+            dataservice.addObject('AddLogsMaterialRelease', doc).then(result => {
+                this.setState({ isLoading: false, docId: result.id, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
-                dataservice.GetDataGrid('GetPoContractItemMaterial?id=' + result.id).then(
-                    res => {
-                        let Data = res
-                        let ListData = []
-                        Data.map(i => {
-                            let obj = {}
-                            obj.value = i.id
-                            obj.label = i.details
-                            ListData.push(obj)
-                        })
-                        this.setState({ descriptionDropData: ListData, descriptionList: res })
-                    }
-                )
             }).catch(ex => {
                 this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-
         }
+        this.AfterSaveDoc()
     }
 
     toggleRow(obj) {
@@ -465,7 +500,7 @@ class materialDeliveryAddEdit extends Component {
         selectedRows.map(s => {
             ids.push(s.id)
         })
-        Api.post('DeleteMultipleLogsMaterialDeliveryTickets', ids).then(
+        Api.post('DeleteMultipleLogsMaterialReleaseTicketsById', ids).then(
             res => {
                 let originalRows = this.state.Items
 
@@ -492,40 +527,46 @@ class materialDeliveryAddEdit extends Component {
     }
 
     SaveItem = (values) => {
-        let Qty = parseInt(this.state.approvedQuantity) + parseInt(this.state.rejectedQuantity) + parseInt(this.state.pendingQuantity)
+        let Qty = parseInt(this.state.quantity)
         let ActaulQty = parseInt(this.state.ItemDescriptionInfo.quantity)
         if (Qty <= ActaulQty) {
             this.setState({ isLoading: true })
             let obj = {
-                projectId: this.state.projectId,
-                materialDeliveryId: this.state.docId,
-                details: this.state.ItemDescriptionInfo.details,
+                materialReleaseId: this.state.document.id,
+                itemId: this.state.ItemDescriptionInfo.itemId,
+                areaId: this.state.SelectedArea.value === '0' ? undefined : this.state.SelectedArea.value,
+                locationId: this.state.SelectedLocation.value === '0' ? undefined : this.state.SelectedLocation.value,
+                boqItemId: this.state.ItemDescriptionInfo.boqItemId,
                 arrange: this.state.arrangeItem,
-                description: this.state.ItemDescriptionInfo.description,
-                receivedDate: moment(this.state.receivedDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-                nextDeliveryDate: moment(this.state.nextDeliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-                approvedQuantity: this.state.approvedQuantity,
-                rejectedQuantity: this.state.rejectedQuantity,
-                pendingQuantity: this.state.pendingQuantity,
-                materialCode: this.state.selectedMaterialCode.value !== '0' ? this.state.selectedMaterialCode.value : '',
-                resourceCode: this.state.ItemDescriptionInfo.resourceCode,
+                quantity: this.state.quantity,
+                requestedQuantity: this.state.ItemDescriptionInfo.quantity,
                 unitPrice: this.state.unitPrice,
-                itemId: this.state.selectedItemId.value,
-                unit: this.state.ItemDescriptionInfo.unit,
-                quantity: this.state.ItemDescriptionInfo.quantity,
-                maxQnty: Qty,
-                maxQuantity: this.state.ItemDescriptionInfo.quantity,
-                remarks: this.state.remarks
+                description: this.state.ItemDescriptionInfo.description,
+                remarks: this.state.remarks,
+                costCodeTreeId: this.state.costCodeTreeId === 0 ? undefined : this.state.costCodeTreeId,
+                resourceCode: this.state.ItemDescriptionInfo.resourceCode,
             }
-            dataservice.addObject('AddLogsMaterialDeliveryTickets', obj).then(result => {
+            dataservice.addObject('AddLogsMaterialReleaseTickets', obj).then(result => {
                 let Items = this.state.Items
                 Items.push(result)
+                let ItemDescriptionInfo = this.state.ItemDescriptionInfo
+                ItemDescriptionInfo.resourceCode = ''
                 this.setState({
-                    Items, arrangeItem: Items.length + 1,
-                    approvedQuantity: 0, rejectedQuantity: 0,
-                    pendingQuantity: 0, remarks: '', isLoading: false,
-                    selectedMaterialCode: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
+                    Items,
+                    isLoading: false,
+                    unitPrice: 0,
+                    selectedItemId: { label: Resources.itemDescription[currentLanguage], value: "0" },
+                    quantity: 0, remarks: '', ItemDescriptionInfo,
+                    SelectedBoqItem: { label: Resources.boqItemSelection[currentLanguage], value: "0" },
+                    SelectedArea: { label: Resources.selectArea[currentLanguage], value: "0" },
+                    SelectedLocation: { label: Resources.locationRequired[currentLanguage], value: "0" },
+                    costCodingTreeName: '', costCodeTreeId: 0
                 })
+                dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId).then(
+                    result => {
+                        this.setState({ arrangeItem: result })
+                    }
+                )
                 toast.success(Resources["operationSuccess"][currentLanguage])
 
             }).catch(ex => {
@@ -534,7 +575,7 @@ class materialDeliveryAddEdit extends Component {
             })
         }
         else {
-            toast.error('Approved, Pending, and Rejected Quantity Greater than ' + ActaulQty + ' And Greater Than 0')
+            toast.error(' ' + ActaulQty + ' Is Max Quantit')
         }
     }
 
@@ -547,76 +588,119 @@ class materialDeliveryAddEdit extends Component {
             selectedItemId: e,
             unitPrice: obj.unitPrice,
             ItemDescriptionInfo: obj,
+            quantity: obj.quantity
 
         })
     }
 
-    HandelChangeItems = (e, name) => {
-        // switch (name) {
-        //     case 'approvedQuantity':
-        //         // code block
-        //         break;
-        //     case 'rejectedQuantity':
-        //         // code block
-        //         break;
-        //     case 'pendingQuantity':
-        //         // code block
-        //         break;
-        //     default:
-        //   }
-        this.setState({ [name]: e.target.value })
+    executeBeforeModalClose = (e) => {
+        this.setState({ showModal: false });
     }
 
-    PendingQuantityHandelChange = (e) => {
-        let value = e.target.value
-        let originalValue = this.state.objItem.pendingQuantity
-        if (value <= originalValue) {
-            this.setState({
-                PendingQuantityCheck: false
-            })
+    ShowCostTree = () => {
+        this.setState({ ShowTree: true })
+    }
+
+    GetNodeData = (item) => {
+
+        if (this.state.ShowPopup) {
+            let updated_document = { ...this.state.objItemForEdit }
+            updated_document.costCodeTreeId = item.id;
+            updated_document.costCodeTreeName = item.codeTreeTitle;
+            this.setState({ objItemForEdit: updated_document })
         }
         else {
             this.setState({
-                PendingQuantityCheck: true
+                costCodeTreeId: item.id,
+                costCodingTreeName: item.codeTreeTitle
             })
         }
     }
 
-    EditPendingQty = () => {
-        if (this.state.PendingQuantityCheck) {
-            this.setState({ isLoading: true })
-            Api.post('UpdateQuantityMaterialDelivery?materialDeliveryId=' + this.state.objItem.id + '&quantity=' + this.state.LastPendingQuantity + '&status=' + this.state.selectedApproveOrRejectData.value).then(
-                result => {
-                    dataservice.GetDataGrid('GetLogsMaterialDeliveryTickets?deliveryId=' + this.state.docId).then(
-                        res => {
-                            this.setState({ Items: res, arrangeItem: res.length + 1, isLoading: false, ShowPopup: false })
-                            toast.success(Resources["operationSuccess"][currentLanguage])
+    AfterSaveDoc = () => {
 
-                        }).catch(ex => {
-                            this.setState({ isLoading: false, ShowPopup: false })
-                            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                        })
+        dataservice.GetDataGrid('GetItemBySiteRequestId?requestId=' + this.state.document.siteRequestId).then(
+            res => {
+                let Data = res
+                let ListData = []
+                Data.map(i => {
+                    let obj = {}
+                    obj.value = i.id
+                    obj.label = i.description
+                    ListData.push(obj)
+                })
+                this.setState({ descriptionDropData: ListData, descriptionList: res })
+            }
+        )
+
+        dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId).then(
+            result => {
+                this.setState({ arrangeItem: result })
+            }
+        )
+    }
+
+    viewModelToEdit(id, type) {
+
+        if (this.state.isViewMode === false) {
+
+            if (type != "checkbox") {
+                if (id) {
+                    dataservice.GetDataGrid("GetLogsMaterialReleaseTicketsForEdit?id=" + id).then(
+                        result => {
+                            let SelectedAreaForEdit = _.find(this.state.AreaData, function (i) { return i.value == result.areaId });
+                            let SelectedLocationForEdit = _.find(this.state.LocationData, function (i) { return i.value == result.locationId });
+                            this.setState({
+                                objItemForEdit: result, ShowPopup: true,
+                                SelectedAreaForEdit,
+                                SelectedLocationForEdit,
+                                quantityEdit: result.quantity
+                            })
+                        }
+                    )
                 }
-            )
-
+            }
         }
     }
 
-    fillTable = () => {
-        this.setState({ isLoading: true })
-        dataservice.GetDataGrid('GetLogsMaterialDeliveryTickets?deliveryId=' + this.state.docId).then(
-            res => {
-                this.setState({ Items: res, arrangeItem: res.length + 1, isLoading: false })
+    HandleChangeItemsForEdit = (Name, Value) => {
+        let updated_document = { ...this.state.objItemForEdit }
+        updated_document[Name] = Value.target.value;
+        this.setState({ objItemForEdit: updated_document })
+    }
+
+    SaveEditItem = () => {
+            this.setState({ isLoading: true })
+            let obj = {
+                id: this.state.objItemForEdit.id,
+                materialReleaseId: this.state.document.id,
+                itemId: this.state.objItemForEdit.itemId,
+                areaId: this.state.SelectedAreaForEdit.value === '0' ? undefined : this.state.SelectedAreaForEdit.value,
+                locationId: this.state.SelectedLocationForEdit.value === '0' ? undefined : this.state.SelectedLocationForEdit.value,
+                arrange: this.state.objItemForEdit.arrange,
+                quantity: this.state.objItemForEdit.quantity,
+                unitPrice: this.state.objItemForEdit.unitPrice,
+                description: this.state.objItemForEdit.description,
+                remarks: this.state.objItemForEdit.remarks,
+                costCodeTreeId: this.state.objItemForEdit.costCodeTreeId,
+                resourceCode: this.state.objItemForEdit.resourceCode,
+                requestedQuantity: this.state.objItemForEdit.requestedQuantity,
+                total: parseInt(this.state.objItemForEdit.quantity) * parseInt(this.state.objItemForEdit.unitPrice)
+            }
+            dataservice.addObject('EditLogsMaterialReleaseTickets', obj).then(result => {
+                let Items = this.state.Items.filter(s => s.id !== this.state.objItemForEdit.id)
+                console.log(Items)
+                Items.push(this.state.objItemForEdit)
+                this.setState({
+                    isLoading: false, Items ,ShowPopup:false
+                })
                 toast.success(Resources["operationSuccess"][currentLanguage])
 
             }).catch(ex => {
-                this.setState({ isLoading: false, ShowPopup: false })
+                this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-    }
-
-    executeBeforeModalClose = (e) => {
-        this.setState({ showModal: false });
+        
     }
 
     render() {
@@ -625,11 +709,11 @@ class materialDeliveryAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             },
             {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
+                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ]
@@ -642,13 +726,17 @@ class materialDeliveryAddEdit extends Component {
                         enableReinitialize={true}
                         onSubmit={values => {
                             if (this.props.showModal) { return; }
-                            if (this.props.changeStatus === true && this.state.docId > 0) {
-                                this.SaveDoc('EditMood');
-                                this.NextStep();
-                            } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                this.SaveDoc('AddMood');
-                            } else {
 
+                            if (this.state.IsAddMood) {
+                                this.NextStep();
+                            }
+                            else {
+                                if (this.props.changeStatus === true && this.state.docId > 0) {
+                                    this.SaveDoc('EditMood');
+                                    this.NextStep();
+                                } else if (this.props.changeStatus === false && this.state.docId === 0) {
+                                    this.SaveDoc('AddMood');
+                                }
                             }
                         }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -690,31 +778,40 @@ class materialDeliveryAddEdit extends Component {
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-                                        <div className="ui input inputDev">
-                                            <input type="text" className="form-control" readOnly value={this.state.document.arrange}
-                                                onBlur={(e) => {
-                                                    handleChange(e)
-                                                    handleBlur(e)
-                                                }} onChange={(e) => this.handleChange(e, 'arrange')} />
-                                        </div>
+                                        <Dropdown title="specsSection" data={this.state.SpecsSectionData} selectedValue={this.state.selectedSpecsSection}
+                                            handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "selectedSpecsSection")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.specsSectionId}
+                                            touched={touched.specsSectionId} name="specsSectionId" id="specsSectionId" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="contractPo" data={this.state.contractPoData} selectedValue={this.state.selectedContractId}
-                                            handleChange={event => this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContractId")}
-                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.contractId} isDisabled={this.props.changeStatus}
-                                            touched={touched.contractId} name="contractId" id="contractId" />
+                                        <Dropdown title="fromCompany" data={this.state.FromCompaniesData} selectedValue={this.state.selectedFromCompany}
+                                            handleChange={event => this.handleChangeDropDown(event, "orderFromCompanyId", true, "selectedFromCompany")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.orderFromCompanyId}
+                                            touched={touched.orderFromCompanyId} name="orderFromCompanyId" id="orderFromCompanyId" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="specsSection" data={this.state.specsSectionData} selectedValue={this.state.selectedSpecsSection}
-                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedSpecsSection')} />
+                                        <Dropdown title="orderFromContact" data={this.state.FromContactsData} selectedValue={this.state.selectedFromContact}
+                                            handleChange={event => this.handleChangeDropDown(event, "orderFromContactId", false, "selectedFromContact")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.orderFromContactId}
+                                            touched={touched.orderFromContactId} name="orderFromContactId" id="orderFromContactId" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="materialDeliveryType" data={this.state.materialTypeData} selectedValue={this.state.selectedMaterialType}
-                                            handleChange={event => this.handleChangeDropDown(event, 'materialDeliveryTypeId', false, '', '', '', 'selectedMaterialType')} />
+                                        <Dropdown title="siteRequest" data={this.state.MaterialReleaseData} selectedValue={this.state.selectedMaterialRelease}
+                                            handleChange={event => this.handleChangeDropDown(event, "siteRequestId", false, "selectedMaterialRelease")}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.materialReleaseId}
+                                            touched={touched.materialReleaseId} name="materialReleaseId" id="materialReleaseId" />
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="materialReleaseType" data={this.state.MaterialReleaseType} selectedValue={this.state.SelectedMaterialReleaseType}
+                                            handleChange={event => this.handleChangeDropDown(event, 'materialReleaseId', false, 'SelectedMaterialReleaseType')} />
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="boqLog" data={this.state.CostCodingData} selectedValue={this.state.selectedCostCoding}
+                                            handleChange={event => this.handleChangeDropDown(event, 'boqId', false, 'selectedCostCoding')} />
                                     </div>
 
                                 </div>
@@ -751,8 +848,8 @@ class materialDeliveryAddEdit extends Component {
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
                                         {this.state.docId > 0 ?
-                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={891} EditAttachments={3242} ShowDropBox={3539}
-                                                ShowGoogleDrive={3540} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={889} EditAttachments={3243} ShowDropBox={3541}
+                                                ShowGoogleDrive={3542} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null}
                                         {this.viewAttachments()}
                                         {this.props.changeStatus === true ?
@@ -777,7 +874,6 @@ class materialDeliveryAddEdit extends Component {
                         )}
                     </Formik>
                 </div>
-
             )
         }
 
@@ -805,7 +901,7 @@ class materialDeliveryAddEdit extends Component {
                 }, {
                     Header: Resources['description'][currentLanguage],
                     accessor: 'description',
-                    width: 300,
+                    width: 250,
                 },
                 {
                     Header: Resources['quantity'][currentLanguage],
@@ -816,78 +912,36 @@ class materialDeliveryAddEdit extends Component {
                     Header: Resources['unitPrice'][currentLanguage],
                     accessor: 'unitPrice',
                     width: 100,
-                }, {
-                    Header: Resources['approvedQuantity'][currentLanguage],
-                    accessor: 'approvedQuantity',
-                    width: 100,
                 },
                 {
-                    Header: Resources['rejectedQuantity'][currentLanguage],
-                    accessor: 'rejectedQuantity',
-                    width: 100,
-                }, {
-                    Header: Resources['pendingQuantity'][currentLanguage],
-                    accessor: 'pendingQuantity',
-                    width: 100,
-                    Cell: row => (
-                        <span>
-                            <a className="editorCell" onClick={() => this.setState({
-                                ShowPopup: row.value !== 0 ? true : false, objItem: row.original, LastPendingQuantity: row.original.pendingQuantity
-                            })} >
-                                <span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>
-                                    {row.value}
-                                </span>
-                            </a>
-                        </span>
-                    )
-                }, {
-                    Header: Resources['remainingQuantity'][currentLanguage],
-                    accessor: 'remaining',
-                    width: 100,
-                },
-                {
-                    Header: Resources['recievedDate'][currentLanguage],
-                    accessor: 'receivedDate',
-                    width: 100,
-                    Cell: row => (
-                        <span>
-                            <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-                        </span>
-                    )
-                }, {
-                    Header: Resources['nextDate'][currentLanguage],
-                    accessor: 'nextDeliveryDate',
-                    width: 100,
-                    Cell: row => (
-                        <span>
-                            <span>{moment(row.value).format("DD/MM/YYYY")}</span>
-                        </span>
-                    )
-                }, {
                     Header: Resources['resourceCode'][currentLanguage],
                     accessor: 'resourceCode',
-                    width: 100,
+                    width: 180,
+                }, {
+                    Header: Resources['area'][currentLanguage],
+                    accessor: 'areaName',
+                    width: 150,
+                },
+                {
+                    Header: Resources['location'][currentLanguage],
+                    accessor: 'locationName',
+                    width: 150,
                 }, {
                     Header: Resources['remarks'][currentLanguage],
                     accessor: 'remarks',
-                    width: 100,
+                    width: 150,
                 }
             ]
 
             return (
                 <div className="step-content">
 
-                    <XSLfile key='materialDeliveryitem' docId={this.state.docId} docType={this.state.docType} link={IPConfig.downloads + '/DownLoads/Excel/MaterialDelivery.xlsx'} header='addManyItems'
-                        disabled={this.props.changeStatus ? (this.props.docId === 0 ? true : false) : false} afterUpload={() => this.fillTable()} />
-
                     <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
                         <Formik
                             initialValues={{
                                 itemId: this.state.selectedItemId.value !== '0' ? this.state.selectedItemId : '',
                                 unitPrice: this.state.unitPrice,
-                                approvedQuantity: this.state.approvedQuantity,
-                                rejectedQuantity: this.state.rejectedQuantity,
-                                pendingQuantity: this.state.pendingQuantity,
+                                returnedQuantity: this.state.quantity,
                                 arrangeItem: this.state.arrangeItem,
                             }}
                             validationSchema={documentItemValidationSchema}
@@ -907,48 +961,76 @@ class materialDeliveryAddEdit extends Component {
                                         <div className="proForm datepickerContainer">
 
                                             <div className="linebylineInput valid-input letterFullWidth ">
-
                                                 <Dropdown title="itemDescription" data={this.state.descriptionDropData} selectedValue={this.state.selectedItemId}
                                                     handleChange={event => this.handleChangeItemId(event)} onBlur={setFieldTouched} error={errors.itemId}
                                                     onChange={setFieldValue} touched={touched.itemId} name="itemId" id="itemId" />
-
-                                            </div>
-
-                                            <div className="linebylineInput valid-input alternativeDate">
-                                                <DatePicker title='recievedDate' startDate={this.state.receivedDate}
-                                                    handleChange={e => this.setState({ receivedDate: e })} />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input alternativeDate">
-                                                <DatePicker title='nextDate' startDate={this.state.nextDeliveryDate}
-                                                    handleChange={e => this.setState({ nextDeliveryDate: e })} />
                                             </div>
 
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources['no'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.arrange ? 'has-error' : !errors.arrange && touched.arrange ? (" has-success") : " ")}>
+                                                <div className={"inputDev ui input " + (errors.arrangeItem ? 'has-error' : !errors.arrangeItem && touched.arrangeItem ? (" has-success") : " ")}>
                                                     <input className="form-control" name='arrangeItem'
                                                         placeholder={Resources['no'][currentLanguage]}
-                                                        value={this.state.arrangeItem} onChange={e => this.HandelChangeItems(e, 'arrangeItem')}
+                                                        value={this.state.arrangeItem} onChange={e => this.setState({ arrangeItem: e.target.value })}
                                                         onBlur={(e) => {
                                                             handleBlur(e)
                                                             handleChange(e)
                                                         }} />
-                                                    {errors.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                                                    {errors.arrangeItem ? (<em className="pError">{errors.arrangeItem}</em>) : null}
                                                 </div>
                                             </div>
 
-                                            <div className="linebylineInput valid-input ">
-                                                <Dropdown title="materialCode" data={this.state.MaterialCodeData} name="materialCode"
-                                                    selectedValue={this.state.selectedMaterialCode}
-                                                    handleChange={e => this.setState({ selectedMaterialCode: e })} />
+
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">{Resources['resourceCode'][currentLanguage]}  </label>
+                                                <div className="inputDev ui input has-success">
+                                                    <input className="form-control" readOnly value={this.state.ItemDescriptionInfo.resourceCode} />
+                                                </div>
+                                            </div>
+
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">{Resources['returnedQuantity'][currentLanguage]} </label>
+                                                <div className={"inputDev ui input " + (errors.returnedQuantity ? 'has-error' : !errors.returnedQuantity && touched.returnedQuantity ? (" has-success") : " ")}>
+                                                    <input name='returnedQuantity' className="form-control" autoComplete='off' placeholder={Resources['returnedQuantity'][currentLanguage]}
+                                                        value={this.state.quantity} onChange={e => this.setState({ quantity: e.target.value })}
+                                                        onBlur={(e) => {
+                                                            handleBlur(e)
+                                                            handleChange(e)
+                                                        }} />
+                                                    {errors.returnedQuantity ? (<em className="pError">{errors.returnedQuantity}</em>) : null}
+                                                </div>
+                                            </div>
+
+
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">{Resources.costCoding[currentLanguage]}</label>
+                                                <div className="shareLinks">
+                                                    <div className="inputDev ui input">
+                                                        <input type="text" className="form-control" name="costCodingTreeName"
+                                                            onChange={(e) => this.handleChange(e, 'costCodingTreeName')}
+                                                            value={this.state.costCodingTreeName}
+                                                            placeholder={Resources.costCoding[currentLanguage]} />
+                                                    </div>
+                                                    <div style={{ marginLeft: '8px' }} onClick={e => this.ShowCostTree()}>
+                                                        <span className="collapseIcon"><span className="plusSpan greenSpan">+</span>
+                                                            <span>{Resources.add[currentLanguage]}</span>  </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="linebylineInput valid-input fullInputWidth">
+                                                <label className="control-label">{Resources.remarks[currentLanguage]}</label>
+                                                <div className="ui input inputDev"  >
+                                                    <input type="text" className="form-control" placeholder={Resources.remarks[currentLanguage]}
+                                                        value={this.state.remarks} onChange={(e) => this.setState({ remarks: e.target.value })} />
+                                                </div>
                                             </div>
 
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
                                                 <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
                                                     <input name='unitPrice' className="form-control" autoComplete='off' placeholder={Resources['unitPrice'][currentLanguage]}
-                                                        value={this.state.unitPrice} onChange={e => this.HandelChangeItems(e, 'unitPrice')}
+                                                        value={this.state.unitPrice} onChange={e => this.setState({ unitPrice: e.target.value })}
                                                         onBlur={(e) => {
                                                             handleBlur(e)
                                                             handleChange(e)
@@ -957,58 +1039,14 @@ class materialDeliveryAddEdit extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['approvedQuantity'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.approvedQuantity ? 'has-error' : !errors.approvedQuantity && touched.approvedQuantity ? (" has-success") : " ")}>
-                                                    <input name='approvedQuantity' className="form-control" autoComplete='off' placeholder={Resources['approvedQuantity'][currentLanguage]}
-                                                        value={this.state.approvedQuantity} onChange={e => this.HandelChangeItems(e, 'approvedQuantity')}
-                                                        onBlur={(e) => {
-                                                            handleBlur(e)
-                                                            handleChange(e)
-                                                        }}
-                                                    />
-                                                    {errors.approvedQuantity ? (<em className="pError">{errors.approvedQuantity}</em>) : null}
-                                                </div>
+                                            <div className="linebylineInput valid-input ">
+                                                <Dropdown data={this.state.AreaData} selectedValue={this.state.SelectedArea}
+                                                    title="area" handleChange={e => this.setState({ SelectedArea: e })} />
                                             </div>
 
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['pendingQuantity'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.pendingQuantity ? 'has-error' : !errors.pendingQuantity && touched.pendingQuantity ? (" has-success") : " ")}>
-                                                    <input name='pendingQuantity' className="form-control" autoComplete='off' placeholder={Resources['pendingQuantity'][currentLanguage]}
-                                                        value={this.state.pendingQuantity} onChange={e => this.HandelChangeItems(e, 'pendingQuantity')}
-                                                        onBlur={(e) => {
-                                                            handleBlur(e)
-                                                            handleChange(e)
-                                                        }}
-                                                    />
-                                                    {errors.pendingQuantity ? (<em className="pError">{errors.pendingQuantity}</em>) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['rejectedQuantity'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.rejectedQuantity ? 'has-error' : !errors.rejectedQuantity && touched.rejectedQuantity ? (" has-success") : " ")}>
-                                                    <input name='rejectedQuantity' className="form-control" autoComplete='off' placeholder={Resources['rejectedQuantity'][currentLanguage]}
-                                                        value={this.state.rejectedQuantity} onChange={e => this.HandelChangeItems(e, 'rejectedQuantity')}
-                                                        onBlur={(e) => {
-                                                            handleBlur(e)
-                                                            handleChange(e)
-                                                        }} />
-                                                    {errors.rejectedQuantity ? (<em className="pError">{errors.rejectedQuantity}</em>) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input fullInputWidth">
-                                                <label className="control-label">{Resources.remarks[currentLanguage]}</label>
-                                                <div className="ui input inputDev"  >
-                                                    <input type="text" className="form-control"
-                                                        value={this.state.remarks} placeholder={Resources.remarks[currentLanguage]}
-                                                        onBlur={(e) => {
-                                                            handleChange(e)
-                                                            handleBlur(e)
-                                                        }}
-                                                        onChange={(e) => this.setState({ remarks: e.target.value })} />
-                                                </div>
+                                            <div className="linebylineInput valid-input ">
+                                                <Dropdown data={this.state.LocationData} selectedValue={this.state.SelectedLocation}
+                                                    title="location" handleChange={e => this.setState({ SelectedLocation: e })} />
                                             </div>
 
                                             <div className="slider-Btns fullWidthWrapper textLeft ">
@@ -1055,6 +1093,10 @@ class materialDeliveryAddEdit extends Component {
                                     data={this.state.Items}
                                     columns={columnsItem}
                                     defaultPageSize={10}
+                                    className="-striped -highlight"
+                                    getTrProps={(state, rowInfo, column, instance) => {
+                                        return { onClick: e => { this.viewModelToEdit(rowInfo.original.id, e.target.type); } };
+                                    }}
                                     minRows={2}
                                     noDataText={Resources['noData'][currentLanguage]}
                                 />
@@ -1071,33 +1113,137 @@ class materialDeliveryAddEdit extends Component {
         let EditItem = () => {
             return (
                 <div className="doc-pre-cycle">
-                    <div className="subiTabsContent feilds__top">
-                        <div className='document-fields'>
-                            <div className="proForm datepickerContainer">
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">{Resources.quantity[currentLanguage]}</label>
-                                    <div className={"inputDev ui input" + (this.state.PendingQuantityCheck ? " has-error" : '')} >
-                                        <input name='description' className="form-control" type='number'
-                                            defaultValue={this.state.objItem.pendingQuantity} onBlur={e => this.PendingQuantityHandelChange(e)}
-                                            onChange={e => this.setState({ LastPendingQuantity: e.target.value })} />
-                                        {this.state.PendingQuantityCheck ? (<em className="pError">Please enter a value greater than or equal to {this.state.objItem.pendingQuantity}.</em>) : null}
+                    <Formik
+                        initialValues={{
+                            unitPrice: this.state.objItemForEdit.unitPrice,
+                            returnedQuantity: this.state.objItemForEdit.quantity,
+                            arrangeItem: this.state.objItemForEdit.arrange,
+                        }}
+                        validationSchema={documentItemValidationSchemaForEdit}
+                        enableReinitialize={true}
+                        onSubmit={() => {
+                            this.SaveEditItem()
+                        }}                >
+                        {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                            <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
+
+                                <div className='document-fields'>
+
+                                    <div className="proForm datepickerContainer">
+
+                                        <div className="linebylineInput valid-input fullInputWidth">
+                                            <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                            <div className="ui input inputDev"  >
+                                                <input type="text" className="form-control" placeholder={Resources.description[currentLanguage]}
+                                                    value={this.state.objItemForEdit.description} onChange={e => this.HandleChangeItemsForEdit('description', e)} />
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['no'][currentLanguage]} </label>
+                                            <div className={"inputDev ui input " + (errors.arrangeItem ? 'has-error' : !errors.arrangeItem && touched.arrangeItem ? (" has-success") : " ")}>
+                                                <input className="form-control" name='arrangeItem'
+                                                    placeholder={Resources['no'][currentLanguage]}
+                                                    value={this.state.objItemForEdit.arrange} onChange={e => this.HandleChangeItemsForEdit('arrange', e)}
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }} />
+                                                {errors.arrangeItem ? (<em className="pError">{errors.arrangeItem}</em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['resourceCode'][currentLanguage]}  </label>
+                                            <div className="inputDev ui input has-success">
+                                                <input className="form-control" readOnly value={this.state.objItemForEdit.resourceCode} />
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['returnedQuantity'][currentLanguage]} </label>
+                                            <div className={"inputDev ui input " + (errors.returnedQuantity ? 'has-error' : !errors.returnedQuantity && touched.returnedQuantity ? (" has-success") : " ")}>
+                                                <input name='returnedQuantity' className="form-control" autoComplete='off' placeholder={Resources['returnedQuantity'][currentLanguage]}
+                                                    value={this.state.objItemForEdit.quantity} onChange={e => this.HandleChangeItemsForEdit('quantity', e)}
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }} />
+                                                {errors.returnedQuantity ? (<em className="pError">{errors.returnedQuantity}</em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources.costCoding[currentLanguage]}</label>
+                                            <div className="shareLinks">
+                                                <div className="inputDev ui input">
+                                                    <input type="text" className="form-control" name="costCodingTreeName"
+                                                        onChange={e => this.HandleChangeItemsForEdit('costCodingTreeName', e)}
+                                                        value={this.state.objItemForEdit.costCodeTreeName}
+                                                        placeholder={Resources.costCoding[currentLanguage]} />
+                                                </div>
+                                                <div style={{ marginLeft: '8px' }} onClick={e => this.ShowCostTree()}>
+                                                    <span className="collapseIcon"><span className="plusSpan greenSpan">+</span>
+                                                        <span>{Resources.add[currentLanguage]}</span>  </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input fullInputWidth">
+                                            <label className="control-label">{Resources.remarks[currentLanguage]}</label>
+                                            <div className="ui input inputDev"  >
+                                                <input type="text" className="form-control" placeholder={Resources.remarks[currentLanguage]}
+                                                    value={this.state.objItemForEdit.remarks} onChange={e => this.HandleChangeItemsForEdit('remarks', e)} />
+                                            </div>
+                                        </div>
+
+                                        {/* <div className="linebylineInput valid-input ">
+                                            <Dropdown data={this.state.BoqItemData} selectedValue={this.state.SelectedBoqItemForEdit}
+                                                title="boqItem" handleChange={e => this.setState({ SelectedBoqItemForEdit: e })} />
+                                        </div> */}
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
+                                            <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
+                                                <input name='unitPrice' className="form-control" autoComplete='off' placeholder={Resources['unitPrice'][currentLanguage]}
+                                                    value={this.state.objItemForEdit.unitPrice} onChange={e => this.HandleChangeItemsForEdit('unitPrice', e)}
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }} />
+                                                {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input ">
+                                            <Dropdown data={this.state.AreaData} selectedValue={this.state.SelectedAreaForEdit}
+                                                title="area" handleChange={e => this.setState({ SelectedAreaForEdit: e })} />
+                                        </div>
+
+                                        <div className="linebylineInput valid-input ">
+                                            <Dropdown data={this.state.LocationData} selectedValue={this.state.SelectedLocationForEdit}
+                                                title="location" handleChange={e => this.setState({ SelectedLocationForEdit: e })} />
+                                        </div>
+
+                                        <div className="slider-Btns fullWidthWrapper">
+                                            {this.state.BtnLoading === false ?
+                                                <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
+                                                : <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown title="approveOrReject"
-                                        data={ApproveOrRejectData}
-                                        selectedValue={this.state.selectedApproveOrRejectData}
-                                        handleChange={e => this.setState({ selectedApproveOrRejectData: e })} />
-                                </div>
+                            </Form>
+                        )}
+                    </Formik>
 
-                            </div> <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.EditPendingQty()} >{Resources['save'][currentLanguage]}</button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div >
+                </div>
             )
         }
 
@@ -1112,9 +1258,19 @@ class materialDeliveryAddEdit extends Component {
                     </SkyLightStateless>
                 </div>
 
+                <div className="skyLight__form">
+                    <SkyLightStateless onOverlayClicked={e => this.setState({ ShowTree: false })}
+                        title={Resources['add'][currentLanguage]}
+                        onCloseClicked={e => this.setState({ ShowTree: false })} isVisible={this.state.ShowTree}>
+                        <Tree projectId={this.state.projectId} GetNodeData={e => this.GetNodeData(e)} />
+                        <div className="fullWidthWrapper">
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.setState({ ShowTree: false })}  >{Resources.add[currentLanguage]}</button>
+                        </div>
+                    </SkyLightStateless>
+                </div>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.materialDelivery[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialRelease[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">
@@ -1152,7 +1308,7 @@ class materialDeliveryAddEdit extends Component {
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources["materialDelivery"][currentLanguage]}</h6>
+                                            <h6>{Resources["materialRelease"][currentLanguage]}</h6>
                                         </div>
                                     </div>
                                     <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
@@ -1171,7 +1327,7 @@ class materialDeliveryAddEdit extends Component {
 
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
-                        beforeClose={() => { this.executeBeforeModalClose() }}>  {this.state.currentComponent}
+                        beforeClose={() => { this.executeBeforeModalClose() }}> {this.state.currentComponent}>
                     </SkyLight>
                 </div>
 
@@ -1209,4 +1365,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(materialDeliveryAddEdit))
+)(withRouter(materialReleaseAddEdit))

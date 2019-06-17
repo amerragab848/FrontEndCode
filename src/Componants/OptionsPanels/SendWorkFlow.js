@@ -25,7 +25,7 @@ class SendWorkFlow extends Component {
                 docTypeId: this.props.docTypeId,
                 arrange: "",
                 workFlowId: null,
-                toAccountId:null,
+                toAccountId: null,
                 dueDate: ""
             },
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
@@ -56,10 +56,10 @@ class SendWorkFlow extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.showModal !== this.props.showModal) {
-            this.setState({ submitLoading: false }) 
+            this.setState({ submitLoading: false })
         }
     }
- 
+
     inputChangeHandler = (e) => {
         this.setState({ workFlowData: { ...this.state.workFlowData, Comment: e.target.value } });
     }
@@ -97,19 +97,19 @@ class SendWorkFlow extends Component {
                     index='ddlApproveTo'
                     handleChange={this.toAccounthandelChange}
                     className={this.state.toCompanyClass} />
-                {!this.state.submitLoading ?
-                    <div className="fullWidthWrapper">
-                        <button className="workFlowDataBtn-1 primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
-                    </div>
-                    : (
-                        <span className="primaryBtn-1 btn largeBtn disabled">
-                            <div className="spinner">
-                                <div className="bounce1" />
-                                <div className="bounce2" />
-                                <div className="bounce3" />
-                            </div>
-                        </span>
-                    )}
+                <div className="fullWidthWrapper">
+                    {!this.state.submitLoading ?
+                        <button className="workFlowDataBtn-1 mediumBtn primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
+                        : (
+                            <button className="primaryBtn-1 btn  mediumBtn disabled">
+                                <div className="spinner">
+                                    <div className="bounce1" />
+                                    <div className="bounce2" />
+                                    <div className="bounce3" />
+                                </div>
+                            </button>
+                        )}
+                </div>
             </div>
         );
     }
@@ -120,7 +120,7 @@ class SendWorkFlow extends Component {
             (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
-                obj.value = item[value]; 
+                obj.value = item[value];
                 Data.push(obj);
             });
 

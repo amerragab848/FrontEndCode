@@ -268,7 +268,7 @@ class Login extends Component {
                         )}
                     </Formik>
                 </div>
-                <div class="access__acc">
+                <div className="access__acc">
                     <p>Unable to access your account? please contact your site administrators.</p>
                 </div>
             </div>
