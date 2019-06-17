@@ -2706,7 +2706,7 @@
         "isDate": true,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": false,
+        "isCustom": true,
         "exportDataType": "d"
       },
       {
@@ -2714,7 +2714,7 @@
         "friendlyName": "refDoc",
         "minWidth": 85,
         "width": "3%",
-        "dataType": "date",
+        "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
