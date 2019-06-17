@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import ForgeViewer from 'react-forge-viewer';
 import Api from '../../api';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import { func } from 'prop-types';
-
 const Autodesk = window.Autodesk;
 
 const listOfOptions = [
