@@ -32,6 +32,7 @@ class AutoDeskViewer extends Component {
             markupCore: {},
             markup: {},
             viewer: null,
+            loadingPer: false
         }
 
     }
@@ -93,7 +94,7 @@ class AutoDeskViewer extends Component {
                     token.access_token, token.expires_in);
         }
     }
-    componentWillMount() { 
+    componentWillMount() {
         Api.get('GetAllMarkUps?docId=640&docType=20&docFileId=38425').then((markups) => {
             this.setState({ markups })
             let obj = {
@@ -101,11 +102,31 @@ class AutoDeskViewer extends Component {
                 attachFile: 'https://newgiza.azureedge.net/project-files/570dfbea-2046-4dc3-a704-5d8dc966befc.dwg'
             }
             Api.post("translateAutoDesk", obj).then(data => {
-                this.showModel(data,markups);
+                this.showModel(data, markups);
                 //this.modeIdToggle(2);
             })
         })
     }
+
+    componentDidMount() {
+        var PercentageID = document.getElementById("precent");
+
+        this.animateValue(PercentageID, 0, 98, 20000);
+    }
+
+    animateValue(id, start, end, duration) {
+        var current = start,
+            obj = id;
+
+        var timer = setInterval(function () {
+            current = current + 1;
+            obj.innerHTML = current + "%";
+            if (current === end) {
+                clearInterval(timer);
+            }
+        }, 200);
+    }
+
     showAllToggle = (value) => {
         if (value == false) {
             if (this.state.markupCore) {
@@ -184,7 +205,7 @@ class AutoDeskViewer extends Component {
 
     }
 
-    showModel = (urn,markups) => {  
+    showModel = (urn, markups) => {
         var options = {
             env: 'AutodeskProduction',
             getAccessToken: this.getAccessToken,
@@ -192,8 +213,8 @@ class AutoDeskViewer extends Component {
         };
         var documentId = 'urn:' + urn;
         Autodesk.Viewing.Initializer(options, function onInitialized() {
-            Autodesk.Viewing.Document.load(documentId, function(doc)  {
-         
+            Autodesk.Viewing.Document.load(documentId, function (doc) {
+
                 var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), { 'type': 'geometry' }, true);
                 if (viewables.length === 0) {
                     console.error('Document contains no viewables.');
@@ -207,9 +228,9 @@ class AutoDeskViewer extends Component {
                 };
                 var viewerDiv = document.getElementById('forgeViewer');
                 let viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
-                viewer.start(svfUrl, modelOptions, function() {
+                viewer.start(svfUrl, modelOptions, function () {
                     //      this.setState({ loaded: true }) 
-                 
+
                     markups.forEach(item => {
                         this.restoreState(item.svg, item.viewerState);
                     });
@@ -217,8 +238,9 @@ class AutoDeskViewer extends Component {
                     console.error('onLoadModelError() - errorCode:');
                 });
                 // this.setState({ viewer })
-            }, alert("onDocumentLoadFailure"));
-        }); 
+            });
+        });
+        this.setState({ loadingPer: true })
     }
 
     getAccessToken = () => {
@@ -301,6 +323,9 @@ class AutoDeskViewer extends Component {
 
         }
     }
+
+
+
     // addCircle() {
     //     if (this.state.markupCore) {
     //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markupCore);
@@ -399,9 +424,9 @@ class AutoDeskViewer extends Component {
     render() {
         return (
             <div className="mainContainer main__withouttabs">
-                    <div id="forgeViewer">
+                <div id="forgeViewer">
 
-</div>
+                </div>
                 {this.state.loaded == true ?
 
                     <Fragment>
@@ -457,7 +482,7 @@ class AutoDeskViewer extends Component {
                                 </div>
                             </div>
                             : null}
-                    
+
                         {/* <ForgeViewer ref={ref => this.ForgeViewer = ref}
                             version="6.0"
                             urn={this.state.urn}
@@ -471,7 +496,13 @@ class AutoDeskViewer extends Component {
                             onModelError={this.handleModelError.bind(this)} */}
                         />
                     </Fragment>
-                    : <h2>Loading...</h2>}
+                    : this.state.loadingPer === true ?
+                        null :
+                        <div id="my_percentage" className="loadingShow" >
+                            <span></span>
+                            <div className="percentage" id="precent"></div>
+                        </div>
+                }
             </div>
         );
     }

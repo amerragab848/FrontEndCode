@@ -6673,3 +6673,374 @@ div#markup-panel {
     justify-content: space-between;
     align-items: center;
 }
+
+.loadingShow {
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:rgba(255,255,255,0.95);
+    display: flex;
+    z-index:99999999999999;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+}
+
+.loadingShow span {
+    width: 64px;
+    height: 64px;
+    transform: rotate(40deg);
+    border-radius: 50%;
+    border: solid 6px #4382f9;
+    border-right-color: transparent;
+    animation: rotate 1s linear infinite;
+    margin-bottom: 28px;
+    display: block;
+}
+
+.loadingShow .percentage {
+    font-family: Muli;
+    font-size: 34px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.18;
+    letter-spacing: -1.1px;
+    text-align: center;
+    color: #252833;
+}
+
+/* data Grid Css */
+
+.react-grid-Toolbar {
+    background-color: #fff;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px;
+    color: inherit;
+    margin-bottom: 0;
+    padding: 0;
+    height: 40px;
+    border-radius: 2px;
+    background-color: #E9ECF0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    flex-wrap: nowrap;
+    z-index: 10;
+}
+
+.selecteDiv {
+     display: flex;
+      align-items: center;
+      justify-content: flex-start;
+}
+
+.react-grid-Grid {
+    overflow: unset !important;
+}
+
+.react-grid-Header {
+    height: 58px !important;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+    z-index: 9;
+}
+
+.react-grid-Row {
+    border-bottom: 1px solid #ddd;
+    height: 60px !important;
+}
+
+.react-grid-HeaderRow >div:first-of-type {
+    height: 58px !important;
+}
+
+.react-grid-HeaderCell {
+    background: #fff;
+    padding: 0;
+    font-weight: 700;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 58px !important;
+    display: flex !important;
+    align-items: center;
+    padding-left: 14px;
+}
+
+.react-grid-Viewport {
+    top: 58px !important;
+}
+
+.react-grid-HeaderRow >div:first-child {
+    width: 100%;
+}
+
+.react-grid-HeaderRow .react-grid-HeaderCell , .react-grid-Row .react-grid-Cell {
+    border-right-color: transparent;
+}
+
+.react-grid-HeaderCell-sortable {
+    color: #A8B0BF;
+    font-family: font-b;
+    font-size: 14px;
+    position: relative;
+}
+
+.react-grid-HeaderCell-sortable  span.pull-right {
+    position: absolute;
+    right: -16px;
+    font-size: 20px;
+    top: -3px;
+}
+
+.react-grid-Cell {
+    height: 60px !important;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 0;
+}
+
+.react-grid-Toolbar .drop-item:hover {
+    border-color: transparent;
+}
+
+.react-grid-Cell__value >div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.react-grid-Cell__value ,.react-grid-Cell__value a {
+    color: #3E4352;
+    letter-spacing: -0.2px;
+    font-size: 14px;
+    font-family: font-opens;
+}
+
+.react-grid-Cell__value a {
+    font-weight: bold;
+}
+
+.react-grid-Row.row-context-menu .react-grid-Cell, .react-grid-Row:hover .react-grid-Cell, .react-grid-Row:hover {
+    background-color: #edf0f2;
+    transition: 0.2s ease;
+}
+
+.selecteDiv >div {
+    opacity: 1;
+}
+
+.react-grid-Toolbar .selecteDiv .dragMessage {
+    letter-spacing: -0.2px;
+    text-align: center;
+    color: #A8B0BF;
+    font-family: font-r;
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 9999;
+} 
+
+.react-grid-Toolbar .selecteDiv .data-dark:empty + .dragMessage {
+    display: flex;
+}
+
+.react-grid-Toolbar .selecteDiv .data-dark + .dragMessage {
+    display: none;
+}
+
+.react-grid-Toolbar .selecteDiv  .datagrid-grouping.active ~ .dragMessage {
+    display: flex;
+}
+
+.react-grid-Toolbar .selecteDiv .drop-item  span.grouped-col-btn__name {
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: -0.2px;
+    color: #5E6475;
+}
+
+.react-grid-Canvas >div:nth-of-type(2), .react-grid-row-group {
+    width:100% !important;
+}
+
+.react-grid-Toolbar .drop-item  {
+    min-width: 77px;
+    height: 26px;
+    border-radius: 100px;
+    background-color: #e9edf2;
+    padding: 0 10px 0 12px;
+    margin-left: 6px;
+    line-height: 26px;
+    font-family: font-b;
+    border-color: transparent;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 99999;
+    flex-shrink: 0;
+    font-size: 12px;
+    letter-spacing: -0.2px;
+    color: #5E6475;
+    justify-content: space-between;
+}
+
+.drop-item .remove {
+    padding: 0;
+    float: right;
+    background-color: #858D9E;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    color: #e9edf2;
+    font-size: 8px;
+    text-align: center;
+    line-height: 15px;
+    padding-right: 1px;
+    font-family: font-r;
+    margin: 1px 0 0 5px;
+}
+
+.react-grid-Toolbar .data-dark:empty {
+    background-color: #E9ECF0 !important;
+    display: none;
+    width: 0;
+}
+
+.react-grid-Toolbar .data-dark {
+    background-color: #5E6475;
+    padding-left: 12px;
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+}
+
+.react-grid-Toolbar .data-dark::-webkit-scrollbar {
+    height: 0;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom:-20px;
+    transition: all 0.2s ease-in-out
+}
+
+.react-grid-Toolbar .data-dark:hover::-webkit-scrollbar {
+    height: 10px;
+    position: absolute;
+    background-color: #E9ECF0
+}
+
+.minimizeRelative {
+    position: relative;
+}
+
+.minimizeSpan {
+    position: absolute;
+    right: 40px;
+    top: 5px;
+    z-index: 19;
+    display: flex;
+}
+
+.minimizeSpan .H-tableSize, .minimizeSpan .V-tableSize {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    cursor: pointer;
+}
+
+.minimizeSpan .H-tableSize {
+    flex-flow: column;
+}
+
+.minimizeSpan .H-tableSize span {
+    width: 12px;
+    height: 3px;
+    background: #A8B0BF;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.minimizeSpan .V-tableSize span {
+    width: 3px;
+    height: 12px;
+    margin-right: 2px;
+    background: #A8B0BF;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.gridLoading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255, 0.8);
+    z-index: 99999;
+    top: 0;
+    display: none;
+}  
+
+.gridLoading span {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #3570e6;
+    border-right-color: transparent;
+    animation: rotate 1s linear infinite;
+    border-radius: 50%;
+}
+
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg); 
+    }
+    25% {
+      transform: rotate(90deg);
+     }
+    50% {
+      transform: rotate(180deg); 
+    }
+    75% {
+      transform: rotate(270deg); 
+    }
+    100% {
+      transform: rotate(360deg); 
+    } 
+}
+
+.miniRows .react-grid-Row {
+    height: 40px !important;
+}
+
+.miniRows .react-grid-Row .react-grid-Cell {
+    height: 40px !important;
+}
+
+.react-grid-HeaderCell>.react-grid-checkbox-container {
+    padding: 0;
+}
+
+/* data Grid Css */
+
+/* rtl not modified css */
