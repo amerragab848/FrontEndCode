@@ -112,8 +112,8 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
-
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "details",
                 name: Resources["details"][currentLanguage],
@@ -122,7 +122,8 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "quantity",
                 name: Resources["quantity"][currentLanguage],
@@ -133,7 +134,8 @@ class materialRequestAddEdit extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: editQuantity,
-                editable: true
+                editable: true,
+                type:"number"
             }, {
                 key: "stock",
                 name: Resources["stock"][currentLanguage],
@@ -144,7 +146,8 @@ class materialRequestAddEdit extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: editStock,
-                editable: true
+                editable: true,
+                type:"string"
             }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
@@ -153,7 +156,8 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "days",
                 name: Resources["days"][currentLanguage],
@@ -162,7 +166,8 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
@@ -171,7 +176,8 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -180,7 +186,8 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }
         ];
 

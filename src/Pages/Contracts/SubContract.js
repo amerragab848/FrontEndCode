@@ -69,7 +69,8 @@ class SubContract extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
@@ -78,7 +79,8 @@ class SubContract extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
 
             }, {
                 key: "specsSectionName",
@@ -88,7 +90,8 @@ class SubContract extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -97,7 +100,8 @@ class SubContract extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
@@ -106,7 +110,8 @@ class SubContract extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "originalQuantity",
                 name: Resources["originalQuantity"][currentLanguage],
@@ -115,7 +120,8 @@ class SubContract extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "originalUnitPrice",
                 name: Resources["originalPrice"][currentLanguage],
@@ -124,7 +130,8 @@ class SubContract extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "unitPrice",
                 name: Resources["unitPrice"][currentLanguage],
@@ -135,7 +142,8 @@ class SubContract extends Component {
                 editable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: editUnitPrice
+                formatter: editUnitPrice,
+                type:"number"
             }, {
                 key: "quantity",
                 name: Resources["originalQuantity"][currentLanguage],
@@ -146,7 +154,8 @@ class SubContract extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: editQuntity
+                formatter: editQuntity,
+                type:"number"
             }, {
                 key: "defaultQuantity",
                 name: Resources["defaultQuantity"][currentLanguage],
@@ -157,7 +166,8 @@ class SubContract extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: editDefaultQuntity
+                formatter: editDefaultQuntity,
+                type:"number"
             }];
 
         this.state = {

@@ -1,18 +1,18 @@
 import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
-
+import Calendar from "react-calendar";
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
-
 import { toast } from "react-toastify";
-import Resources from "../../resources.json";
+import Resources from "../../resources.json"; 
+import moment from "moment" ; 
+
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
-
 const selectors = Data.Selectors;
 
 let arrColumn = ['arrange', 'quantity', 'itemCode'];
@@ -20,6 +20,7 @@ let arrColumn = ['arrange', 'quantity', 'itemCode'];
 class GridSetupWithFilter extends Component {
 
     constructor(props) {
+        
         super(props);
 
         this.state = {
@@ -35,12 +36,16 @@ class GridSetupWithFilter extends Component {
             copmleteRows: [],
             expandedRows: {},
             ShowModelFilter: false,
-            ClearFilter: ''
+            ClearFilter: '',
+            isView:false,
+            currentData:0
         };
 
         this.groupColumn = this.groupColumn.bind(this);
         this.onRowsSelected = this.onRowsSelected.bind(this);
         this.saveFilter = this.saveFilter.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
+
     }
 
     componentDidMount() {
@@ -289,6 +294,35 @@ class GridSetupWithFilter extends Component {
         this.setState({ rows: this.props.rows, ShowModelFilter: false })
     }
 
+    changeDate(index) {
+        if (!this.state.isView) {
+          // attach/remove event handler
+          document.addEventListener("click", this.handleOutsideClick, false);
+
+        this.setState({ currentData:index });
+        } else {
+          document.removeEventListener("click", this.handleOutsideClick, false);
+        }
+      }
+    
+      handleOutsideClick(e) {
+        if (this.node.contains(e.target)) {
+          return;
+        }
+        this.changeDate();
+      } 
+
+      onChange = date => {
+
+        console.log(date);
+    
+        let margeDate = moment(date[0]).format("DD/MM/YYYY") + "|" +  moment(date[1]).format("DD/MM/YYYY");
+    
+        //alert(margeDate); 
+
+        this.setState({ date, currentData: 0});
+      };
+
     render() {
 
         const { groupBy, rows } = this.state;
@@ -296,30 +330,20 @@ class GridSetupWithFilter extends Component {
         const groupedRows = Data.Selectors.getRows({ rows, groupBy });
         const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
-        let CustomToolbar = ({
-            groupBy,
-            onColumnGroupAdded,
-            onColumnGroupDeleted
-        }) => {
+        let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {
             return (
                 <Toolbar >
-                    <GroupedColumnsPanel
-                        groupBy={groupBy}
-                        onColumnGroupAdded={onColumnGroupAdded}
-                        onColumnGroupDeleted={onColumnGroupDeleted}
-                        noColumnsSelectedMessage={drag}
-                    />
-
+                    <GroupedColumnsPanel groupBy={groupBy} onColumnGroupAdded={onColumnGroupAdded} 
+                                         onColumnGroupDeleted={onColumnGroupDeleted} noColumnsSelectedMessage={drag}/>
                     {this.state.selectedRows.length > 0 && this.props.showToolBar != false ? (
                         <div className="gridSystemSelected active">
                             <div className="tableselcted-items">
-                                <span id="count-checked-checkboxes">{this.state.selectedRows.length}{" "}</span><span>Selected</span>
+                                <span id="count-checked-checkboxes">{this.state.selectedRows.length}</span><span>Selected</span>
                             </div>
                             <div className="tableSelctedBTNs">
                                 {this.props.addLevel ? null : <button className="defaultBtn btn smallBtn" onClick={this.clickHandlerDeleteRows}>{this.props.NoShowDeletedBar === undefined ? 'DELETE' : 'Currency'}                                </button>}
                                 {this.props.assign ? <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.assignFn()} ><i className="fa fa-retweet"></i></button> : null}
                                 {this.props.addLevel ? <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.addLevel()} ><i className="fa fa-paper-plane"></i></button> : null}
-
                                 {this.props.Panels !== undefined ?
                                     <Fragment>
                                         <button className="primaryBtn-1 btn smallBtn" onClick={() => this.props.TaskGroupFun(this.state.selectedRows)} data-toggle="tooltip" title={Resources['projectTaskGroups'][currentLanguage]} >
@@ -378,8 +402,24 @@ class GridSetupWithFilter extends Component {
                                     <div className="filter__input-wrapper">
                                         <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
                                             {this.props.columns.map((column, index) => {
+
                                                 let classX = arrColumn.findIndex(x => x == column.key) > -1 ? 'small__input--width ' : 'medium__input--width'
-                                                return (column.filterable === true && column.key !== 'customBtn' ?
+                                                if(column.type === "date"){
+                                                    return (column.filterable === true && column.key !== 'customBtn' ?
+                                                    <div className={"form-group linebylineInput " + classX} key={index}>
+                                                        <label className="control-label" htmlFor={column.key}>{column.name}</label>
+                                                        <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
+                                                            {/* <input autoComplete="off" key={index} id={column.key} placeholder={column.name}
+                                                                type="text" className="form-control" name={column.key}
+                                                                onChange={e => this.saveFilter(e, index, column.name)} /> */}
+                                                        <input type="text" autoComplete="off" key={index} placeholder={column.name} 
+                                                               onFocus={this.changeDate.bind(this)} value={this.state.setDate} onFocus={() => this.changeDate(index)}/>
+                                                        {this.state.currentData === index && this.state.currentData != 0 ? (<Calendar  onChange={this.onChange} selectRange={true} value={this.state.date} /> ) :  ("")}
+                                                        </div>
+                                                    </div>
+                                                    : null) 
+                                                }else{
+                                                      return (column.filterable === true && column.key !== 'customBtn' ?
                                                     <div className={"form-group linebylineInput " + classX} key={index}>
                                                         <label className="control-label" htmlFor={column.key}>{column.name}</label>
                                                         <div className="ui input inputDev">
@@ -388,7 +428,8 @@ class GridSetupWithFilter extends Component {
                                                                 onChange={e => this.saveFilter(e, index, column.name)} />
                                                         </div>
                                                     </div>
-                                                    : null)
+                                                    : null)  
+                                                } 
                                             })}
                                         </form>
 
@@ -455,10 +496,10 @@ class GridSetupWithFilter extends Component {
                                 onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
                                 getCellActions={this.props.getCellActions}
                             />
-                        </DraggableContainer >
+                        </DraggableContainer>
                     </div>
                 </div>
-            </Fragment >
+            </Fragment>
         );
     }
 }

@@ -6637,3 +6637,14 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     justify-content: space-between;
     align-items: center;
 }
+
+.inpuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.react-calendar {
+    max-width: 350px !important;
+    position: absolute;
+}
