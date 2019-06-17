@@ -1101,6 +1101,61 @@
             }
           ]
         },
+
+        
+        {
+          "title": {
+            "en": "Material Transfer",
+            "ar": "تحويل خامات"
+          },
+          "id": 100,
+          "permissions": [
+            {
+              "code": 3773,
+              "title": {
+                "en": "View",
+                "ar": "عرض تفاصيل"
+              },
+              "value": false
+            },
+            {
+              "code": 3772,
+              "title": {
+                "en": "View All",
+                "ar": "عرض"
+              },
+              "value": false
+            },
+            {
+              "code": 3774,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل"
+              },
+              "value": false
+            },
+            {
+              "code": 3775,
+              "title": {
+                "en": "Send To Workflow",
+                "ar": "إرسال إلى الدورةالمستنديه"
+              },
+              "value": false
+            },
+            {
+              "code": 3776,
+              "title": {
+                "en": "Send To Expenses Work Flow",
+                "ar": "ارسال للدوره المستنديه لاذن الصرف"
+              },
+              "value": false
+            }
+          ]
+        },
+
+
+
+
         {
           "title": {
             "en": "Material Delivery",
@@ -1255,6 +1310,166 @@
           ]
 
         },
+        {
+          "title": {
+            "en": "Material Returned",
+            "ar": "مرتجع التوريدات"
+          },
+          "id": 100002,
+          "permissions": [
+            {
+              "code": 10019,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة مرتجع التوريدات"
+              },
+              "value": false
+            },
+            {
+              "code": 10020,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل مرتجع التوريدات"
+              },
+              "value": false
+            },
+            {
+              "code": 10021,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف مرتجع التوريدات"
+              },
+              "value": false
+            },
+            {
+              "code":  10022,
+              "title": {
+                "en": "View",
+                "ar": "عرض مرتجع التوريدات"
+              },
+              "value": false
+            },
+            {
+              "code":  10023,
+              "title": {
+                "en": "View All",
+                "ar": "عرض جميع مرتجع التوريدات"
+              },
+              "value": false
+            },
+            {
+              "code":  10024,
+              "title": {
+                "en": "Send By Inbox",
+                "ar": "ارسال الى البريد الداخلى"
+              },
+              "value": false
+            },
+            {
+              "code":  10025,
+              "title": {
+                "en": "Send By Mail",
+                "ar": "ارسال الى البريد الالكترونى"
+              },
+              "value": false
+            },
+            {
+              "code":  10026,
+              "title": {
+                "en": "Send To Correspondence Sent",
+                "ar": "ارسال الى صادر المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code":  10027,
+              "title": {
+                "en": "Send To Correspondence Received",
+                "ar": "ارسال الى وارد المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code":  10028,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            },
+            {
+              "code":  10029,
+              "title": {
+                "en": "Add Attachments",
+                "ar": "اضافة مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code":  10030,
+              "title": {
+                "en": "Edit Attachments",
+                "ar": "تعديل مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10031,
+              "title": {
+                "en": "View Attachments",
+                "ar": "عرض مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10032,
+              "title": {
+                "en": "Delete Attachments",
+                "ar": "حذف مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10033,
+              "title": {
+                "en": "Send To Distribution List",
+                "ar": "ارسال الى قائمةالتوزيع"
+              },
+              "value": false
+            },
+            {
+              "code": 10034,
+              "title": {
+                "en": "Create Transmittal",
+                "ar": "انشاء ارسالية"
+              },
+              "value": false
+            },
+            {
+              "code": 10035,
+              "title": {
+                "en": "Show Drop Box",
+                "ar": "اظهار الدروب بوكس"
+              },
+              "value": false
+            },
+            {
+              "code": 10036,
+              "title": {
+                "en": "Show Google Drive",
+                "ar": "اظهار جوجل دريف"
+              },
+              "value": false
+            }
+          ]
+
+        },
+
+
+
+
+
+
         {
           "title": {
             "en": "Project Inventory",

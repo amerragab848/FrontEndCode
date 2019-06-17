@@ -8,8 +8,7 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import IPConfig from '../../IP_Configrations'
+
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -69,8 +68,6 @@ const documentItemValidationSchema = Yup.object().shape({
 })
 
 const documentItemValidationSchemaForEdit = Yup.object().shape({
-
-    itemId: Yup.string().required(Resources['itemDescription'][currentLanguage]),
 
     returnedQuantity: Yup.number().required(Resources['returnedQuantity'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -135,14 +132,14 @@ class materialReturnedAddEdit extends Component {
             descriptionDropData: [],
             Items: [],
             permission: [
-                { name: "sendByEmail", code: 244 },
-                { name: "sendByInbox", code: 243 },
+                { name: "sendByEmail", code: 10025 },
+                { name: "sendByInbox", code: 10024 },
                 { name: "sendTask", code: 0 },
-                { name: "distributionList", code: 986 },
-                { name: "createTransmittal", code: 3072 },
-                { name: "sendToWorkFlow", code: 734 },
-                { name: "viewAttachments", code: 3283 },
-                { name: "deleteAttachments", code: 892 }
+                { name: "distributionList", code: 10033 },
+                { name: "createTransmittal", code: 10034 },
+                { name: "sendToWorkFlow", code: 10028 },
+                { name: "viewAttachments", code: 10031 },
+                { name: "deleteAttachments", code: 10032 }
             ],
             selectedFromCompany: { label: Resources.fromCompany[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -155,8 +152,6 @@ class materialReturnedAddEdit extends Component {
             MaterialReleaseData: [],
             CostCodingData: [],
             ShowTree: false,
-
-            SelectedBoqItemForEdit: { label: Resources.boqItemSelection[currentLanguage], value: "0" },
             SelectedAreaForEdit: { label: Resources.selectArea[currentLanguage], value: "0" },
             SelectedLocationForEdit: { label: Resources.locationRequired[currentLanguage], value: "0" },
             SelectedBoqItem: { label: Resources.boqItemSelection[currentLanguage], value: "0" },
@@ -176,10 +171,11 @@ class materialReturnedAddEdit extends Component {
             BtnLoading: false,
             ShowPopup: false,
             objItemForEdit: {},
-
+            quantityEdit: 0 ,
+            IsAddMood:false
         }
 
-        if (!Config.IsAllow(238) && !Config.IsAllow(239) && !Config.IsAllow(241)) {
+        if (!Config.IsAllow(10019) && !Config.IsAllow(10020) && !Config.IsAllow(10022)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push( 
                 this.state.perviousRoute
@@ -380,12 +376,12 @@ class materialReturnedAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(239)) {
+            if (!Config.IsAllow(10020)) {
                 this.setState({ isViewMode: true })
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(239)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(239)) {
-                    if (this.props.document.status !== false && Config.IsAllow(239)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(10020)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(10020)) {
+                    if (this.props.document.status !== false && Config.IsAllow(10020)) {
                         this.setState({ isViewMode: false })
                     }
                     else { this.setState({ isViewMode: true }) }
@@ -421,7 +417,7 @@ class materialReturnedAddEdit extends Component {
 
     viewAttachments() {
         return this.state.docId > 0 ? (
-            Config.IsAllow(891) === true ?
+            Config.IsAllow(10031) === true ?
                 (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
@@ -463,37 +459,27 @@ class materialReturnedAddEdit extends Component {
     }
 
     SaveDoc = (Mood) => {
-
-        this.setState({ isLoading: true })
-
+        this.setState({ isLoading: true ,IsAddMood:false})
         if (Mood === 'EditMood') {
-
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             dataservice.addObject('EditLogsMaterialReturne', doc).then(result => {
-
-                this.setState({ isLoading: false })
+                this.setState({ isLoading: false,IsAddMood:false })
                 toast.success(Resources["operationSuccess"][currentLanguage])
-
             }).catch(ex => {
                 this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-
         } else {
-
             let doc = { ...this.state.document };
-
             doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             dataservice.addObject('AddLogsMaterialReturn', doc).then(result => {
-
                 this.setState({ isLoading: false, docId: result.id })
                 toast.success(Resources["operationSuccess"][currentLanguage])
             }).catch(ex => {
                 this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-
         }
         this.AfterSaveDoc()
     }
@@ -569,6 +555,7 @@ class materialReturnedAddEdit extends Component {
                 let ItemDescriptionInfo = this.state.ItemDescriptionInfo
                 ItemDescriptionInfo.resourceCode = ''
                 this.setState({
+                    Items,
                     isLoading: false,
                     unitPrice: 0,
                     selectedItemId: { label: Resources.itemDescription[currentLanguage], value: "0" },
@@ -653,7 +640,6 @@ class materialReturnedAddEdit extends Component {
             this.setState({ BoqItemData: result })
         })
 
-        //Items
         dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId).then(
             result => {
                 this.setState({ arrangeItem: result })
@@ -670,16 +656,13 @@ class materialReturnedAddEdit extends Component {
                 if (id) {
                     dataservice.GetDataGrid("GetLogsMaterialReleaseTicketsForEdit?id=" + id).then(
                         result => {
-                            console.log(result)
-
-                            let SelectedBoqItemForEdit = _.find(this.state.BoqItemData, function (i) { return i.value == result.boqItemId });
                             let SelectedAreaForEdit = _.find(this.state.AreaData, function (i) { return i.value == result.areaId });
                             let SelectedLocationForEdit = _.find(this.state.LocationData, function (i) { return i.value == result.locationId });
                             this.setState({
                                 objItemForEdit: result, ShowPopup: true,
-                                SelectedBoqItemForEdit,
                                 SelectedAreaForEdit,
                                 SelectedLocationForEdit,
+                                quantityEdit: result.quantity
                             })
                         }
                     )
@@ -700,33 +683,26 @@ class materialReturnedAddEdit extends Component {
         if (Qty <= ActaulQty) {
             this.setState({ isLoading: true })
             let obj = {
+                id: this.state.objItemForEdit.id,
                 materialReleaseId: this.state.document.id,
                 itemId: this.state.objItemForEdit.itemId,
-                areaId: this.state.SelectedArea.value === '0' ? undefined : this.state.SelectedArea.value,
-                locationId: this.state.SelectedLocation.value === '0' ? undefined : this.state.SelectedLocation.value,
-                boqItemId: this.state.SelectedBoqItem.value === '0' ? undefined : this.state.SelectedBoqItem.value,
-                arrange: this.state.arrangeItem,
-                quantity: this.state.quantity,
-                unitPrice: this.state.unitPrice,
+                areaId: this.state.SelectedAreaForEdit.value === '0' ? undefined : this.state.SelectedAreaForEdit.value,
+                locationId: this.state.SelectedLocationForEdit.value === '0' ? undefined : this.state.SelectedLocationForEdit.value,
+                arrange: this.state.objItemForEdit.arrange,
+                quantity: this.state.objItemForEdit.quantity,
+                unitPrice: this.state.objItemForEdit.unitPrice,
                 description: this.state.objItemForEdit.description,
-                remarks: this.state.remarks,
-                costCodeTreeId: this.state.costCodeTreeId === 0 ? undefined : this.state.costCodeTreeId,
+                remarks: this.state.objItemForEdit.remarks,
+                costCodeTreeId: this.state.objItemForEdit.costCodeTreeId,
                 resourceCode: this.state.objItemForEdit.resourceCode,
+                total: parseInt(this.state.objItemForEdit.quantity) * parseInt(this.state.objItemForEdit.unitPrice)
             }
             dataservice.addObject('EditLogsMaterialReleaseTickets', obj).then(result => {
-                let Items = this.state.Items
-                Items.push(result)
-                let objItemForEdit = this.state.objItemForEdit
-                objItemForEdit.resourceCode = ''
+                let Items = this.state.Items.filter(s => s.id !== this.state.objItemForEdit.id)
+                console.log(Items)
+                Items.push(this.state.objItemForEdit)
                 this.setState({
-                    isLoading: false,
-                    unitPrice: 0,
-                    selectedItemId: { label: Resources.itemDescription[currentLanguage], value: "0" },
-                    quantity: 0, remarks: '', objItemForEdit,
-                    SelectedBoqItem: { label: Resources.boqItemSelection[currentLanguage], value: "0" },
-                    SelectedArea: { label: Resources.selectArea[currentLanguage], value: "0" },
-                    SelectedLocation: { label: Resources.locationRequired[currentLanguage], value: "0" },
-                    costCodingTreeName: '', costCodeTreeId: 0
+                    isLoading: false, Items,ShowPopup:false
                 })
                 toast.success(Resources["operationSuccess"][currentLanguage])
 
@@ -877,8 +853,8 @@ class materialReturnedAddEdit extends Component {
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
                                         {this.state.docId > 0 ?
-                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={891} EditAttachments={3242} ShowDropBox={3539}
-                                                ShowGoogleDrive={3540} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10029} EditAttachments={10030} ShowDropBox={10035}
+                                                ShowGoogleDrive={10036} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null}
                                         {this.viewAttachments()}
                                         {this.props.changeStatus === true ?
@@ -1150,15 +1126,14 @@ class materialReturnedAddEdit extends Component {
                 <div className="doc-pre-cycle">
                     <Formik
                         initialValues={{
-                            itemId: this.state.selectedItemId.value !== '0' ? this.state.selectedItemId : '',
-                            unitPrice: this.state.unitPrice,
-                            returnedQuantity: this.state.quantity,
-                            arrangeItem: this.state.arrangeItem,
+                            unitPrice: this.state.objItemForEdit.unitPrice,
+                            returnedQuantity: this.state.objItemForEdit.quantity,
+                            arrangeItem: this.state.objItemForEdit.arrange,
                         }}
                         validationSchema={documentItemValidationSchemaForEdit}
                         enableReinitialize={true}
                         onSubmit={() => {
-                            this.SaveItem()
+                            this.SaveEditItem()
                         }}                >
                         {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
                             <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
@@ -1209,7 +1184,6 @@ class materialReturnedAddEdit extends Component {
                                             </div>
                                         </div>
 
-
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources.costCoding[currentLanguage]}</label>
                                             <div className="shareLinks">
@@ -1234,10 +1208,10 @@ class materialReturnedAddEdit extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input ">
+                                        {/* <div className="linebylineInput valid-input ">
                                             <Dropdown data={this.state.BoqItemData} selectedValue={this.state.SelectedBoqItemForEdit}
                                                 title="boqItem" handleChange={e => this.setState({ SelectedBoqItemForEdit: e })} />
-                                        </div>
+                                        </div> */}
 
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
@@ -1363,8 +1337,8 @@ class materialReturnedAddEdit extends Component {
                 </div>
 
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        beforeClose={() => { this.executeBeforeModalClose() }}  {this.state.currentComponent}
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
+                        beforeClose={() => { this.executeBeforeModalClose() }}>  {this.state.currentComponent}
                     </SkyLight>
                 </div>
 
