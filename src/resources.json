@@ -3177,7 +3177,7 @@
         "ar": "برجاء اختيار الحدث"
     },
     "information": {
-        "en": "Information",
+        "en": "Basic Information",
         "ar": "المعلومات"
     },
     "informationAddition": {
@@ -7841,6 +7841,18 @@
         "en": "Post-mitigation ",
         "ar": "Post-mitigation "
     },
+    "mitigation": {
+        "en": "Mitigation ",
+        "ar": "Mitigation "
+    },
+    "descriptionMitigation": {
+        "en": "Description Mitigation ",
+        "ar": "Description Mitigation "
+    },
+    "actionProgress": {
+        "en": "Action Progress ",
+        "ar": "Action Progress "
+    },
     "preMedigationRiskQuantification": {
         "en": "pre-Mitigation Risk Quantification",
         "ar": "Pre-mitigation Risk Quantification"
@@ -7873,21 +7885,37 @@
         "en": "Risk Level",
         "ar": "riskLevel"
     },
+    "riskType": {
+        "en": "Risk Type",
+        "ar": "Risk Type"
+    },
+    "mitigationType": {
+        "en": "Mitigation Type",
+        "ar": "Mitigation Type"
+    },
     "consequence": {
-        "en": "Risk Consequences",
+        "en": "Consequences Quantitifaction",
         "ar": "consequences"
     },
     "consequencesFactosrs": {
         "en": "Risk Consequences Factors",
-        "ar": "ConsequencesFactosrs"
+        "ar": "Consequences Factosrs"
     },
     "EMV": {
         "en": "Risk EMV",
         "ar": "EMV"
     },
     "riskRanking": {
-        "en": "The Risk Ranking Is Calculated",
-        "ar": "The Risk Ranking Is Calculated"
+        "en": "The Risk Ranking",
+        "ar": "The Risk Ranking"
+    },
+    "totalEMV": {
+        "en": "Total Risk EMV",
+        "ar": "EMV"
+    },
+    "totalRiskRanking": {
+        "en": "Total Risk Ranking",
+        "ar": "Total Risk Ranking"
     },
     "riskRanking10": {
         "en": "Risk Ranking",

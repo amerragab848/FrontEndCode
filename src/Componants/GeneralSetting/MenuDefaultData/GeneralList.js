@@ -67,9 +67,12 @@ const DropGeneralData =
     { label: Resources["dailyreporttype"][currentLanguage], value: "dailyreporttype" },
     { label: Resources["riskCause"][currentLanguage], value: "riskCauses" },
     { label: Resources["riskLevel"][currentLanguage], value: "riskLevels" },
+    { label: Resources["riskType"][currentLanguage], value: "riskTypes" },
+    { label: Resources["mitigationType"][currentLanguage], value: "mitigationTypes" },
     { label: Resources["likelihood"][currentLanguage], value: "likelihoods" },
     { label: Resources["consequence"][currentLanguage], value: "consequences" },
-    { label: Resources["consequencesFactosrs"][currentLanguage], value: "ConsequencesFactosrs" }]
+    { label: Resources["consequencesFactosrs"][currentLanguage], value: "ConsequencesFactosrs" },
+    { label: Resources["consequencesFactosrs"][currentLanguage], value: "consequencesScores" }]
 
 class GeneralList extends Component {
     constructor(props) {
