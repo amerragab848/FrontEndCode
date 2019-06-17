@@ -1497,8 +1497,18 @@ class SubmittalAddEdit extends Component {
   }
 
   StepThreeLink = () => {
-    if (docId !== 0) {
+    if (docId !== 0) { 
+      let maxArrange = _.maxBy(this.state.itemData, "arrange");
+      
+      let submittalItem = {};
+      submittalItem.description = "";
+      submittalItem.reviewResult = "";
+      submittalItem.submitalDate = moment();
+      submittalItem.refDoc = "";
+      submittalItem.arrange = maxArrange.arrange != null ? maxArrange.arrange + 1 : 1;
+
       this.setState({
+        itemsDocumentSubmital: submittalItem,
         ThirdStep: true,
         SecondStepComplate: true,
         ThirdStepComplate: true,
@@ -2597,6 +2607,6 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(communicationActions, dispatch)
   };
-}
+} 
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SubmittalAddEdit));

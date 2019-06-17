@@ -4383,7 +4383,7 @@
   "changeOrder": {
     "documentTitle": "changeOrder",
     "docTyp": 66,
-    "documentAddEditLink": "changeOrderAddEdit/",
+    "documentAddEditLink": "changeOrderAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 157,
     "documentEditPermission": 158,
@@ -19204,5 +19204,5 @@
         "isCustom": true
       }
     ]
-  }
+  } 
 }

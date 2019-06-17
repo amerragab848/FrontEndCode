@@ -11,12 +11,13 @@ class Export extends Component {
             rows: this.props.rows,
             columns: this.props.columns,
             fileName: this.props.fileName,
-            isExport: false,
+            isExport: false, 
+            isExportRequestPayment:this.props.isExportRequestPayment
         }
     }
 
     tableToExcel(title) {
-        if (this.state.isExport) {
+        if (this.state.isExport||this.state.isExportRequestPayment) {
             var uri = 'data:application/vnd.ms-excel;base64,'
                 , template = '<html xmlns: o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
                     + '<head> '
@@ -26,13 +27,13 @@ class Export extends Component {
                     + '<h2> ' + title + ' </h2>'
                     + '</head > '
                     + '<body>'
-                    + ' <table>{items}</table>   '
+                    + ' <table>{items}</table>'
                     + '</body></html > '
                 , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
                 , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
 
             var items = '';
-            if (this.props.rows.length) {
+            if (this.props.rows.length) { 
                 items = document.getElementById('items').innerHTML
             }
             var ctx = {
@@ -59,25 +60,49 @@ class Export extends Component {
         }
     }
 
+
+    componentDidMount()
+    {
+        if(this.state.isExportRequestPayment){
+            this.tableToExcel(this.state.fileName);
+        }
+    }
+
     componentWillReceiveProps(nextProps, prevState) {
         if (prevState.isExport != nextProps.isExport) {
             this.setState({ isExport: true });
             this.tableToExcel(this.props.fileName);
         }
+        if(prevState.isExportRequestPayment != nextProps.isExportRequestPayment){
+            this.setState({ isExport: true });
+            this.tableToExcel(this.state.fileName);
+        } 
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.isExport !== this.state.isExport) {  
-            this.tableToExcel(this.props.fileName);}
+            this.tableToExcel(this.props.fileName);
+        } 
+        if (prevState.isExportRequestPayment !== this.state.isExportRequestPayment) {  
+            this.tableToExcel(this.props.fileName);
+        } 
     }
+
+    // componentWillUpdate(nextProps, nextState){
+    //     if (nextProps.isExportRequestPayment && nextState.isExportRequestPayment) {  
+    //         this.setState({columns:this.props.columns});
+    //         this.tableToExcel(this.props.fileName);
+    //     } 
+    // }
 
     ifIE() {
         var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
         var isIE11orLess = isIE11 || navigator.appVersion.indexOf("MSIE") != -1;
         return isIE11orLess;
     }
+
     drawItems() {
-        let fieldsItems = this.props.columns
+        let fieldsItems = this.props.columns;
 
         let rows = this.props.rows.length > 0 ?
             (this.props.rows.map(row => {
@@ -117,13 +142,13 @@ class Export extends Component {
         }
     }
 
-    render() {
 
+    render() { 
         return (
-            <Fragment>
-                <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => { this.setState({ isExport: true }); this.tableToExcel(this.props.fileName) }}>{Resources["export"][currentLanguage]}</button>
+            <Fragment> 
+                <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => { this.setState({ isExport: true }); this.tableToExcel(this.props.fileName) }}>{this.state.isExportRequestPayment ? (this.props.type === 1 ?  Resources["export"][currentLanguage] : "Export As Vo") : Resources["export"][currentLanguage]}</button>
                 <div style={{ display: 'none' }}>
-                    {this.state.isExport === true ?
+                    {this.state.isExport === true || this.state.isExportRequestPayment ?
                         this.drawItems()
                         : null}
                 </div>
