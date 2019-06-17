@@ -99,6 +99,16 @@ class ViewAttachmments extends Component {
             }));
     }
 
+    viewAutoDeskModal = (obj, e) => {
+        console.log(obj)
+      //  var encrypte = encodeURIComponent(obj.attachFile);
+        // if (obj.attachFile.toLowerCase().match(/\.(pdf)$/) != null) {
+        //     window.open("#autoDeskPDFViewerNew/" + obj.fileName + "/" + encrypte + "/" + docId() + "/" + docTypeId() + "/" + obj.id + "/" + obj.projectId);
+        // } else {
+        window.open("/autoDeskViewer")// + obj.fileName + "/" + encrypte + "/" + this.state.docId + "/" + this.state.docTypeId + "/" + obj.id + "/" + obj.projectId);
+        // }
+    };
+
     getPDFblob = (fileLink) => {
         //   Send filename (text string) to server and then retrieves file as a blob back. 
         //   using blob as input, converts it to a fileURL that is a link that loads the pdf
@@ -219,8 +229,15 @@ class ViewAttachmments extends Component {
                                 null
                             }
 
-                            {Config.IsAllow(this.props.deleteAttachments) && ext === 'pdf'?
+                            {Config.IsAllow(this.props.deleteAttachments) && ext === 'pdf' ?
                                 <a className="rootIcon" onClick={() => this.goEditPdf(item, ext)}>
+                                    <i className=" fa fa-link" width="100%" height="100%" />
+                                </a> :
+                                null
+                            }
+
+                            {Config.IsAllow(this.props.deleteAttachments)  ?
+                                <a className="rootIcon" onClick={(e) => this.viewAutoDeskModal(item, e)}>
                                     <i className=" fa fa-link" width="100%" height="100%" />
                                 </a> :
                                 null
