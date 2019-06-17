@@ -81,7 +81,9 @@ class XSLfile extends Component {
             let formData = new FormData();
             
             let file = this.state.acceptedFiles[0]
-
+            let fileName=file.name 
+            let testName=[]
+            testName.push(fileName)
             formData.append("file0", file)
              
             let docType = this.props.docType;
@@ -89,10 +91,8 @@ class XSLfile extends Component {
             let header = { 'docType': docType }
             
             let id = this.props.docId
-            
-            let projectId = this.props.projectId
-            
-            Api.postFile('UploadSingleFile?scheduleId=' + id + '&projectId=' + projectId + '&fileName=[object%20FileList]&isEdit=true', formData, header).then(resp => {
+            let projectId = this.props.projectId;
+            Api.postFile('UploadSingleFile?scheduleId=' + id + '&projectId=' + projectId + '&fileName='+testName+'&isEdit=true', formData, header).then(resp => {
                 if (this.props.afterUpload != undefined) {
                     this.props.afterUpload()
                 }
