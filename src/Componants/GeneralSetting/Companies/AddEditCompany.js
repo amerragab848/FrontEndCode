@@ -229,10 +229,10 @@ class AddEditCompany extends Component {
                                             {({ touched, errors, handleBlur, handleChange, values, setFieldValue, setFieldTouched }) => (
                                                 <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" >
                                                     <div className="linebylineInput valid-input passWrapperInput">
+                                                        <label className="control-label"> {Resources['titleEnCompany'][currentLanguage]} </label>
                                                         <div className={"ui input inputDev fillter-item-c " + (errors.titleEnCompany && touched.titleEnCompany ? (
                                                             "has-error") : !errors.titleEnCompany && touched.titleEnCompany ? ("has-success") : "")}
                                                         >
-                                                            <label className="control-label"> {Resources['titleEnCompany'][currentLanguage]} </label>
                                                             <input autoComplete="off" type='text' className="form-control" name="titleEnCompany" value={values.titleEnCompany}
                                                                 onBlur={handleBlur} onChange={handleChange} placeholder={Resources['titleEnCompany'][currentLanguage]} />
                                                             {errors.titleEnCompany && touched.titleEnCompany ? (
@@ -246,10 +246,11 @@ class AddEditCompany extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input passWrapperInput">
+                                                        <label className="control-label"> {Resources['titleArCompany'][currentLanguage]} </label>
+
                                                         <div className={"ui input inputDev fillter-item-c " + (errors.titleArCompany && touched.titleArCompany ? (
                                                             "has-error") : !errors.titleArCompany && touched.titleArCompany ? ("has-success") : "")}
                                                         >
-                                                            <label className="control-label"> {Resources['titleArCompany'][currentLanguage]} </label>
                                                             <input autoComplete="off" type='text' className="form-control" name="titleArCompany" value={values.titleArCompany}
                                                                 onBlur={handleBlur} onChange={handleChange} placeholder={Resources['titleArCompany'][currentLanguage]} />
                                                             {errors.titleArCompany && touched.titleArCompany ? (
@@ -343,10 +344,11 @@ class AddEditCompany extends Component {
                                                                         value={values.title} />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['email'][currentLanguage]} </label>
+
                                                                     <div className={"ui input inputDev fillter-item-c " + (errors.email && touched.email ? (
                                                                         "has-error") : !errors.email && touched.email ? ("has-success") : "")}
                                                                     >
-                                                                        <label className="control-label"> {Resources['email'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="email"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['email'][currentLanguage]} />
                                                                         {errors.email && touched.email ? (
@@ -361,10 +363,11 @@ class AddEditCompany extends Component {
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['ContactNameEn'][currentLanguage]} </label>
+
                                                                     <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameEn && touched.ContactNameEn ? (
                                                                         "has-error") : !errors.ContactNameEn && touched.ContactNameEn ? ("has-success") : "")}
                                                                     >
-                                                                        <label className="control-label"> {Resources['ContactNameEn'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="ContactNameEn"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ContactNameEn'][currentLanguage]} />
                                                                         {errors.ContactNameEn && touched.ContactNameEn ? (
@@ -378,10 +381,11 @@ class AddEditCompany extends Component {
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['ContactNameAr'][currentLanguage]} </label>
+
                                                                     <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameAr && touched.ContactNameAr ? (
                                                                         "has-error") : !errors.ContactNameAr && touched.ContactNameAr ? ("has-success") : "")}
                                                                     >
-                                                                        <label className="control-label"> {Resources['ContactNameAr'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="ContactNameAr"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ContactNameAr'][currentLanguage]} />
                                                                         {errors.ContactNameAr && touched.ContactNameAr ? (
@@ -396,16 +400,18 @@ class AddEditCompany extends Component {
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['EnglishPosition'][currentLanguage]} </label>
+
                                                                     <div className='ui input inputDev fillter-item-c'>
-                                                                        <label className="control-label"> {Resources['EnglishPosition'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="positionEn"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishPosition'][currentLanguage]} />
 
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['ArabicPosition'][currentLanguage]} </label>
+
                                                                     <div className='ui input inputDev fillter-item-c'>
-                                                                        <label className="control-label"> {Resources['ArabicPosition'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="positionAr"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicPosition'][currentLanguage]} />
 
@@ -413,16 +419,18 @@ class AddEditCompany extends Component {
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['EnglishAddress'][currentLanguage]} </label>
+
                                                                     <div className="ui input inputDev fillter-item-c">
-                                                                        <label className="control-label"> {Resources['EnglishAddress'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="addressEn"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishAddress'][currentLanguage]} />
 
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['ArabicAddress'][currentLanguage]} </label>
+
                                                                     <div className="ui input inputDev fillter-item-c" >
-                                                                        <label className="control-label"> {Resources['ArabicAddress'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="addressAr"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicAddress'][currentLanguage]} />
 
@@ -431,10 +439,11 @@ class AddEditCompany extends Component {
 
 
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['Telephone'][currentLanguage]} </label>
+
                                                                     <div className={"ui input inputDev fillter-item-c " + (errors.Telephone && touched.Telephone ? (
                                                                         "has-error") : !errors.Telephone && touched.Telephone ? ("has-success") : "")}
                                                                     >
-                                                                        <label className="control-label"> {Resources['Telephone'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="Telephone"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Telephone'][currentLanguage]} />
                                                                         {errors.Telephone && touched.Telephone ? (
@@ -449,10 +458,11 @@ class AddEditCompany extends Component {
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['Mobile'][currentLanguage]} </label>
+
                                                                     <div className={"ui input inputDev fillter-item-c " + (errors.Mobile && touched.Mobile ? (
                                                                         "has-error") : !errors.Mobile && touched.Mobile ? ("has-success") : "")}
                                                                     >
-                                                                        <label className="control-label"> {Resources['Mobile'][currentLanguage]} </label>
                                                                         <input autoComplete="off" type='text' className="form-control" name="Mobile"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Mobile'][currentLanguage]} />
                                                                         {errors.Mobile && touched.Mobile ? (

@@ -216,7 +216,7 @@ class SendByEmails extends Component {
 
   render() {
     return (
-      <div className="dropWrapper">
+      <div className="dropWrapper proForm">
  
         <Dropdown
           name="color"

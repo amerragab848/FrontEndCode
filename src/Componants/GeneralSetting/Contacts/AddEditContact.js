@@ -90,7 +90,7 @@ class AddNewContact extends Component {
     }
 
     Save = (values) => {
-        this.setState({isLoading:true})
+        this.setState({ isLoading: true })
         let SendingObject = {
             titleId: this.state.values.selectedTitle.value,
             title: this.state.values.selectedTitle.label,
@@ -104,7 +104,7 @@ class AddNewContact extends Component {
             mobile: values.mobile,
             email: values.email,
             companyId: this.props.companyID,
-            id:this.props.contactID
+            id: this.props.contactID
         }
         if (this.state.editMode) {
             this.props.actions.editContact("EditCompanyContact", SendingObject);
@@ -169,148 +169,156 @@ class AddNewContact extends Component {
                     {({ touched, errors, handleBlur, handleChange, values }) => (
                         <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
                             <div className="fullWidthWrapper">
-                                <h2 className="twoLineHeader">{this.state.editMode?Resources['editContact'][currentLanguage]:Resources['addContact'][currentLanguage]}</h2>
+                                <h2 className="twoLineHeader">{this.state.editMode ? Resources['editContact'][currentLanguage] : Resources['addContact'][currentLanguage]}</h2>
                             </div>
                             <Dropdown title="empTitle" data={this.props.titleData} selectedValue={this.state.values.selectedTitle}
                                 handleChange={(e) => this.handleBlur(e, "title")}
                                 index='discipline' name="title" handleBlur={handleBlur} />
-                            <div className={"ui input inputDev fillter-item-c " + (errors.email && touched.email ? (
-                                "has-error") : !errors.email && touched.email ? ("has-success") : " ")}
-                            >
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['email'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="email" value={values.email}
-                                    onBlur={handleBlur} onChange={handleChange} placeholder={Resources['email'][currentLanguage]} />
-                                {errors.email && touched.email ? (
-                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                ) : !errors.email && touched.email ? (
-                                    <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                ) : null}
-                                {errors.email && touched.email ? (
-                                    <em className="pError">{errors.email}</em>
-                                ) : null}
+                                <div className={"ui input inputDev  " + (errors.email && touched.email ? (
+                                    "has-error") : !errors.email && touched.email ? ("has-success") : " ")}
+                                >
+                                    <input autoComplete="off" type='text' className="form-control" name="email" value={values.email}
+                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['email'][currentLanguage]} />
+                                    {errors.email && touched.email ? (
+                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
+                                    ) : !errors.email && touched.email ? (
+                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
+                                    ) : null}
+                                    {errors.email && touched.email ? (
+                                        <em className="pError">{errors.email}</em>
+                                    ) : null}
+                                </div>
                             </div>
-                            <div className={"ui input inputDev fillter-item-c " + (errors.contactNameEn && touched.contactNameEn || this.state.exitsNameEn ? (
-                                " has-error") : !errors.contactNameEn && touched.contactNameEn ? ("has-success") : " ")}
-                            >
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['ContactNameEn'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="contactNameEn" value={values.contactNameEn}
-                                    onBlur={(e) => {
-                                        this.handleBlur(e.target.value, "ContactNameEn")
-                                        handleBlur(e)
-                                    }}
+                                <div className={"ui input inputDev  " + (errors.contactNameEn && touched.contactNameEn || this.state.exitsNameEn ? (
+                                    " has-error") : !errors.contactNameEn && touched.contactNameEn ? ("has-success") : " ")}
+                                >
+                                    <input autoComplete="off" type='text' className="form-control" name="contactNameEn" value={values.contactNameEn}
+                                        onBlur={(e) => {
+                                            this.handleBlur(e.target.value, "ContactNameEn")
+                                            handleBlur(e)
+                                        }}
 
-                                    onChange={handleChange} placeholder={Resources['ContactNameEn'][currentLanguage]} />
-                                {errors.contactNameEn && touched.contactNameEn || this.state.exitsNameEn ? (
-                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                ) : !errors.contactNameEn && touched.contactNameEn && !this.state.exitsNameEn ? (
-                                    <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                ) : null}
-                                {errors.contactNameEn && touched.contactNameEn && this.state.exitsNameEn ? (
-                                    <em className="pError">{errors.contactNameEn}</em>
-                                ) : null}
-                                {!errors.contactNameEn && this.state.exitsNameEn ? (
-                                    <em className="pError">{"name is exist"}</em>
-                                ) : null}
+                                        onChange={handleChange} placeholder={Resources['ContactNameEn'][currentLanguage]} />
+                                    {errors.contactNameEn && touched.contactNameEn || this.state.exitsNameEn ? (
+                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
+                                    ) : !errors.contactNameEn && touched.contactNameEn && !this.state.exitsNameEn ? (
+                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
+                                    ) : null}
+                                    {errors.contactNameEn && touched.contactNameEn && this.state.exitsNameEn ? (
+                                        <em className="pError">{errors.contactNameEn}</em>
+                                    ) : null}
+                                    {!errors.contactNameEn && this.state.exitsNameEn ? (
+                                        <em className="pError">{"name is exist"}</em>
+                                    ) : null}
+                                </div>
                             </div>
-                            <div className={"ui input inputDev fillter-item-c " + (errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
-                                " has-error") : !errors.contactNameAr && touched.contactNameAr ? (" has-success") : "")}
-                            >
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['ContactNameAr'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="contactNameAr" value={values.contactNameAr}
-                                    onBlur={(e) => {
-                                        handleBlur(e)
-                                        this.handleBlur(e.target.value, "ContactNameAr")
-                                    }} onChange={handleChange} placeholder={Resources['ContactNameAr'][currentLanguage]} />
-                                {errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
-                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                ) : !errors.contactNameAr && touched.contactNameAr && !this.state.exitsNameAr ? (
-                                    <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                ) : null}
-                                {errors.contactNameAr && touched.contactNameAr && this.state.exitsNameAr ? (
-                                    <em className="pError">{errors.contactNameAr}</em>
-                                ) : null}
-                                {!errors.contactNameAr && this.state.exitsNameAr ? (
-                                    <em className="pError">{"name is exist"}</em>
-                                ) : null}
+                                <div className={"ui input inputDev  " + (errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
+                                    " has-error") : !errors.contactNameAr && touched.contactNameAr ? (" has-success") : "")}
+                                >
+                                    <input autoComplete="off" type='text' className="form-control" name="contactNameAr" value={values.contactNameAr}
+                                        onBlur={(e) => {
+                                            handleBlur(e)
+                                            this.handleBlur(e.target.value, "ContactNameAr")
+                                        }} onChange={handleChange} placeholder={Resources['ContactNameAr'][currentLanguage]} />
+                                    {errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
+                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
+                                    ) : !errors.contactNameAr && touched.contactNameAr && !this.state.exitsNameAr ? (
+                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
+                                    ) : null}
+                                    {errors.contactNameAr && touched.contactNameAr && this.state.exitsNameAr ? (
+                                        <em className="pError">{errors.contactNameAr}</em>
+                                    ) : null}
+                                    {!errors.contactNameAr && this.state.exitsNameAr ? (
+                                        <em className="pError">{"name is exist"}</em>
+                                    ) : null}
+                                </div>
                             </div>
-                            <div className='ui input inputDev fillter-item-c'>
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['EnglishPosition'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="positionEn" value={values.positionEn}
-                                    onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishPosition'][currentLanguage]} />
-
+                                <div className='ui input inputDev'>
+                                    <input autoComplete="off" type='text' className="form-control" name="positionEn" value={values.positionEn}
+                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishPosition'][currentLanguage]} />
+                                </div>
                             </div>
-
-                            <div className='ui input inputDev fillter-item-c'>
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['ArabicPosition'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="positionAr" value={values.positionAr}
-                                    onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicPosition'][currentLanguage]} />
-
+                                <div className='ui input inputDev  '>
+                                    <input autoComplete="off" type='text' className="form-control" name="positionAr" value={values.positionAr}
+                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicPosition'][currentLanguage]} />
+                                </div>
                             </div>
-
-                            <div className="ui input inputDev fillter-item-c">
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['EnglishAddress'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="addressEn" value={values.addressEn}
-                                    onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishAddress'][currentLanguage]} />
-
+                                <div className="ui input inputDev ">
+                                    <input autoComplete="off" type='text' className="form-control" name="addressEn" value={values.addressEn}
+                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishAddress'][currentLanguage]} />
+                                </div>
                             </div>
-
-                            <div className="ui input inputDev fillter-item-c" >
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['ArabicAddress'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="addressAr" value={values.addressAr}
-                                    onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicAddress'][currentLanguage]} />
-
+                                <div className="ui input inputDev " >
+                                    <input autoComplete="off" type='text' className="form-control" name="addressAr" value={values.addressAr}
+                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicAddress'][currentLanguage]} />
+                                </div>
                             </div>
-
-                            <div className={"ui input inputDev fillter-item-c " + (errors.telephone && touched.telephone ? (
-                                "has-error") : !errors.telephone && touched.telephone ? ("has-success") : "")}
-                            >
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['Telephone'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="telephone" value={values.telephone}
-                                    onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Telephone'][currentLanguage]} />
-                                {errors.telephone && touched.telephone ? (
-                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                ) : !errors.telephone && touched.telephone ? (
-                                    <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                ) : null}
-                                {errors.telephone && touched.telephone ? (
-                                    <em className="pError">{errors.telephone}</em>
-                                ) : null}
+                                <div className={"ui input inputDev  " + (errors.telephone && touched.telephone ? (
+                                    "has-error") : !errors.telephone && touched.telephone ? ("has-success") : "")}
+                                >
+                                    <input autoComplete="off" type='text' className="form-control" name="telephone" value={values.telephone}
+                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Telephone'][currentLanguage]} />
+                                    {errors.telephone && touched.telephone ? (
+                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
+                                    ) : !errors.telephone && touched.telephone ? (
+                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
+                                    ) : null}
+                                    {errors.telephone && touched.telephone ? (
+                                        <em className="pError">{errors.telephone}</em>
+                                    ) : null}
+                                </div>
                             </div>
-
-                            <div className={"ui input inputDev fillter-item-c " + (errors.Mobile && touched.mobile ? (
-                                " has-error") : !errors.mobile && touched.mobile ? ("has-success") : "")}
-                            >
+                            <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['Mobile'][currentLanguage]} </label>
-                                <input autoComplete="off" type='text' className="form-control" name="mobile" value={values.mobile}
-                                    onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Mobile'][currentLanguage]} />
-                                {errors.mobile && touched.mobile ? (
-                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                ) : !errors.mobile && touched.mobile ? (
-                                    <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                ) : null}
-                                {errors.mobile && touched.mobile ? (
-                                    <em className="pError">{errors.mobile}</em>
-                                ) : null}
+                                <div className={"ui input inputDev " + (errors.Mobile && touched.mobile ? (
+                                    " has-error") : !errors.mobile && touched.mobile ? ("has-success") : "")}
+                                >
+                                    <input autoComplete="off" type='text' className="form-control" name="mobile" value={values.mobile}
+                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Mobile'][currentLanguage]} />
+                                    {errors.mobile && touched.mobile ? (
+                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
+                                    ) : !errors.mobile && touched.mobile ? (
+                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
+                                    ) : null}
+                                    {errors.mobile && touched.mobile ? (
+                                        <em className="pError">{errors.mobile}</em>
+                                    ) : null}
+                                </div>
                             </div>
                             <div className="fullWidthWrapper">
-                                        {this.state.isLoading === false ? (
-                                            <button
-                                                className="primaryBtn-1 btn largeBtn"
-                                                type="submit"
-                                            >  {Resources['save'][currentLanguage]}
-                                            </button>
-                                        ) :
-                                            (
-                                                <button className="primaryBtn-1 btn largeBtn disabled" disabled="disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
-                                                </button>
-                                            )}
-
-                                    </div>
+                                {this.state.isLoading === false ? (
+                                    <button
+                                        className="primaryBtn-1 btn mediumBtn"
+                                        type="submit"
+                                    >  {Resources['save'][currentLanguage]}
+                                    </button>
+                                ) :
+                                    (
+                                        <button className="primaryBtn-1 btn mediumBtn disabled" disabled="disabled">
+                                            <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                            </div>
+                                        </button>
+                                    )}
+                            </div>
                         </Form>
                     )}
                 </Formik>

@@ -110,13 +110,13 @@ class AutoDeskViewer extends Component {
 
     componentDidMount() {
         var PercentageID = document.getElementById("precent");
-
-        this.animateValue(PercentageID, 0, 98, 20000);
+        this.animateValue(PercentageID, 0, 98);
     }
 
-    animateValue(id, start, end, duration) {
+    animateValue(id, start, end) {
         var current = start,
-            obj = id;
+            obj = id,
+            duration = this.state.loadingPer === true ? 0 : 500;
 
         var timer = setInterval(function () {
             current = current + 1;
@@ -124,7 +124,7 @@ class AutoDeskViewer extends Component {
             if (current === end) {
                 clearInterval(timer);
             }
-        }, 200);
+        }, duration);
     }
 
     showAllToggle = (value) => {
@@ -231,9 +231,9 @@ class AutoDeskViewer extends Component {
                 viewer.start(svfUrl, modelOptions, function () {
                     //      this.setState({ loaded: true }) 
 
-                    markups.forEach(item => {
-                        this.restoreState(item.svg, item.viewerState);
-                    });
+                    // markups.forEach(item => {
+                    //     this.restoreState(item.svg, item.viewerState);
+                    // });
                 }, function () {
                     console.error('onLoadModelError() - errorCode:');
                 });
@@ -251,6 +251,7 @@ class AutoDeskViewer extends Component {
         return xmlHttp.responseText;
 
     }
+
     onDocumentLoadSuccess = (doc) => {
         // A document contains references to 3D and 2D viewables.
 
@@ -259,6 +260,7 @@ class AutoDeskViewer extends Component {
     /**
      * Autodesk.Viewing.Document.load() failuire callback.
      */
+
     onDocumentLoadFailure = (viewerErrorCode) => {
         console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
     }
@@ -268,7 +270,8 @@ class AutoDeskViewer extends Component {
      * Invoked after the model's SVF has been initially loaded.
      * It may trigger before any geometry has been downloaded and displayed on-screen.
      */
-    onLoadModelSuccess(model) {
+    
+     onLoadModelSuccess(model) {
         console.log('onLoadModelSuccess()!');
         console.log('Validate model loaded: ' + (this.state.viewer.model === model));
         console.log(model);
@@ -282,10 +285,10 @@ class AutoDeskViewer extends Component {
      * viewer.loadModel() failure callback.
      * Invoked when there's an error fetching the SVF file.
      */
-    onLoadModelError(viewerErrorCode) {
+   
+     onLoadModelError(viewerErrorCode) {
         console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
     }
-
 
     handleChangeItemDropDown = () => {
 
@@ -300,6 +303,7 @@ class AutoDeskViewer extends Component {
 
         }
     }
+
     redo() {
         if (this.state.markupCore) {
             this.state.markupCore.redo();
@@ -309,6 +313,7 @@ class AutoDeskViewer extends Component {
 
         }
     }
+    
     addComment = () => {
         if (this.ForgeViewer) {
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markupCore);
@@ -324,7 +329,7 @@ class AutoDeskViewer extends Component {
         }
     }
 
-
+    /* */
 
     // addCircle() {
     //     if (this.state.markupCore) {

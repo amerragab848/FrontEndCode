@@ -1290,7 +1290,6 @@ class projectWorkFlowAddEdit extends Component {
                                             index="IR-nextWorkFlowId" name="nextWorkFlowId" id="nextWorkFlowId" />
                                     </div>
 
-
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.alertDays[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.alertDays && touched.alertDays ? (" has-error") : !errors.alertDays && touched.alertDays ? (" has-success") : " ")} >
@@ -1305,8 +1304,6 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-
-
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.code[currentLanguage]}</label>
                                         <div className="ui input inputDev">
@@ -1319,11 +1316,6 @@ class projectWorkFlowAddEdit extends Component {
                                                 }} name="code" />
                                         </div>
                                     </div>
-
-
-                                </div>
-
-                                <div className="proForm first-proform">
 
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.closeAfterApproval[currentLanguage]}</label>
