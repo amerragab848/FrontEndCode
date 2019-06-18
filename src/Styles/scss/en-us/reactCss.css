@@ -6047,6 +6047,8 @@ line.horizontal-grid-line {
     background-color: #fafbfc;
     padding-bottom: 31px; 
     padding-top: 16px;
+    position: relative;
+    z-index: 100;
 }
 
 .filter__warrper .proForm {
@@ -6682,4 +6684,29 @@ div#markup-panel {
 .doc-input-btn button {
     flex-shrink: 0;
     margin-left: 15px;
+    align-items: center;
+}
+
+.inpuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.react-calendar {
+    max-width: 350px !important;
+    position: absolute;
+    z-index: 99;
+}
+.viewCalender {
+    position: absolute;
+    z-index: 99;
+}
+.viewCalender .react-calendar{
+    position: unset;
+    z-index: 99;
+}
+
+#showMore_input {
+    margin-top: 12px
 }

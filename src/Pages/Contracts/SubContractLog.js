@@ -28,8 +28,8 @@ class SubContractLog extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
-
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "subject",
                 name: Resources["subject"][currentLanguage],
@@ -38,7 +38,8 @@ class SubContractLog extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "companyName",
                 name: Resources["CompanyName"][currentLanguage],
@@ -47,7 +48,8 @@ class SubContractLog extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "toCompanyName",
                 name: Resources["contractTo"][currentLanguage],
@@ -56,7 +58,8 @@ class SubContractLog extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "toContactName",
                 name: Resources["ToContact"][currentLanguage],
@@ -65,7 +68,8 @@ class SubContractLog extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
@@ -75,7 +79,8 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter:dateFormate
+                formatter:dateFormate,
+                type:"date"
             }, {
                 key: "completionDate",
                 name: Resources["completionDate"][currentLanguage],
@@ -85,7 +90,8 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter:dateFormate
+                formatter:dateFormate,
+                type:"date"
             }, {
                 key: "actualExceuted",
                 name: Resources["actualExecuted"][currentLanguage],
@@ -94,7 +100,8 @@ class SubContractLog extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "docCloseDate",
                 name: Resources["closeDate"][currentLanguage],
@@ -104,7 +111,8 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter:dateFormate
+                formatter:dateFormate,
+                type:"date"
             }
         ];
      
