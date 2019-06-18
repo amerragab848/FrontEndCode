@@ -10,6 +10,7 @@ import Select from '../../OptionsPanels/DropdownMelcous';
 import { Formik, Form } from 'formik';
 import config from "../../../Services/Config";
 import * as Yup from 'yup';
+import { toast } from "react-toastify";
 import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
 import Api from '../../../api';
@@ -21,8 +22,8 @@ const ValidtionSchema = Yup.object().shape({
         .required(Resources['titleArValid'][currentLanguage]),
     EnTitle: Yup.string()
         .required(Resources['titleEnValid'][currentLanguage]),
-    // value: Yup.number().required(Resources['isRequiredField'][currentLanguage])
-    //     .typeError(Resources['onlyNumbers'][currentLanguage]),
+    value: Yup.number().required(Resources['isRequiredField'][currentLanguage])
+        .typeError(Resources['onlyNumbers'][currentLanguage]),
 });
 
 const DropGeneralData =
@@ -117,11 +118,11 @@ class GeneralList extends Component {
             selectedrow: '',
             showNotify: false,
             api: 'GetAccountsDefaultList?',
-            showNotifyError: false,
-            showNotifyPermissions: false,
-            showState: true,
-            msgStateNotify: Resources['smartSentAccountingMessage'][currentLanguage].successTitle,
             showValue: false
+        }
+        if (!config.IsAllow(1182) && !config.IsAllow(1180) && !config.IsAllow(1179)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.goBack();
         }
     }
 
@@ -175,21 +176,14 @@ class GeneralList extends Component {
     }
 
     componentWillMount = () => {
-        if (config.IsAllow(1179)) {
-            if (config.IsAllow(1181)) {
-                this.setState({
-                    showCheckbox: true,
-                    isLoading: false
-                })
-            }
+        if (config.IsAllow(1181)) {
+            this.setState({ showCheckbox: true, isLoading: false })
         }
     }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
         let id = ''
-        selectedRows.map(i => {
-            id = i
-        })
+        selectedRows.map(i => { id = i })
         let checkEdit = []
         checkEdit = this.state.rows.filter(s => s.id === id)
         let editable = '';
@@ -199,15 +193,15 @@ class GeneralList extends Component {
         if (editable === true) {
             this.setState({
                 selectedRows,
-                showNotify: false,
                 showDeleteModal: true
             })
         }
         else {
-            this.setState({
-                showNotify: true,
-                msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
-            })
+            this.setState({ isLoading: true })
+            toast.error(Resources["adminItemEditable"][currentLanguage]);
+            setTimeout(() => {
+                this.setState({ isLoading: false })
+            }, 100);
         }
     }
 
@@ -226,17 +220,11 @@ class GeneralList extends Component {
                     rows: originalRows,
                     showDeleteModal: false,
                     isLoading: false,
-                    showNotify: true,
-                    showState: true
                 })
-            }
-        ).catch(ex => {
-            this.setState({
-                isLoading: true,
-
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(ex => {
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-        });
-
     }
 
     onCloseModal = () => {
@@ -261,9 +249,7 @@ class GeneralList extends Component {
                 })
             }
         )
-        this.setState({
-            isLoading: true
-        })
+        this.setState({ isLoading: true })
     }
 
     onRowClick = (obj) => {
@@ -282,29 +268,19 @@ class GeneralList extends Component {
                 )
             }
             else {
-                this.setState({
-                    showNotify: true,
-                    showState: false,
-                    msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
-
-                })
+                toast.error(Resources["adminItemEditable"][currentLanguage]);
             }
         }
         else {
-            this.setState({
-                showNotify: true,
-                showNotifyPermissions: true,
-                showState: false,
-                msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
-
-            })
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
         }
     }
 
     showAdd = (e) => {
         this.setState({
             ShowPopup: true,
-            EditListData: { title: '', titleAr: '', abbreviation: '', listType: this.state.listType }
+            EditListData: this.state.showValue ? { title: '', titleAr: '', abbreviation: '', listType: this.state.listType, value: 0 }
+                : { title: '', titleAr: '', abbreviation: '', listType: this.state.listType }
         });
 
     }
@@ -314,27 +290,27 @@ class GeneralList extends Component {
             isLoading: true,
         })
         if (this.state.IsEdit) {
-            Api.post('EditAccountsDefaultList', this.state.EditListData).then(
+            dataservice.addObject('EditAccountsDefaultList', this.state.EditListData).then(
                 res => {
                     this.setState({
-                        rows: res,
-                        isLoading: false,
-                        ShowPopup: false,
-                        showNotify: true,
-                        IsEdit: false
+                        rows: res, isLoading: false, ShowPopup: false, IsEdit: false
                     })
-                }
-            )
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                })
         }
         else {
-            Api.post('AddAccountsDefaultList', this.state.EditListData).then(
+            dataservice.addObject('AddAccountsDefaultList', this.state.EditListData).then(
                 res => {
                     this.setState({
                         rows: res,
                         isLoading: false,
                     })
-                }
-            )
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                })
         }
         actions.setSubmitting(false);
         values.EnTitle = ''
@@ -344,20 +320,16 @@ class GeneralList extends Component {
             isLoading: true,
             ShowPopup: false
         })
-        this.setState({
-            showNotify: true,
-        })
     }
 
-    HandleInputChange=(e,field)=>{
-        let original_document = { ...this.state.EditListData };
-        let updated_document = {};
-        updated_document[field] = e;
-        updated_document = Object.assign(original_document, updated_document);
-        this.setState({
-            EditListData: updated_document
-        });
+    HandleInputChange = (e, field) => {
+        let originalDoc = { ...this.state.EditListData };
+        let NewDoc = {};
+        NewDoc[field] = e.target.value;
+        NewDoc = Object.assign(originalDoc, NewDoc);
+        this.setState({ EditListData: NewDoc })
     }
+
     render() {
 
         const dataGrid =
@@ -383,7 +355,7 @@ class GeneralList extends Component {
                         EnTitle: this.state.EditListData.title,
                         ARTitle: this.state.EditListData.titleAr,
                         Abbreviation: this.state.EditListData.abbreviation,
-                        value: this.state.EditListData.title.value,
+                        value: this.state.showValue ? this.state.EditListData.title.value : 0,
                     }}
                     enableReinitialize={true}
                     validationSchema={ValidtionSchema}
@@ -405,24 +377,22 @@ class GeneralList extends Component {
                                             onBlur={(e) => { handleBlur(e) }}
                                             onChange={(e) => {
                                                 handleChange(e)
-                                                this.HandleInputChange(e, 'titleEn')
-                                            }} /> }} />}} />
+                                                this.HandleInputChange(e, 'title')
+                                            }} />
                                         {errors.EnTitle && touched.EnTitle ? (<em className="pError">{errors.EnTitle}</em>) : null}
                                     </div>
                                 </div>
-
-
-
 
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
                                     <div className={'ui input inputDev ' + (errors.ARTitle && touched.ARTitle ? 'has-error' : null) + ' '}>
                                         <input name='ARTitle' className="form-control" autoComplete='off'
                                             id='ARTitle' value={this.state.EditListData.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
-                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
+                                            onBlur={(e) => { handleBlur(e) }}
+                                            onChange={(e) => {
                                                 handleChange(e)
                                                 this.HandleInputChange(e, 'titleAr')
-                                            }} /> }} />
+                                            }} />
                                         {errors.ARTitle && touched.ARTitle ? <em className="pError">{errors.ARTitle}</em> : null}
                                     </div>
                                 </div>
@@ -440,18 +410,16 @@ class GeneralList extends Component {
                                 </div>
 
                                 {this.state.showValue ?
-
                                     <div className="fillter-status fillter-item-c fullInputWidth">
-                                        <label className="control-label">{Resources['no'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.arrange ? 'has-error' : !errors.arrange && touched.arrange ? (" has-success") : " ")}>
-                                            <input className="form-control" name='arrangeItem'
-                                                placeholder={Resources['no'][currentLanguage]}
-                                                value={this.state.arrangeItem} onChange={e => this.HandelChangeItems(e, 'arrangeItem')}
+                                        <label className="control-label">{Resources['value'][currentLanguage]} </label>
+                                        <div className={"inputDev ui input " + (errors.value ? 'has-error' : !errors.value && touched.value ? (" has-success") : " ")}>
+                                            <input className="form-control" name='value' id='value' placeholder={Resources['value'][currentLanguage]}
+                                                value={this.state.EditListData.value} onChange={e => this.HandleInputChange(e, 'value')}
                                                 onBlur={(e) => {
                                                     handleBlur(e)
                                                     handleChange(e)
                                                 }} />
-                                            {errors.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                                            {errors.value ? (<em className="pError">{errors.value}</em>) : null}
                                         </div>
                                     </div>
                                     : null}
@@ -472,7 +440,7 @@ class GeneralList extends Component {
 
         return (
             <Fragment >
-                <NotifiMsg showNotify={this.state.showNotify} IsSuccess={this.state.showState} Msg={this.state.msgStateNotify} />
+
 
                 <div className="submittalFilter">
                     <div className="subFilter">
