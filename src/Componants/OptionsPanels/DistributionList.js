@@ -122,6 +122,7 @@ class DistributionList extends Component {
     DistributionHanleChange = (item) => {
         let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
         this.GetDistributionData(url);
+        
         setTimeout(() => {
             let state = { sendingData: { ...this.state.sendingData, DistributionListId: item.value }, DistributionValidation: false, showTabel: true };
             this.state.sendingData.itemContacts.forEach((it) => {
