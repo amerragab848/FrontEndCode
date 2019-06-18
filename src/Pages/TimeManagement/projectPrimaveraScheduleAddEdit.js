@@ -656,7 +656,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                 </div>
                                 :
                                 <Fragment>
-
+ 
                                     <XSLfile CustomAccept={true} key='gen_primavera_schedule_items' docId={this.state.docId}
                                         docType='gen_primavera_schedule_items' CantDownload={true} CustomUpload={true} projectId={this.state.projectId}
                                         afterUpload={() => this.getTabelData()}

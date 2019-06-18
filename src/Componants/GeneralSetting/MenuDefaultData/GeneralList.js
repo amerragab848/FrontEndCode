@@ -78,7 +78,7 @@ const DropGeneralData =
     { label: Resources["consequencesFactosrs"][currentLanguage], value: "consequencesScores" }]
 
 class GeneralList extends Component {
-
+ 
     constructor(props) {
 
         const columnsGrid = [
@@ -238,8 +238,7 @@ class GeneralList extends Component {
     GeneralListHandelChange = (e) => {
         this.setState({
             isLoading: true,
-            listType: e.value,
-            showValue: e.value === 'likelihoods' ? true : e.value === 'consequences' ? true : false
+            listType: e.value
         })
         Api.get('GetAccountsDefaultList?listType=' + e.value + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '').then(
             res => {
@@ -459,7 +458,8 @@ class GeneralList extends Component {
 
                     {this.state.listType ?
                         <div className="filterBTNS">
-                            {config.IsAllow(1182) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
+                            {config.IsAllow(1182) ?
+                                <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
                                 : null}
                             {btnExport}
                         </div>
@@ -467,7 +467,8 @@ class GeneralList extends Component {
 
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
-                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span>of<span> {this.state.totalRows}</span>
+                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
+               <span> {this.state.totalRows}</span>
                         </div>
 
                         <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
@@ -493,7 +494,91 @@ class GeneralList extends Component {
                     Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['editTitle'][currentLanguage]
                     : Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['goAdd'][currentLanguage]}
                     onCloseClicked={() => this.setState({ showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}>
-                    {RenderPopupAddEdit()}
+
+                    <Formik
+                        initialValues={{
+                            EnTitle: this.state.IsEdit ? ' ' : '',
+                            ARTitle: this.state.IsEdit ? ' ' : '',
+                            Abbreviation: this.state.IsEdit ? ' ' : '',
+                        }}
+
+                        enableReinitialize={true}
+
+                        validationSchema={ValidtionSchema}
+
+                        onSubmit={(values, actions) => {
+                            this.AddEditSave(values, actions)
+                        }}>
+
+                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
+                            <Form onSubmit={handleSubmit}>
+
+                                <div className="dropWrapper">
+
+                                    <div className="fillter-status fillter-item-c">
+                                        <div className="linebylineInput valid-input label__block">
+                                            <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
+                                            <div className={'ui input inputDev ' + (errors.EnTitle && touched.EnTitle ? 'has-error' : null) + ' '}>
+                                                <input name='EnTitle' autoComplete='off'
+                                                    value={this.state.IsEdit ? this.state.EditListData.title : values.EnTitle} className="form-control" placeholder={Resources['titleEn'][currentLanguage]}
+                                                    onBlur={(e) => { handleBlur(e) }}
+                                                    onChange={(e) => {
+                                                        handleChange(e)
+                                                        if (this.state.IsEdit) {
+                                                            this.setState({ EditListData: { ...this.state.EditListData, title: e.target.value } })
+                                                        }
+                                                    }} />
+                                                {errors.EnTitle && touched.EnTitle ? (
+                                                    <em className="pError">{errors.EnTitle}</em>) : null}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="fillter-status fillter-item-c">
+                                        <div className="linebylineInput valid-input label__block">
+                                            <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
+                                            <div className={'ui input inputDev ' + (errors.ARTitle && touched.ARTitle ? 'has-error' : null) + ' '}>
+                                                <input name='ARTitle' className="form-control" autoComplete='off'
+                                                    value={this.state.IsEdit ? this.state.EditListData.titleAr : values.ARTitle} placeholder={Resources['titleAr'][currentLanguage]}
+                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
+                                                        handleChange(e)
+                                                        if (this.state.IsEdit) {
+                                                            this.setState({ EditListData: { ...this.state.EditListData, titleAr: e.target.value } })
+                                                        }
+                                                    }} />
+                                                {errors.ARTitle && touched.ARTitle ? (
+                                                    <em className="pError">{errors.ARTitle}</em>) : null}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="fillter-status fillter-item-c">
+                                        <div className="linebylineInput valid-input label__block">
+                                            <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
+                                            <div className="ui input inputDev" >
+                                                <input name='Abbreviation' autoComplete='off'
+                                                    value={this.state.IsEdit ? this.state.EditListData.abbreviation : values.Abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
+                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
+                                                        handleChange(e)
+                                                        if (this.state.IsEdit) {
+                                                            this.setState({ EditListData: { ...this.state.EditListData, abbreviation: e.target.value } })
+                                                        }
+                                                    }} />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="fullWidthWrapper">
+                                        <button className="primaryBtn-1 btn" type='submit'>
+                                            {Resources['save'][currentLanguage]}</button>
+                                    </div>
+
+                                </div>
+
+                            </Form>
+                        )}
+                    </Formik>
+
                 </SkyLightStateless>
 
                 {this.state.showDeleteModal == true ? (
