@@ -183,7 +183,7 @@ class GeneralList extends Component {
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
         let id = ''
-        selectedRows.map(i => { id = i })
+        selectedRows.map(i => { id = i  })
         let checkEdit = []
         checkEdit = this.state.rows.filter(s => s.id === id)
         let editable = '';
@@ -197,10 +197,10 @@ class GeneralList extends Component {
             })
         }
         else {
-            this.setState({ isLoading: true })
+            this.setState({isLoading:true})
             toast.error(Resources["adminItemEditable"][currentLanguage]);
             setTimeout(() => {
-                this.setState({ isLoading: false })
+                this.setState({isLoading:false})
             }, 100);
         }
     }
@@ -238,7 +238,8 @@ class GeneralList extends Component {
     GeneralListHandelChange = (e) => {
         this.setState({
             isLoading: true,
-            listType: e.value
+            listType: e.value,
+            showValue: e.value === 'likelihoods' ? true : e.value === 'consequences' ? true : false
         })
         Api.get('GetAccountsDefaultList?listType=' + e.value + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '').then(
             res => {
@@ -261,7 +262,6 @@ class GeneralList extends Component {
                             ShowPopup: true,
                             EditListData: res,
                             selectedrow: obj.id,
-                            showNotify: false,
                         })
                     }
                 )
@@ -458,8 +458,7 @@ class GeneralList extends Component {
 
                     {this.state.listType ?
                         <div className="filterBTNS">
-                            {config.IsAllow(1182) ?
-                                <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
+                            {config.IsAllow(1182) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
                                 : null}
                             {btnExport}
                         </div>
@@ -467,8 +466,7 @@ class GeneralList extends Component {
 
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
-                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
-               <span> {this.state.totalRows}</span>
+                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span>of<span> {this.state.totalRows}</span>
                         </div>
 
                         <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
