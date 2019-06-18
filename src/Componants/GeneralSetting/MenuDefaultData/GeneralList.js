@@ -10,6 +10,7 @@ import Select from '../../OptionsPanels/DropdownMelcous';
 import { Formik, Form } from 'formik';
 import config from "../../../Services/Config";
 import * as Yup from 'yup';
+import { toast } from "react-toastify";
 import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
 import Api from '../../../api';
@@ -21,6 +22,8 @@ const ValidtionSchema = Yup.object().shape({
         .required(Resources['titleArValid'][currentLanguage]),
     EnTitle: Yup.string()
         .required(Resources['titleEnValid'][currentLanguage]),
+    value: Yup.number().required(Resources['isRequiredField'][currentLanguage])
+        .typeError(Resources['onlyNumbers'][currentLanguage]),
 });
 
 const DropGeneralData =
@@ -67,11 +70,15 @@ const DropGeneralData =
     { label: Resources["dailyreporttype"][currentLanguage], value: "dailyreporttype" },
     { label: Resources["riskCause"][currentLanguage], value: "riskCauses" },
     { label: Resources["riskLevel"][currentLanguage], value: "riskLevels" },
+    { label: Resources["riskType"][currentLanguage], value: "riskTypes" },
+    { label: Resources["mitigationType"][currentLanguage], value: "mitigationTypes" },
     { label: Resources["likelihood"][currentLanguage], value: "likelihoods" },
     { label: Resources["consequence"][currentLanguage], value: "consequences" },
-    { label: Resources["consequencesFactosrs"][currentLanguage], value: "ConsequencesFactosrs" }]
+    { label: Resources["consequencesFactosrs"][currentLanguage], value: "ConsequencesFactosrs" },
+    { label: Resources["consequencesFactosrs"][currentLanguage], value: "consequencesScores" }]
 
 class GeneralList extends Component {
+
     constructor(props) {
 
         const columnsGrid = [
@@ -111,10 +118,11 @@ class GeneralList extends Component {
             selectedrow: '',
             showNotify: false,
             api: 'GetAccountsDefaultList?',
-            showNotifyError: false,
-            showNotifyPermissions: false,
-            showState: true,
-            msgStateNotify: Resources['smartSentAccountingMessage'][currentLanguage].successTitle,
+            showValue: false
+        }
+        if (!config.IsAllow(1182) && !config.IsAllow(1180) && !config.IsAllow(1179)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.goBack();
         }
     }
 
@@ -168,21 +176,14 @@ class GeneralList extends Component {
     }
 
     componentWillMount = () => {
-        if (config.IsAllow(1179)) {
-            if (config.IsAllow(1181)) {
-                this.setState({
-                    showCheckbox: true,
-                    isLoading: false
-                })
-            }
+        if (config.IsAllow(1181)) {
+            this.setState({ showCheckbox: true, isLoading: false })
         }
     }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
         let id = ''
-        selectedRows.map(i => {
-            id = i
-        })
+        selectedRows.map(i => { id = i  })
         let checkEdit = []
         checkEdit = this.state.rows.filter(s => s.id === id)
         let editable = '';
@@ -192,15 +193,15 @@ class GeneralList extends Component {
         if (editable === true) {
             this.setState({
                 selectedRows,
-                showNotify: false,
                 showDeleteModal: true
             })
         }
         else {
-            this.setState({
-                showNotify: true,
-                msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
-            })
+            this.setState({isLoading:true})
+            toast.error(Resources["adminItemEditable"][currentLanguage]);
+            setTimeout(() => {
+                this.setState({isLoading:false})
+            }, 100);
         }
     }
 
@@ -219,17 +220,11 @@ class GeneralList extends Component {
                     rows: originalRows,
                     showDeleteModal: false,
                     isLoading: false,
-                    showNotify: true,
-                    showState: true
                 })
-            }
-        ).catch(ex => {
-            this.setState({
-                isLoading: true,
-
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(ex => {
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
-        });
-
     }
 
     onCloseModal = () => {
@@ -243,7 +238,8 @@ class GeneralList extends Component {
     GeneralListHandelChange = (e) => {
         this.setState({
             isLoading: true,
-            listType: e.value
+            listType: e.value,
+            showValue: e.value === 'likelihoods' ? true : e.value === 'consequences' ? true : false
         })
         Api.get('GetAccountsDefaultList?listType=' + e.value + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '').then(
             res => {
@@ -253,9 +249,7 @@ class GeneralList extends Component {
                 })
             }
         )
-        this.setState({
-            isLoading: true
-        })
+        this.setState({ isLoading: true })
     }
 
     onRowClick = (obj) => {
@@ -268,35 +262,24 @@ class GeneralList extends Component {
                             ShowPopup: true,
                             EditListData: res,
                             selectedrow: obj.id,
-                            showNotify: false,
                         })
                     }
                 )
             }
             else {
-                this.setState({
-                    showNotify: true,
-                    showState: false,
-                    msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
-
-                })
+                toast.error(Resources["adminItemEditable"][currentLanguage]);
             }
         }
         else {
-            this.setState({
-                showNotify: true,
-                showNotifyPermissions: true,
-                showState: false,
-                msgStateNotify: this.state.showNotifyPermissions ? Resources['missingPermissions'][currentLanguage] : Resources['adminItemEditable'][currentLanguage]
-
-            })
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
         }
     }
 
     showAdd = (e) => {
         this.setState({
-            showNotify: false,
-            ShowPopup: true
+            ShowPopup: true,
+            EditListData: this.state.showValue ? { title: '', titleAr: '', abbreviation: '', listType: this.state.listType, value: 0 }
+                : { title: '', titleAr: '', abbreviation: '', listType: this.state.listType }
         });
 
     }
@@ -306,27 +289,27 @@ class GeneralList extends Component {
             isLoading: true,
         })
         if (this.state.IsEdit) {
-            Api.post('EditAccountsDefaultList', this.state.EditListData).then(
+            dataservice.addObject('EditAccountsDefaultList', this.state.EditListData).then(
                 res => {
                     this.setState({
-                        rows: res,
-                        isLoading: false,
-                        ShowPopup: false,
-                        showNotify: true,
-                        IsEdit: false
+                        rows: res, isLoading: false, ShowPopup: false, IsEdit: false
                     })
-                }
-            )
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                })
         }
         else {
-            Api.post('AddAccountsDefaultList', { 'title': values.EnTitle, 'titleAr': values.ARTitle, 'abbreviation': values.Abbreviation, 'listType': this.state.listType }).then(
+            dataservice.addObject('AddAccountsDefaultList', this.state.EditListData).then(
                 res => {
                     this.setState({
                         rows: res,
                         isLoading: false,
                     })
-                }
-            )
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                })
         }
         actions.setSubmitting(false);
         values.EnTitle = ''
@@ -336,9 +319,14 @@ class GeneralList extends Component {
             isLoading: true,
             ShowPopup: false
         })
-        this.setState({
-            showNotify: true,
-        })
+    }
+
+    HandleInputChange = (e, field) => {
+        let originalDoc = { ...this.state.EditListData };
+        let NewDoc = {};
+        NewDoc[field] = e.target.value;
+        NewDoc = Object.assign(originalDoc, NewDoc);
+        this.setState({ EditListData: NewDoc })
     }
 
     render() {
@@ -358,9 +346,100 @@ class GeneralList extends Component {
                 columns={this.state.columns} fileName={Resources['AccountsDefaultList'][currentLanguage]} />
             : null;
 
+        let RenderPopupAddEdit = () => {
+            return (
+
+                <Formik
+                    initialValues={{
+                        EnTitle: this.state.EditListData.title,
+                        ARTitle: this.state.EditListData.titleAr,
+                        Abbreviation: this.state.EditListData.abbreviation,
+                        value: this.state.showValue ? this.state.EditListData.title.value : 0,
+                    }}
+                    enableReinitialize={true}
+                    validationSchema={ValidtionSchema}
+                    onSubmit={(values, actions) => {
+                        this.AddEditSave(values, actions)
+                    }}>
+
+                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
+
+                        <Form className="proForm" onSubmit={handleSubmit}>
+
+                            <div className="dropWrapper">
+
+                                <div className="fillter-status fillter-item-c fullInputWidth">
+                                    <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
+                                    <div className={"inputDev ui input" + (errors.EnTitle && touched.EnTitle ? (" has-error") : !errors.EnTitle && touched.EnTitle ? (" has-success") : " ")} >
+                                        <input name='EnTitle' autoComplete='off' id='EnTitle'
+                                            value={this.state.EditListData.title} className="form-control" placeholder={Resources['titleEn'][currentLanguage]}
+                                            onBlur={(e) => { handleBlur(e) }}
+                                            onChange={(e) => {
+                                                handleChange(e)
+                                                this.HandleInputChange(e, 'title')
+                                            }} />
+                                        {errors.EnTitle && touched.EnTitle ? (<em className="pError">{errors.EnTitle}</em>) : null}
+                                    </div>
+                                </div>
+
+                                <div className="fillter-status fillter-item-c fullInputWidth">
+                                    <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
+                                    <div className={'ui input inputDev ' + (errors.ARTitle && touched.ARTitle ? 'has-error' : null) + ' '}>
+                                        <input name='ARTitle' className="form-control" autoComplete='off'
+                                            id='ARTitle' value={this.state.EditListData.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
+                                            onBlur={(e) => { handleBlur(e) }}
+                                            onChange={(e) => {
+                                                handleChange(e)
+                                                this.HandleInputChange(e, 'titleAr')
+                                            }} />
+                                        {errors.ARTitle && touched.ARTitle ? <em className="pError">{errors.ARTitle}</em> : null}
+                                    </div>
+                                </div>
+
+                                <div className="fillter-status fillter-item-c fullInputWidth">
+                                    <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
+                                    <div className="ui input inputDev" >
+                                        <input name='Abbreviation' autoComplete='off'
+                                            value={this.state.EditListData.abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
+                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
+                                                handleChange(e)
+                                                this.HandleInputChange(e, 'abbreviation')
+                                            }} />
+                                    </div>
+                                </div>
+
+                                {this.state.showValue ?
+                                    <div className="fillter-status fillter-item-c fullInputWidth">
+                                        <label className="control-label">{Resources['value'][currentLanguage]} </label>
+                                        <div className={"inputDev ui input " + (errors.value ? 'has-error' : !errors.value && touched.value ? (" has-success") : " ")}>
+                                            <input className="form-control" name='value' id='value' placeholder={Resources['value'][currentLanguage]}
+                                                value={this.state.EditListData.value} onChange={e => this.HandleInputChange(e, 'value')}
+                                                onBlur={(e) => {
+                                                    handleBlur(e)
+                                                    handleChange(e)
+                                                }} />
+                                            {errors.value ? (<em className="pError">{errors.value}</em>) : null}
+                                        </div>
+                                    </div>
+                                    : null}
+
+                                <div className="fullWidthWrapper">
+                                    <button className="primaryBtn-1 btn" type='submit'>
+                                        {Resources['save'][currentLanguage]}</button>
+                                </div>
+
+                            </div>
+
+                        </Form>
+                    )}
+                </Formik>
+
+            )
+        }
+
         return (
             <Fragment >
-                <NotifiMsg showNotify={this.state.showNotify} IsSuccess={this.state.showState} Msg={this.state.msgStateNotify} />
+
 
                 <div className="submittalFilter">
                     <div className="subFilter">
@@ -379,8 +458,7 @@ class GeneralList extends Component {
 
                     {this.state.listType ?
                         <div className="filterBTNS">
-                            {config.IsAllow(1182) ?
-                                <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
+                            {config.IsAllow(1182) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
                                 : null}
                             {btnExport}
                         </div>
@@ -388,8 +466,7 @@ class GeneralList extends Component {
 
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
-                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
-               <span> {this.state.totalRows}</span>
+                            <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span>of<span> {this.state.totalRows}</span>
                         </div>
 
                         <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
@@ -415,91 +492,7 @@ class GeneralList extends Component {
                     Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['editTitle'][currentLanguage]
                     : Resources['AccountsDefaultList'][currentLanguage] + ' - ' + Resources['goAdd'][currentLanguage]}
                     onCloseClicked={() => this.setState({ showNotify: false, ShowPopup: false, IsEdit: false })} isVisible={this.state.ShowPopup}>
-
-                    <Formik
-                        initialValues={{
-                            EnTitle: this.state.IsEdit ? ' ' : '',
-                            ARTitle: this.state.IsEdit ? ' ' : '',
-                            Abbreviation: this.state.IsEdit ? ' ' : '',
-                        }}
-
-                        enableReinitialize={true}
-
-                        validationSchema={ValidtionSchema}
-
-                        onSubmit={(values, actions) => {
-                            this.AddEditSave(values, actions)
-                        }}>
-
-                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
-                            <Form onSubmit={handleSubmit}>
-
-                                <div className="dropWrapper">
-
-                                    <div className="fillter-status fillter-item-c">
-                                        <div className="linebylineInput valid-input label__block">
-                                            <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                            <div className={'ui input inputDev ' + (errors.EnTitle && touched.EnTitle ? 'has-error' : null) + ' '}>
-                                                <input name='EnTitle' autoComplete='off'
-                                                    value={this.state.IsEdit ? this.state.EditListData.title : values.EnTitle} className="form-control" placeholder={Resources['titleEn'][currentLanguage]}
-                                                    onBlur={(e) => { handleBlur(e) }}
-                                                    onChange={(e) => {
-                                                        handleChange(e)
-                                                        if (this.state.IsEdit) {
-                                                            this.setState({ EditListData: { ...this.state.EditListData, title: e.target.value } })
-                                                        }
-                                                    }} />
-                                                {errors.EnTitle && touched.EnTitle ? (
-                                                    <em className="pError">{errors.EnTitle}</em>) : null}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="fillter-status fillter-item-c">
-                                        <div className="linebylineInput valid-input label__block">
-                                            <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                            <div className={'ui input inputDev ' + (errors.ARTitle && touched.ARTitle ? 'has-error' : null) + ' '}>
-                                                <input name='ARTitle' className="form-control" autoComplete='off'
-                                                    value={this.state.IsEdit ? this.state.EditListData.titleAr : values.ARTitle} placeholder={Resources['titleAr'][currentLanguage]}
-                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
-                                                        handleChange(e)
-                                                        if (this.state.IsEdit) {
-                                                            this.setState({ EditListData: { ...this.state.EditListData, titleAr: e.target.value } })
-                                                        }
-                                                    }} />
-                                                {errors.ARTitle && touched.ARTitle ? (
-                                                    <em className="pError">{errors.ARTitle}</em>) : null}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="fillter-status fillter-item-c">
-                                        <div className="linebylineInput valid-input label__block">
-                                            <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
-                                            <div className="ui input inputDev" >
-                                                <input name='Abbreviation' autoComplete='off'
-                                                    value={this.state.IsEdit ? this.state.EditListData.abbreviation : values.Abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
-                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
-                                                        handleChange(e)
-                                                        if (this.state.IsEdit) {
-                                                            this.setState({ EditListData: { ...this.state.EditListData, abbreviation: e.target.value } })
-                                                        }
-                                                    }} />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="fullWidthWrapper">
-                                        <button className="primaryBtn-1 btn" type='submit'>
-                                            {Resources['save'][currentLanguage]}</button>
-                                    </div>
-
-                                </div>
-
-                            </Form>
-                        )}
-                    </Formik>
-
+                    {RenderPopupAddEdit()}
                 </SkyLightStateless>
 
                 {this.state.showDeleteModal == true ? (

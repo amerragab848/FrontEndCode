@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component} from 'react'
 import Api from '../../api';
-import { Bar, Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
+import {  Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 const ResponsiveLineChart = withResponsiveness(Line);
 

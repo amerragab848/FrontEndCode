@@ -52,8 +52,9 @@ class XSLfile extends Component {
         if (this.state.acceptedFiles.length > 0) {
             let formData = new FormData();
             let file = this.state.acceptedFiles[0]
-            formData.append("file0", file)
-            console.log("file", this.state.acceptedFiles)
+            
+            formData.append("file0", file) 
+
             let docType = this.props.docType;
             let header = { 'docType': docType }
             Api.postFile("UploadExcelFiles?docId=" + this.state.docId, formData, header).then(resp => {
@@ -72,18 +73,26 @@ class XSLfile extends Component {
 
     CustomUpload = () => {
         if (this.state.acceptedFiles.length > 0) {
+            
             this.setState({
                 Isloading: true
             })
+
             let formData = new FormData();
+            
             let file = this.state.acceptedFiles[0]
+            let fileName=file.name 
+            let testName=[]
+            testName.push(fileName)
             formData.append("file0", file)
-            console.log("file", this.state.acceptedFiles)
+             
             let docType = this.props.docType;
+            
             let header = { 'docType': docType }
+            
             let id = this.props.docId
-            let projectId = this.props.projectId
-            Api.postFile('UploadSingleFile?scheduleId=' + id + '&projectId=' + projectId + '&fileName=[object%20FileList]&isEdit=true', formData, header).then(resp => {
+            let projectId = this.props.projectId;
+            Api.postFile('UploadSingleFile?scheduleId=' + id + '&projectId=' + projectId + '&fileName='+testName+'&isEdit=true', formData, header).then(resp => {
                 if (this.props.afterUpload != undefined) {
                     this.props.afterUpload()
                 }
