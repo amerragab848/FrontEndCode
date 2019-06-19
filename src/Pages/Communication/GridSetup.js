@@ -4,7 +4,7 @@ import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
 
 import "../../Styles/gridStyle.css";
 import "../../Styles/scss/en-us/dataGrid.css";
-
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 
@@ -21,13 +21,16 @@ class GridSetup extends Component {
 
     this.state = {
       columns: this.props.columns,
-      rows: this.props.rows,  
+      rows: this.props.rows,
       groupBy: [],
       selectedIndexes: [],
       selectedRows: [],
       selectedRow: [],
       copmleteRows: [],
-      expandedRows: {}
+      expandedRows: {},
+      columnsModal: false,
+      ColumnsHideShow: [],
+      Loading: false
     };
 
     this.groupColumn = this.groupColumn.bind(this);
@@ -37,6 +40,30 @@ class GridSetup extends Component {
 
   componentDidMount() {
     this.scrolllll();
+  }
+
+  componentWillMount() {
+    let state = {};
+
+    // this.props.columns.map((column, index) => {
+    //   if (column.type === "date") {
+    //     state[index + "-column"] = moment().format("DD/MM/YYYY");
+    //   }
+    // });
+
+    let ColumnsHideShow = this.props.columns
+    for (var i in ColumnsHideShow) {
+      ColumnsHideShow[i].hidden = false;
+    }
+
+    this.setState({
+      columns: this.props.columns,
+      ColumnsHideShow
+    });
+
+    setTimeout(() => {
+      this.setState(state);
+    }, 500);
   }
 
   onHeaderDrop = (source, target) => {
@@ -76,8 +103,8 @@ class GridSetup extends Component {
     return sortDirection === "NONE"
       ? initialRows
       : [...this.state.rows].sort(comparer);
-  }; 
-   
+  };
+
   getRows = (rows, filters) => {
     return selectors.getRows({ rows, filters });
   };
@@ -206,7 +233,7 @@ class GridSetup extends Component {
       this.props.DeSelectedRows(oldSelectedRows);
     }
   };
- 
+
   onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
     let expandedRows = Object.assign({}, this.state.expandedRows);
     expandedRows[columnGroupName] = Object.assign(
@@ -275,6 +302,46 @@ class GridSetup extends Component {
     const reorderedColumns = Object.assign({}, this.state, { columns: stateCopy.columns });
     this.setState(reorderedColumns);
   };
+  openModalColumn = () => {
+    this.setState({ columnsModal: true })
+  }
+
+  closeModalColumn = () => {
+    this.setState({ columnsModal: false })
+  }
+
+  handleCheck = (key) => {
+    this.setState({ [key]: !this.state[key], Loading: true })
+    let data = this.state.ColumnsHideShow
+    for (var i in data) {
+      if (data[i].key === key) {
+        let status = data[i].hidden === true ? false : true
+        data[i].hidden = status
+        break;
+      }
+    }
+    setTimeout(() => {
+      this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
+    }, 300);
+
+  }
+
+  ResetShowHide = () => {
+    this.setState({ Loading: true })
+    let ColumnsHideShow = this.props.columns
+    for (var i in ColumnsHideShow) {
+      ColumnsHideShow[i].hidden = false;
+      let key = ColumnsHideShow[i].key
+      this.setState({ [key]: false })
+    }
+    setTimeout(() => {
+      this.setState({
+        columns: ColumnsHideShow.filter(i => i.hidden === false),
+        ColumnsHideShow: ColumnsHideShow.filter(i => i.hidden === false),
+        Loading: false, columnsModal: false
+      })
+    }, 300)
+  }
 
   render() {
     const { rows, groupBy } = this.state;
@@ -325,67 +392,122 @@ class GridSetup extends Component {
       );
     };
 
-    return (
-      <div className="grid-container">
-        <div id="top__scroll">
-          <div id="empty__div--scroll">
+    let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
+      return (
+        <div className="grid__content" key={item.key}>
+          <div className={'ui checkbox checkBoxGray300 count checked'}>
+            <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={!this.state[item.key]}
+              onChange={(e) => this.handleCheck(item.key)} />
+            <label>{item.name}</label>
           </div>
         </div>
-        <div id="bottom__scroll">
-          <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
+      )
+    })
+    return (
+      <Fragment>
+        <div
+          className={
+            this.state.minimizeClick
+              ? "minimizeRelative miniRows"
+              : "minimizeRelative"
+          }
+        >
+          <div className="minimizeSpan">
+            <div className="V-tableSize" onClick={this.openModalColumn}>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                <g fill="none" fill-rule="evenodd" transform="translate(5 5)">
+                  <g fill="#CCD2DB" mask="url(#b)">
+                    <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+          </div>
 
-            <ReactDataGrid
-              rowKey="id"
-              minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
-              height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
-              columns={this.state.columns}
+          <div className="grid-container">
+            <div id="top__scroll">
+              <div id="empty__div--scroll">
+              </div>
+            </div>
+            <div id="bottom__scroll">
+            {this.state.Loading === false ?
+              <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
 
-              rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
-              rowsCount={groupedRows != undefined ? groupedRows.length : 1}
+                <ReactDataGrid
+                  rowKey="id"
+                  minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
+                  height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
+                  columns={this.state.columns}
 
-              enableCellSelect={true}
-              onGridRowsUpdated={this.onGridRowsUpdated}
-              onCellSelected={this.onCellSelected}
-              onColumnResize={(idx, width, event) => {
-                this.scrolllll();
-                //console.log(this.state.columns[idx-1]);
-                // console.log(`Column ${idx} has been resized to ${width}`);
-              }}
-              onGridSort={(sortColumn, sortDirection) =>
-                this.setState({
-                  rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
-                })
-              }
-              enableDragAndDrop={true} 
-              toolbar={
-                <CustomToolbar
-                  groupBy={this.state.groupBy}
-                  onColumnGroupAdded={columnKey =>
-                    this.setState({ groupBy: this.groupColumn(columnKey) })
+                  rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
+                  rowsCount={groupedRows != undefined ? groupedRows.length : 1}
+
+                  enableCellSelect={true}
+                  onGridRowsUpdated={this.onGridRowsUpdated}
+                  onCellSelected={this.onCellSelected}
+                  onColumnResize={(idx, width, event) => {
+                    this.scrolllll();
+                    //console.log(this.state.columns[idx-1]);
+                    // console.log(`Column ${idx} has been resized to ${width}`);
+                  }}
+                  onGridSort={(sortColumn, sortDirection) =>
+                    this.setState({
+                      rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
+                    })
                   }
-                  onColumnGroupDeleted={columnKey =>
-                    this.setState({ groupBy: this.ungroupColumn(columnKey) })
+                  enableDragAndDrop={true}
+                  toolbar={
+                    <CustomToolbar
+                      groupBy={this.state.groupBy}
+                      onColumnGroupAdded={columnKey =>
+                        this.setState({ groupBy: this.groupColumn(columnKey) })
+                      }
+                      onColumnGroupDeleted={columnKey =>
+                        this.setState({ groupBy: this.ungroupColumn(columnKey) })
+                      }
+                    />
                   }
+                  rowSelection={{
+                    showCheckbox: this.props.showCheckbox,
+                    defaultChecked: false,
+                    enableShiftSelect: true,
+                    onRowsSelected: this.onRowsSelected,
+                    onRowsDeselected: this.onRowsDeselected,
+                    enableRowSelect: 'single',
+                    selectBy: {
+                      indexes: this.state.selectedIndexes
+                    }
+                  }}
+
+                  onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
+                  getCellActions={this.props.getCellActions}
                 />
-              }
-              rowSelection={{
-                showCheckbox: this.props.showCheckbox,
-                defaultChecked: false,
-                enableShiftSelect: true,
-                onRowsSelected: this.onRowsSelected,
-                onRowsDeselected: this.onRowsDeselected,
-                enableRowSelect: 'single',
-                selectBy: {
-                  indexes: this.state.selectedIndexes
-                }
-              }}
+              </DraggableContainer >
+                 : <LoadingSection />}
+            </div>
+          </div>
+          <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
+            <div className="grid__column--container">
+              <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
 
-              onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
-              getCellActions={this.props.getCellActions}
-            />
-          </DraggableContainer >
+              <div className="grid__column--title">
+                <h2>Grid Columns</h2>
+              </div>
+
+              <div className="grid__column--content">
+                {RenderPopupShowColumns}
+              </div>
+
+              <div className="grid__column--footer">
+                <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>Close</button>
+                <button className="btn primaryBtn-2" onClick={this.ResetShowHide}>Reset</button>
+              </div>
+
+            </div>
+          </div>
         </div>
-      </div>
+      </Fragment>
+
     );
   }
 }

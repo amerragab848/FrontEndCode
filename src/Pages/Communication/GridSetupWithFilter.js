@@ -634,6 +634,7 @@ class GridSetupWithFilter extends Component {
               </svg>
             </div>
           </div>
+          
           <div className="grid-container">
             <div id="top__scroll">
               <div id="empty__div--scroll" />
