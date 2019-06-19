@@ -164,7 +164,7 @@ import autoDeskViewer from "./Componants/OptionsPanels/AutoDeskViewer";
 import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit"; 
 import procurementAddEdit from "./Pages/Procurement/procurementAddEdit"; 
 
-
+import RiskCause from './Componants/OptionsPanels/RiskCause';
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -340,6 +340,7 @@ let originalRoutes = [
     , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} /> 
     , <Route path="/materialReleaseAddEdit" component={materialReleaseAddEdit} /> 
     , <Route path="/procurementAddEdit" component={procurementAddEdit} /> 
+    , <Route path="/RiskCause" component={RiskCause} /> 
     
     , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
     , <Route path="/autoDeskViewer" component={autoDeskViewer} /> 

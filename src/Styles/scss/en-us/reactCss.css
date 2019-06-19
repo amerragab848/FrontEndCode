@@ -6722,6 +6722,25 @@ div#markup-panel {
 .slider-Btns--menu {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
+}
+
+.doc-input-btn {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.doc-input-btn input, .doc-input-btn .inputDev.ui.input {
+    width: 100%;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.doc-input-btn button {
+    flex-shrink: 0;
+    margin-left: 15px;
     align-items: center;
 }
 
