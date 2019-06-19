@@ -7337,3 +7337,7 @@ div#markup-panel {
 .skylight-dialog .reactTableActions {
     overflow: auto;
 }
+
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm .control-label {
+    z-index: 0;
+}

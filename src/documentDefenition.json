@@ -282,13 +282,15 @@
         "name": "docDate",
         "field": "docDate",
         "type": "date",
-        "isCustom": true
+        "isCustom": true,
+        "isRange":true
       },
       {
         "name": "docClosedate",
         "field": "docClosedate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "disciplineName",
@@ -1263,25 +1265,29 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
-        "isCustom": true
+        "isCustom": true,
+        "isRange":true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "resultDate",
         "field": "resultDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "openedBy",
@@ -1305,7 +1311,8 @@
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       }
     ]
   },
@@ -2898,7 +2905,8 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "Building",
@@ -2910,13 +2918,15 @@
         "name": "docDate",
         "field": "docDate",
         "type": "date",
-        "isCustom": true
+        "isCustom": true,
+        "isRange":true
       },
       {
         "name": "answerDate",
         "field": "answerDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "refDoc",
@@ -2934,7 +2944,8 @@
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "cycleNo",
@@ -2964,13 +2975,15 @@
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       }
     ]
   },
@@ -3293,19 +3306,22 @@
         "name": "docDate",
         "field": "docDate",
         "type": "date",
-        "isCustom": true
+        "isCustom": true,
+        "isRange":true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "disciplineName",
@@ -3347,13 +3363,15 @@
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       }
     ]
   },
@@ -12626,25 +12644,29 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "resultDate",
         "field": "resultDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
-        "isCustom": true
+        "isCustom": true,
+        "isRange":true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "disciplineName",
@@ -12692,7 +12714,8 @@
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       }
     ]
   },
@@ -13374,25 +13397,29 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "resultDate",
         "field": "resultDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
-        "isCustom": true
+        "isCustom": true,
+        "isRange":true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "disciplineName",
@@ -13434,13 +13461,15 @@
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       }
     ]
   },
@@ -17221,13 +17250,15 @@
         "name": "docDate",
         "field": "docDate",
         "type": "date",
-        "isCustom": true
+        "isCustom": true,
+        "isRange":true
       },
       {
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "submittalType",
@@ -17275,13 +17306,15 @@
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
-        "isCustom": false
+        "isCustom": false,
+        "isRange":true
       }
     ]
   },
