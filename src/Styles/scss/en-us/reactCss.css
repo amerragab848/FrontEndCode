@@ -7445,6 +7445,19 @@ div#markup-panel {
     transform: scale(1);
 }
 
+.grid__column--footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 15px 20px;
+    margin-top: 15px;
+    border-top: 1px solid #e9ecf0;
+}
+
+.grid__column--footer button{
+    margin: 0 4px;
+}
+
 .grid__column--container {
     position: absolute;
     left: 50%;
@@ -7452,7 +7465,7 @@ div#markup-panel {
     transform: translate(-50%, -50%);
     background: #fff;
     border-radius: 5px;
-    width: 650px;
+    width: 550px;
     padding: 5px 0;
     overflow: hidden;
 }
@@ -7479,7 +7492,7 @@ div#markup-panel {
 }
 
 .grid__content {
-    height: 60px;
+    height: 45px;
     width: 50%;
     display: flex;
     align-items: center;
@@ -7495,4 +7508,13 @@ div#markup-panel {
     width: 100%;
     height: 100%;
     cursor: pointer;
+}
+
+.grid__content .ui.checkbox input {
+    height: 100%;
+}
+
+.proForm .control-label::after {
+    top: 45%;
+    height: 5px;
 }
