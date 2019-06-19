@@ -44,7 +44,7 @@ class FilterComponent extends Component {
 
     this.props.filtersColumns.map((column, index) => {
       if (column.type === "date") {
-        state[index + "-column"] = moment().format("DD/MM/YYYY");
+        state[index + "-column"] = moment().format("YYYY-MM-DD");
       } 
     });
 
@@ -116,8 +116,13 @@ class FilterComponent extends Component {
     this.state.valueColumns.map(column => {
       if (column.type === "date") {
         if (column.value != "") {
-          //query[column.field] = moment(column.value).format("YYYY-MM-DD");
-          query[column.field] = column.value;
+          let spliteDate = column.value.split("|");
+          if(spliteDate.length > 1){
+            query[column.field] = column.value;
+          }
+          else{ 
+            query[column.field] = moment(column.value, "DD/MM/YYYY").format("YYYY-MM-DD");
+          }
         }
       } else if (column.type === "number") {
         if (column.value != "") {
@@ -230,6 +235,7 @@ onChange = (date,index,columnName,type,key) => {
                     </div>
                   );
                 } else if (column.type === "date") {
+                  if(column.isRange ){
                   return (
                     <div className="form-group fillterinput fillter-item-c"  key={index}>
                           <label className="control-label" htmlFor={column.key}>{column.name}</label>
@@ -245,7 +251,22 @@ onChange = (date,index,columnName,type,key) => {
                             </div>) : ("")}
                             </div>
                     </div>  
+                  );}
+                  else{
+                    return (
+                    <div className="form-group fillterinput fillter-item-c" key={index}>
+                      <DatePicker
+                        title={column.name}
+                        handleChange={date =>
+                          this.getValueHandler(date, column.type, column.field, index)
+                        } 
+                        startDate={this.state[index + "-column"]}
+                        index={index}
+                        key={index}
+                      />
+                    </div>
                   );
+                  }
                 }
               }
             })}
