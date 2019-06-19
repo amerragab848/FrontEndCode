@@ -150,16 +150,6 @@ class FilterComponent extends Component {
       this.setState({ currentData:0  });
     } 
 }
-
-// handleOutsideClick(e) {
-//   if (this.index != null){
- 
-//   if (this.index.contains(e.target)) {
-//     return;
-//   }
-//   this.changeDate();
-//  }
-// }
   
 onChange = (date,index,columnName,type,key) => { 
 
@@ -180,12 +170,12 @@ onChange = (date,index,columnName,type,key) => {
 
   renderFilterColumns() {
     let columns = (
-      <div>
+      <div >
         {this.props.filtersColumns.length > 6 ?
           <div className="showMore__btn">
             <button id="showMore_input" className="moreOn">
               <span className="more">SHOW MORE</span>
-              <span className="less">SHOW Less</span>
+              <span className="less" onClick={this.resetDate}>SHOW Less</span>
               <img className="more" src={plus} alt="plus" />
               <img className="less" src={Minimize} alt="minimize" />
             </button>
@@ -250,7 +240,7 @@ onChange = (date,index,columnName,type,key) => {
                                   
                                   onClick={() => this.changeDate(index,column.type)}/>
                           {this.state.currentData === index && this.state.currentData != 0 ? (
-                           <div className="viewCalender" tabIndex={0} onMouseLeave={this.resetDate}  ref={index => { this.index = index;}}>
+                           <div className="viewCalender" tabIndex={0} ref={index => { this.index = index;}}>
                             <Calendar  onChange={(date) => this.onChange(date,index,column.name,column.type,column.key)} selectRange={true}  /> 
                             </div>) : ("")}
                             </div>
@@ -285,7 +275,7 @@ onChange = (date,index,columnName,type,key) => {
   }
 
   render() {
-    return <div>{this.renderFilterColumns()}</div>;
+    return <div onMouseLeave={this.resetDate}>{this.renderFilterColumns()}</div>;
   }
 }
 
