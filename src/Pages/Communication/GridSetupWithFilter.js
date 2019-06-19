@@ -452,7 +452,7 @@ class GridSetupWithFilter extends Component {
               </button>
             ) : null}
           </div>
-          <div className="filter__input-wrapper">
+          <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
             <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
               {this.state.columns.map((column, index) => {
                 let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
@@ -469,7 +469,7 @@ class GridSetupWithFilter extends Component {
                                onClick={() => this.changeDate(index, column.type)}/>
                         {this.state.currentData === index &&
                         this.state.currentData != 0 ? (
-                            <div className="viewCalender" tabIndex={0} onMouseLeave={this.resetDate}  ref={index => { this.index = index;}}>
+                            <div className="viewCalender" tabIndex={0} ref={index => { this.index = index;}}>
                              <Calendar onChange={date => this.onChange( date, index, column.name, column.type, column.key)} selectRange={true}/> 
                              </div>) : 
                         ("")}
