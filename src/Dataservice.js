@@ -58,6 +58,7 @@ export default class Dataservice {
             return result;
         }).catch(ex => []);
     };
+
     static GetRowById = (url) => {
 
         return Api.get(url).then(result => {
@@ -65,4 +66,5 @@ export default class Dataservice {
             return result;
         }).catch(ex => {});
     };
+    
 }

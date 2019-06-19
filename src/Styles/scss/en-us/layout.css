@@ -680,7 +680,6 @@
   margin-left: 2px;
   vertical-align: middle;
   border-top: 4px dashed;
-  /* border-top: 4px solid \	; */
   border-right: 4px solid transparent;
   border-left: 4px solid transparent; }
 
@@ -785,7 +784,6 @@
 .navbar-fixed-bottom .dropdown .caret {
   border-top: 0;
   border-bottom: 4px dashed;
-  /* border-bottom: 4px solid \	; */
   content: ""; }
 .dropup .dropdown-menu,
 .navbar-fixed-bottom .dropdown .dropdown-menu {
@@ -1031,34 +1029,43 @@ ul {
 /*ENglish*/
 @font-face {
   font-family: font-r;
+  font-weight: normal;
   src: url("../../fonts/Muli-Regular.ttf"); }
 @font-face {
   font-family: font-l;
+  font-weight: 300;
   src: url("../../fonts/Muli-Light.ttf"); }
 @font-face {
   font-family: font-xb;
+  font-weight: 800;
   src: url("../../fonts/Muli-ExtraBold.ttf"); }
 @font-face {
   font-family: font-b;
+  font-weight: bold;
   src: url("../../fonts/Muli-Bold.ttf"); }
 @font-face {
   font-family: font-black;
   src: url("../../fonts/Muli-Black.ttf"); }
 @font-face {
   font-family: font-sb;
-  src: url("../../fonts/Muli-SemiBold.ttf"); }
+  src: url("../../fonts/Muli-SemiBold.ttf");
+  font-weight: 600; }
 @font-face {
   font-family: font-opens;
-  src: url("../../fonts/OpenSans-Regular.ttf"); }
+  src: url("../../fonts/OpenSans-Regular.ttf");
+  font-weight: normal; }
 @font-face {
   font-family: font-opensb;
+  font-weight: 600;
   src: url("../../fonts/OpenSans-Semibold.ttf"); }
 @font-face {
   font-family: font-openb;
-  src: url("../../fonts/OpenSans-Bold.ttf"); }
+  src: url("../../fonts/OpenSans-Bold.ttf");
+  font-weight: bold; }
 @font-face {
   font-family: roboto-M;
-  src: url("../../fonts/Roboto-Medium.ttf"); }
+  src: url("../../fonts/Roboto-Medium.ttf");
+  font-weight: 500; }
 .boxessss {
   margin: 0 auto;
   padding: 50px;
@@ -1099,7 +1106,7 @@ ul {
       width: 123px;
       height: 123px;
       margin-right: 28px;
-      font-family: 'Open Sans';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-openb;
       font-size: 18px;
       text-align: center;
       color: #ffffff; }
@@ -1334,7 +1341,7 @@ ul {
       float: right; }
       .Basics-Typography .right-Side .block-blue a {
         padding-left: 40px;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         font-size: 14px;
         color: #ffffff; }
         .Basics-Typography .right-Side .block-blue a:hover {
@@ -1343,7 +1350,7 @@ ul {
         color: #ffffff;
         margin-top: 60px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading1, .Basics-Typography .right-Side .block-blue .Typography .heading2, .Basics-Typography .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .Typography .heading6, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s {
-          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+          font-family: font-b;
           font-size: 28px;
           margin: 10px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading2 {
@@ -1351,11 +1358,11 @@ ul {
         .Basics-Typography .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .Typography .heading3s {
           font-size: 20px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading3s {
-          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+          font-family: font-r; }
         .Basics-Typography .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .Typography .heading4s {
           font-size: 16px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading4s {
-          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+          font-family: font-r; }
         .Basics-Typography .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s {
           font-size: 14px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading6 {
@@ -1364,10 +1371,10 @@ ul {
       float: left; }
       .Basics-Typography .right-Side .links-block a {
         text-decoration: underline;
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+        font-family: font-opens;
         font-size: 14px; }
       .Basics-Typography .right-Side .links-block .lastlink {
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         font-size: 14px;
         text-decoration: none;
         text-transform: uppercase; }
@@ -1375,7 +1382,7 @@ ul {
     float: left;
     width: 50%;
     max-width: 394px;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     font-size: 14px;
     color: #3E4352; }
     .Basics-Typography .left-Side .body2 {
@@ -1388,36 +1395,36 @@ ul {
     .Basics-Typography .left-Side .Typography {
       color: #252833; }
       .Basics-Typography .left-Side .Typography .heading1, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading2, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading2, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading6, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading6, .Basics-Typography .left-Side .Typography .heading2, .Basics-Typography .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading5, .Basics-Typography .left-Side .Typography .heading5s, .Basics-Typography .left-Side .Typography .heading6 {
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         font-size: 28px; }
       .Basics-Typography .left-Side .Typography .heading2 {
         font-size: 24px; }
       .Basics-Typography .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading3s {
         font-size: 20px; }
       .Basics-Typography .left-Side .Typography .heading3s {
-        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-r; }
       .Basics-Typography .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading4s {
         font-size: 16px; }
       .Basics-Typography .left-Side .Typography .heading4s {
-        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-r; }
       .Basics-Typography .left-Side .Typography .heading5, .Basics-Typography .left-Side .Typography .heading5s {
         font-size: 14px; }
       .Basics-Typography .left-Side .Typography .heading5s {
-        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-r; }
       .Basics-Typography .left-Side .Typography .heading6 {
         font-size: 12px; }
     .Basics-Typography .left-Side .subtitles {
       margin-top: 50px;
       color: #858D9E; }
       .Basics-Typography .left-Side .subtitles p {
-        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-r; }
         .Basics-Typography .left-Side .subtitles p span {
           font-family: font-l; }
   .Basics-Typography .Typography-bottom {
     padding-top: 100px;
     clear: both; }
     .Basics-Typography .Typography-bottom h2 {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       color: #252833; }
       .Basics-Typography .Typography-bottom h2:nth-child(1) {
         font-size: 112px; }
@@ -1455,7 +1462,7 @@ ul {
     -ms-flex-align: center;
     align-items: center; }
     .ui.accordion.basic > .title .accordionTitle {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       line-height: 1.5;
       letter-spacing: -0.2px;
       color: #252833;
@@ -1472,7 +1479,7 @@ ul {
   .ui.accordion.basic .content {
     padding-bottom: 10px !important; }
     .ui.accordion.basic .content a {
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-r;
       font-size: 14px;
       letter-spacing: -0.2px;
       color: #858D9E;
@@ -1500,7 +1507,7 @@ ul {
         flex: 0.1;
         text-align: right;
         color: #252833;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+        font-family: font-b; }
     .ui.accordion.basic .content .contentDivLinks {
       display: flex;
       align-items: center;
@@ -1514,11 +1521,11 @@ ul {
         -ms-flex: 0.1;
         flex: 0.1;
         text-align: right;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+        font-family: font-b; }
     .ui.accordion.basic .content .content a:hover {
       background-color: #f2f6fa; }
     .ui.accordion.basic .content .content a .contentSpan {
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+      font-family: font-r; }
   .ui.accordion.basic .accordion {
     margin: 0;
     padding-left: 35px;
@@ -1544,7 +1551,7 @@ ul {
 .basic.ui.accordion .title:not(.ui) {
   font-size: 14px;
   color: #252833;
-  font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+  font-family: font-r; }
 
 /**/
 /*Start Sidenav CSS*/
@@ -1703,7 +1710,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .ProjectsUlList ul li a:hover {
               background-color: #f5f5f6; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .ProjectsUlList ul li a p {
-              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+              font-family: font-b;
               font-size: 16px;
               color: #252833;
               letter-spacing: -0.2px;
@@ -1758,7 +1765,7 @@ ul {
           display: none; }
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .backToModules a {
             padding: 0 32px;
-            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+            font-family: font-opens;
             font-size: 11px;
             color: #5e6475;
             height: 56px;
@@ -1794,7 +1801,7 @@ ul {
             position: relative;
             display: block;
             padding: 13px 32px;
-            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+            font-family: font-b;
             cursor: pointer; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .EastWestProject .EastMainLi::after {
               content: "\f0d8";
@@ -1821,7 +1828,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .EastWestProject ul li a {
               color: #252833;
               font-size: 16px;
-              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+              font-family: font-b;
               height: 56px;
               border-left: 4px solid transparent;
               padding: 0 36px;
@@ -1855,7 +1862,7 @@ ul {
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects {
             padding: 11.5px 24px;
             height: 80px;
-            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+            font-family: font-opens;
             font-size: 11px;
             color: #5e6475;
             display: -webkit-box;
@@ -1890,7 +1897,7 @@ ul {
               -ms-flex-align: center;
               align-items: center;
               font-size: 11px;
-              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+              font-family: font-opens; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects .backtoProjectsOne svg {
                 height: 36px;
                 width: 36px;
@@ -1900,7 +1907,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects .backToModulesName h2 {
               font-size: 16px;
               color: #252833;
-              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+              font-family: font-b;
               padding-left: 10px;
               display: none; }
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl {
@@ -1928,7 +1935,7 @@ ul {
               border-left: 4px solid transparent; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li .UlName {
               font-size: 14px;
-              font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+              font-family: font-sb;
               color: #858d9e;
               display: none;
               margin-left: 16px; }
@@ -1953,7 +1960,7 @@ ul {
                 display: block;
                 font-size: 14px;
                 color: #A8B0BF;
-                font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+                font-family: font-r;
                 letter-spacing: 0.3px;
                 padding-left: 78px;
                 transition: 0.3s; }
@@ -1961,12 +1968,12 @@ ul {
                   color: #252833; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li .subBigMenuUl li.active a {
                 color: #3570E6;
-                font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+                font-family: font-b; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi > a {
               border-left: 4px solid #4382f9;
               background-color: #f5f5f6; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi > a span {
-                font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+                font-family: font-b;
                 color: #5E6475; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi .ULimg path {
               fill: #858D9E; }
@@ -1999,12 +2006,9 @@ ul {
           display: inline-block; }
         .mainSide .mainSideNav .mainSidenavContent.hover .ProjectsUlList li a p {
           display: inline-block; }
-
-.datepickerContainer.proForm .control-label {
-  padding-right: 18px; }
 .datepickerContainer.proForm .input-group-addon {
   width: 100%;
-  height: 40px;
+  height: 48px;
   border: none;
   background-color: transparent;
   position: absolute;
@@ -2013,7 +2017,7 @@ ul {
   .datepickerContainer.proForm .input-group-addon svg {
     position: absolute;
     right: 8px;
-    top: 11px; }
+    top: 16px; }
 .datepickerContainer.proForm .ui.input.inputDev {
   display: block;
   padding: 0; }
@@ -2036,7 +2040,7 @@ ul {
   padding: 0; }
 
 .datepicker {
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+  font-family: font-opensb;
   font-size: 14px;
   color: #3e4352;
   line-height: 1.71;
@@ -2219,7 +2223,6 @@ ul {
   .Submittal-container .horizSubActions-container {
     width: 732px; }
   .Submittal-container .sadasdsadas {
-    float: left;
     width: calc(100% - 324px); }
   .Submittal-container .submittalFilter {
     clear: both; }
@@ -2250,13 +2253,13 @@ ul {
     color: #252833;
     line-height: 1.18;
     letter-spacing: -1.1px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 34px; }
     .submittalHead h2 span {
       color: #858D9E;
       line-height: 1.43;
       letter-spacing: -0.2px;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       font-size: 14px;
       display: block;
       margin-top: 5px; }
@@ -2287,7 +2290,7 @@ ul {
       letter-spacing: -0.2px;
       color: #252833;
       margin-bottom: 50px;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       text-align: center;
       font-size: 20px; }
     .submittalActions .title > .mediumBtn {
@@ -2338,7 +2341,7 @@ ul {
         line-height: 1.43;
         letter-spacing: 0.2px;
         color: #858d9e;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         text-transform: uppercase; }
         .submittalActions .SubmittalUL li a .svg {
           width: 40px;
@@ -2419,7 +2422,7 @@ ul {
           color: #A8B0BF;
           line-height: normal;
           text-align: center;
-          font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal; }
+          font-family: font-sb; }
           .horizSubActions .horizSubUlContainer .SubmittalUL li a .svg {
             width: 32px;
             height: 32px;
@@ -2482,18 +2485,18 @@ ul {
       text-transform: uppercase;
       margin-right: 8px; }
     .submittalFilter .subFilter > span {
-      font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+      font-family: font-sb;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: 0.6px;
       color: #A8B0BF;
       margin-right: 24px; }
     .submittalFilter .subFilter .text {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 12px;
       line-height: 1.67;
       letter-spacing: 0.2px;
-      color: #252833;
+      color: #858D9E;
       text-transform: uppercase; }
     .submittalFilter .subFilter .dropdown {
       padding-top: 5px;
@@ -2506,7 +2509,7 @@ ul {
       .submittalFilter .subFilter .dropdown .text {
         margin-left: 8px; }
   .submittalFilter .filterBTNS .btn:first-child {
-    margin-right: 16px; }
+    margin-right: 6px; }
   .submittalFilter .fillter-button {
     position: relative; }
     .submittalFilter .fillter-button::after, .submittalFilter .fillter-button::before {
@@ -2531,16 +2534,41 @@ ul {
       border-top: 1px solid #858D9E;
       -webkit-transform: scale(0, 1);
       transform: scale(0, 1); }
-    .submittalFilter .fillter-button .text .show-fillter {
-      display: none; }
+    .submittalFilter .fillter-button .text span {
+      font-family: font-b;
+      font-size: 12px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.67;
+      letter-spacing: 0.2px;
+      transition: all 0.3s ease-in-out; }
+      .submittalFilter .fillter-button .text span.show-fillter {
+        color: #858d9e; }
+      .submittalFilter .fillter-button .text span.hide-fillter {
+        color: #5e6475;
+        display: none; }
     .submittalFilter .fillter-button .text.active .hide-fillter {
-      display: none; }
-    .submittalFilter .fillter-button .text.active .show-fillter {
       display: block; }
+    .submittalFilter .fillter-button .text.active .show-fillter {
+      display: none; }
+    .submittalFilter .fillter-button svg g path {
+      fill: #858d9e;
+      transition: all 0.3s ease; }
     .submittalFilter .fillter-button:hover::after, .submittalFilter .fillter-button:hover::before {
       opacity: 1;
       -webkit-transform: scale(1);
       transform: scale(1); }
+    .submittalFilter .fillter-button:hover .text span.show-fillter {
+      color: #787f8f; }
+    .submittalFilter .fillter-button:hover .text span.hide-fillter {
+      color: #1e2029; }
+    .submittalFilter .fillter-button:hover svg g path {
+      fill: #787f8f; }
+    .submittalFilter .fillter-button.active svg g path {
+      fill: #5e6475; }
+    .submittalFilter .fillter-button.active:hover svg g path {
+      fill: #1e2029; }
 
 .modals.dimmer .ui.scrolling.modal.submiModalBig {
   margin: 0 !important; }
@@ -2599,7 +2627,7 @@ ul {
     letter-spacing: -0.5px;
     text-align: center;
     color: #252833;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 24px; }
   .subitTabs ul li {
     padding-left: 40px;
@@ -2630,7 +2658,7 @@ ul {
       letter-spacing: -0.2px;
       color: #252833;
       font-size: 16px;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+      font-family: font-b; }
     .subitTabs ul li .subUlsubT {
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -2669,7 +2697,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #252833;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 20px; }
 
 .subiGrid {
@@ -2691,7 +2719,7 @@ ul {
         line-height: 1.5;
         letter-spacing: -0.2px;
         color: #252833;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         font-size: 16px;
         padding-bottom: 9px; }
       .subiGrid .subiTaskTitle .divhead .divspans {
@@ -2719,12 +2747,12 @@ ul {
             letter-spacing: -0.2px;
             color: #3E4352;
             font-size: 12px;
-            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+            font-family: font-opens; }
           .subiGrid .subiTaskTitle .divhead .divspans div:nth-child(2) .subiPriority {
             line-height: 1.33;
             letter-spacing: -0.3px;
             color: #3E4352;
-            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+            font-family: font-opensb;
             font-size: 12px;
             position: relative; }
             .subiGrid .subiTaskTitle .divhead .divspans div:nth-child(2) .subiPriority.redsSPan::before {
@@ -2759,11 +2787,11 @@ ul {
       letter-spacing: -0.2px;
       color: #3E4352;
       font-size: 14px;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+      font-family: font-opens; }
       .subiGrid .subiTable td h4 {
         display: flex; }
       .subiGrid .subiTable td span {
-        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-opensb; }
   .subiGrid .subiRefContainer {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2779,13 +2807,13 @@ ul {
         letter-spacing: -0.2px;
         color: #252833;
         font-size: 14px;
-        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-opensb; }
       .subiGrid .subiRefContainer div span {
         line-height: 1.71;
         letter-spacing: -0.2px;
         color: #3E4352;
         font-size: 14px;
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-opens; }
     .subiGrid .subiRefContainer .subiRefNo {
       margin-right: 56px; }
       .subiGrid .subiRefContainer .subiRefNo h4 {
@@ -2799,7 +2827,7 @@ ul {
     line-height: 1.71;
     letter-spacing: -0.2px;
     color: #3E4352;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     font-size: 14px; }
 
 .modals.dimmer .ui.scrolling.modal.subiModalNoTabs {
@@ -2835,6 +2863,46 @@ ul {
     .subiModalNoTabs .subiGrid .subiTaskTitle {
       padding-top: 0; }
 
+.approveDocument {
+  position: fixed;
+  bottom: 0;
+  right: 40px;
+  left: 130px;
+  z-index: 19;
+  height: 64px;
+  border-radius: 3px;
+  box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 0 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 99; }
+  .approveDocument h2 {
+    flex: 0.5;
+    line-height: 1.17;
+    letter-spacing: -0.5px;
+    color: #252833;
+    opacity: 0.3;
+    font-family: font-b;
+    font-size: 24px;
+    text-transform: capitalize; }
+  .approveDocument .approveDocumentBTNS {
+    flex: 1.5;
+    display: flex;
+    justify-content: flex-end; }
+    .approveDocument .approveDocumentBTNS .border {
+      display: block;
+      width: 1px;
+      height: 40px;
+      background-color: #e9ecf0;
+      margin: 0 32px; }
+    .approveDocument .approveDocumentBTNS .middle__btn {
+      margin: 0 8px; }
+
 /**/
 .modalContainerSS {
   padding: 20px 100px;
@@ -2861,7 +2929,7 @@ ul {
   border-bottom: 0;
   padding: 0;
   color: #252833;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+  font-family: font-b; }
 
 .ui.modal > .header:not(.ui) {
   letter-spacing: -0.2px;
@@ -3010,7 +3078,7 @@ ul {
     padding-right: 15px; }
   .ui.modal.stepperModal .header h2 {
     color: #252833;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     letter-spacing: -0.2px;
     font-size: 20px; }
   .ui.modal.stepperModal .actions {
@@ -3042,7 +3110,7 @@ ul {
     padding-bottom: 17px; }
   .ui.modal.subjectModal .description .header {
     font-size: 16px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     margin-bottom: 30px; }
   .ui.modal.subjectModal .content {
     margin-bottom: 27px; }
@@ -3079,11 +3147,11 @@ ul {
       margin-bottom: 15px; }
     .ui.modal.xLargeModal .header h3 {
       font-size: 20px;
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-r;
       line-height: 1.4;
       letter-spacing: -0.2px; }
   .ui.modal.xLargeModal .content p {
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     line-height: 1.5;
     letter-spacing: -0.2px;
     font-size: 16px; }
@@ -3142,7 +3210,7 @@ ul {
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.3px;
-          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+          font-family: font-opensb;
           margin-left: 24px; }
       .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead {
         flex: 1;
@@ -3157,14 +3225,14 @@ ul {
         -ms-flex-align: end;
         align-items: flex-end; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead p {
-          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+          font-family: font-opensb;
           font-size: 12px;
           letter-spacing: -0.3px;
           margin-bottom: 8px; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead span {
           letter-spacing: -0.2px;
           color: #A8B0BF;
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+          font-family: font-opens;
           font-size: 12px; }
     .ui.modal.submiModalBig.docApproval .docApprovalContainer .subitTabs {
       width: 355px;
@@ -3196,7 +3264,7 @@ ul {
         letter-spacing: -0.5px;
         color: #252833;
         opacity: 0.3;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+        font-family: font-b; }
       .ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument .approveDocumentBTNS {
         flex: 1.5;
         display: flex;
@@ -3256,7 +3324,7 @@ ul {
         color: #ffffff;
         letter-spacing: -0.2px;
         font-size: 12px;
-        font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+        font-family: font-sb;
         margin: 0 15px; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot span i {
           margin: 0 5px; }
@@ -3300,11 +3368,13 @@ ul {
   background-color: #fafbfc;
   border-bottom: 0; }
   .gridfillter-container .control-label {
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
     margin-bottom: 4px;
     letter-spacing: -0.2px;
-    color: #26344c;
-    display: block; }
+    display: block;
+    font-family: Muli;
+    font-weight: bold;
+    font-size: 13px;
+    color: #5E6475; }
   .gridfillter-container .fillter-status-container {
     width: 100%;
     display: flex;
@@ -3317,7 +3387,10 @@ ul {
       .gridfillter-container .fillter-status-container {
         justify-content: flex-start; } }
     .gridfillter-container .fillter-status-container .fillter-item-c {
-      margin-right: 8px; }
+      margin-right: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; }
     .gridfillter-container .fillter-status-container .fillterinput {
       padding: 0;
       display: flex;
@@ -3338,7 +3411,7 @@ ul {
           letter-spacing: -0.2px;
           color: #a8b0bf;
           opacity: 0.4;
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+          font-family: font-opens; }
       .gridfillter-container .fillter-status-container .fillter-status.status-from {
         min-width: 184px; }
     .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
@@ -3364,7 +3437,7 @@ ul {
       letter-spacing: -0.2px;
       color: #a8b0bf;
       opacity: 0.4;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+      font-family: font-opens; }
   .gridfillter-container .primaryBtn-2.btn.smallBtn {
     margin-left: 8px;
     margin-top: 22px;
@@ -3396,7 +3469,7 @@ ul {
       height: 20px;
       overflow: hidden; }
       .mainGridSystem .ui.dropdown.classico .uiDropName p {
-        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+        font-family: font-opensb;
         line-height: 1.5; }
       .mainGridSystem .ui.dropdown.classico .uiDropName .dropdown.icon {
         padding-top: 2px;
@@ -3424,7 +3497,7 @@ ul {
       align-items: center;
       padding-left: 10px;
       color: #A8B0BF;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 14px; }
       .mainGridSystem .gridSystemTables .headCell .V-tableSize,
       .mainGridSystem .gridSystemTables .headCell .H-tableSize {
@@ -3544,13 +3617,13 @@ ul {
         color: #3E4352;
         letter-spacing: -0.2px;
         font-size: 14px;
-        font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+        font-family: font-opensb;
         overflow: hidden;
         height: 20px;
         text-align: left; }
       .mainGridSystem .gridSystemTables .contentCell span {
         font-size: 13px;
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+        font-family: font-opens;
         color: #A8B0BF;
         letter-spacing: -0.3px;
         overflow: hidden;
@@ -3560,7 +3633,7 @@ ul {
         color: #3E4352;
         letter-spacing: -0.2px;
         font-size: 14px;
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-opens; }
     .mainGridSystem .gridSystemTables .normalContent {
       height: 60px;
       min-width: 858px;
@@ -3647,7 +3720,7 @@ ul {
       min-width: 91px;
       width: 91px; }
     .mainGridSystem .gridSystemTables .gridTableContent {
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+      font-family: font-opens; }
       .mainGridSystem .gridSystemTables .gridTableContent .gridMainRow {
         background-color: #ffffff;
         border-bottom: 1px solid #E9ECF0;
@@ -3730,7 +3803,7 @@ ul {
       display: -ms-flexbox;
       display: flex; }
     .mainGridSystem .gridSystemSelected .tableselcted-items {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       color: #ffffff;
       line-height: 1.5;
       letter-spacing: -0.2px;
@@ -3821,7 +3894,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #A8B0BF;
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-r;
       font-size: 14px; }
     .mainGridSystem .datagrid-grouping .drop-item {
       min-width: 77px;
@@ -3924,19 +3997,28 @@ ul {
       -ms-flex-align: center;
       align-items: center; }
       .main-header .header-content .nav-right li {
-        margin-left: 32px; }
+        margin-left: 24px;
+        cursor: pointer; }
         .main-header .header-content .nav-right li:first-child {
           margin-left: 0; }
+        .main-header .header-content .nav-right li:nth-child(4) {
+          margin-left: 32px; }
         .main-header .header-content .nav-right li:last-child {
-          margin-left: 50px; }
+          margin-left: 48px; }
         .main-header .header-content .nav-right li.notifi-icon {
           position: relative; }
-          .main-header .header-content .nav-right li.notifi-icon img {
+          .main-header .header-content .nav-right li.notifi-icon svg {
             transform: rotate(-30deg); }
           .main-header .header-content .nav-right li.notifi-icon .inboxNotif.smallSquare {
             top: -3px;
             right: -15px;
             position: absolute; }
+        .main-header .header-content .nav-right li a {
+          display: flex;
+          align-items: center; }
+        .main-header .header-content .nav-right li:hover svg g g {
+          fill: #969eab;
+          transition: all 0.2s ease; }
     .main-header .header-content .UserImg .dropdownContent {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -3958,7 +4040,7 @@ ul {
       position: relative;
       margin-left: 8px;
       color: #3e4352;
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opensb;
       font-size: 12px;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -3967,7 +4049,7 @@ ul {
       -ms-flex-align: center;
       align-items: center; }
     .main-header .header-content .titleproject1 a {
-      font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+      font-family: font-sb;
       color: #858D9E;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -3975,7 +4057,7 @@ ul {
         transition: 0.5s ease-in-out;
         color: #252833; }
     .main-header .header-content .titleproject2 {
-      font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+      font-family: font-sb;
       color: #adbccc;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -3991,12 +4073,239 @@ ul {
     padding-left: 40px;
     position: relative; }
 
-/* .settings-container {
+.main-header .header-content .nav-left > li.logo__pro {
+  margin-right: 88px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 13px; }
+
+.main-header .header-content .nav-left {
+  -webkit-box-flex: 0.7;
+  -ms-flex: 0.7;
+  flex: 0.7;
+  display: flex;
+  align-items: center; }
+
+.main-header.general__header .header-content .nav-left > li.logo__pro {
+  width: 256px;
+  height: 71px;
+  background-color: #fafdff;
+  padding-left: 40px;
+  margin-right: 33px;
+  border-right: 1px solid #e9ecf0; }
+
+.main-header.setting-header.general__header {
+  padding-left: 0; }
+
+.settings-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+  .settings-container .setting-tabs-contant .tab__header {
+    border: 1px solid #e9ecf0;
+    border-right: 0;
+    border-left: 0;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px; }
+    .settings-container .setting-tabs-contant .tab__header p {
+      font-family: font-b;
+      font-size: 20px;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833; }
+  .settings-container .setting-tabs-contant .company__logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 41px; }
+    .settings-container .setting-tabs-contant .company__logo span {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      padding: 30px;
+      border: solid 1px #eceff1;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px; }
+      .settings-container .setting-tabs-contant .company__logo span img {
+        max-width: 100%;
+        max-height: 100%; }
+    .settings-container .setting-tabs-contant .company__logo .company__logo--change h3 {
+      font-family: font-b;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.2px;
+      color: #252833; }
+    .settings-container .setting-tabs-contant .company__logo .company__logo--change form {
+      display: inline-block; }
+      .settings-container .setting-tabs-contant .company__logo .company__logo--change form input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1; }
+      .settings-container .setting-tabs-contant .company__logo .company__logo--change form label {
+        display: flex;
+        width: 88px;
+        align-items: center; }
+  .settings-container .setting-tabs-contant .owner__info p {
+    opacity: 0.4;
+    font-family: font-r;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #252833;
+    padding-left: 16px; }
+  .settings-container .setting-tabs-contant .proForm .admin_form button {
+    margin-left: 16px; }
+  .settings-container .setting-tabs-contant .proForm .admin__checkbox {
+    padding: 4px 16px; }
+    .settings-container .setting-tabs-contant .proForm .admin__checkbox .ui.checkbox label {
+      color: #3e4352; }
+  .settings-container .setting-tabs-contant .proForm .sub__admin .input__btns {
+    display: flex;
+    flex-wrap: wrap; }
+  .settings-container .setting-tabs-contant .proForm .sub__admin button {
+    background: transparent;
+    border: none;
+    cursor: pointer; }
+    .settings-container .setting-tabs-contant .proForm .sub__admin button span {
+      display: flex;
+      align-items: center;
+      font-family: font-b;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.2px;
+      text-align: center;
+      color: #858d9e; }
+      .settings-container .setting-tabs-contant .proForm .sub__admin button span img {
+        margin-right: 4px; }
+  .settings-container .setting-tabs-contant .proForm .add__new--admin button {
+    margin-top: 8px; }
+  .settings-container .setting-tabs-contant .proForm.flex__proform {
+    display: flex;
+    flex-flow: column; }
+    .settings-container .setting-tabs-contant .proForm.flex__proform .form-group .ui.selection.dropdown.singleDropDown {
+      max-width: 360px; }
+    .settings-container .setting-tabs-contant .proForm.flex__proform .datepickerContainer .form-group .ui.selection.dropdown.singleDropDown {
+      max-width: 192px; }
+  .settings-container .setting-tabs-contant .delete__admin {
+    margin-top: 68px;
+    padding: 0 16px; }
+    .settings-container .setting-tabs-contant .delete__admin button {
+      background: transparent;
+      border: none;
+      height: 40px;
+      font-family: font-b;
+      font-size: 13px;
+      line-height: 1.54;
+      letter-spacing: 0.4px;
+      color: #858d9e;
+      cursor: pointer; }
+  .settings-container .setting-tabs-contant .overview__info .overview__info--content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 37px; }
+    .settings-container .setting-tabs-contant .overview__info .overview__info--content p {
+      font-family: font-b;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: -0.2px;
+      color: #252833;
+      margin-right: 12px;
+      min-width: 70px; }
+    .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects {
+      display: flex;
+      align-items: center; }
+      .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        margin: 0 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: font-xb;
+        font-size: 18px;
+        line-height: 1.11;
+        letter-spacing: -0.7px;
+        color: #ffffff; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.pm {
+          background-color: #4382f9; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.hr {
+          background-color: #e74c3c; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.fm {
+          background-color: #39bd3d; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.number_span {
+          border: solid 1px #ccd2db;
+          background-color: rgba(67, 130, 249, 0);
+          font-family: font-b;
+          font-size: 24px;
+          line-height: 1.17;
+          letter-spacing: -0.5px;
+          color: #252833; }
+      .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.text_span {
+        font-family: font-opens;
+        font-size: 14px;
+        line-height: 1.71;
+        letter-spacing: -0.2px;
+        color: #3e4352; }
+
+.two__content--style {
+  display: flex;
+  padding-top: 26px;
+  padding-left: 40px;
+  padding-right: 68px;
+  padding-right: 40px;
+  position: relative;
+  padding-bottom: 32px;
+  margin-bottom: 20px; }
+  @media screen and (max-width: 1200px) {
+    .two__content--style {
+      padding-right: 0; } }
+  .two__content--style::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 40px;
+    right: 68px;
+    height: 1px;
+    background-color: #e1e3e8; }
+  .two__content--style .left__column {
+    width: 234px; }
+    @media screen and (max-width: 1200px) {
+      .two__content--style .left__column {
+        width: 110px; } }
+    .two__content--style .left__column h2 {
+      font-family: font-r;
+      font-size: 20px;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833; }
+      @media screen and (max-width: 1200px) {
+        .two__content--style .left__column h2 {
+          font-size: 14px; } }
+  .two__content--style .right__column {
+    width: calc(100% - 234px); }
+    @media screen and (max-width: 1200px) {
+      .two__content--style .right__column {
+        width: calc(100% - 110px); } }
+  .two__content--style:last-of-type::after {
+    display: none; }
+
+.settings-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
   .settings-container .settings-tabs-items {
-    width: 322px;
+    width: 256px;
     background-color: #FAFBFC;
     position: relative;
     z-index: 1;
@@ -4015,12 +4324,14 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #252833;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 20px;
-      border-bottom: 1px solid #E9ECF0; }
+      border-bottom: 1px solid #E9ECF0;
+      background: #f2f8fc;
+      margin-bottom: 16px; }
     .settings-container .settings-tabs-items ul li {
       padding-left: 40px;
-      height: 64px;
+      height: 52px;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -4032,14 +4343,16 @@ ul {
       -ms-flex-pack: center;
       justify-content: center;
       cursor: pointer;
-      position: relative; }
+      position: relative;
+      transition: all 0.4s ease; }
       .settings-container .settings-tabs-items ul li.title {
         cursor: inherit;
-        padding-left: 0; }
+        padding-left: 0;
+        height: 40px;
+        margin-top: 28px; }
         .settings-container .settings-tabs-items ul li.title h4 {
-          margin: 25px 0;
           padding-left: 40px;
-          font-family: font-xb;
+          font-family: font-b;
           font-size: 12px;
           color: #a8b0bf;
           line-height: 1.33;
@@ -4048,17 +4361,23 @@ ul {
         .settings-container .settings-tabs-items ul li.title::after {
           content: "";
           position: absolute;
-          top: 0;
-          width: 84%;
+          top: -11px;
+          width: 100%;
           height: 1px;
           background-color: #E9ECF0;
-          left: 24px; }
+          left: 0; }
+        .settings-container .settings-tabs-items ul li.title:first-child {
+          margin-top: 24px; }
+          .settings-container .settings-tabs-items ul li.title:first-child::after {
+            display: none; }
+        .settings-container .settings-tabs-items ul li.title:hover {
+          background-color: transparent; }
       .settings-container .settings-tabs-items ul li .subUlTitle {
         line-height: 1.5;
         letter-spacing: -0.2px;
-        color: #252833;
-        font-size: 16px;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+        color: #5E6475;
+        font-size: 13px;
+        font-family: font-sb; }
       .settings-container .settings-tabs-items ul li .subUlsubT {
         line-height: 1.33;
         letter-spacing: -0.2px;
@@ -4069,6 +4388,10 @@ ul {
         right: 15px;
         display: none;
         top: 40%; }
+      .settings-container .settings-tabs-items ul li:hover {
+        background-color: #edf6ff;
+        border-top-right-radius: 86px;
+        border-bottom-right-radius: 86px; }
       .settings-container .settings-tabs-items ul li.active {
         background-color: #cce6ff;
         border-top-right-radius: 86px;
@@ -4076,7 +4399,8 @@ ul {
         .settings-container .settings-tabs-items ul li.active .subUlTitle {
           color: #2557cc; }
   .settings-container .setting-tabs-contant {
-    width: calc(100% - 322px); }
+    width: calc(100% - 256px);
+    background: #fff; }
     .settings-container .setting-tabs-contant .tab .minisettings-header {
       height: 72px;
       border-bottom: 1px solid #E9ECF0;
@@ -4091,7 +4415,7 @@ ul {
           line-height: 1.4;
           letter-spacing: -0.2px;
           color: #252833;
-          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+          font-family: font-b;
           font-size: 20px; }
       .settings-container .setting-tabs-contant .tab .minisettings-header .action {
         flex: 1;
@@ -4132,20 +4456,20 @@ ul {
               line-height: 1.5;
               letter-spacing: -0.2px;
               color: #252833;
-              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+              font-family: font-b;
               font-size: 16px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .job-title {
               line-height: 1.43;
               letter-spacing: -0.2px;
               color: #858d9e;
               font-size: 14px;
-              font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+              font-family: font-r;
               margin-bottom: 4px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .status {
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #3e4352;
-              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+              font-family: font-opens;
               font-size: 12px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .date {
               line-height: 1.33;
@@ -4175,20 +4499,20 @@ ul {
               line-height: 1.5;
               letter-spacing: -0.2px;
               color: #252833;
-              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+              font-family: font-b;
               font-size: 20px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .job-title {
               line-height: 1.43;
               letter-spacing: -0.2px;
               color: #858d9e;
               font-size: 14px;
-              font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+              font-family: font-r;
               margin-bottom: 9px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .status {
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #3e4352;
-              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+              font-family: font-opens;
               font-size: 12px; }
             .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .date {
               line-height: 1.33;
@@ -4198,146 +4522,123 @@ ul {
               right: 0;
               bottom: 12px; }
           .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .bottom-content {
-            padding-top: 40px; } */
+            padding-top: 40px; }
 
-.documents-temp .submittalHead {
-  z-index: 2; }
-.documents-temp .doc-container {
-  display: flex; }
-  .documents-temp .doc-container .subitTabs {
-    width: 25%;
-    height: 100vh;
-    border-right: 1px solid #e9ecf0; }
-    .documents-temp .doc-container .subitTabs header {
+.documents-temp .doc-container .subitTabs header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-bottom: 1px solid #e9ecf0; }
+.documents-temp .doc-container .subiTabContainer {
+  width: 50%; }
+  .documents-temp .doc-container .subiTabContainer .subiTabsContent {
+    width: 100%;
+    background-color: #fff;
+    min-height: 100vh; }
+    .documents-temp .doc-container .subiTabContainer .subiTabsContent > header {
+      height: 72px;
+      border-bottom: 1px solid #e9ecf0;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
       -webkit-box-pack: center;
       -ms-flex-pack: center;
-      justify-content: center;
-      border-bottom: 1px solid #e9ecf0; }
-  .documents-temp .doc-container .subiTabContainer {
-    width: 50%; }
-    .documents-temp .doc-container .subiTabContainer .subiTabsContent {
-      width: 100%;
-      background-color: #fff;
-      min-height: 100vh; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent > header {
-        height: 72px;
-        border-bottom: 1px solid #e9ecf0;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent > header h2 {
-          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-          font-size: 20px;
-          line-height: 1.4;
+      justify-content: center; }
+    .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields {
+      padding: 14px; }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .doc-infohead {
+        font-family: font-opens;
+        font-size: 12px;
+        line-height: 1.33;
+        letter-spacing: -0.2px;
+        color: #a8b0bf;
+        width: 100%;
+        text-align: right; }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput {
+        margin-bottom: 28px; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput .ui.input.inputDev {
+          padding: 0; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput .radioBoxBlue label {
+          padding-left: 35px;
+          padding-right: 15px; }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .control-label {
+        padding-right: 0; }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection {
+        max-width: 360px;
+        width: 100%; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection .text {
+          background: none; }
+    .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header {
+      padding: 40px; }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header h2 {
+        border-bottom: 1px solid #e1e3e8;
+        width: 100%;
+        padding-bottom: 12px;
+        padding-left: 100px;
+        font-family: font-r;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+        color: #252833; }
+    .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid {
+      padding: 8px; }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table {
+        border-left: 0;
+        border-right: 0;
+        /**/ }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
+          font-family: font-b;
+          font-size: 14px;
+          line-height: 1.43;
           letter-spacing: -0.2px;
-          color: #252833; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields {
-        padding: 14px; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .doc-infohead {
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-          font-size: 12px;
-          line-height: 1.33;
+          color: #a8b0bf; }
+          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
+            padding: 0 13px;
+            width: 40px; }
+          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
+            border-right: 1px solid #e9ecf0; }
+          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
+            padding-left: 30px; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td {
+          font-family: font-opens;
+          font-size: 14px;
+          line-height: 1.71;
           letter-spacing: -0.2px;
-          color: #a8b0bf;
-          width: 100%;
-          text-align: right; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput {
-          margin-bottom: 28px; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput > label {
-            width: 130px;
-            text-align: right;
-            margin-right: 16px;
-            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
-            font-size: 14px;
-            line-height: 1.43;
-            letter-spacing: -0.2px;
-            color: #252833; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput .ui.input.inputDev {
-            padding: 0; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput .radioBoxBlue label {
-            padding-left: 35px;
-            padding-right: 15px; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .control-label {
-          padding-right: 0; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection {
-          max-width: 360px;
-          width: 100%; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection .text {
-            background: none; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header {
-        padding: 40px; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header h2 {
-          border-bottom: 1px solid #e1e3e8;
-          width: 100%;
-          padding-bottom: 12px;
-          padding-left: 100px;
-          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-          font-size: 20px;
-          line-height: 1.4;
-          letter-spacing: -0.2px;
-          color: #252833; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid {
-        padding: 8px; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table {
-          border-left: 0;
-          border-right: 0;
-          /**/ }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
-            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-            font-size: 14px;
-            line-height: 1.43;
-            letter-spacing: -0.2px;
-            color: #a8b0bf; }
-            .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
-              padding: 0 13px;
-              width: 40px; }
-            .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
-              border-right: 1px solid #e9ecf0; }
-            .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
-              padding-left: 30px; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td {
-            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-            font-size: 14px;
-            line-height: 1.71;
-            letter-spacing: -0.2px;
-            color: #3e4352; }
-            .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
-              border-right: 1px solid #e9ecf0; }
-            .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
-              padding-left: 30px; }
-            .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:last-child {
-              text-align: right; }
-  .documents-temp .doc-container .submittalActions.doc-submitt {
-    width: 25%;
-    border-left: 1px solid #e9ecf0;
-    padding: 0;
-    height: 100vh; }
-    .documents-temp .doc-container .submittalActions.doc-submitt header {
-      border-bottom: 1px solid #e9ecf0;
-      padding: 21.3px 0;
-      text-align: center;
-      margin-bottom: 28px;
-      height: 72px; }
-    .documents-temp .doc-container .submittalActions.doc-submitt .docsubmitt-group {
-      width: 100%;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-      flex-flow: column;
-      padding: 20px;
-      padding-top: 30px; }
+          color: #3e4352; }
+          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
+            border-right: 1px solid #e9ecf0; }
+          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
+            padding-left: 30px; }
+          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:last-child {
+            text-align: right; }
+.documents-temp .doc-container .submittalActions.doc-submitt {
+  width: 25%;
+  border-left: 1px solid #e9ecf0;
+  padding: 0;
+  height: 100vh; }
+  .documents-temp .doc-container .submittalActions.doc-submitt header {
+    border-bottom: 1px solid #e9ecf0;
+    padding: 21.3px 0;
+    text-align: center;
+    margin-bottom: 28px;
+    height: 72px; }
+  .documents-temp .doc-container .submittalActions.doc-submitt .docsubmitt-group {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    padding: 20px;
+    padding-top: 30px; }
 
 .documents-stepper .submittalHead {
   justify-content: flex-start;
@@ -4359,7 +4660,7 @@ ul {
     -ms-flex-pack: center;
     justify-content: center; }
     .documents-stepper .doc-container .subiTabsContent > header .doc-infohead {
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -4367,7 +4668,7 @@ ul {
       width: 100%;
       text-align: right; }
     .documents-stepper .doc-container .subiTabsContent > header h2 {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
@@ -4378,96 +4679,85 @@ ul {
   position: relative;
   display: flex;
   /**/ }
-  .documents-stepper .doc-container .step-content {
-    width: calc(100% - 347px);
-    border-right: 0;
-    background-color: #ffffff; }
-    .documents-stepper .doc-container .step-content .document-fields {
-      padding: 14px; }
-      .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-        font-size: 12px;
-        line-height: 1.33;
+  .documents-stepper .doc-container .step-content .document-fields {
+    padding: 14px; }
+    .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
+      font-family: font-opens;
+      font-size: 12px;
+      line-height: 1.33;
+      letter-spacing: -0.2px;
+      color: #a8b0bf;
+      width: 100%;
+      text-align: right; }
+    .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput {
+      margin-bottom: 28px; }
+      /* .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput > label {
+        width: 130px;
+        text-align: right;
+        margin-right: 16px;
+        font-family: font-opensb;
+        font-size: 14px;
+        line-height: 1.43;
         letter-spacing: -0.2px;
-        color: #a8b0bf;
+        color: #252833; } */
+      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+        padding: 0; }
+      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .radioBoxBlue label {
+        padding-left: 35px;
+        padding-right: 15px; }
+    .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection {
+      max-width: 360px;
+      width: 100%; }
+      .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection .text {
+        background: none; }
+  .documents-stepper .doc-container .step-content .doc-pre-cycle {
+    padding: 0 80px; }
+    .documents-stepper .doc-container .step-content .doc-pre-cycle header {
+      padding: 40px; }
+      .documents-stepper .doc-container .step-content .doc-pre-cycle header h2 {
+        border-bottom: 1px solid #e1e3e8;
         width: 100%;
-        text-align: right; }
-      .documents-stepper .doc-container .step-content .document-fields .first-proform {
-        display: flex;
-        justify-content: space-between;
-        padding-right: 50px;
-        flex-wrap: wrap; }
-      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput {
-        margin-bottom: 28px; }
-        .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput > label {
-          width: 130px;
-          text-align: right;
-          margin-right: 16px;
-          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+        padding-bottom: 12px;
+        padding-left: 100px;
+        font-family: font-r;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+        color: #252833; }
+    .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
+      padding: 8px; }
+      .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table {
+        border-left: 0;
+        border-right: 0;
+        /**/ }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
+          font-family: font-b;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
-          color: #252833; }
-        .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-          padding: 0; }
-        .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .radioBoxBlue label {
-          padding-left: 35px;
-          padding-right: 15px; }
-      .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .control-label {
-        padding-right: 0; }
-      .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection {
-        max-width: 360px;
-        width: 100%; }
-        .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection .text {
-          background: none; }
-    .documents-stepper .doc-container .step-content .doc-pre-cycle {
-      padding: 0 80px; }
-      .documents-stepper .doc-container .step-content .doc-pre-cycle header {
-        padding: 40px; }
-        .documents-stepper .doc-container .step-content .doc-pre-cycle header h2 {
-          border-bottom: 1px solid #e1e3e8;
-          width: 100%;
-          padding-bottom: 12px;
-          padding-left: 100px;
-          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-          font-size: 20px;
-          line-height: 1.4;
+          color: #a8b0bf; }
+          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
+            padding: 0 13px;
+            width: 40px; }
+          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
+            border-right: 1px solid #e9ecf0; }
+          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
+            padding-left: 30px; }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
+          font-family: font-opens;
+          font-size: 14px;
+          line-height: 1.71;
           letter-spacing: -0.2px;
-          color: #252833; }
-      .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
-        padding: 8px; }
-        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table {
-          border-left: 0;
-          border-right: 0;
-          /**/ }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
-            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-            font-size: 14px;
-            line-height: 1.43;
-            letter-spacing: -0.2px;
-            color: #a8b0bf; }
-            .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
-              padding: 0 13px;
-              width: 40px; }
-            .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
-              border-right: 1px solid #e9ecf0; }
-            .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
-              padding-left: 30px; }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
-            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-            font-size: 14px;
-            line-height: 1.71;
-            letter-spacing: -0.2px;
-            color: #3e4352; }
-            .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
-              border-right: 1px solid #e9ecf0; }
-            .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
-              padding-left: 30px; }
-            .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:last-child {
-              text-align: right; }
-      .documents-stepper .doc-container .step-content .doc-pre-cycle .slider-Btns {
-        padding-top: 55px;
-        padding-left: 64px; }
+          color: #3e4352; }
+          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
+            border-right: 1px solid #e9ecf0; }
+          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
+            padding-left: 30px; }
+          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:last-child {
+            text-align: right; }
+    .documents-stepper .doc-container .step-content .doc-pre-cycle .slider-Btns {
+      padding-top: 55px;
+      padding-left: 64px; }
   .documents-stepper .doc-container .docstepper-levels {
     width: 347px;
     position: relative; }
@@ -4512,7 +4802,7 @@ ul {
               top: 48px; }
             .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline > span {
               font-size: 20px;
-              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+              font-family: font-b;
               line-height: 1.4;
               letter-spacing: -0.2px;
               color: #ccd2db; }
@@ -4526,13 +4816,13 @@ ul {
               letter-spacing: -0.2px;
               color: #252833;
               font-size: 16px;
-              font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+              font-family: font-b; }
             .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info p {
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #a8b0bf;
               font-size: 12px;
-              font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+              font-family: font-opens; }
           .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
             /*
             background-color: #5fd45f;
@@ -4577,7 +4867,7 @@ ul {
       color: #3E4352;
       letter-spacing: -0.2px;
       font-size: 12px;
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opensb;
       margin: 0 12px; }
       .documents-stepper .doc-container .step-content-foot span i {
         margin: 0 4px; }
@@ -4589,7 +4879,7 @@ ul {
     letter-spacing: -0.2px;
     font-size: 16px;
     color: #252833;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
   .documents-stepper .doc-container .step-content .step-content-body.out {
     display: none; }
 
@@ -4644,11 +4934,226 @@ ul {
       .customSubActions .customDropdown .SubmittalUL li a .svg {
         margin-right: 5px;
         transition: 0s; }
-          .dashboard-container {
+
+.noTabs__document .submittalHead {
+  justify-content: center;
+  padding-left: 0;
+  z-index: 2; }
+.noTabs__document .doc-container {
+  background: #fff;
+  flex-flow: column;
+  display: flex; }
+  .noTabs__document .doc-container .main__header {
+    width: 100%;
+    padding: 0;
+    border-bottom: 1px solid #e9ecf0; }
+    .noTabs__document .doc-container .main__header .main__header--div {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: space-between;
+      width: 61%;
+      margin: 0 auto;
+      height: 72px; }
+      @media screen and (max-width: 1200px) {
+        .noTabs__document .doc-container .main__header .main__header--div {
+          width: 68%; } }
+    .noTabs__document .doc-container .main__header h2 {
+      font-family: font-b;
+      font-size: 20px;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833; }
+    .noTabs__document .doc-container .main__header p {
+      font-family: font-opens;
+      font-size: 12px;
+      line-height: 1.33;
+      letter-spacing: -0.2px;
+      color: #a8b0bf;
+      text-align: right; }
+  .noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; }
+  .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:last-of-type {
+    flex-flow: row;
+    margin-bottom: 0; }
+  .noTabs__document .doc-container .step-content .doc-pre-cycle {
+    padding: 0; }
+    .noTabs__document .doc-container .step-content .doc-pre-cycle header {
+      padding: 40px 0; }
+      .noTabs__document .doc-container .step-content .doc-pre-cycle header h2 {
+        border-bottom: 1px solid #e1e3e8;
+        width: 100%;
+        padding-bottom: 12px;
+        padding-left: 0;
+        font-family: font-r;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+        color: #252833; }
+    .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
+      padding-top: 55px;
+      padding-left: 0; }
+
+.one__tab {
+  padding-bottom: 90px; }
+  .one__tab .submittalHead {
+    justify-content: center;
+    padding-left: 0;
+    z-index: 2; }
+  .one__tab .doc-container {
+    background: #fff;
+    flex-flow: row; }
+    .one__tab .doc-container .docstepper-levels {
+      border-left: 1px solid #eef5ff; }
+    .one__tab .doc-container .subiTabsContent > header.main__header {
+      padding: 0; }
+      .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
+        width: 100%;
+        margin: 0 auto;
+        height: 72px; }
+    .one__tab .doc-container .subiTabContainer {
+      width: 70%;
+      flex-flow: column; }
+      @media screen and (max-width: 1200px) {
+        .one__tab .doc-container .subiTabContainer {
+          width: 78%; } }
+      .one__tab .doc-container .subiTabContainer .main__header {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 0 56px; }
+      .one__tab .doc-container .subiTabContainer .step-content {
+        width: 100%;
+        padding: 0 57px; }
+        .one__tab .doc-container .subiTabContainer .step-content.activeTab {
+          display: none; }
+        .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
+          font-family: font-opens;
+          font-size: 12px;
+          line-height: 1.33;
+          letter-spacing: -0.2px;
+          color: #a8b0bf;
+          width: 100%;
+          margin-bottom: 32px; }
+        .one__tab .doc-container .subiTabContainer .step-content .document-fields {
+          padding: 14px 0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .subitTabs {
+            width: 24%;
+            height: 100vh;
+            border-right: 1px solid #e9ecf0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
+            margin-right: 0; }
+            .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+              width: 100%;
+              padding: 0; }
+              .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
+                width: 100%; }
+    .one__tab .doc-container .doc-pre-cycle {
+      padding: 0; }
+      .one__tab .doc-container .doc-pre-cycle header {
+        padding: 40px 0; }
+        .one__tab .doc-container .doc-pre-cycle header h2 {
+          border-bottom: 1px solid #e1e3e8;
+          width: 100%;
+          padding-bottom: 12px;
+          padding-left: 0;
+          font-family: font-r;
+          font-size: 20px;
+          line-height: 1.4;
+          letter-spacing: -0.2px;
+          color: #252833; }
+      .one__tab .doc-container .doc-pre-cycle .slider-Btns {
+        padding-top: 55px;
+        padding-left: 0; }
+  .one__tab .approveDocument {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 19;
+    height: 72px;
+    border-radius: 3px;
+    box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 0 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center; }
+    .one__tab .approveDocument h2 {
+      flex: 0.5;
+      line-height: 1.17;
+      letter-spacing: -0.5px;
+      color: #252833;
+      opacity: 0.3;
+      font-family: font-b; }
+    .one__tab .approveDocument .approveDocumentBTNS {
+      flex: 1.5;
+      display: flex;
+      justify-content: flex-end; }
+      .one__tab .approveDocument .approveDocumentBTNS .border {
+        display: block;
+        width: 1px;
+        height: 40px;
+        background-color: #e9ecf0;
+        margin: 0 24px; }
+      .one__tab .approveDocument .approveDocumentBTNS .middle__btn {
+        margin: 0 6px; }
+  .one__tab.one_step .doc-container .step-content {
+    width: calc(100% - 347px); }
+    .one__tab.one_step .doc-container .step-content .main__header {
+      padding-left: 110px;
+      padding-right: 80px; }
+      @media screen and (max-width: 1300px) {
+        .one__tab.one_step .doc-container .step-content .main__header {
+          padding-left: 35px;
+          padding-right: 20px; } }
+    .one__tab.one_step .doc-container .step-content .document-fields {
+      padding-left: 110px;
+      padding-right: 80px; }
+      @media screen and (max-width: 1300px) {
+        .one__tab.one_step .doc-container .step-content .document-fields {
+          padding-left: 35px;
+          padding-right: 20px; } }
+      .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
+        margin-right: 0; }
+        @media screen and (max-width: 1200px) {
+          .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input {
+            width: 100%; } }
+      @media screen and (max-width: 1200px) {
+        .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform {
+          flex-flow: column;
+          align-items: flex-start; } }
+      @media screen and (max-width: 1200px) {
+        .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput {
+          width: 77%; } }
+      .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
+        width: 300px; }
+        @media screen and (max-width: 1200px) {
+          .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
+            width: 360px; } }
+    .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
+      padding-left: 110px;
+      padding-right: 80px; }
+      @media screen and (max-width: 1300px) {
+        .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
+          padding-left: 35px;
+          padding-right: 20px; } }
+
+.dashboard-container {
   padding-top: 90px; }
   .dashboard-container .welcome-title {
     font-size: 34px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     line-height: 1.18;
     letter-spacing: -1.1px;
     text-align: center;
@@ -4678,7 +5183,7 @@ ul {
       -ms-flex-align: center;
       align-items: center;
       color: #A8B0BF;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 12px;
       cursor: pointer;
       border-bottom: 2px solid transparent;
@@ -4694,7 +5199,7 @@ ul {
         border-bottom: 2px solid #4382F9; }
 
 .chart h2 {
-  font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+  font-family: font-r;
   color: #252833;
   padding-left: 55px;
   padding-bottom: 20px;
@@ -4729,7 +5234,7 @@ ul {
     top: 15px;
     margin: 0;
     display: flex;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     font-size: 12px; }
     .linebar .years li {
       margin: 0 10px;
@@ -4758,7 +5263,7 @@ ul {
     top: 15px;
     margin: 0;
     display: flex;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     font-size: 12px; }
     .group-barchart .years li {
       margin: 0 10px;
@@ -4779,7 +5284,7 @@ ul {
       background-color: #CCD2DB;
       display: inline-block; }
   .group-barchart .x-axis-group .x.axis {
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+    font-family: font-opens; }
   .group-barchart svg:not(:root) {
     overflow: visible; }
 
@@ -4896,13 +5401,13 @@ ul {
       .bar-Star .star-rating-container .ratingresult .ratingresult-numbers {
         margin-top: 33px; }
         .bar-Star .star-rating-container .ratingresult .ratingresult-numbers .below-average {
-          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+          font-family: font-b;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
           color: #252833; }
           .bar-Star .star-rating-container .ratingresult .ratingresult-numbers .below-average span {
-            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+            font-family: font-opens;
             font-size: 12px;
             line-height: 1.33;
             letter-spacing: -0.2px;
@@ -4949,7 +5454,7 @@ ul {
   padding-bottom: 40px; }
   .SparkTabs .sparktab-title h2 {
     padding-right: 35px;
-    font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-r;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -4965,7 +5470,7 @@ ul {
       letter-spacing: -0.3px;
       text-align: center;
       color: #a8b0bf;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       border-radius: 2px;
       border: solid 1px #E9ECF0;
       margin: 0 1px;
@@ -5001,7 +5506,7 @@ ul {
     -ms-flex-align: center;
     align-items: center; }
     .SparkTabs .ui.tab > div .spark-percentage .num {
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       font-size: 12px;
       font-weight: normal;
       font-style: normal;
@@ -5030,14 +5535,14 @@ ul {
       flex-flow: column;
       padding: 0 32px; }
       .SparkTabs .ui.tab > div .sparktask-count ul li .num {
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         font-size: 24px;
         line-height: 1.17;
         letter-spacing: -0.5px;
         text-align: center;
         color: #252833; }
       .SparkTabs .ui.tab > div .sparktask-count ul li .text {
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+        font-family: font-opens;
         font-size: 14px;
         line-height: 1.71;
         letter-spacing: -0.2px;
@@ -5062,10 +5567,10 @@ ul {
 .dount-container .donut-text .value {
   fill: #39bd3d;
   font-size: 16px !important;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+  font-family: font-b; }
 .dount-container .donut-text .label {
   font-size: 56px !important;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
   fill: #252833; }
   .dount-container .donut-text .label:nth-child(3) {
     font-size: 20px !important; }
@@ -5091,7 +5596,7 @@ ul {
   font-size: 14px;
   color: #a8b0bf;
   bottom: 0;
-  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+  font-family: font-opens; }
 
 .linebar70-dount .card--chart {
   float: right;
@@ -5105,7 +5610,7 @@ ul {
 
 .SummeriesContainer .SummeriesTitle {
   font-size: 28px;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
   padding-left: 90px;
   padding-bottom: 58px;
   margin: 0; }
@@ -5153,7 +5658,7 @@ ul {
         overflow: hidden; }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
         font-size: 45px;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         color: #252833;
         margin: 0;
         overflow: hidden;
@@ -5172,7 +5677,7 @@ ul {
         letter-spacing: -0.2px;
         font-size: 14px;
         margin: 0;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         transition: all 0.3s ease-in-out; }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL {
         display: flex;
@@ -5200,7 +5705,7 @@ ul {
         justify-content: center;
         width: 100%; }
         .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
-          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+          font-family: font-b;
           font-size: 12px;
           letter-spacing: -0.2px;
           color: #ccd2db; }
@@ -5247,7 +5752,7 @@ ul {
       background-color: #f5f5f6;
       margin: 0 4px; }
       .SummeriesContainer.numbersOnly .SummeriesContainerContent .summerisItem .content .number {
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         font-size: 56px;
         line-height: 1.14;
         letter-spacing: -1.1px;
@@ -5280,7 +5785,7 @@ ul {
     border-radius: 50%;
     animation: rotate 1s linear infinite; }
   .dashboard-container .dashboardLoading h3 {
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 45px;
     line-height: 1.16;
     letter-spacing: -1.1px;
@@ -5361,7 +5866,7 @@ ul {
           flex: 1 0;
           text-align: center; }
           .dashboard__Project .dash__content .project__content .project__select .project__title h3 {
-            font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+            font-family: font-r;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: -0.2px;
@@ -5391,7 +5896,7 @@ ul {
   justify-content: center;
   border-bottom: 1px solid #e9ecf0; }
   .modalTitle h2 {
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 24px;
     line-height: 1.17;
     letter-spacing: -0.5px;
@@ -5414,14 +5919,14 @@ ul {
     height: 144px;
     position: relative; }
     .dashboard__numbers .dashboard__numbers--info p {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 45px;
       line-height: 1.16;
       letter-spacing: -1.1px;
       color: #252833;
       margin: 0 0 8px; }
     .dashboard__numbers .dashboard__numbers--info h6 {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 12px;
       line-height: 1.67;
       letter-spacing: 0.2px;
@@ -5561,7 +6066,7 @@ ul {
     align-items: center;
     padding-left: 10px;
     color: #A8B0BF;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 14px;
     max-width: 140px;
     white-space: nowrap;
@@ -5659,7 +6164,7 @@ ul {
     -ms-flex-align: center;
     align-items: center;
     padding-left: 10px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 14px;
     max-width: 140px; }
     @media screen and (max-width: 1300px) {
@@ -5684,12 +6189,12 @@ ul {
       text-overflow: ellipsis;
       white-space: nowrap;
       padding: 0 5px;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+      font-family: font-opens; }
       @media screen and (max-width: 1300px) {
         .attachmentTable tbody tr .contentCell a {
           font-size: 11px; } }
     .attachmentTable tbody tr .contentCell p {
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       font-size: 14px;
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -5773,7 +6278,7 @@ ul {
       letter-spacing: -0.2px;
       color: #A8B0BF;
       margin-top: 14px;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+      font-family: font-b; }
     .notifiBar .smallNotifiBar .notifiContent {
       display: flex;
       align-items: center;
@@ -5802,7 +6307,7 @@ ul {
             letter-spacing: -0.2px;
             color: #252833;
             margin: 0;
-            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+            font-family: font-b; }
           .notifiBar .smallNotifiBar .notifiContent .notfiText .notifiName p {
             opacity: 0.4;
             font-size: 12px;
@@ -5810,18 +6315,18 @@ ul {
             letter-spacing: -0.2px;
             color: #858d9e;
             margin-left: 4px;
-            font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+            font-family: font-r; }
         .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow {
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.2px;
           color: #858d9e;
-          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+          font-family: font-r; }
           .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a {
             font-size: 12px;
             color: #5E6475;
             font-weight: 600;
-            font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+            font-family: font-sb;
             transition: all 0.2s; }
             .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a:hover {
               color: #3570e6;
@@ -5884,7 +6389,7 @@ ul {
           .notifiBar .smallNotifiBar .notifi__tabs ul li .tabNAme {
             margin-left: 16px;
             opacity: 0.6;
-            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+            font-family: font-b;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: normal;
@@ -5898,10 +6403,10 @@ ul {
               opacity: 0; }
             .notifiBar .smallNotifiBar .notifi__tabs ul li:hover .imgWrapper.not__icon::after {
               opacity: 1;
-              background-image: url(../../images/notif-iconHover.png); }
+              background-image: url(../../images//notif-iconHover.png); }
             .notifiBar .smallNotifiBar .notifi__tabs ul li:hover .imgWrapper.base__icon::after {
               opacity: 1;
-              background-image: url(../../images/grey-baseHover.png); }
+              background-image: url(../../images//grey-baseHover.png); }
           .notifiBar .smallNotifiBar .notifi__tabs ul li.active::after {
             background-color: #4382f9; }
           .notifiBar .smallNotifiBar .notifi__tabs ul li.active span {
@@ -5937,20 +6442,26 @@ ul {
     background-color: #E9ECF0;
     margin-right: 26px; }
   .company__name h3 {
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.4px;
     color: #4f515a;
-    margin: 0; }
+    margin: 0;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal; }
 
 .printGrid {
   padding-left: 126px;
   padding-right: 35px; }
   .printGrid .printHead h3 {
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 18px;
     font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
     letter-spacing: -0.5px;
     color: #2c2e37;
     padding: 0; }
@@ -5958,7 +6469,7 @@ ul {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    font-family: OpenSans;
+    font-family: font-opens;
     font-size: 11px;
     line-height: 2.18;
     letter-spacing: -0.2px;
@@ -5969,9 +6480,18 @@ ul {
     letter-spacing: -0.2px;
     color: #3e4352;
     font-size: 12px;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+    font-family: font-opens; }
     .printGrid .subiTable td h4 .content {
-      font-size: 12px; }
+      font-size: 12px;
+      font-family: font-opens;
+      font-family: 'Open Sans';
+      font-size: 12px;
+      font-weight: 600;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 2;
+      letter-spacing: -0.2px;
+      color: #3e4352; }
 
 .docStatus {
   display: flex;
@@ -5987,7 +6507,7 @@ ul {
     align-items: center;
     justify-content: space-around; }
     .docStatus .highClosed span {
-      font-family: OpenSans;
+      font-family: font-opensb;
       font-size: 11px;
       font-weight: normal;
       line-height: 1.45;
@@ -6006,7 +6526,7 @@ ul {
           border-radius: 50%;
           background-color: red; }
   .docStatus .requireDate span {
-    font-family: OpenSans;
+    font-family: font-opensb;
     font-size: 12px;
     font-weight: normal;
     line-height: 2;
@@ -6052,7 +6572,7 @@ ul {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: OpenSans;
+      font-family: font-opens;
       font-size: 13px;
       color: #5e6475; }
       .printSecondPage .workflowPrint .flowLevel .flowNumber .stepLevel.pendingLevel {
@@ -6065,7 +6585,7 @@ ul {
         height: 28px;
         margin: 0 8px 0 12px; }
       .printSecondPage .workflowPrint .flowLevel .flowMember .FlowText h3 {
-        font-family: OpenSans;
+        font-family: font-opens;
         font-size: 12px;
         font-weight: 600;
         line-height: 1.33;
@@ -6073,7 +6593,7 @@ ul {
         color: #252833;
         margin: 0; }
       .printSecondPage .workflowPrint .flowLevel .flowMember .FlowText p {
-        font-family: OpenSans;
+        font-family: font-opens;
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.2px;
@@ -6095,14 +6615,14 @@ ul {
     .printSecondPage .workflowPrint .flowStatus.pendingStatue::after {
       background-image: url(../../images/pending.png); }
     .printSecondPage .workflowPrint .flowStatus .statueName {
-      font-family: OpenSans;
+      font-family: font-opensb;
       font-size: 12px;
       font-weight: 600;
       line-height: 1.67;
       letter-spacing: -0.2px;
       color: #252833; }
     .printSecondPage .workflowPrint .flowStatus .statueDate {
-      font-family: OpenSans;
+      font-family: font-opensb;
       font-size: 10px;
       line-height: 1.6;
       letter-spacing: -0.2px;
@@ -6114,6 +6634,24 @@ ul {
       height: 30px; }
       .printSecondPage .workflowPrint .flowStatus .statueSignature img {
         width: 100%; }
+
+.printWrapper .subiGrid .subiTable {
+  border-bottom: none; }
+
+.printWrapper .subiGrid {
+  position: relative; }
+
+.printWrapper .subiGrid::after {
+  content: '';
+  position: absolute;
+  right: 32px;
+  left: 32px;
+  height: 1px;
+  background-color: #e9ecf0;
+  bottom: 0; }
+
+.printWrapper #pdfLength {
+  padding-left: 126px; }
 
 .notificationPage {
   background: #fff; }
@@ -6136,7 +6674,7 @@ ul {
       width: 13px;
       height: 10px; }
     .notificationPage .noti__header h3 {
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 24px;
       line-height: 1.17;
       letter-spacing: -0.5px;
@@ -6144,7 +6682,7 @@ ul {
       margin-right: 12px;
       margin-left: 18px; }
     .notificationPage .noti__header span {
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-r;
       font-size: 16px;
       opacity: 0.6;
       color: #858d9e;
@@ -6199,7 +6737,7 @@ ul {
       .notificationPage .notifi__tabs ul li .tabNAme {
         margin-left: 16px;
         opacity: 0.6;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: normal;
@@ -6213,10 +6751,10 @@ ul {
           opacity: 0; }
         .notificationPage .notifi__tabs ul li:hover .imgWrapper.not__icon::after {
           opacity: 1;
-          background-image: url(../../images/notif-iconHover.png); }
+          background-image: url(../../images//notif-iconHover.png); }
         .notificationPage .notifi__tabs ul li:hover .imgWrapper.base__icon::after {
           opacity: 1;
-          background-image: url(../../images/grey-baseHover.png); }
+          background-image: url(../../images//grey-baseHover.png); }
       .notificationPage .notifi__tabs ul li.active::after {
         background-color: #4382f9; }
       .notificationPage .notifi__tabs ul li.active span {
@@ -6243,7 +6781,7 @@ ul {
         background: #fafbfc;
         height: 48px; }
         .notificationPage .notifi__tabs--content .table_notify table thead tr th p {
-          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+          font-family: font-b;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
@@ -6260,7 +6798,7 @@ ul {
               margin: 0;
               flex-shrink: 0; }
             .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notiDrid__avatar h3 {
-              font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+              font-family: font-opensb;
               font-size: 14px;
               line-height: 1.71;
               letter-spacing: -0.2px;
@@ -6278,26 +6816,26 @@ ul {
               display: flex;
               align-items: center;
               justify-content: center;
-              font-family: 'Muli';  font-weight: 600;   font-style: normal;   font-stretch: normal;
+              font-family: font-sb;
               font-size: 12px;
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #ffffff; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .title_name h3 {
             text-transform: capitalize;
-            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+            font-family: font-opensb;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
             color: #3e4352; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notifiDate p {
-            font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+            font-family: font-opens;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
             color: #3e4352; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notifistate p {
-            font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+            font-family: font-opensb;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
@@ -6315,11 +6853,11 @@ ul {
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notifi__status span {
           display: none; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .title_name h3 {
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+          font-family: font-opens; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notifistate p {
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+          font-family: font-opens; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notiDrid__avatar h3 {
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+          font-family: font-opens; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr:hover {
           background: #f2f5f7;
           cursor: pointer; }
@@ -6348,7 +6886,7 @@ ul {
       .login__page .login__page--form .login__logo p {
         width: 62px;
         height: 19px;
-        font-family: Montserrat;
+        font-family: 'Montserrat', sans-serif;
         font-size: 16px;
         font-weight: 600;
         letter-spacing: -0.4px;
@@ -6361,7 +6899,15 @@ ul {
       margin-top: 31px;
       margin-bottom: 24px;
       padding-bottom: 28px;
-      border-bottom: 2px solid #E9ECF0; }
+      position: relative; }
+      .login__page .login__page--form .select__project::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        height: 2px;
+        right: 7px;
+        left: -6px;
+        background: #E9ECF0; }
       .login__page .login__page--form .select__project li {
         margin: 0 6px;
         border: solid 2px transparent;
@@ -6372,7 +6918,7 @@ ul {
           width: 32px;
           height: 32px;
           border-radius: 8px;
-          font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+          font-family: font-b;
           font-size: 14px;
           font-weight: 800;
           display: flex;
@@ -6397,7 +6943,7 @@ ul {
           .login__page .login__page--form .select__project li p::before {
             content: "\f0d7";
             position: absolute;
-            bottom: -20px;
+            bottom: -24px;
             left: calc(50% - 8px);
             transform: rotate(180deg);
             height: 16px;
@@ -6424,14 +6970,15 @@ ul {
           background: #ffc107; }
     .login__page .login__page--form .login__heading {
       opacity: 0.4;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-      font-size: 20px;
+      font-family: font-b;
+      font-size: 16px;
       line-height: 1.4;
       letter-spacing: -0.2px;
       text-align: center;
-      color: #252833; }
+      color: #252833;
+      margin-top: 24px; }
     .login__page .login__page--form .proForm {
-      margin-top: 37px; }
+      margin-top: 41px; }
       .login__page .login__page--form .proForm .form-group {
         display: block;
         padding: 0; }
@@ -6447,7 +6994,7 @@ ul {
       .login__page .login__page--form .proForm .loginChecked {
         margin: 16px 0 32px; }
         .login__page .login__page--form .proForm .loginChecked label {
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+          font-family: font-opens;
           font-size: 14px;
           line-height: 1.71;
           letter-spacing: -0.2px;
@@ -6465,13 +7012,13 @@ ul {
       text-align: center;
       margin-top: 16px; }
       .login__page .login__page--form .register__link p {
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+        font-family: font-opens;
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.2px;
         color: #3E4352; }
         .login__page .login__page--form .register__link p a {
-          font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+          font-family: font-opensb;
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.3px;
@@ -6481,7 +7028,7 @@ ul {
   .login__page .access__acc {
     text-align: center; }
     .login__page .access__acc p {
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -6498,292 +7045,6 @@ ul {
 .proForm .showPasswordArea .togglePW.active-pw .hide {
   display: block; }
 
-/* .settings-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-  .settings-container .settings-tabs-items {
-    width: 322px;
-    background-color: #FAFBFC;
-    position: relative;
-    z-index: 1;
-    height: calc(100vh - 72px);
-    border-right: 1px solid #E9ECF0; }
-    .settings-container .settings-tabs-items h3 {
-      height: 72px;
-      padding-left: 40px;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      line-height: 1.4;
-      letter-spacing: -0.2px;
-      text-align: center;
-      color: #252833;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-      font-size: 20px;
-      border-bottom: 1px solid #E9ECF0; }
-    .settings-container .settings-tabs-items ul li {
-      padding-left: 40px;
-      height: 64px;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-      flex-flow: column;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      cursor: pointer;
-      position: relative;
-      border: none;
-      border-left: 6px solid transparent; }
-      .settings-container .settings-tabs-items ul li.title {
-        cursor: inherit;
-        padding-left: 0; }
-        .settings-container .settings-tabs-items ul li.title h4 {
-          margin: 25px 0;
-          padding-left: 40px;
-          font-family: font-xb;
-          font-size: 12px;
-          color: #a8b0bf;
-          line-height: 1.33;
-          letter-spacing: 1px;
-          text-transform: uppercase; }
-        .settings-container .settings-tabs-items ul li.title::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          width: 84%;
-          height: 1px;
-          background-color: #E9ECF0;
-          left: 24px; }
-      .settings-container .settings-tabs-items ul li .subUlTitle {
-        line-height: 1.5;
-        letter-spacing: -0.2px;
-        color: #252833;
-        font-size: 16px;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
-      .settings-container .settings-tabs-items ul li .subUlsubT {
-        line-height: 1.33;
-        letter-spacing: -0.2px;
-        color: #A8B0BF;
-        font-size: 12px; }
-      .settings-container .settings-tabs-items ul li .activeArrow {
-        position: absolute;
-        right: 15px;
-        display: none;
-        top: 40%; }
-      .settings-container .settings-tabs-items ul li.active {
-        background-color: #cce6ff;
-        border-top-right-radius: 86px;
-        border-bottom-right-radius: 86px;
-        border-color: #4382f9; }
-        .settings-container .settings-tabs-items ul li.active .subUlTitle {
-          color: #2557cc; }
-  .settings-container .setting-tabs-contant {
-    width: calc(100% - 322px);
-    background: #fff; }
-    .settings-container .setting-tabs-contant .tab__header {
-      border: 1px solid #e9ecf0;
-      border-right: 0;
-      border-left: 0;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      padding: 0 40px; }
-      .settings-container .setting-tabs-contant .tab__header p {
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-        font-size: 20px;
-        line-height: 1.4;
-        letter-spacing: -0.2px;
-        color: #252833; }
-    .settings-container .setting-tabs-contant .company__logo {
-      display: flex;
-      align-items: center;
-      margin-bottom: 41px; }
-      .settings-container .setting-tabs-contant .company__logo span {
-        width: 160px;
-        height: 160px;
-        border-radius: 50%;
-        padding: 30px;
-        border: solid 1px #eceff1;
-        background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 16px; }
-        .settings-container .setting-tabs-contant .company__logo span img {
-          max-width: 100%;
-          max-height: 100%; }
-      .settings-container .setting-tabs-contant .company__logo .company__logo--change h3 {
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-        font-size: 14px;
-        line-height: 1.43;
-        letter-spacing: -0.2px;
-        color: #252833; }
-      .settings-container .setting-tabs-contant .company__logo .company__logo--change form {
-        display: inline-block; }
-        .settings-container .setting-tabs-contant .company__logo .company__logo--change form input {
-          width: 0.1px;
-          height: 0.1px;
-          opacity: 0;
-          overflow: hidden;
-          position: absolute;
-          z-index: -1; }
-        .settings-container .setting-tabs-contant .company__logo .company__logo--change form label {
-          display: flex;
-          width: 88px;
-          align-items: center; }
-    .settings-container .setting-tabs-contant .owner__info p {
-      opacity: 0.4;
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-      font-size: 16px;
-      line-height: 1.5;
-      letter-spacing: -0.2px;
-      color: #252833;
-      padding-left: 16px; }
-    .settings-container .setting-tabs-contant .proForm .admin_form button {
-      margin-left: 16px; }
-    .settings-container .setting-tabs-contant .proForm .admin__checkbox {
-      padding: 4px 16px; }
-      .settings-container .setting-tabs-contant .proForm .admin__checkbox .ui.checkbox label {
-        color: #3e4352; }
-    .settings-container .setting-tabs-contant .proForm .sub__admin .input__btns {
-      display: flex;
-      flex-wrap: wrap; }
-    .settings-container .setting-tabs-contant .proForm .sub__admin button {
-      background: transparent;
-      border: none;
-      cursor: pointer; }
-      .settings-container .setting-tabs-contant .proForm .sub__admin button span {
-        display: flex;
-        align-items: center;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-        font-size: 14px;
-        line-height: 1.43;
-        letter-spacing: -0.2px;
-        text-align: center;
-        color: #858d9e; }
-        .settings-container .setting-tabs-contant .proForm .sub__admin button span img {
-          margin-right: 4px; }
-    .settings-container .setting-tabs-contant .proForm .add__new--admin button {
-      margin-top: 8px; }
-    .settings-container .setting-tabs-contant .proForm.flex__proform {
-      display: flex;
-      flex-flow: column; }
-      .settings-container .setting-tabs-contant .proForm.flex__proform .form-group .ui.selection.dropdown.singleDropDown {
-        max-width: 360px; }
-      .settings-container .setting-tabs-contant .proForm.flex__proform .datepickerContainer .form-group .ui.selection.dropdown.singleDropDown {
-        max-width: 192px; }
-    .settings-container .setting-tabs-contant .delete__admin {
-      margin-top: 68px;
-      padding: 0 16px; }
-      .settings-container .setting-tabs-contant .delete__admin button {
-        background: transparent;
-        border: none;
-        height: 40px;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-        font-size: 13px;
-        line-height: 1.54;
-        letter-spacing: 0.4px;
-        color: #858d9e;
-        cursor: pointer; }
-    .settings-container .setting-tabs-contant .overview__info .overview__info--content {
-      display: flex;
-      align-items: center;
-      margin-bottom: 37px; }
-      .settings-container .setting-tabs-contant .overview__info .overview__info--content p {
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-        font-size: 16px;
-        line-height: 1.5;
-        letter-spacing: -0.2px;
-        color: #252833;
-        margin-right: 12px;
-        min-width: 70px; }
-      .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects {
-        display: flex;
-        align-items: center; }
-        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span {
-          width: 48px;
-          height: 48px;
-          border-radius: 12px;
-          margin: 0 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: font-xb;
-          font-size: 18px;
-          line-height: 1.11;
-          letter-spacing: -0.7px;
-          color: #ffffff; }
-          .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.pm {
-            background-color: #4382f9; }
-          .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.hr {
-            background-color: #e74c3c; }
-          .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.fm {
-            background-color: #39bd3d; }
-          .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.number_span {
-            border: solid 1px #ccd2db;
-            background-color: rgba(67, 130, 249, 0);
-            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
-            font-size: 24px;
-            line-height: 1.17;
-            letter-spacing: -0.5px;
-            color: #252833; }
-        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.text_span {
-          font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-          font-size: 14px;
-          line-height: 1.71;
-          letter-spacing: -0.2px;
-          color: #3e4352; } */
-
-.two__content--style {
-  display: flex;
-  padding-top: 26px;
-  padding-left: 40px;
-  padding-right: 68px;
-  padding-right: 40px;
-  position: relative;
-  padding-bottom: 32px;
-  margin-bottom: 20px; }
-  @media screen and (max-width: 1200px) {
-    .two__content--style {
-      padding-right: 0; } }
-  .two__content--style::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 40px;
-    right: 68px;
-    height: 1px;
-    background-color: #e1e3e8; }
-  .two__content--style .left__column {
-    width: 234px; }
-    @media screen and (max-width: 1200px) {
-      .two__content--style .left__column {
-        width: 110px; } }
-    .two__content--style .left__column h2 {
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-      font-size: 20px;
-      line-height: 1.4;
-      letter-spacing: -0.2px;
-      color: #252833; }
-      @media screen and (max-width: 1200px) {
-        .two__content--style .left__column h2 {
-          font-size: 14px; } }
-  .two__content--style .right__column {
-    width: calc(100% - 234px); }
-    @media screen and (max-width: 1200px) {
-      .two__content--style .right__column {
-        width: calc(100% - 110px); } }
-  .two__content--style:last-of-type::after {
-    display: none; }
-
 .admin__avatar {
   display: flex;
   flex-flow: column;
@@ -6793,7 +7054,7 @@ ul {
   .admin__avatar .sbigAvatar {
     margin: 34px 0 21px 0; }
   .admin__avatar h3 {
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 34px;
     line-height: 1.18;
     letter-spacing: -1.1px;
@@ -6801,7 +7062,7 @@ ul {
     color: #252833;
     margin-bottom: 4px; }
   .admin__avatar span {
-    font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-r;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -6844,14 +7105,14 @@ ul {
     .admin__profile .admin__profile--content:hover::after {
       opacity: 1; }
     .admin__profile .admin__profile--content h3 {
-      font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-r;
       font-size: 24px;
       line-height: 1.17;
       letter-spacing: -0.5px;
       color: #252833;
       margin-bottom: 25px; }
     .admin__profile .admin__profile--content p {
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       font-size: 14px;
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -6860,7 +7121,7 @@ ul {
     .admin__profile .admin__profile--content.big_admin p {
       max-width: 50%; }
   .admin__profile .admin__profile--action h3 {
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -6871,7 +7132,7 @@ ul {
   .admin__profile .admin__profile--action ul li {
     margin-bottom: 16px; }
     .admin__profile .admin__profile--action ul li a {
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opensb;
       font-size: 16px;
       line-height: 1.5;
       letter-spacing: -0.2px;
@@ -6893,7 +7154,7 @@ ul {
       background-image: url(../../images/q-mark.png);
       background-size: 100%; }
     .admin__profile .admin__profile--action.action__li ul li span {
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -6921,7 +7182,9 @@ ul {
   align-items: center; }
 
 .accordionTitle {
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
+  font-family: Muli;
+  font-weight: bold;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -6974,13 +7237,16 @@ ul {
 .Project__num {
   display: flex;
   justify-content: space-between;
-  align-items: center; }
+  align-items: center;
+  min-width: 370px; }
 
 .Project__num p {
   display: flex;
   flex-flow: column;
   align-items: center;
-  font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+  font-family: font-r;
+  font-family: Muli;
+  font-weight: normal;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
@@ -6989,7 +7255,9 @@ ul {
   margin-bottom: 0; }
 
 .Project__num .project__num--span {
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
+  font-family: Muli;
+  font-weight: bold;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -7006,41 +7274,66 @@ ul {
   overflow: hidden;
   cursor: pointer; }
 
-.eps__actions a img {
+.eps__actions a svg {
   transition: all 0.3s ease-in-out;
-  transform: translateY(0); }
+  opacity: 0.4; }
 
-.eps__actions a::after {
-  content: '';
-  width: 20px;
-  position: absolute;
-  height: 20px;
-  transition: all 0.3s ease-in-out;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-repeat: no-repeat;
-  transform: translateY(-30px); }
+.epsTitle:hover .eps__actions a svg {
+  opacity: 0.8; }
 
-.eps__actions a.editIcon::after {
-  background-image: url(../../images/epsActions/editHover.png); }
+.epsTitle:hover .eps__actions a svg g g {
+  opacity: 1;
+  fill: #a8b0bf; }
 
-.eps__actions a.plusIcon::after {
-  background-image: url(../../images/epsActions/plusHover.png); }
+.epsTitle:hover .eps__actions a:hover svg {
+  opacity: 1 !important; }
 
-.eps__actions a.deleteIcon::after {
-  background-image: url(../../images/epsActions/deleteHover.png); }
-
-.eps__actions a:hover img {
-  transform: translateY(30px); }
-
-.eps__actions a:hover::after {
-  transform: translateY(0); }
+.epsTitle:hover .eps__actions a:hover svg g g {
+  opacity: 1 !important;
+  fill: #a5acb7;
+  transition: all 0.1s ease; }
 
 @media screen and (max-width: 1200px) {
+  .Project__num {
+    min-width: inherit; }
+
   .Project__num p {
     margin-right: 30px; } }
+.Accordion__Containers {
+  padding-left: 25px;
+  padding-right: 40px;
+  padding-top: 30px; }
+
+.tree__header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 1px solid #e9ecf0; }
+
+.tree__header h2 {
+  font-family: font-b;
+  font-family: Muli;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833; }
+
+.Eps__header h2 {
+  font-size: 16px;
+  font-family: font-r;
+  font-family: Muli;
+  font-weight: normal;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #252833;
+  padding-left: 4px; }
+
+.no__child .dropArrow {
+  visibility: hidden; }
+
 /*Elements*/
 /*Elements*/
 .Base-Buttons-Container {
@@ -7058,38 +7351,48 @@ ul {
 .button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-sb;
   font-size: 13px;
   border: 1px solid transparent;
   padding: 0 16px;
   cursor: pointer;
-  text-transform: uppercase;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3); }
+  text-transform: lowercase;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
+  height: 36px;
+  font-size: 14px; }
+
+.btn::first-letter,
+.button::first-letter {
+  text-transform: uppercase !important; }
 
 /*Base Hover Press */
-.defaultBtn {
-  min-width: 88px;
-  background-color: transparent;
-  height: 40px;
-  color: #858D9E; }
-  .defaultBtn:hover {
-    border: 1px solid #c2c8d1;
-    color: #858D9E; }
-  .defaultBtn:active {
-    background-color: #FAFBFC;
-    outline: none;
-    border: 1px solid #CCD2DB;
-    box-shadow: none;
-    color: #858D9E; }
-  .defaultBtn:focus {
-    color: #858D9E; }
+.primaryBtn-2 {
+  border: solid 1px #CCD2DB;
+  background-color: rgba(255, 255, 255, 0);
+  color: #5E6475;
+  box-shadow: none;
+  min-width: 80px;
+  transition: all 0.3s ease-in-out; }
+  .primaryBtn-2:hover {
+    color: #5E6475;
+    border: solid 1px #a8b0bf;
+    background-color: #fafbfc; }
+  .primaryBtn-2:active {
+    color: #5E6475;
+    border: solid 1px #858d9e;
+    background-color: #fafbfc; }
+  .primaryBtn-2:focus {
+    color: #5E6475; }
+  .primaryBtn-2 .user.icon {
+    width: 16px;
+    height: 16px; }
 
 .primaryBtn-1 {
   background-color: #4382f9;
   color: #ffffff;
   border: none;
-  min-width: 88px;
-  height: 40px; }
+  min-width: 80px;
+  height: 36px; }
   .primaryBtn-1:hover {
     background-color: #3570E6;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
@@ -7098,155 +7401,380 @@ ul {
     box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05); }
   .primaryBtn-1:focus {
     color: #ffffff; }
+  .primaryBtn-1 .user.icon {
+    width: 16px;
+    height: 16px; }
 
-.primaryBtn-2 {
-  background-color: #E9ECF0;
-  color: #5E6475;
-  border: none;
-  min-width: 88px;
-  height: 40px; }
-  .primaryBtn-2:hover {
-    background-color: #e1e4e8;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4); }
-  .primaryBtn-2:active {
-    -webkit-box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.defaultBtn {
+  border: solid 1px #5F98FA;
+  background-color: rgba(255, 255, 255, 0);
+  color: #3570e6;
+  box-shadow: none;
+  min-width: 80px;
+  transition: all 0.3s ease-in-out; }
+  .defaultBtn:hover {
+    border: solid 1px #4382F9;
+    background-color: #fafcff; }
+  .defaultBtn:active {
+    border: solid 1px #3570E6;
+    background-color: #f7faff; }
+  .defaultBtn .user.icon {
+    width: 16px;
+    height: 16px; }
 
 /*End Base Hover Press */
 /*Disable Btn*/
-.defaultBtn.disabled {
-  background-color: #ffffff; }
-
-.primaryBtn-1.disabled {
-  background-color: #83B4FC;
-  color: #ffffff; }
+.ui.button:disabled, .ui.buttons .disabled.button, .ui.disabled.active.button, .ui.disabled.button, .ui.disabled.button:hover {
+  opacity: 1 !important;
+  text-transform: capitalize;
+  padding: 0 16px !important; }
 
 .primaryBtn-2.disabled {
-  background-color: #edf1f5;
-  color: #CCD2DB; }
+  border: solid 1px #E9ECF0;
+  background-color: rgba(250, 251, 252, 0);
+  color: rgba(94, 100, 117, 0.4); }
+
+.primaryBtn-1.disabled {
+  background-color: #a9ccff;
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none; }
+
+.defaultBtn.disabled {
+  border: solid 1px #9dc3fc;
+  background-color: #f7faff;
+  pointer-events: none;
+  color: rgba(53, 112, 230, 0.4); }
 
 /*End Disable Btn*/
 .LoadBtn svg {
-  height: 40px; }
+  height: 36px; }
 .LoadBtn:hover {
   box-shadow: none; }
 
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 36px;
+  height: 36px; }
+
+.lds-ripple div {
+  position: absolute;
+  border: 2px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite; }
+
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s; }
+
+@keyframes lds-ripple {
+  0% {
+    top: 18px;
+    left: 18px;
+    width: 0;
+    height: 0;
+    opacity: 1; }
+  100% {
+    top: -1px;
+    left: -1px;
+    width: 36px;
+    height: 36px;
+    opacity: 0; } }
+.primaryBtn-2 .lds-ripple div {
+  border: 3px solid #5e6375; }
+
+.primaryBtn-1 .lds-ripple div {
+  border: 3px solid #fff; }
+
+.defaultBtn .lds-ripple div {
+  border: 3px solid #4382F9; }
+
 /* Active Button */
-.activeBtn {
-  -webkit-box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6);
-  -moz-box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6);
-  -ms-box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6);
-  box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6); }
-  .activeBtn:hover {
-    -webkit-box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6);
-    -moz-box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6);
-    -ms-box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6);
-    box-shadow: 0 0 6px 0 rgba(67, 130, 249, 0.6); }
+.primaryBtn-2.activeBtn {
+  border: solid 1px #858D9E;
+  background-color: #fafbfc;
+  color: #5E6475; }
 
-.defaultBtn.activeBtn:hover {
-  border: 1px solid transparent; }
+.primaryBtn-1.activeBtn {
+  border-radius: 4px;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4), 0 0 6px 0 rgba(67, 130, 249, 0.61);
+  background-color: #4382F9; }
+  .primaryBtn-1.activeBtn:hover {
+    background-color: #4382f9; }
 
-.primaryBtn-1.activeBtn:hover {
-  background-color: #4382f9; }
-
-.primaryBtn-2.activeBtn:hover {
-  background-color: #E9ECF0; }
+.defaultBtn.activeBtn {
+  border: solid 1px #3570E6;
+  background-color: #f7faff; }
 
 /* End Active Button */
 .primaryBtnGroup1.smallBtn {
   height: 32px; }
   .primaryBtnGroup1.smallBtn > .ui.button.normal {
-    font-size: 12px;
-    line-height: 1.4; }
+    font-size: 12px; }
+  .primaryBtnGroup1.smallBtn .button {
+    height: 32px; }
 .primaryBtnGroup1.mediumBtn {
-  height: 40px; }
+  height: 36px; }
   .primaryBtnGroup1.mediumBtn > .ui.button.normal {
     font-size: 13px;
-    line-height: 1.4; }
+    line-height: 1.3;
+    height: 36px; }
   .primaryBtnGroup1.mediumBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
     font-size: 13px;
-    line-height: 1.6; }
+    line-height: 1.3; }
 .primaryBtnGroup1.largeBtn {
-  height: 52px; }
+  height: 40px; }
   .primaryBtnGroup1.largeBtn > .ui.button.normal {
     font-size: 16px;
-    line-height: 1.4; }
-  .primaryBtnGroup1.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
-    line-height: 1.8;
-    font-size: 16px; }
+    height: 40px; }
+  .primaryBtnGroup1.largeBtn .ui.floating.dropdown.icon.button {
+    height: 40px; }
+    .primaryBtnGroup1.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
+      font-size: 16px; }
 .primaryBtnGroup1 > .ui.button.normal {
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
-.primaryBtnGroup1 .button {
+  font-family: font-sb;
+  position: relative; }
+  .primaryBtnGroup1 > .ui.button.normal::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    right: 0;
+    width: 1px;
+    background: #ffffff;
+    opacity: 0.2; }
+.primaryBtnGroup1 .button.btnGroup__container {
+  display: flex;
   background-color: #4382f9;
-  color: #ffffff; }
-  .primaryBtnGroup1 .button:hover {
+  color: #ffffff;
+  padding-right: 0 !important;
+  padding: 0; }
+  .primaryBtnGroup1 .button.btnGroup__container:hover {
     background-color: #3570E6;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
     color: #ffffff; }
-  .primaryBtnGroup1 .button:active {
+  .primaryBtnGroup1 .button.btnGroup__container:active {
     box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     background-color: #3570E6; }
-  .primaryBtnGroup1 .button:focus {
+  .primaryBtnGroup1 .button.btnGroup__container:focus {
     color: #ffffff;
     background-color: #3570E6; }
+  .primaryBtnGroup1 .button.btnGroup__container .normal {
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  .primaryBtnGroup1 .button.btnGroup__container .btnGroup__svg {
+    width: 36px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; }
+    .primaryBtnGroup1 .button.btnGroup__container .btnGroup__svg::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 1px;
+      top: 3px;
+      bottom: 3px;
+      width: 1px;
+      opacity: 0.3;
+      background-color: #fff; }
 .primaryBtnGroup1 .button.active:hover {
   background-color: #3570E6;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
   color: #ffffff; }
 
+.defaultBtnGroup.smallBtn {
+  height: 32px; }
+  .defaultBtnGroup.smallBtn > .ui.button.normal {
+    font-size: 12px;
+    height: 32px; }
+  .defaultBtnGroup.smallBtn .button {
+    height: 32px; }
+.defaultBtnGroup.mediumBtn {
+  height: 36px; }
+  .defaultBtnGroup.mediumBtn > .ui.button.normal {
+    font-size: 13px;
+    line-height: 1.3;
+    height: 36px; }
+  .defaultBtnGroup.mediumBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
+    font-size: 13px; }
+.defaultBtnGroup.largeBtn {
+  height: 40px; }
+  .defaultBtnGroup.largeBtn > .ui.button.normal {
+    font-size: 16px;
+    line-height: 1.3;
+    height: 40px; }
+  .defaultBtnGroup.largeBtn .ui.floating.dropdown.icon.button {
+    height: 40px; }
+    .defaultBtnGroup.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
+      font-size: 16px; }
+.defaultBtnGroup > .ui.button.normal {
+  font-family: font-sb;
+  position: relative; }
+  .defaultBtnGroup > .ui.button.normal::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    right: 0;
+    width: 1px;
+    opacity: 0.3;
+    background-color: #83b4fc; }
+.defaultBtnGroup .button.btnGroup__container {
+  display: flex;
+  color: #3570e6;
+  padding-right: 0 !important;
+  border: solid 1px #5f98fa !important;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 0; }
+  .defaultBtnGroup .button.btnGroup__container:hover {
+    border: solid 1px #4382f9 !important;
+    background-color: #fafcff;
+    color: #3570e6; }
+  .defaultBtnGroup .button.btnGroup__container:active {
+    border: solid 1px #3570e6 !important;
+    background-color: #f7faff;
+    color: #3570e6; }
+  .defaultBtnGroup .button.btnGroup__container:focus {
+    color: #3570e6;
+    border: solid 1px #3570e6 !important;
+    background-color: #f7faff; }
+  .defaultBtnGroup .button.btnGroup__container .normal {
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  .defaultBtnGroup .button.btnGroup__container .btnGroup__svg {
+    width: 36px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; }
+    .defaultBtnGroup .button.btnGroup__container .btnGroup__svg::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 3px;
+      bottom: 3px;
+      width: 1px;
+      opacity: 0.3;
+      background-color: #83b4fc; }
+.defaultBtnGroup .button.active:hover {
+  background-color: #f7faff; }
+
 .primaryBtnGroup2.smallBtn {
   height: 32px; }
   .primaryBtnGroup2.smallBtn > .ui.button.normal {
-    font-size: 12px;
-    line-height: 1.4; }
+    font-size: 12px; }
+  .primaryBtnGroup2.smallBtn .button {
+    height: 32px; }
 .primaryBtnGroup2.mediumBtn {
-  height: 40px; }
+  height: 36px; }
   .primaryBtnGroup2.mediumBtn > .ui.button.normal {
     font-size: 13px;
-    line-height: 1.4; }
+    line-height: 1.3;
+    height: 36px; }
   .primaryBtnGroup2.mediumBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
-    font-size: 13px;
-    line-height: 1.6; }
+    font-size: 13px; }
 .primaryBtnGroup2.largeBtn {
-  height: 52px; }
+  height: 40px; }
   .primaryBtnGroup2.largeBtn > .ui.button.normal {
     font-size: 16px;
-    line-height: 1.4; }
-  .primaryBtnGroup2.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
-    line-height: 1.8;
-    font-size: 16px; }
+    height: 40px; }
+  .primaryBtnGroup2.largeBtn .ui.floating.dropdown.icon.button {
+    height: 40px; }
+    .primaryBtnGroup2.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
+      font-size: 16px; }
 .primaryBtnGroup2 > .ui.button.normal {
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
-.primaryBtnGroup2 .button {
-  background-color: #E9ECF0;
-  color: #5E6475; }
-  .primaryBtnGroup2 .button:hover {
-    background-color: #e1e4e8;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4); }
-  .primaryBtnGroup2 .button:active {
-    -webkit-box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2), inset -1px 1px 2px 0 rgba(0, 0, 0, 0.05); }
-  .primaryBtnGroup2 .button:focus {
-    background-color: #e1e4e8; }
+  font-family: font-sb;
+  position: relative; }
+  .primaryBtnGroup2 > .ui.button.normal::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    right: 0;
+    width: 1px;
+    background-color: #dadee6; }
+.primaryBtnGroup2 .button.btnGroup__container {
+  display: flex;
+  padding-right: 0 !important;
+  border: solid 1px #ccd2db !important;
+  background-color: rgba(255, 255, 255, 0);
+  color: #5e6475;
+  padding: 0; }
+  .primaryBtnGroup2 .button.btnGroup__container:hover {
+    border: solid 1px #a8b0bf !important;
+    background-color: #fafbfc !important;
+    color: #5e6475; }
+  .primaryBtnGroup2 .button.btnGroup__container:active {
+    border: solid 1px #858d9e !important;
+    background-color: #fafbfc;
+    color: #5e6475; }
+  .primaryBtnGroup2 .button.btnGroup__container:focus {
+    color: #5e6475;
+    border: solid 1px #858d9e !important;
+    background-color: #fafbfc; }
+  .primaryBtnGroup2 .button.btnGroup__container .normal {
+    padding-left: 16px;
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+    justify-content: center; }
+  .primaryBtnGroup2 .button.btnGroup__container .btnGroup__svg {
+    width: 36px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; }
+    .primaryBtnGroup2 .button.btnGroup__container .btnGroup__svg::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 3px;
+      bottom: 3px;
+      width: 1px;
+      opacity: 0.3;
+      background-color: #5e6475; }
 .primaryBtnGroup2 .button.active:hover {
-  background-color: #e1e4e8;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4); }
+  background-color: #fafbfc; }
 
 .btn.smallBtn {
-  min-width: 72px;
   height: 32px;
+  min-width: 70px;
+  padding: 0 12px;
   font-size: 12px; }
 
 .btn.mediumBtn {
-  min-width: 88px;
-  height: 40px; }
+  min-width: 80px;
+  height: 36px;
+  font-size: 14px; }
 
 .btn.largeBtn {
-  min-width: 158px;
-  height: 52px;
-  font-size: 16px; }
+  height: 40px;
+  font-size: 15px; }
+
+.btn__icon {
+  padding-left: 12px;
+  padding-right: 20px; }
+
+.btn__icon .user.icon {
+  margin-right: 7px; }
+
+.primaryBtnGroup1 .ui.icon.button, .primaryBtnGroup1 .ui.icon.buttons .button, .primaryBtnGroup2 .ui.icon.button, .primaryBtnGroup2 .ui.icon.buttons .button, .defaultBtnGroup .ui.icon.button, .defaultBtnGroup .ui.icon.buttons .button {
+  padding-left: 8px;
+  padding-right: 8px; }
+
+.primaryBtnGroup1 .ui.button.normal, .primaryBtnGroup2 .ui.button.normal, .defaultBtnGroup .ui.button.normal {
+  padding-left: 16px;
+  padding-right: 16px; }
 
 .Controllers-Body {
   padding: 30px; }
@@ -7282,20 +7810,20 @@ ul {
 
 /*Start Radio*/
 .radioBoxBlue.ui.checkbox label::before {
-  border: 2.5px solid #CCD2DB; }
+  border: 2px solid #CCD2DB; }
 .radioBoxBlue.ui.checkbox label:hover::before {
-  border: 2.5px solid #A8B0BF; }
+  border: 2px solid #A8B0BF; }
 
 .ui.radio.checkbox.radioBoxBlue input:focus:checked ~ label:before {
-  border: 2.5px solid #3570E6; }
+  border: 2px solid #3570E6; }
 .ui.radio.checkbox.radioBoxBlue input:focus:checked ~ label:after {
   background-color: #3570E6; }
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:before {
-  border: 2.5px solid #3570E6; }
+  border: 2px solid #3570E6; }
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:after {
   background-color: #3570E6; }
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:hover::before {
-  border: 2.5px solid #2557CC; }
+  border: 2px solid #2557CC; }
 .ui.radio.checkbox.radioBoxBlue input:checked ~ label:hover:after {
   background-color: #2557CC; }
 .ui.radio.checkbox.radioBoxBlue label:after {
@@ -7303,20 +7831,20 @@ ul {
 
 /**/
 .radioBoxgreen.ui.checkbox label::before {
-  border: 2.5px solid #BCC4D1; }
+  border: 2px solid #BCC4D1; }
 
 .radioBoxgreen.ui.checkbox input:focus:checked ~ label:before {
-  border: 2.5px solid #47CC4A; }
+  border: 2px solid #47CC4A; }
 .radioBoxgreen.ui.checkbox input:focus:checked ~ label:after {
   background-color: #47CC4A; }
 .radioBoxgreen.ui.checkbox input:checked ~ label:before {
-  border: 2.5px solid #47CC4A; }
+  border: 2px solid #47CC4A; }
 .radioBoxgreen.ui.checkbox input:checked ~ label:after {
   background-color: #47CC4A; }
 .radioBoxgreen.ui.checkbox input:checked ~ label:hover:after {
   background-color: #2AA832; }
 .radioBoxgreen.ui.checkbox input:checked ~ label:hover:before {
-  border: 2.5px solid #2AA832; }
+  border: 2px solid #2AA832; }
 
 .radioBoxBlue.ui.disabled {
   -webkit-user-select: none;
@@ -7325,7 +7853,7 @@ ul {
   user-select: none;
   pointer-events: none; }
   .radioBoxBlue.ui.disabled input:checked ~ label:before {
-    border: 2.5px solid #ACCFFC; }
+    border: 2px solid #ACCFFC; }
   .radioBoxBlue.ui.disabled input:checked ~ label:after {
     background-color: #ACCFFC; }
 
@@ -7372,7 +7900,7 @@ ul {
 
 .ui.checkbox label {
   font-size: 14px;
-  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+  font-family: font-opens;
   color: #5E6475; }
   .ui.checkbox label:hover {
     color: #252833; }
@@ -7385,7 +7913,7 @@ ul {
   .toggleWithText span {
     color: #252833;
     font-size: 14px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     display: inline-block;
     position: relative;
     top: -6px; }
@@ -7396,7 +7924,7 @@ ul {
   margin-right: 4px; }
 .form.ui .grouped.fields > label {
   font-size: 14px;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
   color: #252833;
   margin-bottom: 4px;
   letter-spacing: -0.2px;
@@ -7406,7 +7934,7 @@ ul {
   align-items: center; }
   .form.ui .grouped.fields > label span {
     color: #adbccc;
-    font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-r;
     font-size: 12px;
     margin-left: 4px; }
 .form.ui .grouped.fields .field {
@@ -7425,7 +7953,7 @@ ul {
 .form.ui .grouped.fields p {
   color: #E74C3C;
   font-size: 12px;
-  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+  font-family: font-opens;
   padding-left: 3px; }
 
 .ui.checkbox .box:after,
@@ -7491,13 +8019,13 @@ ul {
     color: #3E4352;
     font-size: 14px;
     position: relative;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     overflow: hidden;
     margin-bottom: 8px; }
     .choiceCardsUL li span {
       color: #858d9e;
       font-size: 12px;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+      font-family: font-opens; }
     .choiceCardsUL li svg {
       position: absolute;
       top: 5px;
@@ -7519,7 +8047,7 @@ ul {
     color: #A8B0BF; }
   .choiceCardsUL .activeChiceCard {
     border: solid 2px #4382f9;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     color: #3E4352;
     background-color: #f7f9fa; }
     .choiceCardsUL .activeChiceCard:hover {
@@ -7564,7 +8092,7 @@ ul {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2); }
 
 .notfiSpan {
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
   font-size: 16px;
   -webkit-box-flex: 6;
   -ms-flex: 6;
@@ -7576,7 +8104,7 @@ ul {
   -ms-flex: 1;
   flex: 1;
   text-align: right;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
   font-size: 14px;
   letter-spacing: 0.4px; }
 
@@ -7666,7 +8194,7 @@ ul {
     display: inline-block;
     font-size: 12px;
     color: #3E4352;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     letter-spacing: -0.3px;
     margin-left: 4px; }
 
@@ -7707,7 +8235,7 @@ ul {
     display: inline-block;
     font-size: 12px;
     color: #3E4352;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     letter-spacing: -0.3px;
     margin-left: 4px; }
   .chipImgNameClose svg {
@@ -7750,7 +8278,7 @@ ul {
       display: inline-block;
       font-size: 12px;
       color: #3E4352;
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opensb;
       letter-spacing: -0.3px;
       margin-left: 4px; }
     .chipImgNameTextX .chipImgText:hover {
@@ -7824,7 +8352,7 @@ ul {
     display: inline-block;
     font-size: 14px;
     color: #3E4352;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     letter-spacing: -0.2px;
     margin-left: 4px; }
 
@@ -7865,7 +8393,7 @@ ul {
     display: inline-block;
     font-size: 14px;
     color: #3E4352;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     letter-spacing: -0.3px;
     margin-left: 4px; }
   .chipImgNameCloseLarge svg {
@@ -7890,7 +8418,7 @@ ul {
   color: #3E4352;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+  font-family: font-opensb; }
 
 .darkGrayTagIcon {
   height: 24px;
@@ -7904,7 +8432,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+  font-family: font-opensb; }
 
 .blueTagIcon {
   height: 24px;
@@ -7918,7 +8446,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+  font-family: font-opensb; }
 
 .greenTagIcon {
   height: 24px;
@@ -7932,7 +8460,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+  font-family: font-opensb; }
 
 .redTagIcon {
   height: 24px;
@@ -7946,7 +8474,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+  font-family: font-opensb; }
 
 .Labelssss {
   padding: 15px; }
@@ -7969,7 +8497,7 @@ ul {
   .mailBoxLabel .FirstSpAn {
     margin-right: 8px; }
   .mailBoxLabel span {
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 12px; }
 
 .mailBoxLabelGray {
@@ -8027,7 +8555,7 @@ ul {
     .workflowLabel:active path {
       fill: #858d9e; }
   .workflowLabel span {
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     font-size: 12px; }
   .workflowLabel svg {
     margin-left: 8px; }
@@ -8041,7 +8569,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowBlue {
   height: 28px;
@@ -8051,7 +8579,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowGreen {
   height: 28px;
@@ -8061,7 +8589,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowBorder.basic {
   height: 28px;
@@ -8071,7 +8599,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 /**/
 .ui.label.labelWithArrowGrayS {
@@ -8082,7 +8610,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowRedS {
   height: 24px;
@@ -8092,7 +8620,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowGreenS {
   height: 24px;
@@ -8102,7 +8630,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowBorderS.basic {
   height: 24px;
@@ -8112,7 +8640,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowRedBasic.basic {
   border: solid 1px #e74c3c;
@@ -8122,7 +8650,7 @@ ul {
     color: #e74c3c;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 .ui.label.labelWithArrowGreenBasic {
   height: 24px;
@@ -8132,13 +8660,13 @@ ul {
     color: #47cc4a;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
 
 /**/
 .inboxNotif {
   background-color: #E74C3C;
   color: #f9fbfc;
-  font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+  font-family: font-b;
   font-size: 12px;
   display: inline-block;
   cursor: pointer;
@@ -8322,7 +8850,7 @@ ul {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+  font-family: font-opensb;
   font-size: 13px; }
   .rowsPaginations .ui.selection.dropdown.rowsPagiDrop {
     padding: 15px 30px 15px 5px;
@@ -8330,7 +8858,7 @@ ul {
     border: none;
     font-size: 13px; }
     .rowsPaginations .ui.selection.dropdown.rowsPagiDrop .text {
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opensb;
       font-size: 13px; }
     .rowsPaginations .ui.selection.dropdown.rowsPagiDrop:hover {
       background-color: transparent;
@@ -8344,8 +8872,8 @@ ul {
       margin-left: 5px;
       font-size: 15px; }
   .rowsPaginations .rowsPagiRange {
-    margin-left: 50px;
-    margin-right: 16px; }
+    margin-left: 48px;
+    margin-right: 7px; }
     .rowsPaginations .rowsPagiRange .of {
       color: #9da2a9; }
   .rowsPaginations button {
@@ -8386,7 +8914,7 @@ ul {
     background-color: #E9ECF0;
     margin: 5px 2px;
     border-radius: 50%;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     color: #3e4352;
     font-size: 12px;
     letter-spacing: -0.2px; }
@@ -8428,7 +8956,7 @@ ul {
     align-items: center;
     letter-spacing: -0.2px;
     font-size: 11px;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     color: #4382F9;
     -webkit-transition: 0.3s;
     transition: 0.3s; }
@@ -8442,7 +8970,7 @@ ul {
 
 .ui.breadcrumb.proBreadcrumb a {
   color: #4382F9;
-  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+  font-family: font-opens;
   font-size: 11px;
   letter-spacing: -0.2px;
   -webkit-transition: 0.3s;
@@ -8457,7 +8985,7 @@ ul {
 .ui.breadcrumb.proBreadcrumb .active {
   color: #5E6475;
   font-size: 11px;
-  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+  font-family: font-opens;
   letter-spacing: -0.2px; }
 
 .Elements-popups {
@@ -8478,7 +9006,7 @@ ul {
   display: inline-block;
   max-width: 310px; }
   .popUp h3 {
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     font-size: 14px;
     letter-spacing: -0.2px;
     color: #f9fbfc;
@@ -8501,7 +9029,7 @@ ul {
     color: #4382f9;
     font-size: 12px;
     letter-spacing: 0.2px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     display: block;
     text-align: right; }
 
@@ -8592,7 +9120,7 @@ ul {
         justify-content: flex-start;
         color: #252833;
         font-size: 14px;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+        font-family: font-b; }
         .popUpClickContainer .popupClickContent .popupMenu .popupMenuTitile svg {
           width: 24px;
           height: 24px;
@@ -8610,11 +9138,11 @@ ul {
             letter-spacing: -0.2px;
             font-size: 14px;
             color: #858D9E;
-            font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+            font-family: font-r; }
           .popUpClickContainer .popupClickContent .popupMenu ul li a {
             flex: 0.2;
             text-decoration: underline;
-            font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+            font-family: font-b;
             color: #4382f9; }
             .popUpClickContainer .popupClickContent .popupMenu ul li a:hover {
               text-decoration: none; }
@@ -8705,13 +9233,13 @@ ul {
         background: #DADEE6; }
       .StepperNum .StepNumber .StepNum p {
         font-size: 20px;
-        font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+        font-family: font-b;
         color: #adbccc; }
       .StepperNum .StepNumber .StepNum .StepTrue {
         display: none; }
     .StepperNum .StepNumber .stepWord {
       color: #adbccc;
-      font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+      font-family: font-b;
       font-size: 12px;
       margin: 0 8px;
       position: relative; }
@@ -8719,7 +9247,7 @@ ul {
         position: absolute;
         top: 100%;
         left: 0;
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+        font-family: font-opens; }
     .StepperNum .StepNumber .Step-Line {
       width: 48px;
       height: 2px;
@@ -8802,7 +9330,7 @@ ul {
     line-height: 1.45;
     letter-spacing: -0.2px;
     top: 120%;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;; }
+    font-family: font-opens; }
 .StepperNum.StepperNum3 .StepNumber.activea .stepWord {
   color: #4382F9; }
 
@@ -8964,7 +9492,7 @@ ul {
       color: #3E4352;
       letter-spacing: -0.2px;
       font-size: 12px;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       margin: 0 12px; }
       .StepperWorkFlow .step-content-foot span i {
         margin: 0 4px; }
@@ -8976,7 +9504,7 @@ ul {
     letter-spacing: -0.2px;
     font-size: 16px;
     color: #252833;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal; }
+    font-family: font-b; }
   .StepperWorkFlow .step-content .step-content-body.out {
     display: none; }
   .StepperWorkFlow .workflow-sliderSteps {
@@ -8996,7 +9524,8 @@ ul {
       flex: 1; }
 
 .inputsSections {
-  padding: 10px 20px; }
+  padding: 10px 20px;
+  background: #fff; }
 
 .inputsStates {
   width: 148px;
@@ -9039,21 +9568,14 @@ ul {
     -webkit-border-radius: 4px;
     border-radius: 4px;
     margin-bottom: 8px; }
-    .proForm .form-group label {
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
-      margin-bottom: 4px; }
-    .proForm .form-group .ui.labeled.input {
-      height: 40px; }
-      .proForm .form-group .ui.labeled.input input {
-        height: 40px; }
-        .proForm .form-group .ui.labeled.input input:hover {
-          border-color: #A8B0BF; }
-        .proForm .form-group .ui.labeled.input input:focus {
-          background-color: #ffffff;
-          border: solid 2px #83B4FC; }
-        .proForm .form-group .ui.labeled.input input::placeholder {
-          letter-spacing: -0.2px;
-          color: #A8B0BF; }
+    .proForm .form-group .ui.labeled.input input:hover {
+      border-color: #A8B0BF; }
+    .proForm .form-group .ui.labeled.input input:focus {
+      background-color: #ffffff;
+      border: solid 2px #83B4FC; }
+    .proForm .form-group .ui.labeled.input input::placeholder {
+      letter-spacing: -0.2px;
+      color: #A8B0BF; }
     .proForm .form-group .ui.left input:focus {
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
@@ -9066,25 +9588,84 @@ ul {
     letter-spacing: -0.2px;
     color: #A8B0BF;
     font-size: 12px;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-weight: 400;
     margin-top: 4px; }
   .proForm .linebylineInput {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
+    align-items: flex-start;
+    flex-flow: column; }
+    .proForm .linebylineInput.sameLineInput {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      flex-flow: row; }
+      .proForm .linebylineInput.sameLineInput label {
+        margin: 0;
+        margin-right: 16px;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 1.43;
+        letter-spacing: -0.2px;
+        text-align: right;
+        color: #26344c; }
+      .proForm .linebylineInput.sameLineInput .ui.input.inputDev {
+        -webkit-border-radius: 4px;
+        border-radius: 4px; }
+        .proForm .linebylineInput.sameLineInput .ui.input.inputDev input {
+          height: 40px; }
+  .proForm .defaultLabel input {
+    height: 40px; }
+  .proForm .defaultLabel label {
+    margin: 0;
+    margin-bottom: 4px;
+    padding: 0; }
+  .proForm .defaultLabel .ui.basic.label.large.searchlabel.svg {
+    height: 40px; }
+  .proForm .labeledInput input {
+    height: 48px;
+    border-radius: 4px;
+    border: solid 2px #E9ECF0;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    color: #3E4352;
+    background-color: #ffffff;
+    font-size: 14px;
+    text-align: left; }
+    .proForm .labeledInput input:hover {
+      border-color: #A8B0BF; }
+    .proForm .labeledInput input:focus {
+      background-color: #ffffff;
+      border: solid 2px #83B4FC; }
+    .proForm .labeledInput input::placeholder {
+      letter-spacing: -0.2px;
+      color: #A8B0BF;
+      font-size: 14px; }
+  .proForm .labeledInput.labeled.input {
+    height: 48px; }
+    .proForm .labeledInput.labeled.input input {
+      height: 48px; }
+  .proForm .labeledInput .label__input {
+    display: flex;
     align-items: center;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: flex-start; }
-    .proForm .linebylineInput label {
-      margin-right: 4px;
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
-    .proForm .linebylineInput .ui.input.inputDev {
-      padding: 12px 16px;
-      -webkit-border-radius: 4px;
-      border-radius: 4px; }
+    justify-content: center;
+    min-width: 88px;
+    padding-left: 12px;
+    padding-right: 7px;
+    background-color: #fafbfc !important; }
+  .proForm .labeledInput .label__text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #fafbfc;
+    border: solid 2px #E9ECF0; }
   .proForm .has-error .help-block,
   .proForm .has-error .control-label,
   .proForm .has-error .radio,
@@ -9096,22 +9677,38 @@ ul {
   .proForm .has-error.radio-inline label,
   .proForm .has-error.checkbox-inline label {
     color: #E74C3C;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-weight: 600;
     letter-spacing: -0.3px;
     font-size: 12px;
     font-style: normal; }
   .proForm .control-label {
-    letter-spacing: -0.2px;
-    color: #26344c;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-    display: block; }
+    font-family: Muli;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 1.54;
+    letter-spacing: normal;
+    color: #5E6475;
+    position: relative;
+    z-index: 11;
+    margin-bottom: -10px;
+    margin-left: 13px;
+    padding: 0 5px; }
+    .proForm .control-label::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 2px;
+      background: #fff;
+      z-index: -1; }
   .proForm .ui.input .ui.svg-input {
     display: flex;
     align-items: center;
     justify-content: center;
     left: 0;
     top: 0;
-    height: 42px;
+    height: 48px;
     width: 40px;
     position: absolute; }
   .proForm .ui.input .svgInput {
@@ -9132,34 +9729,38 @@ ul {
       background-size: 25px 25px;
       background-repeat: no-repeat;
       background-position: center;
-      height: 39px; }
+      height: 48px; }
     .proForm .ui.input.inputDev .glyphicon-remove {
       background-image: url(../../images/red-requird.svg);
       background-size: 25px 25px;
       background-repeat: no-repeat;
       background-position: center;
-      height: 39px; }
+      height: 48px; }
     .proForm .ui.input.inputDev .error {
       display: block;
       color: #E74C3C;
-      font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+      font-weight: 600;
       letter-spacing: -0.3px;
       font-size: 12px;
-      font-style: normal; }
+      font-style: normal;
+      line-height: 1.33;
+      margin-top: 4px; }
     .proForm .ui.input.inputDev .inputsideNote {
       position: absolute;
-      top: -25px;
-      right: 0;
+      top: -9px;
+      right: 8px;
       letter-spacing: -0.2px;
-      color: #858D9E;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
-      font-size: 12px; }
+      color: #a8b0bf;
+      font-family: font-opens;
+      font-size: 12px;
+      background: #fff;
+      padding: 0 5px; }
     .proForm .ui.input.inputDev input {
-      height: 40px;
+      height: 48px;
       border-radius: 4px;
       width: 360px;
-      border: solid 1px #DADEE6;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      border: solid 2px #E9ECF0;
+      font-weight: normal;
       letter-spacing: -0.2px;
       color: #3E4352;
       background-color: #ffffff;
@@ -9172,7 +9773,8 @@ ul {
         border: solid 2px #83B4FC; }
       .proForm .ui.input.inputDev input::placeholder {
         letter-spacing: -0.2px;
-        color: #A8B0BF; }
+        color: #A8B0BF;
+        font-size: 14px; }
     .proForm .ui.input.inputDev.has-error .form-control {
       border: solid 2px #e74c3c;
       background-color: #ffffff; }
@@ -9181,13 +9783,15 @@ ul {
       .proForm .ui.input.inputDev.has-error .formInputP span {
         color: red; }
     .proForm .ui.input.inputDev.has-success .form-control {
-      border: solid 1px #dadee6; }
+      border: solid 2px #83B4FC; }
       .proForm .ui.input.inputDev.has-success .form-control:focus {
         border: solid 2px #83B4FC;
         box-shadow: none;
         background-color: #ffffff; }
+      .proForm .ui.input.inputDev.has-success .form-control:hover {
+        border: solid 2px #A8B0BF; }
   .proForm .showPasswordArea .inputsideNote {
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-weight: 600;
     color: #3e4352;
     display: inline-flex;
     align-items: center; }
@@ -9199,17 +9803,34 @@ ul {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; }
+    .proForm .showPasswordArea .togglePW svg {
+      margin-right: 2px; }
+    .proForm .showPasswordArea .togglePW span {
+      font-family: font-opens;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 1.33;
+      letter-spacing: -0.2px;
+      color: #a8b0bf; }
     .proForm .showPasswordArea .togglePW .hide {
       display: none; }
+    .proForm .showPasswordArea .togglePW:hover span {
+      color: #3e4352;
+      transition: all 0.3s ease; }
+    .proForm .showPasswordArea .togglePW:hover svg path {
+      fill: #3e4352;
+      transition: all 0.3s ease; }
     .proForm .showPasswordArea .togglePW.active-pw .hide {
       display: block; }
     .proForm .showPasswordArea .togglePW.active-pw .show {
       display: none; }
   .proForm .inputXmark {
     position: absolute;
-    top: 7px;
-    right: 3px;
-    height: 40px; }
+    top: 0;
+    right: 5px;
+    height: 48px;
+    display: flex;
+    align-items: center; }
   .proForm .popUp {
     position: absolute;
     top: 0;
@@ -9241,8 +9862,8 @@ ul {
       .proForm .inputPassContainer .inputsPassLev .SpansLevel {
         margin: 0 5px; }
         .proForm .inputPassContainer .inputsPassLev .SpansLevel span {
-          width: 37px;
-          height: 6px;
+          width: 16px;
+          height: 3px;
           border-radius: 3px;
           background-color: #E9ECF0;
           display: inline-block;
@@ -9258,7 +9879,7 @@ ul {
       .proForm .inputPassContainer .inputsPassLev .spansWord {
         color: #3e4352;
         letter-spacing: -0.2px;
-        font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+        font-weight: 400;
         font-size: 12px; }
   .proForm .dropdown.large {
     min-width: 88px;
@@ -9340,8 +9961,8 @@ ul {
 .ui.dropdown.classico {
   text-align: center;
   padding: 5px 0;
-  width: 45px;
-  margin-left: -15px; }
+  width: auto;
+  margin-left: 0; }
   .ui.dropdown.classico .dropdown.icon {
     font-size: 16px;
     top: 2.5px;
@@ -9385,7 +10006,7 @@ ul {
     .ui.dropdown.classico > .menu .item-content {
       height: 40px;
       width: 100%;
-      font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+      font-family: font-opens;
       letter-spacing: -0.2px;
       color: #3E4352;
       font-size: 14px;
@@ -9519,8 +10140,8 @@ ul {
   padding-left: 16px !important; }
   .ui.dropdown.classico.withIcon .menu .item .item-content .dropIcon {
     display: inline-block;
-    width: 20px;
-    margin-right: 20px; }
+    width: 16px;
+    margin-right: 16px; }
   .ui.dropdown.classico.withIcon .menu .item .item-content p {
     max-width: 220px; }
 
@@ -9552,7 +10173,7 @@ ul {
   .ui.dropdown.classico.withimages.withHeader .dropdownHeader span {
     letter-spacing: 0.6px;
     padding-left: 8px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     color: #A8B0BF; }
 
 /*Base Menu*/
@@ -9568,11 +10189,11 @@ ul {
   align-items: center; }
   .ui.dropdown.classico.baseMenu .dropdownHeader span {
     letter-spacing: 0.6px;
-    font-family: 'Muli';  font-weight: bold;   font-style: normal;   font-stretch: normal;
+    font-family: font-b;
     color: #A8B0BF; }
 .ui.dropdown.classico.baseMenu .menu .item {
-  padding-right: 16px !important;
-  padding-left: 24px !important; }
+  padding-right: 32px !important;
+  padding-left: 24px  !important; }
   .ui.dropdown.classico.baseMenu .menu .item > i {
     width: inherit;
     display: -webkit-inline-box;
@@ -9605,32 +10226,32 @@ ul {
 
 .dropdownTitle {
   font-size: 14px;
-  font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+  font-family: font-opensb;
   margin-bottom: 4px;
   letter-spacing: -0.2px;
   color: #26344c; }
 
 .ui.selection.dropdown {
   user-select: none;
-  height: 40px;
+  height: 48px;
   min-height: inherit;
-  border: solid 1px #CCD2DB; }
+  border: solid 2px #E9ECF0; }
   .ui.selection.dropdown hr {
     border-top: 1px solid #E9ECF0;
     margin: 15px 0; }
   .ui.selection.dropdown > .text {
     font-size: 12px;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;; }
+    font-family: font-opensb; }
   .ui.selection.dropdown > .text.default {
     font-size: 14px;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     letter-spacing: -0.2px;
     color: #A8B0BF; }
   .ui.selection.dropdown .selectionimg {
     margin-right: 7px; }
   .ui.selection.dropdown .item {
     font-size: 14px;
-    font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opens;
     color: #3e4352;
     line-height: 1.6; }
     .ui.selection.dropdown .item .closeIcon {
@@ -9699,7 +10320,7 @@ ul {
     align-items: center;
     box-shadow: none;
     font-size: 12px;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;;
+    font-family: font-opensb;
     color: #3e4352; }
     .ui.selection.dropdown.multiDropDown > .label img {
       margin-right: .78571429rem; }
@@ -9725,12 +10346,92 @@ ul {
   border: solid 1px #CCD2DB; }
 
 .ui.selection.dropdown:hover {
-  border: solid 1px #CCD2DB; }
+  border: solid 2px #CCD2DB; }
 
 .ui.selection.dropdown .menu > .item {
   border: none; }
 
-/*@import "_workflow";*/
+.ui.dropdown.active.visible > .dropdown.icon {
+  transform: rotate(180deg);
+  transition: all 0.2s ease; }
+
+.section__tabs {
+  background: #fafbfc;
+  border-right: 1px solid #e9ecf0;
+  width: 322px;
+  min-height: 100vh; }
+
+.section__tabs header {
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.section__tabs header > h2 {
+  font-family: font-b;
+  font-family: Muli;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
+  font-weight: 800;
+  font-style: normal;
+  font-stretch: normal; }
+
+.section__tabs .section__tabs--item {
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  width: 322px;
+  border-left: 6px solid transparent;
+  padding-left: 35px;
+  position: relative; }
+
+.section__tabs .section__tabs--item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 24px;
+  left: 24px;
+  height: 1px;
+  background: #e9ecf0; }
+
+.section__tabs .section__tabs--item:hover {
+  background: #f5f5f6;
+  cursor: pointer; }
+
+.section__tabs .section__tabs--item.active {
+  border-left: 6px solid #4382f9;
+  background: #e9ecf0; }
+
+.section__tabs .section__tabs--item.active::after {
+  content: '';
+  height: 24px;
+  width: 24px;
+  background-repeat: no-repeat;
+  right: 13px;
+  left: inherit;
+  top: 20px;
+  bottom: 20px;
+  background-image: url(../../images/active-arrow.png);
+  background-position: center; }
+
+.section__tabs .section__tabs--item h3 {
+  font-family: font-b;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #252833; }
+
+.section__tabs .section__tabs--item p {
+  font-family: font-opens;
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: -0.2px;
+  color: #a8b0bf; }
+
 .workflowWrapper {
   overflow: auto;
   scroll-behavior: smooth; }
@@ -9818,7 +10519,7 @@ ul {
       .card-status .card-box .signature-h .avatarName {
         margin-left: 10px; }
         .card-status .card-box .signature-h .avatarName h6 {
-          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+          font-family: font-r;
           font-size: 12px;
           font-weight: bold;
           line-height: 1.33;
@@ -9826,7 +10527,7 @@ ul {
           color: #252833;
           margin: 0; }
         .card-status .card-box .signature-h .avatarName p {
-          font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+          font-family: font-r;
           font-size: 12px;
           font-weight: normal;
           line-height: 1.33;
@@ -9844,14 +10545,14 @@ ul {
       position: relative; }
       .card-status .card-box .box-statue h5 {
         margin: 0;
-        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+        font-family: font-r;
         font-size: 14px;
         font-weight: bold;
         line-height: 1.43;
         letter-spacing: -0.2px;
         color: #252833; }
       .card-status .card-box .box-statue p {
-        font-family: 'Muli';  font-weight: normal;   font-style: normal;   font-stretch: normal;;
+        font-family: font-r;
         font-size: 12px;
         font-weight: normal;
         line-height: 1.33;
@@ -9921,6 +10622,262 @@ ul {
       display: block; }
   .workFlowStep:last-of-type .Step-Line.afterLine {
     display: none; }
+
+.gridfillter-container {
+  padding-top: 0; }
+
+  .filter__warrper {
+    min-height: 124px;
+    border-radius: 2px;
+    background-color: #fafbfc;
+    padding-bottom: 31px; 
+    padding-top: 16px;
+    position: relative;
+    z-index: 100;
+    height: auto;
+}
+
+.filter__warrper .proForm {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.filter__warrper .proForm .linebylineInput {
+    padding: 0;
+    margin: 0 4px;
+}
+
+.filter__warrper .proForm .linebylineInput label {
+    margin: 0 !important;
+    background: transparent;
+}
+
+.filter__warrper .proForm .linebylineInput .ui.input.inputDev input {
+    height: 36px !important;
+}
+
+.filter__warrper .proForm .small__input--width,
+.filter__warrper .proForm .small__input--width .ui.input.inputDev input {
+    width: 104px !important;
+}
+
+.filter__warrper .proForm .medium__input--width,
+.filter__warrper .proForm .medium__input--width .ui.input.inputDev input {
+    width: 216px !important;
+}
+
+.filter__warrper .proForm .large__input--width,
+.filter__warrper .proForm .large__input--width .ui.input.inputDev input {
+    width: 240px !important;
+}
+
+.filter__more .filter__more--btn {
+    font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    text-align: right;
+    color: #252833;
+    float: right;
+    background: transparent;
+    border: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.filter__more {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    padding-right: 7px;
+    margin-bottom: 10px;
+}
+
+
+
+
+.filter__more span {
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
+  font-size: 11px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.45;
+  letter-spacing: -0.2px;
+  color: #5e6475;
+  padding: 4px 8px;
+  border-radius: 100px;
+  border: solid 1px #5e6475;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.filter__warrper .proForm button {
+  margin-bottom: 5px;
+  margin-left: 8px;
+}
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon {
+  width: 100%;
+  height: 36px;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  left: 0;
+  z-index: 9;
+  text-align: right;
+}
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon svg {
+  position: absolute;
+  right: 8px;
+  top: 11px;
+  background: #fff;
+}
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev {
+  padding-bottom: 4px !important;
+}
+
+.filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
+  margin-top: 0;
+}
+
+.filter__warrper .linebylineInput input::placeholder {
+  opacity: 0.4;
+}
+
+/* filter component popUp */
+.filterModal {
+  width: 1136px !important;
+  padding: 0 !important;
+  padding-bottom: 31px !important;
+}
+
+.filterModal .header-filter {
+  height: 128px;
+  display: flex;
+
+  /* align-items: center; */
+  justify-content: center;
+  border-bottom: 0.5px solid #ccd2db;
+  flex-direction: column;
+  padding-top: 39px;
+  padding-bottom: 19px;
+  position: relative;
+}
+
+.filterModal .header-filter h2 {
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
+  font-size: 28px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.14;
+  letter-spacing: -0.5px;
+  text-align: center;
+  color: #252833;
+  margin-bottom: 10px;
+}
+
+.filterModal .header-filter span {
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  text-align: center;
+  color: #252833;
+}
+
+.filterModal .filter__warrper {
+  height: auto;
+  background: transparent;
+  margin-bottom: 50px;
+}
+
+.filterModal .filter__warrper {
+  height: auto;
+  background: transparent;
+}
+
+.filterModal .filter__warrper .linebylineInput {
+  margin-bottom: 16px;
+}
+
+.filterModal .filter__warrper .proForm {
+  justify-content: center;
+  width: 100%;
+}
+
+.filterModal .filter__actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.filterModal .filter__actions button:first-child {
+  width: 204px;
+  margin-bottom: 22px;
+}
+
+.filterModal .reset__filter {
+  background: transparent;
+  color: #3570e6;
+  text-decoration: underline;
+  height: auto;
+  font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: -0.2px;
+  color: #3570e6;
+  border: none;
+  cursor: pointer;
+}
+
+.filterModal .reset__filter.reset__filter--header {
+  position: absolute;
+  right: 44px;
+  bottom: 21px;
+}
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon {
+  width: 100%;
+  height: 36px;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  left: 0;
+  z-index: 9;
+  text-align: right; }
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon svg {
+  position: absolute;
+  right: 8px;
+  top: 11px;
+  background: #fff; }
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev {
+  padding-bottom: 4px !important; }
+
+.filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
+  margin-top: 0; }
+
+.filter__warrper .linebylineInput input::placeholder {
+  opacity: 0.4; }
 
 /*Done*/
 .notificontainer {
@@ -10046,6 +11003,59 @@ ul {
   animation: rotate 1s linear infinite;
   border-radius: 50%; }
 
+/* grid show more filter */
+.showMore__btn {
+  text-align: right; }
+
+.showMore__btn button {
+  background: transparent;
+  border: none;
+  cursor: pointer; }
+
+.showMore__btn button span {
+  background: transparent;
+  border: none;
+  font-family: font-b;
+  font-size: 12px;
+  line-height: 1.67;
+  letter-spacing: 0.2px;
+  color: #858d9e;
+  text-transform: uppercase; }
+
+.showMore__btn .moreOn .less {
+  display: none; }
+
+.showMore__btn .moreOn.lessOn .less {
+  display: inline-block; }
+
+.showMore__btn .moreOn.lessOn .more {
+  display: none; }
+
+.showMore__btn button img {
+  margin-left: 8px; }
+
+.gridfillter-container {
+  display: block; }
+
+.gridfillter-container .fillter-status-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; }
+
+.gridfillter-container .fillter-status-container.onelineFilter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-height: 85px;
+}
+
+.filter__showmore {
+  display: flex;
+  align-items: flex-start; }
+
+/* grid show more filter */
 .add__widget {
   display: flex;
   align-items: center;
@@ -10174,5 +11184,10 @@ ul {
   background-image: url(../../images/EyeShowHover.png);
   height: 11px;
   top: 3px; }
+
+.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput > label {
+  margin-bottom: -10px;
+  position: relative;
+  z-index: 9; }
 
 /*# sourceMappingURL=layout.css.map */

@@ -23,6 +23,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import RiskCause from '../../Componants/OptionsPanels/RiskCause';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
@@ -1421,7 +1422,6 @@ class riskAddEdit extends Component {
                     return (<Dropdown title=""
                         data={this.state.consequences}
                         handleChange={e => this.actionHandler(props.original.id, props.original.conesquenceScore, e, props.original, true, 1)}
-                        //selectedValue={this.state[props.original.id + '-1-drop']}
                         selectedValue={props.original.SelectedConsequence}
                         index={props.original.id} />)
                 }
@@ -1435,7 +1435,6 @@ class riskAddEdit extends Component {
                     return (<Dropdown title=""
                         data={this.state.likelihoods}
                         handleChange={e => this.actionHandler(props.original.id, props.original.likelihoodScore, e, props.original, false, 2)}
-                        //selectedValue={this.state[props.original.id + '-2-drop']}
                         selectedValue={props.original.SelectedLikelihood}
                         index={props.original.id} />)
                 }
@@ -1748,6 +1747,7 @@ class riskAddEdit extends Component {
                                             //Third Step
                                             <Fragment>
                                                 <div className="subiTabsContent feilds__top">
+                                                    <RiskCause riskId={this.state.docId} />
                                                     <div className="doc-pre-cycle">
                                                         <header>
                                                             <h2 className="zero">{Resources['consequence'][currentLanguage]}</h2>
@@ -1757,6 +1757,7 @@ class riskAddEdit extends Component {
                                                             : <LoadingSection />
                                                         }
                                                     </div>
+
                                                     <div className="doc-pre-cycle">
                                                         <div className="slider-Btns">
                                                             <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>

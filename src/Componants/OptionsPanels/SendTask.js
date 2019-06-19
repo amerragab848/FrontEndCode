@@ -88,33 +88,34 @@ class SendTask extends Component {
     render() {
         return (
 
-            <div className="dropWrapper"> 
-                <InputMelcous fullwidth='true' title='subject'
-                    placeholderText='subject'
-                    defaultValue={Resources['Task'][currentLanguage] + ':'}
-                    inputChangeHandler={this.inputSubjectChangeHandler} />
+            <div className="proForm">
+                <div className="dropWrapper">
+                    <InputMelcous fullwidth='true' title='subject'
+                        placeholderText='subject'
+                        defaultValue={Resources['Task'][currentLanguage] + ':'}
+                        inputChangeHandler={this.inputSubjectChangeHandler} />
 
-                <Dropdown title='toCompany'
-                    data={this.state.ToCompany} handleChange={this.To_company_handleChange}
-                    placeholder='selectCompany' />
+                    <Dropdown title='toCompany'
+                        data={this.state.ToCompany} handleChange={this.To_company_handleChange}
+                        placeholder='selectCompany' />
 
-                <Dropdown title='ContactName'
-                    data={this.state.contactData} handleChange={this.Contact_handelChange}
-                    placeholder='selectContact' />
+                    <Dropdown title='ContactName'
+                        data={this.state.contactData} handleChange={this.Contact_handelChange}
+                        placeholder='selectContact' />
 
-                <DatePicker title='startDate'
-                    startDate={this.state.sendingData.startDate}
-                    handleChange={this.startDatehandleChange} />
+                    <DatePicker title='startDate'
+                        startDate={this.state.sendingData.startDate}
+                        handleChange={this.startDatehandleChange} />
 
-                <DatePicker title='finishDate'
-                    startDate={this.state.sendingData.finishDate}
-                    handleChange={this.finishDatehandleChange} />
+                    <DatePicker title='finishDate'
+                        startDate={this.state.sendingData.finishDate}
+                        handleChange={this.finishDatehandleChange} />
 
-                <div className="fullWidthWrapper">
-                    <button className="primaryBtn-1 btn" onClick={this.clickHandler}>
-                        {Resources['save'][currentLanguage]}</button>
+                    <div className="fullWidthWrapper">
+                        <button className="primaryBtn-1 btn" onClick={this.clickHandler}>
+                            {Resources['save'][currentLanguage]}</button>
+                    </div>
                 </div>
-
             </div>
         )
     }
