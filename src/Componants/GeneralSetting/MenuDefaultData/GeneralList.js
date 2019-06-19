@@ -354,7 +354,7 @@ class GeneralList extends Component {
                         EnTitle: this.state.EditListData.title,
                         ARTitle: this.state.EditListData.titleAr,
                         Abbreviation: this.state.EditListData.abbreviation,
-                        value: this.state.showValue ? this.state.EditListData.title.value : 0,
+                        value: this.state.showValue ? this.state.EditListData.value : 0,
                     }}
                     enableReinitialize={true}
                     validationSchema={ValidtionSchema}

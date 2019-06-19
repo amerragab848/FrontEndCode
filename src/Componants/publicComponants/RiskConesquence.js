@@ -16,31 +16,47 @@ class RiskConesquence extends Component {
             conesquenceList: [],
             conesquenceItems: [],
             isLoading: true,
-            riskId: 2
+            riskId: this.props.riskId
 
         }
     }
 
     componentWillMount() {
         dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=consequences").then(result => {
+            if (result) {
+                this.setState({
+                    conesquenceList: result, isLoading: false
+                });
+            }
+            else
             this.setState({
-                conesquenceList: result, isLoading: false
+                conesquenceList: [], isLoading: false
             });
         });
-    } 
+        if(this.state.riskId){
+        dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
+            this.setState({
+                conesquenceItems: result, isLoading: false
+            });
+        }).catch(() => {
+            this.setState({
+                conesquenceItems: [], isLoading: false
+            });
+        });}
+    }
 
     renderEditable = (cellInfo) => {
         return (
             <div
-                style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer' }}
+                style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={e => {
                     const conesquenceItems = [...this.state.conesquenceItems];
                     conesquenceItems[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                    this.setState({isLoading:true})
-                    Api.post('EditConesquence',conesquenceItems[cellInfo.index]).then(()=>{
-                        this.setState({ conesquenceItems ,isLoading:false}); 
+                    this.setState({ isLoading: true })
+                    Api.post('EditConesquence', conesquenceItems[cellInfo.index]).then(() => {
+                        this.setState({ conesquenceItems, isLoading: false });
                     })
                 }}
                 dangerouslySetInnerHTML={{
@@ -51,21 +67,27 @@ class RiskConesquence extends Component {
     }
 
     chooseConesquence = (item) => {
-        let checked = this.state[item.id] ? this.state[item.id].checked : false;
-        if (checked == false) {
-            this.setState({ isLoading: true })
+        let existinTable = this.state.conesquenceItems.findIndex((i) => i.conesquenceId == item.id)
+        if (existinTable == -1) {
+            this.setState({ [item.id]: true })
             let conesquenceObj = {
                 riskId: this.state.riskId,
                 conesquenceId: item.id,
                 comment: '',
                 addedDate: moment().format('MM/DD/YYYY')
             }
+            this.setState({ isLoading: true })
             dataservice.addObject('AddConesquence', conesquenceObj).then(result => {
                 let conesquenceItems = this.state.conesquenceItems;
-                let  conesquenceItem=result;
-                conesquenceItem.addedDate=moment(conesquenceItem).format("DD/MM/YYYY");
-                conesquenceItems.push(conesquenceItem);
-                this.setState({ conesquenceItems, isLoading: false })
+                let conesquenceItem = result;
+                if (result.id > 0) {
+                    conesquenceItem.addedDate = moment(conesquenceItem).format("DD/MM/YYYY");
+                    conesquenceItems.push(conesquenceItem);
+                    this.setState({ conesquenceItems, isLoading: false, [item.id]: false })
+                }
+                else
+                    this.setState({ isLoading: false, [item.id]: false })
+
             })
             this.setState({ [item.id]: true });
         }
@@ -75,8 +97,8 @@ class RiskConesquence extends Component {
         this.setState({ isLoading: true })
         Api.post('DeleteConesquence?id=' + id).then(result => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            let consequencesItems = this.state.conesquenceItems.filter(element => element.id != id);
-            this.setState({ isLoading: false, consequencesItems }) 
+            let conesquenceItems = this.state.conesquenceItems.filter(element => element.id != id);
+            this.setState({ isLoading: false, conesquenceItems })
         }).catch(() => {
             toast.success(Resources["operationCanceled"][currentLanguage]);
 
@@ -87,9 +109,9 @@ class RiskConesquence extends Component {
         let checkBoxs = this.state.conesquenceList.map(item => {
             return (
                 <div className="project__Permissions--type " key={item.id} >
-                    <div id="allSelected" className={"ui checkbox checkBoxGray300  " + (this.state[item.id] ? this.state[item.id].checked : null)}
+                    <div id="allSelected" className={"ui checkbox checkBoxGray300  " + (this.state[item.id] ? (this.state[item.id] == true ? "checked" : '') : null)}
                         onClick={e => this.chooseConesquence(item)} >
-                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state[item.id] ? (this.state[item.id].checked == true ? "checked" : null) : null}
+                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state[item.id] ? (this.state[item.id] == true ? "checked" : null) : null}
                         />
                         <label>{item.title}</label>
                     </div>
@@ -103,33 +125,33 @@ class RiskConesquence extends Component {
                     Cell: props => {
                         return (
                             <img src={Recycle} alt="delete" onClick={e => this.deleteConesquence(props.original.id)} />
-                        ) 
+                        )
                     }, width: 30
                 },
                 {
                     Header: Resources.numberAbb[currentLanguage],
-                    accessor: 'id', 
+                    accessor: 'id',
                     show: false,
                 }, {
-                    Header: "riskId", 
-                    accessor: 'riskId' ,
-                     show: false,
-                }, {
-                    Header: 'conesquenceId',  
-                    accessor: 'conesquenceId' ,
+                    Header: "riskId",
+                    accessor: 'riskId',
                     show: false,
-                },  {
-                    Header:  Resources.conesquenceName[currentLanguage],
+                }, {
+                    Header: 'conesquenceId',
+                    accessor: 'conesquenceId',
+                    show: false,
+                }, {
+                    Header: Resources.conesquenceName[currentLanguage],
                     accessor: 'consequenceName'
                 }, {
-                    Header:  Resources.comment[currentLanguage],
+                    Header: Resources.comment[currentLanguage],
                     accessor: 'comment',
                     Cell: this.renderEditable
                 }, {
-                    Header:  Resources.addedDate[currentLanguage],
-                    accessor: 'addedDate' 
+                    Header: Resources.addedDate[currentLanguage],
+                    accessor: 'addedDate'
                 }
-            ]  }
+            ]}
             defaultPageSize={5}
             className="-striped -highlight"
         />
