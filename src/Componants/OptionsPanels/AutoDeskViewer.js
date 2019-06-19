@@ -51,7 +51,6 @@ class AutoDeskViewer extends Component {
             index++;
         }
         this.state = {
-
             docId: docId,
             projectId: projectId,
             docType: docTypeId,
@@ -72,6 +71,7 @@ class AutoDeskViewer extends Component {
             markupCore: {},
             markup: {},
             viewer: null,
+            loadingPer: false
         }
 
     }
@@ -100,7 +100,8 @@ class AutoDeskViewer extends Component {
                     token.access_token, token.expires_in);
         }
     }
-    componentWillMount() { 
+
+    componentWillMount() {
         Api.get('GetAllMarkUps?docId=' + this.state.docId + '&docType=' + this.state.docType + '&docFileId=' + this.state.docFileId).then((markups) => {
             this.setState({ markups })
             let markupsList = []
@@ -109,20 +110,40 @@ class AutoDeskViewer extends Component {
             })
             this.setState({ markupsList })
             let obj = {
-                fileName: this.state.fileName,// 'visualization_-_conference_room.dwg',
-                attachFile: this.state.attachFile // 'https://newgiza.azureedge.net/project-files/570dfbea-2046-4dc3-a704-5d8dc966befc.dwg'
+                fileName: 'visualization_-_conference_room.dwg',//this.state.fileName,// 
+                attachFile: 'https://newgiza.azureedge.net/project-files/570dfbea-2046-4dc3-a704-5d8dc966befc.dwg'//this.state.attachFile // 
             }
             Api.post("translateAutoDesk", obj).then(data => {
-                this.showModel(data); 
+                this.showModel(data);
             })
         })
     }
+
+    componentDidMount() {
+        var PercentageID = document.getElementById("precent");
+        this.animateValue(PercentageID, 0, 98);
+    }
+
+    animateValue(id, start, end) {
+        var current = start,
+            obj = id,
+            duration = this.state.loadingPer === true ? 0 : 500;
+
+        var timer = setInterval(function () {
+            current = current + 1;
+            obj.innerHTML = current + "%";
+            if (current === end) {
+                clearInterval(timer);
+            }
+        }, duration);
+    }
+
     showAllToggle = () => {
         let markupCore = this.state.markupCore;
         if (this.state.showAll == true) {
             if (markupCore) {
-                markupCore.leaveEditMode();
-                markupCore.hide();
+                // markupCore.leaveEditMode();
+                // markupCore.hide();
             }
             this.setState({ showAll: false, viewEditMarkUps: true })
             // if (markup) {
@@ -234,8 +255,8 @@ class AutoDeskViewer extends Component {
                 }, console.log("Loading fail model autoDesk"));
                 this.setState({ viewer, loaded: true })
             }, console.log("Loading fail model autoDesk"));
+            this.setState({ loadingPer: true })
         });
-
     }
 
     getAccessToken = () => {
@@ -258,6 +279,7 @@ class AutoDeskViewer extends Component {
 
         }
     }
+
     redo = () => {
         if (this.state.markupCore) {
             let markupCore = this.state.markupCore;
@@ -269,6 +291,7 @@ class AutoDeskViewer extends Component {
 
         }
     }
+
     addComment = () => {
         if (this.state.markupCore) {
             let viewer = this.state.viewer
@@ -283,6 +306,7 @@ class AutoDeskViewer extends Component {
 
         }
     }
+
     addCircle = () => {
         if (this.state.markupCore) {
             let viewer = this.state.viewer
@@ -298,6 +322,7 @@ class AutoDeskViewer extends Component {
         }
 
     }
+
     addArrow = () => {
         if (this.state.markupCore) {
             let viewer = this.state.viewer
@@ -312,6 +337,7 @@ class AutoDeskViewer extends Component {
 
         }
     }
+
     addRectangle = () => {
         if (this.state.markupCore) {
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(this.state.markupCore);
@@ -326,6 +352,7 @@ class AutoDeskViewer extends Component {
 
         }
     }
+
     Freehand = () => {
         if (this.state.markupCore) {
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(this.state.markupCore);
@@ -439,6 +466,7 @@ class AutoDeskViewer extends Component {
 
 
     }
+
     changeMarkup = (value) => {
         let item = this.state.markups[value]
         this.restoreState(item.svg, item.viewerState);
@@ -446,8 +474,7 @@ class AutoDeskViewer extends Component {
 
     render() {
         return (
-            <div className="mainContainer main__withouttabs">
-
+            <div className="mainContainer main__withouttabs white-bg">
                 {this.state.loaded == true ?
                     <Fragment>
                         <div className="autoDisk__dropdown">
@@ -460,7 +487,7 @@ class AutoDeskViewer extends Component {
                                     index="mode" />
                             </div>
                             {this.state.showCheckBox == true ?
-                                <div id="allSelected" className={"ui checkbox checkBoxGray300 " + (this.state.showAll == true ? "checked" : "")} onClick={this.showAllToggle}>
+                                <div id="markupBox" className={"ui checkbox checkBoxGray300 " + (this.state.showAll == true ? "checked" : "")} onClick={this.showAllToggle}>
                                     <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state.showAll == true ? "checked" : ""} />
                                     <label>Show</label>
                                 </div> : null}
@@ -515,7 +542,13 @@ class AutoDeskViewer extends Component {
                             </div>
                             : null}
                     </Fragment>
-                    : <h2>Loading...</h2>}
+                    : this.state.loadingPer === true ?
+                        null :
+                        <div id="my_percentage" className="loadingShow" >
+                            <span></span>
+                            <div className="percentage" id="precent"></div>
+                        </div>
+                }
                 <div id="forgeViewer" >
 
                 </div>

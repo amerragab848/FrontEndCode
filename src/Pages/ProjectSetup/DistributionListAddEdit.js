@@ -687,9 +687,9 @@ class TaskGroupsAddEdit extends Component {
                                                 <div className="document-fields">
 
                                                     <div className="proForm first-proform">
-                                                        <div className={'ui input inputDev linebylineInput ' + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
+                                                        <div className='linebylineInput '>
                                                             <label className="control-label">{Resources['subject'][currentLanguage]}</label>
-                                                            <div className="inputDev ui input">
+                                                            <div className={"inputDev ui input "  + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
                                                                 <input autoComplete="off" className="form-control" name="Subject"
                                                                     value={this.state.IsEditMode ? this.state.Dis_ListData.subject : values.Subject}
                                                                     onBlur={(e) => { handleBlur(e) }}
@@ -728,9 +728,9 @@ class TaskGroupsAddEdit extends Component {
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div className={'ui input inputDev linebylineInput  ' + (errors.ArrangeTaskGroups && touched.ArrangeTaskGroups ? 'has-error' : null) + ' '}>
+                                                        <div className='linebylineInput '>
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
-                                                            <div className="inputDev ui input">
+                                                            <div className={"inputDev ui input "  + (errors.ArrangeTaskGroups && touched.ArrangeTaskGroups ? 'has-error' : null) + ' '}>
                                                                 <input disabled autoComplete="off" className="form-control" name="ArrangeTaskGroups"
                                                                     value={this.state.IsEditMode ? this.state.Dis_ListData.arrange : values.ArrangeTaskGroups}
                                                                     onBlur={(e) => { handleBlur(e) }}

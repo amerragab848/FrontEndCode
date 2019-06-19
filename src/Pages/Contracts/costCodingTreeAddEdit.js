@@ -389,7 +389,7 @@ class CostCodingTreeAddEdit extends Component {
                     setFieldTouched,
                     setFieldValue
                   }) => (
-                      <Form className="dropWrapper" onSubmit={handleSubmit}>
+                      <Form className="dropWrapper proForm" onSubmit={handleSubmit}>
                         <div className="fullWidthWrapper textLeft">
                           <header>
                             <h2 className="zero">
@@ -397,13 +397,13 @@ class CostCodingTreeAddEdit extends Component {
                             </h2>
                           </header>
                         </div>
-                        <div className="fillter-status fillter-item-c">
+                        <div className="fillter-status fillter-item-c fullInputWidth ">
                           <label className="control-label">
                             {Resources.codeTitle[currentLanguage]}
                           </label>
                           <div
                             className={
-                              "ui input inputDev fillter-item-c " +
+                              "ui input inputDev fullInputWidth " +
                               (errors.codeTreeTitle && touched.codeTreeTitle
                                 ? "has-error"
                                 : !errors.codeTreeTitle && touched.codeTreeTitle
@@ -435,13 +435,13 @@ class CostCodingTreeAddEdit extends Component {
                             ) : null}
                           </div>
                         </div>
-                        <div className="fillter-status fillter-item-c">
+                        <div className="fillter-status fillter-item-c fullInputWidth">
                           <label className="control-label">
                             {Resources.budgetThisPeriod[currentLanguage]}
                           </label>
                           <div
                             className={
-                              "ui input inputDev fillter-item-c " +
+                              "ui input inputDev " +
                               (errors.budgetThisPeriod && touched.budgetThisPeriod
                                 ? "has-error"
                                 : !errors.budgetThisPeriod &&
@@ -481,13 +481,13 @@ class CostCodingTreeAddEdit extends Component {
                               ) : null}
                           </div>
                         </div>
-                        <div className="fillter-status fillter-item-c">
+                        <div className="fillter-status fillter-item-c fullInputWidth">
                           <label className="control-label">
                             {Resources.budgetAtComplete[currentLanguage]}
                           </label>
                           <div
                             className={
-                              "ui input inputDev fillter-item-c " +
+                              "ui input inputDev " +
                               (errors.budgetAtComplete && touched.budgetAtComplete
                                 ? "has-error"
                                 : !errors.budgetAtComplete &&
@@ -527,13 +527,13 @@ class CostCodingTreeAddEdit extends Component {
                               ) : null}
                           </div>
                         </div>
-                        <div className="fillter-status fillter-item-c">
+                        <div className="fillter-status fillter-item-c fullInputWidth">
                           <label className="control-label">
                             {Resources.originalBudget[currentLanguage]}
                           </label>
                           <div
                             className={
-                              "ui input inputDev fillter-item-c " +
+                              "ui input inputDev " +
                               (errors.originalBudget && touched.originalBudget
                                 ? "has-error"
                                 : !errors.originalBudget && touched.originalBudget
@@ -568,13 +568,13 @@ class CostCodingTreeAddEdit extends Component {
                             ) : null}
                           </div>
                         </div>
-                        <div className="fillter-status fillter-item-c">
+                        <div className="fillter-status fillter-item-c fullInputWidth">
                           <label className="control-label">
                             {Resources.costForcast[currentLanguage]}
                           </label>
                           <div
                             className={
-                              "ui input inputDev fillter-item-c " +
+                              "ui input inputDev " +
                               (errors.costForcast && touched.costForcast
                                 ? "has-error"
                                 : !errors.costForcast && touched.costForcast
@@ -613,7 +613,7 @@ class CostCodingTreeAddEdit extends Component {
                               {Resources["save"][currentLanguage]}
                             </button>
                           ) : (
-                              <button className="primaryBtn-1 btn disabled">
+                              <button className="primaryBtn-1 btn middle__btn disabled">
                                 <div className="spinner">
                                   <div className="bounce1" />
                                   <div className="bounce2" />

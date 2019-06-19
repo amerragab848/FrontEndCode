@@ -32,7 +32,7 @@ class OptionContainer extends React.Component {
             currentTitle: 'LogControls',
             selectedPanels: [],
             showModal: false,
-            defualtValue: { label: Resources["otherActions"][currentLanguage], value: '0' },
+            defualtValue: { label: Resources["action"][currentLanguage], value: '0' },
             data: [
                 { title: "export", value: <ExportDetails />, label: Resources["export"][currentLanguage] },
                 { title: "copyTo", value: <CopyTo docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["copyTo"][currentLanguage] },

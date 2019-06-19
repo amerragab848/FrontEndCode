@@ -216,7 +216,7 @@ class DistributionList extends Component {
                 <div className="fullWidthWrapper">
                     <h4 className="twoLineHeader">{Resources['contactList'][currentLanguage]}</h4>
                 </div>
-                <div className="modal-header fullWidthWrapper">
+                <div className="modal-header dis_reactTable fullWidthWrapper">
                     <ReactTable
                         ref={(r) => {
                             this.selectTable = r;
@@ -267,7 +267,6 @@ class DistributionList extends Component {
                     {({ errors, touched, setFieldValue, setFieldTouched }) => (
                         <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
 
-                            <div className={"ui input inputDev fillter-item-c "}>
                                 <Dropdown title="distributionList" data={this.state.DistributionListDate}
                                     handleChange={this.DistributionHanleChange}
                                     onChange={setFieldValue}
@@ -275,10 +274,9 @@ class DistributionList extends Component {
                                     error={errors.DistributionValidation}
                                     touched={touched.DistributionValidation}
                                     name="DistributionValidation" />
-
-                            </div>
+                         
                             <DatePicker startDate={this.state.sendingData.RequiredDate} handleChange={this.DatehandleChange} />
-                            <div className={"ui input inputDev fillter-item-c "}>
+                          
                                 <Dropdown title="priority"
                                     data={this.state.PriorityData}
                                     handleChange={this.Priority_handelChange}
@@ -288,8 +286,6 @@ class DistributionList extends Component {
                                     touched={touched.PriorityValidation}
                                     name="PriorityValidation" />
 
-
-                            </div>
                             {!this.state.DistributionValidation && <this.ContactSection />}
                             <div className="fullWidthWrapper">
 

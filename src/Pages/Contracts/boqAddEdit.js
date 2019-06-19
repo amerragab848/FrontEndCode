@@ -77,7 +77,7 @@ let projectId = 0;
 let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute=0;
+let perviousRoute = 0;
 let arrange = 0;
 
 
@@ -91,7 +91,7 @@ class bogAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -105,7 +105,7 @@ class bogAddEdit extends Component {
             }
             index++;
         }
- 
+
         let editUnitPrice = ({ value, row }) => {
 
             if (row) {
@@ -262,7 +262,7 @@ class bogAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -324,9 +324,9 @@ class bogAddEdit extends Component {
 
         if (!Config.IsAllow(616) && !Config.IsAllow(617) && !Config.IsAllow(619)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
 
@@ -522,7 +522,7 @@ class bogAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document.id !== this.props.document.id) {
- 
+
             let docDate = moment(props.document.documentDate)
             props.document.statusName = props.document.status ? 'Opened' : 'Closed'
             let document = Object.assign(props.document, { documentDate: docDate })
@@ -535,7 +535,7 @@ class bogAddEdit extends Component {
             this.setState({ isLoading: true })
             this.setState({ _items }, () => this.setState({ isLoading: false }));
         }
- 
+
         if (this.state.showModal != props.showModal) {
             this.setState({ showModal: props.showModal });
         }
@@ -771,7 +771,8 @@ class bogAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -819,7 +820,7 @@ class bogAddEdit extends Component {
             selectedRow: []
         });
     }
-    
+
     assign = () => {
         this.setState({ showBoqModal: true })
         this.boqTypeModal.show()
@@ -1241,7 +1242,7 @@ class bogAddEdit extends Component {
                     {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
                         <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
 
-                            <div className="proForm first-proform">
+                            <div className="proForm first-proform letterFullWidth">
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources['subject'][currentLanguage]} </label>
                                     <div className={"inputDev ui input " + (errors.subject ? 'has-error' : !errors.subject && touched.subject ? (" has-success") : " ")}>
@@ -1635,7 +1636,7 @@ class bogAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                    </div> 
+                    </div>
                 </div>
             </div>
 
@@ -1668,10 +1669,10 @@ class bogAddEdit extends Component {
         let Step_3 = <React.Fragment>
             {this.state.loadingContractPurchase ? <LoadingSection /> : null}
             <div className="company__total proForm">
-                <div className="form-group ">
+                <div className="form-group linebylineInput ">
                     <label className="control-label">{Resources.company[currentLanguage]}</label>
-                    <div className="ui right labeled input">
-                        <input autoComplete="off" type="text" value={this.state.selectedFromCompany.label} readOnly data-toggle="tooltip" title="procoor Company" />
+                    <div className="ui right labeled input inputDev  " style={{ display: 'flex' }}>
+                        <input className="form-control" autoComplete="off" type="text" value={this.state.selectedFromCompany.label} readOnly data-toggle="tooltip" title="procoor Company" />
                         <span className="total_money">{Resources.total[currentLanguage]}</span>
                         <div className="ui basic label greyLabel"> {this.props.document.total}</div>
                     </div>
