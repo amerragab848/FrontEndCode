@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import GridSetup from "./GridSetup";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from "../../api";
@@ -52,7 +52,8 @@ class CommonLog extends Component {
       showDeleteModal: false,
       selectedRows: [],
       minimizeClick: false,
-      documentObj: {}
+      documentObj: {},
+      columnsModal: false
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
@@ -134,7 +135,7 @@ class CommonLog extends Component {
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+        perviousRoute: window.location.pathname + window.location.search
       };
 
       if (
@@ -165,7 +166,7 @@ class CommonLog extends Component {
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+        perviousRoute: window.location.pathname + window.location.search
       };
 
       if (
@@ -333,7 +334,7 @@ class CommonLog extends Component {
           arrange: 0,
           docApprovalId: 0,
           isApproveMode: false,
-          perviousRoute:window.location.pathname+window.location.search
+          perviousRoute: window.location.pathname + window.location.search
         };
 
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -429,6 +430,14 @@ class CommonLog extends Component {
     );
   };
 
+  openModalColumn = () => {
+    this.setState({columnsModal : true})
+  }
+
+  closeModalColumn = () => {
+    this.setState({columnsModal : false})
+  }
+
   cellClick = (rowId, colID) => {
     if (colID != 0 && colID != 1) {
       if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
@@ -444,7 +453,7 @@ class CommonLog extends Component {
             arrange: 0,
             docApprovalId: 0,
             isApproveMode: false,
-            perviousRoute:window.location.pathname+window.location.search
+            perviousRoute: window.location.pathname + window.location.search
           };
 
           if (
@@ -506,6 +515,7 @@ class CommonLog extends Component {
       ) : null;
 
     return (
+      <Fragment>
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
@@ -634,15 +644,23 @@ class CommonLog extends Component {
           >
             <div className="minimizeSpan">
               <div className="H-tableSize" onClick={this.handleMinimize}>
-                {this.state.minimizeClick ? (
-                  <img src={MinimizeVBlue} alt="" />
-                ) : (
-                    <img src={MinimizeV} alt="" />
-                  )}
+                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                  <g fill="none" fill-rule="evenodd" transform="translate(5 5)">
+                    <g fill="#CCD2DB" mask="url(#b)">
+                      <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                    </g>
+                  </g>
+                </svg>
               </div>
-              {/* <div className="V-tableSize">
-                <img src={MinimizeH} alt="" />
-              </div> */}
+              <div className="V-tableSize" onClick={this.openModalColumn}>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                  <g fill="none" fill-rule="evenodd" transform="translate(5 5)">
+                    <g fill="#CCD2DB" mask="url(#b)">
+                      <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                    </g>
+                  </g>
+                </svg>
+              </div>
             </div>
             <div
               className={
@@ -667,6 +685,55 @@ class CommonLog extends Component {
           ) : null}
         </div>
       </div>
+      <div className={this.state.columnsModal ? "grid__column active " : "grid__column " }>
+        <div className="grid__column--container">
+        <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
+
+          <div className="grid__column--title">
+            <h2>Grid Columns</h2>
+          </div>
+          <div className="grid__column--content">
+            <div className="grid__content">
+              <div className="ui checkbox checkBoxGray300 count">
+                <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                <label>Terms of purchase orders 11</label>
+              </div>
+            </div>
+            <div className="grid__content">
+              <div className="ui checkbox checkBoxGray300 count">
+                <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                <label>Terms of purchase orders 11</label>
+              </div>
+            </div>
+            <div className="grid__content">
+              <div className="ui checkbox checkBoxGray300 count">
+                <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                <label>Terms of purchase orders 11</label>
+              </div>
+            </div>
+            <div className="grid__content">
+              <div className="ui checkbox checkBoxGray300 count">
+                <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                <label>Terms of purchase orders 11</label>
+              </div>
+            </div>
+            <div className="grid__content">
+              <div className="ui checkbox checkBoxGray300 count">
+                <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                <label>Terms of purchase orders 11</label>
+              </div>
+            </div>
+            <div className="grid__content">
+              <div className="ui checkbox checkBoxGray300 count">
+                <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                <label>Terms of purchase orders 11</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      </Fragment>
     );
   }
 }

@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import Api from '../../api';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+import moment from "moment";
+import CryptoJS from "crypto-js";
+import { withRouter } from "react-router-dom";
+
 const Autodesk = window.Autodesk;
 
 const listOfOptions = [
@@ -8,24 +12,59 @@ const listOfOptions = [
     { label: 'View Markups', value: 2 },
     { label: 'Edit Markups', value: 3 },
 ];
+const markUpsModel = {
+    projectId: 0,
+    docType: 17,
+    docId: '',
+    docFileId: '',
+    svg: '',
+    viewerState: ''
+};
+let docId = 0;
+let docTypeId = 0;
+let encrypte = "";
+let fileName = "";
+let id = 0;
+let projectId = 0;
 
 class AutoDeskViewer extends Component {
     constructor(props) {
         super(props)
+        const query = new URLSearchParams(this.props.location.search);
+        let index = 0;
+        for (let param of query.entries()) {
+            if (index == 0) {
+                try {
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+                    docId = obj.docId;
+                    docTypeId = obj.docTypeId;
+                    encrypte = obj.encrypte;
+                    fileName = obj.fileName;
+                    id = obj.id;
+                    projectId = obj.projectId;
 
+                }
+                catch{
+                    this.props.history.goBack();
+                }
+            }
+            index++;
+        }
         this.state = {
+            docId: docId,
+            projectId: projectId,
+            docType: docTypeId,
+            docFileId: id,
+            fileName: fileName,
+            attachFile: encrypte,
             view: null, loaded: false,
-            selectedMode: { label: 'View WithOut Markups', value: 1 },
+            showCheckBox: false,
+            selectedMode: { label: 'Select Mode', value: 0 },
             isViewEdit: false,
-            markupCore: null,
             viewLoading: true,
             viewEditMarkUps: false,
-            isViewMarkUp: false,
+            contactName: localStorage.getItem("contactName") !== null ? localStorage.getItem('contactName') : 'Procoor User',
             showAll: true,
-            docId: 0,
-            currentProjectId: 0,
-            docType: 0,
-            docFileId: 0,
             markupId: 0,
             modeId: 0,
             markups: [],
@@ -35,39 +74,6 @@ class AutoDeskViewer extends Component {
             loadingPer: false
         }
 
-    }
-
-    handleViewerError(error) {
-        console.log('Error loading viewer.');
-    }
-
-    /* after the viewer loads a document, we need to select which viewable to
-    display in our component */
-    handleDocumentLoaded(doc, viewables) {
-        if (viewables.length === 0) {
-            console.error('Document contains no viewables.');
-        }
-        else {
-            //Select the first viewable in the list to use in our viewer component
-            this.setState({ view: viewables[0] });
-        }
-    }
-
-    handleDocumentError(viewer, error) {
-        console.log('Error loading a document');
-    }
-
-    handleModelLoaded(viewer, model) {
-        console.log('Loaded model:', model);
-        viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then((markupCore) => {
-            // load the markups 
-            // markupCore.loadMarkups(model.svg, model.viewerState);
-            this.setState({ isViewEdit: true, markupCore })
-        })
-    }
-
-    handleModelError(viewer, error) {
-        console.log('Error loading the model.');
     }
 
     getForgeToken() {
@@ -94,16 +100,21 @@ class AutoDeskViewer extends Component {
                     token.access_token, token.expires_in);
         }
     }
+
     componentWillMount() {
-        Api.get('GetAllMarkUps?docId=640&docType=20&docFileId=38425').then((markups) => {
+        Api.get('GetAllMarkUps?docId=' + this.state.docId + '&docType=' + this.state.docType + '&docFileId=' + this.state.docFileId).then((markups) => {
             this.setState({ markups })
+            let markupsList = []
+            markups.forEach((item, index) => {
+                markupsList.push({ label: item.viewerState, value: index })
+            })
+            this.setState({ markupsList })
             let obj = {
-                fileName: 'visualization_-_conference_room.dwg',
-                attachFile: 'https://newgiza.azureedge.net/project-files/570dfbea-2046-4dc3-a704-5d8dc966befc.dwg'
+                fileName: 'visualization_-_conference_room.dwg',//this.state.fileName,// 
+                attachFile: 'https://newgiza.azureedge.net/project-files/570dfbea-2046-4dc3-a704-5d8dc966befc.dwg'//this.state.attachFile // 
             }
             Api.post("translateAutoDesk", obj).then(data => {
-                this.showModel(data, markups);
-                //this.modeIdToggle(2);
+                this.showModel(data);
             })
         })
     }
@@ -127,18 +138,20 @@ class AutoDeskViewer extends Component {
         }, duration);
     }
 
-    showAllToggle = (value) => {
-        if (value == false) {
-            if (this.state.markupCore) {
-                this.state.markupCore.leaveEditMode();
-                this.state.markupCore.hide();
+    showAllToggle = () => {
+        let markupCore = this.state.markupCore;
+        if (this.state.showAll == true) {
+            if (markupCore) {
+                // markupCore.leaveEditMode();
+                // markupCore.hide();
             }
-            if (this.state.markup) {
-                this.state.markup.leaveEditMode();
-                this.state.markup.hide();
-            }
+            this.setState({ showAll: false, viewEditMarkUps: true })
+            // if (markup) {
+            //     markup.leaveEditMode();
+            //     markup.hide();
+            // }
         } else {
-            this.setState({ isViewMarkUp: true, isViewEdit: false, viewEditMarkUps: false })
+            this.setState({ viewEditMarkUps: false, showAll: true })
             this.state.markups.forEach(item => {
                 this.restoreState(item.svg, item.viewerState);
             })
@@ -147,100 +160,103 @@ class AutoDeskViewer extends Component {
 
     restoreState = (svg, name) => {
         let markup = svg;
-        this.state.viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(markupsExt => {
-            this.setState({ markupCore: markupsExt })
+        let viewer = this.state.viewer
+        viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(markupsExt => {
+            let markupCore = markupsExt
             // load the markups
-            this.state.markupCore.show();
-            this.state.markupCore.loadMarkups(markup, name);
-            this.setState({ viewEditMarkUps: false, isViewEdit: false })
+            markupCore.show();
+            markupCore.loadMarkups(markup, name);
+            this.setState({ markupCore })
         });
     }
 
     modeIdToggle = (value) => {
         if (value == 1) {
-            if (this.state.markupCore) {
-                this.state.markupCore.leaveEditMode();
-                this.state.markupCore.hide();
+            let markupCore = this.state.markupCore
+            if (markupCore) {
+                markupCore.leaveEditMode();
+                markupCore.hide();
             }
-            if (this.state.markup) {
-                this.state.markup.leaveEditMode();
-                this.state.markup.hide();
-            }
-            this.setState({ isViewMarkUp: false, isViewEdit: false, viewEditMarkUps: false })
+            // if (this.state.markup) {
+            //     this.state.markup.leaveEditMode();
+            //     this.state.markup.hide();
+            // }
+            this.setState({ showCheckBox: false, showAll: false, isViewEdit: false, viewEditMarkUps: false, markupCore })
 
         } else if (value == 2) {
-            this.setState({ isViewMarkUp: true, isViewEdit: false, viewEditMarkUps: false })
+            this.setState({ showCheckBox: true, showAll: true, isViewEdit: false, viewEditMarkUps: false })
             this.state.markups.forEach(item => {
                 this.restoreState(item.svg, item.viewerState);
             })
         } else {
-            this.setState({ isViewMarkUp: false, isViewEdit: true, viewEditMarkUps: true })
+            this.setState({ showCheckBox: false, showAll: false, isViewEdit: true, viewEditMarkUps: false })
+            this.state.markups.forEach(item => {
+                this.restoreState(item.svg, item.viewerState);
+            })
             this.editingMarkUps();
 
         }
     }
 
     editingMarkUps = () => {
-        this.setState({ isViewEdit: true, viewEditMarkUps: true })
-
         if (this.state.markups.length > 0) {
             this.state.markups.forEach(item => {
                 this.state.viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(markupsExt => {
-                    this.setState({ markupCore: markupsExt })
+                    let markupCore = markupsExt
                     // load the markups
-                    this.state.markupCore.show();
-                    this.state.markupCore.loadMarkups(item.svg, item.viewerState);
-                    this.setState({ isViewEdit: true, viewEditMarkUps: true })
+                    markupCore.show();
+                    markupCore.loadMarkups(item.svg, item.viewerState);
+                    markupCore.enterEditMode();
+                    this.setState({ markupCore })
                 });
             })
-            this.state.markupCore.enterEditMode();
 
         } else {
-            this.state.viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(function (markupsExt) {
-                this.setState({ markupCore: markupsExt })
-                this.state.markup.enterEditMode();
+            let viewer = this.state.viewer
+            viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(markupsExt => {
+                this.setState({ markupCore: markupsExt, viewer })
+            })
 
-            });
         }
-
     }
 
-    showModel = (urn, markups) => {
+    showModel = (urn) => {
         var options = {
             env: 'AutodeskProduction',
             getAccessToken: this.getAccessToken,
-            refreshToken: this.getAccessToken
+            refreshToken: this.getAccessToken,
+            useADP: false,
         };
         var documentId = 'urn:' + urn;
-        Autodesk.Viewing.Initializer(options, function onInitialized() {
-            Autodesk.Viewing.Document.load(documentId, function (doc) {
-
-                var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), { 'type': 'geometry' }, true);
-                if (viewables.length === 0) {
-                    console.error('Document contains no viewables.');
+        Autodesk.Viewing.Initializer(options, () => {
+            Autodesk.Viewing.Document.load(documentId, (doc) => {
+                // A document contains references to 3D and 2D geometries.
+                var geometries = doc.getRoot().search({ 'type': 'geometry' });
+                if (geometries.length === 0) {
+                    console.error('Document contains no geometries.');
                     return;
                 }
-                // Choose any of the avialble viewables
-                var initialViewable = viewables[0];
-                var svfUrl = doc.getViewablePath(initialViewable);
+                // Choose any of the avialable geometries
+                var initGeom = geometries[0];
+                // Create Viewer instance
+                var viewerDiv = document.getElementById('forgeViewer');
+                var config = {
+                    extensions: initGeom.extensions() || []
+                };
+                var viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv, config);
+                var svfUrl = doc.getViewablePath(initGeom);
                 var modelOptions = {
                     sharedPropertyDbPath: doc.getPropertyDbPath()
                 };
-                var viewerDiv = document.getElementById('forgeViewer');
-                let viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
-                viewer.start(svfUrl, modelOptions, function () {
-                    //      this.setState({ loaded: true }) 
-
-                    // markups.forEach(item => {
-                    //     this.restoreState(item.svg, item.viewerState);
-                    // });
-                }, function () {
-                    console.error('onLoadModelError() - errorCode:');
-                });
-                // this.setState({ viewer })
-            });
+                viewer.start(svfUrl, modelOptions, () => {
+                    this.state.markups.forEach(item => {
+                        this.restoreState(item.svg, item.viewerState);
+                    })
+                }, console.log("Loading fail model autoDesk"));
+                this.setState({ viewer, loaded: true })
+            }, console.log("Loading fail model autoDesk"));
+            this.setState({ loadingPer: true })
         });
-        this.setState({ loadingPer: true })
     }
 
     getAccessToken = () => {
@@ -252,51 +268,11 @@ class AutoDeskViewer extends Component {
 
     }
 
-    onDocumentLoadSuccess = (doc) => {
-        // A document contains references to 3D and 2D viewables.
-
-    }
-
-    /**
-     * Autodesk.Viewing.Document.load() failuire callback.
-     */
-
-    onDocumentLoadFailure = (viewerErrorCode) => {
-        console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
-    }
-
-    /**
-     * viewer.loadModel() success callback.
-     * Invoked after the model's SVF has been initially loaded.
-     * It may trigger before any geometry has been downloaded and displayed on-screen.
-     */
-    
-     onLoadModelSuccess(model) {
-        console.log('onLoadModelSuccess()!');
-        console.log('Validate model loaded: ' + (this.state.viewer.model === model));
-        console.log(model);
-        this.setState({ loaded: true })
-        this.state.markups.forEach(item => {
-            this.restoreState(item.svg, item.viewerState);
-        });
-    }
-
-    /**
-     * viewer.loadModel() failure callback.
-     * Invoked when there's an error fetching the SVF file.
-     */
-   
-     onLoadModelError(viewerErrorCode) {
-        console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
-    }
-
-    handleChangeItemDropDown = () => {
-
-    }
-
-    undo() {
+    undo = () => {
         if (this.state.markupCore) {
-            this.state.markupCore.undo();
+            let markupCore = this.state.markupCore;
+            markupCore.undo();
+            this.setState({ markupCore })
 
         } else {
             //  markup.undo();
@@ -304,23 +280,25 @@ class AutoDeskViewer extends Component {
         }
     }
 
-    redo() {
+    redo = () => {
         if (this.state.markupCore) {
-            this.state.markupCore.redo();
+            let markupCore = this.state.markupCore;
+            markupCore.redo();
+            this.setState({ markupCore })
 
         } else {
             //   markup.redo();
 
         }
     }
-    
+
     addComment = () => {
-        if (this.ForgeViewer) {
+        if (this.state.markupCore) {
+            let viewer = this.state.viewer
+            var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markupCore);
-            console.log(this.state.markupCore)
-            let markUpObj = this.state.markupCore;
-            markUpObj.changeEditMode(mode)
-            this.setState({ markupCore: markUpObj })
+            extension.enterEditMode();
+            extension.changeEditMode(mode)
 
         } else {
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markup);
@@ -329,177 +307,240 @@ class AutoDeskViewer extends Component {
         }
     }
 
-    /* */
+    addCircle = () => {
+        if (this.state.markupCore) {
+            let viewer = this.state.viewer
+            var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markupCore);
+            extension.enterEditMode();
+            extension.changeEditMode(mode)
 
-    // addCircle() {
-    //     if (this.state.markupCore) {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markupCore);
-    //         this.state.markupCore.changeEditMode(mode);
+        } else {
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markup);
+            //    markup.changeEditMode(mode);
 
-    //     } else {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markup);
-    //     //    markup.changeEditMode(mode);
+        }
 
-    //     }
+    }
 
-    // }
-    // addArrow() {
-    //     if (this.state.markupCore) {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(this.state.markupCore);
-    //         this.state.markupCore.changeEditMode(mode);
+    addArrow = () => {
+        if (this.state.markupCore) {
+            let viewer = this.state.viewer
+            var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(this.state.markupCore);
+            extension.enterEditMode();
+            extension.changeEditMode(mode)
 
-    //     } else {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(this.state.markup);
-    //      //   markup.changeEditMode(mode);
+        } else {
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(this.state.markup);
+            //   markup.changeEditMode(mode);
 
-    //     }
-    // }
-    // addRectangle() {
-    //     if (markupCore) {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(this.state.markupCore);
-    //         this.state.markupCore.changeEditMode(mode);
+        }
+    }
 
-    //     } else {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(this.state.markup);
-    //       //  markup.changeEditMode(mode);
+    addRectangle = () => {
+        if (this.state.markupCore) {
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(this.state.markupCore);
+            let viewer = this.state.viewer
+            var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
+            extension.enterEditMode();
+            extension.changeEditMode(mode)
 
-    //     }
-    // }
-    // Freehand() {
-    //     if (markupCore) {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(this.state.markupCore);
-    //         this.state.markupCore.changeEditMode(mode);
+        } else {
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(this.state.markup);
+            //  markup.changeEditMode(mode);
 
-    //     } else {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(this.state.markup);
-    //         //markup.changeEditMode(mode);
+        }
+    }
 
-    //     }
-    // }
-    // freeMoving() {
-    //     if (this.state.markupCore) {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModePen(this.state.markupCore);
-    //         this.state.markupCore.changeEditMode(mode);
+    Freehand = () => {
+        if (this.state.markupCore) {
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(this.state.markupCore);
+            let viewer = this.state.viewer
+            var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
+            extension.enterEditMode();
+            extension.changeEditMode(mode)
 
-    //     } else {
-    //         var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModePen(this.state.markup);
-    //         //markup.changeEditMode(mode);
+        } else {
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(this.state.markup);
+            //markup.changeEditMode(mode);
 
-    //     }
+        }
+    }
 
-    // }
-    // clear() {
-    //     if (this.state.markupCore) {
-    //         this.state.markupCore.clear()
-    //     } else {
-    //         //markup.clear()
-    //     }
+    clear = () => {
+        let markupCore = this.state.markupCore
+        if (this.state.markupCore) {
+            markupCore.clear();
+            this.setState({ markupCore })
+        } else {
+            //markup.clear()
+        }
 
-    // }
+    }
 
-    // close() {
+    close = () => {
+        let markupCore = this.state.markupCore
+        if (this.state.markupCore) {
+            markupCore.leaveEditMode();
+            markupCore.hide();
+            this.setState({ markupCore, viewEditMarkUps: false, showCheckBox: false, isViewEdit: false })
+        }
+        //else {
+        //     viewEditMarkUps(false);
 
-    //     // if (markupCore) {
-    //     //     viewEditMarkUps(false);
+        //     isViewEdit(false);
 
-    //     //     isViewEdit(false);
+        //     markup.leaveEditMode();
 
-    //     //     markupCore.leaveEditMode();
+        //     markup.hide();
+        // }
 
-    //     //     markupCore.hide();
-    //     // } else {
-    //     //     viewEditMarkUps(false);
+    }
 
-    //     //     isViewEdit(false);
+    deleteAction = () => {
+        let markupCore = this.state.markupCore;
+        markupCore.deleteMarkup();
+        this.setState({ markupCore })
+    }
 
-    //     //     markup.leaveEditMode();
+    saveState = () => {
+        if (this.state.markupCore) {
+            // markups we just created as a string svg
+            let markupCore = this.state.markupCore
+            var markupsPersist = markupCore.generateData();
+            // current view state (zoom, direction, sections)
+            var viewerStatePersist = markupCore.viewer.getState();
 
-    //     //     markup.hide();
-    //     // }
+            let markUpObj = markUpsModel;
+            markUpObj.svg = markupsPersist;
+            markUpObj.viewerState = this.state.contactName + "-" + moment().format("DD/MM/YYYY") + "-" + new Date().getTime();
+            markUpObj.docType = this.state.docType;
+            markUpObj.docId = this.state.docId;
+            markUpObj.docFileId = this.state.docFileId;
+            markUpObj.projectId = this.state.projectId;
+            Api.post('SaveMarkupsState', markUpObj).then(data => {
+                markupCore.leaveEditMode();
+                markupCore.hide();
+                let markupsList = []
+                data.forEach((item, index) => {
+                    markupsList.push({ label: item.viewerState, value: index })
+                    this.restoreState(item.svg, item.viewerState)
+                })
+                this.setState({
+                    markupsList, markups: data, markupCore, showCheckBox: true, showAll: true, isViewEdit: false, viewEditMarkUps: false,
+                    selectedMode: listOfOptions[1]
+                })
+            })
+        }
+        // } else {
+        //     // markups we just created as a string svg
+        //     var markupsPersist = markup.generateData();
+        //     // current view state (zoom, direction, sections)
+        //     var viewerStatePersist = markup.viewer.getState();
 
-    // }
+        //     markUpObj(new markUpsModel());
 
-    // deleteAction() {
+        //     markUpObj().svg(markupsPersist);
+        //     markUpObj().viewerState("doc" + moment().format());
+        //     markUpObj().docType(docType());
+        //     markUpObj().docId(docId());
+        //     markUpObj().docFileId(docFileId());
+        //     markUpObj().projectId(currentProjectId());
 
-    //     //markup.deleteMarkup();
-    // }
+        //     dataservice.saveMarkupsState(undefined, markUpObj()).done(function (data) {
+        //         markups(data);
+
+        //         // finish edit of markup
+        //         markup.leaveEditMode();
+        //         // hide markups (and restore Viewer tools)
+        //         markup.hide();
+
+        //         viewEditMarkUps(false);
+
+        //         isViewEdit(false);
+
+        //         modeId(2);
+        //     });
+        // }
 
 
+    }
+
+    changeMarkup = (value) => {
+        let item = this.state.markups[value]
+        this.restoreState(item.svg, item.viewerState);
+    }
 
     render() {
         return (
-            <div className="mainContainer main__withouttabs">
-                <div id="forgeViewer">
-
-                </div>
+            <div className="mainContainer main__withouttabs white-bg">
                 {this.state.loaded == true ?
-
                     <Fragment>
                         <div className="autoDisk__dropdown">
                             <div className="autoDisk__dropdown--comp">
                                 <Dropdown
-                                    title="unit"
+                                    title="mode"
                                     data={listOfOptions}
                                     selectedValue={this.state.selectedMode}
-                                    handleChange={event => this.handleChangeItemDropDown(event)}
-                                    index="unit" />
+                                    handleChange={event => { this.modeIdToggle(event.value); this.setState({ selectedMode: event }) }}
+                                    index="mode" />
                             </div>
-                            <div className="autoDisk__dropdown--comp">
-
-                            </div>
+                            {this.state.showCheckBox == true ?
+                                <div id="markupBox" className={"ui checkbox checkBoxGray300 " + (this.state.showAll == true ? "checked" : "")} onClick={this.showAllToggle}>
+                                    <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state.showAll == true ? "checked" : ""} />
+                                    <label>Show</label>
+                                </div> : null}
+                            {this.state.viewEditMarkUps == true ?
+                                <div className="autoDisk__dropdown--comp">
+                                    <Dropdown
+                                        title="markups"
+                                        data={this.state.markupsList}
+                                        selectedValue={this.state.selectedMarkup}
+                                        handleChange={event => this.changeMarkup(event.value)}
+                                        index="markups" />
+                                </div> : null}
                         </div>
+
                         {this.state.isViewEdit == true ?
                             <div id="markup-panel" className="docking-panel" style={{ resize: 'none', border: '1px solid rgba(0, 0, 0, 0.2)', backgroundColor: 'transparent', top: '20%', width: '15%', height: '27%', maxHeight: '513px', maxWidth: '881.406px' }} >
-                                <section className="docking-panel-title" style={{ color: '#0a131c', backgroundColor: 'transparent', borderBottom: 'solid 1px rgba(0, 0, 0, 0.2)' }} dataI18n="Markup Editor">Markup Editor</section>
+                                <section className="docking-panel-title" style={{ color: '#0a131c', backgroundColor: 'transparent', borderBottom: 'solid 1px rgba(0, 0, 0, 0.2)' }}  >Markup Editor</section>
                                 <section className="docking-panel-close"></section>
                                 <div className="docking-panel-footer"></div>
                                 <div className="docking-panel-scroll docking-panel-container-solid-color-a right" id="markup-panel-scroll-container">
                                     <div className="markups-panel-content">
                                         <div className="edit-tools">
                                             <div className="markup-actions" style={{ marginTop: '7%', textAlign: 'center' }}>
-                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Undo">Undo</button>
-                                                <button className="primaryBtn-2 btnbtn table-btn-tooltip btn-xs btn-default" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Redo">Redo</button>
+                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" title="Undo" onClick={this.undo} >Undo</button>
+                                                <button className="primaryBtn-2 btnbtn table-btn-tooltip btn-xs btn-default" dataToggle="tooltip" title="Redo" onClick={this.redo}>Redo</button>
                                             </div>
                                             <div className="markup-buttons" style={{ marginTop: '7%', textAlign: 'center' }}>
-                                                <button className="btn primaryBtn-2" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Arrow">
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Arrow" onClick={this.addArrow}>
                                                     <i style={{ fontSize: '1.6em' }} className="fa fa-long-arrow-up"></i>
                                                 </button>
-                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Comment" onClick={this.addComment}>
+                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" title="Comment" onClick={this.addComment}>
                                                     <i style={{ fontSize: '1.6em' }} className="fa fa-comments"></i>
                                                 </button>
-                                                <button className="btn primaryBtn-2" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Circle">
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Circle" onClick={this.addCircle}>
                                                     <i style={{ fontSize: '1.6em' }} className="fa fa-circle"></i>
                                                 </button>
-                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Rectangle">
+                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" title="Rectangle" onClick={this.addRectangle}>
                                                     <i style={{ fontSize: '1.6em' }} className="fa fa-square-o"></i>
                                                 </button>
-                                                <button className="btn primaryBtn-2" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Freehand">
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Freehand" onClick={this.Freehand}>
                                                     <i style={{ fontSize: '1.6em' }} className="fa fa-pencil"></i>
                                                 </button>
                                             </div>
                                             <div className="panel-actions" style={{ marginTop: '7%', textAlign: 'center' }}>
-                                                <button className="btn primaryBtn-2" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Clear">Clear</button>
-                                                <button className="primaryBtn-1 btn" style={{ margin: '0 5px' }} dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Close">Close</button>
-                                                <button className="btn primaryBtn-2" dataToggle="tooltip" dataPlacement="bottom" title="" dataOriginalTitle="Save">Save</button>
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Clear" onClick={this.clear}>Clear</button>
+                                                <button className="primaryBtn-1 btn" style={{ margin: '0 5px' }} dataToggle="tooltip" title="Close" onClick={this.close}>Close</button>
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Save" onClick={this.saveState}>Save</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             : null}
-
-                        {/* <ForgeViewer ref={ref => this.ForgeViewer = ref}
-                            version="6.0"
-                            urn={this.state.urn}
-                            view={this.state.view}
-                            headless={false}
-                            onViewerError={this.handleViewerError.bind(this)}
-                            onTokenRequest={this.handleTokenRequested.bind(this)}
-                            onDocumentLoad={this.handleDocumentLoaded.bind(this)}
-                            onDocumentError={this.handleDocumentError.bind(this)}
-                            onModelLoad={this.handleModelLoaded.bind(this)}
-                            onModelError={this.handleModelError.bind(this)} */}
-                        />
                     </Fragment>
                     : this.state.loadingPer === true ?
                         null :
@@ -508,22 +549,18 @@ class AutoDeskViewer extends Component {
                             <div className="percentage" id="precent"></div>
                         </div>
                 }
+                <div id="forgeViewer" >
+
+                </div>
             </div>
         );
     }
 
 
-} export default AutoDeskViewer;
+} export default withRouter(AutoDeskViewer);
 
 
-// const markUpsModel = {
-//     projectId = 0,
-//     docType =  17,
-//     docId = '',
-//     docFileId =  '',
-//     svg = '',
-//     viewerState =''
-// };
+
 
 
 
@@ -769,106 +806,6 @@ class AutoDeskViewer extends Component {
 
 
 
-//         /**
-//         * Autodesk.Viewing.Document.load() success callback.
-//         * Proceeds with model initialization.
-//         */
-//        //       
-//         function undo() {
-//             if (markupCore) {
-//                 markupCore.undo();
-
-//             } else {
-//                 markup.undo();
-
-//             }
-//         }
-//         function redo() {
-//             if (markupCore) {
-//                 markupCore.redo();
-
-//             } else {
-//                 markup.redo();
-
-//             }
-//         }
-//         function addComment() {
-//             if (markupCore) {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(markupCore);
-//                 markupCore.changeEditMode(mode);
-
-//             } else {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(markup);
-//                 markup.changeEditMode(mode);
-
-//             }
-//         }
-//         function addCircle() {
-//             if (markupCore) {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(markupCore);
-//                 markupCore.changeEditMode(mode);
-
-//             } else {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(markup);
-//                 markup.changeEditMode(mode);
-
-//             }
-
-//         }
-//         function addArrow() {
-//             if (markupCore) {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(markupCore);
-//                 markupCore.changeEditMode(mode);
-
-//             } else {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(markup);
-//                 markup.changeEditMode(mode);
-
-//             }
-//         }
-//         function addRectangle() {
-//             if (markupCore) {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(markupCore);
-//                 markupCore.changeEditMode(mode);
-
-//             } else {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(markup);
-//                 markup.changeEditMode(mode);
-
-//             }
-//         }
-//         function Freehand() {
-//             if (markupCore) {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(markupCore);
-//                 markupCore.changeEditMode(mode);
-
-//             } else {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(markup);
-//                 markup.changeEditMode(mode);
-
-//             }
-//         }
-//         function freeMoving() {
-//             if (markupCore) {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModePen(markupCore);
-//                 markupCore.changeEditMode(mode);
-
-//             } else {
-//                 var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModePen(markup);
-//                 markup.changeEditMode(mode);
-
-//             }
-
-//         }
-//         function clear() {
-//             if (markupCore) {
-//                 markupCore.clear()
-//             } else {
-//                 markup.clear()
-//             }
-
-//         }
-
 //         function close() {
 
 //             if (markupCore) {
@@ -896,70 +833,7 @@ class AutoDeskViewer extends Component {
 //             markup.deleteMarkup();
 //         }
 
-//         function saveState() {
-//             if (markupCore) {
-//                 // markups we just created as a string svg
-//                 var markupsPersist = markupCore.generateData();
-//                 // current view state (zoom, direction, sections)
-//                 var viewerStatePersist = markupCore.viewer.getState();
-
-//                 markUpObj(new markUpsModel());
-
-//                 markUpObj().svg(markupsPersist);
-//                 markUpObj().viewerState(config.contactName() + "-" + moment().format("DD/MM/YYYY") + "-" + new Date().getTime());
-//                 markUpObj().docType(docType());
-//                 markUpObj().docId(docId());
-//                 markUpObj().docFileId(docFileId());
-//                 markUpObj().projectId(currentProjectId());
-
-//                 dataservice.saveMarkupsState(undefined, markUpObj()).done(function (data) {
-//                     markups(data);
-
-//                     // finish edit of markup
-//                     markupCore.leaveEditMode();
-//                     // hide markups (and restore Viewer tools)
-//                     markupCore.hide();
-
-//                     viewEditMarkUps(false);
-
-//                     isViewEdit(false);
-
-//                     modeId(2);
-//                 });
-//             } else {
-//                 // markups we just created as a string svg
-//                 var markupsPersist = markup.generateData();
-//                 // current view state (zoom, direction, sections)
-//                 var viewerStatePersist = markup.viewer.getState();
-
-//                 markUpObj(new markUpsModel());
-
-//                 markUpObj().svg(markupsPersist);
-//                 markUpObj().viewerState("doc" + moment().format());
-//                 markUpObj().docType(docType());
-//                 markUpObj().docId(docId());
-//                 markUpObj().docFileId(docFileId());
-//                 markUpObj().projectId(currentProjectId());
-
-//                 dataservice.saveMarkupsState(undefined, markUpObj()).done(function (data) {
-//                     markups(data);
-
-//                     // finish edit of markup
-//                     markup.leaveEditMode();
-//                     // hide markups (and restore Viewer tools)
-//                     markup.hide();
-
-//                     viewEditMarkUps(false);
-
-//                     isViewEdit(false);
-
-//                     modeId(2);
-//                 });
-//             }
-
-
-//         }
-
+//        
 //         var markupCore;
 
 //    

@@ -3653,12 +3653,13 @@ button.companies_icon {
 }
 
 /* .control-label {
-    display: block;
     letter-spacing: -0.2px;
     color: #26344c;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
-    margin-bottom: 4px;
-} */
+    font-family: 'Open Sans';
+    font-weight: 600; 
+    font-style: normal; 
+    font-stretch: normal;
+}  */
 
 .dropWrapper .proForm {
     margin-top: 0;
@@ -6092,9 +6093,6 @@ line.horizontal-grid-line {
     margin-top: 25px;
 }
 
-.gridfillter-container {
-    padding-top: 0;
-}
 
 .filter__warrper {
     min-height: 124px;
@@ -6102,6 +6100,8 @@ line.horizontal-grid-line {
     background-color: #fafbfc;
     padding-bottom: 31px; 
     padding-top: 16px;
+    position: relative;
+    z-index: 100;
 }
 
 .filter__warrper .proForm {
@@ -6727,7 +6727,7 @@ div#markup-panel {
 
 .loadingShow {
     position: fixed;
-    top:0;
+    top:72px;
     left:0;
     right:0;
     bottom:0;
@@ -7264,3 +7264,216 @@ label + .ui.checkbox {
     flex-flow: row;
 }
 /* new Menu panel */
+.inpuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.react-calendar {
+    max-width: 350px !important;
+    position: absolute;
+    z-index: 99;
+}
+.viewCalender {
+    position: absolute;
+    z-index: 99;
+}
+.viewCalender .react-calendar{
+    position: unset;
+    z-index: 99;
+}
+
+.gridfillter-container {
+    padding-top: 12px
+}
+
+.autocadIcon:hover svg g {
+    fill: #3570E6;
+    transition: all 0.2s ease;
+}
+
+.gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
+    height: 48px;
+    border: solid 2px !important;
+    transition: all 0.5s ease-in-out;
+    border-color: #E9ECF0 !important;
+}
+
+.autocadIcon::after {
+    display: none;
+}
+
+.autocadIcon:hover img {
+    transform: translate(0) !important;
+}
+
+div#markup-panel {
+    margin: 25px auto;
+    padding: 15px;
+    min-width: 28% !important;
+    min-height: 89px !important;
+    position: fixed;
+    border-radius: 5px;
+    z-index: 9999;
+    background: #fafbfc!important;
+    right: 40px;
+    top: 72px !important;
+    border: solid 2px #E9ECF0 !important;
+    max-height: inherit !important;
+    height: auto !important;
+    width: auto !important;
+}
+
+.edit-tools {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.edit-tools >div {
+    margin-top: 7px;
+}
+
+.adsk-viewing-viewer {
+    width: 95% !important;
+}
+
+.white-bg {
+    background: #fff;
+}
+
+.autoDisk__dropdown {
+    position: relative;
+    padding-bottom: 30px;
+}
+
+#markupBox {
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+}
+#markupBox label {
+    margin: 0
+}
+
+.autoDisk__dropdown--comp label {
+    font-family: Muli;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 1.54;
+    letter-spacing: normal;
+    color: #5E6475;
+    position: relative;
+    z-index: 11;
+    margin-bottom: -10px;
+    margin-left: 13px;
+    padding: 0 5px;
+}
+.autoDisk__dropdown--comp label::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: #fff;
+    z-index: -1;
+}
+
+.H-tableSize {
+    transform: rotate(90deg);
+}
+
+.miniRows .H-tableSize svg g g {
+    fill: #4382F9;
+}
+
+.minimizeRelative .H-tableSize:hover svg g g , .minimizeRelative .V-tableSize:hover svg g g {
+    fill: #4382F9;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+.grid__column {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+    z-index: 9999999999;
+}
+
+.grid__column .grid__column--container {
+    position: relative;
+}
+
+.grid__column .grid__column--container .closeColumn {
+    background: transparent;
+    color: #000;
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 14px;
+}
+
+.grid__column.active {
+    transform: scale(1);
+}
+
+.grid__column--container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 5px;
+    width: 650px;
+    padding: 5px 0;
+    overflow: hidden;
+}
+
+.grid__column--title {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e9ecf0;
+}
+
+.grid__column--title h2 {
+    font-family: font-b;
+    font-size: 24px;
+    line-height: 1.17;
+    letter-spacing: -0.5px;
+    color: #252833;
+}
+
+.grid__column--content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid__content {
+    height: 60px;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    border: 1px solid #E9ECF0;
+    background-color: #ffffff;
+    flex-shrink: 0;
+    padding: 0 16px;
+}
+
+.grid__content .ui.checkbox {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}

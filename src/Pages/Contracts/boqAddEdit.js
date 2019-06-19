@@ -127,7 +127,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
 
             }, {
                 key: "boqType",
@@ -137,7 +138,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "boqTypeChild",
                 name: Resources["boqTypeChild"][currentLanguage],
@@ -146,7 +148,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "boqSubType",
                 name: Resources["boqSubType"][currentLanguage],
@@ -155,7 +158,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -164,7 +168,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "description",
                 name: Resources["details"][currentLanguage],
@@ -173,7 +178,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "quantity",
                 name: Resources["quantity"][currentLanguage],
@@ -182,7 +188,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "revisedQuntitty",
                 name: Resources["receivedQuantity"][currentLanguage],
@@ -191,7 +198,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
@@ -200,7 +208,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "unitPrice",
                 name: Resources["unitPrice"][currentLanguage],
@@ -211,7 +220,8 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                formatter: editUnitPrice
+                formatter: editUnitPrice,
+                type:"number"
             }, {
                 key: "total",
                 name: Resources["total"][currentLanguage],
@@ -220,7 +230,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
@@ -229,7 +240,8 @@ class bogAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }
         ];
 

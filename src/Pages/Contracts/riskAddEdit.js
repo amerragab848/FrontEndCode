@@ -399,14 +399,14 @@ class riskAddEdit extends Component {
             });
         });
         //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
             if (isEdit) {
 
                 let areaId = this.props.document.area;
 
                 if (areaId) {
 
-                    let areaIdName = result.find(i => i.value === parseInt(areaId));
+                    let areaIdName = result.find(i => i.label === parseInt(areaId));
 
                     if (areaIdName) {
                         this.setState({

@@ -100,7 +100,7 @@ class PieChartComp extends Component {
                                         <p id="legenbd__teext" style={{ width: width / 2 }}>
                                             <span className="chartName"> {this.state.data.name}</span>
                                             <span className="percentage">{this.state.data.percentage + '%'}</span>
-                                            <span className="totalAmount">{this.state.data.quantity }</span>
+                                            <span className="totalAmount">{this.state.data.quantity.toFixed(1) }</span>
                                         </p>
                                         : null}
                                 </div>

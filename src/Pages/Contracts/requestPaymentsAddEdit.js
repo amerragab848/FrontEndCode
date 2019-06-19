@@ -134,7 +134,6 @@ class requestPaymentsAddEdit extends Component {
             isApproveMode: isApproveMode, 
             perviousRoute: perviousRoute,
             isView: false,
-
             pageNumber: 0,
             pageSize: 2000, 
             docId: docId,
@@ -158,7 +157,10 @@ class requestPaymentsAddEdit extends Component {
             currentObject:{},
             deductionId:0,
             exportFile:"",
-            isView : false 
+            isView : false ,
+            viewUpdatePayment: false,
+            viewUpdateCalc: false,
+            actualPayments:0
         }
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
@@ -220,7 +222,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "boqType",
                 name: Resources["boqType"][currentLanguage],
@@ -229,7 +232,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "secondLevel",
                 name: Resources["boqTypeChild"][currentLanguage],
@@ -238,7 +242,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "boqSubType",
                 name: Resources["boqSubType"][currentLanguage],
@@ -247,7 +252,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -256,7 +262,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "description",
                 name: Resources["details"][currentLanguage],
@@ -265,7 +272,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"string"
             }, {
                 key: "quantity",
                 name: Resources["boqQuanty"][currentLanguage],
@@ -274,7 +282,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "revisedQuantity",
                 name: Resources["approvedQuantity"][currentLanguage],
@@ -283,7 +292,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "unitPrice",
                 name: Resources["unitPrice"][currentLanguage],
@@ -292,7 +302,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
@@ -301,8 +312,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
-
+                sortDescendingFirst: true,
+                type:"string" 
             }, {
                 key: "prevoiuseQnty",
                 name: Resources["previousQuantity"][currentLanguage],
@@ -311,7 +322,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "oldPaymentPercent",
                 name: Resources["previousPaymentPercent"][currentLanguage],
@@ -320,7 +332,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type:"number"
             }, {
                 key: "sitePercentComplete",
                 name: Resources["sitePercentComplete"][currentLanguage],
@@ -331,7 +344,8 @@ class requestPaymentsAddEdit extends Component {
                 filterable: false,
                 sortDescendingFirst: true,
                 formatter: editSitePercentComplete,
-                editable: !this.props.changeStatus
+                editable: !this.props.changeStatus,
+                type:"number"
             }, {
                 key: "siteQuantityComplete",
                 name: Resources["siteQuantityComplete"][currentLanguage],
@@ -342,7 +356,8 @@ class requestPaymentsAddEdit extends Component {
                 filterable: false,
                 sortDescendingFirst: true,
                 formatter: editSiteQuantityComplete,
-                editable: !this.props.changeStatus
+                editable: !this.props.changeStatus,
+                type:"number"
             }, {
                 key: "percentComplete",
                 name: Resources["percentComplete"][currentLanguage],
@@ -354,7 +369,8 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 formatter: editPercentComplete,
                 editable: this.props.changeStatus,
-                visible: this.props.changeStatus
+                visible: this.props.changeStatus,
+                type:"number"
             }, {
                 key: "quantityComplete",
                 name: Resources["quantityComplete"][currentLanguage],
@@ -366,7 +382,8 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 formatter: editQuantityComplete,
                 editable: this.props.changeStatus,
-                visible: this.props.changeStatus
+                visible: this.props.changeStatus,
+                type:"number"
             }, {
                 key: "paymentPercent",
                 name: Resources["paymentPercent"][currentLanguage],
@@ -377,7 +394,8 @@ class requestPaymentsAddEdit extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: editPaymentPercent,
-                editable: true
+                editable: true,
+                type:"number"
             }
         ]; 
   
@@ -1581,20 +1599,60 @@ class requestPaymentsAddEdit extends Component {
         selectedDropDownExport:event
     })
    }
+
+   updateActualPayments = () => {
+
+    this.setState({viewUpdatePayment:true});
+
+    let obj = {};
+
+    obj.id = this.state.docId;
+
+    obj.actualPayment =this.state.actualPayments;
+
+    dataservice.addObject("EditActualPayment",obj).then(result => {
+
+        this.setState({viewUpdatePayment:false});
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    }).catch(res => {
+        this.setState({
+            viewUpdatePayment: false
+        });
+        toast.error(Resources["operationCanceled"][currentLanguage]);
+    });
+   }
+
+   updatePayemtWithVariationOrderByAdmin = () => {
+
+    this.setState({viewUpdateCalc:true});
+ 
+    let requestId= this.state.docId;
+
+    let contactId = this.state.document.contractId;
+
+    dataservice.GetDataGrid("UpdatePayemtWithVariationOrderByAdmin?requestId="+requestId+"&contractId="+contactId).then(result => {
+
+        this.setState({viewUpdateCalc:false});
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    }).catch(res => {
+        this.setState({
+            viewUpdateCalc: false
+        });
+        toast.error(Resources["operationCanceled"][currentLanguage]);
+    });
+   }
         
     render() {
  
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }, 
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
         
         let columns = [];
@@ -1830,8 +1888,7 @@ class requestPaymentsAddEdit extends Component {
             <div className="mainContainer"> 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
-                    <div className="doc-container">
-
+                    <div className="doc-container"> 
                         <div className="step-content">
                             {this.state.FirstStep ?
                                 <Fragment>
@@ -2122,6 +2179,41 @@ class requestPaymentsAddEdit extends Component {
                             {this.state.SecondStep ?
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top"> 
+                                        {this.props.changeStatus ?               <div className="doc-pre-cycle">
+                                            <header>
+                                                <h2 className="zero">{Resources['actualPayment'][currentLanguage]}</h2>
+                                            </header>
+                                            <div className="inpuBtn">
+                                            <div className="linebylineInput valid-input ">
+                                                <label className="control-label">{Resources.actualPayment[currentLanguage]}</label>
+                                                <div className="ui input inputDev">
+                                                    <input type="text" className="form-control" name="actualPayment"
+                                                        value={this.state.actualPayments}
+                                                        placeholder={Resources.actualPayment[currentLanguage]}
+                                                        onChange={(event) => this.setState({actualPayments: event.target.value})}/> 
+                                                </div>
+                                            </div>
+
+                                            {this.state.viewUpdatePayment ? 
+                                                <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                             :<button className="primaryBtn-1 btn meduimBtn" onClick={this.updateActualPayments}>{Resources['update'][currentLanguage]}</button>}
+                                        </div>
+                                            {this.state.viewUpdateCalc ?   <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button> :<div className="slider-Btns ">
+                                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.updatePayemtWithVariationOrderByAdmin}>{Resources['recalculateWithVariation'][currentLanguage]}</button> 
+                                            </div>}
+                                        </div> : ""} 
                                         <div className="doc-pre-cycle">
                                             <header>
                                                 <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>

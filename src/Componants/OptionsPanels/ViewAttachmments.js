@@ -8,12 +8,12 @@ import jpg from '../../Styles/images/ex.png'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Download from '../../Styles/images/attacthDownloadPdf.png'
 import Pending from '../../Styles/images/AttacthePending.png'
-
 import pdfPrint from '../../Styles/images/pdfPrint.png'
 import pdfDelete from '../../Styles/images/pdfMDelete.png'
 import pdfMenuAction from '../../Styles/images/pdfMenuAction.png'
+import autocad from '../../Styles/images/autocad.png'
 import pdfMaxi from '../../Styles/images/pdfMaxi.png'
-
+import CryptoJS from "crypto-js";
 import Api from '../../api';
 import IP_Configrations from '../../IP_Configrations.json';
 import Resources from '../../resources.json';
@@ -100,13 +100,18 @@ class ViewAttachmments extends Component {
     }
 
     viewAutoDeskModal = (obj, e) => {
-        console.log(obj)
-      //  var encrypte = encodeURIComponent(obj.attachFile);
-        // if (obj.attachFile.toLowerCase().match(/\.(pdf)$/) != null) {
-        //     window.open("#autoDeskPDFViewerNew/" + obj.fileName + "/" + encrypte + "/" + docId() + "/" + docTypeId() + "/" + obj.id + "/" + obj.projectId);
-        // } else {
-        window.open("/autoDeskViewer")// + obj.fileName + "/" + encrypte + "/" + this.state.docId + "/" + this.state.docTypeId + "/" + obj.id + "/" + obj.projectId);
-        // }
+        var encrypte = encodeURIComponent(obj.attachFile);
+        let obj1 = {
+            fileName: obj.fileName,
+            encrypte: encrypte,
+            docId: this.state.docId,
+            docTypeId: this.state.docTypeId,
+            id: obj.id,
+            projectId: obj.projectId
+        };
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj1));
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+        window.open("autoDeskViewer?id=" + encodedPaylod);
     };
 
     getPDFblob = (fileLink) => {
@@ -236,15 +241,15 @@ class ViewAttachmments extends Component {
                                 null
                             }
 
-                            {Config.IsAllow(this.props.deleteAttachments)  ?
-                                <a className="rootIcon" onClick={(e) => this.viewAutoDeskModal(item, e)}>
-                                    <i className=" fa fa-link" width="100%" height="100%" />
-                                </a> :
+                            {ext === 'dwg' ?
+                                <a className="autocadIcon" onClick={(e) => this.viewAutoDeskModal(item, e)}>
+                                    <img src={autocad} style={{maxWidth: '100%', maxHeight:'100%'}} alt="autoDesk" />
+                                </a > :
                                 null
                             }
                         </div>
-                    </td>
-                </tr>
+                    </td >
+                </tr >
             );
         }) : null
 

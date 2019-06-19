@@ -11007,7 +11007,7 @@ ul {
   align-items: center;
   flex-wrap: wrap;
   max-height: 85px;
-  overflow: hidden; }
+}
 
 .filter__showmore {
   display: flex;
