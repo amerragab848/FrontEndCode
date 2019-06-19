@@ -163,7 +163,7 @@ import materialReturnedAddEdit from "./Pages/Procurement/materialReturnedAddEdit
 import autoDeskViewer from "./Componants/OptionsPanels/AutoDeskViewer"; 
 import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit"; 
 import procurementAddEdit from "./Pages/Procurement/procurementAddEdit"; 
-
+import RiskConesquence from "./Componants/publicComponants/RiskConesquence"; 
 
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
@@ -343,6 +343,7 @@ let originalRoutes = [
     
     , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
     , <Route path="/autoDeskViewer" component={autoDeskViewer} /> 
+    , <Route path="/RiskConesquence" component={RiskConesquence} /> 
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
