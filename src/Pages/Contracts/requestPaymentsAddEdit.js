@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"; 
+import React, { Component, Fragment } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -10,15 +10,15 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
-import GridSetup from "../Communication/GridSetupWithFilter"; 
-import { withRouter } from "react-router-dom"; 
+import GridSetup from "../Communication/GridSetupWithFilter";
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../store/actions/communication'; 
-import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
+import * as communicationActions from '../../store/actions/communication';
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList';
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
@@ -32,8 +32,8 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const validationSchema = Yup.object().shape({ 
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
+const validationSchema = Yup.object().shape({
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     contractId: Yup.string().required(Resources['selectContract'][currentLanguage]).nullable(true),
     vat: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
     tax: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
@@ -42,14 +42,14 @@ const validationSchema = Yup.object().shape({
     retainagePercent: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
 })
 
-const validationDeductionSchema = Yup.object().shape({ 
-    title: Yup.string().required(Resources['description'][currentLanguage]), 
+const validationDeductionSchema = Yup.object().shape({
+    title: Yup.string().required(Resources['description'][currentLanguage]),
     deductionValue: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
 })
 
-const validationItemsSchema = Yup.object().shape({ 
-    percentComplete: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).required(Resources['percentComplete'][currentLanguage]), 
-    quantityComplete: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).required(Resources['quantityComplete'][currentLanguage]), 
+const validationItemsSchema = Yup.object().shape({
+    percentComplete: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).required(Resources['percentComplete'][currentLanguage]),
+    quantityComplete: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).required(Resources['quantityComplete'][currentLanguage]),
     paymentPercent: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).required(Resources['paymentPercent'][currentLanguage])
 })
 
@@ -64,12 +64,12 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
-let type =1;
+let type = 1;
 const _ = require('lodash')
 let itemsColumns = [];
-let VOItemsColumns = []; 
+let VOItemsColumns = [];
 
 class requestPaymentsAddEdit extends Component {
 
@@ -83,7 +83,7 @@ class requestPaymentsAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -99,17 +99,17 @@ class requestPaymentsAddEdit extends Component {
         }
 
         let userType = Config.getPayload();
-  
-        this.state = {  
-            showDeleteModal:false,
-            userType:userType.uty,
-            fillDropDown:[{ label: "AddMissingAmendments", value: "1" },{ label: "ReCalculatorPayment", value: "2" },{ label: "UpdateItemsFromVO", value: "3" }],
-            fillDropDownExport:[{ label: "Export", value: "1" },{ label: "ExportAsVo", value: "2" }],
+
+        this.state = {
+            showDeleteModal: false,
+            userType: userType.uty,
+            fillDropDown: [{ label: "AddMissingAmendments", value: "1" }, { label: "ReCalculatorPayment", value: "2" }, { label: "UpdateItemsFromVO", value: "3" }],
+            fillDropDownExport: [{ label: "Export", value: "1" }, { label: "ExportAsVo", value: "2" }],
             selectedDropDown: [{ label: "Admin Actions", value: "0" }],
             selectedDropDownExport: [{ label: "Export File", value: "0" }],
             selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" }, 
+            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
             boqTypes: [],
             BoqTypeChilds: [],
             BoqSubTypes: [],
@@ -124,26 +124,25 @@ class requestPaymentsAddEdit extends Component {
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
-            FourthStep: false, 
+            FourthStep: false,
             SecondStepComplate: false,
             ThirdStepComplate: false,
-            FourthStepComplate: false, 
+            FourthStepComplate: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
-
             pageNumber: 0,
-            pageSize: 2000, 
+            pageSize: 2000,
             docId: docId,
             docTypeId: 71,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            arrange: arrange, 
+            arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            voItem: {}, 
+            voItem: {},
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
@@ -154,24 +153,28 @@ class requestPaymentsAddEdit extends Component {
             CurrentStep: 1,
             editRows: [],
             comment: '',
-            viewPopUpRows : false ,
-            currentObject:{},
-            deductionId:0,
-            exportFile:"",
-            isView : false 
+            viewPopUpRows: false,
+            currentObject: {},
+            deductionId: 0,
+            exportFile: "",
+            isView: false,
+            viewUpdatePayment: false,
+            viewUpdateCalc: false,
+            actualPayments: 0
         }
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
         this.editRowsClick = this.editRowsClick.bind(this);
         this.GetCellActions = this.GetCellActions.bind(this);
     }
-  
-    buildColumns() {
+
+    buildColumns(changeStatus) {
+ 
         let editPaymentPercent = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.paymentPercent}</span></a>;
@@ -220,7 +223,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "number"
             }, {
                 key: "boqType",
                 name: Resources["boqType"][currentLanguage],
@@ -229,7 +233,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             }, {
                 key: "secondLevel",
                 name: Resources["boqTypeChild"][currentLanguage],
@@ -238,7 +243,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             }, {
                 key: "boqSubType",
                 name: Resources["boqSubType"][currentLanguage],
@@ -247,7 +253,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -256,7 +263,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             }, {
                 key: "description",
                 name: Resources["details"][currentLanguage],
@@ -265,7 +273,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             }, {
                 key: "quantity",
                 name: Resources["boqQuanty"][currentLanguage],
@@ -274,7 +283,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "number"
             }, {
                 key: "revisedQuantity",
                 name: Resources["approvedQuantity"][currentLanguage],
@@ -283,7 +293,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "number"
             }, {
                 key: "unitPrice",
                 name: Resources["unitPrice"][currentLanguage],
@@ -292,7 +303,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "number"
             }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
@@ -301,8 +313,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
-
+                sortDescendingFirst: true,
+                type: "string"
             }, {
                 key: "prevoiuseQnty",
                 name: Resources["previousQuantity"][currentLanguage],
@@ -311,7 +323,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "number"
             }, {
                 key: "oldPaymentPercent",
                 name: Resources["previousPaymentPercent"][currentLanguage],
@@ -320,7 +333,8 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "number"
             }, {
                 key: "sitePercentComplete",
                 name: Resources["sitePercentComplete"][currentLanguage],
@@ -330,8 +344,9 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                formatter: editSitePercentComplete,
-                editable: !this.props.changeStatus
+                formatter: changeStatus ? null : editSitePercentComplete,
+                editable: !changeStatus,
+                type: "number"
             }, {
                 key: "siteQuantityComplete",
                 name: Resources["siteQuantityComplete"][currentLanguage],
@@ -341,8 +356,9 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                formatter: editSiteQuantityComplete,
-                editable: !this.props.changeStatus
+                formatter: changeStatus ? null : editSiteQuantityComplete,
+                editable: !changeStatus,
+                type: "number"
             }, {
                 key: "percentComplete",
                 name: Resources["percentComplete"][currentLanguage],
@@ -352,9 +368,10 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                formatter: editPercentComplete,
-                editable: this.props.changeStatus,
-                visible: this.props.changeStatus
+                formatter: changeStatus ? null : editPercentComplete,
+                editable: !changeStatus,
+                visible: this.props.changeStatus,
+                type: "number"
             }, {
                 key: "quantityComplete",
                 name: Resources["quantityComplete"][currentLanguage],
@@ -364,9 +381,10 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: editQuantityComplete,
-                editable: this.props.changeStatus,
-                visible: this.props.changeStatus
+                formatter: changeStatus ? null : editQuantityComplete,
+                editable: !changeStatus,
+                visible: this.props.changeStatus,
+                type: "number"
             }, {
                 key: "paymentPercent",
                 name: Resources["paymentPercent"][currentLanguage],
@@ -376,67 +394,68 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: editPaymentPercent,
-                editable: true
+                formatter: changeStatus ? null : editPaymentPercent,
+                editable: !changeStatus,
+                type: "number"
             }
-        ]; 
-  
-        VOItemsColumns = [ 
+        ];
+
+        VOItemsColumns = [
             {
                 key: "id",
                 name: "id",
-                width: 50, 
+                width: 50,
             }, {
                 key: "voItemId",
                 name: "voItemId",
-                width: 100 
+                width: 100
             }, {
                 key: "itemId",
                 name: Resources["itemId"][currentLanguage],
-                width: 120 
+                width: 120
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
-                width: 100 
+                width: 100
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
-                width: 100 
+                width: 100
             }, {
                 key: "revisedQuantity",
                 name: Resources["approvedQuantity"][currentLanguage],
-                width: 100 
+                width: 100
             }, {
                 key: "unitPrice",
                 name: Resources["unitPrice"][currentLanguage],
-                width: 100 
+                width: 100
             }, {
                 key: "unitPrice",
                 name: "newUnitPrice",
-                width: 100 
+                width: 100
             }, {
                 key: "quantity",
                 name: "newBoqQuantity",
-                width: 100 
+                width: 100
             }, {
                 key: "details",
                 name: Resources["description"][currentLanguage],
-                width: 100 
+                width: 100
 
             }, {
                 key: "boqType",
                 name: Resources["boqType"][currentLanguage],
-                width: 120 
+                width: 120
             }, {
                 key: "secondLevel",
                 name: Resources["boqTypeChild"][currentLanguage],
-                width: 120 
+                width: 120
             }, {
                 key: "boqSubType",
                 name: Resources["boqSubType"][currentLanguage],
-                width: 120 
-            } 
-        ]; 
+                width: 120
+            }
+        ];
     }
 
     componentDidMount() {
@@ -494,7 +513,7 @@ class requestPaymentsAddEdit extends Component {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(187)) {
                 this.setState({ isViewMode: true });
-            } 
+            }
             if (this.state.isApproveMode != true && Config.IsAllow(187)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
                     //close => false
@@ -552,9 +571,9 @@ class requestPaymentsAddEdit extends Component {
                 advancePaymentPercent: 0,
                 collected: 0,
                 useQuantity: false,
-                percentComplete:"",
-                quantityComplete:"",
-                paymentPercent:""
+                percentComplete: "",
+                quantityComplete: "",
+                paymentPercent: ""
 
             };
 
@@ -573,7 +592,6 @@ class requestPaymentsAddEdit extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
-        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
@@ -674,7 +692,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
 
-            this.buildColumns();
+            this.buildColumns(this.props.changeStatus);
             dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
                     paymentsItems: result,
@@ -797,7 +815,7 @@ class requestPaymentsAddEdit extends Component {
             let paymentsItems = [...this.state.paymentsItems];
 
             if (paymentsItems.length == 0) {
-                this.buildColumns();
+                this.buildColumns(this.props.changeStatus);
 
                 dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
@@ -831,7 +849,7 @@ class requestPaymentsAddEdit extends Component {
                 if (this.props.items.length == 0) {
                     //   this.fillVoItems();
                 }
-            } 
+            }
         }
         else if (this.state.CurrentStep === 2) {
             this.FillSummariesTab();
@@ -862,7 +880,7 @@ class requestPaymentsAddEdit extends Component {
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
-        } 
+        }
     }
 
     FillSummariesTab() {
@@ -959,7 +977,7 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     }
- 
+
     saveVariationOrderItem(event) {
         let saveDocument = { ...this.state.voItem };
 
@@ -1019,36 +1037,36 @@ class requestPaymentsAddEdit extends Component {
     onRowClick = (value, index, column) => {
 
         let userType = Config.getPayload();
- 
-        if(userType.uty != "user"){
- 
-        if (this.props.hasWorkflow == false && Config.IsAllow(185)) {
-     
-            if(this.props.changeStatus){
 
-                if(this.state.document.status === true   && this.state.document.editable=== true){
+        if (userType.uty != "user") {
 
-                    let original_document = { ...this.state.document };
+            if (this.props.hasWorkflow == false && Config.IsAllow(185)) {
 
-                    let updated_document = {};
+                if (this.props.changeStatus) {
 
-                    updated_document.percentComplete = value.percentComplete;
-                    updated_document.quantityComplete = value.quantityComplete;
-                    updated_document.paymentPercent = value.paymentPercent; 
-                    updated_document.lastComment = value.lastComment; 
+                    if (this.state.document.status === true && this.state.document.editable === true) {
 
-                    updated_document = Object.assign(original_document, updated_document);
+                        let original_document = { ...this.state.document };
 
-                    this.setState({
-                        viewPopUpRows:true,
-                        currentObject : value,
-                        document:updated_document
-                    });
-                    this.addCommentModal.show();
+                        let updated_document = {};
+
+                        updated_document.percentComplete = value.percentComplete;
+                        updated_document.quantityComplete = value.quantityComplete;
+                        updated_document.paymentPercent = value.paymentPercent;
+                        updated_document.lastComment = value.lastComment;
+
+                        updated_document = Object.assign(original_document, updated_document);
+
+                        this.setState({
+                            viewPopUpRows: true,
+                            currentObject: value,
+                            document: updated_document
+                        });
+                        this.addCommentModal.show();
+                    }
                 }
             }
-         }
-       }
+        }
     }
 
     GetCellActions(column, row) {
@@ -1148,7 +1166,7 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => { 
+    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
         let rows = [...this.state.paymentsItems];
         let updateRow = rows[fromRow];
 
@@ -1215,7 +1233,7 @@ class requestPaymentsAddEdit extends Component {
             i.sitePercentComplete = ((parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100);
             i.contractId = this.state.document.contractId;
             i.requestId = this.state.docId;
-            i.projectId = projectId; 
+            i.projectId = projectId;
         })
 
         let api = this.props.changeStatus === true ? 'EditContractsRequestPaymentsItems' : 'AddContractsRequestPaymentsItemsNewScenario';
@@ -1256,7 +1274,7 @@ class requestPaymentsAddEdit extends Component {
             this.setState({
                 isLoading: false,
                 documentDeduction: documentDeduction,
-                deductionObservableArray:list
+                deductionObservableArray: list
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1279,7 +1297,7 @@ class requestPaymentsAddEdit extends Component {
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ showBoqModal: false, isLoading: false })
-        }) 
+        })
     }
 
     addCommentClick = () => {
@@ -1288,7 +1306,7 @@ class requestPaymentsAddEdit extends Component {
         this.setState({ showCommentModal: true, isLoading: true })
         if (this.props.changeStatus) {
             this.setState({ showCommentModal: false, isLoading: false })
-        } 
+        }
     }
 
     NextTopStep = () => {
@@ -1337,7 +1355,7 @@ class requestPaymentsAddEdit extends Component {
             this.props.history.push({
                 pathname: "/requestPayments/" + projectId
             });
-        } 
+        }
     }
 
     PreviousStep = () => {
@@ -1389,7 +1407,7 @@ class requestPaymentsAddEdit extends Component {
                 CurrentStep: 1,
                 ThirdStepComplate: false,
                 FourthStepComplate: false,
-            }) 
+            })
         }
     }
 
@@ -1431,14 +1449,14 @@ class requestPaymentsAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: false,
                 FourthStepComplate: true,
-                CurrentStep: 4, 
+                CurrentStep: 4,
                 ThirdStepComplate: true,
                 SecondStepComplate: true
             })
         }
     }
 
-    handleChangeForEdit = (e,updated) => {
+    handleChangeForEdit = (e, updated) => {
 
         let updateRow = this.state.currentObject;
 
@@ -1463,185 +1481,223 @@ class requestPaymentsAddEdit extends Component {
                     updateRow.percentComplete = ((parseFloat(e.target.value) / updateRow.revisedQuantity) * 100);
                 }
                 break;
-         
-         let getIndex = originalData.findIndex(x=>x.id === updateRow.id);
- 
-         originalData.splice(getIndex,1);
 
-            this.setState({
-                paymentsItems:originalData,
-                currentObject:updateRow
-            }); 
+                let getIndex = originalData.findIndex(x => x.id === updateRow.id);
+
+                originalData.splice(getIndex, 1);
+
+                this.setState({
+                    paymentsItems: originalData,
+                    currentObject: updateRow
+                });
         }
     }
 
-    editPaymentRequistionItems = () =>{
+    editPaymentRequistionItems = () => {
 
         let mainDoc = this.state.currentObject;
         mainDoc.requestId = this.state.docId;
 
         this.setState({
-            isLoading:true
+            isLoading: true
         });
 
-        dataservice.addObject("EditRequestPaymentItem",mainDoc).then(result => {
+        dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.setState({
-                viewPopUpRows:false,
-                isLoading:false
+                viewPopUpRows: false,
+                isLoading: false
             });
         });
     }
 
-    handleDropAction(event)
-    {
-        if(event.label === "AddMissingAmendments"){
-        dataservice.GetDataGrid("AddMissingAmendments?requestId="+this.state.docId+"&contractId="+this.state.document.contractId).then(result => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        }).catch(res => { 
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-        });
-        }else if(event.label === "ReCalculatorPayment"){
-            dataservice.GetDataGrid("UpdatePayemtRequistionTotals?id="+this.state.docId).then(result => {
+    handleDropAction(event) {
+        if (event.label === "AddMissingAmendments") {
+            dataservice.GetDataGrid("AddMissingAmendments?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-            }).catch(res => { 
+            }).catch(res => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
-            });  
-        }else if(event.label === "UpdateItemsFromVO"){
-            dataservice.GetDataGrid("UpdatePRItemsByVariationOrders?requestId="+this.state.docId).then(result => {
+            });
+        } else if (event.label === "ReCalculatorPayment") {
+            dataservice.GetDataGrid("UpdatePayemtRequistionTotals?id=" + this.state.docId).then(result => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-            }).catch(res => { 
+            }).catch(res => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
-            }); 
+            });
+        } else if (event.label === "UpdateItemsFromVO") {
+            dataservice.GetDataGrid("UpdatePRItemsByVariationOrders?requestId=" + this.state.docId).then(result => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(res => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            });
         }
 
         this.setState({
-            selectedDropDown:event
+            selectedDropDown: event
         });
     }
 
     viewConfirmDelete(id) {
         this.setState({
-          deductionId: id,
-          showDeleteModal: true 
+            deductionId: id,
+            showDeleteModal: true
         });
-      }
+    }
 
     clickHandlerCancelMain = () => {
-      this.setState({ showDeleteModal: false });
+        this.setState({ showDeleteModal: false });
     };
 
     clickHandlerContinueMain = () => {
-    
-            let id = this.state.deductionId;
 
-            dataservice.GetDataGrid("ContractsRequestPaymentsDeductionsDelete?id="+id+"&requestId="+this.state.docId).then(result => {
-    
+        let id = this.state.deductionId;
+
+        dataservice.GetDataGrid("ContractsRequestPaymentsDeductionsDelete?id=" + id + "&requestId=" + this.state.docId).then(result => {
+
             let originalData = this.state.deductionObservableArray;
-    
-              
+
+
             let getIndex = originalData.findIndex(x => x.id === id);
-    
-            originalData.splice(getIndex, 1); 
-    
-              this.setState({
+
+            originalData.splice(getIndex, 1);
+
+            this.setState({
                 deductionObservableArray: originalData,
                 showDeleteModal: false
-              });
-    
-              toast.success(Resources["operationSuccess"][currentLanguage]);
-    
-            }).catch(ex => {
-              toast.success(Resources["operationSuccess"][currentLanguage]);
             });
-          }
 
-   handleDropActionForExportFile = (event) => {
-     let exportFile="";
+            toast.success(Resources["operationSuccess"][currentLanguage]);
 
-    if(event.label === "Export"){ 
-
-        this.setState({isView:false,exportFile:""});
-
-        const ExportColumns=itemsColumns.filter(i=>i.key !== 'BtnActions')
-      
-        exportFile = <Export isExportRequestPayment={true} type={1} rows={this.state.isLoading === false ? this.state.paymentsItems : []}
-            columns={ExportColumns} fileName={"Request Payments Items"} />;
-    }else{
-        
-        this.setState({isView:false,exportFile:""});
-
-        exportFile= <Export isExportRequestPayment={true} rows={this.state.isLoading === false ? this.state.paymentsItems : []}
-                columns={VOItemsColumns} fileName={"Request Payments Items"} />  ;
+        }).catch(ex => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        });
     }
-    this.setState({
-        exportFile,
-        isView:true,
-        selectedDropDownExport:event
-    })
-   }
-        
+
+    handleDropActionForExportFile = (event) => {
+        let exportFile = "";
+
+        if (event.label === "Export") {
+
+            this.setState({ isView: false, exportFile: "" });
+
+            const ExportColumns = itemsColumns.filter(i => i.key !== 'BtnActions')
+
+            exportFile = <Export isExportRequestPayment={true} type={1} rows={this.state.isLoading === false ? this.state.paymentsItems : []}
+                columns={ExportColumns} fileName={"Request Payments Items"} />;
+        } else {
+
+            this.setState({ isView: false, exportFile: "" });
+
+            exportFile = <Export isExportRequestPayment={true} rows={this.state.isLoading === false ? this.state.paymentsItems : []}
+                columns={VOItemsColumns} fileName={"Request Payments Items"} />;
+        }
+        this.setState({
+            exportFile,
+            isView: true,
+            selectedDropDownExport: event
+        })
+    }
+
+    updateActualPayments = () => {
+
+        this.setState({ viewUpdatePayment: true });
+
+        let obj = {};
+
+        obj.id = this.state.docId;
+
+        obj.actualPayment = this.state.actualPayments;
+
+        dataservice.addObject("EditActualPayment", obj).then(result => {
+
+            this.setState({ viewUpdatePayment: false });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+        }).catch(res => {
+            this.setState({
+                viewUpdatePayment: false
+            });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+    }
+
+    updatePayemtWithVariationOrderByAdmin = () => {
+
+        this.setState({ viewUpdateCalc: true });
+
+        let requestId = this.state.docId;
+
+        let contactId = this.state.document.contractId;
+
+        dataservice.GetDataGrid("UpdatePayemtWithVariationOrderByAdmin?requestId=" + requestId + "&contractId=" + contactId).then(result => {
+
+            this.setState({ viewUpdateCalc: false });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+        }).catch(res => {
+            this.setState({
+                viewUpdateCalc: false
+            });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+    }
+
     render() {
- 
+
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
-        
+
         let columns = [];
 
-        if(this.state.userType !== "user")
-        {
-            columns.push( {
+        if (this.state.userType !== "user") {
+            columns.push({
                 Header: "Controls",
                 id: "checkbox",
                 accessor: "id",
                 Cell: ({ row }) => {
                     return (
-                      <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDelete(row._original.id)}>
-                        <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
-                      </div>
+                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDelete(row._original.id)}>
+                            <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+                        </div>
                     );
-                  },
+                },
                 width: 50
             },
-            {
-                Header: Resources["description"][currentLanguage],
-                accessor: "title",
-                sortabel: true,
-                width: 200
-            },
-            {
-                Header: Resources["deductions"][currentLanguage],
-                accessor: "deductionValue",
-                width: 200,
-                sortabel: true
-            });
-        }else{
+                {
+                    Header: Resources["description"][currentLanguage],
+                    accessor: "title",
+                    sortabel: true,
+                    width: 200
+                },
+                {
+                    Header: Resources["deductions"][currentLanguage],
+                    accessor: "deductionValue",
+                    width: 200,
+                    sortabel: true
+                });
+        } else {
             columns.push(
-            {
-                Header: Resources["description"][currentLanguage],
-                accessor: "title",
-                sortabel: true,
-                width: 200
-            },
-            {
-                Header: Resources["deductions"][currentLanguage],
-                accessor: "deductionValue",
-                width: 200,
-                sortabel: true
-            });
+                {
+                    Header: Resources["description"][currentLanguage],
+                    accessor: "title",
+                    sortabel: true,
+                    width: 200
+                },
+                {
+                    Header: Resources["deductions"][currentLanguage],
+                    accessor: "deductionValue",
+                    width: 200,
+                    sortabel: true
+                });
         }
-      
+
         const ItemsGrid = this.state.isLoading === false && this.state.CurrentStep === 2 && itemsColumns.length > 0 ? (
             <GridSetup
                 rows={this.state.paymentsItems}
@@ -1653,7 +1709,7 @@ class requestPaymentsAddEdit extends Component {
                 getCellActions={this.GetCellActions}
                 key='PRitems'
             />) : <LoadingSection />;
- 
+
         const BoqTypeContent = <Fragment>
             <div className="dropWrapper">
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -1700,10 +1756,10 @@ class requestPaymentsAddEdit extends Component {
                                 error={errors.boqSubType}
                                 touched={touched.boqSubType}
                                 name="boqSubType"
-                                index="boqSubType" /> 
+                                index="boqSubType" />
                             <div className={"slider-Btns fullWidthWrapper"}>
                                 <button className={this.state.isViewMode === true ? "primaryBtn-1 btn  disNone" : "primaryBtn-1 btn "} type="submit" >{Resources['save'][currentLanguage]}</button>
-                            </div> 
+                            </div>
                         </Form>
                     )}
                 </Formik>
@@ -1751,7 +1807,7 @@ class requestPaymentsAddEdit extends Component {
                     }
                 </tr>
             ) : <LoadingSection />;
- 
+
         let viewHistory =
             <div className="doc-pre-cycle">
                 <table className="attachmentTable" key="DeductionsCertificate">
@@ -1824,14 +1880,13 @@ class requestPaymentsAddEdit extends Component {
             </Fragment>
             : <LoadingSection />
 
-        let ExportColumns=itemsColumns.filter(i=>i.key !== 'BtnActions');
+        let ExportColumns = itemsColumns.filter(i => i.key !== 'BtnActions');
 
         return (
-            <div className="mainContainer"> 
+            <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
-
                         <div className="step-content">
                             {this.state.FirstStep ?
                                 <Fragment>
@@ -1853,7 +1908,7 @@ class requestPaymentsAddEdit extends Component {
                                                     }}>
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                                            <div className="proForm first-proform"> 
+                                                            <div className="proForm first-proform">
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -2085,21 +2140,21 @@ class requestPaymentsAddEdit extends Component {
                                                                                 <div className="bounce3" />
                                                                             </div>
                                                                         </button>
-                                                                    )} 
+                                                                    )}
 
-                                                                 {this.props.changeStatus===true ? this.state.userType !="user"?
-                                                                        <div className="default__dropdown" style={{minWidth:'225px'}}>
-                                                                            <Dropdown 
-                                                                                data={this.state.fillDropDown}
-                                                                                selectedValue={this.state.selectedDropDown}
-                                                                                handleChange={event => {
-                                                                                    this.handleDropAction(event)
-                                                                                }}
-                                                                                onChange={setFieldValue} 
-                                                                                name="actions"
-                                                                                index="actions" />
-                                                                        </div>  
-                                                                        :null:null}
+                                                                {this.props.changeStatus === true ? this.state.userType != "user" ?
+                                                                    <div className="default__dropdown" style={{ minWidth: '225px' }}>
+                                                                        <Dropdown
+                                                                            data={this.state.fillDropDown}
+                                                                            selectedValue={this.state.selectedDropDown}
+                                                                            handleChange={event => {
+                                                                                this.handleDropAction(event)
+                                                                            }}
+                                                                            onChange={setFieldValue}
+                                                                            name="actions"
+                                                                            index="actions" />
+                                                                    </div>
+                                                                    : null : null}
                                                             </div>
                                                         </Form>
                                                     )}
@@ -2121,7 +2176,42 @@ class requestPaymentsAddEdit extends Component {
                             }
                             {this.state.SecondStep ?
                                 <Fragment>
-                                    <div className="subiTabsContent feilds__top"> 
+                                    <div className="subiTabsContent feilds__top">
+                                        {this.props.changeStatus ? <div className="doc-pre-cycle">
+                                            <header>
+                                                <h2 className="zero">{Resources['actualPayment'][currentLanguage]}</h2>
+                                            </header>
+                                            <div className="inpuBtn">
+                                                <div className="linebylineInput valid-input ">
+                                                    <label className="control-label">{Resources.actualPayment[currentLanguage]}</label>
+                                                    <div className="ui input inputDev">
+                                                        <input type="text" className="form-control" name="actualPayment"
+                                                            value={this.state.actualPayments}
+                                                            placeholder={Resources.actualPayment[currentLanguage]}
+                                                            onChange={(event) => this.setState({ actualPayments: event.target.value })} />
+                                                    </div>
+                                                </div>
+
+                                                {this.state.viewUpdatePayment ?
+                                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                    : <button className="primaryBtn-1 btn meduimBtn" onClick={this.updateActualPayments}>{Resources['update'][currentLanguage]}</button>}
+                                            </div>
+                                            {this.state.viewUpdateCalc ? <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button> : <div className="slider-Btns ">
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.updatePayemtWithVariationOrderByAdmin}>{Resources['recalculateWithVariation'][currentLanguage]}</button>
+                                                </div>}
+                                        </div> : ""}
                                         <div className="doc-pre-cycle">
                                             <header>
                                                 <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
@@ -2131,33 +2221,33 @@ class requestPaymentsAddEdit extends Component {
                                                     <div className="slider-Btns editableRows">
                                                         <span>No.Update Rows.{this.state.editRows.length}</span>
                                                         <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>{Resources['edit'][currentLanguage]}</button>
-                                                    </div> 
-                                                </div>
-                                                : null}
-                                                <div className="default__dropdown--custom">
-                                                    <div className="default__dropdown">
-                                                         <Dropdown 
-                                                            data={this.state.fillDropDownExport}
-                                                            selectedValue={this.state.selectedDropDownExport}
-                                                            handleChange={event => this.handleDropActionForExportFile(event)}
-                                                            index="contractId" 
-                                                            name="contractId" />
-                                                     <div style={{ display: 'none' }}>
-                                                     {  this.state.exportFile }
-                                                    </div> 
                                                     </div>
                                                 </div>
+                                                : null}
+                                            <div className="default__dropdown--custom">
+                                                <div className="default__dropdown">
+                                                    <Dropdown
+                                                        data={this.state.fillDropDownExport}
+                                                        selectedValue={this.state.selectedDropDownExport}
+                                                        handleChange={event => this.handleDropActionForExportFile(event)}
+                                                        index="contractId"
+                                                        name="contractId" />
+                                                    <div style={{ display: 'none' }}>
+                                                        {this.state.exportFile}
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             {ItemsGrid}
                                         </div>
-                                    </div> 
+                                    </div>
                                 </Fragment>
                                 : null
                             }
 
-                            {this.state.ThirdStep ? 
+                            {this.state.ThirdStep ?
                                 <Fragment>
-                                    <div className="subiTabsContent feilds__top"> 
+                                    <div className="subiTabsContent feilds__top">
                                         <div className="doc-pre-cycle">
                                             <header>
                                                 <h2 className="zero">{Resources['interimPaymentCertificate'][currentLanguage]}</h2>
@@ -2185,7 +2275,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 {Resources['total'][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th> 
+                                                        <th>
                                                             <div className="headCell">
                                                                 {Resources['comments'][currentLanguage]}
                                                             </div>
@@ -2198,17 +2288,17 @@ class requestPaymentsAddEdit extends Component {
                                             </table>
                                             {approvedSummaries}
                                         </div>
-                                    </div> 
+                                    </div>
                                 </Fragment>
                                 : null
                             }
 
-                            {this.state.FourthStep ? 
+                            {this.state.FourthStep ?
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
                                         <header>
                                             <h2 className="zero">{Resources['deductions'][currentLanguage]}</h2>
-                                        </header> 
+                                        </header>
                                         <div className="document-fields">
                                             <Formik
                                                 initialValues={{ ...this.state.documentDeduction }}
@@ -2216,7 +2306,7 @@ class requestPaymentsAddEdit extends Component {
                                                 enableReinitialize={true}
                                                 onSubmit={(values) => {
                                                     this.addDeduction();
-                                                }}> 
+                                                }}>
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                     <Form id="deductionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                         <div className="proForm datepickerContainer">
@@ -2234,7 +2324,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     {touched.title ? (<em className="pError">{errors.title}</em>) : null}
 
                                                                 </div>
-                                                            </div> 
+                                                            </div>
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.deductions[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev" + (errors.deductionValue && touched.deductionValue ? (" has-error") : "ui input inputDev")} >
@@ -2252,26 +2342,26 @@ class requestPaymentsAddEdit extends Component {
                                                         </div>
                                                         <div className="slider-Btns">
                                                             {this.state.isLoading === false ?
-                                                                (this.state.userType != "user"?
-                                                                <button className="primaryBtn-1 btn meduimBtn">{Resources['save'][currentLanguage]}</button>:null
-                                                                ):
+                                                                (this.state.userType != "user" ?
+                                                                    <button className="primaryBtn-1 btn meduimBtn">{Resources['save'][currentLanguage]}</button> : null
+                                                                ) :
                                                                 (<button className="primaryBtn-1 btn  disabled" disabled="disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
-                                                                        </div>
-                                                                    </button>
-                                                                )} 
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>
+                                                                )}
                                                         </div>
                                                     </Form>
                                                 )}
                                             </Formik>
                                         </div>
 
-                                        <div className="doc-pre-cycle"> 
+                                        <div className="doc-pre-cycle">
                                             <ReactTable data={this.state.deductionObservableArray} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
-                                                className="-striped -highlight"/>
+                                                className="-striped -highlight" />
                                             <div className="slider-Btns">
                                                 <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
                                             </div>
@@ -2357,7 +2447,7 @@ class requestPaymentsAddEdit extends Component {
                         }
                     </div>
                 </div>
-           
+
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
@@ -2369,11 +2459,11 @@ class requestPaymentsAddEdit extends Component {
                         {BoqTypeContent}
                     </SkyLight>
                 </div>
-            
+
                 <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.addCommentModal = ref} title={Resources.comments[currentLanguage]}>
                         <div className="proForm datepickerContainer">
-                            <div className="linebylineInput valid-input mix_dropdown"> 
+                            <div className="linebylineInput valid-input mix_dropdown">
                                 <div className="letterFullWidth">
                                     <label className="control-label">{Resources.comment[currentLanguage]}</label>
                                     <div className="inputDev ui input">
@@ -2391,96 +2481,96 @@ class requestPaymentsAddEdit extends Component {
 
                 <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.addCommentModal = ref}>
-                    <Formik  initialValues={{ ...this.state.document }}
-                             validationSchema={validationItemsSchema} enableReinitialize={true}
-                             onSubmit={(values) => {
-                                    this.editPaymentRequistionItems()
-                                }}>
-                        {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                        <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
-                        <div className="dropWrapper">
-                         <div className="fillter-item-c fullInputWidth">
-                            <label className="control-label">{Resources.percentComplete[currentLanguage]}</label>
-                            <div className={"inputDev ui input" + (errors.percentComplete && touched.percentComplete ? (" has-error") : !errors.percentComplete && touched.percentComplete ? (" has-success") : " ")} >
-                                <input name='percentComplete' className="form-control fsadfsadsa" id="percentComplete"
-                                    placeholder={Resources.percentComplete[currentLanguage]}
-                                    autoComplete='off'
-                                    onBlur={(e) => {
-                                            handleBlur(e)
-                                            handleChange(e)
-                                        }}
-                                    defaultValue={this.state.document.percentComplete} 
-                                    onChange={(e) => this.handleChangeForEdit(e, 'percentComplete')} /> 
-                                {touched.percentComplete ? (<em className="pError">{errors.percentComplete}</em>) : null}
-                            </div>
-                         </div>
-                         <div className="fillter-item-c fullInputWidth">
-                            <label className="control-label">{Resources.quantityComplete[currentLanguage]}</label>
-                            <div className={"inputDev ui input" + (errors.quantityComplete && touched.quantityComplete ? (" has-error") : !errors.quantityComplete && touched.quantityComplete ? (" has-success") : " ")} >
-                                <input name='quantityComplete' className="form-control fsadfsadsa" id="quantityComplete"
-                                    placeholder={Resources.quantityComplete[currentLanguage]}
-                                    autoComplete='off'
-                                    onBlur={(e) => {
-                                            handleBlur(e)
-                                            handleChange(e)
-                                        }}
-                                        defaultValue={this.state.document.quantityComplete} 
-                                    onChange={(e) => this.handleChangeForEdit(e, 'quantityComplete')} /> 
-                            {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
-                            </div>
-                         </div>
-                         <div className="fillter-item-c fullInputWidth">
-                            <label className="control-label">{Resources.paymentPercent[currentLanguage]}</label>
-                            <div className={"inputDev ui input" + (errors.paymentPercent && touched.paymentPercent ? (" has-error") : !errors.paymentPercent && touched.paymentPercent ? (" has-success") : " ")} >
-                                <input name='paymentPercent' className="form-control fsadfsadsa" id="paymentPercent"
-                                    placeholder={Resources.paymentPercent[currentLanguage]}
-                                    autoComplete='off' 
-                                    onBlur={(e) => {
-                                            handleBlur(e)
-                                            handleChange(e)
-                                        }}
-                                        defaultValue={this.state.document.paymentPercent} 
-                                    onChange={(e) =>{ this.handleChangeForEdit(e, 'paymentPercent');}} /> 
-                                    {touched.paymentPercent ? (<em className="pError">{errors.paymentPercent}</em>) : null}
-                            </div>
-                         </div>
-                       
-                         <div className="fillter-item-c fullInputWidth">
-                            <label className="control-label">{Resources.comments[currentLanguage]}</label>
-                            <div className={"inputDev ui input"} >
-                                <input name='comments' className="form-control fsadfsadsa" id="comments"
-                                    placeholder={Resources.comments[currentLanguage]}
-                                    autoComplete='off' 
-                                    onBlur={(e) => {
-                                            handleBlur(e)
-                                            handleChange(e)
-                                        }}
-                                    defaultValue={this.state.document.lastComment} 
-                                    onChange={(e) =>{ this.handleChangeForEdit(e, 'lastComment');}} />  
-                            </div>
-                         </div>
-                        <div className="fullWidthWrapper">
-                        {
-                        this.state.isLoading === true ?  (<button className="primaryBtn-1 btn  disabled" disabled="disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
-                                                                        </div>
-                                                        </button>): <button className="primaryBtn-1 btn " type="submit">{Resources.save[currentLanguage]}</button>
-                        }
-                        </div>
-                        </div>
-                         </Form> 
-                        )}
-                       </Formik>
+                        <Formik initialValues={{ ...this.state.document }}
+                            validationSchema={validationItemsSchema} enableReinitialize={true}
+                            onSubmit={(values) => {
+                                this.editPaymentRequistionItems()
+                            }}>
+                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                                    <div className="dropWrapper">
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">{Resources.percentComplete[currentLanguage]}</label>
+                                            <div className={"inputDev ui input" + (errors.percentComplete && touched.percentComplete ? (" has-error") : !errors.percentComplete && touched.percentComplete ? (" has-success") : " ")} >
+                                                <input name='percentComplete' className="form-control fsadfsadsa" id="percentComplete"
+                                                    placeholder={Resources.percentComplete[currentLanguage]}
+                                                    autoComplete='off'
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }}
+                                                    defaultValue={this.state.document.percentComplete}
+                                                    onChange={(e) => this.handleChangeForEdit(e, 'percentComplete')} />
+                                                {touched.percentComplete ? (<em className="pError">{errors.percentComplete}</em>) : null}
+                                            </div>
+                                        </div>
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">{Resources.quantityComplete[currentLanguage]}</label>
+                                            <div className={"inputDev ui input" + (errors.quantityComplete && touched.quantityComplete ? (" has-error") : !errors.quantityComplete && touched.quantityComplete ? (" has-success") : " ")} >
+                                                <input name='quantityComplete' className="form-control fsadfsadsa" id="quantityComplete"
+                                                    placeholder={Resources.quantityComplete[currentLanguage]}
+                                                    autoComplete='off'
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }}
+                                                    defaultValue={this.state.document.quantityComplete}
+                                                    onChange={(e) => this.handleChangeForEdit(e, 'quantityComplete')} />
+                                                {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
+                                            </div>
+                                        </div>
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">{Resources.paymentPercent[currentLanguage]}</label>
+                                            <div className={"inputDev ui input" + (errors.paymentPercent && touched.paymentPercent ? (" has-error") : !errors.paymentPercent && touched.paymentPercent ? (" has-success") : " ")} >
+                                                <input name='paymentPercent' className="form-control fsadfsadsa" id="paymentPercent"
+                                                    placeholder={Resources.paymentPercent[currentLanguage]}
+                                                    autoComplete='off'
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }}
+                                                    defaultValue={this.state.document.paymentPercent}
+                                                    onChange={(e) => { this.handleChangeForEdit(e, 'paymentPercent'); }} />
+                                                {touched.paymentPercent ? (<em className="pError">{errors.paymentPercent}</em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">{Resources.comments[currentLanguage]}</label>
+                                            <div className={"inputDev ui input"} >
+                                                <input name='comments' className="form-control fsadfsadsa" id="comments"
+                                                    placeholder={Resources.comments[currentLanguage]}
+                                                    autoComplete='off'
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }}
+                                                    defaultValue={this.state.document.lastComment}
+                                                    onChange={(e) => { this.handleChangeForEdit(e, 'lastComment'); }} />
+                                            </div>
+                                        </div>
+                                        <div className="fullWidthWrapper">
+                                            {
+                                                this.state.isLoading === true ? (<button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>) : <button className="primaryBtn-1 btn " type="submit">{Resources.save[currentLanguage]}</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
                     </SkyLight>
                 </div>
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
-                    showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
-                    clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
+                        showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
+                        clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
                 <div className="largePopup largeModal " style={{ display: this.state.showViewHistoryModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.ViewHistoryModal = ref} title={Resources.viewHistory[currentLanguage]}>
                         {viewHistory}
@@ -2489,7 +2579,7 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
     }
-} 
+}
 
 function mapStateToProps(state) {
     return {
@@ -2510,4 +2600,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(requestPaymentsAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(requestPaymentsAddEdit))

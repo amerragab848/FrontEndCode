@@ -56,7 +56,7 @@ class CopyTo extends Component {
 
   render() {
     return ( 
-      <div>
+      <div className="proForm">
         <Dropdown title="Projects" data={this.state.Projects} handleChange={value => this.selectValue(value)} placeholder="Projects" />
         <div className="fullWidthWrapper">
           <button className="primaryBtn-1 btn" onClick={() => this.saveCopyTo()}>

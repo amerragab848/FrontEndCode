@@ -132,8 +132,7 @@ class LettersAddEdit extends Component {
 
     };
 
-    componentWillReceiveProps(nextProps) {
-        //console.log(this.props, nextProps)
+    componentWillReceiveProps(nextProps) { 
         if (nextProps.document.id !== this.props.document.id) {
             this.setState({
                 document: nextProps.document,

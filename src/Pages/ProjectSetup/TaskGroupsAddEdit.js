@@ -53,7 +53,7 @@ let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
-let perviousRoute=0;
+let perviousRoute = 0;
 let actions = []
 
 class TaskGroupsAddEdit extends Component {
@@ -67,7 +67,7 @@ class TaskGroupsAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -125,7 +125,7 @@ class TaskGroupsAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             IsEditMode: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -476,7 +476,8 @@ class TaskGroupsAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -545,7 +546,7 @@ class TaskGroupsAddEdit extends Component {
             }]
 
         let Data = this.state.rows
-       
+
         let RenderContactsTable = Data.map((item, index) => {
             return (
                 this.state.isLoading === false ?
@@ -689,9 +690,9 @@ class TaskGroupsAddEdit extends Component {
                                                 <div className="document-fields">
 
                                                     <div className="proForm first-proform">
-                                                        <div className={'ui input inputDev linebylineInput ' + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
+                                                        <div className=' linebylineInput ' >
                                                             <label className="control-label">{Resources['subject'][currentLanguage]}</label>
-                                                            <div className="inputDev ui input">
+                                                            <div className={"inputDev ui input " + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
                                                                 <input autoComplete="off" className="form-control" name="Subject"
                                                                     value={this.state.IsEditMode ? this.state.DocTaskGroupsData.subject : values.Subject}
                                                                     onBlur={(e) => { handleBlur(e) }}

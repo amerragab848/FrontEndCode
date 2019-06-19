@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import ReactTable from "react-table";
 import moment from "moment";
 import LoadingSection from './LoadingSection'
+import Recycle from '../../Styles/images/attacheRecycle.png'
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class RiskConesquence extends Component {
     constructor(props) {
@@ -25,7 +27,7 @@ class RiskConesquence extends Component {
                 conesquenceList: result, isLoading: false
             });
         });
-    }
+    } 
 
     renderEditable = (cellInfo) => {
         return (
@@ -36,21 +38,18 @@ class RiskConesquence extends Component {
                 onBlur={e => {
                     const conesquenceItems = [...this.state.conesquenceItems];
                     conesquenceItems[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                    const updatedItem = conesquenceItems[cellInfo.index]
-                    const updatedItems = this.state.conesquenceItems
-                    let index = updatedItems.findIndex(item => item.id == updatedItem.id)
-                    if (index != -1)
-                        updatedItems[index] = updatedItem
-                    this.setState({ conesquenceItems: updatedItem });
-
+                    this.setState({isLoading:true})
+                    Api.post('EditConesquence',conesquenceItems[cellInfo.index]).then(()=>{
+                        this.setState({ conesquenceItems ,isLoading:false}); 
+                    })
                 }}
                 dangerouslySetInnerHTML={{
-                    __html: this.state.items[cellInfo.index][cellInfo.column.id]
+                    __html: this.state.conesquenceItems[cellInfo.index][cellInfo.column.id]
                 }}
             />
         );
-
     }
+
     chooseConesquence = (item) => {
         let checked = this.state[item.id] ? this.state[item.id].checked : false;
         if (checked == false) {
@@ -63,19 +62,27 @@ class RiskConesquence extends Component {
             }
             dataservice.addObject('AddConesquence', conesquenceObj).then(result => {
                 let conesquenceItems = this.state.conesquenceItems;
-                conesquenceItems.push(result);
+                let  conesquenceItem=result;
+                conesquenceItem.addedDate=moment(conesquenceItem).format("DD/MM/YYYY");
+                conesquenceItems.push(conesquenceItem);
                 this.setState({ conesquenceItems, isLoading: false })
             })
             this.setState({ [item.id]: true });
         }
     }
+
     deleteConesquence = (id, e) => {
+        this.setState({ isLoading: true })
         Api.post('DeleteConesquence?id=' + id).then(result => {
-            toast.success(Resources["operationCancelled"][currentLanguage]);
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            let consequencesItems = this.state.conesquenceItems.filter(element => element.id != id);
+            this.setState({ isLoading: false, consequencesItems }) 
         }).catch(() => {
+            toast.success(Resources["operationCanceled"][currentLanguage]);
 
         })
     }
+
     render() {
         let checkBoxs = this.state.conesquenceList.map(item => {
             return (
@@ -95,51 +102,59 @@ class RiskConesquence extends Component {
                 {
                     Cell: props => {
                         return (
-                            <i className='fa fa-plus-circle' onClick={e => this.deleteConesquence(props.original.id)} />
-                        )
-
+                            <img src={Recycle} alt="delete" onClick={e => this.deleteConesquence(props.original.id)} />
+                        ) 
                     }, width: 30
                 },
                 {
                     Header: Resources.numberAbb[currentLanguage],
-                    accessor: 'id'
+                    accessor: 'id', 
+                    show: false,
                 }, {
-                    Header: Resources.description[currentLanguage],
-                    accessor: 'riskId'
+                    Header: "riskId", 
+                    accessor: 'riskId' ,
+                     show: false,
                 }, {
-                    Header: Resources.unit[currentLanguage],
-                    accessor: 'conesquenceId'
+                    Header: 'conesquenceId',  
+                    accessor: 'conesquenceId' ,
+                    show: false,
+                },  {
+                    Header:  Resources.conesquenceName[currentLanguage],
+                    accessor: 'consequenceName'
                 }, {
-                    Header: Resources.quantity[currentLanguage],
+                    Header:  Resources.comment[currentLanguage],
                     accessor: 'comment',
+                    Cell: this.renderEditable
                 }, {
-                    Header: Resources.stock[currentLanguage],
-                    accessor: 'addedDate',
+                    Header:  Resources.addedDate[currentLanguage],
+                    accessor: 'addedDate' 
                 }
-            ]
-            }
+            ]  }
             defaultPageSize={5}
             className="-striped -highlight"
         />
         return (
             <div className="mainContainer">
-                <div className="documents-stepper noTabs__document">
-                    {this.state.isLoading == true ? <LoadingSection /> :
-                        <div className="doc-container">
-                            <div className="step-content">
-                                <div className="subiTabsContent">
-                                    <div className="document-fields">
-                                        {checkBoxs}
+                <div className="doc-pre-cycle letterFullWidth">
+                    <div className="document-fields">
+                        <header style={{ paddingTop: '0' }}>
+                            <h2 className="zero">{Resources['riskConesquence'][currentLanguage]}</h2>
+                        </header>
+                        <div className="dropWrapper">
+                            {this.state.isLoading == true ? <LoadingSection /> :
+                                <React.Fragment>
+                                    {checkBoxs}
+                                    <div className="doc-pre-cycle letterFullWidth">
+                                        <div className='document-fields'>
+                                            {table}
+                                        </div>
                                     </div>
-                                    <div className="document-fields">
-                                        {table}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>}
+                                </React.Fragment>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
-
         );
     }
 }

@@ -7877,6 +7877,10 @@
         "en": "Risk Cause",
         "ar": "riskCause"
     },
+    "riskConesquence": {
+        "en": "Risk Conesquence",
+        "ar": "RiskConesquence"
+    },
     "likelihood": {
         "en": "Likelihood",
         "ar": "likelihood"
@@ -7924,5 +7928,9 @@
     "toContactNameRequired": {
         "en": "Please select to Contact Name",
         "ar": "برجاء إختيار الشخص المسئول"
+    },
+    "conesquenceName": {
+        "en": "Conesquence Name",
+        "ar": "conesquenceName"
     }
 }
