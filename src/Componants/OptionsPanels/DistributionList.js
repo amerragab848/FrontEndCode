@@ -216,7 +216,7 @@ class DistributionList extends Component {
                 <div className="fullWidthWrapper">
                     <h4 className="twoLineHeader">{Resources['contactList'][currentLanguage]}</h4>
                 </div>
-                <div className="modal-header fullWidthWrapper">
+                <div className="modal-header dis_reactTable fullWidthWrapper">
                     <ReactTable
                         ref={(r) => {
                             this.selectTable = r;

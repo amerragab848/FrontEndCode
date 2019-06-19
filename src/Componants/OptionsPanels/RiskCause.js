@@ -157,10 +157,10 @@ class RiskCause extends Component {
                                         }} >
                                         {({ errors, touched, handleBlur, handleChange, values }) => (
                                             <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
-                                                <div className="doc-input-btn" style={{ border: 'none' }}>
-                                                    <div className="ui input inputDev fillter-item-c ">
+                                                <div className="doc-input-btn customeError" style={{ border: 'none' }}>
+                                                    <div className="fullInputWidth fillter-item-c ">
                                                         <label className="control-label"> {Resources['description'][currentLanguage]}</label>
-                                                        <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
+                                                        <div className={"inputDev ui input " + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
                                                             <input name='description' autoComplete='off' id='description'
                                                                 value={values.description} className="form-control" placeholder={Resources['description'][currentLanguage]}
                                                                 onBlur={(e) => { handleBlur(e) }}
@@ -170,7 +170,6 @@ class RiskCause extends Component {
                                                             {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                                                         </div>
                                                     </div>
-
                                                     <button className="primaryBtn-1 btn mediumBtn" type="submit"  >{Resources['add'][currentLanguage]}</button>
                                                 </div>
                                                 <div className="doc-pre-cycle letterFullWidth">
