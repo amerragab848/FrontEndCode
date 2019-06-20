@@ -259,8 +259,8 @@ class CommonLog extends Component {
 
     Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
       this.setState({
-        rows: [...result.data],
-        totalRows: result.total,
+        rows:result.data != undefined ?  [...result.data] : result,
+        totalRows:result.data != undefined ? result.total : 0,
         isLoading: false
       });
 

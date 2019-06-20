@@ -446,14 +446,11 @@ class ActionByAlerts extends Component {
 
                                 {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                                     <Form onSubmit={handleSubmit}>
-
-
                                         <div className='document-fields'>
                                             <div className="proForm datepickerContainer">
-
                                                 {!this.state.IsEditModel ?
                                                     <Fragment>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput">
                                                             <DropdownMelcous title='selectModule' data={this.state.ModuleDropData} name='ModuleDrop'
                                                                 selectedValue={this.state.IsEditModel ? this.state.SelectedModuleDrop : values.ModuleDrop} onChange={setFieldValue}
                                                                 handleChange={(e) => this.handleChangeDropsForEdit(e, "ModuleDrop")}
@@ -463,7 +460,7 @@ class ActionByAlerts extends Component {
                                                                 value={values.ModuleDrop} />
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput">
                                                             <DropdownMelcous title='docType' data={this.state.DocumentTypeDropData} name='DocumentTypeDrop'
                                                                 selectedValue={this.state.IsEditModel ? this.state.SelectedDocumentTypeDrop : values.DocumentTypeDrop} onChange={setFieldValue}
                                                                 handleChange={(e) => this.handleChangeDropsForEdit(e, "DocumentTypeDrop")}
@@ -473,11 +470,11 @@ class ActionByAlerts extends Component {
                                                                 value={values.DocumentTypeDrop} />
                                                         </div>
                                                     </Fragment>
-                                                    : null}
-
-                                                <div className="linebylineInput valid-input">
+                                                    : null
+                                                }
+                                                <div className="linebylineInput fullInputWidth">
                                                     <label className="control-label">{Resources['redAlertDays'][currentLanguage]}</label>
-                                                    <div className={'ui input inputDev ' + (errors.HighAlert && touched.HighAlert ? 'has-error' : null) + ' '}>
+                                                    <div className={'ui input inputDev ' + (errors.HighAlert && touched.HighAlert ? 'has-error' : 'has-succsess') + ' '}>
                                                         <input autoComplete="off" value={this.state.IsEditModel ? this.state.ActionByAlertsDataForEdit.redAlertDays : values.HighAlert}
                                                             className="form-control" name="HighAlert" onBlur={(e) => { handleBlur(e) }}
                                                             onChange={(e) => {
@@ -489,17 +486,17 @@ class ActionByAlerts extends Component {
                                                             placeholder={Resources['redAlertDays'][currentLanguage]} />
                                                         {errors.HighAlert && touched.HighAlert ?
                                                             <Fragment>
-                                                                <span className='glyphicon glyphicon-remove form-control-feedback spanError'>
-                                                                </span>
+                                                                <span className='glyphicon glyphicon-remove form-control-feedback spanError'></span>
                                                                 <em className="pError">{errors.HighAlert}</em>
                                                             </Fragment>
                                                             : values.HighAlert !== '' ?
                                                                 <span className='glyphicon form-control-feedback glyphicon-ok'> </span>
-                                                                : null}
+                                                                : null
+                                                                }
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
+                                                <div className="linebylineInput fullInputWidth">
                                                     <label className="control-label">{Resources['yellowAlertDays'][currentLanguage]}</label>
                                                     <div className={'ui input inputDev ' + (errors.NormalAlert && touched.NormalAlert ? 'has-error' : null) + ' '}>
                                                         <input autoComplete="off" value={this.state.IsEditModel ? this.state.ActionByAlertsDataForEdit.yellowAlertDays : values.NormalAlert}
@@ -527,7 +524,7 @@ class ActionByAlerts extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
+                                                <div className="linebylineInput fullInputWidth">
                                                     <label className="control-label">{Resources['greenAlertDays'][currentLanguage]}</label>
                                                     <div className={'ui input inputDev ' + (errors.LowAlert && touched.LowAlert ? 'has-error' : null) + ' '}>
                                                         <input autoComplete="off" value={this.state.IsEditModel ? this.state.ActionByAlertsDataForEdit.greenAlertDays : values.LowAlert}
@@ -554,10 +551,6 @@ class ActionByAlerts extends Component {
 
                                                     </div>
                                                 </div>
-
-
-
-
 
                                             </div>
 

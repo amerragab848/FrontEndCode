@@ -558,9 +558,21 @@ class TaskGroupsAddEdit extends Component {
                                 </span>
                             </div>
                         </td>
-                        <td>{item.arrange}</td>
-                        <td>{item.companyName}</td>
-                        <td>{item.contactName}</td>
+                        <td>
+                            <div className="contentCell tableCell-1">
+                                {item.arrange}
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-2">
+                                {item.companyName}
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-3">
+                                {item.contactName}
+                            </div>
+                        </td>
                     </tr>
                     : <LoadingSection />
             )
@@ -766,21 +778,34 @@ class TaskGroupsAddEdit extends Component {
                                                 <header>
                                                     <h2 className="zero">{Resources['contactList'][currentLanguage]}</h2>
                                                 </header>
-                                                <table className="ui table">
+                                                <table className="attachmentTable attachmentTableAuto">
                                                     <thead>
                                                         <tr>
-                                                            <th>{Resources['delete'][currentLanguage]}</th>
-                                                            <th>{Resources['arrange'][currentLanguage]}</th>
-                                                            <th>{Resources['CompanyName'][currentLanguage]}</th>
-                                                            <th>{Resources['ContactName'][currentLanguage]}</th>
-
+                                                            <th>
+                                                                <div className="headCell tableCell-1">
+                                                                    {Resources['delete'][currentLanguage]}
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-1">
+                                                                    {Resources['arrange'][currentLanguage]}
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-2">
+                                                                    {Resources['CompanyName'][currentLanguage]}
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-3">
+                                                                    {Resources['ContactName'][currentLanguage]}
+                                                                </div>
+                                                            </th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
                                                         {RenderContactsTable}
-
                                                     </tbody>
                                                 </table>
                                             </div>

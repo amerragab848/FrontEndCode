@@ -44,7 +44,7 @@ class FilterComponent extends Component {
 
     this.props.filtersColumns.map((column, index) => {
       if (column.type === "date") {
-        state[index + "-column"] = moment().format("DD/MM/YYYY");
+        state[index + "-column"] = moment().format("YYYY-MM-DD");
       } 
     });
 
@@ -116,8 +116,13 @@ class FilterComponent extends Component {
     this.state.valueColumns.map(column => {
       if (column.type === "date") {
         if (column.value != "") {
-          //query[column.field] = moment(column.value).format("YYYY-MM-DD");
-          query[column.field] = column.value;
+          let spliteDate = column.value.split("|");
+          if(spliteDate.length > 1){
+            query[column.field] = column.value;
+          }
+          else{ 
+            query[column.field] = moment(column.value, "DD/MM/YYYY").format("YYYY-MM-DD");
+          }
         }
       } else if (column.type === "number") {
         if (column.value != "") {
@@ -150,16 +155,6 @@ class FilterComponent extends Component {
       this.setState({ currentData:0  });
     } 
 }
-
-// handleOutsideClick(e) {
-//   if (this.index != null){
- 
-//   if (this.index.contains(e.target)) {
-//     return;
-//   }
-//   this.changeDate();
-//  }
-// }
   
 onChange = (date,index,columnName,type,key) => { 
 
@@ -180,12 +175,12 @@ onChange = (date,index,columnName,type,key) => {
 
   renderFilterColumns() {
     let columns = (
-      <div>
+      <div >
         {this.props.filtersColumns.length > 6 ?
           <div className="showMore__btn">
             <button id="showMore_input" className="moreOn">
               <span className="more">SHOW MORE</span>
-              <span className="less">SHOW Less</span>
+              <span className="less" onClick={this.resetDate}>SHOW Less</span>
               <img className="more" src={plus} alt="plus" />
               <img className="less" src={Minimize} alt="minimize" />
             </button>
@@ -240,6 +235,7 @@ onChange = (date,index,columnName,type,key) => {
                     </div>
                   );
                 } else if (column.type === "date") {
+                  if(column.isRange ){
                   return (
                     <div className="form-group fillterinput fillter-item-c"  key={index}>
                           <label className="control-label" htmlFor={column.key}>{column.name}</label>
@@ -250,12 +246,27 @@ onChange = (date,index,columnName,type,key) => {
                                   
                                   onClick={() => this.changeDate(index,column.type)}/>
                           {this.state.currentData === index && this.state.currentData != 0 ? (
-                           <div className="viewCalender" tabIndex={0} onMouseLeave={this.resetDate}  ref={index => { this.index = index;}}>
+                           <div className="viewCalender" tabIndex={0} ref={index => { this.index = index;}}>
                             <Calendar  onChange={(date) => this.onChange(date,index,column.name,column.type,column.key)} selectRange={true}  /> 
                             </div>) : ("")}
                             </div>
                     </div>  
+                  );}
+                  else{
+                    return (
+                    <div className="form-group fillterinput fillter-item-c" key={index}>
+                      <DatePicker
+                        title={column.name}
+                        handleChange={date =>
+                          this.getValueHandler(date, column.type, column.field, index)
+                        } 
+                        startDate={this.state[index + "-column"]}
+                        index={index}
+                        key={index}
+                      />
+                    </div>
                   );
+                  }
                 }
               }
             })}
@@ -285,7 +296,7 @@ onChange = (date,index,columnName,type,key) => {
   }
 
   render() {
-    return <div>{this.renderFilterColumns()}</div>;
+    return <div onMouseLeave={this.resetDate}>{this.renderFilterColumns()}</div>;
   }
 }
 

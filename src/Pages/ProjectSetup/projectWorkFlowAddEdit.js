@@ -26,16 +26,16 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
- 
+
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
- 
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -108,7 +108,7 @@ class projectWorkFlowAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -118,7 +118,7 @@ class projectWorkFlowAddEdit extends Component {
                 }
                 catch{
                     this.props.history.goBack();
-                    
+
                 }
             }
             index++;
@@ -194,7 +194,7 @@ class projectWorkFlowAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -276,7 +276,8 @@ class projectWorkFlowAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -1160,8 +1161,16 @@ class projectWorkFlowAddEdit extends Component {
                                 </span>
                             </div>
                         </td>
-                        <td>{item.actionByCompanyName}</td>
-                        <td>{item.actionByContactName}</td>
+                        <td>
+                            <div className="contentCell tableCell-2">
+                                <p>{item.actionByCompanyName}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-2">
+                                <p>{item.actionByContactName}</p>
+                            </div>
+                        </td>
                     </tr>
                 )
             })
@@ -1178,10 +1187,26 @@ class projectWorkFlowAddEdit extends Component {
                                 </span>
                             </div>
                         </td>
-                        <td>{item.docTypeTitle}</td>
-                        <td>{item.redAlert}</td>
-                        <td>{item.yellowAlert}</td>
-                        <td>{item.greenAlert}</td>
+                        <td>
+                            <div className="contentCell tableCell-2">
+                                <p>{item.docTypeTitle}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-2">
+                                <p>{item.redAlert}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-2">
+                                <p>{item.yellowAlert}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-2">
+                                <p>{item.greenAlert}</p>
+                            </div>
+                        </td>
                     </tr>
                 )
             })
@@ -1190,7 +1215,13 @@ class projectWorkFlowAddEdit extends Component {
             this.state.MultiApprovalData.map((item) => {
                 return (
                     <tr key={item.workFlowItemId}>
-                        <td>{item.arrange}</td>
+                        <td>
+                            <div className="contentCell tableCell-1">
+                                <p>
+                                    {item.arrange}
+                                </p>
+                            </div>
+                        </td>
                         {() => this.setState({ MultiApproval: item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false } })}
                         <td>
                             <Select options={[{ label: 'Multi', value: true }, { label: 'Single', value: false }]}
@@ -1251,7 +1282,6 @@ class projectWorkFlowAddEdit extends Component {
                                             <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
                                     </div>
-
 
                                 </div>
 
@@ -1522,18 +1552,28 @@ class projectWorkFlowAddEdit extends Component {
                         </header>
 
                         <div className='document-fields'>
-                            <table className="ui table">
+                            <table className="attachmentTable">
                                 <thead>
                                     <tr>
-                                        <th>{Resources['actions'][currentLanguage]}</th>
-                                        <th>{Resources['CompanyName'][currentLanguage]}</th>
-                                        <th>{Resources['ContactName'][currentLanguage]}</th>
+                                        <th>
+                                            <div className="headCell tableCell-1">
+                                                <span>{Resources['actions'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div className="headCell tableCell-2">
+                                                <span>{Resources['CompanyName'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div className="headCell tableCell-2">
+                                                <span>{Resources['ContactName'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     {RenderFollowUpsTable}
-
                                 </tbody>
                             </table>
                         </div>
@@ -1641,14 +1681,34 @@ class projectWorkFlowAddEdit extends Component {
                             <h2 className="zero">{Resources['itemsList'][currentLanguage]}</h2>
                         </header>
                         <div className='document-fields'>
-                            <table className="ui table">
+                            <table className="attachmentTable">
                                 <thead>
                                     <tr>
-                                        <th>{Resources['actions'][currentLanguage]}</th>
-                                        <th>{Resources['docType'][currentLanguage]}</th>
-                                        <th>{Resources['redAlert'][currentLanguage]}</th>
-                                        <th>{Resources['yellowAlert'][currentLanguage]}</th>
-                                        <th>{Resources['GreenAlert'][currentLanguage]}</th>
+                                        <th>
+                                            <div className="headCell tableCell-1">
+                                                <span>{Resources['actions'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div className="headCell tableCell-2">
+                                                <span>{Resources['docType'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div className="headCell tableCell-2">
+                                                <span>{Resources['redAlert'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div className="headCell tableCell-2">
+                                                <span>{Resources['yellowAlert'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div className="headCell tableCell-2">
+                                                <span>{Resources['GreenAlert'][currentLanguage]}</span>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1677,11 +1737,19 @@ class projectWorkFlowAddEdit extends Component {
             return (
                 <Fragment>
                     <div className='document-fields'>
-                        <table className="ui table">
+                        <table className="attachmentTable">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Subject</th>
+                                    <th>
+                                        <div className="headCell tableCell-1">
+                                            <span>No.</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="headCell tableCell-1">
+                                            <span> Subject</span>
+                                        </div>
+                                    </th>
 
                                     <th></th>
                                 </tr>

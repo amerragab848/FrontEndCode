@@ -1,19 +1,12 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
-import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
 import Resources from "../../resources.json";
-import { withRouter } from "react-router-dom";
 import Recycle from '../../Styles/images/attacheRecycle.png'
-import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
-import * as communicationActions from '../../store/actions/communication';
 import { toast } from "react-toastify";
 import _ from "lodash";
 import moment from 'moment';
@@ -40,20 +33,25 @@ class RiskCause extends Component {
     }
 
     componentWillMount = () => {
-          Api.get('GetRiskCause?riskId='+this.state.riskId).then(result => {
-              this.setState({
-                  rows: result,
-              })
-          })
+        dataservice.GetDataGrid('GetRiskCause?riskId=' + this.state.riskId).then(result => {
+            if (result) {
+                this.setState({
+                    rows: result,
+                    isLoading: false
+                })
+            }
+        })
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.riskId !== this.props.riskId) {
-            Api.get('GetRiskCause?riskId=' + this.state.riskId).then(result => {
-                this.setState({
-                    rows: result,
-                    riskId: nextProps.riskId
-                })
+            dataservice.GetDataGrid('GetRiskCause?riskId=' + this.state.riskId).then(result => {
+                if (result) {
+                    this.setState({
+                        rows: result,
+                        riskId: nextProps.riskId
+                    })
+                }
             })
         }
     }
@@ -79,15 +77,14 @@ class RiskCause extends Component {
         this.setState({ isLoading: true })
         let Data = this.state.rows;
         Data.splice(this.state.index, 1);
-        Api.post("DeleteRiskCause?id=" + this.state.rowId).then(
-            res => {
-                this.setState({
-                    showDeleteModal: false,
-                    isLoading: false,
-                    rows: Data
-                })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-            }
+        dataservice.GetDataGridPost("DeleteRiskCause?id=" + this.state.rowId).then(res => {
+            this.setState({
+                showDeleteModal: false,
+                isLoading: false,
+                rows: Data
+            })
+            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        }
         ).catch(ex => {
             this.setState({
                 showDeleteModal: false,
@@ -101,7 +98,7 @@ class RiskCause extends Component {
         this.setState({ isLoading: true })
         dataservice.addObject('AddRiskCause', {
             id: undefined,
-            riskId: 1,
+            riskId: this.state.riskId,
             comment: values.description,
             addedDate: moment()
         }).then(
@@ -137,99 +134,82 @@ class RiskCause extends Component {
                         </td>
 
                     </tr>
-                    : <LoadingSection /> )
+                    : <LoadingSection />)
         })
 
         return (
-            <div className="mainContainer">
-                <div className="documents-stepper noTabs__document one__tab one_step">
-                    <div className="doc-container">
-                        <div className="step-content">
-                            <div className="document-fields">
-                                <div className="dropWrapper">
-                                    <Formik
-                                        validationSchema={ValidtionSchema}
-                                        initialValues={{
-                                            description: '',
-                                        }}
-                                        onSubmit={(values) => {
-                                            this.AddItem(values)
-                                        }} >
-                                        {({ errors, touched, handleBlur, handleChange, values }) => (
-                                            <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
-                                                <div className="doc-input-btn customeError" style={{ border: 'none' }}>
-                                                    <div className="fullInputWidth fillter-item-c ">
-                                                        <label className="control-label"> {Resources['description'][currentLanguage]}</label>
-                                                        <div className={"inputDev ui input " + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
-                                                            <input name='description' autoComplete='off' id='description'
-                                                                value={values.description} className="form-control" placeholder={Resources['description'][currentLanguage]}
-                                                                onBlur={(e) => { handleBlur(e) }}
-                                                                onChange={(e) => {
-                                                                    handleChange(e)
-                                                                }} />
-                                                            {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
-                                                        </div>
-                                                    </div>
-                                                    <button className="primaryBtn-1 btn mediumBtn" type="submit"  >{Resources['add'][currentLanguage]}</button>
-                                                </div>
-                                                <div className="doc-pre-cycle letterFullWidth">
+            <div className="doc-pre-cycle letterFullWidth">
+                <div className="document-fields">
+                    <header style={{ paddingTop: '0' }}>
+                        <h2 className="zero">{Resources['riskCause'][currentLanguage]}</h2>
+                    </header>
+                    <div className="dropWrapper">
+                        <Formik
+                            validationSchema={ValidtionSchema}
+                            initialValues={{
+                                description: '',
+                            }}
+                            onSubmit={(values) => {
+                                this.AddItem(values)
+                            }} >
+                            {({ errors, touched, handleBlur, handleChange, values }) => (
+                                <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
+                                    <div className="doc-input-btn customeError" style={{ border: 'none' }}>
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label"> {Resources['description'][currentLanguage]}</label>
+                                            <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
+                                                <input name='description' autoComplete='off' id='description'
+                                                    value={values.description} className="form-control" placeholder={Resources['description'][currentLanguage]}
+                                                    onBlur={(e) => { handleBlur(e) }}
+                                                    onChange={(e) => {
+                                                        handleChange(e)
+                                                    }} />
+                                                {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                                            </div>
+                                        </div>
 
-                                                    <div className='document-fields'>
-                                                        <header style={{ paddingTop: '0' }}>
-                                                            <h2 className="zero">{Resources['riskCause'][currentLanguage]}</h2>
-                                                        </header>
-                                                        <table className="attachmentTable">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>
-                                                                        <div className="headCell tableCell-1">{Resources['delete'][currentLanguage]}</div>
-                                                                    </th>
+                                        <button className="primaryBtn-1 btn mediumBtn" type="submit"  >{Resources['add'][currentLanguage]}</button>
+                                    </div>
 
-                                                                    <th>
-                                                                        <div className="headCell"> {Resources['description'][currentLanguage]}</div>
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
+                                </Form>
+                            )}
+                        </Formik>
 
-                                                            <tbody>
-                                                                {RenderRiskTable}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                        <div className="doc-pre-cycle letterFullWidth">
+                            <div className='document-fields'>
+                                <table className="attachmentTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div className="headCell tableCell-1">{Resources['delete'][currentLanguage]}</div>
+                                            </th>
 
-                                                </div>
-                                            </Form>
-                                        )}
-                                    </Formik>
-                                </div >
+                                            <th>
+                                                <div className="headCell"> {Resources['description'][currentLanguage]}</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {RenderRiskTable}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+
+                        {this.state.showDeleteModal == true ? (
+                            <ConfirmationModal
+                                title={Resources['smartDeleteMessage'][currentLanguage].content}
+                                closed={e => this.setState({ showDeleteModal: true })}
+                                showDeleteModal={this.state.showDeleteModal}
+                                clickHandlerCancel={e => this.setState({ showDeleteModal: false })}
+                                buttonName='delete' clickHandlerContinue={this.ConfirmationDelete}
+                            />
+                        ) : null}
                     </div>
-
-                    {this.state.showDeleteModal == true ? (
-                        <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
-                            closed={e => this.setState({ showDeleteModal: true })}
-                            showDeleteModal={this.state.showDeleteModal}
-                            clickHandlerCancel={e => this.setState({ showDeleteModal: false })}
-                            buttonName='delete' clickHandlerContinue={this.ConfirmationDelete}
-                        />
-                    ) : null}
                 </div>
-
             </div>
         );
     }
 }
-
-function mapStateToProps(state) {
-    return { showModal: state.communication.showModal }
-}
-
-function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators(communicationActions, dispatch) }
-}
-
-export default connect(
-    mapStateToProps, mapDispatchToProps
-)(RiskCause);
+export default RiskCause;

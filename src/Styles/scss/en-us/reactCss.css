@@ -453,9 +453,12 @@ table edition
     margin: 0 16px;
 }
 
+.proForm .ui.input.inputDev {
+    padding-bottom: 0;
+}
+
 .proForm .ui.input.inputDev .inputsideNote {
     right: 10px;
-    /* top: -17px */
 }
 
 .approvalTitle {
@@ -717,9 +720,24 @@ table edition
     overflow: auto;
     width: 100%;
     min-height: 100px;
-    border-radius: 4px;
-    border: 1px solid #DADEE6;
     padding: 10px;
+    border-radius: 4px;
+    border: solid 2px #E9ECF0;
+    font-weight: normal;
+    letter-spacing: -0.2px;
+    color: #3E4352;
+    background-color: #ffffff;
+    font-size: 14px;
+    text-align: left;
+    transition: all 0.2s ease
+}
+
+.textarea-group textarea:hover {
+    border-color: #A8B0BF;
+}
+
+.textarea-group textarea:focus {
+    border: solid 2px #83B4FC;
 }
 
 .textarea-group .ui.input.inputDev {
@@ -7261,6 +7279,18 @@ div#markup-panel {
     transform: scale(1);
 }
 
+.grid__column--footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 15px 20px;
+    border-top: 1px solid #e9ecf0;
+}
+
+.grid__column--footer button{
+    margin: 0 4px;
+}
+
 .grid__column--container {
     position: absolute;
     left: 50%;
@@ -7268,7 +7298,7 @@ div#markup-panel {
     transform: translate(-50%, -50%);
     background: #fff;
     border-radius: 5px;
-    width: 650px;
+    width: 550px;
     padding: 5px 0;
     overflow: hidden;
 }
@@ -7295,7 +7325,7 @@ div#markup-panel {
 }
 
 .grid__content {
-    height: 60px;
+    height: 45px;
     width: 50%;
     display: flex;
     align-items: center;
@@ -7313,6 +7343,14 @@ div#markup-panel {
     cursor: pointer;
 }
 
+.grid__content .ui.checkbox input {
+    height: 100%;
+}
+
+.proForm .control-label::after {
+    top: 45%;
+    height: 5px;
+}
 .filterModal .filter__warrper .proForm {
     justify-content: flex-start;
     padding: 0 20px;
@@ -7337,3 +7375,29 @@ div#markup-panel {
     flex-direction: column;
     align-items: flex-start;
 }
+
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm .control-label {
+    z-index: 0;
+}
+
+.login__page .login__page--form .proForm .form-group {
+    display: flex;
+}
+
+.dropdownMulti .css-1hwfws3, .multiChoice .css-1hwfws3 {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+.attachmentTableAuto.attachmentTable thead tr th:nth-child(2) , .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
+    width: 50px;
+}
+
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3) {
+    width: auto;
+}
+
+.attachmentTableAuto.attachmentTable tbody tr .contentCell.tableCell-2 {
+    max-width: 100%;
+}
+

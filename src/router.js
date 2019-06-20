@@ -163,6 +163,8 @@ import materialReturnedAddEdit from "./Pages/Procurement/materialReturnedAddEdit
 import autoDeskViewer from "./Componants/OptionsPanels/AutoDeskViewer"; 
 import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit"; 
 import procurementAddEdit from "./Pages/Procurement/procurementAddEdit"; 
+import RiskConesquence from "./Componants/publicComponants/RiskConesquence"; 
+
 
 import RiskCause from './Componants/OptionsPanels/RiskCause';
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -344,6 +346,7 @@ let originalRoutes = [
     
     , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
     , <Route path="/autoDeskViewer" component={autoDeskViewer} /> 
+    , <Route path="/RiskConesquence" component={RiskConesquence} /> 
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
