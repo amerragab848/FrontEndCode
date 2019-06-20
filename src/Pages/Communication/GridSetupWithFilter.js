@@ -626,7 +626,7 @@ class GridSetupWithFilter extends Component {
           <div className="minimizeSpan">
             <div className="V-tableSize" onClick={this.openModalColumn}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                <g fill="none" fill-rule="evenodd" transform="translate(5 5)">
+                <g fill="none" fillRule="evenodd" transform="translate(5 5)">
                   <g fill="#CCD2DB" mask="url(#b)">
                     <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
                   </g>

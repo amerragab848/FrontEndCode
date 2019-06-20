@@ -101,9 +101,14 @@ class requestPaymentsAddEdit extends Component {
         let userType = Config.getPayload();
 
         this.state = {
+            trees : [],
+            showCostCodingTree: false,
             showDeleteModal: false,
             userType: userType.uty,
             fillDropDown: [{ label: "AddMissingAmendments", value: "1" }, { label: "ReCalculatorPayment", value: "2" }, { label: "UpdateItemsFromVO", value: "3" }],
+            selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0"},
+            selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0"},
+            fillDropDownTress: [],
             fillDropDownExport: [{ label: "Export", value: "1" }, { label: "ExportAsVo", value: "2" }],
             selectedDropDown: [{ label: "Admin Actions", value: "0" }],
             selectedDropDownExport: [{ label: "Export File", value: "0" }],
@@ -160,7 +165,11 @@ class requestPaymentsAddEdit extends Component {
             isView: false,
             viewUpdatePayment: false,
             viewUpdateCalc: false,
-            actualPayments: 0
+            actualPayments: 0,
+            percentageStatus : [{label :"percentage",value:1 },{label :"Actual Value",value:2 }],
+            id:1,
+            itemId:0,
+            quantityComplete:0
         }
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
@@ -174,7 +183,7 @@ class requestPaymentsAddEdit extends Component {
     }
 
     buildColumns(changeStatus) {
- 
+
         let editPaymentPercent = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.paymentPercent}</span></a>;
@@ -206,6 +215,13 @@ class requestPaymentsAddEdit extends Component {
         let editSitePercentComplete = ({ value, row }) => {
             if (row) {
                 return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.sitePercentComplete}</span></a>;
+            }
+            return null;
+        };
+
+        let addCostCodingTree = ({ value, row }) => {
+            if (row) {
+                return <button className="primaryBtn-1 btn meduimBtn" type="submit" >Add Cost Coding Tree </button>;
             }
             return null;
         };
@@ -400,6 +416,20 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
+        if (changeStatus) {
+            itemsColumns.push({
+                key: "actions",
+                name: Resources["LogControls"][currentLanguage],
+                width: 200,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: addCostCodingTree
+            })
+        }
+
         VOItemsColumns = [
             {
                 key: "id",
@@ -549,6 +579,12 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
+
+            dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId="+this.state.projectId,"codeTreeTitle","id").then(result => {
+                this.setState({
+                    fillDropDownTress : result
+                });
+            })
 
             this.setState({
                 isLoading: true,
@@ -1036,36 +1072,50 @@ class requestPaymentsAddEdit extends Component {
 
     onRowClick = (value, index, column) => {
 
-        let userType = Config.getPayload();
+        if (!column.key === "actions") {
+            let userType = Config.getPayload();
 
-        if (userType.uty != "user") {
+            if (userType.uty != "user") {
 
-            if (this.props.hasWorkflow == false && Config.IsAllow(185)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(185)) {
 
-                if (this.props.changeStatus) {
+                    if (this.props.changeStatus) {
 
-                    if (this.state.document.status === true && this.state.document.editable === true) {
+                        if (this.state.document.status === true && this.state.document.editable === true) {
 
-                        let original_document = { ...this.state.document };
+                            let original_document = { ...this.state.document };
 
-                        let updated_document = {};
+                            let updated_document = {};
 
-                        updated_document.percentComplete = value.percentComplete;
-                        updated_document.quantityComplete = value.quantityComplete;
-                        updated_document.paymentPercent = value.paymentPercent;
-                        updated_document.lastComment = value.lastComment;
+                            updated_document.percentComplete = value.percentComplete;
+                            updated_document.quantityComplete = value.quantityComplete;
+                            updated_document.paymentPercent = value.paymentPercent;
+                            updated_document.lastComment = value.lastComment;
 
-                        updated_document = Object.assign(original_document, updated_document);
+                            updated_document = Object.assign(original_document, updated_document);
 
-                        this.setState({
-                            viewPopUpRows: true,
-                            currentObject: value,
-                            document: updated_document
-                        });
-                        this.addCommentModal.show();
+                            this.setState({
+                                viewPopUpRows: true,
+                                currentObject: value,
+                                document: updated_document
+                            });
+                            this.addCommentModal.show();
+                        }
                     }
                 }
             }
+        } else {
+
+            dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId="+this.state.docId+"&reqItemId="+value.id).then(result => {
+ 
+                this.setState({
+                    itemId:value.id,
+                    quantityComplete : value.quantityComplete,
+                    trees:result != null ? result : [],
+                    showCostCodingTree: true
+                })
+             this.costCodingTree.show();
+            })
         }
     }
 
@@ -1645,6 +1695,89 @@ class requestPaymentsAddEdit extends Component {
         });
     }
 
+    addCostTree = () => {
+        let costCodingId = this.state.selectedDropDownTrees.value ;
+        
+        if(costCodingId != "0"){
+    
+            let isExist = this.state.trees.find(x=>x.costCodingId=== costCodingId);
+
+            if(isExist == undefined){
+
+                let lastCodingItems = this.state.trees;
+
+                let objTree = {};
+
+                objTree.id= this.state.id;
+                objTree.requestItemId= this.state.itemId;
+                objTree.requestId= this.state.docId;
+                objTree.costCodingId= this.state.selectedDropDownTrees.value;
+                objTree.costCodingTitle= this.state.selectedDropDownTrees.label;
+                objTree.value= 0;
+                objTree.percentageId=1;
+                objTree.qtyCompelete= this.state.quantityComplete;
+                objTree.date = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+                lastCodingItems.push(objTree);
+
+                this.setState({
+                    id:(this.state.id + 1),
+                    trees : lastCodingItems
+                });
+ 
+            }else{
+                toast.warn("This CostCodingTree Already Added");
+            }
+        }else{
+            toast.warn("Please Choose CostCodingTree");
+        }
+    }
+
+    handleDropTrees = (event) => {
+        if (event == null) return; 
+
+        this.setState({
+            selectedDropDownTrees:event
+        });
+    }
+
+    renderEditableValue = (cellInfo) => {
+        return (
+            <div
+                style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer' }}
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={e => {
+                    //const updatedItem = this.state.trees[cellInfo.index].value;
+                    const trees = [...this.state.trees];
+                    trees[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+                    //updatedItem = trees[cellInfo.index]
+                    this.setState({ trees }); 
+                }}
+                dangerouslySetInnerHTML={{
+                    __html: this.state.trees[cellInfo.index].value
+                }}
+            />
+        );
+    }
+
+    actionHandler = (key, e) => {
+        let state = {};
+        state[key + '-drop'] = e;
+
+        let lastData = this.state.trees;
+
+        let data = lastData.findIndex(x=> x.id ===key.id);
+ 
+        if(data){
+            if(lastData[data].percentageId != 1){
+                lastData[data].value = lastData[data].qtyCompelete * lastData[data].value
+            }
+        }
+ 
+        this.setState({state,trees:lastData});
+    }
+
     render() {
 
         let actions = [
@@ -1697,6 +1830,47 @@ class requestPaymentsAddEdit extends Component {
                     sortabel: true
                 });
         }
+
+        let columnsTrees = [
+            {
+                Header: "Delete",
+                id: "checkbox",
+                accessor: "id",
+                Cell: ({ row }) => {
+                    return (
+                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDelete(row._original.id)}>
+                            <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+                        </div>
+                    );
+                },
+                width: 100
+            },
+            {
+                Header: Resources["costCodingTree"][currentLanguage],
+                accessor: "costCodingTitle",
+                sortabel: true,
+                width: 200
+            },
+            {
+                Header: Resources["value"][currentLanguage],
+                accessor: "value",
+                Cell: this.renderEditableValue,
+                width: 200
+            },
+            {
+                Header: Resources["percentageStatus"][currentLanguage],
+                accessor: "percentageStatus",
+                Cell: ({ row }) => {
+                    return (
+                        <div className="shareLinks">
+                            <Dropdown title="" data={this.state.percentageStatus} handleChange={e => this.actionHandler(row._original, e)}
+                              selectedValue={this.state[row._original.percentageId + '-drop']} index={Date.now()} />
+                       </div>
+                    );
+                },
+                width: 200
+            }
+        ]
 
         const ItemsGrid = this.state.isLoading === false && this.state.CurrentStep === 2 && itemsColumns.length > 0 ? (
             <GridSetup
@@ -2476,6 +2650,33 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         </div>
                         <button className="primaryBtn-1 btn " onClick={(e) => this.addCommentClick(e)} >{Resources.save[currentLanguage]}</button>
+                    </SkyLight>
+                </div>
+
+                <div className="largePopup largeModal " style={{ display: this.state.showCostCodingTree ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.costCodingTree = ref} title={Resources.comments[currentLanguage]}>
+                        <div className="dropWrapper proForm">
+                            <div className="fullWidthWrapper linebylineInput">
+                                <label className="control-label">{Resources.costCodingTree[currentLanguage]}</label>
+                                <div className="shareLinks">
+                                     <Dropdown 
+                                        data={this.state.fillDropDownTress}
+                                        selectedValue={this.state.selectedDropDownTrees}
+                                        handleChange={event => this.handleDropTrees(event)}
+                                        name="costCodingTree"
+                                        index="costCodingTree" />
+                                     <div style={{ marginLeft: '8px' }} onClick={e => this.addCostTree()}>
+                                        <span className="collapseIcon"><span className="plusSpan greenSpan">+</span>
+                                            <span>{Resources.add[currentLanguage]}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="fullWidthWrapper">
+                        <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
+                        </div> 
+                        
                     </SkyLight>
                 </div>
 

@@ -2699,6 +2699,7 @@ button.companies_icon {
     min-width: 420px !important;
     width: auto !important;
     max-width: 722px;
+    z-index: 999999999999999999999999;
 }
 
 .Toastify__toast {
