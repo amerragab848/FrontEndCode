@@ -24,6 +24,7 @@ import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import RiskCause from '../../Componants/OptionsPanels/RiskCause';
+import RiskConesquence from '../../Componants/publicComponants/RiskConesquence';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
@@ -1337,7 +1338,8 @@ class riskAddEdit extends Component {
             }
 
             let riskRanking = (consequenceScoreValue + likelihoodScoreValue);
-            let riskEMV = Math.log10(riskRanking);
+            // let riskEMV =(( Math.pow(10,riskRanking)*(-riskRanking+1))/1000); 
+            let riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);// Math.log10(riskRanking);
 
             let obj = {
                 likelihoodScoreValue: likelihoodScoreValue,
@@ -1543,6 +1545,7 @@ class riskAddEdit extends Component {
                 title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }];
+        let comCause = <RiskCause riskId={this.state.docId} />
 
         return (
             <div className="mainContainer">
@@ -1747,7 +1750,9 @@ class riskAddEdit extends Component {
                                             //Third Step
                                             <Fragment>
                                                 <div className="subiTabsContent feilds__top">
-                                                    <RiskCause riskId={this.state.docId} />
+                                                    {comCause}
+                                                    <RiskConesquence riskId={this.state.docId} />
+
                                                     <div className="doc-pre-cycle">
                                                         <header>
                                                             <h2 className="zero">{Resources['consequence'][currentLanguage]}</h2>
