@@ -4,11 +4,11 @@ import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
-import "./Styles/scss/en-us/layout.css";
-import "./Styles/scss/en-us/reactCss.css";
+// import "./Styles/scss/en-us/layout.css";
+// import "./Styles/scss/en-us/reactCss.css";
 
-// import "./Styles/scss/ar-eg/layout-ar.css";
-// import "./Styles/scss/ar-eg/reactCss-ar.css";
+import "./Styles/scss/ar-eg/layout-ar.css";
+import "./Styles/scss/ar-eg/reactCss-ar.css";
 
 import Menu from "./Pages/Menu/Menu";
 import Login from './Componants/Layouts/Login'

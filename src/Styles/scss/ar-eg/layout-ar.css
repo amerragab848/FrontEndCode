@@ -7269,9 +7269,9 @@ ul {
   height: 36px;
   font-size: 14px; }
 
-.btn::first-letter,
+/* .btn::first-letter,
 .button::first-letter {
-  text-transform: uppercase !important; }
+  text-transform: uppercase !important; } */
 
 /*Base Hover Press */
 .primaryBtn-2 {
