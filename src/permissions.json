@@ -12418,6 +12418,22 @@
                 "ar": "اظهار الرسومات"
               },
               "value": false
+            },
+            {
+              "code": 4501,
+              "title": {
+                "en": "Edit PDF",
+                "ar": "تعديل PDF"
+              },
+              "value": false
+            },
+            {
+              "code": 4502,
+              "title": {
+                "en": "Delete PDF Version",
+                "ar": "مسح نسخ من PDF"
+              },
+              "value": false
             }
           ]
         },

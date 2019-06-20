@@ -119,7 +119,6 @@
 .dropWrapper .spanValidation {
     display: flex;
     justify-content: space-between;
-    /* margin-bottom: 4px; */
 }
 
 .dropWrapper .spanValidation span {
@@ -454,9 +453,12 @@ table edition
     margin: 0 16px;
 }
 
+.proForm .ui.input.inputDev {
+    padding-bottom: 0;
+}
+
 .proForm .ui.input.inputDev .inputsideNote {
     right: 10px;
-    /* top: -17px */
 }
 
 .approvalTitle {
@@ -486,7 +488,7 @@ table edition
     display: block;
 }
 
-.customeError .pError {
+.customeError .pError , .reports__content .reports__proForm .customD_Menu.errorClass .dropdown__error {
     position: absolute;
     left: 0;
     top: 100%;
@@ -507,9 +509,9 @@ table edition
     text-align: left;
 }
 
-.fullWidthWrapper.textLeft label {
+/* .fullWidthWrapper.textLeft label {
     margin-bottom: 5px;
-}
+} */
 
 .dropWrapper .customProform {
     margin-top: 12px;
@@ -718,9 +720,24 @@ table edition
     overflow: auto;
     width: 100%;
     min-height: 100px;
-    border-radius: 4px;
-    border: 1px solid #DADEE6;
     padding: 10px;
+    border-radius: 4px;
+    border: solid 2px #E9ECF0;
+    font-weight: normal;
+    letter-spacing: -0.2px;
+    color: #3E4352;
+    background-color: #ffffff;
+    font-size: 14px;
+    text-align: left;
+    transition: all 0.2s ease
+}
+
+.textarea-group textarea:hover {
+    border-color: #A8B0BF;
+}
+
+.textarea-group textarea:focus {
+    border: solid 2px #83B4FC;
 }
 
 .textarea-group .ui.input.inputDev {
@@ -1373,11 +1390,11 @@ tfoot tr td p {
     margin-bottom: 20px;
 }
 
-.timeSheetInput .fillter-item-c .spanValidation,
+/* .timeSheetInput .fillter-item-c .spanValidation,
 .timeSheetInput .fullWidthWrapper label {
     margin-bottom: 10px;
     display: block;
-}
+} */
 
 .customizeBtn {
     position: fixed;
@@ -1556,8 +1573,17 @@ tfoot tr td p {
     color: #5E6475;
 }
 
+.linebylineInput__collapse {
+    position: relative;
+}
+
 .taskInfo {
     max-height: inherit;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 75%;
+    z-index: 9999999999999;
+    background: #fff;
 }
 
 .taskInfo.taskMaxHeight {
@@ -1604,10 +1630,10 @@ tfoot tr td p {
     width: 100%;
 }
 
-.table__inputs .halfWindow label {
+/* .table__inputs .halfWindow label {
     margin-bottom: 10px;
     display: block;
-}
+} */
 
 .taskAdminTable {
     border-spacing: 0;
@@ -2168,7 +2194,7 @@ tfoot tr td p {
 .noTabs__document .approveDocument .approveDocumentBTNS .border {
     display: block;
     width: 1px;
-    height: 40px;
+    height: 36px;
     background-color: #e9ecf0;
     margin: 0 24px;
 }
@@ -4533,6 +4559,12 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     opacity: 1 !important;
 }
 
+@media screen and (max-width: 1200px) {
+    .skylight-dialog>* {
+        width: 800px;
+    }
+}
+
 .skylight-close-button {
     width: auto;
     background: transparent;
@@ -6406,7 +6438,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     min-height: 79px;
 }
 
-.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
+.ck-content {
     min-height: 80px;
 }
 
@@ -6450,7 +6482,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     padding:4px 0;
 }
 
-.tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-left-text tspan, .tooltip-body .tooltip-right-text {
+.tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-right-text tspan, .tooltip-body .tooltip-left-text, .tooltip-body .tooltip-left-text tspan, .tooltip-body .tooltip-right-text {
     font-family: 'Open Sans' !important;
     font-size: 12px !important;
     font-weight: normal !important;
@@ -6460,6 +6492,11 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     letter-spacing: -0.2px !important;
     fill: #ffffff !important;
 }
+
+.tooltip-text-container {
+    width: 280px !important;
+}
+
 .tooltip-divider {
     stroke: #ffffff !important;
     opacity: 0.1 !important;
@@ -7228,10 +7265,6 @@ div#markup-panel {
     z-index: 9999999999;
 }
 
-.grid__column .grid__column--container {
-    position: relative;
-}
-
 .grid__column .grid__column--container .closeColumn {
     background: transparent;
     color: #000;
@@ -7251,7 +7284,6 @@ div#markup-panel {
     align-items: center;
     justify-content: flex-end;
     padding: 15px 20px;
-    margin-top: 15px;
     border-top: 1px solid #e9ecf0;
 }
 
@@ -7338,6 +7370,12 @@ div#markup-panel {
     overflow: auto;
 }
 
+.customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm .control-label {
     z-index: 0;
 }
@@ -7352,6 +7390,27 @@ div#markup-panel {
     padding: 10;
     margin-bottom: 8px;
 }
+.login__page .login__page--form .proForm .form-group {
+    display: flex;
+}
+
+.dropdownMulti .css-1hwfws3, .multiChoice .css-1hwfws3 {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+.attachmentTableAuto.attachmentTable thead tr th:nth-child(2) , .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
+    width: 50px;
+}
+
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3) {
+    width: auto;
+}
+
+.attachmentTableAuto.attachmentTable tbody tr .contentCell.tableCell-2 {
+    max-width: 100%;
+}
+
 .fixedLoading .dashboardLoading {
     position: fixed !important;
     top: 0!important;

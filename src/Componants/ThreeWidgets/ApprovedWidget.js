@@ -1,9 +1,9 @@
-import React, { Component,Fragment } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import Modales from "./modal";
 import Api from "../../api";
 import "../../Styles/css/rodal.css";
-import language from "../../resources.json"; 
+import language from "../../resources.json";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -21,7 +21,7 @@ class ApprovedWidget extends Component {
 
   componentDidMount() {
     Api.get(this.props.props.api).then(result => {
-      
+
       this.setState({
         dataList: result != null ? result : []
       });
@@ -29,15 +29,15 @@ class ApprovedWidget extends Component {
   }
 
   onOpenModal = (action, value) => {
-    if (value > 0) {  
+    if (value > 0) {
 
       let splitestring = this.props.props.route.split("?");
 
-      if(splitestring){
+      if (splitestring) {
         this.props.history.push(this.props.props.route + action);
-      }else{
-        this.props.history.push(this.props.props.route);  
-      } 
+      } else {
+        this.props.history.push(this.props.props.route);
+      }
     }
   };
 
@@ -51,19 +51,20 @@ class ApprovedWidget extends Component {
     if (this.state.dataList.length > 0) {
       widgetes = this.state.dataList;
 
-      var high = widgetes.find(function(i) {
+      var high = widgetes.find(function (i) {
         return i.action === 1;
       });
 
-      var normal = widgetes.find(function(i) {
+      var normal = widgetes.find(function (i) {
         return i.action === 2;
       });
 
-      var low = widgetes.find(function(i) {
+      var low = widgetes.find(function (i) {
         return i.action === 3;
       });
-  
+      //console.log(this.props.props.listType);
       return (
+
         <div className="summerisItem">
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
@@ -71,7 +72,7 @@ class ApprovedWidget extends Component {
               {high ? high[this.props.props.value] : 0}
             </p>
             <p className="status">
-              {high ? language[high[this.props.props.listType]][currentLanguage] : ""}
+              {high ? high[this.props.props.listType] : ""}
             </p>
             <ul className="satusBarUL">
               <li className="num-1" />
@@ -82,16 +83,16 @@ class ApprovedWidget extends Component {
               <div className="first">
                 <span
                   className="mediumModal"
-                  onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value]) } >
-                  {normal ? normal[this.props.props.value] : 0} 
+                  onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value])} >
+                  {normal ? normal[this.props.props.value] : 0}
                 </span>
-                {normal ? " "+language[normal[this.props.props.listType]][currentLanguage]: ""}
+                {normal ? " " + normal[this.props.props.listType] : ""}
               </div>
               <div>
                 <span className="mediumModal" onClick={() => this.onOpenModal(low.action, low[this.props.props.value])}>
                   {low ? low[this.props.props.value] : ""}
                 </span>
-                {low ? " "+language[low[this.props.props.listType]][currentLanguage] : ""}
+                {low ? " " + low[this.props.props.listType] : ""}
               </div>
             </div>
           </div>
@@ -103,7 +104,7 @@ class ApprovedWidget extends Component {
   render() {
     return (
       <Fragment>
-       {this.drawThreeCard()} 
+        {this.drawThreeCard()}
       </Fragment>
     );
   }
