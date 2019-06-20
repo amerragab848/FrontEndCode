@@ -2355,7 +2355,7 @@ class requestPaymentsAddEdit extends Component {
                                             <header>
                                                 <h2 className="zero">{Resources['actualPayment'][currentLanguage]}</h2>
                                             </header>
-                                            <div className="inpuBtn">
+                                            <div className="inpuBtn proForm">
                                                 <div className="linebylineInput valid-input ">
                                                     <label className="control-label">{Resources.actualPayment[currentLanguage]}</label>
                                                     <div className="ui input inputDev">
@@ -2676,7 +2676,7 @@ class requestPaymentsAddEdit extends Component {
                         <div className="fullWidthWrapper">
                         <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
                         </div> 
-                        
+
                     </SkyLight>
                 </div>
 

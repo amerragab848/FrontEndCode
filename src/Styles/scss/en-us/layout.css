@@ -10698,9 +10698,6 @@ ul {
     margin-bottom: 10px;
 }
 
-
-
-
 .filter__more span {
   font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 11px;
@@ -10740,10 +10737,6 @@ ul {
   right: 8px;
   top: 11px;
   background: #fff;
-}
-
-.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev {
-  padding-bottom: 4px !important;
 }
 
 .filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
@@ -10853,25 +10846,6 @@ ul {
   right: 44px;
   bottom: 21px;
 }
-
-.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon {
-  width: 100%;
-  height: 36px;
-  border: none;
-  background-color: transparent;
-  position: absolute;
-  left: 0;
-  z-index: 9;
-  text-align: right; }
-
-.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon svg {
-  position: absolute;
-  right: 8px;
-  top: 11px;
-  background: #fff; }
-
-.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev {
-  padding-bottom: 4px !important; }
 
 .filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
   margin-top: 0; }

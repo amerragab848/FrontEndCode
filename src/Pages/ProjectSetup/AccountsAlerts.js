@@ -477,7 +477,7 @@ class AccountsAlerts extends Component {
                                                     </Fragment>
                                                     : null}
 
-                                                <div className="linebylineInput valid-input">
+                                                <div className="linebylineInput fullInputWidth">
                                                     <label className="control-label">{Resources['redAlertDays'][currentLanguage]}</label>
                                                     <div className={'ui input inputDev ' + (errors.HighAlert && touched.HighAlert ? 'has-error' : null) + ' '}>
                                                         <input autoComplete="off" value={this.state.IsEditModel ? this.state.ActionByAlertsDataForEdit.redAlertDays : values.HighAlert}
@@ -501,7 +501,7 @@ class AccountsAlerts extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
+                                                <div className="linebylineInput fullInputWidth">
                                                     <label className="control-label">{Resources['yellowAlertDays'][currentLanguage]}</label>
                                                     <div className={'ui input inputDev ' + (errors.NormalAlert && touched.NormalAlert ? 'has-error' : null) + ' '}>
                                                         <input autoComplete="off" value={this.state.IsEditModel ? this.state.ActionByAlertsDataForEdit.yellowAlertDays : values.NormalAlert}
@@ -529,7 +529,7 @@ class AccountsAlerts extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
+                                                <div className="linebylineInput fullInputWidth">
                                                     <label className="control-label">{Resources['greenAlertDays'][currentLanguage]}</label>
                                                     <div className={'ui input inputDev ' + (errors.LowAlert && touched.LowAlert ? 'has-error' : null) + ' '}>
                                                         <input autoComplete="off" value={this.state.IsEditModel ? this.state.ActionByAlertsDataForEdit.greenAlertDays : values.LowAlert}
@@ -556,10 +556,6 @@ class AccountsAlerts extends Component {
 
                                                     </div>
                                                 </div>
-
-
-
-
 
                                             </div>
 

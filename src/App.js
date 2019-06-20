@@ -4,8 +4,10 @@ import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
-import "./Styles/scss/en-us/layout.css";
-import "./Styles/scss/en-us/reactCss.css";
+
+// import "./Styles/scss/en-us/layout.css";
+// import "./Styles/scss/en-us/reactCss.css";
+
 import Menu from "./Pages/Menu/Menu";
 import Login from './Componants/Layouts/Login'
 import Route from './router';
@@ -16,11 +18,24 @@ import {
 
 import configureStore from './store/configureStore';
 import { ToastContainer } from "react-toastify";
+ 
 const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized()
 
 class App extends Component {
+  componentWillMount() {
+    let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
+    if (currentLanguage != "ar") {
+      require("./Styles/scss/en-us/layout.css");
+      require("./Styles/scss/en-us/reactCss.css") 
+    } else {
+      require("./Styles/scss/ar-eg/layout-ar.css");
+      require("./Styles/scss/ar-eg/reactCss-ar.css");
+
+    }
+  }
 
   render() {
     const showComp = IsAuthorize ?
@@ -31,12 +46,12 @@ class App extends Component {
       : <Login />
     return (
       <Provider store={store}>
-        {/* <ErrorHandler > */}
+        <ErrorHandler >
           <div>
             {showComp}
             <ToastContainer autoClose={3000} />
           </div>
-        {/* </ErrorHandler > */}
+        </ErrorHandler >
       </Provider>
 
     );
@@ -65,7 +80,7 @@ class ErrorHandler extends React.Component {
   render() {
     if (this.state.error) {
       // Some error was thrown. Let's display something helpful to the user
-      return ( 
+      return (
         <div className="screen-error active">
           <div className="screen-error-text">
             <div>
@@ -80,7 +95,7 @@ class ErrorHandler extends React.Component {
               <span className="goBack">
                 <i className="fa fa-angle-double-left" aria-hidden="true"></i>Back to Dashboard
             </span>
-            </NavLink> 
+            </NavLink>
           </div>
         </div>
       );

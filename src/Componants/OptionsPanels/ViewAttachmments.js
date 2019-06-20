@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import pdf from '../../Styles/images/pdfAttache.png'
 import xlsx from '../../Styles/images/attatcheXLS.png'
 import doc from '../../Styles/images/attatcheDOC.png'
@@ -41,7 +41,9 @@ class ViewAttachmments extends Component {
             data: [],
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
-            activeURL: ''
+            activeURL: '',
+            viewVersion: false,
+            Versionfiles: []
         }
     }
 
@@ -55,8 +57,9 @@ class ViewAttachmments extends Component {
             let urlVersion = 'GetChildFiles?docTypeId=' + this.state.docTypeId + '&docId=' + this.state.docId + '&parentId=' + parentId
             Api.get(urlVersion).then(result => {
                 if (result) {
-                    // this.setState({ view: true })
-                    this.simpleDialog.show()
+
+                    this.setState({ viewVersion: true, Versionfiles: result })
+                    this.simpleDialogVersion.show()
                 }
             });
         }
@@ -65,7 +68,7 @@ class ViewAttachmments extends Component {
     previewPDF = (item, extension) => {
         if (extension == 'pdf') {
             this.setState({
-                view: true,
+                //view: true,
                 activeURL: item.attachFile
             })
             activeURL = item.attachFile;
@@ -92,6 +95,7 @@ class ViewAttachmments extends Component {
 
         window.open(IP_Configrations.exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#/public/edit-pdf/" + stamp + item.parentAttachFile.split('/')[4]);
     };
+
     b64EncodeUnicode = (str) => {
         return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
             function toSolidBytes(match, p1) {
@@ -168,6 +172,111 @@ class ViewAttachmments extends Component {
     }
 
     render() {
+
+        let tabelVersion = this.state.Versionfiles.map((item, Index) => {
+
+            let ext = item['fileName'].split(".")[1] ? item['fileName'].split(".")[1].toLowerCase() : 'png';
+            let extension = (ext == 'xlsx' ? xlsx : ext == 'pdf' ? pdf : ext == 'jpeg' ? jpeg : ext == 'png' ? png : ext == 'jpg' ? jpg : doc)
+            let createdDate = moment(item['createdDate']).format('DD/MM/YYYY');
+            if (item.isCloud !== true) {
+                var containerIndex = item.attachFile.indexOf('/' + IP_Configrations.BlobStorageContainerName);
+                var filePath = item.attachFile.substr(containerIndex);
+                item.attachFile = IP_Configrations.cdn + filePath;
+            }
+
+            if (item.fileName) {
+                item.fileNameDisplay = item.fileName.replace(/%23/g, '#');
+                item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
+                item.fileNameDisplay = item.fileNameDisplay.replace(/%2C/g, ",");
+
+                if (!this.has_ar(item.fileNameDisplay)) {
+                    item.fileNameDisplay = decodeURI(item.fileNameDisplay);
+                };
+            } else {
+                item.fileNameDisplay = "";
+            }
+
+            return (
+                <tr key={Index}>
+                    <td>
+                        <div className="contentCell tableCell-1">
+                            <span>
+                                <img src={extension} alt={extension} width="100%" height="100%" onClick={() => this.previewPDF(item, ext)} />
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <a href={item['attachFile']} className="pdfPopup various zero" data-toggle="tooltip" title={item['fileName']}>{item.fileNameDisplay}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-3">
+                            <p className="zero status">{createdDate}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-4">
+                            <p className="zero">{item['uploadedBy']} </p>
+                        </div>
+                    </td>
+                    <td className="tdHover">
+                        <div className="attachmentAction">
+                        <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
+                                <img src={Download} alt="dLoad" width="100%" height="100%" />
+                            </a>
+                            
+                            {Config.IsAllow(this.props.deleteAttachments) ?
+                                <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
+                                    <img src={Recycle} alt="del" width="100%" height="100%" />
+                                </a> :
+                                null
+                            }
+                        </div>
+                    </td >
+                </tr >
+            );
+        })
+
+        let ViewVersionDetails = () => {
+            return (
+                <Fragment>
+                    <table className="attachmentTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div className="headCell tableCell-1">
+                                        <span> {Resources['actions'][currentLanguage]} </span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div className="headCell tableCell-2">
+                                        <span>{Resources['fileName'][currentLanguage]} </span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div className="headCell tableCell-3">
+                                        <span>{Resources['docDate'][currentLanguage]}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div className="headCell tableCell-4">
+                                        <span>{Resources['uploadedBy'][currentLanguage]} </span>
+                                    </div>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tabelVersion}
+                        </tbody>
+                    </table>
+
+                </Fragment>
+            )
+        }
+
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
 
             let ext = item['fileName'].split(".")[1] ? item['fileName'].split(".")[1].toLowerCase() : 'png';
@@ -227,14 +336,15 @@ class ViewAttachmments extends Component {
                             <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
-                            {Config.IsAllow(this.props.deleteAttachments) ?
+                            {Config.IsAllow(4502) ?
                                 <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
                                     <img src={Pending} alt="pend" width="100%" height="100%" />
-                                </a> :
+                                </a>
+                                :
                                 null
                             }
 
-                            {Config.IsAllow(this.props.deleteAttachments) && ext === 'pdf' ?
+                            {Config.IsAllow(4501) && ext === 'pdf' ?
                                 <a className="rootIcon" onClick={() => this.goEditPdf(item, ext)}>
                                     <i className=" fa fa-link" width="100%" height="100%" />
                                 </a> :
@@ -243,7 +353,7 @@ class ViewAttachmments extends Component {
 
                             {ext === 'dwg' ?
                                 <a className="autocadIcon" onClick={(e) => this.viewAutoDeskModal(item, e)}>
-                                    <img src={autocad} style={{maxWidth: '100%', maxHeight:'100%'}} alt="autoDesk" />
+                                    <img src={autocad} style={{ maxWidth: '100%', maxHeight: '100%' }} alt="autoDesk" />
                                 </a > :
                                 null
                             }
@@ -318,7 +428,17 @@ class ViewAttachmments extends Component {
                             </div>
                         </SkyLight>
                     </div>
+
                     : null}
+
+                <div className="largePopup largeModal " style={{ display: this.state.viewVersion ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogVersion = ref}>
+                        <div className="dropWrapper">
+                            {ViewVersionDetails()}
+                        </div>
+                    </SkyLight>
+                </div>
+
             </React.Fragment>
         )
     }

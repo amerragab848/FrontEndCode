@@ -475,7 +475,7 @@ class ProjectSetup extends Component {
                                             <div className='document-fields'>
                                                 <div className="proForm datepickerContainer">
 
-                                                    <div className="linebylineInput valid-input">
+                                                    <div className="linebylineInput fullInputWidth">
                                                         <label className="control-label">{Resources['titleEn'][currentLanguage]}</label>
                                                         <div className={'ui input inputDev ' + (errors.EnglishTitle && touched.EnglishTitle ? 'has-error' : null) + ' '}>
                                                             <input autoComplete="off" value={this.state.IsEditModel ? this.state.ProjectEPSDataForEdit.titleEn : values.EnglishTitle}
@@ -499,7 +499,7 @@ class ProjectSetup extends Component {
                                                         </div>
                                                     </div>
 
-                                                    <div className="linebylineInput valid-input">
+                                                    <div className="linebylineInput fullInputWidth">
                                                         <label className="control-label">{Resources['titleAr'][currentLanguage]}</label>
                                                         <div className={'ui input inputDev ' + (errors.ArabicTitle && touched.ArabicTitle ? 'has-error' : null) + ' '}>
                                                             <input autoComplete="off" value={this.state.IsEditModel ? this.state.ProjectEPSDataForEdit.titleAr : values.ArabicTitle}
