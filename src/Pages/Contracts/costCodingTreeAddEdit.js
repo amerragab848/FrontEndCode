@@ -14,11 +14,9 @@ import Delete from "../../Styles/images/epsActions/delete.png";
 import Rodal from "../../Styles/js/rodal";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import _ from "lodash";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
-import { toast } from "react-toastify";
-import visibility from "material-ui/svg-icons/action/visibility";
+import _ from "lodash"; 
+import Api from '../../api'
+import { toast } from "react-toastify"; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -40,6 +38,7 @@ const validationSchema = Yup.object().shape({
   )
 });
 
+var treeContainer = []
 class CostCodingTreeAddEdit extends Component {
   constructor(props) {
     super(props);
@@ -57,7 +56,9 @@ class CostCodingTreeAddEdit extends Component {
       drawChilderns: false,
       showDeleteModal: false,
       docId: "",
-      IsFirstParent: false
+      IsFirstParent: false,
+      finish: false,
+   
     };
 
     if (!Config.IsAllow(134) || !Config.IsAllow(135) || !Config.IsAllow(137)) {
@@ -81,39 +82,61 @@ class CostCodingTreeAddEdit extends Component {
         links[i].classList.add("odd");
       }
     }
-  }
 
+  }
+  componentDidUpdate = () => {
+  }
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.projectId !== this.props.projectId) {
 
       dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + nextProps.projectId).then(result => {
-        this.setState({
-          trees: result
-        });
-
+        let state = this.state
+        if (result.length > 0) {
+          result.forEach(item => {
+            state[item.id] = item
+          })
+          this.setState({
+            trees: result,
+            state
+          });
+        }
       });
 
     }
   }
+  getTree = () => {
+    this.setState({isLoading:true})
+    dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + this.state.projectId).then(result => {
+      let state = this.state
+      let treeDocument = {
+        codeTreeTitle: "",
+        budgetThisPeriod: "",
+        budgetAtComplete: "",
+        originalBudget: "",
+        costForcast: "",
+        parentId: ""
+      };
+      if (result.length > 0) {
+        result.forEach(item => {
+          state[item.id] = item
+        })
+        this.setState({
+          trees: result,
+          state,
+          isLoading:false,
+        });
+      }
+      this.setState({document:treeDocument,isLoading:false})
+
+    });
+  }
 
   componentWillMount() {
-    let treeDocument = {
-      codeTreeTitle: "",
-      budgetThisPeriod: "",
-      budgetAtComplete: "",
-      originalBudget: "",
-      costForcast: "",
-      parentId: ""
-    };
+    
     this.props.actions.documentForAdding();
 
-    dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + this.state.projectId).then(result => {
-      this.setState({
-        trees: result,
-        document: treeDocument
-      });
-    });
+    this.getTree();
   }
 
   AddDocument(item) {
@@ -149,19 +172,24 @@ class CostCodingTreeAddEdit extends Component {
     return updateTrees;
   };
 
+
+
   printChild(children) {
     return (
       children.map((item, i) => {
+        if (treeContainer != null)
+          treeContainer[item.id] = item
         return (
           <Fragment>
-            <div className={"epsTitle" + (item.collapse === false ? ' active' : ' ')} key={item.id} onClick={() => this.viewChild(item)} >
+            <div className={this.state[item.id] == -1 ? ' epsTitle' : item.collapse === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
+              style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
               <div className="listTitle">
 
                 <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }}>
                   <i className="dropdown icon" />
                 </span>
 
-                <span className="accordionTitle">{item.codeTreeTitle}</span>
+                <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}</span>
               </div>
               <div className="Project__num">
                 <div className="eps__actions">
@@ -191,18 +219,14 @@ class CostCodingTreeAddEdit extends Component {
 
   viewChild(item) {
 
-    this.setState({
-      isLoading: true
-    });
+    
 
     let trees = [...this.state.trees];
 
     this.search(item.id, trees, [], item.parentId);
     this.setState({
-      trees,
-      isLoading: false
-    });
-    console.log(item.trees);
+      trees, 
+    }); 
   }
 
   closePopUp() {
@@ -232,7 +256,7 @@ class CostCodingTreeAddEdit extends Component {
     let saveDocument = { ...this.state.document };
     saveDocument.parentId = this.state.IsFirstParent ? '' : this.state.parentId;
     saveDocument.projectId = this.state.projectId;
-
+ 
     dataservice.addObject("AddcostCodeTree", saveDocument).then(result => {
       toast.success(Resources["operationSuccess"][currentLanguage]);
 
@@ -244,51 +268,58 @@ class CostCodingTreeAddEdit extends Component {
         costForcast: "",
         parentId: ""
       };
-      let data = this.state.trees
+      let data = this.state.trees 
       data.push(result)
       this.setState({
         trees: data,
         viewPopUp: false,
         document: treeDocument,
         isLoading: false,
-        IsFirstParent: false
-      });
+        IsFirstParent: false, 
+      }); 
+      this.getTree();
     }).catch(ex => {
-      this.setState({ viewPopUp: false });
+      this.setState({ viewPopUp: false ,isLoading: false});
 
       toast.error(Resources["failError"][currentLanguage]);
     });
   }
 
-  editTree() {
-    this.setState({
-      isLoading: true
-    });
+  editTree = () => {
+    this.setState({ isLoading: true });
     let saveDocument = { ...this.state.document };
     saveDocument.projectId = this.state.projectId;
-
-    dataservice
-      .addObject("EditCostCodeTree", saveDocument)
-      .then(result => {
-        toast.success(Resources["operationSuccess"][currentLanguage]);
-
-        let treeDocument = {
-          codeTreeTitle: "",
-          budgetThisPeriod: "",
-          budgetAtComplete: "",
-          originalBudget: "",
-          costForcast: "",
-          parentId: ""
-        };
-
-        this.setState({
-          viewPopUp: false,
-          document: treeDocument,
-          isLoading: false
-        });
+    let state = this.state
+    if (treeContainer != null) {
+      treeContainer.forEach(item => {
+        state[item.id] = item
       })
+      this.setState({ state })
+    }
+
+    dataservice.addObject("EditCostCodeTree", saveDocument).then(result => {
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+      let treeDocument = {
+        codeTreeTitle: "",
+        budgetThisPeriod: "",
+        budgetAtComplete: "",
+        originalBudget: "",
+        costForcast: "",
+        parentId: ""
+      };
+      let itemId = saveDocument.id
+      let state = this.state
+      state[itemId] = saveDocument
+      this.setState({
+        viewPopUp: false,
+        document: treeDocument,
+        state,
+        isLoading: false
+      });
+      treeContainer = null
+    })
       .catch(ex => {
-        this.setState({ viewPopUp: false });
+        this.setState({ viewPopUp: false,isLoading: false });
 
         toast.error(Resources["failError"][currentLanguage]);
       });
@@ -302,12 +333,22 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   clickHandlerContinueMain() {
-    dataservice.addObject("DeleteCostCodeTree", this.state.docId).then(result => {
+    let state = this.state
+    if (treeContainer != null) {
+      treeContainer.forEach(item => {
+        state[item.id] = item
+      })
+      this.setState({ state })
+    }
+    Api.post("DeleteCostCodeTree?id=" + this.state.docId).then(result => {
 
+      let state = this.state
+      state[this.state.docId] = -1
       this.setState({
-        showDeleteModal: false
+        showDeleteModal: false,
+        state
       });
-
+      treeContainer = null;
       toast.success(Resources["operationSuccess"][currentLanguage]);
 
     }).catch(ex => {
@@ -316,27 +357,30 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   render() {
-
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document">
           <div className="tree__header">
             <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
+             
             <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
               {Resources["goAdd"][currentLanguage]}
             </button>
           </div>
+            {this.state.isLoading==true?<LoadingSection />:  
           <div className="Eps__list">
             {
               this.state.trees.map((item, i) => {
+                if (treeContainer != null)
+                  treeContainer[item.id] = item
                 return (
                   <Fragment>
-                    <div className="epsTitle active" key={item.id}>
+                    <div className={this.state[item.id] == -1 ? ' epsTitle' : item.collapse === true ? 'epsTitle active' : 'epsTitle'} key={item.id} style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
                       <div className="listTitle">
                         <span className="dropArrow">
                           <i className="dropdown icon" />
                         </span>
-                        <span className="accordionTitle">{item.codeTreeTitle}</span>
+                        <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}</span>
                       </div>
                       <div className="Project__num">
                         <div className="eps__actions">
@@ -357,10 +401,13 @@ class CostCodingTreeAddEdit extends Component {
                     </div>
                   </Fragment>
                 )
+
               })
+
             }
           </div>
-        </div>
+           }  
+       </div>
         {this.state.viewPopUp ? (
           <Fragment>
             <Rodal
