@@ -7380,6 +7380,16 @@ div#markup-panel {
     z-index: 0;
 }
 
+.riskConContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.riskConContainer .riskCon {
+    padding: 10;
+    margin-bottom: 8px;
+}
 .login__page .login__page--form .proForm .form-group {
     display: flex;
 }
