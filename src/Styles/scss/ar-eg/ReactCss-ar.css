@@ -6092,7 +6092,7 @@ line.horizontal-grid-line {
   margin-bottom: 10px;
 }
 
-.filter__more span {
+/* .filter__more span {
   font-family: 'Muli';
   font-weight: bold;
   font-style: normal;
@@ -6109,9 +6109,9 @@ line.horizontal-grid-line {
   border: solid 1px #5e6475;
   position: absolute;
   top: 50%;
-  right: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-}
+} */
 
 .filter__warrper .proForm button {
   margin-bottom: 5px;
@@ -7824,6 +7824,62 @@ padding: 0;
   min-width: 180px;
 }
 
+.grid__column--footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  border-top: 1px solid #e9ecf0;
+}
+
+.grid__column--footer button{
+  margin: 0 4px;
+}
+
+
+
+.skylight-dialog .reactTableActions {
+  overflow: auto;
+}
+
+.customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.gridfillter-container .fillter-status-container .datepickerContainer.proForm .control-label {
+  z-index: 0;
+}
+
+.login__page .login__page--form .proForm .form-group {
+  display: flex;
+}
+
+.dropdownMulti .css-1hwfws3, .multiChoice .css-1hwfws3 {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.attachmentTableAuto.attachmentTable thead tr th:nth-child(2) , .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
+  width: 50px;
+}
+
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3) {
+  width: auto;
+}
+
+.attachmentTableAuto.attachmentTable tbody tr .contentCell.tableCell-2 {
+  max-width: 100%;
+}
+
+.fixedLoading .dashboardLoading {
+  position: fixed !important;
+  top: 0!important;
+  right: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+}
 
 /* new Menu panel */
 

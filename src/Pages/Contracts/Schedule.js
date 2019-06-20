@@ -4,15 +4,12 @@ import Resources from "../../resources.json";
 import ReactTable from "react-table";
 import moment from "moment";
 import dataservice from "../../Dataservice";
-import Config from "../../Services/Config.js";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import Api from "../../api.js";
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const _ = require('lodash')
