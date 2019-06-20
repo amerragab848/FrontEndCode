@@ -22,10 +22,10 @@ class FilterComponent extends Component {
       valueColumns: [],
       isCustom: true,
       isLoading: false,
-      currentData:0
-    }; 
+      currentData: 0
+    };
 
-//    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    //    this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   componentDidMount() {
@@ -38,14 +38,14 @@ class FilterComponent extends Component {
   }
 
   componentWillMount() {
- 
+
     let state = {};
     this._isMounted = false;
 
     this.props.filtersColumns.map((column, index) => {
       if (column.type === "date") {
         state[index + "-column"] = moment().format("YYYY-MM-DD");
-      } 
+      }
     });
 
     this.setState({
@@ -67,12 +67,12 @@ class FilterComponent extends Component {
       obj.type = type;
     } else if (type === "date") {
       obj.field = field;
-      obj.value = typeof(event) === "object" ? "" : event;
+      obj.value = typeof (event) === "object" ? "" : event;
       obj.type = type;
 
       let state = {};
       this.state[indexx + "-column"] = obj.value;
-      this.setState({state,currentData : obj.value != "" ? this.state.currentData : 0});
+      this.setState({ state, currentData: obj.value != "" ? this.state.currentData : 0 });
     } else {
       obj.field = event.target.name;
       obj.value = event.target.value;
@@ -117,10 +117,10 @@ class FilterComponent extends Component {
       if (column.type === "date") {
         if (column.value != "") {
           let spliteDate = column.value.split("|");
-          if(spliteDate.length > 1){
+          if (spliteDate.length > 1) {
             query[column.field] = column.value;
           }
-          else{ 
+          else {
             query[column.field] = moment(column.value, "DD/MM/YYYY").format("YYYY-MM-DD");
           }
         }
@@ -144,36 +144,37 @@ class FilterComponent extends Component {
     });
   }
 
-  changeDate(index,type) {
-    if (type == "date") { 
- 
-        document.addEventListener('click', this.handleOutsideClick, false);
-         
-      this.setState({ currentData:index });
+  changeDate(index, type) {
+    if (type == "date") {
+
+      document.addEventListener('click', this.handleOutsideClick, false);
+
+      this.setState({ currentData: index });
     } else {
       document.removeEventListener('click', this.handleOutsideClick, false);
-      this.setState({ currentData:0  });
-    } 
-}
-  
-onChange = (date,index,columnName,type,key) => { 
+      this.setState({ currentData: 0 });
+    }
+  }
 
-  let margeDate =date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" +  moment(date[1]).format("DD/MM/YYYY") : "";
-   
-  let lastState = this.state;
+  onChange = (date, index, columnName, type, key) => {
 
-  lastState[index+ "-column"] = margeDate 
+    let margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
 
-  this.getValueHandler(margeDate,"date",columnName);
+    let lastState = this.state;
 
-  this.setState({lastState, currentData: 0});
+    lastState[index + "-column"] = margeDate
+
+    this.getValueHandler(margeDate, "date", columnName);
+
+    this.setState({ lastState, currentData: 0 });
   };
 
   resetDate = () => {
-    this.setState({ currentData: 0});
+    this.setState({ currentData: 0 });
   }
 
   renderFilterColumns() {
+    let count = 0;
     let columns = (
       <div >
         {this.props.filtersColumns.length > 6 ?
@@ -188,10 +189,11 @@ onChange = (date,index,columnName,type,key) => {
           : null
         }
 
-        <div className="filter__showmore"> 
+        <div className="filter__showmore">
           <div className="fillter-status-container onelineFilter">
             {this.state.filtersColumns.map((column, index) => {
-              if (this.state.isCustom) {
+              if (this.state.isCustom && count < 6) {
+                count++
                 if (column.type === "string" || column.type === "number") {
                   return (
                     <div className="form-group fillterinput fillter-item-c" key={index}>
@@ -235,37 +237,38 @@ onChange = (date,index,columnName,type,key) => {
                     </div>
                   );
                 } else if (column.type === "date") {
-                  if(column.isRange ){
-                  return (
-                    <div className="form-group fillterinput fillter-item-c"  key={index}>
-                          <label className="control-label" htmlFor={column.key}>{column.name}</label>
-                      <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}>
-                          <input type="text" autoComplete="off" key={index} placeholder={column.name}  
-                                  onChange={date => this.getValueHandler(date, column.type, column.field, index)} 
-                                  value={this.state[index + "-column"]} 
-                                  
-                                  onClick={() => this.changeDate(index,column.type)}/>
-                          {this.state.currentData === index && this.state.currentData != 0 ? (
-                           <div className="viewCalender" tabIndex={0} ref={index => { this.index = index;}}>
-                            <Calendar  onChange={(date) => this.onChange(date,index,column.name,column.type,column.key)} selectRange={true}  /> 
-                            </div>) : ("")}
-                            </div>
-                    </div>  
-                  );}
-                  else{
+                  if (column.isRange) {
                     return (
-                    <div className="form-group fillterinput fillter-item-c" key={index}>
-                      <DatePicker
-                        title={column.name}
-                        handleChange={date =>
-                          this.getValueHandler(date, column.type, column.field, index)
-                        } 
-                        startDate={this.state[index + "-column"]}
-                        index={index}
-                        key={index}
-                      />
-                    </div>
-                  );
+                      <div className="form-group fillterinput fillter-item-c" key={index}>
+                        <label className="control-label" htmlFor={column.key}>{column.name}</label>
+                        <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}>
+                          <input type="text" autoComplete="off" key={index} placeholder={column.name}
+                            onChange={date => this.getValueHandler(date, column.type, column.field, index)}
+                            value={this.state[index + "-column"]}
+
+                            onClick={() => this.changeDate(index, column.type)} />
+                          {this.state.currentData === index && this.state.currentData != 0 ? (
+                            <div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
+                              <Calendar onChange={(date) => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
+                            </div>) : ("")}
+                        </div>
+                      </div>
+                    );
+                  }
+                  else {
+                    return (
+                      <div className="form-group fillterinput fillter-item-c" key={index}>
+                        <DatePicker
+                          title={column.name}
+                          handleChange={date =>
+                            this.getValueHandler(date, column.type, column.field, index)
+                          }
+                          startDate={this.state[index + "-column"]}
+                          index={index}
+                          key={index}
+                        />
+                      </div>
+                    );
                   }
                 }
               }
