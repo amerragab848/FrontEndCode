@@ -438,8 +438,11 @@ class GridSetupWithFilter extends Component {
 
   render() {
     const { groupBy, rows } = this.state;
-    console.log(groupBy);
-    const groupedRows = Data.Selectors.getRows({ rows, groupBy });
+   
+    let groupedRows =  Data.Selectors.getRows({ rows, groupBy });
+
+    groupedRows = groupedRows != null ? groupedRows :0 ;
+
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {

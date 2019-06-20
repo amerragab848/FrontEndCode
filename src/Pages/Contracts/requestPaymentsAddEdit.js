@@ -855,7 +855,7 @@ class requestPaymentsAddEdit extends Component {
 
                 dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
-                        paymentsItems: result,
+                        paymentsItems: result != null ? result : [],
                         isLoading: false
                     });
                 });
