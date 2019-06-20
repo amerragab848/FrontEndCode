@@ -999,12 +999,21 @@ class ExpensesWorkFlowAddEdit extends Component {
                                         //Third Step
                                         <Fragment>
                                             <div className='document-fields'>
-                                                <table className="ui table">
+                                                <table className="attachmentTable">
                                                     <thead>
                                                         <tr>
-                                                            <th>No.</th>
-                                                            <th>Subject</th>
-
+                                                            <th>
+                                                                <div className="headCell tableCell-1">
+                                                                    <span> No.</span>
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-1">
+                                                                    <span>
+                                                                        Subject
+                                                                </span>
+                                                                </div>
+                                                            </th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>

@@ -152,6 +152,21 @@
   font-weight: 600;
   font-style: normal;
   font-stretch: normal;
+  margin-bottom: -10px;
+  margin-right: 13px;
+  position: relative;
+  z-index: 12;
+}
+
+.dropWrapper .spanValidation label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: #fff;
+  z-index: -1;
 }
 
 .dropWrapper .spanValidation span {
