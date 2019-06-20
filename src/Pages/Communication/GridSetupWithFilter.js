@@ -382,15 +382,6 @@ class GridSetupWithFilter extends Component {
     this.setState({ state, currentData: 0 });
   };
 
-  //   handleOutsideClick(e) {
-  //     if (this.index != null){
-  //     if (this.index.contains(e.target)) {
-  //       return;
-  //     }
-  //     this.changeDate();
-  //    }
-  //   }
-
   resetDate = () => {
     this.setState({ currentData: 0 });
   }
@@ -439,7 +430,8 @@ class GridSetupWithFilter extends Component {
   render() {
     const { groupBy, rows } = this.state;
     console.log(groupBy);
-    const groupedRows = Data.Selectors.getRows({ rows, groupBy });
+    const groupedRows = Data.Selectors.getRows({ rows, groupBy }) == null? []: Data.Selectors.getRows({ rows, groupBy });
+ 
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {
@@ -530,11 +522,11 @@ class GridSetupWithFilter extends Component {
                           //onBlur={this.handeDateChange}
                           onClick={() => this.changeDate(index, column.type)} />
                         {this.state.currentData === index &&
-                        this.state.currentData != 0 ? (
-                            <div className="viewCalender" tabIndex={0} ref={index => { this.index = index;}}>
-                             <Calendar onChange={date => this.onChange( date, index, column.name, column.type, column.key)} selectRange={true}/> 
-                             </div>) : 
-                        ("")}
+                          this.state.currentData != 0 ? (
+                            <div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
+                              <Calendar onChange={date => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
+                            </div>) :
+                          ("")}
                       </div>
                     </div>
                   ) : null;
@@ -634,7 +626,7 @@ class GridSetupWithFilter extends Component {
               </svg>
             </div>
           </div>
-          
+
           <div className="grid-container">
             <div id="top__scroll">
               <div id="empty__div--scroll" />
