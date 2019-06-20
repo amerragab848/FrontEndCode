@@ -4,6 +4,7 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import { withRouter } from "react-router-dom";
+import Config from '../../IP_Configrations.json'
 
 const Autodesk = window.Autodesk;
 
@@ -76,21 +77,14 @@ class AutoDeskViewer extends Component {
 
     }
 
-    getForgeToken() {
-        /* Normally, this would call an endpoint on your server to generate a public
-        access token (using your client id and sercret). Doing so should yield a
-        response that looks something like the following...
-        */
-
+    getForgeToken() { 
         return {
             access_token: this.state.access_token,
             expires_in: 3600,
             token_type: "Bearer"
         };
     }
-
-    /* Once the viewer has initialized, it will ask us for a forge token so it can
-    access the specified document. */
+ 
     handleTokenRequested(onAccessToken) {
         console.log('Token requested by the viewer.');
         if (onAccessToken) {
@@ -110,8 +104,8 @@ class AutoDeskViewer extends Component {
             })
             this.setState({ markupsList })
             let obj = {
-                fileName: 'visualization_-_conference_room.dwg',//this.state.fileName,// 
-                attachFile: 'https://newgiza.azureedge.net/project-files/570dfbea-2046-4dc3-a704-5d8dc966befc.dwg'//this.state.attachFile // 
+                fileName:this.state.fileName, 
+                attachFile:  decodeURIComponent(this.state.attachFile )  
             }
             Api.post("translateAutoDesk", obj).then(data => {
                 this.showModel(data);
@@ -127,8 +121,7 @@ class AutoDeskViewer extends Component {
     animateValue(id, start, end) {
         var current = start,
             obj = id,
-            duration = this.state.loadingPer === true ? 0 : 500;
-
+            duration = this.state.loadingPer === true ? 0 : 500; 
         var timer = setInterval(function () {
             current = current + 1;
             obj.innerHTML = current + "%";
@@ -138,18 +131,9 @@ class AutoDeskViewer extends Component {
         }, duration);
     }
 
-    showAllToggle = () => {
-        let markupCore = this.state.markupCore;
-        if (this.state.showAll == true) {
-            if (markupCore) {
-                // markupCore.leaveEditMode();
-                // markupCore.hide();
-            }
-            this.setState({ showAll: false, viewEditMarkUps: true })
-            // if (markup) {
-            //     markup.leaveEditMode();
-            //     markup.hide();
-            // }
+    showAllToggle = () => { 
+        if (this.state.showAll == true) { 
+            this.setState({ showAll: false, viewEditMarkUps: true }) 
         } else {
             this.setState({ viewEditMarkUps: false, showAll: true })
             this.state.markups.forEach(item => {
@@ -176,25 +160,17 @@ class AutoDeskViewer extends Component {
             if (markupCore) {
                 markupCore.leaveEditMode();
                 markupCore.hide();
-            }
-            // if (this.state.markup) {
-            //     this.state.markup.leaveEditMode();
-            //     this.state.markup.hide();
-            // }
+            } 
             this.setState({ showCheckBox: false, showAll: false, isViewEdit: false, viewEditMarkUps: false, markupCore })
 
         } else if (value == 2) {
-            this.setState({ showCheckBox: true, showAll: true, isViewEdit: false, viewEditMarkUps: false })
-            this.state.markups.forEach(item => {
-                this.restoreState(item.svg, item.viewerState);
-            })
+            this.setState({ showCheckBox: true, showAll: true, isViewEdit: false, viewEditMarkUps: false }) 
         } else {
             this.setState({ showCheckBox: false, showAll: false, isViewEdit: true, viewEditMarkUps: false })
             this.state.markups.forEach(item => {
                 this.restoreState(item.svg, item.viewerState);
             })
-            this.editingMarkUps();
-
+            this.editingMarkUps(); 
         }
     }
 
@@ -215,8 +191,7 @@ class AutoDeskViewer extends Component {
             let viewer = this.state.viewer
             viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(markupsExt => {
                 this.setState({ markupCore: markupsExt, viewer })
-            })
-
+            }) 
         }
     }
 
@@ -262,7 +237,7 @@ class AutoDeskViewer extends Component {
     getAccessToken = () => {
         var xmlHttp = null;
         xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", 'http://172.30.1.17:8900/api/Procoor/getAccessToken', false /*forge viewer requires SYNC*/);
+        xmlHttp.open("GET", Config.static+'/api/Procoor/getAccessToken', false /*forge viewer requires SYNC*/);
         xmlHttp.send(null);
         return xmlHttp.responseText;
 
@@ -272,24 +247,16 @@ class AutoDeskViewer extends Component {
         if (this.state.markupCore) {
             let markupCore = this.state.markupCore;
             markupCore.undo();
-            this.setState({ markupCore })
-
-        } else {
-            //  markup.undo();
-
-        }
+            this.setState({ markupCore }) 
+        } 
     }
 
     redo = () => {
         if (this.state.markupCore) {
             let markupCore = this.state.markupCore;
             markupCore.redo();
-            this.setState({ markupCore })
-
-        } else {
-            //   markup.redo();
-
-        }
+            this.setState({ markupCore }) 
+        }  
     }
 
     addComment = () => {
@@ -298,13 +265,8 @@ class AutoDeskViewer extends Component {
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markupCore);
             extension.enterEditMode();
-            extension.changeEditMode(mode)
-
-        } else {
-            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markup);
-            //      markup.changeEditMode(mode);
-
-        }
+            extension.changeEditMode(mode) 
+        }  
     }
 
     addCircle = () => {
@@ -313,14 +275,8 @@ class AutoDeskViewer extends Component {
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markupCore);
             extension.enterEditMode();
-            extension.changeEditMode(mode)
-
-        } else {
-            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markup);
-            //    markup.changeEditMode(mode);
-
-        }
-
+            extension.changeEditMode(mode) 
+        }  
     }
 
     addArrow = () => {
@@ -329,13 +285,8 @@ class AutoDeskViewer extends Component {
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(this.state.markupCore);
             extension.enterEditMode();
-            extension.changeEditMode(mode)
-
-        } else {
-            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(this.state.markup);
-            //   markup.changeEditMode(mode);
-
-        }
+            extension.changeEditMode(mode) 
+        }  
     }
 
     addRectangle = () => {
@@ -344,13 +295,8 @@ class AutoDeskViewer extends Component {
             let viewer = this.state.viewer
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             extension.enterEditMode();
-            extension.changeEditMode(mode)
-
-        } else {
-            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(this.state.markup);
-            //  markup.changeEditMode(mode);
-
-        }
+            extension.changeEditMode(mode) 
+        }  
     }
 
     Freehand = () => {
@@ -361,11 +307,7 @@ class AutoDeskViewer extends Component {
             extension.enterEditMode();
             extension.changeEditMode(mode)
 
-        } else {
-            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeFreehand(this.state.markup);
-            //markup.changeEditMode(mode);
-
-        }
+        } 
     }
 
     clear = () => {
@@ -373,10 +315,7 @@ class AutoDeskViewer extends Component {
         if (this.state.markupCore) {
             markupCore.clear();
             this.setState({ markupCore })
-        } else {
-            //markup.clear()
-        }
-
+        }   
     }
 
     close = () => {
@@ -385,17 +324,7 @@ class AutoDeskViewer extends Component {
             markupCore.leaveEditMode();
             markupCore.hide();
             this.setState({ markupCore, viewEditMarkUps: false, showCheckBox: false, isViewEdit: false })
-        }
-        //else {
-        //     viewEditMarkUps(false);
-
-        //     isViewEdit(false);
-
-        //     markup.leaveEditMode();
-
-        //     markup.hide();
-        // }
-
+        } 
     }
 
     deleteAction = () => {
@@ -409,9 +338,7 @@ class AutoDeskViewer extends Component {
             // markups we just created as a string svg
             let markupCore = this.state.markupCore
             var markupsPersist = markupCore.generateData();
-            // current view state (zoom, direction, sections)
-            var viewerStatePersist = markupCore.viewer.getState();
-
+            // current view state (zoom, direction, sections) 
             let markUpObj = markUpsModel;
             markUpObj.svg = markupsPersist;
             markUpObj.viewerState = this.state.contactName + "-" + moment().format("DD/MM/YYYY") + "-" + new Date().getTime();
@@ -432,37 +359,7 @@ class AutoDeskViewer extends Component {
                     selectedMode: listOfOptions[1]
                 })
             })
-        }
-        // } else {
-        //     // markups we just created as a string svg
-        //     var markupsPersist = markup.generateData();
-        //     // current view state (zoom, direction, sections)
-        //     var viewerStatePersist = markup.viewer.getState();
-
-        //     markUpObj(new markUpsModel());
-
-        //     markUpObj().svg(markupsPersist);
-        //     markUpObj().viewerState("doc" + moment().format());
-        //     markUpObj().docType(docType());
-        //     markUpObj().docId(docId());
-        //     markUpObj().docFileId(docFileId());
-        //     markUpObj().projectId(currentProjectId());
-
-        //     dataservice.saveMarkupsState(undefined, markUpObj()).done(function (data) {
-        //         markups(data);
-
-        //         // finish edit of markup
-        //         markup.leaveEditMode();
-        //         // hide markups (and restore Viewer tools)
-        //         markup.hide();
-
-        //         viewEditMarkUps(false);
-
-        //         isViewEdit(false);
-
-        //         modeId(2);
-        //     });
-        // }
+        } 
 
 
     }
@@ -500,8 +397,7 @@ class AutoDeskViewer extends Component {
                                         handleChange={event => this.changeMarkup(event.value)}
                                         index="markups" />
                                 </div> : null}
-                        </div>
-
+                        </div> 
                         {this.state.isViewEdit == true ?
                             <div id="markup-panel" className="docking-panel" style={{ resize: 'none', border: '1px solid rgba(0, 0, 0, 0.2)', backgroundColor: 'transparent', top: '20%', width: '15%', height: '27%', maxHeight: '513px', maxWidth: '881.406px' }} >
                                 <section className="docking-panel-title" style={{ color: '#0a131c', backgroundColor: 'transparent', borderBottom: 'solid 1px rgba(0, 0, 0, 0.2)' }}  >Markup Editor</section>
@@ -554,290 +450,7 @@ class AutoDeskViewer extends Component {
                 </div>
             </div>
         );
-    }
-
+    } 
 
 } export default withRouter(AutoDeskViewer);
-
-
-
-
-
-
-// var markUpObj = markUpsModel;
-// var modeOptions = listOfOptions;
-
-
-
-
- //         markupId.subscribe(function (value) {
-
-//             ko.utils.arrayForEach(markups(), function (item) {
-//                 if (item.id == value) {
-
-//                     restoreState(item.svg, item.viewerState);
-//                 }
-//             });
-//         });
-
-//         var elem = "";
-
-
-
-//         function attached() {
-//             // elem = document.getElementById("myBar");
-
-
-//         };
-
-//         function compositionComplete() {
-
-//             $.fn.progressCircle = function (options) {
-//                 return this.each(function (key, value) {
-//                     var element = $(this);
-//                     if (element.data('progressCircle')) {
-//                         var progressCircle = new ProgressCircle(this, options);
-//                         return element.data('progressCircle');
-//                     }
-//                     $(this).append('<div class="prog-circle">' +
-//                                             '	<div class="percenttext"> </div>' +
-//                                             '	<div class="slice">' +
-//                                             '		<div class="bar"> </div>' +
-//                                             '		<div class="fill"> </div>' +
-//                                             '	</div>' +
-//                                             '	<div class="after"> </div>' +
-//                                             '</div>');
-//                     var progressCircle = new ProgressCircle(this, options);
-//                     element.data('progressCircle', progressCircle);
-//                 });
-//             };
-
-//             $.fn.progressCircle.defaults = {
-//                 nPercent: 10,
-//                 showPercentText: true,
-//                 circleSize: 100,
-//                 thickness: 3
-//             };
-
-//             $('.circle').each(function () {
-//                 $(this).progressCircle({
-//                     nPercent: 0,
-//                     showPercentText: true,
-//                     thickness: 10,
-//                     circleSize: 150
-//                 });
-//             });
-
-//             var speed = $(this).data("size");
-//             var speed = parseInt(speed) * 10;
-//             var speed = parseInt(speed) / 1024;
-//             var speed = parseInt(speed);
-
-//             $(this).addClass("active");
-
-//             circle('#circle', "#cricleinput", 1024);
-//         };
-
-//         function circle(circleID, cricleinput, speed) {
-
-//             setTimeout(function () {
-//                 $(circleID).each(function () {
-//                     var ci = $(cricleinput).val();
-//                     var ci = parseInt(ci) + 1;
-
-//                     if (viewLoading() == false) ci = 100;
-
-//                     if (ci < 100) {
-//                         $(this).progressCircle({
-//                             nPercent: ci,
-//                             showPercentText: true,
-//                             thickness: 10,
-//                             circleSize: 150
-//                         });
-//                     }
-//                     else
-//                         if (ci == 100) {
-//                             if (viewLoading() == false) {
-//                                 ci = 99;
-
-//                                 $(this).addClass("end").progressCircle({
-//                                     nPercent: 100,
-//                                     showPercentText: true,
-//                                     thickness: 9,
-//                                     circleSize: 150
-//                                 });
-//                             }
-//                         }
-//                     $(cricleinput).val(ci);
-//                 });
-
-//                 $(circleID).promise().done(function () {
-//                     var ci = $("#cricleinput").val();
-//                     if (ci < 105) {
-//                         circle(circleID, cricleinput, speed);
-//                     }
-//                     else {
-//                         var nextid = $(this).data("next");
-//                         if (nextid != 'none') {
-//                             $(cricleinput).val(0);
-//                             circle(nextid, cricleinput, speed);
-//                         }
-//                         else {
-//                             $(".end").addClass("complate");
-//                         }
-//                     }
-//                 })
-//             }, speed);
-//         }
-
-//         var ProgressCircle = function (element, options) {
-
-//             var settings = $.extend({}, $.fn.progressCircle.defaults, options);
-//             var thicknessConstant = 0.02;
-//             var nRadian = 0;
-
-//             computePercent();
-//             setThickness();
-
-//             var border = (settings.thickness * thicknessConstant) + 'em';
-//             var offset = (1 - thicknessConstant * settings.thickness * 2) + 'em';
-//             var circle = $(element);
-//             var progCirc = circle.find('.prog-circle');
-//             var circleDiv = progCirc.find('.bar');
-//             var circleSpan = progCirc.children('.percenttext');
-//             var circleFill = progCirc.find('.fill');
-//             var circleSlice = progCirc.find('.slice');
-
-//             if (settings.nPercent == 0) {
-//                 circleSlice.hide();
-//             } else {
-//                 resetCircle();
-//                 transformCircle(nRadians, circleDiv);
-//             }
-//             setBorderThickness();
-//             updatePercentage();
-//             setCircleSize();
-
-//             function computePercent() {
-//                 settings.nPercent > 100 || settings.nPercent < 0 ? settings.nPercent = 0 : settings.nPercent;
-//                 nRadians = (360 * settings.nPercent) / 100;
-//             }
-
-//             function setThickness() {
-//                 if (settings.thickness > 10) {
-//                     settings.thickness = 10;
-//                 } else if (settings.thickness < 1) {
-//                     settings.thickness = 1;
-//                 } else {
-//                     settings.thickness = Math.round(settings.thickness);
-//                 }
-//             }
-
-//             function setCircleSize() {
-//                 progCirc.css('font-size', settings.circleSize + 'px');
-//             }
-
-//             function transformCircle(nRadians, cDiv) {
-//                 var rotate = "rotate(" + nRadians + "deg)";
-//                 cDiv.css({
-//                     "-webkit-transform": rotate,
-//                     "-moz-transform": rotate,
-//                     "-ms-transform": rotate,
-//                     "-o-transform": rotate,
-//                     "transform": rotate
-//                 });
-//                 if (nRadians > 180) {
-//                     transformCircle(180, circleFill);
-//                     circleSlice.addClass(' clipauto ');
-//                 }
-//             }
-
-//             function setBorderThickness() {
-
-//                 progCirc.find(' .slice > div ').css({
-//                     'border-width': border,
-//                     'width': offset,
-//                     'height': offset
-//                 });
-
-//                 progCirc.find('.after').css({
-//                     'top': border,
-//                     'left': border,
-//                     'width': offset,
-//                     'height': offset
-//                 });
-
-//             }
-
-//             function resetCircle() {
-//                 circleSlice.show();
-//                 circleSpan.text('');
-//                 circleSlice.removeClass('clipauto')
-//                 transformCircle(20, circleDiv);
-//                 transformCircle(20, circleFill);
-//                 return this;
-//             }
-
-//             function updatePercentage() {
-//                 settings.showPercentText && circleSpan.text(settings.nPercent + '%');
-//             }
-//         };
-
-//         function move() {
-//             var width = 10;
-//             var sec = 2.5;
-//             var count = 0;
-//             var id = setInterval(frame, 2000);
-//             function frame() {
-//                 if (width >= 95) {
-//                     clearInterval(id);
-//                 } else {
-//                     width++;
-//                     sec++;
-//                     count++;
-//                     //elem.style.width = width - 6 + '%';
-//                     //elem.innerHTML = width * 1 + '%';
-//                 }
-//             }
-//         }
-
-//         var viewer;
-//         var markup;
-
-
-
-//         function close() {
-
-//             if (markupCore) {
-//                 viewEditMarkUps(false);
-
-//                 isViewEdit(false);
-
-//                 markupCore.leaveEditMode();
-
-//                 markupCore.hide();
-//             } else {
-//                 viewEditMarkUps(false);
-
-//                 isViewEdit(false);
-
-//                 markup.leaveEditMode();
-
-//                 markup.hide();
-//             }
-
-//         }
-
-//         function deleteAction() {
-
-//             markup.deleteMarkup();
-//         }
-
-//        
-//         var markupCore;
-
-//    
-
-
-//     }
-// } export default AutoDeskViewer;
+ 
