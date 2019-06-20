@@ -86,7 +86,7 @@ export default class uploadSignture extends React.Component {
 
     render() {
         return (
-            <div className="mainContainer main__fulldash">
+            <div className="mainContainer main__fulldash white-bg">
                 <div className="main__fulldash--container">
                     <div >
                         <h4>{resources.uploadSignature[currentLanguage]}</h4>

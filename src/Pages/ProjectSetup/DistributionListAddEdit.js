@@ -54,7 +54,7 @@ let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
-let perviousRoute=0;
+let perviousRoute = 0;
 let actions = []
 
 class TaskGroupsAddEdit extends Component {
@@ -68,7 +68,7 @@ class TaskGroupsAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -126,7 +126,7 @@ class TaskGroupsAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             IsEditMode: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -512,7 +512,8 @@ class TaskGroupsAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -559,9 +560,21 @@ class TaskGroupsAddEdit extends Component {
                                 </span>
                             </div>
                         </td>
-                        <td>{item.arrange}</td>
-                        <td>{item.companyName}</td>
-                        <td>{item.contactName}</td>
+                        <td>
+                            <div className="contentCell tableCell-1">
+                                <p>{item.arrange}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-1">
+                                <p>{item.companyName}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div className="contentCell tableCell-1">
+                                <p>{item.contactName}</p>
+                            </div>
+                        </td>
                     </tr>
                     : <LoadingSection />
             )
@@ -606,7 +619,6 @@ class TaskGroupsAddEdit extends Component {
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
 
-
                                         <div className="linebylineInput valid-input">
                                             <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
                                                 selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
@@ -616,7 +628,6 @@ class TaskGroupsAddEdit extends Component {
                                                 touched={touched.Company}
                                                 value={values.Company} isClear={true} />
                                         </div>
-
 
                                         <div className="linebylineInput valid-input">
                                             <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
@@ -640,8 +651,6 @@ class TaskGroupsAddEdit extends Component {
                                                 {errors.ArrangeContact && touched.ArrangeContact ? (<em className="pError">{errors.ArrangeContact}</em>) : null}
                                             </div>
                                         </div>
-
-
 
                                     </div>
                                     <div className="slider-Btns">
@@ -689,7 +698,7 @@ class TaskGroupsAddEdit extends Component {
                                                     <div className="proForm first-proform">
                                                         <div className='linebylineInput '>
                                                             <label className="control-label">{Resources['subject'][currentLanguage]}</label>
-                                                            <div className={"inputDev ui input "  + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
+                                                            <div className={"inputDev ui input " + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
                                                                 <input autoComplete="off" className="form-control" name="Subject"
                                                                     value={this.state.IsEditMode ? this.state.Dis_ListData.subject : values.Subject}
                                                                     onBlur={(e) => { handleBlur(e) }}
@@ -730,7 +739,7 @@ class TaskGroupsAddEdit extends Component {
                                                         </div>
                                                         <div className='linebylineInput '>
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
-                                                            <div className={"inputDev ui input "  + (errors.ArrangeTaskGroups && touched.ArrangeTaskGroups ? 'has-error' : null) + ' '}>
+                                                            <div className={"inputDev ui input " + (errors.ArrangeTaskGroups && touched.ArrangeTaskGroups ? 'has-error' : null) + ' '}>
                                                                 <input disabled autoComplete="off" className="form-control" name="ArrangeTaskGroups"
                                                                     value={this.state.IsEditMode ? this.state.Dis_ListData.arrange : values.ArrangeTaskGroups}
                                                                     onBlur={(e) => { handleBlur(e) }}
@@ -763,21 +772,34 @@ class TaskGroupsAddEdit extends Component {
                                                 <header>
                                                     <h2 className="zero">{Resources['contactList'][currentLanguage]}</h2>
                                                 </header>
-                                                <table className="ui table">
+                                                <table className="attachmentTable attachmentTableAuto">
                                                     <thead>
                                                         <tr>
-                                                            <th>{Resources['delete'][currentLanguage]}</th>
-                                                            <th>{Resources['arrange'][currentLanguage]}</th>
-                                                            <th>{Resources['CompanyName'][currentLanguage]}</th>
-                                                            <th>{Resources['ContactName'][currentLanguage]}</th>
-
+                                                            <th>
+                                                                <div className="headCell tableCell-1">
+                                                                    {Resources['delete'][currentLanguage]}
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-1">
+                                                                    {Resources['arrange'][currentLanguage]}
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-2">
+                                                                    {Resources['CompanyName'][currentLanguage]}
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-2">
+                                                                    {Resources['ContactName'][currentLanguage]}
+                                                                </div>
+                                                            </th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
                                                         {RenderContactsTable}
-
                                                     </tbody>
                                                 </table>
                                             </div>

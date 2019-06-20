@@ -157,7 +157,7 @@ class PrivacySetting extends Component {
 
         return ( 
              
-            <div className="mainContainer">
+            <div className="mainContainer white-bg">
                 {this.state.isNewMode === true ?
                     <Formik
                         enableReinitialize={false}
