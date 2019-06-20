@@ -1,23 +1,3 @@
-/* Fonts  Vars*/
-
-/********************************************/
-
-/*Blue */
-
-/*#Light Green*/
-
-/*Green */
-
-/*Red*/
-
-/*Teal*/
-
-/*grey*/
-
-/*Basic Spacing*/
-
-/********************************************/
-
 .ui.selection.dropdown.singleDropDown {
   transform: none;
 }
@@ -60,9 +40,6 @@
   justify-content: center;
   align-items: center;
 }
-
-/*# sourceMappingURL=layout.css.map */
-
 /* new css */
 
 .dropWrapper .ui.selection.dropdown {
@@ -98,13 +75,6 @@
   margin-left: 10px;
 }
 
-/* .dropWrapper .fillter-item-c label {
-  font-family: 'Open Sans';
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-} */
-
 .dropWrapper .filterWrapper {
   width: 100%;
 }
@@ -126,10 +96,6 @@
   width: 15px;
   height: 18px;
 }
-
-/* .dropWrapper .inputDev.ui.input {
-  padding: 4px 0;
-} */
 
 .dropWrapper #lastname1 {
   height: 40px;
@@ -168,7 +134,6 @@
 .dropWrapper .spanValidation {
   display: flex;
   justify-content: space-between;
-  /* margin-bottom: 4px; */
 }
 
 .dropWrapper .spanValidation label {
@@ -240,15 +205,6 @@
 
 .customDatepicker .proForm .linebylineInput input {
   width: 100% !important;
-  /* text-align:$left;
-  height: 40px;
-  border-radius: 4px;
-  border: solid 1px #DADEE6;
-  font-family: 'Open Sans';  font-weight: normal;   font-style: normal;   font-stretch: normal;
-  letter-spacing: -0.2px;
-  color: #3E4352;
-  background-color: #ffffff;
-  font-size: 14px; */
   outline: 0;
   padding: .67857143em 1em;
 }
@@ -331,29 +287,9 @@ table edition
   padding: 0;
 }
 
-/* .mainContainer .customD_Menu>div>div>div {
-    padding: 0;
-}
-
-.mainContainer .customD_Menu>div>div>div>div {
-    white-space: nowrap;
-} */
-
 .mainContainer .customD_Menu {
   width: 100%;
 }
-
-/* .mainContainer .customD_Menu>div {
-    border-color: hsl(0, 0%, 80%) !important;
-    outline: 0;
-    box-shadow: none !important
-}
-
-.mainContainer .customD_Menu div:hover {
-    border-color: hsl(0, 0%, 80%) !important;
-    box-shadow: none;
-    outline: 0;
-} */
 
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   display: block;
@@ -503,7 +439,7 @@ table edition
 
 .proForm .ui.input.inputDev .inputsideNote {
   left: 10px;
-  /* top: -17px */
+  right: auto;
 }
 
 .approvalTitle {
@@ -535,19 +471,8 @@ table edition
 
 /* error text new */
 
-/* .pError {
-  display: block;
-  color: #e74c3c;
-  font-size: 12px;
-  width: 100%;
-} */
-
 .fullWidthWrapper.textLeft {
   text-align: right;
-}
-
-.fullWidthWrapper.textLeft label {
-  margin-bottom: 5px;
 }
 
 .dropWrapper .customProform {
@@ -1266,6 +1191,7 @@ table edition
 .panel {
   margin-bottom: 25px;
   height: 100%;
+  direction: ltr;
   /*  display: flex;
    align-items: center; */
 }
@@ -1345,10 +1271,6 @@ table edition
 
 /**/
 
-/* .customD_Menu .css-vj8t7z {
-  z-index: 12;
-} */
-
 .customD_Menu .css-15k3avv {
   z-index: 155;
   /* min-width: 400px !important; */
@@ -1390,8 +1312,6 @@ table edition
 
 .customD_Menu {
   width: 100%;
-  /* position: relative;
-z-index: 12; */
 }
 
 .fullColumn {
@@ -1420,11 +1340,6 @@ tfoot tr td p {
 
 .timeSheetInput .fillter-item-c {
   margin-bottom: 20px;
-}
-
-.timeSheetInput .fillter-item-c .spanValidation, .timeSheetInput .fullWidthWrapper label {
-  margin-bottom: 10px;
-  display: block;
 }
 
 .customizeBtn {
@@ -1547,10 +1462,6 @@ tfoot tr td p {
   margin: 0;
 }
 
-/* .dashboard__Project .dash__content .project__content li.secondTabs{
-  width: 50%;
-} */
-
 .dashboard__Project .dash__content .project__content .secondTabs .thirdTabs {
   position: absolute;
   left: 0;
@@ -1560,10 +1471,6 @@ tfoot tr td p {
   overflow-y: auto;
   height: 400px;
 }
-
-/* ul.project__content div:first-of-type {
-  position: unset !important;
-} */
 
 .halfWidth {
   width: 100%;
@@ -1604,8 +1511,17 @@ tfoot tr td p {
   color: #5E6475;
 }
 
+.linebylineInput__collapse {
+  position: relative;
+}
+
 .taskInfo {
   max-height: inherit;
+  margin-bottom: 10px;
+  position: absolute;
+  top: 75%;
+  z-index: 9999999999999;
+  background: #fff;
 }
 
 .taskInfo.taskMaxHeight {
@@ -1650,11 +1566,6 @@ tfoot tr td p {
 
 .table__inputs .halfWindow .proForm .inputDev input {
   width: 100%;
-}
-
-.table__inputs .halfWindow label {
-  margin-bottom: 10px;
-  display: block;
 }
 
 .taskAdminTable {
@@ -1815,10 +1726,6 @@ tfoot tr td p {
   margin-left: 8px;
 }
 
-/* .SummeriesContainer .SummeriesContainerContent .summerisItem:last-child:after {
-
-} */
-
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
   cursor: pointer;
   font-size: 56px;
@@ -1977,15 +1884,6 @@ tfoot tr td p {
   flex-flow: column;
 }
 
-/* .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
-    width: 130px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-left: 15px;
-} */
-
 .document-fields.userProject .proForm.datepickerContainer .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
   width: auto;
   display: block;
@@ -2007,10 +1905,6 @@ tfoot tr td p {
 .label__block .inputDev {
   width: 100%;
 }
-
-/* .spanValidation {
-  margin-bottom: 10px;
-} */
 
 /* noTabs */
 
@@ -2128,21 +2022,6 @@ tfoot tr td p {
   align-items: flex-start;
 }
 
-.noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput>label {
-  width: auto;
-  text-align: right;
-  margin-left: 32px;
-  font-family: 'Open Sans';
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 14px;
-  line-height: 1.43;
-  letter-spacing: -0.2px;
-  color: #252833;
-  margin-bottom: 4px;
-}
-
 @media screen and (max-width: 1250px) {
   .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.even {
     margin-left: 0;
@@ -2222,7 +2101,7 @@ tfoot tr td p {
 .noTabs__document .approveDocument .approveDocumentBTNS .border {
   display: block;
   width: 1px;
-  height: 40px;
+  height: 36px;
   background-color: #e9ecf0;
   margin: 0 24px;
 }
@@ -2232,21 +2111,6 @@ tfoot tr td p {
 }
 
 /* new css notabs */
-
-.noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c label {
-  width: auto;
-  text-align: right;
-  margin-left: 32px;
-  font-family: 'Open Sans';
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 14px;
-  line-height: 1.43;
-  letter-spacing: -0.2px;
-  color: #252833;
-  margin-bottom: 4px;
-}
 
 .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
   width: 360px;
@@ -2271,48 +2135,6 @@ tfoot tr td p {
 /* new css notabs */
 
 /* noTabs */
-
-.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
-  background: #E9ECF0;
-  border: 1px solid #E9ECF0;
-  height: 40px;
-  min-width: 184px;
-  box-shadow: none;
-}
-
-.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
-  background: #E9ECF0;
-  border: 1px solid #E9ECF0 !important;
-  height: 40px;
-  min-width: 184px;
-  box-shadow: none;
-}
-
-.document__action--menu .customD_Menu .css-1hwfws3 {
-  min-width: 135px;
-  text-align: center;
-}
-
-.document__action--menu .customD_Menu .css-xp4uvy {
-  color: #5E6475;
-  font-size: 15px;
-  font-weight: 800;
-  max-width: calc(100% - 8px);
-  width: 100%;
-  text-transform: uppercase;
-}
-
-.document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
-  height: 145px;
-  overflow-y: auto;
-  top: -155px;
-}
-
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
-  height: auto;
-  overflow-y: auto;
-  top: 100%;
-}
 
 .shareLinks {
   width: 100%;
@@ -2733,6 +2555,8 @@ button.companies_icon {
   min-width: 420px !important;
   width: auto !important;
   max-width: 722px;
+  right: auto;
+  left: 1em;
 }
 
 .Toastify__toast {
@@ -3012,9 +2836,6 @@ button.companies_icon {
 }
 
 .dropdown__error {
-  /* position: absolute;
-  right: 0;
-  bottom: -20px; */
   color: #e74c3c;
   font-size: 12px;
 }
@@ -3037,10 +2858,6 @@ button.companies_icon {
   margin-bottom: 16px;
 }
 
-/* .skyLight__form .skylight-dialog .document-fields .proForm.datepickerContainer .linebylineInput .inputDev.ui.input {
-  width: 100%;
-} */
-
 .proForm .contentCell.tableCell-3 .form-group .ui.left input:focus {
   border-right-color: #83B4FC !important;
   border-top-right-radius: .28571429rem !important;
@@ -3061,10 +2878,6 @@ button.companies_icon {
   display: block;
   font-size: 14px;
 }
-
-/* .proForm .control-label {
-  margin-bottom: 4px;
-} */
 
 .letterFullWidth {
   width: 100% !important;
@@ -3458,10 +3271,16 @@ button.companies_icon {
   }
 }
 
-.react-grid-Container .gridSystemSelected {
+.gridSystemSelected {
   right: 58px;
-  width: calc(100% - 58px);
-  min-width: auto;
+  width: calc(100% - 58px) !important;
+  min-width: inherit !important;
+  left: auto !important;
+  padding: 0 22px;
+}
+
+.react-grid-Container .gridSystemSelected {
+  left: 58px !important;
 }
 
 .css-1g6gooi {
@@ -3701,17 +3520,6 @@ button.companies_icon {
   width: 100% !important;
 }
 
-/* .control-label {
-  display: block;
-  letter-spacing: -0.2px;
-  color: #26344c;
-  font-family: 'Open Sans';
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  margin-bottom: 4px;
-} */
-
 .dropWrapper .proForm {
   margin-top: 0;
 }
@@ -3745,7 +3553,6 @@ button.companies_icon {
 }
 
 #empty__div--scroll {
-  /* width: 2800px; */
   height: 1px;
 }
 
@@ -3770,11 +3577,8 @@ button.companies_icon {
   margin-bottom: 30px;
   border-bottom: 1px solid #e9ecf0;
   flex-wrap: wrap;
-  /* background: #e9ecf052; */
   margin-top: 0;
   padding-top: 10px;
-  /* padding-bottom: 20px; */
-  /*            background: #e9ecf052;*/
   margin-top: 0;
   padding-top: 10px;
 }
@@ -3828,8 +3632,6 @@ button.companies_icon {
   border-bottom: 4px solid transparent;
   display: flex;
   align-items: center;
-  /* height: 60px; */
-  /* padding-bottom: 13px; */
   background: #e9ecf0;
   padding: 10px;
   border-top-right-radius: 5px;
@@ -3886,7 +3688,6 @@ button.companies_icon {
   letter-spacing: -0.2px;
   display: block;
   text-decoration: underline;
-  /* color: #252833; */
 }
 
 .fileDownUp a i {
@@ -4109,7 +3910,6 @@ button.companies_icon {
   flex-wrap: wrap;
   padding: 0 40px;
   overflow-x: hidden;
-  /*justify-content: center; */
 }
 
 .charts__row .highcharts-color-0, .charts__row .highcharts-color-0 .highcharts-point {
@@ -4172,7 +3972,6 @@ button.companies_icon {
 }
 
 .charts__row .barChart__container .highcharts-graph {
-  /* stroke: #47cc4a; */
   stroke-width: 3px;
 }
 
@@ -4504,7 +4303,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text, path.highcharts-label-box
 }
 
 .table__figure {
-  /* max-width: 110px; */
   margin-right: 15px;
 }
 
@@ -4540,7 +4338,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text, path.highcharts-label-box
   bottom: 0 !important;
   left: 0 !important;
   margin-top: 0 !important;
-  margin-right: 0 !important;
+  margin-left: 0 !important;
   background-color: transparent !important;
   border-radius: 2px;
   z-index: 100;
@@ -4558,6 +4356,12 @@ path.highcharts-label-box.highcharts-tooltip-box+text, path.highcharts-label-box
   margin: auto !important;
   padding: 20px !important;
   opacity: 1 !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .skylight-dialog>* {
+      width: 800px;
+  }
 }
 
 .skylight-close-button {
@@ -4993,7 +4797,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text, path.highcharts-label-box
 
 .reports__proForm .linebylineInput .inputDev.ui.input {
   padding: 0;
-  /* margin-top: 4px; */
 }
 
 .reports__proForm .linebylineInput .inputDev.ui.input input {
@@ -5037,10 +4840,6 @@ path.highcharts-label-box.highcharts-tooltip-box+text, path.highcharts-label-box
 }
 
 .rodal-close:before, .rodal-close:after {
-  /* height: 3px;
-width: 31px;
-top: 100%;
-right: -20px; */
   background: #fff;
 }
 
@@ -5159,7 +4958,6 @@ right: -20px; */
 .project__Permissions {
   display: flex;
   flex-wrap: wrap;
-  /* margin-top: 20px; */
 }
 
 .project__Permissions--type {
@@ -6745,7 +6543,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
   min-height: 79px;
 }
 
-.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
+.ck-content {
   min-height: 80px;
 }
 
@@ -6789,7 +6587,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
   padding: 4px 0;
 }
 
-.tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-right-text tspan, .tooltip-body .tooltip-left-text {
+.tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-right-text tspan, .tooltip-body .tooltip-left-text, .tooltip-body .tooltip-left-text tspan, .tooltip-body .tooltip-right-text {
   font-family: 'Open Sans' !important;
   font-size: 12px !important;
   font-weight: normal !important;
@@ -6798,6 +6596,10 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
   line-height: 1.33 !important;
   letter-spacing: -0.2px !important;
   fill: #ffffff !important;
+}
+
+.tooltip-text-container {
+  width: 280px !important;
 }
 
 .tooltip-divider {
@@ -6820,10 +6622,6 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 .line-chart .topic .line {
   stroke-width: 3px !important;
 }
-
-/* .chart-group {
-    fill: url(#grad1) !important
-} */
 
 .lineCharts .vertical-marker-container .vertical-marker {
   stroke: transparent;
@@ -6905,31 +6703,6 @@ div#markup-panel {
   text-align: center;
   color: #252833;
 }
-
-/*# sourceMappingURL=reactCss-ar2.css.map */
-
-/* .UserImg .dropdownContent .menu.center.left {
-  display: none;
-  min-width: 185px !important;
-}
-
-.UserImg .dropdownContent.active .menu.center.left {
-  display: block !important;
-}
-
-.UserImg .dropdownContent .item .ui.checkbox.radio.radioBoxBlue {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.UserImg .dropdownContent .item .ui.checkbox.radio.radioBoxBlue label {
-  font-size: 12px;
-  padding-left: 24px;
-  cursor: pointer;
-} */
-
-/* new rtl css */
 
 .dashboard__Project .dash__content .project__content {
   width: 48%;
@@ -7190,8 +6963,8 @@ div#markup-panel {
 
 .react-grid-Toolbar .data-dark {
   background-color: #5E6475;
-  padding-left: 12px;
-  justify-content: flex-start;
+  padding-right: 12px;
+  justify-content: flex-end;
   display: flex;
   align-items: center;
   width: 100%;
@@ -7216,45 +6989,6 @@ div#markup-panel {
 
 .minimizeRelative {
   position: relative;
-}
-
-.minimizeSpan {
-  position: absolute;
-  right: 40px;
-  top: 5px;
-  z-index: 19;
-  display: flex;
-}
-
-.minimizeSpan .H-tableSize, .minimizeSpan .V-tableSize {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 30px;
-  cursor: pointer;
-}
-
-.minimizeSpan .H-tableSize {
-  flex-flow: column;
-}
-
-.minimizeSpan .H-tableSize span {
-  width: 12px;
-  height: 3px;
-  background: #A8B0BF;
-  border-radius: 5px;
-  margin-bottom: 2px;
-  display: block;
-}
-
-.minimizeSpan .V-tableSize span {
-  width: 3px;
-  height: 12px;
-  margin-right: 2px;
-  background: #A8B0BF;
-  border-radius: 5px;
-  margin-bottom: 2px;
-  display: block;
 }
 
 .gridLoading {
@@ -7682,6 +7416,116 @@ label + .ui.checkbox {
   z-index: 99;
 }
 
+.gridfillter-container {
+  padding-top: 12px
+}
+
+.autocadIcon:hover svg g {
+  fill: #3570E6;
+  transition: all 0.2s ease;
+}
+
+.gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
+  height: 48px;
+  border: solid 2px !important;
+  transition: all 0.5s ease-in-out;
+  border-color: #E9ECF0 !important;
+}
+
+.autocadIcon::after {
+  display: none;
+}
+
+.autocadIcon:hover img {
+  transform: translate(0) !important;
+}
+
+div#markup-panel {
+  margin: 25px auto;
+  padding: 15px;
+  min-width: 28% !important;
+  min-height: 89px !important;
+  position: fixed;
+  border-radius: 5px;
+  z-index: 9999;
+  background: #fafbfc!important;
+  left: 40px;
+  top: 72px !important;
+  border: solid 2px #E9ECF0 !important;
+  max-height: inherit !important;
+  height: auto !important;
+  width: auto !important;
+}
+
+.edit-tools {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.edit-tools >div {
+  margin-top: 7px;
+}
+
+.adsk-viewing-viewer {
+  width: 95% !important;
+}
+
+.white-bg {
+  background: #fff;
+}
+
+.autoDisk__dropdown {
+  position: relative;
+  padding-bottom: 30px;
+}
+
+#markupBox {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+}
+#markupBox label {
+  margin: 0
+}
+
+.autoDisk__dropdown--comp label {
+  font-family: Muli;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 1.54;
+  letter-spacing: normal;
+  color: #5E6475;
+  position: relative;
+  z-index: 11;
+  margin-bottom: -10px;
+  margin-right: 13px;
+  padding: 0 5px;
+}
+.autoDisk__dropdown--comp label::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: #fff;
+  z-index: -1;
+}
+
+.H-tableSize {
+  transform: rotate(90deg);
+}
+
+.miniRows .H-tableSize svg g g {
+  fill: #4382F9;
+}
+
+.minimizeRelative .H-tableSize:hover svg g g , .minimizeRelative .V-tableSize:hover svg g g {
+  fill: #4382F9;
+  transition: all 0.3s ease-in-out;
+}
+
 .grid__column {
   position: fixed;
   top: 0;
@@ -7689,6 +7533,23 @@ label + .ui.checkbox {
   left: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.6);
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+  z-index: 9999999999;
+}
+
+.grid__column .grid__column--container .closeColumn {
+  background: transparent;
+  color: #000;
+  border: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+}
+
+.grid__column.active {
+  transform: scale(1);
 }
 
 .grid__column--container {
@@ -7743,113 +7604,227 @@ label + .ui.checkbox {
   cursor: pointer;
 }
 
-.gridfillter-container {
-  padding-top: 12px
+.filterModal .filter__warrper .proForm {
+  justify-content: flex-start;
+  padding: 0 20px;
 }
 
-.autocadIcon:hover svg g {
-  fill: #3570E6;
-  transition: all 0.2s ease;
+@media screen and (max-width: 1200px) {
+  .filterModal {
+      width: 1000px !important;
+  }
 }
 
-.gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
-  height: 48px;
-  border: solid 2px !important;
-  transition: all 0.5s ease-in-out;
-  border-color: #E9ECF0 !important;
-}
-
-.autocadIcon::after {
-  display: none;
-}
-
-.autocadIcon:hover img {
-  transform: translate(0) !important;
-}
-
-div#markup-panel {
-  margin: 25px auto;
-  padding: 15px;
-  min-width: 28% !important;
-  min-height: 89px !important;
-  position: fixed;
-  border-radius: 5px;
-  z-index: 9999;
-  background: #fafbfc!important;
-  right: 40px;
-  top: 72px !important;
-  border: solid 2px #E9ECF0 !important;
-  max-height: inherit !important;
-  height: auto !important;
-  width: auto !important;
-}
-
-.edit-tools {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.edit-tools >div {
-  margin-top: 7px;
-}
-
-.adsk-viewing-viewer {
-  width: 95% !important;
-}
-
-.white-bg {
-  background: #fff;
-}
-
-.autoDisk__dropdown {
-  position: relative;
-  padding-bottom: 30px;
-}
-
-#markupBox {
-  position: absolute;
-  bottom: 0;
-  left: 8px;
-}
-#markupBox label {
+.linebylineInput .shareLinks .collapseIcon{
   margin: 0
 }
 
-.autoDisk__dropdown--comp label {
-  font-family: Muli;
-  font-weight: bold;
-  font-size: 13px;
-  line-height: 1.54;
-  letter-spacing: normal;
-  color: #5E6475;
-  position: relative;
-  z-index: 11;
-  margin-bottom: -10px;
-  margin-left: 13px;
-  padding: 0 5px;
+.skylight-dialog .reactTableActions {
+  overflow: auto;
 }
-.autoDisk__dropdown--comp label::after{
-  content: '';
+
+.first-proform .linebylineInput:nth-child(2) > label {
+  margin: 0;
+  margin-left: 8px;
+}
+
+.spanValidation {
+ display: flex;
+}
+
+.doc-input-btn {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.doc-input-btn input, .doc-input-btn .inputDev.ui.input {
+  width: 100%;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.doc-input-btn button {
+  flex-shrink: 0;
+  margin-right: 15px;
+  align-items: center;
+}
+
+.customeError .fullInputWidth.fillter-item-c {
+  margin-bottom: 0;
+  display: flex;
+  width: 100%;
+  flex-flow: column;
+  align-items: flex-start;
+}
+
+.customeError .pError  , .reports__content .reports__proForm .customD_Menu.errorClass .dropdown__error {
   position: absolute;
-  left: 0;
   right: 0;
-  top: 50%;
-  height: 2px;
-  background: #fff;
-  z-index: -1;
+  top: 100%;
 }
 
-.H-tableSize {
-  transform: rotate(90deg);
+.dashboard__Project .dash__content .project__content .project__select::after {
+  transform: rotate(180deg);
 }
 
-.miniRows .H-tableSize svg g g {
-  fill: #4382F9;
+.login__page .login__page--form .proForm .form-group {
+  display: flex;
 }
 
-.minimizeRelative .H-tableSize:hover svg g g , .minimizeRelative .V-tableSize:hover svg g g {
-  fill: #4382F9;
-  transition: all 0.3s ease-in-out;
+.login__page .login__page--form .proForm .form-group label{
+  margin-left: 13px;
 }
+
+.login__page {
+  direction: ltr;
+}
+
+.login__page .login__page--form .proForm .ui.input.inputDev .inputsideNote.togglePW {
+  left: auto;
+  right: 13px;
+}
+
+.customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* new Menu panel */
+
+.document__action--menu {
+  width: 115px;
+}
+
+.document__action--menu .css-10nd86i {
+  min-width: 115px;
+}
+
+.document__action--menu .css-10nd86i .css-vj8t7z {
+  background-color: rgba(255,255,255,0)!important;
+  border-radius: 4px;
+  min-height: 36px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: solid 1px #ccd2db !important; 
+}
+
+.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+  min-width: 115px;
+  height: 36px;
+}
+
+.document__action--menu .css-10nd86i .css-1492t68 {
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.54;
+  letter-spacing: 0.4px;
+  color: #ffffff;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.document__action--menu .css-10nd86i .css-xp4uvy {
+font-family: 'Muli';
+font-weight: bold;
+font-style: normal;
+font-stretch: normal;;
+font-size: 13px;
+line-height: 1.54;
+letter-spacing: 0.4px;
+width: 100%;
+text-transform: capitalize;
+text-align: center
+}
+
+.document__action--menu .css-10nd86i .css-1hwfws3 {
+padding: 0;
+}
+
+.document__action--menu .css-10nd86i .css-19bqh2r {
+  display: inline-block;
+  fill: white;
+  line-height: 1;
+  stroke: white;
+  stroke-width: 0px;
+}
+
+.document__action--menu .css-10nd86i .css-d8oujb {
+  opacity: 0.3;
+  background-color: #83b4fc !important;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  width: 1px;
+  display: block;
+}
+
+.document__action--menu .css-10nd86i .css-2o5izw {
+  background-color: rgba(255, 255, 255, 0);
+  /* border-color: transparent; */
+  border: solid 1px #5f98fa !important;
+  border-width: 0;
+  border-radius: 4px;
+}
+
+.document__action--menu .css-10nd86i .css-2o5izw:hover {
+  border-radius: 4px;
+  border: solid 1px #4382f9 !important;
+  background-color: #fafcff !important;
+  border-color: #4382f9 !important;
+  border-color: transparent;
+}
+
+.document__action--menu .css-10nd86i .css-1g6gooi input {
+  color: #5e6475 !important;
+  font-size: 13px !important;
+}
+
+.document__action--menu .css-10nd86i .css-xp4uvy {
+  color: #5e6475 !important;
+  font-size: 13px !important;
+}
+
+.document__action--menu .css-10nd86i .css-1ep9fjw {
+  position: relative;
+}
+
+.document__action--menu .css-10nd86i .css-1ep9fjw:last-child::after,
+.document__action--menu .css-10nd86i .css-1uq0kb5:last-child::after {
+  content: '';
+  background-image: url(../../images/greyArrow.png);
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.document__action--menu .css-10nd86i .css-1ep9fjw- svg,
+.document__action--menu .css-10nd86i .css-1uq0kb5 svg {
+  opacity: 0.6;
+}
+
+.document__action--menu .css-10nd86i .css-1ep9fjw:last-child svg,
+.document__action--menu .css-10nd86i .css-1uq0kb5:last-child svg {
+  display: none;
+}
+
+
+.document__action--menu .customD_Menu .css-1hwfws3 {
+  min-width: 80px;
+}
+
+.document__action--menu .customD_Menu .css-15k3avv {
+  min-width: 180px;
+}
+
+
+/* new Menu panel */
+
 /* new rtl css */

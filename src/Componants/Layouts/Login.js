@@ -190,9 +190,8 @@ class Login extends Component {
                     >
                         {({ errors, touched, handleBlur, handleChange }) => (
                             <Form id="signupForm1" className="proForm" noValidate="novalidate">
-                                <div className="form-group ">
+                                <div className="form-group linebylineInput fullInputWidth">
                                     <label className="control-label" for="username">{Resources['UserName'][currentLanguage]}</label>
-
                                     <div className="inputDev ui input">
                                         <div className={errors.userName && touched.userName ? (
                                             "ui input inputDev has-error"
@@ -213,7 +212,7 @@ class Login extends Component {
                                     </div>
                                 </div>
 
-                                <div className="form-group">
+                                <div className="form-group linebylineInput fullInputWidth">
                                     <label className="control-label" for="username">{Resources['password'][currentLanguage]}</label>
                                     <div className="inputDev ui input">
                                         <div className={errors.password && touched.password ? (

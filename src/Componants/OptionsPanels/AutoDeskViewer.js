@@ -127,7 +127,7 @@ class AutoDeskViewer extends Component {
     animateValue(id, start, end) {
         var current = start,
             obj = id,
-            duration = this.state.loadingPer === true ? 0 : 500;
+            duration = this.state.loadingPer === true ? 0 : 1000;
 
         var timer = setInterval(function () {
             current = current + 1;
