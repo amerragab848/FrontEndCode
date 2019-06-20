@@ -151,8 +151,11 @@ class clientSelectionAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
+            let docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY')
+            let doc = nextProps.document
+            doc.docDate = docDate
             this.setState({
-                document: nextProps.document,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
                 answer:  nextProps.document.answer
             });
@@ -477,8 +480,9 @@ class clientSelectionAddEdit extends Component {
         this.setState({
             isLoading: true
         });
-
-        dataservice.addObject('EditLogsClientSelections', this.state.document).then(result => {
+        let saveDocument = { ...this.state.document };
+        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        dataservice.addObject('EditLogsClientSelections', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -644,7 +648,6 @@ class clientSelectionAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate'
-                                                                format={'DD/MM/YYYY'}
                                                                 onChange={e => setFieldValue('docDate', e)}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.docDate}
@@ -901,7 +904,6 @@ class clientSelectionAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='letterDate'
-                                                                format={'DD/MM/YYYY'}
                                                                 onChange={e => setFieldValue('letterDate', e)}
                                                                 startDate={this.state.document.letterDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'letterDate')} />
@@ -909,7 +911,6 @@ class clientSelectionAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='drawingDate'
-                                                                format={'DD/MM/YYYY'}
                                                                 onChange={e => setFieldValue('drawingDate', e)}
                                                                 startDate={this.state.document.drawingDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'drawingDate')} />
