@@ -2384,12 +2384,10 @@ class SubmittalAddEdit extends Component {
                               {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                             </div>
                           </div>
-                          <div className="fillter-status fillter-item-c">
-                            <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
-                              handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
-                              onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
-                              touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
-                          </div>
+                          <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                            handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
+                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
+                            touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
                           <div className="fillter-status fillter-item-c">
                             <div className="inputDev ui input input-group date NormalInputDate">
                               <div className="customDatepicker fillter-status fillter-item-c ">
@@ -2502,7 +2500,7 @@ class SubmittalAddEdit extends Component {
                             <label>{Resources.closed[currentLanguage]}</label>
                           </div>
                         </div>
-                        <div className="customDatepicker fillter-status fillter-item-c " style={{marginBottom: '0'}}>
+                        <div className="customDatepicker fillter-status fillter-item-c " style={{ marginBottom: '0' }}>
                           <div className="proForm datepickerContainer fillter-status fillter-item-c ">
                             <label className="control-label">
                               {Resources.cycleDate[currentLanguage]}

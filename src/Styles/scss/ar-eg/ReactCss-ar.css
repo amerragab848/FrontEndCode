@@ -69,6 +69,17 @@
 .dropWrapper .fillter-item-c {
   min-width: 48%;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.dropWrapper .fillter-item-c >div  {
+  width: 100%;
+}
+
+.dropWrapper input {
+  width: 100% !important
 }
 
 .dropWrapper .fillter-item-c .ui.checkbox.radio.radioBoxBlue {
@@ -462,7 +473,7 @@ table edition
   color: #e74c3c;
   font-size: 12px;
   max-width: 360px;
-  /* margin-top: -2px; */
+  text-align: right;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -534,6 +545,8 @@ table edition
 
 .skylight-wrapper .skylight-close-button {
   top: 10px !important;
+  left: 10px !important;
+  right: auto !important;
 }
 
 .ReactTable .rt-tbody {
@@ -1273,6 +1286,7 @@ table edition
 
 .customD_Menu .css-15k3avv {
   z-index: 155;
+  direction: ltr
   /* min-width: 400px !important; */
 }
 
@@ -6502,7 +6516,7 @@ z-index: 9999;
 }
 
 .document__action--menu .skylight-dialog .spanValidation {
-  display: block;
+  display: flex;
 }
 
 .document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
@@ -6511,6 +6525,7 @@ z-index: 9999;
 
 .document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z, .document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
   box-shadow: none;
+  min-height: 36px !important
 }
 
 button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label, button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg, button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg {
@@ -7713,7 +7728,7 @@ div#markup-panel {
 
 .document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
   min-width: 115px;
-  height: 36px;
+  min-height: 36px;
 }
 
 .document__action--menu .css-10nd86i .css-1492t68 {
@@ -7824,6 +7839,36 @@ padding: 0;
   min-width: 180px;
 }
 
+.document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
+  height: 145px;
+  overflow-y: auto;
+  top: -155px;
+} 
+
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
+  height: auto;
+  overflow-y: auto;
+  top: 100%;
+}
+
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu  .css-vj8t7z , .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw{
+  height: 48px;
+  border: solid 2px !important;
+  transition: all 0.5s ease-in-out;
+}
+
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu  .css-vj8t7z {
+  border-color: #E9ECF0 !important;
+}
+
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu  .css-vj8t7z:hover {
+  border-color: #A8B0BF !important
+}
+
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw ,.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw:hover {
+  border-color:  #83B4FC !important;
+}
+
 .grid__column--footer {
   display: flex;
   align-items: center;
@@ -7880,6 +7925,7 @@ padding: 0;
   left: 0 !important;
   bottom: 0 !important;
 }
+
 
 /* new Menu panel */
 
