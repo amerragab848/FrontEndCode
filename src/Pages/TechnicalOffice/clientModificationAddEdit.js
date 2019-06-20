@@ -202,11 +202,13 @@ class clientModificationAddEdit extends Component {
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'clientModificationLog');
 
         } else {
+            dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
+                res => {
             let clientSelection = {
                 subject: '',
                 id: 0,
                 projectId:projectId,
-                arrange: '',
+                arrange: res,
                 fromCompanyId: '',
                 fromContactId: '',
                 toCompanyId: '',
@@ -227,16 +229,15 @@ class clientModificationAddEdit extends Component {
                 location: '',
                 clientName: '',
                 contractId: '',
-                letterDate: moment(),
-                drawingDate: moment(),
                 total: 0,
                 letterNo: '',
                 clientSelectionType: ''
             };
-
             this.setState({ document: clientSelection });
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
+         } )
+            
         }
     };
 
@@ -403,7 +404,6 @@ class clientModificationAddEdit extends Component {
         let updated_document = {};
 
         updated_document[field] = e.target.value;
-        updated_document.projectId = this.state.projectId;
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -488,12 +488,13 @@ class clientModificationAddEdit extends Component {
         });
         let saveDocument = { ...this.state.document };
         saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-       // saveDocument.projectId = this.state.projectId;
+        saveDocument.projectId = this.state.projectId;
 
-        dataservice.addObject('AddContractsClientModifications', saveDocument).then(result => {
+        dataservice.addObject('AddContractsClientModifications', saveDocument).then(res => {
+            let id = res.id
             this.setState({
-                docId: result.id,
-                isLoading: false
+                isLoading: false,
+                docId:id
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
