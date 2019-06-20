@@ -127,7 +127,7 @@ class CostCodingTreeAddEdit extends Component {
           isLoading:false,
         });
       }
-      this.setState({document:treeDocument})
+      this.setState({document:treeDocument,isLoading:false})
 
     });
   }
@@ -219,18 +219,14 @@ class CostCodingTreeAddEdit extends Component {
 
   viewChild(item) {
 
-    this.setState({
-      isLoading: true
-    });
+    
 
     let trees = [...this.state.trees];
 
     this.search(item.id, trees, [], item.parentId);
     this.setState({
-      trees,
-      isLoading: false
-    });
-    console.log(item.trees);
+      trees, 
+    }); 
   }
 
   closePopUp() {
@@ -283,7 +279,7 @@ class CostCodingTreeAddEdit extends Component {
       }); 
       this.getTree();
     }).catch(ex => {
-      this.setState({ viewPopUp: false });
+      this.setState({ viewPopUp: false ,isLoading: false});
 
       toast.error(Resources["failError"][currentLanguage]);
     });
@@ -323,7 +319,7 @@ class CostCodingTreeAddEdit extends Component {
       treeContainer = null
     })
       .catch(ex => {
-        this.setState({ viewPopUp: false });
+        this.setState({ viewPopUp: false,isLoading: false });
 
         toast.error(Resources["failError"][currentLanguage]);
       });
