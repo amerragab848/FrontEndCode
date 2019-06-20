@@ -32,15 +32,19 @@ class RiskCause extends Component {
         }
     }
 
-    componentWillMount = () => {
-        dataservice.GetDataGrid('GetRiskCause?riskId=' + this.state.riskId).then(result => {
-            if (result) {
-                this.setState({
-                    rows: result,
-                    isLoading: false
-                })
-            }
-        })
+    componentWillMount = () => { 
+        let rows = this.state.rows;
+        if (rows.length == 0) {
+            dataservice.GetDataGrid('GetRiskCause?riskId=' + this.state.riskId).then(result => {
+                if (result) {
+                    this.setState({
+                        rows: result,
+                        isLoading: false
+                    })
+                }
+            })
+
+        }
     }
 
     componentWillReceiveProps(nextProps) {

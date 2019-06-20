@@ -29,20 +29,21 @@ class RiskConesquence extends Component {
                 });
             }
             else
-            this.setState({
-                conesquenceList: [], isLoading: false
-            });
+                this.setState({
+                    conesquenceList: [], isLoading: false
+                });
         });
-        if(this.state.riskId){
-        dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
-            this.setState({
-                conesquenceItems: result, isLoading: false
+        if (this.state.riskId) {
+            dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
+                this.setState({
+                    conesquenceItems: result, isLoading: false
+                });
+            }).catch(() => {
+                this.setState({
+                    conesquenceItems: [], isLoading: false
+                });
             });
-        }).catch(() => {
-            this.setState({
-                conesquenceItems: [], isLoading: false
-            });
-        });}
+        }
     }
 
     renderEditable = (cellInfo) => {
@@ -81,7 +82,7 @@ class RiskConesquence extends Component {
                 let conesquenceItems = this.state.conesquenceItems;
                 let conesquenceItem = result;
                 if (result.id > 0) {
-                    conesquenceItem.addedDate = moment(conesquenceItem).format("DD/MM/YYYY");
+                    //conesquenceItem.addedDate = moment(conesquenceItem).format("DD/MM/YYYY");
                     conesquenceItems.push(conesquenceItem);
                     this.setState({ conesquenceItems, isLoading: false, [item.id]: false })
                 }
@@ -108,7 +109,7 @@ class RiskConesquence extends Component {
     render() {
         let checkBoxs = this.state.conesquenceList.map(item => {
             return (
-                <div className="project__Permissions--type " key={item.id} >
+                <div className="riskCon " key={item.id} >
                     <div id="allSelected" className={"ui checkbox checkBoxGray300  " + (this.state[item.id] ? (this.state[item.id] == true ? "checked" : '') : null)}
                         onClick={e => this.chooseConesquence(item)} >
                         <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state[item.id] ? (this.state[item.id] == true ? "checked" : null) : null}
@@ -149,31 +150,32 @@ class RiskConesquence extends Component {
                     Cell: this.renderEditable
                 }, {
                     Header: Resources.addedDate[currentLanguage],
-                    accessor: 'addedDate'
+                    accessor: 'addedDate',
+                    Cell: props => {
+                        return (<span>{props.original.addedDate != null ? moment(props.original.addedDate).format('DD/MM/YYYY') : 'No Date'}</span>)
+                    } 
                 }
             ]}
             defaultPageSize={5}
             className="-striped -highlight"
         />
         return (
-            <div className="mainContainer">
-                <div className="doc-pre-cycle letterFullWidth">
-                    <div className="document-fields">
-                        <header style={{ paddingTop: '0' }}>
-                            <h2 className="zero">{Resources['riskConesquence'][currentLanguage]}</h2>
-                        </header>
-                        <div className="dropWrapper">
-                            {this.state.isLoading == true ? <LoadingSection /> :
-                                <React.Fragment>
-                                    {checkBoxs}
-                                    <div className="doc-pre-cycle letterFullWidth">
-                                        <div className='document-fields'>
-                                            {table}
-                                        </div>
+            <div className="doc-pre-cycle letterFullWidth">
+                <div className="document-fields">
+                    <header style={{ paddingTop: '0' }}>
+                        <h2 className="zero">{Resources['riskConesquence'][currentLanguage]}</h2>
+                    </header>
+                    <div className="riskConContainer">
+                        {this.state.isLoading == true ? <LoadingSection /> :
+                            <React.Fragment>
+                                {checkBoxs}
+                                <div className="doc-pre-cycle letterFullWidth">
+                                    <div className='document-fields'>
+                                        {table}
                                     </div>
-                                </React.Fragment>
-                            }
-                        </div>
+                                </div>
+                            </React.Fragment>
+                        }
                     </div>
                 </div>
             </div>

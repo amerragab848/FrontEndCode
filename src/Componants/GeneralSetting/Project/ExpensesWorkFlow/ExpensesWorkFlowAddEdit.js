@@ -635,14 +635,24 @@ class ExpensesWorkFlowAddEdit extends Component {
 
                 return (
                     <tr key={item.workFlowItemId}>
-                        <td>{item.arrange}</td>
+                        <td>
+                            <div className="contentCell tableCell-1">
+                                <span>
+
+                                    {item.arrange}
+
+                                </span>
+                            </div>
+                        </td>
                         {() => this.setState({ MultiApproval: item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false } })}
                         <td>
-                            <Select options={[{ label: 'Multi', value: true }, { label: 'Single', value: false }]}
-                                onChange={e => this.MultiApprovalhandleChange(item.workFlowItemId, e)}
-                                onBlur={() => this.handleBlurmultiApproval(item.workFlowItemId)}
-                                defaultValue={item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false }}
-                            />
+                            <div className="contentCell tableCell-2">
+                                <Select options={[{ label: 'Multi', value: true }, { label: 'Single', value: false }]}
+                                    onChange={e => this.MultiApprovalhandleChange(item.workFlowItemId, e)}
+                                    onBlur={() => this.handleBlurmultiApproval(item.workFlowItemId)}
+                                    defaultValue={item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false }}
+                                />
+                            </div>
                         </td>
                     </tr>
                 )
@@ -739,7 +749,7 @@ class ExpensesWorkFlowAddEdit extends Component {
 
         return (
 
-            <div className="mainContainer" >
+            <div className="mainContainer main__fulldash" >
                 <div className="documents-stepper noTabs__document one__tab one_step">
                     {/* Header */}
                     <div className="submittalHead">
@@ -999,12 +1009,21 @@ class ExpensesWorkFlowAddEdit extends Component {
                                         //Third Step
                                         <Fragment>
                                             <div className='document-fields'>
-                                                <table className="ui table">
+                                                <table className="attachmentTable">
                                                     <thead>
                                                         <tr>
-                                                            <th>No.</th>
-                                                            <th>Subject</th>
-
+                                                            <th>
+                                                                <div className="headCell tableCell-1">
+                                                                    <span> No.</span>
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-2">
+                                                                    <span>
+                                                                        Subject
+                                                                </span>
+                                                                </div>
+                                                            </th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>

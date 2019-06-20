@@ -18,9 +18,9 @@ class WidgetsWithText extends Component {
   }
 
   componentDidMount() {
-    this.abortController = new AbortController();
+//    this.abortController = new AbortController();
 
-    let signal = this.abortController.signal;
+//    let signal = this.abortController.signal;
 
     Api.get(this.props.props.api).then(data => {
        if (data) { 
@@ -30,14 +30,13 @@ class WidgetsWithText extends Component {
         this.setState({
           count: data[_value[1]][_value[0]] != null ? data[_value[1]][_value[0]] : 0,
           total: data[_total[1]][_total[0]] != null ? data[_total[1]][_total[0]] : 0
-        });
-
+        }); 
       }
     });
   }
 
   componentWillUnmount() {    
-    this.abortController.abort();
+   // this.abortController.abort();
   }
 
   onOpenModal() {

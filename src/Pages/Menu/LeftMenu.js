@@ -464,9 +464,7 @@ class LeftMenu extends Component {
               <div className={this.state.hover ? "header-logocontent hover" : "header-logocontent"}>
                 <div className="content-collapse">
                   <div className="procoorLogo">
-                    <NavLink to="/" >
-                      <img src={Logo} alt="logo" title="logo" />
-                    </NavLink>
+                    <NavLink to="/" ><img src={Logo} alt="Procoor" title="Procoor" /> </NavLink>
                   </div>
                   <div className="clearfix" />
                 </div>

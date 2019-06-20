@@ -531,8 +531,7 @@ class boqStructure extends Component {
                                 this.AddEditNode()
                             }}>
                             {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                <Form className="dropWrapper" onSubmit={handleSubmit}>
-
+                                <Form className="dropWrapper proForm" onSubmit={handleSubmit}>
 
                                     <div className="fillter-item-c textarea-group">
                                         <label className="control-label">{Resources['titleEn'][currentLanguage]}</label>
@@ -540,11 +539,9 @@ class boqStructure extends Component {
                                             <textarea style={{ maxWidth: '100%' }} value={this.state.SelectedNode.titleEn} className="form-control" name="titleEn"
                                                 onBlur={(e) => { handleBlur(e) }} onChange={(e) => { this.handleChange(e, 'titleEn') }}
                                                 placeholder={Resources['titleEn'][currentLanguage]} ></textarea>
-                                            {errors.titleEn && touched.titleEn ? (<em className="pError">{errors.titleEn}</em>) : null}
                                         </div>
+                                        {errors.titleEn && touched.titleEn ? (<em className="pError">{errors.titleEn}</em>) : null}
                                     </div>
-
-
 
                                     <div className="fillter-item-c textarea-group">
                                         <label className="control-label">{Resources['titleAr'][currentLanguage]}</label>
@@ -552,10 +549,9 @@ class boqStructure extends Component {
                                             <textarea style={{ maxWidth: '100%' }} value={this.state.SelectedNode.titleAr} className="form-control" name="titleAr"
                                                 onBlur={(e) => { handleBlur(e) }} onChange={(e) => { this.handleChange(e, 'titleAr') }}
                                                 placeholder={Resources['titleAr'][currentLanguage]} ></textarea>
-                                            {errors.titleAr && touched.titleAr ? (<em className="pError">{errors.titleAr}</em>) : null}
                                         </div>
+                                        {errors.titleAr && touched.titleAr ? (<em className="pError">{errors.titleAr}</em>) : null}
                                     </div>
-
 
                                     <div className="fillter-item-c fullInputWidth">
                                         <label className="control-label">{Resources['code'][currentLanguage]}</label>

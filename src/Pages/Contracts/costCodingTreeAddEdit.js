@@ -14,11 +14,9 @@ import Delete from "../../Styles/images/epsActions/delete.png";
 import Rodal from "../../Styles/js/rodal";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import _ from "lodash";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import _ from "lodash"; 
 import Api from '../../api'
-import { toast } from "react-toastify";
-import visibility from "material-ui/svg-icons/action/visibility";
+import { toast } from "react-toastify"; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -59,7 +57,8 @@ class CostCodingTreeAddEdit extends Component {
       showDeleteModal: false,
       docId: "",
       IsFirstParent: false,
-      finish: false
+      finish: false,
+   
     };
 
     if (!Config.IsAllow(134) || !Config.IsAllow(135) || !Config.IsAllow(137)) {
@@ -107,30 +106,34 @@ class CostCodingTreeAddEdit extends Component {
     }
   }
   getTree = () => {
+    this.setState({isLoading:true})
     dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + this.state.projectId).then(result => {
       let state = this.state
+      let treeDocument = {
+        codeTreeTitle: "",
+        budgetThisPeriod: "",
+        budgetAtComplete: "",
+        originalBudget: "",
+        costForcast: "",
+        parentId: ""
+      };
       if (result.length > 0) {
         result.forEach(item => {
           state[item.id] = item
         })
         this.setState({
           trees: result,
-          state
+          state,
+          isLoading:false,
         });
       }
+      this.setState({document:treeDocument})
 
     });
   }
 
   componentWillMount() {
-    let treeDocument = {
-      codeTreeTitle: "",
-      budgetThisPeriod: "",
-      budgetAtComplete: "",
-      originalBudget: "",
-      costForcast: "",
-      parentId: ""
-    };
+    
     this.props.actions.documentForAdding();
 
     this.getTree();
@@ -363,10 +366,12 @@ class CostCodingTreeAddEdit extends Component {
         <div className="documents-stepper noTabs__document">
           <div className="tree__header">
             <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
+             
             <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
               {Resources["goAdd"][currentLanguage]}
             </button>
           </div>
+            {this.state.isLoading==true?<LoadingSection />:  
           <div className="Eps__list">
             {
               this.state.trees.map((item, i) => {
@@ -405,7 +410,8 @@ class CostCodingTreeAddEdit extends Component {
 
             }
           </div>
-        </div>
+           }  
+       </div>
         {this.state.viewPopUp ? (
           <Fragment>
             <Rodal

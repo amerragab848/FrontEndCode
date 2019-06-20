@@ -2006,9 +2006,6 @@ ul {
           display: inline-block; }
         .mainSide .mainSideNav .mainSidenavContent.hover .ProjectsUlList li a p {
           display: inline-block; }
-
-.datepickerContainer.proForm .control-label {
-  padding-left: 18px; }
 .datepickerContainer.proForm .input-group-addon {
   width: 100%;
   height: 48px;
@@ -4494,22 +4491,11 @@ ul {
       text-align: left; }
     .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput {
       margin-bottom: 28px; }
-      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput > label {
-        width: 130px;
-        text-align: left;
-        margin-left: 16px;
-        font-family: font-opensb;
-        font-size: 14px;
-        line-height: 1.43;
-        letter-spacing: -0.2px;
-        color: #252833; }
       .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
         padding: 0; }
       .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .radioBoxBlue label {
         padding-right: 35px;
         padding-left: 15px; }
-    .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .control-label {
-      padding-left: 0; }
     .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection {
       max-width: 360px;
       width: 100%; }
@@ -7283,9 +7269,9 @@ ul {
   height: 36px;
   font-size: 14px; }
 
-.btn::first-letter,
+/* .btn::first-letter,
 .button::first-letter {
-  text-transform: uppercase !important; }
+  text-transform: uppercase !important; } */
 
 /*Base Hover Press */
 .primaryBtn-2 {
@@ -9613,7 +9599,7 @@ ul {
     position: relative;
     z-index: 11;
     margin-bottom: -10px;
-    margin-left: 13px;
+    margin-right: 13px;
     padding: 0 5px; }
     .proForm .control-label::after {
       content: '';
@@ -10647,9 +10633,6 @@ ul {
   right: 8px;
   top: 11px;
   background: #fff; }
-
-.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev {
-  padding-bottom: 4px !important; }
 
 .filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
   margin-top: 0; }
