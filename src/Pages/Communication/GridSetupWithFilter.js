@@ -10,8 +10,7 @@ import Resources from "../../resources.json";
 import moment from "moment";
 const _ = require("lodash");
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
@@ -27,7 +26,6 @@ class GridSetupWithFilter extends Component {
       columns: [],
       rows: this.props.rows,
       filteredRows: this.props.rows,
-      //setFilters: [],
       setFilters: {},
       filters: [],
       groupBy: [],
@@ -51,7 +49,6 @@ class GridSetupWithFilter extends Component {
     this.groupColumn = this.groupColumn.bind(this);
     this.onRowsSelected = this.onRowsSelected.bind(this);
     this.saveFilter = this.saveFilter.bind(this);
-    // this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   componentDidMount() {
@@ -262,45 +259,51 @@ class GridSetupWithFilter extends Component {
     });
   }
 
+  // getRowsFilter = (rows, filters) => {
+  //   console.log(rows, filters);
+
+  //   let rowsList = []; //selectors.getRows({ rows, filters });
+
+  //   Object.keys(filters).forEach(key =>
+  //     console.log(`key=${key} value=${filters[key]}`)
+  //   );
+
+  //   let matched = 0;
+  //   rows.forEach(row => {
+  //     matched = 0;
+  //     Object.keys(filters).forEach(key => {
+  //       let isValue = row[`${key}`];
+  //       if (isValue != "") {
+  //         if (`${filters[key]}`.includes("|")) {
+  //           let searchDate = `${filters[key]}`.split("|");
+  //           let date = moment(row[`${key}`]).format("DD/MM/YYYY");
+  //           let startDate = searchDate[0];
+  //           let finishDate = searchDate[1];
+
+  //           if (date >= startDate && date <= finishDate) {
+  //             matched++;
+  //           }
+  //         } else if (row[`${key}`].includes(`${filters[key]}`)) {
+  //           matched++;
+  //         } else {
+  //           matched = 0;
+  //         }
+  //       }
+  //     });
+  //     if (matched > 0) rowsList.push(row);
+  //   });
+
+  //   this.setState({
+  //     rows: rowsList
+  //   });
+  // };
+
   getRowsFilter = (rows, filters) => {
-    console.log(rows, filters);
-
-    let rowsList = []; //selectors.getRows({ rows, filters });
-    Object.keys(filters).forEach(key =>
-      console.log(`key=${key} value=${filters[key]}`)
-    );
-    let matched = 0;
-    rows.forEach(row => {
-      matched = 0;
-      Object.keys(filters).forEach(key => {
-        let isValue = row[`${key}`];
-
-        if (isValue != "") {
-
-          if (`${filters[key]}`.includes("|")) {
-            let searchDate = `${filters[key]}`.split("|");
-
-            let date = moment(row[`${key}`]).format("DD/MM/YYYY");
-            let startDate = searchDate[0];
-            let finishDate = searchDate[1];
-
-            if (date >= startDate && date <= finishDate) {
-              matched++;
-            }
-          } else if (row[`${key}`].includes(`${filters[key]}`)) {
-            matched++;
-          } else {
-            matched = 0;
-          }
-        }
-      });
-      if (matched > 0) rowsList.push(row);
-    });
-
+    let rowsList = selectors.getRows({ rows, filters });
     this.setState({
       rows: rowsList
-    });
-  };
+    })
+  }
 
   showFilterMore = () => {
     this.setState({
@@ -311,8 +314,11 @@ class GridSetupWithFilter extends Component {
   saveFilter(event, index, name, type, key) {
     var filter = {};
     filter.key = type === "date" ? key : event.target.name;
-    //filter.filterTerm = type ==="date"  ? event.split('|') : event.target.value;
-    filter.filterTerm = "";
+    //filter.filterTerm = "";
+    
+    //filter.key = event.target.name;
+    filter.filterTerm = event.target.value;
+
     filter.type = type;
     filter.column = {
       rowType: "filter",
@@ -322,17 +328,25 @@ class GridSetupWithFilter extends Component {
       idx: index
     };
 
-    //const newFilters = this.state.setFilters;
     const newFilters = this.state.setFilters;
-
-    if (type === "date") {
-      newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
-    }
-    else if (event.target.value != "") {
-      newFilters[filter.column.key] = event.target.value;
+    if (filter.filterTerm) {
+      if (type === "date") {
+        newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
+      } else {
+        newFilters[filter.column.key] = filter;
+      }
     } else {
       delete newFilters[filter.column.key];
     }
+
+    // if (type === "date") {
+    //   newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
+    // }
+    // else if (event.target.value != "") {
+    //   newFilters[filter.column.key] = event.target.value;
+    // } else {
+    //   delete newFilters[filter.column.key];
+    // }
 
     let rows = [...this.state.filteredRows];
 
@@ -428,9 +442,10 @@ class GridSetupWithFilter extends Component {
   }
 
   render() {
-    const { groupBy, rows } = this.state; 
-    const groupedRows = Data.Selectors.getRows({ rows, groupBy }) == null? []: Data.Selectors.getRows({ rows, groupBy });
- 
+    const { groupBy, rows } = this.state;
+    const groupedRows = Data.Selectors.getRows({ rows, groupBy });
+    //const groupedRows = Data.Selectors.getRows({ rows, groupBy }) == null ? [] : Data.Selectors.getRows({ rows, groupBy });
+
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {
@@ -518,14 +533,14 @@ class GridSetupWithFilter extends Component {
                       <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
                         <input type="text" autoComplete="off" key={index} placeholder={column.name}
                           onChange={e => this.saveFilter(e, index, column.name, column.type)} value={this.state[index + "-column"]}
-                          //onBlur={this.handeDateChange}
                           onClick={() => this.changeDate(index, column.type)} />
+
                         {this.state.currentData === index &&
                           this.state.currentData != 0 ? (
                             <div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
                               <Calendar onChange={date => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
                             </div>) :
-                          ("")}
+                          null}
                       </div>
                     </div>
                   ) : null;
@@ -608,12 +623,7 @@ class GridSetupWithFilter extends Component {
           </div>
         </div>
         <div
-          className={
-            this.state.minimizeClick
-              ? "minimizeRelative miniRows"
-              : "minimizeRelative"
-          }
-        >
+          className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}        >
           <div className="minimizeSpan">
             <div className="V-tableSize" onClick={this.openModalColumn}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
