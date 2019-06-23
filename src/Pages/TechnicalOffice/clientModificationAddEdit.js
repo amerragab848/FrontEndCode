@@ -1,4 +1,4 @@
-import React, { Component,Fragment } from "react";
+import React, { Component, Fragment } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
@@ -121,7 +121,7 @@ class clientModificationAddEdit extends Component {
             selectedbuildingno: { label: Resources.Buildings[currentLanguage], value: "0" },
             answer: '',
             isLoading: false,
-            CanViewAtt: false
+
         }
 
         if (!Config.IsAllow(3133) && !Config.IsAllow(3134) && !Config.IsAllow(3136)) {
@@ -153,14 +153,15 @@ class clientModificationAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document != this.state.document) {
-            let docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY')
+        if (nextProps.document.id) {
             let doc = nextProps.document
-            doc.docDate = docDate
+            doc.docDate = moment(doc.docDate).format('DD/MM/YYYY')
+
             this.setState({
                 document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: nextProps.document.answer
+                answer: nextProps.document.answer,
+
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -202,7 +203,6 @@ class clientModificationAddEdit extends Component {
         if (this.state.docId > 0) {
             let url = "GetContractsClientModificationsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'clientModificationLog');
-            this.setState({ CanViewAtt: true })
         } else {
             dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
                 res => {
@@ -238,7 +238,6 @@ class clientModificationAddEdit extends Component {
                     this.setState({ document: clientSelection });
                     this.fillDropDowns(false);
                     this.props.actions.documentForAdding();
-                    this.setState({ CanViewAtt: false })
                 })
 
         }
@@ -406,7 +405,7 @@ class clientModificationAddEdit extends Component {
         let updated_document = {};
         updated_document[field] = e.target.value;
         updated_document = Object.assign(original_document, updated_document);
-        this.setState({document: updated_document});
+        this.setState({ document: updated_document });
 
     }
 
@@ -474,18 +473,17 @@ class clientModificationAddEdit extends Component {
     }
 
     saveLetter(event) {
-        this.setState({isLoading: true})
-        let saveDocument = this.state.document;
-        saveDocument.docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        this.setState({ isLoading: true })
+        let saveDocument = { ...this.state.document };
+        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.projectId = this.state.projectId;
 
         dataservice.addObject('AddContractsClientModifications', saveDocument).then(res => {
             this.setState({
                 isLoading: false,
-                 docId: res.id,
-               // document: NewDoc,
-                CanViewAtt: true,
+                docId: res.id,
             });
+            console.log(saveDocument)
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
 
@@ -510,10 +508,9 @@ class clientModificationAddEdit extends Component {
     }
 
     viewAttachments() {
-        return (this.state.CanViewAtt ? (
+        return (this.state.docId > 0 ? (
             Config.IsAllow(3321) === true ?
-                 null
-                    // <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3144} />
+                <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3144} />
                 : null)
             : null
         )
