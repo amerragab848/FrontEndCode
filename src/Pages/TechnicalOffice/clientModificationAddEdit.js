@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,Fragment } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
@@ -32,6 +32,7 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import Api from "../../api";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -119,7 +120,8 @@ class clientModificationAddEdit extends Component {
             selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
             selectedbuildingno: { label: Resources.Buildings[currentLanguage], value: "0" },
             answer: '',
-            isLoading: false
+            isLoading: false,
+            CanViewAtt: false
         }
 
         if (!Config.IsAllow(3133) && !Config.IsAllow(3134) && !Config.IsAllow(3136)) {
@@ -200,44 +202,45 @@ class clientModificationAddEdit extends Component {
         if (this.state.docId > 0) {
             let url = "GetContractsClientModificationsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'clientModificationLog');
-
+            this.setState({ CanViewAtt: true })
         } else {
             dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
                 res => {
-            let clientSelection = {
-                subject: '',
-                id: 0,
-                projectId:projectId,
-                arrange: res,
-                fromCompanyId: '',
-                fromContactId: '',
-                toCompanyId: '',
-                toContactId: '',
-                docDate: moment(),
-                status: true,
-                isModification: true,
-                refDoc: '',
-                approvalStatusId: '',
-                answer: '',
-                bicCompanyId: '',
-                bicContactId: '',
-                fileNumberId: '',
-                areaId: '',
-                building: '',
-                unitType: '',
-                apartment: '',
-                location: '',
-                clientName: '',
-                contractId: '',
-                total: 0,
-                letterNo: '',
-                clientSelectionType: ''
-            };
-            this.setState({ document: clientSelection });
-            this.fillDropDowns(false);
-            this.props.actions.documentForAdding();
-         } )
-            
+                    let clientSelection = {
+                        subject: '',
+                        id: 0,
+                        projectId: projectId,
+                        arrange: res,
+                        fromCompanyId: '',
+                        fromContactId: '',
+                        toCompanyId: '',
+                        toContactId: '',
+                        docDate: moment(),
+                        status: true,
+                        isModification: true,
+                        refDoc: '',
+                        approvalStatusId: '',
+                        answer: '',
+                        bicCompanyId: '',
+                        bicContactId: '',
+                        fileNumberId: '',
+                        areaId: '',
+                        building: '',
+                        unitType: '',
+                        apartment: '',
+                        location: '',
+                        clientName: '',
+                        contractId: '',
+                        total: 0,
+                        letterNo: '',
+                        clientSelectionType: ''
+                    };
+                    this.setState({ document: clientSelection });
+                    this.fillDropDowns(false);
+                    this.props.actions.documentForAdding();
+                    this.setState({ CanViewAtt: false })
+                })
+
         }
     };
 
@@ -398,32 +401,19 @@ class clientModificationAddEdit extends Component {
     };
 
     handleChange(e, field) {
-        console.log(e.target.value, field)
+
         let original_document = { ...this.state.document };
-
         let updated_document = {};
-
         updated_document[field] = e.target.value;
         updated_document = Object.assign(original_document, updated_document);
+        this.setState({document: updated_document});
 
-        this.setState({
-            document: updated_document
-        });
     }
 
     handleChangeDate(e, field) {
-
         let original_document = { ...this.state.document };
-
-        let updated_document = {};
-
-        updated_document[field] = e;
-
-        updated_document = Object.assign(original_document, updated_document);
-
-        this.setState({
-            document: updated_document
-        });
+        original_document.docDate = e;
+        this.setState({ document: original_document })
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -467,7 +457,8 @@ class clientModificationAddEdit extends Component {
         });
 
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
         dataservice.addObject('EditContractsClientModifications', saveDocument).then(result => {
             this.setState({
                 isLoading: false
@@ -482,22 +473,22 @@ class clientModificationAddEdit extends Component {
         });
     }
 
-    saveLetter = (event) => {
-        this.setState({
-            isLoading: true
-        });
-        let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+    saveLetter(event) {
+        this.setState({isLoading: true})
+        let saveDocument = this.state.document;
+        saveDocument.docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.projectId = this.state.projectId;
 
         dataservice.addObject('AddContractsClientModifications', saveDocument).then(res => {
-            let id = res.id
             this.setState({
                 isLoading: false,
-                docId:id
+                 docId: res.id,
+               // document: NewDoc,
+                CanViewAtt: true,
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
+
     }
 
     saveAndExit(event) {
@@ -519,12 +510,12 @@ class clientModificationAddEdit extends Component {
     }
 
     viewAttachments() {
-        return (
-            this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
-                    : null)
-                : null
+        return (this.state.CanViewAtt ? (
+            Config.IsAllow(3321) === true ?
+                 null
+                    // <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3144} />
+                : null)
+            : null
         )
     }
 
@@ -559,7 +550,7 @@ class clientModificationAddEdit extends Component {
         ];
         return (
             <div className="mainContainer">
-             
+
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.clientModificationLog[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
@@ -578,14 +569,14 @@ class clientModificationAddEdit extends Component {
                                 : null
                         }
                         <div className="step-content">
-                        {this.state.isLoading ? <LoadingSection /> : null}
+                            {this.state.isLoading ? <LoadingSection /> : null}
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            enableReinitialize={true}
+                                            enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) { return; }
 
@@ -598,7 +589,7 @@ class clientModificationAddEdit extends Component {
                                                 }
                                             }}  >
 
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched,values }) => (
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                                 <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="proForm first-proform">
@@ -637,8 +628,8 @@ class clientModificationAddEdit extends Component {
                                                     <div className="proForm datepickerContainer">
 
                                                         <div className="linebylineInput valid-input alternativeDate">
-                                                            <DatePicker title='docDate' 
-                                                            startDate={this.state.document.docDate}
+                                                            <DatePicker title='docDate'
+                                                                startDate={this.state.document.docDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
 
@@ -817,6 +808,7 @@ class clientModificationAddEdit extends Component {
                                                                 handleChange={event => this.handleChangeDropDown(event, 'building', false, '', '', '', 'selectedbuildingno')}
                                                                 index="building" />
                                                         </div>
+
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.apartmentNumber[currentLanguage]}</label>
                                                             <div className="ui input inputDev"  >
