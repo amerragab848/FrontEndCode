@@ -14,9 +14,9 @@ import Delete from "../../Styles/images/epsActions/delete.png";
 import Rodal from "../../Styles/js/rodal";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import _ from "lodash"; 
+import _ from "lodash";
 import Api from '../../api'
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -58,7 +58,7 @@ class CostCodingTreeAddEdit extends Component {
       docId: "",
       IsFirstParent: false,
       finish: false,
-   
+
     };
 
     if (!Config.IsAllow(134) || !Config.IsAllow(135) || !Config.IsAllow(137)) {
@@ -106,7 +106,7 @@ class CostCodingTreeAddEdit extends Component {
     }
   }
   getTree = () => {
-    this.setState({isLoading:true})
+    this.setState({ isLoading: true })
     dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + this.state.projectId).then(result => {
       let state = this.state
       let treeDocument = {
@@ -119,21 +119,22 @@ class CostCodingTreeAddEdit extends Component {
       };
       if (result.length > 0) {
         result.forEach(item => {
-          state[item.id] = item
+          state[item.id] = item;
+          state['_' + item.id] = false
         })
         this.setState({
           trees: result,
           state,
-          isLoading:false,
+          isLoading: false,
         });
       }
-      this.setState({document:treeDocument,isLoading:false})
+      this.setState({ document: treeDocument, isLoading: false })
 
     });
   }
 
   componentWillMount() {
-    
+
     this.props.actions.documentForAdding();
 
     this.getTree();
@@ -181,7 +182,7 @@ class CostCodingTreeAddEdit extends Component {
           treeContainer[item.id] = item
         return (
           <Fragment>
-            <div className={this.state[item.id] == -1 ? ' epsTitle' : item.collapse === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
+            <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === false ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
               style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
               <div className="listTitle">
 
@@ -219,14 +220,13 @@ class CostCodingTreeAddEdit extends Component {
 
   viewChild(item) {
 
-    
-
     let trees = [...this.state.trees];
-
+    let state = this.state;
+    state['_' + item.id] = !state['_' + item.id];
     this.search(item.id, trees, [], item.parentId);
     this.setState({
-      trees, 
-    }); 
+      trees, state
+    });
   }
 
   closePopUp() {
@@ -256,10 +256,8 @@ class CostCodingTreeAddEdit extends Component {
     let saveDocument = { ...this.state.document };
     saveDocument.parentId = this.state.IsFirstParent ? '' : this.state.parentId;
     saveDocument.projectId = this.state.projectId;
- 
     dataservice.addObject("AddcostCodeTree", saveDocument).then(result => {
       toast.success(Resources["operationSuccess"][currentLanguage]);
-
       let treeDocument = {
         codeTreeTitle: "",
         budgetThisPeriod: "",
@@ -268,18 +266,20 @@ class CostCodingTreeAddEdit extends Component {
         costForcast: "",
         parentId: ""
       };
-      let data = this.state.trees 
-      data.push(result)
+      let data = result
+      let state = this.state;
+      state['_' + saveDocument.id] = true;
       this.setState({
         trees: data,
+        state,
         viewPopUp: false,
         document: treeDocument,
         isLoading: false,
-        IsFirstParent: false, 
-      }); 
-      this.getTree();
+        IsFirstParent: false,
+      });
+
     }).catch(ex => {
-      this.setState({ viewPopUp: false ,isLoading: false});
+      this.setState({ viewPopUp: false, isLoading: false });
 
       toast.error(Resources["failError"][currentLanguage]);
     });
@@ -319,7 +319,7 @@ class CostCodingTreeAddEdit extends Component {
       treeContainer = null
     })
       .catch(ex => {
-        this.setState({ viewPopUp: false,isLoading: false });
+        this.setState({ viewPopUp: false, isLoading: false });
 
         toast.error(Resources["failError"][currentLanguage]);
       });
@@ -344,10 +344,10 @@ class CostCodingTreeAddEdit extends Component {
 
       let state = this.state
       state[this.state.docId] = -1
-      this.setState({
-        showDeleteModal: false,
-        state
-      });
+      if (result != null)
+        this.setState({ trees: result, showDeleteModal: false, state })
+      else
+        this.setState({ showDeleteModal: false, state });
       treeContainer = null;
       toast.success(Resources["operationSuccess"][currentLanguage]);
 
@@ -356,58 +356,61 @@ class CostCodingTreeAddEdit extends Component {
     });
   }
 
+
+
   render() {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document">
           <div className="tree__header">
             <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
-             
+
             <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
               {Resources["goAdd"][currentLanguage]}
             </button>
           </div>
-            {this.state.isLoading==true?<LoadingSection />:  
-          <div className="Eps__list">
-            {
-              this.state.trees.map((item, i) => {
-                if (treeContainer != null)
-                  treeContainer[item.id] = item
-                return (
-                  <Fragment>
-                    <div className={this.state[item.id] == -1 ? ' epsTitle' : item.collapse === true ? 'epsTitle active' : 'epsTitle'} key={item.id} style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
-                      <div className="listTitle">
-                        <span className="dropArrow">
-                          <i className="dropdown icon" />
-                        </span>
-                        <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}</span>
-                      </div>
-                      <div className="Project__num">
-                        <div className="eps__actions">
-                          <a className="editIcon" onClick={() => this.EditDocument(item)}>
-                            <img src={Edit} alt="Edit" />
-                          </a>
-                          <a className="plusIcon" onClick={() => this.AddDocument(item)}>
-                            <img src={Plus} alt="Add" />
-                          </a>
-                          <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
-                            <img src={Delete} alt="Delete" />
-                          </a>
+          {this.state.isLoading == true ? <LoadingSection /> :
+            <div className="Eps__list">
+              {
+                this.state.trees.map((item, i) => {
+                  if (treeContainer != null)
+                    treeContainer[item.id] = item
+                  return (
+                    <Fragment>
+                      <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id}
+                        style={{ display: this.state[item.id] == -1 ? 'none' : '' }} onClick={() => this.viewChild(item)} >
+                        <div className="listTitle">
+                          <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }}>
+                            <i className="dropdown icon" />
+                          </span>
+                          <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}</span>
+                        </div>
+                        <div className="Project__num">
+                          <div className="eps__actions">
+                            <a className="editIcon" onClick={() => this.EditDocument(item)}>
+                              <img src={Edit} alt="Edit" />
+                            </a>
+                            <a className="plusIcon" onClick={() => this.AddDocument(item)}>
+                              <img src={Plus} alt="Add" />
+                            </a>
+                            <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
+                              <img src={Delete} alt="Delete" />
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="epsContent">
-                      {item.trees.length > 0 ? this.printChild(item.trees) : null}
-                    </div>
-                  </Fragment>
-                )
+                      <div className="epsContent" id={item.id}>
+                        {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                      </div>
+                    </Fragment>
+                  )
 
-              })
+                })
 
-            }
-          </div>
-           }  
-       </div>
+              }
+            </div>
+          }
+        </div>
         {this.state.viewPopUp ? (
           <Fragment>
             <Rodal

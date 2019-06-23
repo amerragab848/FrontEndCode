@@ -350,7 +350,7 @@ class ViewAttachmments extends Component {
                                 null
                             }
 
-                            {ext === 'dwg' ?
+                            {ext === 'dwg' ||ext==='rvt' ?
                                 <a className="autocadIcon" onClick={(e) => this.viewAutoDeskModal(item, e)}>
                                     <img src={autocad} style={{ maxWidth: '100%', maxHeight: '100%' }} alt="autoDesk" />
                                 </a > :
