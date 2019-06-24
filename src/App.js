@@ -18,7 +18,7 @@ import {
 
 import configureStore from './store/configureStore';
 import { ToastContainer } from "react-toastify";
- 
+
 const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized()
@@ -27,21 +27,22 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 class App extends Component {
   componentWillMount() {
-    
+    let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+    if (currentLanguage == null)
+      localStorage.getItem('lang', 'en')
 
-    if (currentLanguage != "ar") {
-      require("./Styles/scss/en-us/layout.css");
-      require("./Styles/scss/en-us/reactCss.css") 
-    } else {
+    if (currentLanguage == "ar") {
       require("./Styles/scss/ar-eg/layout-ar.css");
       require("./Styles/scss/ar-eg/reactCss-ar.css");
-
+    } else {
+      require("./Styles/scss/en-us/layout.css");
+      require("./Styles/scss/en-us/reactCss.css")
     }
   }
 
   render() {
     const showComp = IsAuthorize ?
-      <div id="direction_warrper" dir={currentLanguage !== "ar" ? "ltr" : "rtl" }>
+      <div id="direction_warrper" dir={currentLanguage !== "ar" ? "ltr" : "rtl"}>
         <Menu />
         {Route}
       </div>

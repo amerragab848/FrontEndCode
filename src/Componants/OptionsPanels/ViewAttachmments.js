@@ -78,7 +78,6 @@ class ViewAttachmments extends Component {
     }
 
     goEditPdf = (item, ext) => {
-        console.log('item', item)
         var stamp = new Date().getTime();
         var data = JSON.stringify({
             refer: window.location.href.replace('#', '-hashfill-'),
@@ -90,7 +89,8 @@ class ViewAttachmments extends Component {
             fileName: item.parentAttachFile.split('/')[4],
             fileId: item.id,
             stamp: stamp,
-            server: "api/procoor"
+            editable: Config.IsAllow(4501),
+            server: Config.getPublicConfiguartion().static + '/api/Procoor/'
         });
 
         window.open(IP_Configrations.exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#/public/edit-pdf/" + stamp + item.parentAttachFile.split('/')[4]);
@@ -151,7 +151,6 @@ class ViewAttachmments extends Component {
             }
         }).catch(error => {
             activeURL = '';
-            console.log('abmbmas', error);
         });
     }
 
@@ -222,11 +221,11 @@ class ViewAttachmments extends Component {
                     </td>
                     <td className="tdHover">
                         <div className="attachmentAction">
-                        <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
+                            <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
-                            
-                            {Config.IsAllow(this.props.deleteAttachments) ?
+
+                            {Config.IsAllow(4502) ?
                                 <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
                                     <img src={Recycle} alt="del" width="100%" height="100%" />
                                 </a> :
@@ -336,7 +335,7 @@ class ViewAttachmments extends Component {
                             <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
-                            {Config.IsAllow(4502) ?
+                            {Config.IsAllow(4501) ?
                                 <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
                                     <img src={Pending} alt="pend" width="100%" height="100%" />
                                 </a>
@@ -344,14 +343,14 @@ class ViewAttachmments extends Component {
                                 null
                             }
 
-                            {Config.IsAllow(4501) && ext === 'pdf' ?
+                            {ext === 'pdf' ?
                                 <a className="rootIcon" onClick={() => this.goEditPdf(item, ext)}>
                                     <i className=" fa fa-link" width="100%" height="100%" />
                                 </a> :
                                 null
                             }
 
-                            {ext === 'dwg' ?
+                            {ext === 'dwg' ||ext==='rvt' ?
                                 <a className="autocadIcon" onClick={(e) => this.viewAutoDeskModal(item, e)}>
                                     <img src={autocad} style={{ maxWidth: '100%', maxHeight: '100%' }} alt="autoDesk" />
                                 </a > :

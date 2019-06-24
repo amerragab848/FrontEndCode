@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
 }
-
+ 
 /*# sourceMappingURL=layout.css.map */
 
 /* new css */
@@ -6987,7 +6987,7 @@ div#markup-panel {
   line-height: 15px;
   padding-right: 1px;
   font-family: font-r;
-  margin: 1px 0 0 5px;
+  margin: 1px 5px 0 0 ;
 }
 
 .react-grid-Toolbar .data-dark:empty {
@@ -7171,16 +7171,6 @@ div#markup-panel {
   padding-left: 0;
 }
 
-.react-grid-Toolbar .drop-item:hover {
-  border-color: transparent;
-}
-
-.react-grid-Cell__value>div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .react-grid-Cell__value, .react-grid-Cell__value a {
   color: #3E4352;
   letter-spacing: -0.2px;
@@ -7239,43 +7229,6 @@ div#markup-panel {
 
 .react-grid-Canvas>div:nth-of-type(2), .react-grid-row-group {
   width: 100% !important;
-}
-
-.react-grid-Toolbar .drop-item {
-  min-width: 77px;
-  height: 26px;
-  border-radius: 100px;
-  background-color: #e9edf2;
-  padding: 0 10px 0 12px;
-  margin-left: 6px;
-  line-height: 26px;
-  font-family: font-b;
-  border-color: transparent;
-  display: flex;
-  align-items: center;
-  position: relative;
-  z-index: 99999;
-  flex-shrink: 0;
-  font-size: 12px;
-  letter-spacing: -0.2px;
-  color: #5E6475;
-  justify-content: space-between;
-}
-
-.drop-item .remove {
-  padding: 0;
-  float: left;
-  background-color: #858D9E;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  color: #e9edf2;
-  font-size: 8px;
-  text-align: center;
-  line-height: 15px;
-  padding-left: 1px;
-  font-family: font-r;
-  margin: 1px 0 0 5px;
 }
 
 .react-grid-Toolbar .data-dark:empty {
@@ -7946,7 +7899,13 @@ padding: 0;
   bottom: 0 !important;
 }
 
+/* .submittalFilter .subFilter > span {
+  margin: 0 24px;
+}
 
+.submittalFilter .subFilter .dropdown .text {
+  margin-right: 8px;
+} */
 /* new Menu panel */
 
 /* new rtl css */
