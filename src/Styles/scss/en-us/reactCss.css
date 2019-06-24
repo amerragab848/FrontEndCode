@@ -7419,3 +7419,8 @@ div#markup-panel {
     left: 0 !important;
     bottom: 0 !important;
 }
+.costHeader {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #DADEE6;
+ }

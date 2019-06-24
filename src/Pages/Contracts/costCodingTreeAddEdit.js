@@ -124,7 +124,8 @@ class CostCodingTreeAddEdit extends Component {
       parentId: item.id,
       isEdit: true,
       viewPopUp: true,
-      objDocument: item
+      objDocument: item,
+      mode: 'add'
     });
     this.clear();
   }
@@ -133,7 +134,8 @@ class CostCodingTreeAddEdit extends Component {
     this.setState({
       isEdit: false,
       viewPopUp: true,
-      document: item
+      document: item,
+      mode: 'goEdit'
     });
   }
 
@@ -343,7 +345,7 @@ class CostCodingTreeAddEdit extends Component {
         <div className="documents-stepper noTabs__document">
           {this.props.showActions == false ? null :
             <div className="tree__header">
-              <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2> 
+              <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
               <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
                 {Resources["goAdd"][currentLanguage]}
               </button>
@@ -401,6 +403,11 @@ class CostCodingTreeAddEdit extends Component {
               onClose={this.closePopUp.bind(this)}
             >
               <div className="ui modal largeModal ">
+                <header className="costHeader">
+                  <h2 className="zero">
+                    {Resources[this.state.mode][currentLanguage]}
+                  </h2>
+                </header>
                 <Formik
                   initialValues={{ ...this.state.document }}
                   validationSchema={validationSchema}
@@ -422,13 +429,10 @@ class CostCodingTreeAddEdit extends Component {
                     setFieldTouched,
                     setFieldValue
                   }) => (
+
                       <Form className="dropWrapper proForm" onSubmit={handleSubmit}>
                         <div className="fullWidthWrapper textLeft">
-                          <header>
-                            <h2 className="zero">
-                              {Resources["costCodingTree"][currentLanguage]}
-                            </h2>
-                          </header>
+
                         </div>
                         <div className="fillter-status fillter-item-c fullInputWidth ">
                           <label className="control-label">
