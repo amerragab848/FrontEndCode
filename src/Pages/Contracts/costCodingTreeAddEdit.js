@@ -87,37 +87,16 @@ class CostCodingTreeAddEdit extends Component {
   componentDidUpdate = () => {
   }
   componentWillReceiveProps(nextProps) {
-
     if (nextProps.projectId !== this.props.projectId) {
-
-      dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + nextProps.projectId).then(result => {
-        let state = this.state
-        if (result.length > 0) {
-          result.forEach(item => {
-            state[item.id] = item
-          })
-          this.setState({
-            trees: result,
-            state
-          });
-        }
-      });
-
+      this.getTree(nextProps.projectId)
     }
   }
-  getTree = () => {
+  getTree = (projectId) => {
     this.setState({ isLoading: true })
-    dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + this.state.projectId).then(result => {
+    dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + projectId).then(result => {
       let state = this.state
-      let treeDocument = {
-        codeTreeTitle: "",
-        budgetThisPeriod: "",
-        budgetAtComplete: "",
-        originalBudget: "",
-        costForcast: "",
-        parentId: ""
-      };
-      if (result.length > 0) {
+      this.clear();
+      if (result) {
         result.forEach(item => {
           state[item.id] = item;
           state['_' + item.id] = false
@@ -128,7 +107,7 @@ class CostCodingTreeAddEdit extends Component {
           isLoading: false,
         });
       }
-      this.setState({ document: treeDocument, isLoading: false })
+      this.setState({ isLoading: false })
 
     });
   }
@@ -137,7 +116,7 @@ class CostCodingTreeAddEdit extends Component {
 
     this.props.actions.documentForAdding();
 
-    this.getTree();
+    this.getTree(this.state.projectId);
   }
 
   AddDocument(item) {
@@ -156,6 +135,10 @@ class CostCodingTreeAddEdit extends Component {
       viewPopUp: true,
       document: item
     });
+  }
+
+  GetNodeData = (item) => {
+    this.props.GetNodeData(item)
   }
 
   search(id, trees, updateTrees, parentId) {
@@ -187,25 +170,28 @@ class CostCodingTreeAddEdit extends Component {
                   <i className="dropdown icon" />
                 </span>
 
-                <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}</span>
+                <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}
+                </span>
               </div>
-              <div className="Project__num">
-                <div className="eps__actions">
-                  <a className="editIcon" onClick={() => this.EditDocument(item)}>
-                    <img src={Edit} alt="Edit" />
-                  </a>
-                  <a className="plusIcon" onClick={() => this.AddDocument(item)}>
-                    <img src={Plus} alt="Add" />
-                  </a>
-                  <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
-                    <img
-                      src={Delete}
-                      alt="Delete"
-                    />
-                  </a>
-                </div>
-              </div>
+              {this.props.showActions == false ? null :
+                <div className="Project__num">
+                  <div className="eps__actions">
+                    <a className="editIcon" onClick={() => this.EditDocument(item)}>
+                      <img src={Edit} alt="Edit" />
+                    </a>
+                    <a className="plusIcon" onClick={() => this.AddDocument(item)}>
+                      <img src={Plus} alt="Add" />
+                    </a>
+                    <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
+                      <img
+                        src={Delete}
+                        alt="Delete"
+                      />
+                    </a>
+                  </div>
+                </div>}
             </div>
+
             <div className="epsContent">
               {item.trees.length > 0 ? this.printChild(item.trees) : null}
             </div>
@@ -267,7 +253,7 @@ class CostCodingTreeAddEdit extends Component {
       });
 
     }).catch(ex => {
-      this.setState({ viewPopUp: false, isLoading: false }); 
+      this.setState({ viewPopUp: false, isLoading: false });
       this.clear();
       toast.error(Resources["failError"][currentLanguage]);
     });
@@ -353,15 +339,16 @@ class CostCodingTreeAddEdit extends Component {
 
   render() {
     return (
-      <div className="mainContainer">
+      <div className={this.props.showActions == false ? '' : "mainContainer"}>
         <div className="documents-stepper noTabs__document">
-          <div className="tree__header">
-            <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
-
-            <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
-              {Resources["goAdd"][currentLanguage]}
-            </button>
-          </div>
+          {this.props.showActions == false ? null :
+            <div className="tree__header">
+              <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2> 
+              <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
+                {Resources["goAdd"][currentLanguage]}
+              </button>
+            </div>
+          }
           {this.state.isLoading == true ? <LoadingSection /> :
             <div className="Eps__list">
               {
@@ -376,21 +363,24 @@ class CostCodingTreeAddEdit extends Component {
                           <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }}>
                             <i className="dropdown icon" />
                           </span>
-                          <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}</span>
+                          <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}
+                          </span>
                         </div>
-                        <div className="Project__num">
-                          <div className="eps__actions">
-                            <a className="editIcon" onClick={() => this.EditDocument(item)}>
-                              <img src={Edit} alt="Edit" />
-                            </a>
-                            <a className="plusIcon" onClick={() => this.AddDocument(item)}>
-                              <img src={Plus} alt="Add" />
-                            </a>
-                            <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
-                              <img src={Delete} alt="Delete" />
-                            </a>
+                        {this.props.showActions == false ? null :
+                          <div className="Project__num">
+                            <div className="eps__actions">
+                              <a className="editIcon" onClick={() => this.EditDocument(item)}>
+                                <img src={Edit} alt="Edit" />
+                              </a>
+                              <a className="plusIcon" onClick={() => this.AddDocument(item)}>
+                                <img src={Plus} alt="Add" />
+                              </a>
+                              <a className="deleteIcon" onClick={() => this.DeleteDocument(item.id)}>
+                                <img src={Delete} alt="Delete" />
+                              </a>
+                            </div>
                           </div>
-                        </div>
+                        }
                       </div>
                       <div className="epsContent" id={item.id}>
                         {item.trees.length > 0 ? this.printChild(item.trees) : null}
