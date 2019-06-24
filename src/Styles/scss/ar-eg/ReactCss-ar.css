@@ -7899,6 +7899,10 @@ padding: 0;
   bottom: 0 !important;
 }
 
+.grid__content .ui.checkbox input {
+  height: 100%;
+}
+
 /* .submittalFilter .subFilter > span {
   margin: 0 24px;
 }
