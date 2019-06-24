@@ -31,7 +31,7 @@ class ExpensesWorkFlowLog extends Component {
             {
                 key: "arrange",
                 name: Resources["arrange"][currentLanguage],
-                width: 250,
+                width: 50,
                 draggable: true,
                 sortable: true,
                 resizable: true,
