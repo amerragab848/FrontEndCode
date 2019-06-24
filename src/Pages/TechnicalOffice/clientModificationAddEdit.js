@@ -11,20 +11,15 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { withRouter } from "react-router-dom";
-
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
 import { connect } from 'react-redux';
 import {
     bindActionCreators
 } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
@@ -32,7 +27,7 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-import Api from "../../api";
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -155,8 +150,7 @@ class clientModificationAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let doc = nextProps.document
-            doc.docDate = moment(doc.docDate).format('DD/MM/YYYY')
-
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             this.setState({
                 document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -243,14 +237,13 @@ class clientModificationAddEdit extends Component {
         }
     };
 
-
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                //   console.log(targetFieldSelected);
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -411,8 +404,10 @@ class clientModificationAddEdit extends Component {
 
     handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
-        original_document.docDate = e;
-        this.setState({ document: original_document })
+        let updated_document = {};
+        updated_document[field] = e;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({ document: updated_document });
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -456,7 +451,7 @@ class clientModificationAddEdit extends Component {
         });
 
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         dataservice.addObject('EditContractsClientModifications', saveDocument).then(result => {
             this.setState({
@@ -475,7 +470,7 @@ class clientModificationAddEdit extends Component {
     saveLetter(event) {
         this.setState({ isLoading: true })
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
 
         dataservice.addObject('AddContractsClientModifications', saveDocument).then(res => {
@@ -483,7 +478,6 @@ class clientModificationAddEdit extends Component {
                 isLoading: false,
                 docId: res.id,
             });
-            console.log(saveDocument)
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
 
@@ -518,7 +512,7 @@ class clientModificationAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        console.log(item);
+        //console.log(item);
         if (item.value != "0") {
             this.props.actions.showOptionPanel(false);
 
@@ -625,7 +619,7 @@ class clientModificationAddEdit extends Component {
                                                     <div className="proForm datepickerContainer">
 
                                                         <div className="linebylineInput valid-input alternativeDate">
-                                                            <DatePicker title='docDate'
+                                                            <DatePicker title='docDate' format={'yyyy/MM/dd'}
                                                                 startDate={this.state.document.docDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
