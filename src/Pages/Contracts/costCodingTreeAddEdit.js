@@ -44,6 +44,7 @@ class CostCodingTreeAddEdit extends Component {
     super(props);
 
     this.state = {
+      mode:'add',
       projectId: props.match.params.projectId,
       trees: [],
       childerns: [],
@@ -87,7 +88,7 @@ class CostCodingTreeAddEdit extends Component {
   componentDidUpdate = () => {
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.projectId !== this.props.projectId) {
+    if (nextProps.projectId !== this.props.projectId ||nextProps.showActions==false) {
       this.getTree(nextProps.projectId)
     }
   }
@@ -318,20 +319,22 @@ class CostCodingTreeAddEdit extends Component {
       treeContainer.forEach(item => {
         state[item.id] = item
       })
-      this.setState({ state })
+      this.setState({ state,isLoading:true })
     }
     Api.post("DeleteCostCodeTree?id=" + this.state.docId).then(result => {
       let state = this.state
       state[this.state.docId] = -1
       if (result != null)
-        this.setState({ trees: result, showDeleteModal: false, state })
+        this.setState({ trees: result, showDeleteModal: false, state,isLoading:false })
       else
-        this.setState({ showDeleteModal: false, state });
+        this.setState({ showDeleteModal: false, state,isLoading:false });
       treeContainer = null;
       toast.success(Resources["operationSuccess"][currentLanguage]);
 
     }).catch(ex => {
       toast.success(Resources["operationSuccess"][currentLanguage]);
+      this.setState({ showDeleteModal: false,isLoading:false });
+
     });
   }
 
