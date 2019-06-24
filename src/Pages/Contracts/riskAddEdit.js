@@ -130,8 +130,7 @@ class riskAddEdit extends Component {
             preMedigationCostEMV: 0,
             medigationCost: 0,
             preMedigation: 0,
-            EMV: 0,
-            likelihood: 0.1,
+            EMV: 0, 
             documentCycle: {},
             currentTitle: "sendToWorkFlow",
             showModal: false,
@@ -1060,192 +1059,7 @@ class riskAddEdit extends Component {
             }
         }
     }
-
-    addItemEquations() {
-        return (
-            <Fragment>
-                <div className='document-fields'>
-                    {!this.state.updateConsequence ?
-                        <table className="ui table fullInputWidth">
-                            <thead>
-                                <tr>
-                                    <th>Title.</th>
-                                    <th>Consequence Score</th>
-                                    <th>likelihood Score</th>
-                                    <th>Risk Ranking</th>
-                                    <th>Risk EMV</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.items.map((item, index) =>
-                                    <Fragment>
-                                        <tr key={index}>
-                                            <td>{item.title}</td>
-                                            <td>
-                                                <div className="linebylineInput valid-input">
-                                                    <Dropdown
-                                                        isMulti={false}
-                                                        data={this.state.likelihoods}
-                                                        selectedValue={this.state.selectedLikelihood}
-                                                        handleChange={(e) => this.handleChangeCycleDropDown(e, "likelihood", 'selectedLikelihood')}
-
-                                                        isClear={false}
-                                                        index="risk-likelihoodScore"
-                                                        name="likelihoodScore"
-                                                        id="likelihoodScore" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="linebylineInput valid-input">
-                                                    <Dropdown
-                                                        isMulti={false}
-                                                        data={this.state.likelihoods}
-                                                        selectedValue={this.state.selectedLikelihood}
-                                                        handleChange={(e) => this.handleChangeCycleDropDown(e, "likelihood", 'selectedLikelihood')}
-
-                                                        isClear={false}
-                                                        index="risk-likelihoodScore"
-                                                        name="likelihoodScore"
-                                                        id="likelihoodScore" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className='ui input inputDev '>
-                                                    <input autoComplete="off" readOnly
-                                                        value={item.riskRanking}
-                                                        className="form-control" name="riskRanking"
-                                                        defaultValue={item.riskRanking}
-                                                        onBlur={(e) => this.HandleChangeDb(e, index, item.id)}
-                                                        onChange={(e) => this.HandleChangeValue(e, index, item.id)}
-                                                        placeholder={Resources['value'][currentLanguage]} />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className='ui input inputDev '>
-                                                    <input autoComplete="off" readOnly
-                                                        value={item.riskEMV}
-                                                        className="form-control" name="riskEMV"
-                                                        defaultValue={item.riskEMV}
-                                                        onBlur={(e) => this.HandleChangeDb(e, index, item.id)}
-                                                        onChange={(e) => this.HandleChangeValue(e, index, item.id)}
-                                                        placeholder={Resources['value'][currentLanguage]} />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </Fragment>
-
-                                )}
-                            </tbody>
-                        </table>
-                        : null
-                    }
-                    <div className="Risk__input">
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off" readOnly
-                                    value={this.state.EMV}
-                                    className="form-control" name="EMV"
-                                    placeholder={Resources['totalEMV'][currentLanguage]} />
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label"> {Resources['totalRiskRanking'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off" readOnly
-                                    value={this.state.EMV > 0 ? (Math.log10(this.state.EMV)).toFixed(2) : 0}
-                                    className="form-control" name="EMV"
-                                    placeholder={Resources['totalRiskRanking'][currentLanguage]} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <header>
-                        <h2 className="zero">{Resources['preMedigationRiskQuantification'][currentLanguage]}</h2>
-                    </header>
-
-                    <div className="Risk__input">
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">{Resources['preMedigationCostEMV'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off"
-                                    value={this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV}
-                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'preMedigationCostEMV')}
-                                    type="number"
-                                    className="form-control" name="preMedigationCostEMV"
-                                    placeholder={Resources['preMedigationCostEMV'][currentLanguage]} />
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label"> {Resources['medigationCost'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off"
-                                    value={this.state.medigationCost == null ? 0 : this.state.medigationCost}
-                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'medigationCost')}
-                                    type="number" pattern="[0-9]*"
-                                    className="form-control" name="medigationCost"
-                                    placeholder={Resources['medigationCost'][currentLanguage]} />
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label"> {this.state.medigationCost == 0 ? Resources['preMedigation'][currentLanguage] : Resources['postMedigation'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off" readOnly
-                                    value={(this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV) + (this.state.medigationCost == null ? 0 : this.state.medigationCost)}
-                                    className="form-control" name="preMedigation"
-                                    placeholder={Resources['preMedigation'][currentLanguage]} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <header>
-                        <h2 className="zero">{Resources['postMedigationRiskQuantification'][currentLanguage]}</h2>
-                    </header>
-
-                    <div className="Risk__input">
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">{Resources['postMedigationCostEMV'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off"
-                                    value={this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV}
-                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'preMedigationCostEMV')}
-                                    type="number"
-                                    className="form-control" name="postMedigationCostEMV"
-                                    placeholder={Resources['postMedigationCostEMV'][currentLanguage]} />
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label"> {Resources['medigationCost'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off"
-                                    value={this.state.medigationCost == null ? 0 : this.state.medigationCost}
-                                    onChange={(e) => this.HandleMitigationChangeValue(e, 'medigationCost')}
-                                    type="number" pattern="[0-9]*"
-                                    className="form-control" name="medigationCost"
-                                    placeholder={Resources['medigationCost'][currentLanguage]} />
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label"> {Resources['postMedigation'][currentLanguage]}</label>
-                            <div className='ui input inputDev '>
-                                <input autoComplete="off" readOnly
-                                    value={(this.state.preMedigationCostEMV == null ? 0 : this.state.preMedigationCostEMV) + (this.state.medigationCost == null ? 0 : this.state.medigationCost)}
-                                    className="form-control" name="preMedigation"
-                                    placeholder={Resources['preMedigation'][currentLanguage]} />
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </Fragment >
-        )
-    }
-
+ 
     fillConsequence() {
 
         dataservice.GetDataGrid("GetRiskConsequenceByRiskId?riskId=" + this.state.docId).then(result => {
@@ -1337,8 +1151,7 @@ class riskAddEdit extends Component {
 
             }
 
-            let riskRanking = (consequenceScoreValue + likelihoodScoreValue);
-            // let riskEMV =(( Math.pow(10,riskRanking)*(-riskRanking+1))/1000); 
+            let riskRanking = (consequenceScoreValue + likelihoodScoreValue); 
             let riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);// Math.log10(riskRanking);
 
             let obj = {
@@ -1550,7 +1363,7 @@ class riskAddEdit extends Component {
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['costControl'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">
@@ -1773,10 +1586,8 @@ class riskAddEdit extends Component {
 
 
                                             </Fragment>
-
                                             :
                                             <Fragment>
-
                                                 <div className="document-fields tableBTnabs">
                                                     {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                 </div>
@@ -1844,8 +1655,7 @@ class riskAddEdit extends Component {
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-
+                                    <div className="approveDocumentBTNS"> 
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
