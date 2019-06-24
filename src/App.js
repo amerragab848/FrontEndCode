@@ -23,9 +23,11 @@ const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized()
 
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 class App extends Component {
   componentWillMount() {
-    let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+    
 
     if (currentLanguage != "ar") {
       require("./Styles/scss/en-us/layout.css");
@@ -39,7 +41,7 @@ class App extends Component {
 
   render() {
     const showComp = IsAuthorize ?
-      <div>
+      <div id="direction_warrper" dir={currentLanguage !== "ar" ? "ltr" : "rtl" }>
         <Menu />
         {Route}
       </div>

@@ -6783,7 +6783,7 @@ div#markup-panel {
 
 .react-grid-Container {
   position: relative;
-  direction: ltr;
+  /* direction: ltr; */
 }
 
 .react-grid-Toolbar {
@@ -6841,7 +6841,7 @@ div#markup-panel {
   height: 58px !important;
   display: flex !important;
   align-items: center;
-  padding-left: 14px;
+  padding-right: 14px;
 }
 
 .react-grid-Viewport {
@@ -6854,6 +6854,11 @@ div#markup-panel {
 
 .react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
   border-right-color: transparent;
+  padding-right: 14px;
+}
+
+.react-grid-HeaderRow {
+  right: 0;
 }
 
 .react-grid-HeaderCell-sortable {
@@ -7406,7 +7411,7 @@ div#markup-panel {
 
 .checkbox-align {
   text-align: center;
-  padding: 0 10px;
+  /* padding: 0 10px; */
 }
 
 label + .ui.checkbox {

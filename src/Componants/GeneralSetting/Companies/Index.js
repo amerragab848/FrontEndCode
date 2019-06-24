@@ -106,7 +106,8 @@ class Index extends Component {
         const columnsGrid = [
             {
                 formatter: this.customButton,
-                key: 'customBtn'
+                key: 'customBtn',
+                width: 80,
 
             },
             {
@@ -220,7 +221,7 @@ class Index extends Component {
             {
                 key: "lastModified",
                 name: Resources["lastModified"][currentLanguage],
-                width: 100,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
