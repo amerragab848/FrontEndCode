@@ -77,7 +77,7 @@ let columns = [
         width: '40px',
     }, {
         Header: Resources['type'][currentLanguage],
-        accessor: 'notes',
+        accessor: 'mitigationTypeText',
         width: '40px',
     }
 ]
@@ -113,7 +113,9 @@ class riskAddEdit extends Component {
         }
 
         this.state = {
+            statusNumbers: true,
             consequenceData: [],
+            consequenceDataPost: [],
             updateConsequence: false,
             FirstStep: true,
             SecondStep: false,
@@ -130,7 +132,7 @@ class riskAddEdit extends Component {
             preMedigationCostEMV: 0,
             medigationCost: 0,
             preMedigation: 0,
-            EMV: 0, 
+            EMV: 0,
             documentCycle: {},
             currentTitle: "sendToWorkFlow",
             showModal: false,
@@ -150,7 +152,6 @@ class riskAddEdit extends Component {
 
             riskTypes: [],
             mitigationTypes: [],
-            riskCauses: [],
             likelihoods: [],
             items: [],
             areas: [],
@@ -265,6 +266,13 @@ class riskAddEdit extends Component {
             this.props.actions.documentForEdit(url);
 
             dataservice.GetDataGrid("GetRiskCycles?riskId=" + this.state.docId).then(result => {
+                result.map(i => {
+                    if (i.mitigationType == 1) {
+                        i.mitigationTypeText = "Preventive";
+                    } else {
+                        i.mitigationTypeText = "Reactive";
+                    }
+                })
                 this.setState({
                     IRCycles: [...result]
                 });
@@ -274,13 +282,14 @@ class riskAddEdit extends Component {
             });
 
             dataservice.GetDataGrid("GetRiskLastCycle?id=" + this.state.docId).then(result => {
+                if (result) {
+                    result.docDate = result.docDate !== null ? moment(result.docDate).format('DD/MM/YYYY') : moment();
 
-                result.docDate = result.docDate !== null ? moment(result.docDate).format('DD/MM/YYYY') : moment();
-
-                this.setState({
-                    documentCycle: { ...result }
-                });
-                this.fillDropDownsCycle(true);
+                    this.setState({
+                        documentCycle: { ...result }
+                    });
+                    this.fillDropDownsCycle(true);
+                }
             });
 
         } else {
@@ -296,13 +305,9 @@ class riskAddEdit extends Component {
                 subject: "",
                 requiredDate: moment(),
                 docDate: moment(),
-                status: false,
-                refDoc: "",
-                discipline: null,
+                status: true,
                 area: "",
                 location: "",
-                building: "",
-                apartment: "",
                 priorityId: "",
                 description: "",
                 descriptionMitigation: "",
@@ -381,46 +386,6 @@ class riskAddEdit extends Component {
             });
         });
 
-        //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "title").then(result => {
-            if (isEdit) {
-                let disciplineId = this.props.document.discipline;
-                if (disciplineId) {
-                    let discipline = result.find(i => i.label === parseInt(disciplineId));
-
-                    if (discipline) {
-                        this.setState({
-                            selectedDiscpline: discipline
-                        });
-                    }
-                }
-            }
-            this.setState({
-                discplines: [...result]
-            });
-        });
-        //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
-            if (isEdit) {
-
-                let areaId = this.props.document.area;
-
-                if (areaId) {
-
-                    let areaIdName = result.find(i => i.label === parseInt(areaId));
-
-                    if (areaIdName) {
-                        this.setState({
-                            selectedArea: { label: areaIdName.label, value: areaId }
-                        });
-                    }
-                }
-            }
-            this.setState({
-                areas: [...result]
-            });
-        });
-
         //priorty
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
             if (isEdit) {
@@ -473,23 +438,6 @@ class riskAddEdit extends Component {
             }
             this.setState({
                 mitigationTypes: [...result]
-            });
-        });
-
-        //riskCauses
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=riskCauses", "title", "id").then(result => {
-            if (isEdit) {
-
-                let riskCauses = this.state.documentCycle.riskCause;
-                if (riskCauses) {
-                    let priorityName = result.find(i => i.value === parseInt(riskCauses));
-                    this.setState({
-                        selectedRiskCause: { label: priorityName.label, value: riskCauses }
-                    });
-                }
-            }
-            this.setState({
-                riskCauses: [...result]
             });
         });
 
@@ -551,6 +499,18 @@ class riskAddEdit extends Component {
         });
     }
 
+    handleChangeStatusNumbers(e, field) {
+        let statusNumbers = this.state.statusNumbers
+        let riskEMV = 0;
+        if (e.targetState.value) {
+            // riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)));
+        } else {
+            // riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);
+        }
+        this.setState({
+            statusNumbers: e.targetState.value
+        });
+    }
     handleChangeDate(e, field) {
 
         let original_document = { ...this.state.document };
@@ -780,7 +740,6 @@ class riskAddEdit extends Component {
 
         }
         else if (this.state.CurrentStep === 2) {
-
             window.scrollTo(0, 0)
             this.setState({
                 FirstStep: false,
@@ -912,31 +871,30 @@ class riskAddEdit extends Component {
 
     AddNewCycle() {
         return (
-            <Fragment>
-                <Formik
-                    initialValues={{ ...this.state.documentCycle }}
-                    validationSchema={documentCycleValidationSchema}
-                    enableReinitialize={true}
-                    onSubmit={(values) => {
-                        this.saveMitigationRequest()
-                    }}>
+            <div className="subiTabsContent">
+                <header className="main__header">
+                    <div className="main__header--div">
+                        <h2 className="zero">{Resources['mitigation'][currentLanguage]}</h2>
+                    </div>
+                </header>
+                <div className='document-fields'>
+                    <Formik
+                        initialValues={{ ...this.state.documentCycle }}
+                        validationSchema={documentCycleValidationSchema}
+                        enableReinitialize={true}
+                        onSubmit={(values) => {
+                            this.saveMitigationRequest()
+                        }}>
 
-                    {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                        <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                            <header className="main__header">
-                                <div className="main__header--div">
-                                    <h2 className="zero">{Resources['mitigation'][currentLanguage]}</h2>
-                                </div>
-                            </header>
-
-                            <div className='document-fields'>
+                        {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                            <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                 <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources.subject[currentLanguage]}</label>
+                                    <div className="fullInputWidth letterFullWidth">
+                                        <label className="control-label">{Resources.currentPlannedMitigation[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                             <input name='subject' id="subject" className="form-control fsadfsadsa"
-                                                placeholder={Resources.subject[currentLanguage]}
+                                                placeholder={Resources.currentPlannedMitigation[currentLanguage]}
                                                 autoComplete='off'
                                                 value={this.state.documentCycle.subject}
                                                 onBlur={(e) => { handleBlur(e); handleChange(e) }}
@@ -944,6 +902,8 @@ class riskAddEdit extends Component {
                                             {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                         </div>
                                     </div>
+                                </div>
+                                <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title="mitigationType"
                                             isMulti={false}
@@ -979,9 +939,9 @@ class riskAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
+                                    <div className="letterFullWidth fullInputWidth">
                                         <label className="control-label">{Resources['actionProgress'][currentLanguage]}</label>
-                                        <div className='ui input inputDev '>
+                                        <div className='ui input inputDev  '>
                                             <input autoComplete="off"
                                                 value={this.state.documentCycle.actionProgress}
                                                 className="form-control" name="actionProgress"
@@ -1009,11 +969,11 @@ class riskAddEdit extends Component {
 
                                 </div>
 
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-            </Fragment>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            </div>
         )
     }
 
@@ -1059,75 +1019,179 @@ class riskAddEdit extends Component {
             }
         }
     }
- 
-    fillConsequence() {
 
+    fillConsequence() {
         dataservice.GetDataGrid("GetRiskConsequenceByRiskId?riskId=" + this.state.docId).then(result => {
             if (result) {
-
-                let data = [];
-                let likelihood = {
-                    label: 'Please Select',
-                    value: 0
-                }
-                let consequ = {
-                    label: 'Please Select',
-                    value: 0
-                }
-
-                let state = { ...this.state };
-                result.map(item => {
-
-                    let likelihoodScore = item['likelihoodScore'];
-                    let dslikelihood = this.state.likelihoods;
-                    if (likelihoodScore) {
-                        likelihood = dslikelihood.find(i => i.value === parseInt(likelihoodScore));
-                    }
-                    let consequenceScore = item['conesquenceScore'];
-
-                    let consequences = this.state.consequences;
-                    if (consequenceScore) {
-                        consequ = consequences.find(i => i.value === parseInt(consequenceScore));
-                    }
-                    data.push({
-                        id: item['id'],
-                        consequenceId: item['consequenceId'],
-                        title: item['title'],
-                        likelihoodScore: item['likelihoodScore'],
-                        conesquenceScore: item['conesquenceScore'],
-
-                        consequenceScoreValue: item['consequenceScoreValue'],
-                        likelihoodScoreValue: item['likelihoodScoreValue'],
-
-                        riskEMV: item['riskEMV'],
-                        riskRanking: item['riskRanking'],
-
-                        action: 0,
-                        SelectedLikelihood: { label: likelihood.label, value: item['likelihoodScore'] },
-                        SelectedConsequence: { label: consequ.label, value: consequ.value }
-                    })
-                    state[item.id + '-1-drop'] = null;
-                    state[item.id + '-2-drop'] = null;
-                })
-                this.setState(state);
-
-                data = _.orderBy(data, ['id'], ['asc']);
-                this.setState({
-                    consequenceData: data
-                })
+                this.buildStructureTableThirdTab(result);
             }
         });
     }
+    buildStructureTableThirdTab(result) {
+        let data = [];
+        let dataPost = [];
+        let likelihood = {
+            label: 'Please Select',
+            value: 0
+        }
+        let consequ = {
+            label: 'Please Select',
+            value: 0
+        }
+
+        let state = { ...this.state };
+        let dslikelihood = this.state.likelihoods;
+        let consequences = this.state.consequences;
+
+        let totalRankingPost = 0;
+        let totalRanking = 0;
+        result.map(item => {
+
+            let likelihoodScore = item['likelihoodScore'];
+            let consequenceScore = item['conesquenceScore'];
+
+            let riskEMV = 0;
+
+            let statusNumbers = this.state.statusNumbers
+            let riskRanking = parseFloat(item['riskRanking']);
+            if (statusNumbers) {
+                riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)));
+            } else {
+                riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);
+            }
+
+            let itemObj = {
+                id: item['id'],
+                consequenceId: item['consequenceId'],
+                title: item['title'],
+                likelihoodScore: item['likelihoodScore'],
+                conesquenceScore: item['conesquenceScore'],
+
+                consequenceScoreValue: item['consequenceScoreValue'],
+                likelihoodScoreValue: item['likelihoodScoreValue'],
+
+                riskEMV: riskEMV,
+                action: 0,
+                riskRanking: item['riskRanking']
+            };
+
+            if (item.mitigationType == 1) {
+
+                if (likelihoodScore) {
+                    likelihood = dslikelihood.find(i => i.value === parseInt(likelihoodScore));
+                }
+
+                if (consequenceScore) {
+                    consequ = consequences.find(i => i.value === parseInt(consequenceScore));
+                }
+
+                totalRanking = totalRanking + parseFloat((Math.round(Math.pow(10, riskRanking), (-riskRanking + 1))));
+
+                itemObj.SelectedLikelihood = likelihood;
+                itemObj.SelectedConsequence = consequ;
+                data.push(itemObj)
+                state[item.id + '-1-drop'] = null;
+                state[item.id + '-2-drop'] = null;
+            } else {
+
+                if (likelihoodScore) {
+                    likelihood = dslikelihood.find(i => i.value === parseInt(likelihoodScore));
+                }
+
+                if (consequenceScore) {
+                    consequ = consequences.find(i => i.value === parseInt(consequenceScore));
+                }
+
+                totalRankingPost = totalRankingPost + parseFloat((Math.round(Math.pow(10, riskRanking), (-riskRanking + 1))));
+
+                itemObj.SelectedLikelihoodPost = likelihood;
+                itemObj.SelectedConsequencePost = consequ;
+                dataPost.push(itemObj)
+                state[item.id + '-1-drop-post'] = null;
+                state[item.id + '-2-drop-post'] = null;
+            }
+
+        })
+
+        this.setState(state);
+
+        let preMedigationCostEMV = Math.log10(totalRanking);
+        let postMedigationCostEMV = Math.log10(totalRankingPost);
+        let postTotalRanking = totalRankingPost;
+        let preTotalRanking = totalRanking;
+
+        data = _.orderBy(data, ['id'], ['asc']);
+        dataPost = _.orderBy(dataPost, ['id'], ['asc']);
+
+        this.setState({
+            consequenceData: data,
+            consequenceDataPost: dataPost,
+            preMedigationCostEMV: preMedigationCostEMV,
+            postMedigationCostEMV: postMedigationCostEMV,
+            postTotalRanking: postTotalRanking,
+            preTotalRanking: preTotalRanking
+        })
+    }
 
     actionHandler = (id, consequenceId, e, data, isCon, index) => {
-
         let state = { ...this.state };
         state[id + '-' + index + '-drop'] = e;
         let consequenceData = state.consequenceData;
         this.setState(state);
-
         if (id != null) {
+            this.setState({
+                updateConsequence: true
+            })
+            let likelihoodScoreValue = 0;
+            let consequenceScoreValue = 0;
+            if (isCon) {
+                let consequences = this.state.consequences;
+                if (e.value) {
+                    let consequ = consequences.find(i => i.value === parseInt(e.value));
+                    consequenceScoreValue = consequ.action;
+                    likelihoodScoreValue = data.likelihoodScoreValue;
+                }
+            } else {
+                let likelihoods = this.state.likelihoods;
+                if (e.value) {
+                    let likelihood = likelihoods.find(i => i.value === parseInt(e.value));
+                    likelihoodScoreValue = likelihood.action;
+                    consequenceScoreValue = data.consequenceScoreValue;
+                }
+            }
 
+            let riskRanking = (consequenceScoreValue + likelihoodScoreValue);
+            let statusNumbers = this.state.statusNumbers
+            let riskEMV = 0;
+            if (statusNumbers) {
+                riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)));
+            } else {
+                riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);
+            }
+
+            let obj = {
+                likelihoodScoreValue: likelihoodScoreValue,
+                consequenceScoreValue: consequenceScoreValue,
+                likelihoodScore: isCon == false ? e.value : data.likelihoodScore,
+                conesquenceScore: isCon ? e.value : data.conesquenceScore,
+                riskRanking: (consequenceScoreValue + likelihoodScoreValue),
+                riskEMV: riskEMV,
+                riskId: this.state.docId, id: data.id,
+                mitigationType: 1
+            };
+
+            dataservice.addObject('EditRiskConsequence', obj).then(res => {
+                this.refreshDataAfterAddConsequence(consequenceData, id, 1, riskRanking, riskEMV, obj);
+            })
+        }
+    }
+    actionHandlerPost = (id, consequenceId, e, data, isCon, index) => {
+
+        let state = { ...this.state };
+        state[id + '-' + index + '-drop-post'] = e;
+        let consequenceData = state.consequenceDataPost;
+        this.setState(state);
+        if (id != null) {
             this.setState({
                 updateConsequence: true
             })
@@ -1148,11 +1212,17 @@ class riskAddEdit extends Component {
                     likelihoodScoreValue = likelihood.action;
                     consequenceScoreValue = data.consequenceScoreValue;
                 }
-
             }
 
-            let riskRanking = (consequenceScoreValue + likelihoodScoreValue); 
-            let riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);// Math.log10(riskRanking);
+            let riskRanking = (consequenceScoreValue + likelihoodScoreValue);
+            let statusNumbers = this.state.statusNumbers
+
+            let riskEMV = 0;
+            if (statusNumbers) {
+                riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)));
+            } else {
+                riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);
+            }
 
             let obj = {
                 likelihoodScoreValue: likelihoodScoreValue,
@@ -1161,55 +1231,96 @@ class riskAddEdit extends Component {
                 conesquenceScore: isCon ? e.value : data.conesquenceScore,
                 riskRanking: (consequenceScoreValue + likelihoodScoreValue),
                 riskEMV: riskEMV,
-                riskId: this.state.docId, id: data.id
+                riskId: this.state.docId,
+                id: data.id,
+                mitigationType: 2
             };
 
             dataservice.addObject('EditRiskConsequence', obj).then(res => {
+                this.refreshDataAfterAddConsequence(consequenceData, id, 2, riskRanking, riskEMV, obj);
+            })
+        }
+    }
 
-                let currentObj = consequenceData.find(i => i.id === id);
-                currentObj.riskRanking = riskRanking;
-                currentObj.riskEMV = riskEMV;
-                currentObj.likelihoodScoreValue = likelihoodScoreValue;
-                currentObj.consequenceScoreValue = consequenceScoreValue;
-                currentObj.conesquenceScore = obj.conesquenceScore;
-                currentObj.likelihoodScore = obj.likelihoodScore;
+    refreshDataAfterAddConsequence(consequenceData, id, mitigationType, riskRanking, riskEMV, obj) {
 
-                let likelihood = {
-                    label: 'Please Select',
-                    value: 0
+        let currentObj = consequenceData.find(i => i.id === id);
+        if (currentObj) {
+            currentObj.riskRanking = riskRanking;
+            currentObj.riskEMV = riskEMV;
+            currentObj.likelihoodScoreValue = obj.likelihoodScoreValue;
+            currentObj.consequenceScoreValue = obj.consequenceScoreValue;
+            currentObj.conesquenceScore = obj.conesquenceScore;
+            currentObj.likelihoodScore = obj.likelihoodScore;
+        }
+        let likelihood = {
+            label: 'Please Select',
+            value: 0
+        }
+        let consequ = {
+            label: 'Please Select',
+            value: 0
+        }
+
+        let likelihoodScore = currentObj['likelihoodScore'];
+        let dslikelihood = this.state.likelihoods;
+        if (likelihoodScore) {
+            likelihood = dslikelihood.find(i => i.value === parseInt(likelihoodScore));
+        }
+        let consequenceScore = currentObj['conesquenceScore'];
+
+        let consequences = this.state.consequences;
+        if (consequenceScore) {
+            consequ = consequences.find(i => i.value === parseInt(consequenceScore));
+        }
+
+        let arr = []
+        if (mitigationType == 1) {
+            currentObj.SelectedLikelihood = { label: likelihood.label, value: likelihood.value };
+            currentObj.SelectedConsequence = { label: consequ.label, value: consequ.value };
+            let totalRanking = 0;
+
+            consequenceData.map(i => {
+                if (i.id != id) {
+                    arr.push(i);
                 }
-                let consequ = {
-                    label: 'Please Select',
-                    value: 0
+                totalRanking = totalRanking + + parseFloat(i.riskEMV);
+            });
+
+            let preMedigationCostEMV = Math.log10(totalRanking);
+
+            let postTotalRanking = totalRanking;
+
+            let newData = [...arr, currentObj];
+            newData = _.orderBy(newData, ['id'], ['asc']);
+            this.setState({
+                consequenceData: newData,
+                updateConsequence: false,
+                preMedigationCostEMV: preMedigationCostEMV,
+                preTotalRanking: postTotalRanking
+            })
+        }
+        else {
+            currentObj.SelectedLikelihoodPost = { label: likelihood.label, value: likelihood.value };
+            currentObj.SelectedConsequencePost = { label: consequ.label, value: consequ.value };
+            let totalRanking = 0;
+            consequenceData.map(i => {
+                if (i.id != id) {
+                    arr.push(i);
                 }
+                totalRanking = totalRanking + parseFloat(i.riskEMV);
+            });
+            let postMedigationCostEMV = Math.log10(totalRanking);
 
-                let likelihoodScore = currentObj['likelihoodScore'];
-                let dslikelihood = this.state.likelihoods;
-                if (likelihoodScore) {
-                    likelihood = dslikelihood.find(i => i.value === parseInt(likelihoodScore));
-                }
-                let consequenceScore = currentObj['conesquenceScore'];
+            let preTotalRanking = totalRanking;
 
-                let consequences = this.state.consequences;
-                if (consequenceScore) {
-                    consequ = consequences.find(i => i.value === parseInt(consequenceScore));
-                }
-
-                currentObj.SelectedLikelihood = { label: likelihood.label, value: likelihood.value };
-                currentObj.SelectedConsequence = { label: consequ.label, value: consequ.value };
-
-                let arr = []
-                consequenceData.map(i => {
-                    if (i.id != id)
-                        arr.push(i);
-                });
-
-                let newData = [...arr, currentObj];
-                newData = _.orderBy(newData, ['id'], ['asc']);
-                this.setState({
-                    consequenceData: newData,
-                    updateConsequence: false
-                })
+            let newData = [...arr, currentObj];
+            newData = _.orderBy(newData, ['id'], ['asc']);
+            this.setState({
+                consequenceDataPost: newData,
+                updateConsequence: false,
+                postMedigationCostEMV: postMedigationCostEMV,
+                postTotalRanking: preTotalRanking
             })
         }
     }
@@ -1218,11 +1329,11 @@ class riskAddEdit extends Component {
 
         const columnsCons = [
             {
-                Header: 'title',
+                Header: 'Title',
                 accessor: 'title',
                 sortabel: true,
                 filterable: false,
-                width: 250
+                width: 160
             }, {
                 Header: 'id',
                 accessor: 'id',
@@ -1241,7 +1352,7 @@ class riskAddEdit extends Component {
                         index={props.original.id} />)
                 }
             }, {
-                Header: 'likelihood Score',
+                Header: 'Likelihood Score',
                 accessor: 'likelihoodScore',
                 width: 150,
                 sortabel: true,
@@ -1279,6 +1390,132 @@ class riskAddEdit extends Component {
                     minRows={2}
                     noDataText={Resources['noData'][currentLanguage]}
                 />
+                <header>
+                    <h2 className="zero">{Resources['preMedigationRiskQuantification'][currentLanguage]}</h2>
+                </header>
+
+                <div className="Risk__input">
+                    <div className="linebylineInput valid-input">
+                        <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
+                        <div className='ui input inputDev '>
+                            <input autoComplete="off" readOnly
+                                value={this.state.preTotalRanking == null ? 0 : (this.state.preTotalRanking).toFixed(2)}
+                                type="number"
+                                className="form-control" name="totalRiskRanking"
+                                placeholder={Resources['totalEMV'][currentLanguage]} />
+                        </div>
+                    </div>
+                    <div className="linebylineInput valid-input">
+                        <label className="control-label">{Resources['totalRiskRanking'][currentLanguage]}</label>
+                        <div className='ui input inputDev '>
+                            <input autoComplete="off" readOnly
+                                value={this.state.preMedigationCostEMV == null ? 0 : (this.state.preMedigationCostEMV).toFixed(2)}
+                                type="number"
+                                className="form-control" name="preMedigationCostEMV"
+                                placeholder={Resources['totalRiskRanking'][currentLanguage]} />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        );
+    }
+
+    drawConsequencePost = () => {
+
+        const columnsCons = [
+            {
+                Header: 'Title',
+                accessor: 'title',
+                sortabel: true,
+                filterable: false,
+                width: 160
+            }, {
+                Header: 'id',
+                accessor: 'id',
+                show: false
+            }, {
+                Header: 'Consequence Score',
+                accessor: 'conesquenceId',
+                width: 150,
+                sortabel: true,
+                filterable: false,
+                Cell: props => {
+                    return (<Dropdown title=""
+                        data={this.state.consequences}
+                        handleChange={e => this.actionHandlerPost(props.original.id, props.original.conesquenceScore, e, props.original, true, 1)}
+                        selectedValue={props.original.SelectedConsequencePost}
+                        index={props.original.id} />)
+                }
+            }, {
+                Header: 'Likelihood Score',
+                accessor: 'likelihoodScore',
+                width: 150,
+                sortabel: true,
+                filterable: false,
+                Cell: props => {
+                    return (<Dropdown title=""
+                        data={this.state.likelihoods}
+                        handleChange={e => this.actionHandlerPost(props.original.id, props.original.likelihoodScore, e, props.original, false, 2)}
+                        selectedValue={props.original.SelectedLikelihoodPost}
+                        index={props.original.id} />)
+                }
+            }, {
+                Header: 'Risk Ranking',
+                accessor: 'riskRanking',
+                width: 150,
+                sortabel: true,
+                filterable: false
+            }, {
+                Header: 'Risk EMV',
+                accessor: 'riskEMV',
+                width: 150,
+                sortabel: true,
+                filterable: false
+            }
+        ]
+        return (
+            <div className="modal-header fullWidthWrapper">
+                <ReactTable
+                    ref={(r) => {
+                        this.selectTable = r;
+                    }}
+                    data={this.state.consequenceDataPost}
+                    columns={columnsCons}
+                    defaultPageSize={10}
+                    minRows={2}
+                    noDataText={Resources['noData'][currentLanguage]}
+                />
+
+
+                <header>
+                    <h2 className="zero">{Resources['postMedigationRiskQuantification'][currentLanguage]}</h2>
+                </header>
+
+                <div className="Risk__input">
+                    <div className="linebylineInput valid-input">
+                        <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
+                        <div className='ui input inputDev '>
+                            <input autoComplete="off" readOnly
+                                value={this.state.postTotalRanking == null ? 0 : (this.state.postTotalRanking).toFixed(2)}
+                                type="number"
+                                className="form-control" name="totalRiskRanking"
+                                placeholder={Resources['totalEMV'][currentLanguage]} />
+                        </div>
+                    </div>
+                    <div className="linebylineInput valid-input">
+                        <label className="control-label">{Resources['totalRiskRanking'][currentLanguage]}</label>
+                        <div className='ui input inputDev '>
+                            <input autoComplete="off" readOnly
+                                value={this.state.postMedigationCostEMV == null ? 0 : (this.state.postMedigationCostEMV).toFixed(2)}
+                                type="number"
+                                className="form-control" name="postMedigationCostEMV"
+                                placeholder={Resources['totalRiskRanking'][currentLanguage]} />
+                        </div>
+                    </div>
+                </div>
+
             </div>
         );
     }
@@ -1328,6 +1565,10 @@ class riskAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: false,
             })
+            let consequenceData = this.state.consequenceData;
+            if (consequenceData.length == 0) {
+                this.fillConsequence();
+            }
         }
     }
 
@@ -1389,7 +1630,7 @@ class riskAddEdit extends Component {
                                                     <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                         <div className="proForm first-proform">
                                                             <div className="linebylineInput valid-input">
-                                                                <label className="control-label">{Resources.subject[currentLanguage]}</label>
+                                                                <label className="control-label">{Resources.generalListTitle[currentLanguage]}</label>
                                                                 <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                     <input name='subject' id="subject" className="form-control fsadfsadsa"
                                                                         placeholder={Resources.generalListTitle[currentLanguage]}
@@ -1403,23 +1644,13 @@ class riskAddEdit extends Component {
                                                         </div>
 
                                                         <div className="proForm datepickerContainer">
-
-
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                                 <div className="inputDev ui input">
                                                                     <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
                                                                 </div>
                                                             </div>
-
-                                                            <div className="letterFullWidth">
-                                                                <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
-                                                                <div className="inputDev ui input">
-                                                                    <TextEditor value={this.state.descriptionMitigation} onChange={event => this.onChangeMessage(event, 'descriptionMitigation')} />
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="linebylineInput valid-input">
+                                                            <div className="linebylineInput linebylineInput__checkbox">
                                                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                                 <div className="ui checkbox radio radioBoxBlue">
                                                                     <input type="radio" name="rfi-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
@@ -1480,19 +1711,9 @@ class riskAddEdit extends Component {
                                                             </div>
 
                                                             <div className="linebylineInput valid-input">
-                                                                <Dropdown title="discipline" data={this.state.discplines}
-                                                                    selectedValue={this.state.selectedDiscpline}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'discipline', false, '', '', '', 'selectedDiscpline')} />
-                                                            </div>
-                                                            <div className="linebylineInput valid-input">
                                                                 <Dropdown title="priority" data={this.state.priority}
                                                                     selectedValue={this.state.selectedPriorityId}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedPriorityId')} />
-                                                            </div>
-                                                            <div className="linebylineInput valid-input">
-                                                                <Dropdown title="area" data={this.state.areas}
-                                                                    selectedValue={this.state.selectedArea}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')} />
                                                             </div>
                                                             <div className="linebylineInput valid-input">
                                                                 <Dropdown title="riskType"
@@ -1507,14 +1728,85 @@ class riskAddEdit extends Component {
                                                                     name="riskType"
                                                                     id="riskType" />
                                                             </div>
+                                                            <div className="linebylineInput valid-input mix_dropdown">
+                                                                <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
+                                                                <div className="supervisor__company">
+                                                                    <div className="super_name">
+                                                                        <Dropdown data={this.state.companies} isMulti={false}
+                                                                            selectedValue={this.state.selectedFromCompany}
+                                                                            handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                            error={errors.fromCompanyId}
+                                                                            touched={touched.fromCompanyId}
+                                                                            name="fromCompanyId"
+                                                                            id="fromCompanyId" />
+                                                                    </div>
+                                                                    <div className="super_company">
+                                                                        <Dropdown isMulti={false} data={this.state.fromContacts}
+                                                                            selectedValue={this.state.selectedFromContact}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                            error={errors.fromContactId}
+                                                                            touched={touched.fromContactId}
+                                                                            name="fromContactId"
+                                                                            id="fromContactId" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="linebylineInput valid-input mix_dropdown">
+                                                                <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
+                                                                <div className="supervisor__company">
+                                                                    <div className="super_name">
+                                                                        <Dropdown isMulti={false} data={this.state.companies}
+                                                                            selectedValue={this.state.selectedToCompany}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'ownerCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                            error={errors.ownerCompanyId}
+                                                                            touched={touched.ownerCompanyId}
+                                                                            name="ownerCompanyId"
+                                                                            id="ownerCompanyId" />
+                                                                    </div>
+                                                                    <div className="super_company">
+                                                                        <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                            selectedValue={this.state.selectedToContact}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'ownerContactId', false, '', '', '', 'selectedToContact')}
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                            error={errors.ownerContactId}
+                                                                            touched={touched.ownerContactId}
+                                                                            name="ownerContactId"
+                                                                            id="ownerContactId" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div className="slider-Btns">
 
-                                                            {this.showBtnsSaving()}
+                                                        {this.state.docId > 0 ?
+                                                            <Fragment>
+                                                                {comCause}
+                                                                < RiskConesquence riskId={this.state.docId} />
+                                                            </Fragment>
+                                                            : null
+                                                        }
+
+                                                        <div className="slider-Btns">
+                                                            {this.state.isLoading ?
+                                                                <button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button> :
+                                                                this.showBtnsSaving()}
                                                         </div>
                                                     </Form>
                                                 )}
                                             </Formik>
+
                                         </div>
 
                                         <div className="doc-pre-cycle letterFullWidth">
@@ -1538,7 +1830,7 @@ class riskAddEdit extends Component {
 
                                             <div className="doc-pre-cycle">
                                                 <header>
-                                                    <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
+                                                    <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
                                                 </header>
                                                 <ReactTable
                                                     ref={(r) => {
@@ -1560,19 +1852,38 @@ class riskAddEdit extends Component {
                                         </div>
                                         :
                                         this.state.ThirdStep ?
-                                            //Third Step
                                             <Fragment>
                                                 <div className="subiTabsContent feilds__top">
-                                                    {comCause}
-                                                    <RiskConesquence riskId={this.state.docId} />
+                                                    <div className="proForm datepickerContainer">
+
+                                                        <div className="linebylineInput linebylineInput__checkbox">
+                                                            <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'statusNumbers')} />
+                                                                <label>{Resources.normal[currentLanguage]}</label>
+                                                            </div>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'statusNumbers')} />
+                                                                <label>{Resources.thousand[currentLanguage]}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="doc-pre-cycle">
+                                                        <header>
+                                                            <h2 className="zero">{Resources['preMedigationRiskQuantitfaction'][currentLanguage]}</h2>
+                                                        </header>
+                                                        {!this.state.updateConsequence ?
+                                                            <this.drawConsequence /> : <LoadingSection />
+                                                        }
+                                                    </div>
+
 
                                                     <div className="doc-pre-cycle">
                                                         <header>
-                                                            <h2 className="zero">{Resources['consequence'][currentLanguage]}</h2>
+                                                            <h2 className="zero">{Resources['postMedigationRiskQuantitfaction'][currentLanguage]}</h2>
                                                         </header>
                                                         {!this.state.updateConsequence ?
-                                                            <this.drawConsequence />
-                                                            : <LoadingSection />
+                                                            <this.drawConsequencePost /> : <LoadingSection />
                                                         }
                                                     </div>
 
@@ -1591,7 +1902,6 @@ class riskAddEdit extends Component {
                                                 <div className="document-fields tableBTnabs">
                                                     {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                 </div>
-
                                                 <div className="doc-pre-cycle">
                                                     <div className="slider-Btns">
                                                         <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
@@ -1655,7 +1965,7 @@ class riskAddEdit extends Component {
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
-                                    <div className="approveDocumentBTNS"> 
+                                    <div className="approveDocumentBTNS">
                                         {this.state.isApproveMode === true ?
                                             <div >
                                                 <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>

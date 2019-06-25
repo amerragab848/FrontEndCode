@@ -7419,3 +7419,15 @@ div#markup-panel {
     left: 0 !important;
     bottom: 0 !important;
 }
+
+
+.linebylineInput__checkbox {
+    flex-flow: row !important;
+    align-items: center !important;
+}
+.linebylineInput__checkbox .ui.checkbox {
+    margin: 0
+}
+.linebylineInput__checkbox label {
+    margin: 0 !important
+}

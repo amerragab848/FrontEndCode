@@ -120,6 +120,7 @@ class GeneralList extends Component {
             api: 'GetAccountsDefaultList?',
             showValue: false
         }
+
         if (!config.IsAllow(1182) && !config.IsAllow(1180) && !config.IsAllow(1179)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.goBack();
@@ -183,7 +184,7 @@ class GeneralList extends Component {
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
         let id = ''
-        selectedRows.map(i => { id = i  })
+        selectedRows.map(i => { id = i })
         let checkEdit = []
         checkEdit = this.state.rows.filter(s => s.id === id)
         let editable = '';
@@ -197,10 +198,10 @@ class GeneralList extends Component {
             })
         }
         else {
-            this.setState({isLoading:true})
+            this.setState({ isLoading: true })
             toast.error(Resources["adminItemEditable"][currentLanguage]);
             setTimeout(() => {
-                this.setState({isLoading:false})
+                this.setState({ isLoading: false })
             }, 100);
         }
     }
@@ -209,22 +210,21 @@ class GeneralList extends Component {
         this.setState({
             isLoading: true
         })
-        Api.post('AccountsDefaultListMultipleDelete', this.state.selectedRows).then(
-            res => {
-                let originalRows = this.state.rows
+        Api.post('AccountsDefaultListMultipleDelete', this.state.selectedRows).then(res => {
+            let originalRows = this.state.rows
 
-                this.state.selectedRows.map(i => {
-                    originalRows = originalRows.filter(r => r.id !== i);
-                })
-                this.setState({
-                    rows: originalRows,
-                    showDeleteModal: false,
-                    isLoading: false,
-                })
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            }).catch(ex => {
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            this.state.selectedRows.map(i => {
+                originalRows = originalRows.filter(r => r.id !== i);
             })
+            this.setState({
+                rows: originalRows,
+                showDeleteModal: false,
+                isLoading: false,
+            })
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(ex => {
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        })
     }
 
     onCloseModal = () => {
@@ -236,10 +236,11 @@ class GeneralList extends Component {
     };
 
     GeneralListHandelChange = (e) => {
+
         this.setState({
             isLoading: true,
             listType: e.value,
-            showValue: e.value === 'likelihoods' ? true : e.value === 'consequences' ? true : false
+            showValue: e.value === 'likelihoods' || e.value === "consequencesScores" || e.value === 'consequences' ? true : false
         })
         Api.get('GetAccountsDefaultList?listType=' + e.value + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '').then(
             res => {

@@ -147,6 +147,7 @@ class CostCodingTreeAddEdit extends Component {
       viewPopUp: true,
       objDocument: item
     });
+    this.clear();
   }
 
   EditDocument(item) {
@@ -160,20 +161,16 @@ class CostCodingTreeAddEdit extends Component {
   search(id, trees, updateTrees, parentId) {
 
     trees.map(item => {
-      if (id == item.id) {
-        item.collapse = !item.collapse;
-      } else {
-        //item.collapse = item.id != parentId ? true : item.collapse; 
-      }
       updateTrees.push(item);
       if (item.trees.length > 0) {
+        let state = this.state;
+        state['_' + item.id] = state['_' + item.id] ? state['_' + item.id] : false;
+        this.setState({ state });
         this.search(id, item.trees, updateTrees, parentId);
       }
     });
     return updateTrees;
   };
-
-
 
   printChild(children) {
     return (
@@ -182,7 +179,7 @@ class CostCodingTreeAddEdit extends Component {
           treeContainer[item.id] = item
         return (
           <Fragment>
-            <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === false ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
+            <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
               style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
               <div className="listTitle">
 
@@ -219,7 +216,6 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   viewChild(item) {
-
     let trees = [...this.state.trees];
     let state = this.state;
     state['_' + item.id] = !state['_' + item.id];
@@ -258,14 +254,7 @@ class CostCodingTreeAddEdit extends Component {
     saveDocument.projectId = this.state.projectId;
     dataservice.addObject("AddcostCodeTree", saveDocument).then(result => {
       toast.success(Resources["operationSuccess"][currentLanguage]);
-      let treeDocument = {
-        codeTreeTitle: "",
-        budgetThisPeriod: "",
-        budgetAtComplete: "",
-        originalBudget: "",
-        costForcast: "",
-        parentId: ""
-      };
+      this.clear();
       let data = result
       let state = this.state;
       state['_' + saveDocument.id] = true;
@@ -273,14 +262,13 @@ class CostCodingTreeAddEdit extends Component {
         trees: data,
         state,
         viewPopUp: false,
-        document: treeDocument,
         isLoading: false,
         IsFirstParent: false,
       });
 
     }).catch(ex => {
-      this.setState({ viewPopUp: false, isLoading: false });
-
+      this.setState({ viewPopUp: false, isLoading: false }); 
+      this.clear();
       toast.error(Resources["failError"][currentLanguage]);
     });
   }
@@ -296,33 +284,37 @@ class CostCodingTreeAddEdit extends Component {
       })
       this.setState({ state })
     }
-
+    this.clear();
     dataservice.addObject("EditCostCodeTree", saveDocument).then(result => {
       toast.success(Resources["operationSuccess"][currentLanguage]);
-      let treeDocument = {
-        codeTreeTitle: "",
-        budgetThisPeriod: "",
-        budgetAtComplete: "",
-        originalBudget: "",
-        costForcast: "",
-        parentId: ""
-      };
+      this.clear();
       let itemId = saveDocument.id
       let state = this.state
       state[itemId] = saveDocument
       this.setState({
         viewPopUp: false,
-        document: treeDocument,
         state,
         isLoading: false
       });
       treeContainer = null
-    })
-      .catch(ex => {
-        this.setState({ viewPopUp: false, isLoading: false });
+    }).catch(ex => {
+      this.setState({ viewPopUp: false, isLoading: false });
+      toast.error(Resources["failError"][currentLanguage]);
+      this.clear();
+    });
 
-        toast.error(Resources["failError"][currentLanguage]);
-      });
+  }
+
+  clear = () => {
+    let treeDocument = {
+      codeTreeTitle: "",
+      budgetThisPeriod: "",
+      budgetAtComplete: "",
+      originalBudget: "",
+      costForcast: "",
+      parentId: ""
+    };
+    this.setState({ document: treeDocument })
   }
 
   DeleteDocument(id) {
@@ -341,7 +333,6 @@ class CostCodingTreeAddEdit extends Component {
       this.setState({ state })
     }
     Api.post("DeleteCostCodeTree?id=" + this.state.docId).then(result => {
-
       let state = this.state
       state[this.state.docId] = -1
       if (result != null)
@@ -356,7 +347,9 @@ class CostCodingTreeAddEdit extends Component {
     });
   }
 
-
+  clickHandlerCancelMain = () => {
+    this.setState({ showDeleteModal: false });
+  }
 
   render() {
     return (
