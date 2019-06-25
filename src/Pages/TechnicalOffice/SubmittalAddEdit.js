@@ -205,8 +205,10 @@ class SubmittalAddEdit extends Component {
     this.checkDocumentIsView();
   }
 
-  componentWillReceiveProps(nextProps, prevProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.document.id) {
+
+      let doc = { ...nextProps.document }
 
       nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
       nextProps.document.forwardToDate = nextProps.document.forwardToDate != null ? moment(nextProps.document.forwardToDate).format("DD/MM/YYYY") : moment();
@@ -214,21 +216,24 @@ class SubmittalAddEdit extends Component {
       let obj = this.state.SubmittalTypes.find(o => o.label === nextProps.document.submittalType);
 
       this.setState({
+        document: doc,
         selectedSubmittalType: nextProps.document.submittalType != "" ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
         isEdit: true,
-        document: nextProps.document,
+
         hasWorkflow: nextProps.hasWorkflow
       });
 
       dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + nextProps.document.id).then(result => {
         if (result) {
+          let cycle = result
+
           result.docDate = result.docDate != null ? moment(result.docDate).format("DD/MM/YYYY") : moment();
           result.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format("DD/MM/YYYY") : moment();
 
           this.setState({
-            documentCycle: { ...result },
-            addCycleSubmital: { ...result },
-            selectedFromContactCycles: { label: result.flowContactName, value: result.flowContactId }
+            documentCycle: { ...cycle },
+            addCycleSubmital: { ...cycle },
+            selectedFromContactCycles: { label: cycle.flowContactName, value: cycle.flowContactId }
           });
         }
 
@@ -865,6 +870,7 @@ class SubmittalAddEdit extends Component {
 
     let saveDocument = this.state.document;
 
+
     saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.forwardToDate = moment(saveDocument.forwardToDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
@@ -959,6 +965,7 @@ class SubmittalAddEdit extends Component {
       });
 
       let saveDocument = { ...this.state.document };
+
       saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
       saveDocument.forwardToDate = moment(saveDocument.forwardToDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
@@ -968,7 +975,7 @@ class SubmittalAddEdit extends Component {
         this.setState({
           docId: result.id,
           isLoading: false,
-          Stepes: this.state.Stepes + 1,
+          //Stepes: this.state.Stepes + 1,
           SecondStepComplate: true,
           ThirdStepComplate: false,
           FourthStepComplate: false
@@ -980,11 +987,11 @@ class SubmittalAddEdit extends Component {
 
         toast.error(Resources["failError"][currentLanguage]);
       });
-    } else {
+    } else { 
       this.setState({
         Stepes: this.state.Stepes + 1
       });
-    }
+    } 
   }
 
   saveAndExit(event) {
@@ -1418,8 +1425,7 @@ class SubmittalAddEdit extends Component {
 
     let saveCycle = this.state.addCycleSubmital;
 
-    saveCycle.docDate = moment(saveCycle.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-
+   saveCycle.docDate = moment(saveCycle.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     dataservice.addObject("AddLogSubmittalCycles", saveCycle).then(result => {
 
       let originalData = this.state.submittalItemData;
@@ -1726,7 +1732,7 @@ class SubmittalAddEdit extends Component {
                                       </label>
                                       <div className="linebylineInput">
                                         <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker date={this.state.document.docDate} 
+                                          <ModernDatepicker date={this.state.document.docDate}
                                             onChange={e => this.handleChangeDate(e, "docDate")} />
                                         </div>
                                       </div>
@@ -1743,8 +1749,8 @@ class SubmittalAddEdit extends Component {
                                       </label>
                                       <div className="linebylineInput">
                                         <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker date={this.state.document.forwardToDate} 
-                                            onChange={e => this.handleChangeDate(e, "forwardToDate")}  />
+                                          <ModernDatepicker date={this.state.document.forwardToDate}
+                                            onChange={e => this.handleChangeDate(e, "forwardToDate")} />
                                         </div>
                                       </div>
                                     </div>
@@ -2006,7 +2012,7 @@ class SubmittalAddEdit extends Component {
                                               </label>
                                               <div className="linebylineInput">
                                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                                  <ModernDatepicker date={this.state.documentCycle.docDate} 
+                                                  <ModernDatepicker date={this.state.documentCycle.docDate}
                                                     onChange={e => this.handleChangeDateCycles(e, "docDate")} />
                                                 </div>
                                               </div>
@@ -2071,8 +2077,8 @@ class SubmittalAddEdit extends Component {
                                               </label>
                                               <div className="linebylineInput">
                                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                                  <ModernDatepicker date={this.state.documentCycle.approvedDate} 
-                                                    onChange={e => this.handleChangeDateCycles(e, "approvedDate")}  />
+                                                  <ModernDatepicker date={this.state.documentCycle.approvedDate}
+                                                    onChange={e => this.handleChangeDateCycles(e, "approvedDate")} />
                                                 </div>
                                               </div>
                                             </div>
@@ -2163,7 +2169,7 @@ class SubmittalAddEdit extends Component {
                                               </label>
                                               <div className="linebylineInput">
                                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                                  <ModernDatepicker date={this.state.itemsDocumentSubmital.submitalDate} 
+                                                  <ModernDatepicker date={this.state.itemsDocumentSubmital.submitalDate}
                                                     onChange={e => this.handleChangeDateItems(e, "submitalDate")}
                                                     placeholder={"Select a date"} />
                                                 </div>
@@ -2398,7 +2404,7 @@ class SubmittalAddEdit extends Component {
                                   <div className="linebylineInput">
                                     <div className="inputDev ui input input-group date NormalInputDate">
                                       <ModernDatepicker date={this.state.itemsDocumentSubmital.submitalDate}
-                                        onChange={e => this.handleChangeDateItems(e, "submitalDate")}  />
+                                        onChange={e => this.handleChangeDateItems(e, "submitalDate")} />
                                     </div>
                                   </div>
                                 </div>
@@ -2507,8 +2513,8 @@ class SubmittalAddEdit extends Component {
                             </label>
                             <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker date={this.state.addCycleSubmital.docDate} 
-                                  onChange={e => this.handleChangeDateCyclesPopUp(e, "docDate")}  />
+                                <ModernDatepicker date={this.state.addCycleSubmital.docDate}
+                                  onChange={e => this.handleChangeDateCyclesPopUp(e, "docDate")} />
                               </div>
                             </div>
                           </div>
@@ -2606,3 +2612,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SubmittalAddEdit));
+  

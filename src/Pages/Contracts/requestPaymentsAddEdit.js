@@ -101,13 +101,13 @@ class requestPaymentsAddEdit extends Component {
         let userType = Config.getPayload();
 
         this.state = {
-            trees : [],
+            trees: [],
             showCostCodingTree: false,
             showDeleteModal: false,
             userType: userType.uty,
             fillDropDown: [{ label: "AddMissingAmendments", value: "1" }, { label: "ReCalculatorPayment", value: "2" }, { label: "UpdateItemsFromVO", value: "3" }],
-            selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0"},
-            selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0"},
+            selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
+            selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
             fillDropDownTress: [],
             fillDropDownExport: [{ label: "Export", value: "1" }, { label: "ExportAsVo", value: "2" }],
             selectedDropDown: [{ label: "Admin Actions", value: "0" }],
@@ -160,16 +160,17 @@ class requestPaymentsAddEdit extends Component {
             comment: '',
             viewPopUpRows: false,
             currentObject: {},
-            deductionId: 0,
+            currentId: 0,
             exportFile: "",
             isView: false,
             viewUpdatePayment: false,
             viewUpdateCalc: false,
             actualPayments: 0,
-            percentageStatus : [{label :"percentage",value:1 },{label :"Actual Value",value:2 }],
-            id:1,
-            itemId:0,
-            quantityComplete:0
+            percentageStatus: [{ label: "percentage", value: 1 }, { label: "Actual Value", value: 2 }],
+            id: 1,
+            itemId: 0,
+            quantityComplete: 0,
+            currentDocument: ""
         }
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
@@ -424,7 +425,7 @@ class requestPaymentsAddEdit extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
+                filterable: false,
                 sortDescendingFirst: true,
                 formatter: addCostCodingTree
             })
@@ -580,9 +581,9 @@ class requestPaymentsAddEdit extends Component {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
 
-            dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId="+this.state.projectId,"codeTreeTitle","id").then(result => {
+            dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
                 this.setState({
-                    fillDropDownTress : result
+                    fillDropDownTress: result
                 });
             })
 
@@ -1105,16 +1106,15 @@ class requestPaymentsAddEdit extends Component {
                 }
             }
         } else {
+            dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId=" + this.state.docId + "&reqItemId=" + value.id).then(result => {
 
-            dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId="+this.state.docId+"&reqItemId="+value.id).then(result => {
- 
                 this.setState({
-                    itemId:value.id,
-                    quantityComplete : value.quantityComplete,
-                    trees:result != null ? result : [],
+                    itemId: value.id,
+                    quantityComplete: value.quantityComplete,
+                    trees: result != null ? result : [],
                     showCostCodingTree: true
                 })
-             this.costCodingTree.show();
+                this.costCodingTree.show();
             })
         }
     }
@@ -1142,7 +1142,6 @@ class requestPaymentsAddEdit extends Component {
 
                                             this.ViewHistoryModal.show()
                                         });
-
                                     }
                                 }
                             }) : null),
@@ -1153,9 +1152,7 @@ class requestPaymentsAddEdit extends Component {
                                     this.setState({
                                         showCommentModal: true,
                                         comment: row.comment
-
                                     });
-
                                     this.addCommentModal.show()
                                 }
                             }
@@ -1588,10 +1585,11 @@ class requestPaymentsAddEdit extends Component {
         });
     }
 
-    viewConfirmDelete(id) {
+    viewConfirmDelete(id, type) {
         this.setState({
-            deductionId: id,
-            showDeleteModal: true
+            currentId: id,
+            showDeleteModal: true,
+            currentDocument: type
         });
     }
 
@@ -1601,27 +1599,48 @@ class requestPaymentsAddEdit extends Component {
 
     clickHandlerContinueMain = () => {
 
-        let id = this.state.deductionId;
+        if (this.state.currentDocument === "deduction") {
 
-        dataservice.GetDataGrid("ContractsRequestPaymentsDeductionsDelete?id=" + id + "&requestId=" + this.state.docId).then(result => {
+            let id = this.state.currentId;
 
-            let originalData = this.state.deductionObservableArray;
+            dataservice.GetDataGrid("ContractsRequestPaymentsDeductionsDelete?id=" + id + "&requestId=" + this.state.docId).then(result => {
+
+                let originalData = this.state.deductionObservableArray;
 
 
-            let getIndex = originalData.findIndex(x => x.id === id);
+                let getIndex = originalData.findIndex(x => x.id === id);
+
+                originalData.splice(getIndex, 1);
+
+                this.setState({
+                    deductionObservableArray: originalData,
+                    showDeleteModal: false
+                });
+
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+
+            }).catch(ex => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            });
+        } else {
+
+            if(this.props.changeStatus){
+                dataservice.GetDataGrid("DeleteDistributionItems?id="+this.state.currentId).then(result => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                });
+            }
+
+            let originalData = this.state.trees;
+
+            let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
 
             originalData.splice(getIndex, 1);
 
             this.setState({
-                deductionObservableArray: originalData,
+                trees: originalData,
                 showDeleteModal: false
             });
-
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-
-        }).catch(ex => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
+        }
     }
 
     handleDropActionForExportFile = (event) => {
@@ -1696,48 +1715,61 @@ class requestPaymentsAddEdit extends Component {
     }
 
     addCostTree = () => {
-        let costCodingId = this.state.selectedDropDownTrees.value ;
-        
-        if(costCodingId != "0"){
-    
-            let isExist = this.state.trees.find(x=>x.costCodingId=== costCodingId);
+        let costCodingId = this.state.selectedDropDownTrees.value;
 
-            if(isExist == undefined){
+        if (costCodingId != "0") {
 
-                let lastCodingItems = this.state.trees;
+            let isExist = this.state.trees.find(x => x.costCodingId === costCodingId);
+
+            if (isExist == undefined) {
 
                 let objTree = {};
 
-                objTree.id= this.state.id;
-                objTree.requestItemId= this.state.itemId;
-                objTree.requestId= this.state.docId;
-                objTree.costCodingId= this.state.selectedDropDownTrees.value;
-                objTree.costCodingTitle= this.state.selectedDropDownTrees.label;
-                objTree.value= 0;
-                objTree.percentageId=1;
-                objTree.qtyCompelete= this.state.quantityComplete;
+                objTree.id = this.state.id;
+                objTree.requestItemId = this.state.itemId;
+                objTree.requestId = this.state.docId;
+                objTree.costCodingId = this.state.selectedDropDownTrees.value;
+                objTree.costCodingTitle = this.state.selectedDropDownTrees.label;
+                objTree.value = 0;
+                objTree.percentageId = 1;
+                objTree.qtyCompelete = this.state.quantityComplete;
                 objTree.date = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
-                lastCodingItems.push(objTree);
+                if (this.props.changeStatus) {
 
-                this.setState({
-                    id:(this.state.id + 1),
-                    trees : lastCodingItems
-                });
- 
-            }else{
+                    let lastCodingItems = this.state.trees; 
+
+                    dataservice.addObject("AddDistributionQuantityForEdit", objTree).then(result => {
+                        lastCodingItems.push(objTree);
+                        this.setState({
+                            trees: lastCodingItems
+                        });
+                    });
+                }
+                else {
+                    let lastCodingItems = this.state.trees;
+
+
+                    lastCodingItems.push(objTree);
+
+                    this.setState({
+                        id: (this.state.id + 1),
+                        trees: lastCodingItems
+                    });
+                }
+            } else {
                 toast.warn("This CostCodingTree Already Added");
             }
-        }else{
+        } else {
             toast.warn("Please Choose CostCodingTree");
         }
     }
 
     handleDropTrees = (event) => {
-        if (event == null) return; 
+        if (event == null) return;
 
         this.setState({
-            selectedDropDownTrees:event
+            selectedDropDownTrees: event
         });
     }
 
@@ -1748,11 +1780,9 @@ class requestPaymentsAddEdit extends Component {
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={e => {
-                    //const updatedItem = this.state.trees[cellInfo.index].value;
                     const trees = [...this.state.trees];
                     trees[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                    //updatedItem = trees[cellInfo.index]
-                    this.setState({ trees }); 
+                    this.setState({ trees });
                 }}
                 dangerouslySetInnerHTML={{
                     __html: this.state.trees[cellInfo.index].value
@@ -1762,20 +1792,39 @@ class requestPaymentsAddEdit extends Component {
     }
 
     actionHandler = (key, e) => {
-        let state = {};
-        state[key + '-drop'] = e;
+
+        let state = this.state;
+
+        state[key.id + '-drop'] = e;
 
         let lastData = this.state.trees;
 
-        let data = lastData.findIndex(x=> x.id ===key.id);
- 
-        if(data){
-            if(lastData[data].percentageId != 1){
+        let data = lastData.findIndex(x => x.id === key.id);
+
+        if (data != undefined || data != null) {
+            if (lastData[data].percentageId != 1) {
                 lastData[data].value = lastData[data].qtyCompelete * lastData[data].value
             }
         }
- 
-        this.setState({state,trees:lastData});
+
+        this.setState({ state, trees: lastData });
+    }
+
+    AddedItems = () => {
+        if (this.state.trees.length > 0) {
+            this.setState({ isLoading: true });
+
+            let originalData = this.state.trees;
+
+            originalData = originalData.map(x => (x.value = parseFloat(x.value)));
+
+            dataservice.addObject("AddDistributionQuantity", originalData).then(result => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.setState({ showCostCodingTree: false, isLoading: false });
+            });
+        } else {
+            toast.success("Please Add CostCodingTree");
+        }
     }
 
     render() {
@@ -1796,7 +1845,7 @@ class requestPaymentsAddEdit extends Component {
                 accessor: "id",
                 Cell: ({ row }) => {
                     return (
-                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDelete(row._original.id)}>
+                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDelete(row._original.id, "deduction")}>
                             <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
                         </div>
                     );
@@ -1838,7 +1887,7 @@ class requestPaymentsAddEdit extends Component {
                 accessor: "id",
                 Cell: ({ row }) => {
                     return (
-                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDelete(row._original.id)}>
+                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDelete(row._original.id, "trees")}>
                             <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
                         </div>
                     );
@@ -1864,8 +1913,8 @@ class requestPaymentsAddEdit extends Component {
                     return (
                         <div className="shareLinks">
                             <Dropdown title="" data={this.state.percentageStatus} handleChange={e => this.actionHandler(row._original, e)}
-                              selectedValue={this.state[row._original.percentageId + '-drop']} index={Date.now()} />
-                       </div>
+                                selectedValue={this.state[row._original.id + '-drop']} name={row._original.id + '-drop'} index={Date.now()} />
+                        </div>
                     );
                 },
                 width: 200
@@ -2659,13 +2708,13 @@ class requestPaymentsAddEdit extends Component {
                             <div className="fullWidthWrapper linebylineInput">
                                 <label className="control-label">{Resources.costCodingTree[currentLanguage]}</label>
                                 <div className="shareLinks">
-                                     <Dropdown 
+                                    <Dropdown
                                         data={this.state.fillDropDownTress}
                                         selectedValue={this.state.selectedDropDownTrees}
                                         handleChange={event => this.handleDropTrees(event)}
                                         name="costCodingTree"
                                         index="costCodingTree" />
-                                     <div style={{ marginLeft: '8px' }} onClick={e => this.addCostTree()}>
+                                    <div style={{ marginLeft: '8px' }} onClick={e => this.addCostTree()}>
                                         <span className="collapseIcon"><span className="plusSpan greenSpan">+</span>
                                             <span>{Resources.add[currentLanguage]}</span>
                                         </span>
@@ -2674,8 +2723,24 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         </div>
                         <div className="fullWidthWrapper">
-                        <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
-                        </div> 
+                            <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
+                        </div>
+                        {
+                            this.state.isLoading === false ?
+                                <div className="fullWidthWrapper">
+                                    <button className="primaryBtn-1 btn " type="button" onClick={this.AddedItems}>{Resources.save[currentLanguage]}</button>
+                                </div> :
+                                (
+                                    <div className="fullWidthWrapper">
+                                        <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                            <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                            </div>
+                                        </button>
+                                    </div>)
+                        }
 
                     </SkyLight>
                 </div>

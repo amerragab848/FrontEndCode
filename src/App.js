@@ -26,6 +26,13 @@ const IsAuthorize = api.IsAuthorized()
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      responsive: false
+    }
+  }
+
   componentWillMount() {
     let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
     if (currentLanguage == null)
@@ -33,19 +40,35 @@ class App extends Component {
 
     if (currentLanguage == "ar") {
       require("./Styles/scss/ar-eg/layout-ar.css");
-      require("./Styles/scss/ar-eg/reactCss-ar.css");
+      require("./Styles/scss/ar-eg/ReactCss-ar.css");
     } else {
       require("./Styles/scss/en-us/layout.css");
       require("./Styles/scss/en-us/reactCss.css")
     }
   }
 
+  componentDidMount = () => {
+    this.responsiveMsg()
+
+    window.addEventListener("resize", this.responsiveMsg.bind(this), false)
+  }
+
+  responsiveMsg = () => {
+    if (window.innerWidth < 1025) {
+      this.setState({ responsive: true })
+    } else {
+      this.setState({ responsive: false })
+    }
+  }
+
   render() {
     const showComp = IsAuthorize ?
-      <div>
-        <Menu />
-        {Route}
-      </div>
+      this.state.responsive ?
+        <p>moutasem</p>
+        : <div>
+          <Menu />
+          {Route}
+        </div>
       : <Login />
     return (
       <Provider store={store}>
