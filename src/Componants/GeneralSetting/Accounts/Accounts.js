@@ -32,7 +32,7 @@ class Accounts extends Component {
         const columnsGrid = [
             {
                 key: 'BtnActions',
-                width: 150
+                width: 80
             },
             {
                 key: "id",
@@ -123,7 +123,7 @@ class Accounts extends Component {
             {
                 key: "groupName",
                 name: Resources["GroupName"][currentLanguage],
-                width: 150,
+                width: 250,
                 draggable: true,
                 sortable: true,
                 resizable: true,

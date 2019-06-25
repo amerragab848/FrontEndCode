@@ -164,6 +164,7 @@ import autoDeskViewer from "./Componants/OptionsPanels/AutoDeskViewer";
 import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit"; 
 import procurementAddEdit from "./Pages/Procurement/procurementAddEdit"; 
 import RiskConesquence from "./Componants/publicComponants/RiskConesquence"; 
+import GlobalSearch from "./Componants/publicComponants/GlobalSearch"; 
 
 
 import RiskCause from './Componants/OptionsPanels/RiskCause';
@@ -342,11 +343,11 @@ let originalRoutes = [
     , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} /> 
     , <Route path="/materialReleaseAddEdit" component={materialReleaseAddEdit} /> 
     , <Route path="/procurementAddEdit" component={procurementAddEdit} /> 
-    , <Route path="/RiskCause" component={RiskCause} /> 
-    
+    , <Route path="/RiskCause" component={RiskCause} />  
     , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
     , <Route path="/autoDeskViewer" component={autoDeskViewer} /> 
     , <Route path="/RiskConesquence" component={RiskConesquence} /> 
+    , <Route path="/GlobalSearch" component={GlobalSearch} /> 
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]

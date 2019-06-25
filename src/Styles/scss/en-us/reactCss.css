@@ -7102,7 +7102,7 @@ div#markup-panel {
 
 .checkbox-align {
     text-align: center;
-    padding: 0 10px;
+    /* padding: 0 10px; */
 }
 
 label + .ui.checkbox {
@@ -7419,3 +7419,8 @@ div#markup-panel {
     left: 0 !important;
     bottom: 0 !important;
 }
+.costHeader {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #DADEE6;
+ }
