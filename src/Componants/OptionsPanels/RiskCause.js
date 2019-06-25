@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import LoadingSection from "../publicComponants/LoadingSection";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
@@ -13,12 +11,6 @@ import moment from 'moment';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const ValidtionSchema = Yup.object().shape({
-    description: Yup.string()
-        .required(Resources['descriptionRequired'][currentLanguage])
-        .max(500, Resources['maxLength'][currentLanguage]),
-})
-
 class RiskCause extends Component {
     constructor(props) {
         super(props)
@@ -28,13 +20,15 @@ class RiskCause extends Component {
             riskId: this.props.riskId,
             showDeleteModal: false,
             rowId: 0,
-            index: -1
+            index: -1,
+            description: '',
+            hasError: false
         }
     }
 
-    componentWillMount = () => { 
+    componentWillMount = () => {
         let rows = this.state.rows;
-        if (rows.length == 0) {
+        if (rows.length == 0 && this.state.riskId > 0) {
             dataservice.GetDataGrid('GetRiskCause?riskId=' + this.state.riskId).then(result => {
                 if (result) {
                     this.setState({
@@ -43,12 +37,11 @@ class RiskCause extends Component {
                     })
                 }
             })
-
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.riskId !== this.props.riskId) {
+        if (nextProps.riskId !== this.props.riskId && nextProps.riskId > 0) {
             dataservice.GetDataGrid('GetRiskCause?riskId=' + this.state.riskId).then(result => {
                 if (result) {
                     this.setState({
@@ -60,20 +53,12 @@ class RiskCause extends Component {
         }
     }
 
-    DeleteItem = (rowId, index) => {
-        if (index === undefined) {
-            this.setState({
-                showDeleteModal: true,
-                rowId: rowId,
-            })
-        }
-        else {
-            this.setState({
-                showDeleteModal: true,
-                rowId: rowId,
-                index: index
-            })
-        }
+    DeleteItem = (rowId) => {
+
+        this.setState({
+            showDeleteModal: true,
+            rowId: rowId,
+        })
     }
 
     ConfirmationDelete = () => {
@@ -99,25 +84,40 @@ class RiskCause extends Component {
     }
 
     AddItem = (values) => {
-        this.setState({ isLoading: true })
-        dataservice.addObject('AddRiskCause', {
-            id: undefined,
-            riskId: this.state.riskId,
-            comment: values.description,
-            addedDate: moment()
-        }).then(
-            res => {
+
+        if (this.state.description.length > 0) {
+            this.setState({ isLoading: true, hasError: false })
+
+            dataservice.addObject('AddRiskCause', {
+                id: undefined,
+                riskId: this.state.riskId,
+                comment: this.state.description,
+                addedDate: moment()
+            }).then(
+                res => {
+                    this.setState({
+                        rows: res,
+                        isLoading: false,
+                        description: ''
+                    })
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                }
+            ).catch(ex => {
                 this.setState({
-                    rows: res,
-                    isLoading: false
+                    isLoading: false,
+                    description: ''
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-            }
-        ).catch(ex => {
-            this.setState({ isLoading: false })
-            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            });
+        } else {
+            this.setState({ hasError: true })
+        }
+    }
+
+    handleChange(e) {
+        this.setState({
+            description: e.target.value
         });
-        values.description = ''
     }
 
     render() {
@@ -125,18 +125,17 @@ class RiskCause extends Component {
         let RenderRiskTable = this.state.rows.map((item, index) => {
             return (
                 this.state.isLoading === false ?
-                    <tr key={item.id}>
+                    <tr key={item.id + '-' + index}>
                         <td className="removeTr">
                             <div className="contentCell tableCell-1">
-                                <span className="pdfImage" onClick={() => this.DeleteItem(item.id, index)} >
-                                    <img src={Recycle} alt="pdf" />
+                                <span className="pdfImage" onClick={(e) => this.DeleteItem(item.id)} >
+                                    <img src={Recycle} alt="Delete" />
                                 </span>
                             </div>
                         </td>
                         <td>
                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.comment}</div>
                         </td>
-
                     </tr>
                     : <LoadingSection />)
         })
@@ -148,36 +147,18 @@ class RiskCause extends Component {
                         <h2 className="zero">{Resources['riskCause'][currentLanguage]}</h2>
                     </header>
                     <div className="dropWrapper">
-                        <Formik
-                            validationSchema={ValidtionSchema}
-                            initialValues={{
-                                description: '',
-                            }}
-                            onSubmit={(values) => {
-                                this.AddItem(values)
-                            }} >
-                            {({ errors, touched, handleBlur, handleChange, values }) => (
-                                <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
-                                    <div className="doc-input-btn customeError" style={{ border: 'none' }}>
-                                        <div className="fillter-item-c fullInputWidth">
-                                            <label className="control-label"> {Resources['description'][currentLanguage]}</label>
-                                            <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
-                                                <input name='description' autoComplete='off' id='description'
-                                                    value={values.description} className="form-control" placeholder={Resources['description'][currentLanguage]}
-                                                    onBlur={(e) => { handleBlur(e) }}
-                                                    onChange={(e) => {
-                                                        handleChange(e)
-                                                    }} />
-                                                {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
-                                            </div>
-                                        </div>
 
-                                        <button className="primaryBtn-1 btn mediumBtn" type="submit"  >{Resources['add'][currentLanguage]}</button>
-                                    </div>
-
-                                </Form>
-                            )}
-                        </Formik>
+                        <div className="doc-input-btn customeError" style={{ border: 'none' }}>
+                            <div className="fillter-item-c fullInputWidth">
+                                <label className="control-label"> {Resources['description'][currentLanguage]}</label>
+                                <div className={"inputDev ui input" + (this.state.hasError ? (" has-error") : " ")} >
+                                    <input name='description' autoComplete='off' id='description' required
+                                        value={this.state.description} className="form-control" placeholder={Resources['description'][currentLanguage]}
+                                        onChange={(e) => { this.handleChange(e) }} />
+                                </div>
+                            </div>
+                            <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.AddItem(e)} >{Resources['add'][currentLanguage]}</button>
+                        </div>
 
                         <div className="doc-pre-cycle letterFullWidth">
                             <div className='document-fields'>

@@ -18260,19 +18260,7 @@
         "isTime": false,
         "isCustom": true,
           "exportDataType": "s"
-      },
-      {
-        "field": "refDoc",
-        "friendlyName": "refDoc",
-        "minWidth": 85,
-        "width": "3%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "statusName",
         "friendlyName": "status",
@@ -18380,31 +18368,7 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "s"
-      },
-      {
-        "field": "likelihood",
-        "friendlyName": "likelihood",
-        "minWidth": 85,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": true,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
-      },
-      {
-        "field": "discipline",
-        "friendlyName": "disciplineName",
-        "minWidth": 85,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+      },  
       {
         "field": "docCloseDate",
         "friendlyName": "docClosedate",
@@ -18416,19 +18380,7 @@
         "cellTemplate": "",
         "isCustom": false,
         "exportDataType": "d"
-      },
-      {
-        "field": "building",
-        "friendlyName": "Building",
-        "minWidth": 85,
-        "width": "3%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": false,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "oppenedBy",
         "friendlyName": "openedBy",

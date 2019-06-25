@@ -5,13 +5,11 @@ import moment from "moment";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 class DatePicker extends Component {
 
-    //function DatePicker() {
     constructor(props) {
         super(props);
         this.state = {
             Date: this.props.startDate,
         }
-        //this.handleChange=this.handleChange.bind(this);
     }
 
     handleChange() {
@@ -20,7 +18,9 @@ class DatePicker extends Component {
 
     componentWillReceiveProps = (nextprops) => {
         if (nextprops.startDate) {
-            this.setState({ Date:moment(nextprops.startDate).format('YYYY-MM-DD') })
+            this.setState({
+                Date: nextprops.startDate === null ? moment().format('YYYY-MM-DD') : moment(nextprops.startDate).format('YYYY-MM-DD')
+            })
         }
     }
 

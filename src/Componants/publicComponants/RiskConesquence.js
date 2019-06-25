@@ -22,7 +22,7 @@ class RiskConesquence extends Component {
     }
 
     componentWillMount() {
-        dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=consequences").then(result => {
+        dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=ConsequencesFactosrs").then(result => {
             if (result) {
                 this.setState({
                     conesquenceList: result, isLoading: false
@@ -33,6 +33,7 @@ class RiskConesquence extends Component {
                     conesquenceList: [], isLoading: false
                 });
         });
+
         if (this.state.riskId) {
             dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
                 this.setState({
@@ -75,14 +76,14 @@ class RiskConesquence extends Component {
                 riskId: this.state.riskId,
                 conesquenceId: item.id,
                 comment: '',
-                addedDate: moment().format('MM/DD/YYYY')
+                addedDate: moment().format('MM/DD/YYYY'),
+                
             }
             this.setState({ isLoading: true })
             dataservice.addObject('AddConesquence', conesquenceObj).then(result => {
                 let conesquenceItems = this.state.conesquenceItems;
                 let conesquenceItem = result;
-                if (result.id > 0) {
-                    //conesquenceItem.addedDate = moment(conesquenceItem).format("DD/MM/YYYY");
+                if (result.id > 0) { 
                     conesquenceItems.push(conesquenceItem);
                     this.setState({ conesquenceItems, isLoading: false, [item.id]: false })
                 }

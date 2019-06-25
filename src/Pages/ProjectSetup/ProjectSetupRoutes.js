@@ -56,7 +56,8 @@ let routes = [
         settings: {
             General: true,
             permission: 778,
-            caption: "procoor-icon-task-groups"
+            caption: "procoor-icon-task-groups",
+            order: 7
         }
     },
     {
@@ -67,7 +68,8 @@ let routes = [
         settings: {
             General: true,
             permission: 629,
-            caption: "procoor-icon-task-groups"
+            caption: "procoor-icon-task-groups",
+            order: 6
         }
     },
 
@@ -79,10 +81,10 @@ let routes = [
         settings: {
             General: true,
             permission: 778,
-            caption: "procoor-icon-task-groups"
+            caption: "procoor-icon-task-groups",
+            order: 5
         }
-    },
-
+    }, 
     {
         route: "WorkFlow",
         moduleId: "CommonLog",
@@ -91,7 +93,8 @@ let routes = [
         settings: {
             General: true,
             permission: 778,
-            caption: "procoor-icon-task-groups"
+            caption: "procoor-icon-task-groups",
+            order: 1
         }
     },{
         route: "AccountsAlerts",
@@ -101,7 +104,8 @@ let routes = [
         settings: {
             General: true,
             permission: 3274,
-            caption: "procoor-icon-task-groups"
+            caption: "procoor-icon-task-groups",
+            order: 3
         }
     },
     ,{
@@ -112,7 +116,8 @@ let routes = [
         settings: {
             General: true,
             permission: 3274,
-            caption: "procoor-icon-task-groups"
+            caption: "procoor-icon-task-groups",
+            order: 4
         }
     },
 

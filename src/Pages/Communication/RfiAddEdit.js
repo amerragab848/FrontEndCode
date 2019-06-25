@@ -8,7 +8,6 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ModernDatepicker from 'react-modern-datepicker';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -194,8 +193,8 @@ class RfiAddEdit extends Component {
             if (Config.IsAllow(75) || Config.IsAllow(76) || Config.IsAllow(78)) {
             }
         } else {
+            //field
             const rfiDocument = {
-                //field
                 projectId: projectId,
                 fromCompanyId: null,
                 toCompanyId: null,
@@ -256,10 +255,8 @@ class RfiAddEdit extends Component {
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
 
-                let toCompanyId = this.props.document.toCompanyId;
-
-                if (toCompanyId) {
-
+                let toCompanyId = this.props.document.toCompanyId; 
+                if (toCompanyId) { 
                     this.setState({
                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
                     });
@@ -275,16 +272,14 @@ class RfiAddEdit extends Component {
         //discplines
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
             if (isEdit) {
-
                 let disciplineId = this.props.document.disciplineId;
-
                 if (disciplineId) {
-
-                    let disciplineName = result.find(i => i.value === disciplineId);
-
-                    this.setState({
-                        selectedDiscpline: { label: disciplineName.label, value: disciplineId }
-                    });
+                    let discipline = result.find(i => i.value === disciplineId);
+                    if (discipline) {
+                        this.setState({
+                            selectedDiscpline: { label: discipline.label, value: disciplineId }
+                        });
+                    }
                 }
             }
             this.setState({
@@ -294,16 +289,14 @@ class RfiAddEdit extends Component {
         //area
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
             if (isEdit) {
-
                 let areaId = this.props.document.area;
-
                 if (areaId) {
-
-                    let areaIdName = result.find(i => i.value === parseInt(areaId));
-
-                    this.setState({
-                        selectedArea: { label: areaIdName.label, value: areaId }
-                    });
+                    let area = result.find(i => i.value === parseInt(areaId));
+                    if (area) {
+                        this.setState({
+                            selectedArea: { label: area.label, value: areaId }
+                        });
+                    }
                 }
             }
             this.setState({
@@ -317,12 +310,12 @@ class RfiAddEdit extends Component {
                 let locationId = this.props.document.location;
 
                 if (locationId) {
-
-                    let locationName = result.find(i => i.value === parseInt(locationId));
-
-                    this.setState({
-                        selectedLocation: { label: locationName.label, value: locationId }
-                    });
+                    let location = result.find(i => i.value === parseInt(locationId));
+                    if (location) {
+                        this.setState({
+                            selectedLocation: { label: location.label, value: locationId }
+                        });
+                    }
                 }
             }
             this.setState({
@@ -416,7 +409,7 @@ class RfiAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-            }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+            });
         }
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value

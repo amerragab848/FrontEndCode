@@ -1325,6 +1325,10 @@
         "en": "Title",
         "ar": "العنوان"
     },
+    "proposeMitigation": {
+        "en": "Current Mitigation",
+        "ar": "Current Mitigation"
+    },
     "empTitle": {
         "en": "Title",
         "ar": "اللقب"
@@ -3731,6 +3735,10 @@
     "normal": {
         "en": "Normal",
         "ar": "عادى"
+    },
+    "thousand": {
+        "en": "Thousand",
+        "ar": "بالاف"
     },
     "portrait": {
         "en": "Portrait",
@@ -7822,12 +7830,20 @@
         "ar": "الشخص المسئول"
     },
     "preMedigationCostEMV": {
-        "en": "Pre-mitigation risk EMV",
-        "ar": "Pre-mitigation risk EMV"
+        "en": "Pre-Total Risk Ranking",
+        "ar": "Pre-Total Risk Ranking"
+    },
+    "preMedigationRiskQuantitfaction": {
+        "en": "Pre-Mitigation Risk Quantifaction",
+        "ar": "Pre-Mitigation Risk Quantifaction"
+    },
+    "postMedigationRiskQuantitfaction": {
+        "en": "Post Mitigation Risk Quantifaction",
+        "ar": "Post Mitigation Risk Quantifaction"
     },
     "postMedigationCostEMV": {
-        "en": "post-mitigation risk EMV",
-        "ar": "post-mitigation risk EMV"
+        "en": "Post-Total Risk Ranking",
+        "ar": "post-Total Risk Ranking"
     },
     "medigationCost": {
         "en": "Mitigation Cost",
@@ -7854,11 +7870,11 @@
         "ar": "Action Progress "
     },
     "preMedigationRiskQuantification": {
-        "en": "pre-Mitigation Risk Quantification",
+        "en": "Pre-Mitigation Risk Quantification Summary",
         "ar": "Pre-mitigation Risk Quantification"
     },
     "postMedigationRiskQuantification": {
-        "en": "Post-Mitigation Risk Quantification",
+        "en": "Post-Mitigation Risk Quantification Summary",
         "ar": "Post-mitigation Risk Quantification"
     },
     "mergeProjects": {
@@ -7878,8 +7894,8 @@
         "ar": "riskCause"
     },
     "riskConesquence": {
-        "en": "Risk Conesquence",
-        "ar": "RiskConesquence"
+        "en": "Risk Consequence",
+        "ar": "RiskConsequence"
     },
     "likelihood": {
         "en": "Likelihood",
@@ -7898,12 +7914,16 @@
         "ar": "Mitigation Type"
     },
     "consequence": {
-        "en": "Consequences Quantitifaction",
-        "ar": "consequences"
+        "en": "Quantitifaction",
+        "ar": "Quantitifaction"
     },
     "consequencesFactosrs": {
         "en": "Risk Consequences Factors",
         "ar": "Consequences Factosrs"
+    },
+    "currentPlannedMitigation": {
+        "en": "Current Mitigation",
+        "ar": "Current Mitigation"
     },
     "EMV": {
         "en": "Risk EMV",
@@ -7930,7 +7950,7 @@
         "ar": "برجاء إختيار الشخص المسئول"
     },
     "conesquenceName": {
-        "en": "Conesquence Name",
-        "ar": "conesquenceName"
+        "en": "Consequence Name",
+        "ar": "consequence Name"
     }
 }
