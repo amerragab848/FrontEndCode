@@ -26,12 +26,6 @@ const IsAuthorize = api.IsAuthorized()
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      responsive: false
-    }
-  }
 
   componentWillMount() {
     let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -47,25 +41,9 @@ class App extends Component {
     }
   }
 
-  componentDidMount = () => {
-    this.responsiveMsg()
-
-    window.addEventListener("resize", this.responsiveMsg.bind(this), false)
-  }
-
-  responsiveMsg = () => {
-    if (window.innerWidth < 1025) {
-      this.setState({ responsive: true })
-    } else {
-      this.setState({ responsive: false })
-    }
-  }
-
   render() {
     const showComp = IsAuthorize ?
-      this.state.responsive ?
-        <p>moutasem</p>
-        : <div>
+       <div>
           <Menu />
           {Route}
         </div>
