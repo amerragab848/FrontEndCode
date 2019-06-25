@@ -5,8 +5,7 @@ import 'react-table/react-table.css'
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import api from "../../api";
 import resources from '../../resources.json';
-
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 export default class DocumentEmailNotification extends Component {
