@@ -54,7 +54,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 class siteInstructionsAddEdit extends Component {
@@ -69,7 +69,7 @@ class siteInstructionsAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -96,7 +96,7 @@ class siteInstructionsAddEdit extends Component {
             docTypeId: 90,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            perviousRoute:perviousRoute,
+            perviousRoute: perviousRoute,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
@@ -136,6 +136,7 @@ class siteInstructionsAddEdit extends Component {
             }
         }
     };
+
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
@@ -145,20 +146,19 @@ class siteInstructionsAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
+            let doc = nextProps.document
+            doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+            doc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(doc.requiredDate).format('YYYY-MM-DD')
             this.setState({
-                document: nextProps.document,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
-            }, function () {
-                let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
-                let requiredDate = moment(this.state.document.requiredDate).format('DD/MM/YYYY')
-                this.setState({ document: { ...this.state.document, docDate: docDate, requiredDate: requiredDate } })
-            });
+            })
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -401,8 +401,8 @@ class siteInstructionsAddEdit extends Component {
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         dataservice.addObject('EditLogsSiteInstructions', saveDocument).then(result => {
             this.setState({
                 isLoading: false
@@ -410,18 +410,18 @@ class siteInstructionsAddEdit extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
+                this.props.history.push(
                     this.state.perviousRoute
-                  );
-            } 
+                );
+            }
         });
     }
 
     saveSiteInstruction(event) {
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.replayDate = moment(saveDocument.replayDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.replayDate = moment(saveDocument.replayDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         saveDocument.projectId = this.state.projectId;
         this.setState({ isLoading: true })
@@ -451,8 +451,9 @@ class siteInstructionsAddEdit extends Component {
     }
 
     handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); } 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false);  
+        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -518,9 +519,9 @@ class siteInstructionsAddEdit extends Component {
                                                 validationSchema={validationSchema}
                                                 enableReinitialize={this.props.changeStatus}
                                                 onSubmit={(values) => {
-                                                    
+
                                                     if (this.props.showModal) { return; }
-        
+
                                                     if (this.props.changeStatus === true && this.state.docId > 0) {
                                                         this.editSiteInstruction();
                                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {

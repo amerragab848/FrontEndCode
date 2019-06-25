@@ -153,7 +153,7 @@ class clientSelectionAddEdit extends Component {
         if (nextProps.document.id) {
             let docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY')
             let doc = nextProps.document
-            doc.docDate = docDate
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             this.setState({
                 document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -481,7 +481,7 @@ class clientSelectionAddEdit extends Component {
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         dataservice.addObject('EditLogsClientSelections', saveDocument).then(result => {
             this.setState({
                 isLoading: true
@@ -489,17 +489,14 @@ class clientSelectionAddEdit extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]); 
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
-                    this.state.perviousRoute
-                  );
+                this.props.history.push(this.state.perviousRoute );
             } 
         });
     }
 
     saveLetter(event) {
         let saveDocument = { ...this.state.document };
-
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
 
         dataservice.addObject('AddLogsClientSelections', saveDocument).then(result => {
