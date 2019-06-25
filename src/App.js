@@ -33,7 +33,7 @@ class App extends Component {
 
     if (currentLanguage == "ar") {
       require("./Styles/scss/ar-eg/layout-ar.css");
-      require("./Styles/scss/ar-eg/reactCss-ar.css");
+      require("./Styles/scss/ar-eg/ReactCss-ar.css");
     } else {
       require("./Styles/scss/en-us/layout.css");
       require("./Styles/scss/en-us/reactCss.css")
