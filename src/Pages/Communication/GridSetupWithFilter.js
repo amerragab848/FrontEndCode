@@ -8,6 +8,7 @@ import "../../Styles/scss/en-us/dataGrid.css";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 import moment from "moment";
+import { relative } from "path";
 const _ = require("lodash");
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -88,9 +89,7 @@ class GridSetupWithFilter extends Component {
       }
     };
 
-    return sortDirection === "NONE"
-      ? initialRows
-      : [...this.state.rows].sort(comparer);
+    return sortDirection === "NONE" ? initialRows : [...this.state.rows].sort(comparer);
   };
 
   getRows = (rows, filters) => {
@@ -259,118 +258,201 @@ class GridSetupWithFilter extends Component {
     });
   }
 
+  getRowsFilter = (rows, filters) => {
+    console.log(rows, filters);
+
+    if (this.state.filteredRows.length > 0) {
+
+      let rowsList = [];
+
+      let matched = 0;
+
+      if (Object.keys(filters).length > 1) {
+        
+        let Data = this.state.rows;
+
+        Data.forEach(row => {
+          matched = 0;
+          Object.keys(filters).forEach(key => {
+            let isValue = row[`${key}`];
+
+            if (isValue != "" && isValue != null) {
+              if (`${filters[key]}`.includes("|")) {
+                let searchDate = `${filters[key]}`.split("|");
+                let date = moment(row[`${key}`]).format("DD/MM/YYYY");
+                let startDate = searchDate[0];
+                let finishDate = searchDate[1];
+
+                if (date >= startDate && date <= finishDate) {
+                  matched++;
+                } else {
+                  matched = 0;
+                }
+              } else if (typeof filters[key] == 'number') {
+                if (row[`${key}`] === filters[key]) {
+                  matched++;
+                } else {
+                  matched = 0;
+                }
+              } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                matched++;
+              }
+              else {
+                matched = 0;
+              }
+            }
+          });
+          if (matched > 0) rowsList.push(row);
+        });
+
+        this.setState({
+          rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
+          Loading: false
+        });
+      } else { 
+        rows.forEach(row => {
+          matched = 0;
+          Object.keys(filters).forEach(key => {
+            let isValue = row[`${key}`];
+
+            if (isValue != "" && isValue != null) {
+              if (`${filters[key]}`.includes("|")) {
+                let searchDate = `${filters[key]}`.split("|");
+                let date = moment(row[`${key}`]).format("DD/MM/YYYY");
+                let startDate = searchDate[0];
+                let finishDate = searchDate[1];
+
+                if (date >= startDate && date <= finishDate) {
+                  matched++;
+                } else {
+                  matched = 0;
+                }
+              } else if (typeof filters[key] == 'number') {
+                if (row[`${key}`] === filters[key]) {
+                  matched++;
+                } else {
+                  matched = 0;
+                }
+              } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                matched++;
+              }
+              else {
+                matched = 0;
+              }
+            }
+          });
+          if (matched > 0) rowsList.push(row);
+        });
+
+        this.setState({
+          rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
+          Loading: false
+        });
+      }
+    }
+  };
+
   // getRowsFilter = (rows, filters) => {
-  //   console.log(rows, filters);
-
-  //   let rowsList = []; //selectors.getRows({ rows, filters });
-
-  //   Object.keys(filters).forEach(key =>
-  //     console.log(`key=${key} value=${filters[key]}`)
-  //   );
-
-  //   let matched = 0;
-  //   rows.forEach(row => {
-  //     matched = 0;
-  //     Object.keys(filters).forEach(key => {
-  //       let isValue = row[`${key}`];
-  //       if (isValue != "") {
-  //         if (`${filters[key]}`.includes("|")) {
-  //           let searchDate = `${filters[key]}`.split("|");
-  //           let date = moment(row[`${key}`]).format("DD/MM/YYYY");
-  //           let startDate = searchDate[0];
-  //           let finishDate = searchDate[1];
-
-  //           if (date >= startDate && date <= finishDate) {
-  //             matched++;
-  //           }
-  //         } else if (row[`${key}`].includes(`${filters[key]}`)) {
-  //           matched++;
-  //         } else {
-  //           matched = 0;
-  //         }
-  //       }
-  //     });
-  //     if (matched > 0) rowsList.push(row);
-  //   });
-
+  //   let rowsList = selectors.getRows({ rows, filters });
   //   this.setState({
   //     rows: rowsList
-  //   });
-  // };
-
-  getRowsFilter = (rows, filters) => {
-    let rowsList = selectors.getRows({ rows, filters });
-    this.setState({
-      rows: rowsList
-    })
-  }
+  //   })
+  // }
 
   showFilterMore = () => {
     this.setState({
-      ShowModelFilter: true
+      ShowModelFilter: true,
+      rows: this.props.rows
     });
   };
 
   saveFilter(event, index, name, type, key) {
-    var filter = {};
-    filter.key = type === "date" ? key : event.target.name;
-    //filter.filterTerm = "";
-    
-    //filter.key = event.target.name;
-    filter.filterTerm = event.target.value;
 
-    filter.type = type;
-    filter.column = {
-      rowType: "filter",
-      key: type === "date" ? key : event.target.name,
-      name: name,
-      filterable: true,
-      idx: index
-    };
+    if (this.state.filteredRows.length > 0) {
 
-    const newFilters = this.state.setFilters;
-    if (filter.filterTerm) {
+      this.setState({
+        Loading: true
+      });
+
+      var filter = {};
+      filter.key = type === "date" ? key : event.target.name;
+
+      filter.type = type;
+      filter.column = {
+        rowType: "filter",
+        key: type === "date" ? key : event.target.name,
+        name: name,
+        filterable: true,
+        idx: index
+      };
+
+      const newFilters = this.state.setFilters;
+
       if (type === "date") {
         newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
-      } else {
-        newFilters[filter.column.key] = filter;
       }
-    } else {
-      delete newFilters[filter.column.key];
+      else if (type === "number") {
+        newFilters[filter.column.key] = parseFloat(event.target.value);
+      } else if (event.target.value != "") {
+        newFilters[filter.column.key] = event.target.value;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+
+      let rows = [...this.state.filteredRows];
+
+      this.getRowsFilter(rows, newFilters);
+
+      this.setState({
+        setFilters: newFilters,
+        Loading: false
+      });
     }
-
-    // if (type === "date") {
-    //   newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
-    // }
-    // else if (event.target.value != "") {
-    //   newFilters[filter.column.key] = event.target.value;
-    // } else {
-    //   delete newFilters[filter.column.key];
-    // }
-
-    let rows = [...this.state.filteredRows];
-
-    this.getRowsFilter(rows, newFilters);
-
-    this.setState({
-      setFilters: newFilters
-    });
   }
 
   ClearFilters = () => {
-    var filterArray = Array.from(
-      document.querySelectorAll(".filterModal input")
-    );
+    var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
     filterArray.map(input => (input.value = ""));
-    this.setState({ rows: this.props.rows });
+
+    var filterArrayParent = Array.from(document.querySelectorAll("#resetData input"));
+    filterArrayParent.map(input => (input.value = ""));
+
+    let state = this.state;
+
+    this.props.columns.map((column, index) => {
+      if (column.type === "date") {
+        state[index + "-column"] = moment().format("DD/MM/YYYY");
+      }
+    });
+
+    this.setState({ rows: this.props.rows, setFilters: {}, state });
   };
 
   CloseModeFilter = () => {
-    var filterArray = Array.from(
-      document.querySelectorAll(".filterModal input")
-    );
+    var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
+
     filterArray.map(input => (input.value = ""));
-    this.setState({ rows: this.props.rows, ShowModelFilter: false });
+
+    this.setState({ ShowModelFilter: false });
+  };
+
+  resetModeFilter = () => { 
+
+    var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
+    filterArray.map(input => (input.value = ""));
+
+    var filterArrayParent = Array.from(document.querySelectorAll("#resetData input"));
+    filterArrayParent.map(input => (input.value = ""));
+
+    let state = this.state;
+
+    this.props.columns.map((column, index) => {
+      if (column.type === "date") {
+        state[index + "-column"] = moment().format("DD/MM/YYYY");
+      }
+    });
+
+    this.setState({ rows: this.props.rows, setFilters: {}, state });
   };
 
   changeDate(index, type) {
@@ -421,7 +503,6 @@ class GridSetupWithFilter extends Component {
     setTimeout(() => {
       this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
     }, 300);
-
   }
 
   ResetShowHide = () => {
@@ -443,8 +524,7 @@ class GridSetupWithFilter extends Component {
 
   render() {
     const { groupBy, rows } = this.state;
-    const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-    //const groupedRows = Data.Selectors.getRows({ rows, groupBy }) == null ? [] : Data.Selectors.getRows({ rows, groupBy });
+    const groupedRows = Data.Selectors.getRows({ rows, groupBy }); 
 
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
@@ -520,7 +600,7 @@ class GridSetupWithFilter extends Component {
               </button>
             ) : null}
           </div>
-          <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
+          <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
             <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
               {this.state.columns.map((column, index) => {
                 let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
@@ -535,12 +615,22 @@ class GridSetupWithFilter extends Component {
                           onChange={e => this.saveFilter(e, index, column.name, column.type)} value={this.state[index + "-column"]}
                           onClick={() => this.changeDate(index, column.type)} />
 
-                        {this.state.currentData === index &&
-                          this.state.currentData != 0 ? (
-                            <div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
-                              <Calendar onChange={date => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
-                            </div>) :
-                          null}
+                        {this.state.currentData === index && this.state.currentData != 0 ?
+                          (<div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
+                            <Calendar onChange={date => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
+                          </div>) : null}
+                      </div>
+                    </div>
+                  ) : null;
+                } else if (column.type === "number") {
+                  return column.filterable === true && index <= 5 ? (
+                    <div className={"form-group linebylineInput " + classX} key={index}>
+                      <label className="control-label" htmlFor={column.key}>
+                        {column.name}
+                      </label>
+                      <div className="ui input inputDev">
+                        <input autoComplete="off" placeholder={column.name} key={index} type="number" className="form-control"
+                          id={column.key} name={column.key} onChange={e => this.saveFilter(e, index, column.name, column.type)} />
                       </div>
                     </div>
                   ) : null;
@@ -552,78 +642,94 @@ class GridSetupWithFilter extends Component {
                       </label>
                       <div className="ui input inputDev">
                         <input autoComplete="off" placeholder={column.name} key={index} type="text" className="form-control"
-                          id={column.key} name={column.key} onChange={e => this.saveFilter(e, index, column.name)} />
+                          id={column.key} name={column.key} onChange={e => this.saveFilter(e, index, column.name, column.type)} />
                       </div>
                     </div>
                   ) : null;
                 }
               })}
+              <button style={{ marginBottom: '0' }} className="defaultBtn btn" onClick={this.resetModeFilter} type="button">
+                Reset all
+              </button>
             </form>
           </div>
         </div>
+
+
         <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"}>
+          <h2 className="zero">Filter results</h2>
           <button className="filter__close" onClick={this.CloseModeFilter}>
             x
           </button>
           <div className="filterModal" id="largeModal">
-            <div className="header-filter">
-              <h2 className="zero">Filter results</h2>
-              <span>{groupedRows.length} Results</span>
-              <button className="reset__filter reset__filter--header" onClick={this.ClearFilters}>
-                Reset all
-              </button>
-            </div>
-            <div className="content">
-              <div className="filter__warrper">
-                <div className="filter__input-wrapper">
-                  <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
-                    {this.props.columns.map((column, index) => {
-                      let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
-                      if (column.type === "date") {
-                        return column.filterable === true && column.key !== "customBtn" ? (
-                          <div className={"form-group linebylineInput " + classX} key={index}>
-                            <label className="control-label" htmlFor={column.key}>
-                              {column.name}
-                            </label>
-                            <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
-                              <input type="text" autoComplete="off" key={index} placeholder={column.name}
-                                onChange={e => this.saveFilter(e, index, column.name, column.type)}
-                                value={this.state[index + "-column"]} onFocus={() => this.changeDate(index, column.type)} />
-                              {this.state.currentData === index &&
-                                this.state.currentData != 0 ? (
-                                  <div className="viewCalender" tabIndex={0} onMouseLeave={this.resetDate} ref={index => { this.index = index; }}>
-                                    <Calendar onChange={date => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
-                                  </div>) : ("")}
+            <div style={{ position: 'relative', minHeight: '200px' }}>
+              <div className="header-filter">
+                <h2 className="zero">Filter results</h2>
+                <span><span className={this.state.Loading ? "res__load" : ""}>{groupedRows.length}</span> Results</span>
+              </div>
+              <div className="content">
+                <div className="filter__warrper">
+                  <div className="filter__input-wrapper">
+                    <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
+                      {this.props.columns.map((column, index) => {
+                        let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
+                        if (column.type === "date") {
+                          return column.filterable === true && column.key !== "customBtn" ? (
+                            <div className={"form-group linebylineInput " + classX} key={index}>
+                              <label className="control-label" htmlFor={column.key}>
+                                {column.name}
+                              </label>
+                              <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
+                                <input type="text" autoComplete="off" key={index} placeholder={column.name}
+                                  onChange={e => this.saveFilter(e, index, column.name, column.type)}
+                                  value={this.state[index + "-column"]} onFocus={() => this.changeDate(index, column.type)} />
+                                {this.state.currentData === index &&
+                                  this.state.currentData != 0 ? (
+                                    <div className="viewCalender" tabIndex={0} onMouseLeave={this.resetDate} ref={index => { this.index = index; }}>
+                                      <Calendar onChange={date => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
+                                    </div>) : ("")}
+                              </div>
                             </div>
-                          </div>
-                        ) : null;
-                      } else {
-                        return column.filterable === true && column.key !== "customBtn" ? (
-                          <div className={"form-group linebylineInput " + classX} key={index}>
-                            <label className="control-label" htmlFor={column.key}>
-                              {column.name}
-                            </label>
-                            <div className="ui input inputDev">
-                              <input autoComplete="off" key={index} id={column.key} placeholder={column.name} type="text"
-                                className="form-control" name={column.key} onChange={e => this.saveFilter(e, index, column.name)} />
+                          ) : null;
+                        } else if (column.type === "number") {
+                          return column.filterable === true && column.key !== "customBtn" ? (
+                            <div className={"form-group linebylineInput " + classX} key={index}>
+                              <label className="control-label" htmlFor={column.key}>
+                                {column.name}
+                              </label>
+                              <div className="ui input inputDev">
+                                <input autoComplete="off" key={index} id={column.key} placeholder={column.name} type="number"
+                                  className="form-control" name={column.key} onChange={e => this.saveFilter(e, index, column.name, column.type)} />
+                              </div>
                             </div>
-                          </div>
-                        ) : null;
-                      }
-                    })}
-                  </form>
+                          ) : null;
+                        } else {
+                          return column.filterable === true && column.key !== "customBtn" ? (
+                            <div className={"form-group linebylineInput " + classX} key={index}>
+                              <label className="control-label" htmlFor={column.key}>
+                                {column.name}
+                              </label>
+                              <div className="ui input inputDev">
+                                <input autoComplete="off" key={index} id={column.key} placeholder={column.name} type="text"
+                                  className="form-control" name={column.key} onChange={e => this.saveFilter(e, index, column.name, column.type)} />
+                              </div>
+                            </div>
+                          ) : null;
+                        }
+                      })}
+                    </form>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="filter__actions">
-              <button className="reset__filter" onClick={this.ClearFilters}>
-                Reset all
+              <div className="filter__actions">
+                <button className="reset__filter" onClick={this.ClearFilters}>
+                  Reset all
               </button>
+              </div>
             </div>
           </div>
         </div>
-        <div
-          className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}        >
+        <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
           <div className="minimizeSpan">
             <div className="V-tableSize" onClick={this.openModalColumn}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">

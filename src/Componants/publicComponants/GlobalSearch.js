@@ -1,12 +1,24 @@
 import React, { Component } from 'react'
-import GridSetupWithFilter from "../../Pages/Communication/GridSetupWithFilter";
+import GridSetup from "../../Pages/Communication/GridSetup";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import Api from '../../api';
 import Resources from "../../resources.json"
 import LoadingSection from '../publicComponants/LoadingSection'
+import Calendar from "react-calendar";
+import Dropdown from '../OptionsPanels/DropdownMelcous'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let subject = "test"
+let formatDate = function (date) {
+    if (date != null)
+        return moment(date).format("DD/MM/YYYY");
+    return "No Date"
+}
+// let formatStatus=function(status){
+//     if(status==null)
+//     return "Pending"
+// }
+
 class GlobalSearch extends Component {
     constructor(props) {
         super(props)
@@ -24,15 +36,11 @@ class GlobalSearch extends Component {
         //         }
         //         index++;
         //     }
-        this.state = {
-            subject: subject,
-            searchResult: []
-        }
         this.searchColumns = [
             {
-                key: "arrange",
+                key: "index",
                 name: Resources["no"][currentLanguage],
-                width: 50,
+                width: 100,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -42,43 +50,36 @@ class GlobalSearch extends Component {
             }, {
                 key: "subject",
                 name: Resources["subject"][currentLanguage],
-                width: 100,
+                width: 300,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
             }, {
-                key: "status",
+                key: "statusText",
                 name: Resources["status"][currentLanguage],
-                width: 80,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: false,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                //  formatter:formatStatus
             }, {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
-                width: 100,
+                width: 200,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "docType",
-                name: Resources["docType"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: formatDate
             }, {
                 key: "projectName",
                 name: Resources["projectName"][currentLanguage],
-                width: 100,
+                width: 250,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -86,27 +87,67 @@ class GlobalSearch extends Component {
                 sortDescendingFirst: true,
             }
         ];
+        this.statusData = [
+            {
+                label: Resources.oppened[currentLanguage], value: 0
+            }, {
+                label: Resources.closed[currentLanguage], value: 1
+            }, {
+                label: Resources.all[currentLanguage], value: 2
+            },
+
+        ]
+
+        this.state = {
+            subject: subject,
+            searchResult: [],
+            isLoading: true,
+            showDate: false,
+            filterDate: moment().format("DD/MM/YYYY"), 
+            selectedStatus: this.statusData[2]
+        }
 
 
+    
     }
     componentWillMount() {
         let searchOptions = {
-            // subject: this.state.subject,
-            // fromDate: moment().add(-15, 'Y').format('YYYY/MM/DD'),
-            // toDate: moment().format('YYYY/MM/DD'),
-            // docs: [],
-            // status: null,
-            // pageNumber:0
+            subject: this.state.subject,
+            fromDate: moment().add(-15, 'Y').format('YYYY/MM/DD'),
+            toDate: moment().format('YYYY/MM/DD'),
+            docs: [],
+            status: null,
+            pageNumber: 0
         }
         Api.post("GetDataForSearchInApp", searchOptions).then(searchResult => {
-            if (searchResult)
-                this.setState({ searchResult })
+            if (searchResult) {
+                let data = []
+                if (searchResult.length > 0)
+                    searchResult.forEach((item, i) => {
+                        item.index = i + 1;
+                        data.push(item)
+                    })
+                this.setState({ isLoading: false, searchResult: data })
+            }
+            else
+                this.setState({ isLoading: false, searchResult: [] })
         })
     }
+    changeDate() {
+        let showDate = !this.state.showDate
+        this.setState({ showDate });
+    }
 
+    resetDate = () => {
+        this.setState({ showDate: false });
+    }
+    onChange = (date) => {
+        let filterDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "-" + moment(date[1]).format("DD/MM/YYYY") : "";
+        this.setState({ filterDate, showDate: false });
+    };
     render() {
         const searchGrid = this.state.isLoading === false ? (
-            <GridSetupWithFilter
+            <GridSetup
                 rows={this.state.searchResult}
                 showCheckbox={false}
                 pageSize={this.state.pageSize}
@@ -115,12 +156,63 @@ class GlobalSearch extends Component {
             />) : <LoadingSection />;
 
         return (
-            <div className="doc-pre-cycle">
-                <header className="doc-pre-btn">
-                    <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
-                    <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? 'disNone' : '')} disabled={this.state.isViewMode} onClick={this.viewSubContract}><i className="fa fa-file-text"></i></button>
-                </header>
-                {/* {dataGrid} */}
+            <div className="main__withouttabs mainContainer">
+                <div className="doc-pre-cycle">
+                    <header className="doc-pre-btn">
+                        <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
+                    </header>
+                    <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
+                        <div className="filter__more" style={{ padding: 0 }}>
+                            <span>5 filters applied</span>
+                        </div>
+                        <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
+                            <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
+                                {/* "small__input--width " */}
+                                <div className="form-group linebylineInput medium__input--width">
+                                    <label className="control-label"> {Resources.subject[currentLanguage]}   </label>
+                                    <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
+                                        <input type="text" autoComplete="off" placeholder="Subject" />
+                                    </div>
+                                </div>
+                                <div className={"form-group linebylineInput medium__input--width "}  >
+                                    <label className="control-label" >
+                                        {Resources.docDate[currentLanguage]}
+                                    </label>
+                                    <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}  >
+                                        <input type="text" autoComplete="off" placeholder={Resources.docDate[currentLanguage]} value={this.state.filterDate}
+                                            onClick={() => this.changeDate()} />
+
+                                        {this.state.showDate ?
+                                            <div className="viewCalender"   >
+                                                <Calendar onChange={date => this.onChange(date)} selectRange={true} />
+                                            </div> :
+                                            null}
+                                    </div>
+                                </div>
+                                <div className="form-group linebylineInput medium__input--width">
+                                    <label className="control-label"> {Resources.status[currentLanguage]}   </label>
+                                        <Dropdown
+                                            data={this.statusData}
+                                            isMulti={false}
+                                            selectedValue={this.state.selectedStatus}
+                                            handleChange={event => this.setState({ selectedStatus: event })}
+                                            name="status" />
+                                </div>
+                                <div className="form-group linebylineInput medium__input--width">
+                                    <label className="control-label"> {Resources.docType[currentLanguage]}   </label>
+                                        <Dropdown
+                                            data={this.state.docTypeData}
+                                            isMulti={false}
+                                            selectedValue={this.state.docType}
+                                            handleChange={event => this.setState({ docType: event })}
+                                            name="docType" />
+                                </div> 
+                                <button className="defaultBtn btn">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                    {searchGrid}
+                </div>
             </div>
         );
     }

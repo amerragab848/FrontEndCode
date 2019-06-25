@@ -349,7 +349,7 @@ class CostCodingTreeAddEdit extends Component {
           {this.props.showActions == false ? null :
             <div className="tree__header">
               <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
-              <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, isEdit: true, IsFirstParent: true })}>
+              <button className="primaryBtn-1 btn" onClick={() => this.setState({mode:'goAdd', viewPopUp: true, isEdit: true, IsFirstParent: true })}>
                 {Resources["goAdd"][currentLanguage]}
               </button>
             </div>

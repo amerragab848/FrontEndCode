@@ -7419,8 +7419,43 @@ div#markup-panel {
     left: 0 !important;
     bottom: 0 !important;
 }
+
+.res__load {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    position: relative;
+}
+
+.res__load::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+    border: 3px solid #3570e6;
+    border-right-color: transparent;
+    background: #Fff
+}
 .costHeader {
     text-align: center;
     padding-bottom: 10px;
     border-bottom: 1px solid #DADEE6;
  }
+
+ .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
+    min-height: 36px;
+    /* height: 40px; */
+  }
+  
+  .filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c {
+    width: 100%;
+  }
+  .filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c .spanValidation label::after{
+    display: none;
+  }
+
+  
