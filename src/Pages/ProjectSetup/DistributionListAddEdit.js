@@ -329,14 +329,18 @@ class TaskGroupsAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document.id) {
-            let date = moment(props.document.docDate).format("DD/MM/YYYY")
+          
             this.setState({
                 IsEditMode: true,
                 Dis_ListData: props.document,
-                DocumentDate: date,
+              //  DocumentDate: date,
                 isLoading: false
             });
             this.checkDocumentIsView();
+        }
+        if (props.document.docDate) {
+            let date = moment(props.document.docDate).format("DD/MM/YYYY")
+            this.setState({DocumentDate:date})
         }
 
     }
@@ -733,7 +737,7 @@ class TaskGroupsAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input">
                                                                 <DatePicker title='docDate' handleChange={this.DocumentDatehandleChange}
-                                                                    startDate={this.state.DocumentDate} Customformat={true}
+                                                                    startDate={this.state.DocumentDate} CustomFormat={true}
                                                                 />
                                                             </div>
                                                         </div>

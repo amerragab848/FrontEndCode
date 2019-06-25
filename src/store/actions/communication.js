@@ -65,7 +65,7 @@ export function documentForAdding(doc) {
         dispatch({
             type: types.Document_Adding
         });
-    }
+    } 
 }
 
 export function ExportingData(data) {

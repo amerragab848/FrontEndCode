@@ -138,8 +138,8 @@ class projectPicturesAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let ProjectPicDoc = nextProps.document
-            ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate).format('DD/MM/YYYY')
-            ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate).format('DD/MM/YYYY')
+            ProjectPicDoc.docDate = ProjectPicDoc.docDate === null ? moment().format('YYYY-MM-DD') : moment(ProjectPicDoc.docDate).format('YYYY-MM-DD')
+            ProjectPicDoc.picDate =ProjectPicDoc.picDate === null ? moment().format('YYYY-MM-DD') : moment(ProjectPicDoc.picDate).format('YYYY-MM-DD')
             this.setState({
                 document: ProjectPicDoc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -338,8 +338,8 @@ class projectPicturesAddEdit extends Component {
             isLoading: true
         })
         let ProjectPicDoc = { ...this.state.document }
-        ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        ProjectPicDoc.docDate = moment(ProjectPicDoc.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        ProjectPicDoc.picDate = moment(ProjectPicDoc.picDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
         if (this.state.docId > 0) {
             dataservice.addObject('EditProjectPicture', ProjectPicDoc).then(

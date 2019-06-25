@@ -59,7 +59,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 class clientSelectionAddEdit extends Component {
@@ -74,7 +74,7 @@ class clientSelectionAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -93,7 +93,7 @@ class clientSelectionAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -105,7 +105,7 @@ class clientSelectionAddEdit extends Component {
             companies: [],
             ToContacts: [],
             fromContacts: [],
-            locations: [], 
+            locations: [],
             clientSelections: [],
             permission: [{ name: 'sendByEmail', code: 3153 }, { name: 'sendByInbox', code: 3152 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 3159 },
@@ -151,19 +151,22 @@ class clientSelectionAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY')
             let doc = nextProps.document
-            doc.docDate = docDate
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+
             this.setState({
                 document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
-                answer:  nextProps.document.answer
+                answer: nextProps.document.answer
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
+        }
+        if (nextProps.document.docDate) {
+            console.log(nextProps.document.docDate)
         }
     };
 
@@ -393,7 +396,7 @@ class clientSelectionAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-            if (isEdit === false) { 
+            if (isEdit === false) {
                 let contractId = this.props.document.contractId;
                 let selectedContract = {};
                 if (contractId) {
@@ -410,16 +413,16 @@ class clientSelectionAddEdit extends Component {
     }
 
     onChangeMessage = (value) => {
-        if (value != null) { 
+        if (value != null) {
             let original_document = { ...this.state.document };
 
-            let updated_document = {}; 
-            updated_document.answer = value; 
+            let updated_document = {};
+            updated_document.answer = value;
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document,
-                answer: value 
+                answer: value
             });
         }
     };
@@ -481,25 +484,22 @@ class clientSelectionAddEdit extends Component {
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         dataservice.addObject('EditLogsClientSelections', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
 
-            toast.success(Resources["operationSuccess"][currentLanguage]); 
+            toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
-                    this.state.perviousRoute
-                  );
-            } 
+                this.props.history.push(this.state.perviousRoute);
+            }
         });
     }
 
     saveLetter(event) {
         let saveDocument = { ...this.state.document };
-
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
 
         dataservice.addObject('AddLogsClientSelections', saveDocument).then(result => {
@@ -541,7 +541,8 @@ class clientSelectionAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -596,9 +597,9 @@ class clientSelectionAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
-                                                
+
                                                 if (this.props.showModal) { return; }
-        
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -935,7 +936,7 @@ class clientSelectionAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
-                                    <div>
+                                        <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3157} EditAttachments={3252} ShowDropBox={3561} ShowGoogleDrive={3562} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ?

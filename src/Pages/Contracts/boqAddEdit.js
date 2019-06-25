@@ -332,7 +332,7 @@ class bogAddEdit extends Component {
     }
 
     customButton = () => {
-        return <button className="companies_icon" style={{ cursor: 'pointer' }}><i class="fa fa-folder-open" ></i></button>;
+        return <button className="companies_icon" style={{ cursor: 'pointer' }}><i className="fa fa-folder-open" ></i></button>;
     };
 
     itemization = (value) => {
@@ -473,7 +473,6 @@ class bogAddEdit extends Component {
         this.setState({ isLoading: true, LoadingPage: true })
         Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=0&pageSize=1000').then(res => {
             let data = { items: res };
-            this.props.actions.ExportingData(data);
 
             res.forEach((element, index) => {
                 Table.push({
@@ -504,7 +503,8 @@ class bogAddEdit extends Component {
                 })
             })
             this.setState({ rows: Table })
-            this.props.actions.setItemDescriptions(Table);
+            this.props.actions.ExportingData(data);
+            //this.props.actions.setItemDescriptions(Table);
 
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
         })
