@@ -108,7 +108,7 @@
   height: 18px;
 }
 
-.dropWrapper #lastname1 {
+/* .dropWrapper #lastname1 {
   height: 40px;
   border-radius: 4px;
   width: 360px;
@@ -122,7 +122,7 @@
   color: #3E4352;
   background-color: #ffffff;
   font-size: 14px;
-}
+} */
 
 .dropWrapper {
   padding: 5px 10px;
@@ -2509,12 +2509,16 @@ button.companies_icon {
 
 /* grid show more filter */
 
+.showMore__btn  {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .showMore__btn button {
   background: transparent;
   border: none;
   cursor: pointer;
   display: flex;
-  width: 100%;
   align-items: center;
   justify-content: flex-end;
 }
@@ -2584,8 +2588,7 @@ button.companies_icon {
   min-width: 420px !important;
   width: auto !important;
   max-width: 722px;
-  right: auto;
-  left: 1em;
+  right: 1em;
 }
 
 .Toastify__toast {
@@ -6828,10 +6831,6 @@ div#markup-panel {
   height: 60px !important;
 }
 
-.react-grid-HeaderRow>div:first-of-type {
-  height: 58px !important;
-}
-
 .react-grid-HeaderCell {
   background: #fff;
   padding: 0;
@@ -6848,9 +6847,6 @@ div#markup-panel {
   top: 58px !important;
 }
 
-.react-grid-HeaderRow>div:first-child {
-  width: 100%;
-}
 
 .react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
   border-right-color: transparent;
@@ -6859,6 +6855,7 @@ div#markup-panel {
 
 .react-grid-HeaderRow {
   right: 0;
+  left: auto !important;
 }
 
 .react-grid-HeaderCell-sortable {
@@ -7902,6 +7899,26 @@ padding: 0;
 .grid__content .ui.checkbox input {
   height: 100%;
 }
+
+.dashDragCustom .react-tabs__tab--selected::after {
+  top: 31%;
+  transform: rotate(181deg);
+}
+
+.datepickerContainer.proForm .ui.input.inputDev {
+  max-width: 100%;
+}
+
+.datepickerContainer.proForm .letterFullWidth {
+  display: flex;
+  align-items: flex-start;
+  flex-flow: column;
+}
+
+.datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
+  width: 100%;
+}
+
 
 /* .submittalFilter .subFilter > span {
   margin: 0 24px;

@@ -85,7 +85,7 @@
     padding: 4px 0;
 } */
 
-.dropWrapper #lastname1 {
+/* .dropWrapper #lastname1 {
     height: 48px;
     border-radius: 4px;
     width: 360px;
@@ -96,7 +96,7 @@
     color: #3E4352;
     background-color: #ffffff;
     font-size: 14px;
-}
+} */
 
 .dropWrapper {
     padding: 5px 10px;
@@ -2095,32 +2095,7 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput {
     margin-bottom: 16px;
-    width: 43%;
-    /* margin-right: 50px; */
-    flex-shrink: 0;
-    flex-flow: column;
-    align-items: flex-start;
-}
-
-/* .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput>label {
-    width: auto;
-    text-align: left;
-    margin-right: 32px;
-    font-family: 'Open Sans';
-    font-weight: 600;
-    font-style: normal;
-    font-stretch: normal;
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.2px;
-    color: #252833;
-    margin-bottom: 4px;
-} */
-
-@media screen and (max-width: 1250px) {
-    .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.even {
-        margin-right: 0;
-    }
+    width: 48%;
 }
 
 .noTabs__document .doc-container .step-content .doc-pre-cycle {
@@ -2533,14 +2508,6 @@ button.companies_icon {
     width: 360px;
 }
 
-/* .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
-    margin-right: 0;
-} */
-
-.noTabs__document.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
-    width: 46%;
-}
-
 @media screen and (max-width: 1200px) {
     .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input,
     .noTabs__document .doc-container .step-content .linebylineInput .inputDev.ui.input,
@@ -2549,9 +2516,6 @@ button.companies_icon {
     }
     .one__tab.one_step .doc-container .docstepper-levels {
         width: 250px;
-    }
-    .noTabs__document.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
-        width: 48%;
     }
     .noTabs__document.one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput>label {
         margin-right: 13px;
@@ -2626,7 +2590,6 @@ button.companies_icon {
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate {
-    display: flex;
     flex-flow: row;
     align-items: flex-end;
     justify-content: space-between;
@@ -2652,12 +2615,17 @@ button.companies_icon {
 
 /* grid show more filter */
 
+.showMore__btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .showMore__btn button {
     background: transparent;
     border: none;
     cursor: pointer;
     display: flex;
-    width: 100%;
+    /* width: 100%; */
     align-items: center;
     justify-content: flex-end;
 }
@@ -7424,3 +7392,31 @@ div#markup-panel {
     padding-bottom: 10px;
     border-bottom: 1px solid #DADEE6;
  }
+
+ .datepickerContainer.proForm .ui.input.inputDev {
+     max-width: 100%;
+ }
+
+ .datepickerContainer.proForm .letterFullWidth, .dropWrapper .letterFullWidth {
+     display: flex;
+     align-items: flex-start;
+     flex-flow: column;
+ }
+
+ /* .datepickerContainer.proForm .letterFullWidth >*{
+     width: 100%
+ } */
+
+ .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
+     width: 100%;
+ }
+
+.linebylineInput__checkbox {
+    flex-flow: row !important;
+    align-items: center !important;
+}
+
+.linebylineInput__checkbox .ui.checkbox , .linebylineInput__checkbox label {
+    margin: 0 !important;
+ 
+}

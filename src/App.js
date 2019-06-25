@@ -42,7 +42,7 @@ class App extends Component {
 
   render() {
     const showComp = IsAuthorize ?
-      <div id="direction_warrper" dir={currentLanguage !== "ar" ? "ltr" : "rtl"}>
+      <div>
         <Menu />
         {Route}
       </div>
