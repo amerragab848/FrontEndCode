@@ -89,11 +89,11 @@ class GlobalSearch extends Component {
         ];
         this.statusData = [
             {
-                label: Resources.oppened[currentLanguage], value: 1
+                label: Resources.oppened[currentLanguage], value: 0
             }, {
                 label: Resources.closed[currentLanguage], value: 1
             }, {
-                label: Resources.all[currentLanguage], value: 1
+                label: Resources.all[currentLanguage], value: 2
             },
 
         ]
