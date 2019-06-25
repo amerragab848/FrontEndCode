@@ -9,14 +9,12 @@ import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ReactTable from "react-table";
-
+//import ReactTable from "react-table";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import { withRouter } from "react-router-dom";
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
-
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
@@ -26,149 +24,148 @@ import Distribution from "../../Componants/OptionsPanels/DistributionList";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
-
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
-
-  contractId: Yup.string()
-    .required(Resources["selectContract"][currentLanguage])
-    .nullable(true),
-
-  total: Yup.string().matches(
-    /(^[0-9]+$)/,
-    Resources["onlyNumbers"][currentLanguage]
-  ),
-
-  timeExtension: Yup.string().matches(
-    /(^[0-9]+$)/,
-    Resources["onlyNumbers"][currentLanguage]
-  )
+  contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
+  total: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+  timeExtension: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
-
-let columns = [
-  {
-    Header: "arrange",
-    accessor: "arrange",
-    width: 60
-  },
-  {
-    Header: Resources["description"][currentLanguage],
-    accessor: "description",
-    width: 180
-  },
-  {
-    Header: Resources["quantity"][currentLanguage],
-    accessor: "quantity",
-    width: 80
-  },
-  {
-    Header: Resources["unitPrice"][currentLanguage],
-    accessor: "unitPrice",
-    width: 80
-  },
-  {
-    Header: Resources["resourceCode"][currentLanguage],
-    accessor: "resourceCode",
-    width: 120
-  },
-  {
-    Header: Resources["itemCode"][currentLanguage],
-    accessor: "itemCode",
-    width: 80
-  },
-  {
-    Header: Resources["boqType"][currentLanguage],
-    accessor: "boqType",
-    width: 120
-  },
-  {
-    Header: Resources["boqSubType"][currentLanguage],
-    accessor: "boqSubType",
-    width: 120
-  },
-  {
-    Header: Resources["boqTypeChild"][currentLanguage],
-    accessor: "boqTypeChild",
-    width: 120
-  }
-];
 
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
-class variationOrderAddEdit extends Component { 
-    constructor(props) { 
-        super(props);
-        const query = new URLSearchParams(this.props.location.search);
-        let index = 0;
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+class variationOrderAddEdit extends Component {
+  constructor(props) {
+    super(props);
+    const query = new URLSearchParams(this.props.location.search);
+    let index = 0;
+    for (let param of query.entries()) {
+      if (index == 0) {
+        try {
+          let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                    perviousRoute = obj.perviousRoute;
-                }
-                catch{
-                    this.props.history.goBack();
-                }
-            }
-            index++;
+          docId = obj.docId;
+          projectId = obj.projectId;
+          projectName = obj.projectName;
+          isApproveMode = obj.isApproveMode;
+          docApprovalId = obj.docApprovalId;
+          arrange = obj.arrange;
+          perviousRoute = obj.perviousRoute;
         }
+        catch{
+          this.props.history.goBack();
+        }
+      }
+      index++;
+    }
 
-        this.state = {
-            FirstStep: true,
-            SecondStep: false, 
-            SecondStepComplate: false,
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
-            isViewMode: false,
-            isApproveMode: isApproveMode, 
-            perviousRoute: perviousRoute,
-            isView: false, 
-            docId: docId,
-            docTypeId: 66,
-            projectId: projectId,
-            docApprovalId: docApprovalId,
-            arrange: arrange, 
-            document: this.props.document ? Object.assign({}, this.props.document) : {},
-            voItem: {}, 
-            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code: 3280 }],
-            selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
-            selectPco: { label: Resources.pco[currentLanguage], value: "0" },
-            pcos: [],
-            contractsPos: [],
-            voItems: [],
-            CurrentStep: 1
-        }
+    let itemsColumns = [
+      {
+        key: "arrange",
+        name: Resources["arrange"][currentLanguage],
+        width: 50,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "number"
+      }, {
+        key: "description",
+        name: Resources["description"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "string"
+      }, {
+        key: "quantity",
+        name: Resources["quantity"][currentLanguage],
+        width: 120,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "number"
+      }, {
+        key: "unitPrice",
+        name: Resources["unitPrice"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "number"
+      }, {
+        key: "resourceCode",
+        name: Resources["resourceCode"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "string"
+      }, {
+        key: "itemCode",
+        name: Resources["itemCode"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "string"
+      }, {
+        key: "boqType",
+        name: Resources["boqType"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "string"
+      }, {
+        key: "boqSubType",
+        name: Resources["boqSubType"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "string"
+      }, {
+        key: "boqTypeChild",
+        name: Resources["boqTypeChild"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        type: "string"
+      }
+    ];
 
-        if (!Config.IsAllow(159) && !Config.IsAllow(158) && !Config.IsAllow(160)) {
-            toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
-                this.state.perviousRoute
-              );
-        }
-      
-    this.state = { 
+
+    this.state = {
+      itemsColumns: itemsColumns,
       FirstStep: true,
       SecondStep: false,
       SecondStepComplate: false,
@@ -176,36 +173,26 @@ class variationOrderAddEdit extends Component {
       showModal: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
+      perviousRoute: perviousRoute,
       isView: false,
       docId: docId,
       docTypeId: 66,
       projectId: projectId,
       docApprovalId: docApprovalId,
       arrange: arrange,
-      document: this.props.document
-        ? Object.assign({}, this.props.document)
-        : {},
+      document: this.props.document ? Object.assign({}, this.props.document) : {},
       voItem: {},
-      permission: [
-        { name: "sendByEmail", code: 54 },
-        { name: "sendByInbox", code: 53 },
-        { name: "sendTask", code: 1 },
-        { name: "distributionList", code: 956 },
-        { name: "createTransmittal", code: 3042 },
-        { name: "sendToWorkFlow", code: 707 },
-        { name: "viewAttachments", code: 3298 },
-        { name: "deleteAttachments", code: 3280 }
-      ],
-      selectContract: {
-        label: Resources.selectContract[currentLanguage],
-        value: "0"
-      },
+      permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
+      { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
+      { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
+      { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code: 3280 }],
+      selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
       selectPco: { label: Resources.pco[currentLanguage], value: "0" },
       pcos: [],
       contractsPos: [],
       voItems: [],
       CurrentStep: 1
-    };
+    }
 
     if (!Config.IsAllow(159) && !Config.IsAllow(158) && !Config.IsAllow(160)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -213,35 +200,28 @@ class variationOrderAddEdit extends Component {
         pathname: "/changeOrder/" + projectId
       });
     }
- 
     index++;
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll(
-      ".noTabs__document .doc-container .linebylineInput"
-    );
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
     for (var i = 0; i < links.length; i++) {
       if ((i + 1) % 2 == 0) {
         links[i].classList.add("even");
       } else {
         links[i].classList.add("odd");
       }
-    }
+    } 
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.document.id) {
       let serverChangeOrder = { ...nextProps.document };
-      serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format(
-        "DD/MM/YYYY"
-      );
-      serverChangeOrder.dateApproved = moment(
-        serverChangeOrder.resultDate
-      ).format("DD/MM/YYYY");
-      serverChangeOrder.timeExtensionRequired = serverChangeOrder.timeExtensionRequired
-        ? parseFloat(serverChangeOrder.timeExtensionRequired)
-        : 0;
+      serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("DD/MM/YYYY");
+      serverChangeOrder.dateApproved = moment(serverChangeOrder.resultDate).format("DD/MM/YYYY");
+      serverChangeOrder.timeExtensionRequired = serverChangeOrder.timeExtensionRequired ? parseFloat(serverChangeOrder.timeExtensionRequired) : 0;
+
       this.setState({
         document: { ...serverChangeOrder },
         hasWorkflow: nextProps.hasWorkflow
@@ -256,10 +236,7 @@ class variationOrderAddEdit extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.hasWorkflow !== prevProps.hasWorkflow ||
-      this.props.changeStatus !== prevProps.changeStatus
-    ) {
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
     }
   }
@@ -267,7 +244,6 @@ class variationOrderAddEdit extends Component {
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
       if (!Config.IsAllow(158)) {
-        alert("not have edit...");
         this.setState({ isViewMode: true });
       }
 
@@ -291,27 +267,25 @@ class variationOrderAddEdit extends Component {
   }
 
   fillVoItems() {
-    dataservice
-      .GetDataGrid(
-        "GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId
-      )
-      .then(result => {
-        let data = { items: result };
-        this.props.actions.ExportingData(data);
-        this.setState({
-          voItems: [...result]
-        });
-        this.props.actions.setItemDescriptions(result);
+    dataservice.GetDataGrid("GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId).then(result => {
+
+      let data = { items: result };
+
+      this.props.actions.ExportingData(data);
+
+      this.setState({
+        voItems: [...result]
       });
+      //this.props.actions.setItemDescriptions(result);
+    });
   }
 
   componentWillMount() {
     if (this.state.docId > 0) {
-      this.props.actions.documentForEdit(
-        "GetContractsChangeOrderForEdit?id=" + this.state.docId,
-        this.state.docTypeId,
-        "changeOrder"
-      );
+      this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId, this.state.docTypeId, "changeOrder");
+
+      this.fillVoItems();
+
     } else {
       let changeOrder = {
         subject: "",
@@ -331,7 +305,7 @@ class variationOrderAddEdit extends Component {
         dateApproved: moment()
       };
 
-      this.setState({ document: changeOrder }, function() {
+      this.setState({ document: changeOrder }, function () {
         this.GetNExtArrange();
       });
       this.fillDropDowns(false);
@@ -341,19 +315,15 @@ class variationOrderAddEdit extends Component {
 
   GetNExtArrange() {
     let original_document = { ...this.state.document };
+
     let updated_document = {};
-    let url =
-      "GetNextArrangeMainDoc?projectId=" +
-      this.state.projectId +
-      "&docType=" +
-      this.state.docTypeId +
-      "&companyId=" +
-      this.state.document.fromCompanyId +
-      "&contactId=" +
-      this.state.document.fromContactId;
-    // this.props.actions.GetNextArrange(url);
+
+    let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+
     dataservice.GetNextArrangeMainDocument(url).then(res => {
+
       updated_document.arrange = res;
+
       updated_document = Object.assign(original_document, updated_document);
 
       this.setState({
@@ -364,28 +334,16 @@ class variationOrderAddEdit extends Component {
 
   fillDropDowns(isEdit) {
     if (isEdit === false) {
-      dataservice
-        .GetDataList(
-          "GetPoContractForList?projectId=" + this.state.projectId,
-          "subject",
-          "id"
-        )
-        .then(result => {
-          this.setState({
-            contractsPos: [...result]
-          });
+      dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
+        this.setState({
+          contractsPos: [...result]
         });
-      dataservice
-        .GetDataList(
-          "GetContractsPcoByProjectIdForList?projectId=" + this.state.projectId,
-          "subject",
-          "id"
-        )
-        .then(result => {
-          this.setState({
-            pcos: [...result]
-          });
+      });
+      dataservice.GetDataList("GetContractsPcoByProjectIdForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
+        this.setState({
+          pcos: [...result]
         });
+      });
     }
   }
 
@@ -397,13 +355,15 @@ class variationOrderAddEdit extends Component {
   }
 
   onChangeMessage = (value, field) => {
-    let isEmpty = !value
-      .getEditorState()
-      .getCurrentContent()
-      .hasText();
+
+    let isEmpty = !value.getEditorState().getCurrentContent().hasText();
+
     if (isEmpty === false) {
+
       this.setState({ [field]: value });
+
       if (value.toString("markdown").length > 1) {
+
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -420,6 +380,7 @@ class variationOrderAddEdit extends Component {
   };
 
   handleChange(e, field) {
+
     let original_document = { ...this.state.document };
 
     let updated_document = {};
@@ -434,6 +395,7 @@ class variationOrderAddEdit extends Component {
   }
 
   handleChangeDate(e, field) {
+
     let original_document = { ...this.state.document };
 
     let updated_document = {};
@@ -448,32 +410,36 @@ class variationOrderAddEdit extends Component {
   }
 
   handleChangeDropDown(event, field, selectedValue, isPCO) {
+
     if (event == null) return;
+
     let original_document = { ...this.state.document };
+
     let updated_document = {};
+
     updated_document[field] = event.value;
+
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
       document: updated_document,
       [selectedValue]: event
     });
+
     if (isPCO === true) {
       if (this.props.changeStatus === false) {
-        dataservice
-          .GetRowById("GetContractsPcoForEdit?id=" + event.value)
-          .then(result => {
-            updated_document.total = result.total;
-            updated_document.timeExtensionRequired =
-              result.timeExtensionRequired;
-            updated_document.contractId = result.contractId;
-            updated_document.arrange = result.arrange;
-            updated_document.subject = result.subject;
+        dataservice.GetRowById("GetContractsPcoForEdit?id=" + event.value).then(result => {
 
-            this.setState({
-              document: updated_document
-            });
+          updated_document.total = result.total;
+          updated_document.timeExtensionRequired = result.timeExtensionRequired;
+          updated_document.contractId = result.contractId;
+          updated_document.arrange = result.arrange;
+          updated_document.subject = result.subject;
+
+          this.setState({
+            document: updated_document
           });
+        });
       }
     }
   }
@@ -485,56 +451,43 @@ class variationOrderAddEdit extends Component {
 
     let saveDocument = this.state.document;
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format(
-      "YYYY-MM-DD[T]HH:mm:ss.SSS"
-    );
-    saveDocument.dateApproved = moment(
-      saveDocument.dateApproved,
-      "DD/MM/YYYY"
-    ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.dateApproved = moment(saveDocument.dateApproved, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    dataservice
-      .addObject("EditContractsChangeOrder", saveDocument)
-      .then(result => {
-        this.setState({
-          isLoading: true
-        });
-
-        toast.success(Resources["operationSuccess"][currentLanguage]);
-      })
-      .catch(res => {
-        this.setState({
-          isLoading: true
-        });
-        toast.error(Resources["operationCanceled"][currentLanguage]);
+    dataservice.addObject("EditContractsChangeOrder", saveDocument).then(result => {
+      this.setState({
+        isLoading: true
       });
+
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+    }).catch(res => {
+      this.setState({
+        isLoading: true
+      });
+      toast.error(Resources["operationCanceled"][currentLanguage]);
+    });
   }
 
   saveVariationOrder(event) {
     let saveDocument = { ...this.state.document };
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format(
-      "YYYY-MM-DD[T]HH:mm:ss.SSS"
-    );
-    saveDocument.dateApproved = moment(
-      saveDocument.dateApproved,
-      "DD/MM/YYYY"
-    ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.dateApproved = moment(saveDocument.dateApproved, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     saveDocument.projectId = this.state.projectId;
 
-    dataservice.addObject("AddContractsChangeOrder", saveDocument)  .then(result => {
-        if (result.id) {
-            this.props.actions.setDocId(result.id)
-          this.setState({
-            docId: result.id
-          });
+    dataservice.addObject("AddContractsChangeOrder", saveDocument).then(result => {
+      if (result.id) {
+        this.props.actions.setDocId(result.id)
+        this.setState({
+          docId: result.id
+        });
 
-          toast.success(Resources["operationSuccess"][currentLanguage]);
-        }
-      })  .catch(res => {
-        toast.error(Resources["operationCanceled"][currentLanguage]);
-      });
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+      }
+    }).catch(res => {
+      toast.error(Resources["operationCanceled"][currentLanguage]);
+    });
   }
 
   showBtnsSaving() {
@@ -547,14 +500,7 @@ class variationOrderAddEdit extends Component {
       );
     } else if (this.state.docId > 0) {
       btn = (
-        <button
-          className={
-            this.state.isViewMode === true
-              ? "primaryBtn-1 btn meduimBtn disNone"
-              : "primaryBtn-1 btn meduimBtn"
-          }
-          type="submit"
-        >
+        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type="submit">
           {Resources.next[currentLanguage]}
         </button>
       );
@@ -607,11 +553,6 @@ class variationOrderAddEdit extends Component {
         CurrentStep: this.state.CurrentStep + 1,
         ThirdStep: false
       });
-      if (this.props.changeStatus === true) {
-        if (this.props.items.length == 0) {
-          this.fillVoItems();
-        }
-      }
     } else if (this.state.CurrentStep === 2) {
       window.scrollTo(0, 0);
       this.setState({
@@ -638,11 +579,6 @@ class variationOrderAddEdit extends Component {
         CurrentStep: this.state.CurrentStep + 1,
         ThirdStep: false
       });
-      if (this.props.changeStatus === true) {
-        if (this.props.items.length == 0) {
-          this.fillVoItems();
-        }
-      }
     } else if (this.state.CurrentStep === 2) {
       this.props.history.push({
         pathname: "/changeOrder/" + projectId
@@ -679,18 +615,16 @@ class variationOrderAddEdit extends Component {
 
     saveDocument.changeOrderId = this.state.docId;
 
-    dataservice
-      .addObject("AddVOItems", saveDocument)
-      .then(result => {
-        if (result) {
-          let oldItems = [...this.state.voItems];
-          oldItems.push(result);
-          this.setState({
-            voItems: [...oldItems]
-          });
-          toast.success(Resources["operationSuccess"][currentLanguage]);
-        }
-      })
+    dataservice.addObject("AddVOItems", saveDocument).then(result => {
+      if (result) {
+        let oldItems = [...this.state.voItems];
+        oldItems.push(result);
+        this.setState({
+          voItems: [...oldItems]
+        });
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+      }
+    })
       .catch(res => {
         toast.error(Resources["operationCanceled"][currentLanguage]);
       });
@@ -710,15 +644,7 @@ class variationOrderAddEdit extends Component {
     });
   }
 
-  handleChangeItemDropDown(
-    event,
-    field,
-    selectedValue,
-    isSubscribe,
-    url,
-    param,
-    nextTragetState
-  ) {
+  handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
     if (event == null) return;
     let original_document = { ...this.state.voItem };
     let updated_document = {};
@@ -818,22 +744,11 @@ class variationOrderAddEdit extends Component {
 
     return (
       <div className="mainContainer">
-        <div
-          className={
-            this.state.isViewMode === true
-              ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
-              : "documents-stepper noTabs__document one__tab one_step"
-          }
-        >
-          <HeaderDocument
-            projectName={projectName}
-            isViewMode={this.state.isViewMode}
-            docTitle={Resources.changeOrder[currentLanguage]}
-            moduleTitle={Resources["contracts"][currentLanguage]}
-          />
+        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.changeOrder[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
-              {this.state.FirstStep  ?
+              {this.state.FirstStep ?
                 <Fragment>
                   <div id="step1" className="step-content-body">
                     <div className="subiTabsContent">
@@ -843,68 +758,28 @@ class variationOrderAddEdit extends Component {
                           validationSchema={validationSchema}
                           enableReinitialize={this.props.changeStatus}
                           onSubmit={values => {
-                            if (
-                              this.props.changeStatus === false &&
-                              this.state.docId === 0
-                            ) {
+                            if (this.props.changeStatus === false && this.state.docId === 0) {
                               this.saveVariationOrder();
                             } else {
                               this.NextStep();
                             }
-                          }}
-                        >
-                          {({
-                            errors,
-                            touched,
-                            handleBlur,
-                            handleChange,
-                            handleSubmit,
-                            setFieldValue,
-                            setFieldTouched
-                          }) => (
-                            <Form
-                              id="InspectionRequestForm"
-                              className="customProform"
-                              noValidate="novalidate"
-                              onSubmit={handleSubmit}
-                            >
+                          }}>
+                          {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                            <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                               <div className="proForm first-proform">
                                 <div className="linebylineInput valid-input">
                                   <label className="control-label">
                                     {Resources.subject[currentLanguage]}
                                   </label>
-                                  <div
-                                    className={
-                                      "inputDev ui input" +
-                                      (errors.subject && touched.subject
-                                        ? " has-error"
-                                        : !errors.subject && touched.subject
-                                        ? " has-success"
-                                        : " ")
-                                    }
-                                  >
-                                    <input
-                                      name="subject"
-                                      className="form-control fsadfsadsa"
-                                      id="subject"
-                                      placeholder={
-                                        Resources.subject[currentLanguage]
-                                      }
-                                      autoComplete="off"
-                                      value={this.state.document.subject}
+                                  <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
+                                    <input name="subject" className="form-control fsadfsadsa" id="subject" placeholder={Resources.subject[currentLanguage]}
+                                      autoComplete="off" value={this.state.document.subject}
                                       onBlur={e => {
                                         handleBlur(e);
                                         handleChange(e);
                                       }}
-                                      onChange={e =>
-                                        this.handleChange(e, "subject")
-                                      }
-                                    />
-                                    {touched.subject ? (
-                                      <em className="pError">
-                                        {errors.subject}
-                                      </em>
-                                    ) : null}
+                                      onChange={e => this.handleChange(e, "subject")} />
+                                    {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
                                   </div>
                                 </div>
 
@@ -994,7 +869,7 @@ class variationOrderAddEdit extends Component {
                                         name="vo-isRaisedPrices"
                                         defaultChecked={
                                           this.state.document.isRaisedPrices ===
-                                          false
+                                            false
                                             ? null
                                             : "checked"
                                         }
@@ -1013,7 +888,7 @@ class variationOrderAddEdit extends Component {
                                         name="vo-isRaisedPrices"
                                         defaultChecked={
                                           this.state.document.isRaisedPrices ===
-                                          false
+                                            false
                                             ? "checked"
                                             : null
                                         }
@@ -1135,51 +1010,51 @@ class variationOrderAddEdit extends Component {
                                     </div>
                                   </div>
                                 ) : (
-                                  <Fragment>
-                                    <div className="linebylineInput valid-input">
-                                      <Dropdown
-                                        title="pco"
-                                        isMulti={false}
-                                        data={this.state.pcos}
-                                        selectedValue={this.state.selectPco}
-                                        handleChange={event =>
-                                          this.handleChangeDropDown(
-                                            event,
-                                            "pcoId",
-                                            "selectPco",
-                                            true
-                                          )
-                                        }
-                                        id="pcoId"
-                                      />
-                                    </div>
+                                    <Fragment>
+                                      <div className="linebylineInput valid-input">
+                                        <Dropdown
+                                          title="pco"
+                                          isMulti={false}
+                                          data={this.state.pcos}
+                                          selectedValue={this.state.selectPco}
+                                          handleChange={event =>
+                                            this.handleChangeDropDown(
+                                              event,
+                                              "pcoId",
+                                              "selectPco",
+                                              true
+                                            )
+                                          }
+                                          id="pcoId"
+                                        />
+                                      </div>
 
-                                    <div className="linebylineInput valid-input">
-                                      <Dropdown
-                                        title="contractPo"
-                                        data={this.state.contractsPos}
-                                        selectedValue={
-                                          this.state.selectContract
-                                        }
-                                        handleChange={event =>
-                                          this.handleChangeDropDown(
-                                            event,
-                                            "contractId",
-                                            "selectContract",
-                                            false
-                                          )
-                                        }
-                                        index="contractId"
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.contractId}
-                                        touched={touched.contractId}
-                                        isClear={false}
-                                        name="contractId"
-                                      />
-                                    </div>
-                                  </Fragment>
-                                )}
+                                      <div className="linebylineInput valid-input">
+                                        <Dropdown
+                                          title="contractPo"
+                                          data={this.state.contractsPos}
+                                          selectedValue={
+                                            this.state.selectContract
+                                          }
+                                          handleChange={event =>
+                                            this.handleChangeDropDown(
+                                              event,
+                                              "contractId",
+                                              "selectContract",
+                                              false
+                                            )
+                                          }
+                                          index="contractId"
+                                          onChange={setFieldValue}
+                                          onBlur={setFieldTouched}
+                                          error={errors.contractId}
+                                          touched={touched.contractId}
+                                          isClear={false}
+                                          name="contractId"
+                                        />
+                                      </div>
+                                    </Fragment>
+                                  )}
                                 <div className="linebylineInput valid-input">
                                   <label className="control-label">
                                     {Resources.total[currentLanguage]}
@@ -1222,7 +1097,7 @@ class variationOrderAddEdit extends Component {
                                     className={
                                       "ui input inputDev" +
                                       (errors.timeExtension &&
-                                      touched.timeExtension
+                                        touched.timeExtension
                                         ? " has-error"
                                         : "ui input inputDev")
                                     }
@@ -1268,18 +1143,18 @@ class variationOrderAddEdit extends Component {
                       <div className="doc-pre-cycle letterFullWidth">
                         <div>
                           {this.state.docId > 0 &&
-                          this.state.isViewMode === false ? (
-                            <UploadAttachment
-                              changeStatus={this.props.changeStatus}
-                              AddAttachments={3278}
-                              EditAttachments={3279}
-                              ShowDropBox={3573}
-                              ShowGoogleDrive={3574}
-                              docTypeId={this.state.docTypeId}
-                              docId={this.state.docId}
-                              projectId={this.state.projectId}
-                            />
-                          ) : null}
+                            this.state.isViewMode === false ? (
+                              <UploadAttachment
+                                changeStatus={this.props.changeStatus}
+                                AddAttachments={3278}
+                                EditAttachments={3279}
+                                ShowDropBox={3573}
+                                ShowGoogleDrive={3574}
+                                docTypeId={this.state.docTypeId}
+                                docId={this.state.docId}
+                                projectId={this.state.projectId}
+                              />
+                            ) : null}
                           {this.viewAttachments()}
                           {this.props.changeStatus === true ? (
                             <ViewWorkFlow
@@ -1293,10 +1168,9 @@ class variationOrderAddEdit extends Component {
                     </div>
                   </div>
                 </Fragment>
-              :  
+                :
                 <Fragment>
                   <div className="subiTabsContent feilds__top">
-                    {/* {this.addVariationDraw()} */}
                     <AddItemDescription
                       docLink="/Downloads/Excel/BOQ.xlsx"
                       showImportExcel={this.state.document.isRaisedPrices}
@@ -1308,31 +1182,23 @@ class variationOrderAddEdit extends Component {
                       projectId={this.state.projectId}
                       showItemType={false}
                     />
-
                     <div className="doc-pre-cycle">
                       <header>
                         <h2 className="zero">
                           {Resources["AddedItems"][currentLanguage]}
                         </h2>
                       </header>
-                      <ReactTable
-                        ref={r => {
-                          this.selectTable = r;
-                        }}
-                        data={this.props.items}
-                        columns={columns}
-                        defaultPageSize={10}
-                        minRows={2}
-                        noDataText={Resources["noData"][currentLanguage]}
+                       
+                      <GridSetupWithFilter
+                        rows={this.props.items}
+                        pageSize={10}
+                        columns={this.state.itemsColumns}
+                        key='items'
                       />
                     </div>
-
                     <div className="doc-pre-cycle">
                       <div className="slider-Btns">
-                        <button
-                          className="primaryBtn-1 btn meduimBtn"
-                          onClick={this.NextStep}
-                        >
+                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>
                           {Resources["next"][currentLanguage]}
                         </button>
                       </div>
@@ -1346,12 +1212,7 @@ class variationOrderAddEdit extends Component {
               <div className="step-content-foot">
                 <span
                   onClick={this.PreviousStep}
-                  className={
-                    !this.state.FirstStep && this.state.docId !== 0
-                      ? "step-content-btn-prev "
-                      : "step-content-btn-prev disabled"
-                  }
-                >
+                  className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
                   <i className="fa fa-caret-left" aria-hidden="true" />
                   {Resources.previous[currentLanguage]}
                 </span>
@@ -1397,8 +1258,8 @@ class variationOrderAddEdit extends Component {
                       (this.state.ThirdStepComplate
                         ? "active"
                         : this.state.SecondStepComplate
-                        ? "current__step"
-                        : "")
+                          ? "current__step"
+                          : "")
                     }
                   >
                     <div className="steps-timeline">
@@ -1496,7 +1357,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(variationOrderAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(variationOrderAddEdit));

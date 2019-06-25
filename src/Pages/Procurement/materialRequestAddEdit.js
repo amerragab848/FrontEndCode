@@ -167,7 +167,7 @@ class materialRequestAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type:"number"
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],

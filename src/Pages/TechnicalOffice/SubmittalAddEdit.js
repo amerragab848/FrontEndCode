@@ -968,7 +968,7 @@ class SubmittalAddEdit extends Component {
         this.setState({
           docId: result.id,
           isLoading: false,
-          Stepes: this.state.Stepes + 1,
+          //Stepes: this.state.Stepes + 1,
           SecondStepComplate: true,
           ThirdStepComplate: false,
           FourthStepComplate: false
@@ -980,11 +980,11 @@ class SubmittalAddEdit extends Component {
 
         toast.error(Resources["failError"][currentLanguage]);
       });
-    } else {
+    } else { 
       this.setState({
         Stepes: this.state.Stepes + 1
       });
-    }
+    } 
   }
 
   saveAndExit(event) {
