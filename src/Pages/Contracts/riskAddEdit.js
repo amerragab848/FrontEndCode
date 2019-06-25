@@ -426,19 +426,24 @@ class riskAddEdit extends Component {
 
     fillDropDownsCycle(isEdit) {
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=mitigationTypes", "title", "title").then(result => {
-            if (isEdit) {
-                let mitigationType = this.state.documentCycle.notes;
-                if (mitigationType) {
-                    let mitigationTypeObj = result.find(i => i.value === parseInt(mitigationType));
-                    this.setState({
-                        selectedMitigationType: { label: mitigationTypeObj.label, value: mitigationTypeObj.value }
-                    });
-                }
-            }
-            this.setState({
-                mitigationTypes: [...result]
-            });
+        // dataservice.GetDataList("GetaccountsDefaultListForList?listType=mitigationTypes", "title", "title").then(result => {
+        //     if (isEdit) {
+        //         let mitigationType = this.state.documentCycle.notes;
+        //         if (mitigationType) {
+        //             let mitigationTypeObj = result.find(i => i.value === parseInt(mitigationType));
+        //             this.setState({
+        //                 selectedMitigationType: { label: mitigationTypeObj.label, value: mitigationTypeObj.value }
+        //             });
+        //         }
+        //     }
+        //     this.setState({
+        //         mitigationTypes: [...result]
+        //     });
+        // });
+
+        let mitigationTypes = [{ id: 1, title: 'Preventive' }, { id: 2, title: 'Reactive' }]
+        this.setState({
+            mitigationTypes: mitigationTypes
         });
 
         //likelihoods
@@ -597,10 +602,14 @@ class riskAddEdit extends Component {
 
                 let cycle = {
                     subject: this.state.document.subject,
-                    docDate: this.state.document.docDate,
-                    notes: null,
-                    acctionProgress: null,
-                    riskId: result.id,
+                    subject: '',
+                    docDate: moment(),
+                    actionOwnerId: null,
+                    actionOwnerContactId: null,
+                    actionProgress: '',
+                    mitigationType: 1,
+                    mitigationCost: 0,
+                    riskId: this.state.docId,
                     id: null
                 };
 
@@ -848,8 +857,11 @@ class riskAddEdit extends Component {
                     let cycle = {
                         subject: '',
                         docDate: moment(),
-                        notes: null,
+                        actionOwnerId: null,
+                        actionOwnerContactId: null,
                         actionProgress: '',
+                        mitigationType: 1,
+                        mitigationCost: 0,
                         riskId: this.state.docId,
                         id: null
                     };
@@ -869,12 +881,12 @@ class riskAddEdit extends Component {
             });
     }
 
-    AddNewCycle() {
+    CurrentMit() {
         return (
             <div className="subiTabsContent">
                 <header className="main__header">
                     <div className="main__header--div">
-                        <h2 className="zero">{Resources['mitigation'][currentLanguage]}</h2>
+                        <h2 className="zero">{Resources['currentMitigation'][currentLanguage]}</h2>
                     </div>
                 </header>
                 <div className='document-fields'>
@@ -910,7 +922,7 @@ class riskAddEdit extends Component {
                                             isClear={false}
                                             data={this.state.mitigationTypes}
                                             selectedValue={this.state.selectedMitigationType}
-                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "notes", 'selectedMitigationType')}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationType')}
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.notes}
@@ -919,12 +931,119 @@ class riskAddEdit extends Component {
                                             name="notes"
                                             id="notes" />
                                     </div>
+                                </div>
+
+                                <div className="slider-Btns">
+
+                                    {this.state.CycleEditLoading ?
+                                        <button className="primaryBtn-1 btn disabled">
+                                            <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                            </div>
+                                        </button>
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['goAdd'][currentLanguage]}</button>
+                                    }
+                                </div>
+
+                            </Form>
+                        )}
+                    </Formik>
+
+                    <div className="doc-pre-cycle">
+                        <header>
+                            <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
+                        </header>
+
+                        <table className="attachmentTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div className="headCell tableCell-1">{Resources['subject'][currentLanguage]}</div>
+                                    </th>
+
+                                    <th>
+                                        <div className="headCell"> {Resources['type'][currentLanguage]}</div>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {this.state.IRCycles.map((item, index) => {
+                                    return <tr key={item.id + '-' + index}>
+                                        <td className="removeTr">
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.mitigationTypeText}</div>
+                                        </td>
+                                    </tr>
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    ProposedMit() {
+        return (
+            <div className="subiTabsContent">
+                <header className="main__header">
+                    <div className="main__header--div">
+                        <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
+                    </div>
+                </header>
+                <div className='document-fields'>
+                    <Formik
+                        initialValues={{ ...this.state.documentCycle }}
+                        validationSchema={documentCycleValidationSchema}
+                        enableReinitialize={true}
+                        onSubmit={(values) => {
+                            this.saveMitigationRequest()
+                        }}>
+
+                        {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                            <Form id="RiskRequestCycleFormPost" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+
+                                <div className="proForm datepickerContainer">
+                                    <div className="fullInputWidth letterFullWidth">
+                                        <label className="control-label">{Resources.proposeMitigation[currentLanguage]}</label>
+                                        <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                            <input name='subject' id="subject" className="form-control fsadfsadsa"
+                                                placeholder={Resources.proposeMitigation[currentLanguage]}
+                                                autoComplete='off'
+                                                value={this.state.documentCycle.subject}
+                                                onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                                onChange={(e) => this.handleChangeCycle(e, 'subject')} />
+                                            {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="proForm datepickerContainer">
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="mitigationType"
+                                            isMulti={false}
+                                            isClear={false}
+                                            data={this.state.mitigationTypes}
+                                            selectedValue={this.state.selectedMitigationType}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationType')}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.notes}
+                                            touched={touched.notes}
+                                            index="post-mitigationType"
+                                            name="post-mitigationType"
+                                            id="post-mitigationType" />
+                                    </div>
 
                                     <div className="linebylineInput valid-input">
                                         <div className="inputDev ui input input-group date NormalInputDate">
                                             <div className="customDatepicker fillter-status fillter-item-c ">
                                                 <div className="proForm datepickerContainer">
-                                                    <label className="control-label">{Resources.docDate[currentLanguage]}</label>
+                                                    <label className="control-label">{Resources.deadLineDate[currentLanguage]}</label>
                                                     <div className="linebylineInput" >
                                                         <div className="inputDev ui input input-group date NormalInputDate">
                                                             <ModernDatepicker date={this.state.documentCycle.docDate}
@@ -950,6 +1069,17 @@ class riskAddEdit extends Component {
                                                 placeholder={Resources['actionProgress'][currentLanguage]} />
                                         </div>
                                     </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources['medigationCost'][currentLanguage]}</label>
+                                        <div className='ui input inputDev  '>
+                                            <input autoComplete="off"
+                                                value={this.state.documentCycle.medigationCost}
+                                                className="form-control" name="medigationCost"
+                                                onBlur={(e) => { handleBlur(e) }}
+                                                onChange={(e) => { this.handleChangeCycle(e, 'medigationCost') }}
+                                                placeholder={Resources['medigationCost'][currentLanguage]} />
+                                        </div>
+                                    </div>
 
                                 </div>
 
@@ -972,11 +1102,67 @@ class riskAddEdit extends Component {
                             </Form>
                         )}
                     </Formik>
+
+                    <div className="doc-pre-cycle">
+                        <header>
+                            <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
+                        </header>
+
+                        <table className="attachmentTable attachmentTable__fixedWidth">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div className="headCell tableCell-1">{Resources['subject'][currentLanguage]}</div>
+                                    </th>
+                                    <th>
+                                        <div className="headCell"> {Resources['type'][currentLanguage]}</div>
+                                    </th>
+                                    <th>
+                                        <div className="headCell"> {Resources['responsibleCompanyName'][currentLanguage]}</div>
+                                    </th>
+                                    <th>
+                                        <div className="headCell"> {Resources['deadLineDate'][currentLanguage]}</div>
+                                    </th>
+                                    <th>
+                                        <div className="headCell"> {Resources['actionProgress'][currentLanguage]}</div>
+                                    </th>
+                                    <th>
+                                        <div className="headCell"> {Resources['medigationCost'][currentLanguage]}</div>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {this.state.IRCycles.map((item, index) => {
+                                    return <tr key={item.id + '-' + index}>
+                                        <td className="removeTr">
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.mitigationTypeText}</div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionOwnerContactName}</div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> { item.docDate != null ? moment(item.docDate).format('DD/MM/YYYY') : 'No Date'}</div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionProgress}</div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.medigationCost}</div>
+                                        </td>
+                                    </tr>
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         )
     }
-
     HandleChangeValue = (e, index, id) => {
         let items = this.state.items;
         let likelihood = this.state.likelihood;
@@ -1628,28 +1814,7 @@ class riskAddEdit extends Component {
 
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                     <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                                        <div className="proForm first-proform">
-                                                            <div className="linebylineInput valid-input">
-                                                                <label className="control-label">{Resources.generalListTitle[currentLanguage]}</label>
-                                                                <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                                    <input name='subject' id="subject" className="form-control fsadfsadsa"
-                                                                        placeholder={Resources.generalListTitle[currentLanguage]}
-                                                                        autoComplete='off'
-                                                                        value={this.state.document.subject}
-                                                                        onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                                        onChange={(e) => this.handleChange(e, 'subject')} />
-                                                                    {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
                                                         <div className="proForm datepickerContainer">
-                                                            <div className="letterFullWidth">
-                                                                <label className="control-label">{Resources.description[currentLanguage]}</label>
-                                                                <div className="inputDev ui input">
-                                                                    <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
-                                                                </div>
-                                                            </div>
                                                             <div className="linebylineInput linebylineInput__checkbox">
                                                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                                 <div className="ui checkbox radio radioBoxBlue">
@@ -1710,6 +1875,31 @@ class riskAddEdit extends Component {
                                                                 </div>
                                                             </div>
 
+
+                                                        </div>
+                                                        <div className="proForm first-proform">
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">{Resources.generalListTitle[currentLanguage]}</label>
+                                                                <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                                    <input name='subject' id="subject" className="form-control fsadfsadsa"
+                                                                        placeholder={Resources.generalListTitle[currentLanguage]}
+                                                                        autoComplete='off'
+                                                                        value={this.state.document.subject}
+                                                                        onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                                                        onChange={(e) => this.handleChange(e, 'subject')} />
+                                                                    {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="proForm datepickerContainer">
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
+                                                                </div>
+                                                            </div>
+
                                                             <div className="linebylineInput valid-input">
                                                                 <Dropdown title="priority" data={this.state.priority}
                                                                     selectedValue={this.state.selectedPriorityId}
@@ -1729,7 +1919,7 @@ class riskAddEdit extends Component {
                                                                     id="riskType" />
                                                             </div>
                                                             <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
+                                                                <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
                                                                         <Dropdown data={this.state.companies} isMulti={false}
@@ -1826,23 +2016,7 @@ class riskAddEdit extends Component {
                                     {this.state.SecondStep ?
                                         <div className="subiTabsContent feilds__top">
 
-                                            {this.AddNewCycle()}
-
-                                            <div className="doc-pre-cycle">
-                                                <header>
-                                                    <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
-                                                </header>
-                                                <ReactTable
-                                                    ref={(r) => {
-                                                        this.selectTable = r;
-                                                    }}
-                                                    data={this.state.IRCycles}
-                                                    columns={columns}
-                                                    defaultPageSize={10}
-                                                    minRows={2}
-                                                    noDataText={Resources['noData'][currentLanguage]}
-                                                />
-                                            </div>
+                                            {this.CurrentMit()}
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
@@ -1898,17 +2072,28 @@ class riskAddEdit extends Component {
 
                                             </Fragment>
                                             :
-                                            <Fragment>
-                                                <div className="document-fields tableBTnabs">
-                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                </div>
-                                                <div className="doc-pre-cycle">
-                                                    <div className="slider-Btns">
-                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
-                                                    </div>
+                                            this.state.FourStep ?
+                                                <div className="subiTabsContent feilds__top">
+                                                    {this.ProposedMit()}
+                                                    <div className="doc-pre-cycle">
+                                                        <div className="slider-Btns">
+                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                        </div>
 
+                                                    </div>
                                                 </div>
-                                            </Fragment>
+                                                :
+                                                <Fragment>
+                                                    <div className="document-fields tableBTnabs">
+                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                    </div>
+                                                    <div className="doc-pre-cycle">
+                                                        <div className="slider-Btns">
+                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                        </div>
+
+                                                    </div>
+                                                </Fragment>
                                     }
                                 </Fragment>}
                         </div>
@@ -1953,6 +2138,15 @@ class riskAddEdit extends Component {
                                     <div onClick={this.StepFourLink} data-id="step3" className={this.state.FourthStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
                                         <div className="steps-timeline">
                                             <span>4</span>
+                                        </div>
+                                        <div className="steps-info">
+                                            <h6>{Resources.proposeMitigation[currentLanguage]}</h6>
+
+                                        </div>
+                                    </div>
+                                    <div onClick={this.StepFourLink} data-id="step3" className={this.state.fivethStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                        <div className="steps-timeline">
+                                            <span>5</span>
                                         </div>
                                         <div className="steps-info">
                                             <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
