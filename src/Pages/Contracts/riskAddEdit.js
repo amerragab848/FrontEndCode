@@ -155,7 +155,8 @@ class riskAddEdit extends Component {
             likelihoods: [],
             items: [],
             areas: [],
-            IRCycles: [],
+            IRCyclesPre: [],
+            IRCyclesPost: [],
             priority: [],
             permission: [{ name: 'sendByEmail', code: 10006 },
             { name: 'sendByInbox', code: 10005 },
@@ -266,15 +267,19 @@ class riskAddEdit extends Component {
             this.props.actions.documentForEdit(url);
 
             dataservice.GetDataGrid("GetRiskCycles?riskId=" + this.state.docId).then(result => {
+                let IRCyclesPre = [];
+                let IRCyclesPost = [];
                 result.map(i => {
                     if (i.mitigationType == 1) {
-                        i.mitigationTypeText = "Preventive";
+                        IRCyclesPre.push(i)
                     } else {
-                        i.mitigationTypeText = "Reactive";
+                        IRCyclesPost.push(i)
                     }
                 })
+
                 this.setState({
-                    IRCycles: [...result]
+                    IRCyclesPre: IRCyclesPre,
+                    IRCyclesPost: IRCyclesPost
                 });
 
                 let data = { items: result };
@@ -867,7 +872,7 @@ class riskAddEdit extends Component {
                     };
 
                     this.setState({
-                        IRCycles: result,
+                        IRCyclesPre: result,
                         documentCycle: cycle,
                         CycleEditLoading: false
                     });
@@ -970,7 +975,7 @@ class riskAddEdit extends Component {
                             </thead>
 
                             <tbody>
-                                {this.state.IRCycles.map((item, index) => {
+                                {this.state.IRCyclesPre.map((item, index) => {
                                     return <tr key={item.id + '-' + index}>
                                         <td className="removeTr">
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
@@ -1133,7 +1138,7 @@ class riskAddEdit extends Component {
                             </thead>
 
                             <tbody>
-                                {this.state.IRCycles.map((item, index) => {
+                                {this.state.IRCyclesPost.map((item, index) => {
                                     return <tr key={item.id + '-' + index}>
                                         <td className="removeTr">
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
@@ -1145,7 +1150,7 @@ class riskAddEdit extends Component {
                                             <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionOwnerContactName}</div>
                                         </td>
                                         <td>
-                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> { item.docDate != null ? moment(item.docDate).format('DD/MM/YYYY') : 'No Date'}</div>
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.docDate != null ? moment(item.docDate).format('DD/MM/YYYY') : 'No Date'}</div>
                                         </td>
                                         <td>
                                             <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionProgress}</div>

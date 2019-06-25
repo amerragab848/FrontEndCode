@@ -18,7 +18,9 @@ class DatePicker extends Component {
 
     componentWillReceiveProps = (nextprops) => {
         if (nextprops.startDate) {
-            this.setState({ Date: moment(nextprops.startDate).format('YYYY-MM-DD') })
+            this.setState({
+                Date: nextprops.startDate === null ? moment().format('YYYY-MM-DD') : moment(nextprops.startDate).format('YYYY-MM-DD')
+            })
         }
     }
 
