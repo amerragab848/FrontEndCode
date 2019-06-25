@@ -225,7 +225,7 @@ class ViewAttachmments extends Component {
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
 
-                            {Config.IsAllow(this.props.deleteAttachments) ?
+                            {Config.IsAllow(4502) ?
                                 <a className="attachRecycle" onClick={() => this.deletehandler(item)} >
                                     <img src={Recycle} alt="del" width="100%" height="100%" />
                                 </a> :
@@ -335,7 +335,7 @@ class ViewAttachmments extends Component {
                             <a href={item['attachFile']} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf">
                                 <img src={Download} alt="dLoad" width="100%" height="100%" />
                             </a>
-                            {Config.IsAllow(4502) ?
+                            {Config.IsAllow(4501) ?
                                 <a className="attachPend" onClick={() => this.versionHandler(item['parentId'], ext)}>
                                     <img src={Pending} alt="pend" width="100%" height="100%" />
                                 </a>
@@ -350,7 +350,7 @@ class ViewAttachmments extends Component {
                                 null
                             }
 
-                            {ext === 'dwg' ?
+                            {ext === 'dwg' ||ext==='rvt' ?
                                 <a className="autocadIcon" onClick={(e) => this.viewAutoDeskModal(item, e)}>
                                     <img src={autocad} style={{ maxWidth: '100%', maxHeight: '100%' }} alt="autoDesk" />
                                 </a > :
