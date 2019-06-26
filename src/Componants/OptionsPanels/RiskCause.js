@@ -146,10 +146,10 @@ class RiskCause extends Component {
                     <header style={{ paddingTop: '0' }}>
                         <h2 className="zero">{Resources['riskCause'][currentLanguage]}</h2>
                     </header>
-                    <div className="dropWrapper">
+                    <div className="dropWrapper proForm">
 
                         <div className="doc-input-btn customeError" style={{ border: 'none' }}>
-                            <div className="fillter-item-c fullInputWidth">
+                            <div className="letterFullWidth fullInputWidth" style={{marginBottom : '0'}}>
                                 <label className="control-label"> {Resources['description'][currentLanguage]}</label>
                                 <div className={"inputDev ui input" + (this.state.hasError ? (" has-error") : " ")} >
                                     <input name='description' autoComplete='off' id='description' required
