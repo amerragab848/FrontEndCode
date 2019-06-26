@@ -133,7 +133,7 @@ class TaskGroupsAddEdit extends Component {
             docTypeId: 89,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            DocumentDate: moment().format("DD-MM-YYYY"),
+            DocumentDate: moment(),
             Status: 'true',
             CompanyData: [],
             ContactData: [],
@@ -254,7 +254,6 @@ class TaskGroupsAddEdit extends Component {
             Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
                 res => {
                     MaxArrange = res
-                    this.setState({ DocumentDate: moment().format("DD:MM:YYYY") })
                 }
             )
             this.props.actions.documentForAdding()
@@ -337,10 +336,6 @@ class TaskGroupsAddEdit extends Component {
                 isLoading: false
             });
             this.checkDocumentIsView();
-        }
-        if (props.document.docDate) {
-            let date = moment(props.document.docDate).format("DD/MM/YYYY")
-            this.setState({DocumentDate:date})
         }
 
     }
@@ -450,9 +445,6 @@ class TaskGroupsAddEdit extends Component {
             }
             dataservice.addObject('EditProjectDistributionList', saveDoc).then(
                 res => {
-                    this.setState({
-                        Dis_ListData: res
-                    })
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                     this.NextStep()
                 }).catch(ex => {
