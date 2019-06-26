@@ -1427,6 +1427,7 @@ class PurchaseOrderAddEdit extends Component {
                       {Resources["fromInventory"][currentLanguage]}
                     </button>
                   </div>
+
                   <div className="linebylineInput valid-input">
                     <label className="control-label">
                       {Resources.arrange[currentLanguage]}
@@ -1573,6 +1574,7 @@ class PurchaseOrderAddEdit extends Component {
                       ) : null}
                     </div>
                   </div>
+                  
                   <div className="linebylineInput valid-input">
                     <Dropdown
                       title="itemType"
