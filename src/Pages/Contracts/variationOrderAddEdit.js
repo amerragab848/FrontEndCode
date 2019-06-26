@@ -9,7 +9,6 @@ import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-//import ReactTable from "react-table";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -212,14 +211,14 @@ class variationOrderAddEdit extends Component {
       } else {
         links[i].classList.add("odd");
       }
-    } 
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.document.id) {
       let serverChangeOrder = { ...nextProps.document };
-      serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("DD/MM/YYYY");
-      serverChangeOrder.dateApproved = moment(serverChangeOrder.resultDate).format("DD/MM/YYYY");
+      serverChangeOrder.docDate = serverChangeOrder.docDate != null ? moment(serverChangeOrder.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+      serverChangeOrder.dateApproved = serverChangeOrder.dateApproved != null ? moment(serverChangeOrder.dateApproved).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
       serverChangeOrder.timeExtensionRequired = serverChangeOrder.timeExtensionRequired ? parseFloat(serverChangeOrder.timeExtensionRequired) : 0;
 
       this.setState({
@@ -276,7 +275,6 @@ class variationOrderAddEdit extends Component {
       this.setState({
         voItems: [...result]
       });
-      //this.props.actions.setItemDescriptions(result);
     });
   }
 
@@ -451,8 +449,8 @@ class variationOrderAddEdit extends Component {
 
     let saveDocument = this.state.document;
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocument.dateApproved = moment(saveDocument.dateApproved, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.dateApproved = moment(saveDocument.dateApproved, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditContractsChangeOrder", saveDocument).then(result => {
       this.setState({
@@ -471,8 +469,8 @@ class variationOrderAddEdit extends Component {
   saveVariationOrder(event) {
     let saveDocument = { ...this.state.document };
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocument.dateApproved = moment(saveDocument.dateApproved, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.dateApproved = moment(saveDocument.dateApproved, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     saveDocument.projectId = this.state.projectId;
 
@@ -829,8 +827,7 @@ class variationOrderAddEdit extends Component {
                               <div className="proForm datepickerContainer">
                                 <div className="linebylineInput valid-input alternativeDate">
                                   <DatePicker
-                                    title="docDate"
-                                    format={"DD/MM/YYYY"}
+                                    title="docDate" 
                                     onChange={e => setFieldValue("docDate", e)}
                                     onBlur={setFieldTouched}
                                     error={errors.docDate}
@@ -845,8 +842,7 @@ class variationOrderAddEdit extends Component {
 
                                 <div className="linebylineInput valid-input alternativeDate">
                                   <DatePicker
-                                    title="dateApproved"
-                                    format={"DD/MM/YYYY"}
+                                    title="dateApproved" 
                                     onChange={e =>
                                       setFieldValue("dateApproved", e)
                                     }
@@ -1134,7 +1130,7 @@ class variationOrderAddEdit extends Component {
                                 </div>
                               </div>
                               <div className="slider-Btns">
-                                {this.showBtnsSaving()}
+                                {this.showBtnsSaving()} 
                               </div>
                             </Form>
                           )}
@@ -1188,7 +1184,7 @@ class variationOrderAddEdit extends Component {
                           {Resources["AddedItems"][currentLanguage]}
                         </h2>
                       </header>
-                       
+
                       <GridSetupWithFilter
                         rows={this.props.items}
                         pageSize={10}

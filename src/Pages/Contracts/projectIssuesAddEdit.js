@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import dataservice from "../../Dataservice"; 
+import dataservice from "../../Dataservice";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import Resources from "../../resources.json";
-import ModernDatepicker from 'react-modern-datepicker';
-import { withRouter } from "react-router-dom"; 
+import Resources from "../../resources.json"; 
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -19,7 +19,6 @@ import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
-import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -34,7 +33,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 
 const _ = require('lodash');
@@ -54,7 +53,7 @@ class ProjectIssuesAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -80,7 +79,7 @@ class ProjectIssuesAddEdit extends Component {
             docTypeId: 18,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            perviousRoute:perviousRoute,
+            perviousRoute: perviousRoute,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             permission: [{ name: 'sendByEmail', code: 26 },
@@ -95,9 +94,9 @@ class ProjectIssuesAddEdit extends Component {
 
         if (!Config.IsAllow(20) && !Config.IsAllow(21) && !Config.IsAllow(23)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
 
@@ -115,8 +114,8 @@ class ProjectIssuesAddEdit extends Component {
         this.checkDocumentIsView();
     };
 
-    componentWillUnmount() { 
-          this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -124,9 +123,9 @@ class ProjectIssuesAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('DD/MM/YYYY') : moment();
-            nextProps.document.openDate = nextProps.document.openDate != null ? moment(nextProps.document.openDate).format('DD/MM/YYYY') : moment();
-            nextProps.document.dueDate = nextProps.document.dueDate != null ? moment(nextProps.document.dueDate).format('DD/MM/YYYY') : moment();
+            nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('YYYY-MM-DD') : moment();
+            nextProps.document.openDate = nextProps.document.openDate != null ? moment(nextProps.document.openDate).format('YYYY-MM-DD') : moment();
+            nextProps.document.dueDate = nextProps.document.dueDate != null ? moment(nextProps.document.dueDate).format('YYYY-MM-DD') : moment();
 
             this.setState({
                 document: nextProps.document,
@@ -136,7 +135,7 @@ class ProjectIssuesAddEdit extends Component {
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -171,7 +170,7 @@ class ProjectIssuesAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsProjectIssuesForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url,this.state.docTypeId,'projectIssuesLog');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectIssuesLog');
         } else {
             const projectIssuesDocument = {
                 id: 0,
@@ -229,9 +228,9 @@ class ProjectIssuesAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.openDate = moment(saveDocument.openDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.dueDate = moment(saveDocument.dueDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.openDate = moment(saveDocument.openDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.dueDate = moment(saveDocument.dueDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditContractsProjectIssues', saveDocument).then(result => {
             this.setState({
@@ -240,19 +239,19 @@ class ProjectIssuesAddEdit extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
+                this.props.history.push(
                     this.state.perviousRoute
-                  );
-            } 
+                );
+            }
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveProjectIssues(event) {
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.openDate = moment(saveDocument.openDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.dueDate = moment(saveDocument.dueDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.openDate = moment(saveDocument.openDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.dueDate = moment(saveDocument.dueDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddContractsProjectIssues', saveDocument).then(result => {
 
@@ -282,16 +281,17 @@ class ProjectIssuesAddEdit extends Component {
 
     viewAttachments() {
         return this.state.docId > 0 ? (
-          Config.IsAllow(3300) === true ? (
-            <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={866}/>
-          ) : null
+            Config.IsAllow(3300) === true ? (
+                <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={866} />
+            ) : null
         ) : null;
-      }
+    }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -318,7 +318,7 @@ class ProjectIssuesAddEdit extends Component {
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectIssuesLog[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectIssuesLog[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -339,9 +339,9 @@ class ProjectIssuesAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
-                                                
+
                                                 if (this.props.showModal) { return; }
-        
+
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editProjectIssues();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -377,7 +377,8 @@ class ProjectIssuesAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="proForm datepickerContainer">
-                                                        <div className="linebylineInput valid-input">
+
+                                                        {/* <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
                                                                     <div className="proForm datepickerContainer">
@@ -394,7 +395,16 @@ class ProjectIssuesAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div> */}
+
+                                                        <div className="linebylineInput valid-input alternativeDate">
+                                                            <DatePicker title='docDate'
+                                                                handleChange={e => this.handleChangeDate(e, 'docDate')}
+                                                                name="docDate"
+                                                                startDate={this.state.document.docDate}
+                                                            />
                                                         </div>
+{/* 
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -411,8 +421,16 @@ class ProjectIssuesAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div> */}
+
+                                                        <div className="linebylineInput valid-input alternativeDate">
+                                                            <DatePicker title='openDate'
+                                                                handleChange={e => this.handleChangeDate(e, 'openDate')}
+                                                                name="openDate"
+                                                                startDate={this.state.document.openDate}/>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+
+                                                        {/* <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <div className="customDatepicker fillter-status fillter-item-c ">
                                                                     <div className="proForm datepickerContainer">
@@ -428,7 +446,15 @@ class ProjectIssuesAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div> */}
+
+                                                        <div className="linebylineInput valid-input alternativeDate">
+                                                            <DatePicker title='dueDate'
+                                                                handleChange={e => this.handleChangeDate(e, 'dueDate')}
+                                                                name="dueDate"
+                                                                startDate={this.state.document.dueDate}/>
                                                         </div>
+
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.description && touched.description ? (" has-error") : "ui input inputDev")} >
@@ -491,10 +517,10 @@ class ProjectIssuesAddEdit extends Component {
                                                 </Form>
                                             )}
                                         </Formik>
-                                    </div> 
+                                    </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={865} EditAttachments={3259} ShowDropBox={3577} ShowGoogleDrive={3578} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={865} EditAttachments={3259} ShowDropBox={3577} ShowGoogleDrive={3578} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>

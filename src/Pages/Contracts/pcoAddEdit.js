@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Component, Fragment } from "react"; 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -12,22 +11,16 @@ import Resources from "../../resources.json";
 import ReactTable from "react-table";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { withRouter } from "react-router-dom";
-
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 
@@ -113,7 +106,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 class pcoAddEdit extends Component {
@@ -128,7 +121,7 @@ class pcoAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -154,7 +147,7 @@ class pcoAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             companies: [],
@@ -198,7 +191,7 @@ class pcoAddEdit extends Component {
             permission: [{ name: 'sendByEmail', code: 154 }, { name: 'sendByInbox', code: 153 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 976 },
             { name: 'createTransmittal', code: 3062 }, { name: 'sendToWorkFlow', code: 724 },
-            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code:3020 }],
+            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code: 3020 }],
             selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             selectPco: { label: Resources.pco[currentLanguage], value: "0" },
             pcos: [],
@@ -209,9 +202,9 @@ class pcoAddEdit extends Component {
 
         if (!Config.IsAllow(148) && !Config.IsAllow(149) && !Config.IsAllow(151)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
 
@@ -230,8 +223,8 @@ class pcoAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
-            serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
-            serverChangeOrder.dateApproved = moment(serverChangeOrder.resultDate).format('DD/MM/YYYY');
+            serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('YYYY-MM-DD');
+            serverChangeOrder.dateApproved = moment(serverChangeOrder.resultDate).format('YYYY-MM-DD');
             serverChangeOrder.timeExtensionRequired = serverChangeOrder.timeExtensionRequired ? parseFloat(serverChangeOrder.timeExtensionRequired) : 0;
             this.setState({
                 document: { ...serverChangeOrder },
@@ -258,7 +251,6 @@ class pcoAddEdit extends Component {
             if (!Config.IsAllow(149)) {
                 this.setState({ isViewMode: true });
             }
-
             if (this.state.isApproveMode != true && Config.IsAllow(149)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(149)) {
                     //close => false
@@ -498,7 +490,7 @@ class pcoAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditContractsPco', saveDocument).then(result => {
             this.setState({
@@ -520,7 +512,7 @@ class pcoAddEdit extends Component {
         });
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         saveDocument.projectId = this.state.projectId;
 
@@ -656,6 +648,9 @@ class pcoAddEdit extends Component {
         let currentTab = this.state.currIndex;
         saveDocument.action = currentTab;
 
+        if (this.state.currIndex === 3) {
+            saveDocument.dueBack = moment(saveDocument.dueBack, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        }
         dataservice.addObject('AddContractsPcoItems', saveDocument).then(result => {
             if (result) {
                 let oldItems = [...this.state.voItems];
@@ -850,7 +845,6 @@ class pcoAddEdit extends Component {
                                             </div>
                                             <div className="linebylineInput valid-input alternativeDate">
                                                 <DatePicker title='dueBack'
-                                                    format={'DD/MM/YYYY'}
                                                     name="dueBack"
                                                     startDate={this.state.voItem.dueBack}
                                                     handleChange={e => this.handleChangeDateItem(e, 'dueBack')} />
@@ -918,19 +912,12 @@ class pcoAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
 
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.pco[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
@@ -952,13 +939,10 @@ class pcoAddEdit extends Component {
                                                         } else {
                                                             this.NextStep();
                                                         }
-                                                    }}  >
-
+                                                    }}>
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="PCOForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                                             <div className="proForm first-proform">
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -972,10 +956,8 @@ class pcoAddEdit extends Component {
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'subject')} />
                                                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                                     <div className="ui checkbox radio radioBoxBlue">
@@ -988,9 +970,7 @@ class pcoAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                             <div className="proForm datepickerContainer">
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                                     <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -1004,13 +984,11 @@ class pcoAddEdit extends Component {
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'description')} />
                                                                         {touched.description ? (<em className="pError">{errors.description}</em>) : null}
-
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='docDate'
-                                                                        format={'DD/MM/YYYY'}
                                                                         onChange={e => setFieldValue('docDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.docDate}
@@ -1213,15 +1191,12 @@ class pcoAddEdit extends Component {
                                                                     </button>
                                                                     :
                                                                     this.showBtnsSaving()}
-
                                                             </div>
                                                         </Form>
                                                     )}
                                                 </Formik>
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
-
-
                                                 <div>
                                                     {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3019} EditAttachments={3257} ShowDropBox={3571} ShowGoogleDrive={3572} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                     {this.viewAttachments()}
@@ -1254,17 +1229,13 @@ class pcoAddEdit extends Component {
                                                 noDataText={Resources['noData'][currentLanguage]}
                                             />
                                         </div>
-
                                         <div className="doc-pre-cycle">
                                             <div className="slider-Btns">
                                                 <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
                                             </div>
-
                                         </div>
                                     </div>
-
                                 </Fragment>}
-
                         </div>
                         <div className="docstepper-levels">
                             {/* Next & Previous */}
@@ -1309,8 +1280,6 @@ class pcoAddEdit extends Component {
                                             <div >
                                                 <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                                 <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
                                             </div>
                                             : null
                                         }
@@ -1355,7 +1324,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(pcoAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(pcoAddEdit))
