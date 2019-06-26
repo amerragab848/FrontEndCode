@@ -4716,6 +4716,10 @@
         "en": "Tender Analysis",
         "ar": "تحليل العطاء"
     },
+    "riskAnalysis": {
+        "en": "Risk Analysis",
+        "ar": "تحليل مخاطر"
+    },
     "tenderAnalysisAdd": {
         "en": "Add Tender Analysis",
         "ar": "اضافة تحليل العطاء"
@@ -7860,6 +7864,14 @@
     "medigationCost": {
         "en": "Mitigation Cost",
         "ar": "Mitigation Cost"
+    },
+    "totalRESIDUALRisk": {
+        "en": "Total Residual Risk",
+        "ar": "Mitigation Cost"
+    },
+    "totalMedigationCost": {
+        "en": "Total Mitigation Cost",
+        "ar": "Mitigation Cost"
     } ,
     "preMedigation": {
         "en": "Pre-mitigation ",
@@ -7926,7 +7938,11 @@
         "ar": "Mitigation Type"
     },
     "consequence": {
-        "en": "Quantitifaction",
+        "en": "Pre Quantitifaction",
+        "ar": "Quantitifaction"
+    },
+    "postQuantitifaction": {
+        "en": "Post Quantitifaction",
         "ar": "Quantitifaction"
     },
     "consequencesFactosrs": {
