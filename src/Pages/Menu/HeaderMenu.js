@@ -24,6 +24,7 @@ class HeaderMenu extends Component {
     super(props);
 
     this.state = {
+      subjectText:'',
       tabIndex: 0,
       projects: [],
       contactName: this.props.contactName,
@@ -54,7 +55,6 @@ class HeaderMenu extends Component {
 
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
-    this.handleOutsideClickSearch = this.handleOutsideClickSearch.bind(this);
   }
 
   componentWillMount = () => {
@@ -1005,20 +1005,19 @@ class HeaderMenu extends Component {
     this.props.history.push("/myTasks");
   }
 
-  handleOutsideClickSearch(e){
-    if (this.search.contains(e.target)) {
-      return;
-    }
-    this.searchClick();
-  }
 
-  searchClick = () => {
-    if(!this.state.searchClass) {
-      document.addEventListener('click', this.handleOutsideClickSearch, false);
-    } else {
-      document.removeEventListener('click', this.handleOutsideClickSearch, false);
-    }
-    this.setState({searchClass: !this.state.searchClass});
+  searchClick = ( ) => {
+
+    let obj = {
+      subject:this.state.subjectText   
+    }; 
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+    this.props.history.push({
+      pathname: "/GlobalSearch" ,
+      search: "?id=" + encodedPaylod
+    });
   }
 
   render() {
@@ -1057,7 +1056,7 @@ class HeaderMenu extends Component {
               <ul className="nav-right">
                 <li ref={search => { this.search = search }}>
                   <a>
-                    <div className={ this.state.searchClass ? "header__search  active " : "header__search "}>
+                    <div className="header__search ">
                       <span onClick={this.searchClick}>
                         <svg width="24" height="24" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                           <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -1071,7 +1070,7 @@ class HeaderMenu extends Component {
                         </svg>
                       </span>
                       <div className="ui input ">
-                        <input type="text" placeholder={Resources["search"][currentLanguage]} />
+                        <input type="text" placeholder={Resources["search"][currentLanguage]} onChange={e=>this.setState({subjectText:e.target.value})} />
                       </div>
                     </div>
                   </a>
