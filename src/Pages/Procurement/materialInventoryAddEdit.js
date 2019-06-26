@@ -380,8 +380,10 @@ class MaterialInventoryAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) { 
         if (nextProps.document.id !== this.props.document.id) {
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             this.setState({
-                document: nextProps.document,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
             }); 
@@ -619,7 +621,7 @@ class MaterialInventoryAddEdit extends Component {
         });
 
         let saveDocument = { ...this.state.document }; 
-
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         dataservice.addObject('EditLogsMaterialInventories', saveDocument).then(result => {
             this.setState({
                 isLoading: false
@@ -640,7 +642,7 @@ class MaterialInventoryAddEdit extends Component {
         });
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         dataservice.addObject('AddLogsMaterialInventories', saveDocument).then(result => {
             this.setState({
