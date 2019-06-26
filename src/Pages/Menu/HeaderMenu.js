@@ -24,6 +24,7 @@ class HeaderMenu extends Component {
     super(props);
 
     this.state = {
+      subjectText:'',
       tabIndex: 0,
       projects: [],
       contactName: this.props.contactName,
@@ -41,7 +42,8 @@ class HeaderMenu extends Component {
       taskes: [],
       totalNotification: 0,
       tabNotifi: true,
-      tabTask: false
+      tabTask: false,
+      searchClass: false,
     };
     config.contactName = this.props.contactName;
     this.handleChange = this.handleChange.bind(this);
@@ -1003,6 +1005,21 @@ class HeaderMenu extends Component {
     this.props.history.push("/myTasks");
   }
 
+
+  searchClick = ( ) => {
+
+    let obj = {
+      subject:this.state.subjectText   
+    }; 
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+    this.props.history.push({
+      pathname: "/GlobalSearch" ,
+      search: "?id=" + encodedPaylod
+    });
+  }
+
   render() {
     let totalNotification = this.state.notifications.length + this.state.taskes.length;
 
@@ -1037,6 +1054,27 @@ class HeaderMenu extends Component {
                 ) : null}
               </ul>
               <ul className="nav-right">
+                <li ref={search => { this.search = search }}>
+                  <a>
+                    <div className="header__search ">
+                      <span onClick={this.searchClick}>
+                        <svg width="24" height="24" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                          <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                            <g id="Icons/Search/16px/Light-grey" fill="#A8B0BF" stroke="#A8B0BF">
+                              <g id="search">
+                                <path d="M7.26998519,1.00030679 C5.21410776,0.99945959 3.28858201,2.00665384 2.11723694,3.6959605 C0.945891873,5.38526717 0.677539882,7.54107511 1.39781093,9.46666586 C2.11892701,11.3913466 3.73811764,12.8411624 5.73044429,13.3455818 C7.72368098,13.8491778 9.83708563,13.3447346 11.3867453,11.9938981 L14.2594224,14.8715588 C14.4286998,15.0408362 14.7037795,15.0408362 14.8730461,14.8715588 C15.0423126,14.7022815 15.0423234,14.4272017 14.8730461,14.2579352 L11.9953853,11.3826579 C13.0559011,10.1672412 13.6069057,8.58950045 13.5341245,6.97895515 C13.4604897,5.36743481 12.7681351,3.84648463 11.6009718,2.73255844 C10.4346536,1.61871892 8.88321726,0.998313379 7.27007186,1.00000344 L7.26998519,1.00030679 Z M1.86827736,7.26871463 C1.86658513,5.46760367 2.76375182,3.78414723 4.25928602,2.78029194 C5.7548419,1.77647999 7.65241657,1.58350923 9.3190807,2.26737887 C10.9864599,2.95124852 12.2028083,4.42058672 12.5624888,6.18529628 C12.9230577,7.95000584 12.3796693,9.77820118 11.1134747,11.0604839 L11.0855432,11.0841838 L11.0618433,11.1121153 C10.0453341,12.1159273 8.67256799,12.6762489 7.24467972,12.6694669 C5.81596808,12.663543 4.44827213,12.092223 3.44095004,11.0791157 C2.43291292,10.0668318 1.86752117,8.6965574 1.8683662,7.26866913 L1.86827736,7.26871463 Z"
+                                  id="Page-1"></path>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </span>
+                      <div className="ui input ">
+                        <input type="text" placeholder={Resources["search"][currentLanguage]} onChange={e=>this.setState({subjectText:e.target.value})} />
+                      </div>
+                    </div>
+                  </a>
+                </li>
                 <li>
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
@@ -1254,7 +1292,7 @@ class HeaderMenu extends Component {
               clickHandlerContinue={() => this.handleClearCach()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearCach' />
           ) : null
         }
-        
+
         {
           this.state.clearSettings ? (
             <ConfirmationModal closed={event => this.setState({ clearSettings: false })} showDeleteModal={this.state.clearSettings} clickHandlerCancel={event => this.setState({ clearSettings: false })}

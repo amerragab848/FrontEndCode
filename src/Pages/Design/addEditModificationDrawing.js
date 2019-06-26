@@ -56,7 +56,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 let isModification = true;
 const _ = require('lodash')
@@ -72,7 +72,7 @@ class addEditModificationDrawing extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -93,7 +93,7 @@ class addEditModificationDrawing extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -125,9 +125,9 @@ class addEditModificationDrawing extends Component {
         if (isModification === true) {
             if (!Config.IsAllow(3516) || !Config.IsAllow(3517) || !Config.IsAllow(3519)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
-                this.props.history.push( 
+                this.props.history.push(
                     this.state.perviousRoute
-                  );
+                );
             }
 
         } else {
@@ -163,7 +163,8 @@ class addEditModificationDrawing extends Component {
         })
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -184,8 +185,11 @@ class addEditModificationDrawing extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+
             this.setState({
-                document: nextProps.document,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow
             });
 
@@ -194,13 +198,13 @@ class addEditModificationDrawing extends Component {
                 this.props.actions.ExportingData(data);
                 this.setState({
                     drawingCycle: { ...result }
-                }); 
+                });
                 this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             });
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     };
 
@@ -338,6 +342,7 @@ class addEditModificationDrawing extends Component {
             }
         });
     }
+
     fillDropDowns(isEdit) {
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
 
@@ -538,12 +543,12 @@ class addEditModificationDrawing extends Component {
         this.setState({
             isLoading: true
         });
-
-        dataservice.addObject('EditLogDrawing', this.state.document).then(result => {
+        let saveDocument = { ...this.state.document };
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        dataservice.addObject('EditLogDrawing', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
-
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
                 if (isModification === true) {
@@ -551,22 +556,18 @@ class addEditModificationDrawing extends Component {
                         pathname: "/drawing/" + this.state.projectId
                     });
                 } else {
-                    this.props.history.push( 
+                    this.props.history.push(
                         this.state.perviousRoute
-                      );
+                    );
                 }
-             
-            } 
-
-        
+            }
         });
     }
 
     //EditLogDrawingCycle
     saveDrawing(event) {
         let saveDocument = { ...this.state.document };
-
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
 
         dataservice.addObject('AddLogsDrawings', saveDocument).then(result => {
@@ -576,8 +577,8 @@ class addEditModificationDrawing extends Component {
 
             let saveDocumentCycle = { ...this.state.drawingCycle };
             saveDocumentCycle.drawingId = result.id;
-            saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-
+            saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             dataservice.addObject('AddLogsDrawingsCycles', saveDocumentCycle).then(result => {
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -596,9 +597,11 @@ class addEditModificationDrawing extends Component {
             });
         }
     }
+
     showNEwCycle() {
         alert('showing....');
     }
+
     showBtnsSaving() {
         let btn = null;
 
@@ -630,10 +633,11 @@ class addEditModificationDrawing extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -662,7 +666,7 @@ class addEditModificationDrawing extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={isModification === true ? Resources.drawing[currentLanguage] : Resources.drawingModification[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={isModification === true ? Resources.drawing[currentLanguage] : Resources.drawingModification[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -735,7 +739,6 @@ class addEditModificationDrawing extends Component {
 
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate'
-                                                                format={'DD/MM/YYYY'}
                                                                 onChange={e => setFieldValue('docDate', e)}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.docDate}
@@ -800,7 +803,7 @@ class addEditModificationDrawing extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown
+                                                                    <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
@@ -928,7 +931,6 @@ class addEditModificationDrawing extends Component {
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker
                                                                     title='docDate'
-                                                                    format={'DD/MM/YYYY'}
                                                                     onChange={e => setFieldValue('docDate', e)}
                                                                     name="docDateCycle"
                                                                     startDate={this.state.drawingCycle.docDate}
@@ -938,7 +940,6 @@ class addEditModificationDrawing extends Component {
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker
                                                                     title='dateApproved'
-                                                                    format={'DD/MM/YYYY'}
                                                                     onChange={e => setFieldValue('approvedDate', e)}
                                                                     name="approvedDate"
                                                                     startDate={this.state.drawingCycle.approvedDate}
@@ -950,7 +951,7 @@ class addEditModificationDrawing extends Component {
                                                                 <label className="control-label">{Resources.CompanyName[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                    <Dropdown
+                                                                        <Dropdown
                                                                             data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedFlowCompany}
@@ -962,7 +963,7 @@ class addEditModificationDrawing extends Component {
                                                                             id="flowCompanyId" />
                                                                     </div>
                                                                     <div className="super_company">
-                                                                    <Dropdown
+                                                                        <Dropdown
                                                                             isMulti={false}
                                                                             data={this.state.flowContacts}
                                                                             selectedValue={this.state.selectedFlowContact}

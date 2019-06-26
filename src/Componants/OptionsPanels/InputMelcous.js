@@ -12,7 +12,7 @@ class InputMelcous extends Component {
       <div
         className={
           this.props.fullwidth == "true"
-            ? "fullWidthWrapper textLeft"
+            ? "letterFullWidth fullInputWidth linebylineInput"
             : "fillter-status fillter-item-c"
         }
       >

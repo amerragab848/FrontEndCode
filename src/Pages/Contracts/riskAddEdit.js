@@ -54,7 +54,9 @@ const documentProposedValidationSchema = Yup.object().shape({
     actionProgress: Yup.string()
         .required(Resources['actionProgress'][currentLanguage]).nullable(true),
     medigationCost: Yup.string()
-        .required(Resources['medigationCost'][currentLanguage]).nullable(true)
+        .required(Resources['medigationCost'][currentLanguage]).nullable(true),
+    actionOwnerContactId: Yup.string()
+        .required(Resources['ownerRisk'][currentLanguage]).nullable(true)
 
 })
 let docId = 0;
@@ -101,7 +103,6 @@ class riskAddEdit extends Component {
             totalResidualRisk: 0,
             totalMedigationCost: 0,
             totalProposedMit: 0,
-
             statusNumbers: true,
             consequenceData: [],
             consequenceDataPost: [],
@@ -110,11 +111,23 @@ class riskAddEdit extends Component {
             SecondStep: false,
             ThirdStep: false,
             FourStep: false,
+            FiveStep:false,
+            SixStep:false,
+            SevenStep:false,
+            EightStep:false,
             FourthStepComplate: false,
+            FivethStepComplate: false,
+            SixthStepComplate:false,
             SecondStepComplate: false,
             ThirdStepComplate: false,
+            SeventhStepComplate : false,
+            EightthStepComplate : false,
             postQuantitifactionStepComplate: false,
             addDocStepComplate: false,
+            postQuantitifactionStep: false,
+            addDocStep: false,
+            analysisStepComplate: false,
+            analysisStep: false,
             CurrentStep: 1,
             CycleEditLoading: false,
             CycleAddLoading: false,
@@ -140,7 +153,6 @@ class riskAddEdit extends Component {
             companies: [],
             ToContacts: [],
             fromContacts: [],
-
             riskTypes: [],
             mitigationTypes: [],
             likelihoods: [],
@@ -161,11 +173,9 @@ class riskAddEdit extends Component {
             selectedToCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-
             selectedLikelihood: { label: Resources.likelihood[currentLanguage], value: "0" },
             selectedMitigationTypes: { label: Resources.mitigationType[currentLanguage], value: "0" },
             selectedRiskCause: { label: Resources.riskCause[currentLanguage], value: "0" },
-
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
             description: '',
@@ -352,16 +362,6 @@ class riskAddEdit extends Component {
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
 
             if (isEdit) {
-
-                let companyId = this.props.document.fromCompanyId;
-
-                if (companyId) {
-                    this.setState({
-                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-                    });
-                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
-                }
-
                 let ownerCompanyId = this.props.document.ownerCompanyId;
 
                 if (ownerCompanyId) {
@@ -493,6 +493,7 @@ class riskAddEdit extends Component {
             statusNumbers: e.targetState.value
         });
     }
+
     handleChangeDate(e, field) {
 
         let original_document = { ...this.state.document };
@@ -661,6 +662,8 @@ class riskAddEdit extends Component {
             this.setState({
                 FirstStep: false,
                 SecondStep: true,
+                analysisStep: false,
+                postQuantitifactionStep: false,
                 SecondStepComplate: true,
                 ThirdStepComplate: false,
                 postQuantitifactionStepComplate: false,
@@ -668,7 +671,6 @@ class riskAddEdit extends Component {
                 CurrentStep: this.state.CurrentStep + 1,
                 ThirdStep: false
             })
-
         }
         else if (this.state.CurrentStep === 2) {
 
@@ -676,6 +678,11 @@ class riskAddEdit extends Component {
             this.setState({
                 FirstStep: false,
                 SecondStep: false,
+                analysisStep: false,
+                postQuantitifactionStep: false,
+                ThirdStepComplate: false,
+                postQuantitifactionStepComplate: false,
+                addDocStepComplate: false,
                 ThirdStep: true,
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: true
@@ -689,6 +696,11 @@ class riskAddEdit extends Component {
                 SecondStep: false,
                 ThirdStep: false,
                 FourStep: true,
+                analysisStep: false,
+                postQuantitifactionStep: false,
+                ThirdStepComplate: false,
+                postQuantitifactionStepComplate: false,
+                addDocStepComplate: false,
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: false,
                 FourthStepComplate: true
@@ -703,10 +715,13 @@ class riskAddEdit extends Component {
                 ThirdStep: false,
                 FourStep: false,
                 CurrentStep: (this.state.CurrentStep + 1),
+
                 ThirdStepComplate: false,
                 postQuantitifactionStepComplate: true,
+                FourthStepComplate: true,
+
                 addDocStepComplate: false,
-                FourthStepComplate: true
+                analysisStep: false
             })
         }
         else if (this.state.CurrentStep === 5) {
@@ -719,10 +734,27 @@ class riskAddEdit extends Component {
                 FourStep: false,
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: false,
-
+                analysisStep: true,
+                analysisStepComplate: true,
                 postQuantitifactionStepComplate: false,
-                addDocStepComplate: true,
-                FourthStepComplate: true
+                addDocStepComplate: false,
+                FourthStepComplate: false
+            })
+        }else if (this.state.CurrentStep === 6) {
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+                FourStep: false,
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: false,
+                analysisStep: true,
+                analysisStepComplate: true,
+                postQuantitifactionStepComplate: false,
+                addDocStepComplate: false,
+               
             })
         } else {
             this.props.history.push({
@@ -746,6 +778,12 @@ class riskAddEdit extends Component {
                 SecondStep: true,
                 SecondStepComplate: true,
                 ThirdStepComplate: false,
+                analysisStep: false,
+                analysisStepComplate: false,
+                postQuantitifactionStepComplate: false,
+                postQuantitifactionStep: false,
+                addDocStepComplate: false,
+
                 CurrentStep: this.state.CurrentStep + 1,
                 ThirdStep: false
             })
@@ -758,6 +796,11 @@ class riskAddEdit extends Component {
                 SecondStep: false,
                 ThirdStep: true,
                 CurrentStep: (this.state.CurrentStep + 1),
+                analysisStep: false,
+                analysisStepComplate: false,
+                postQuantitifactionStepComplate: false,
+                postQuantitifactionStep: false,
+                addDocStepComplate: false,
                 ThirdStepComplate: true
             })
         }
@@ -770,8 +813,14 @@ class riskAddEdit extends Component {
                 ThirdStep: false,
                 FourStep: true,
                 CurrentStep: (this.state.CurrentStep + 1),
+                analysisStep: false,
+                analysisStepComplate: false,
+                postQuantitifactionStepComplate: false,
+                postQuantitifactionStep: false,
+                addDocStepComplate: false,
                 ThirdStepComplate: true,
-                FourthStepComplate: true
+                FourthStepComplate: true,
+                
             })
         }
         else if (this.state.CurrentStep === 4) {
@@ -786,7 +835,10 @@ class riskAddEdit extends Component {
                 ThirdStepComplate: true,
                 postQuantitifactionStepComplate: true,
                 addDocStepComplate: false,
-                FourthStepComplate: true
+                FourthStepComplate: true,
+                FivethStepComplate:true,
+                SixthStepComplate:false,
+                SeventhStepComplate:false,
             })
         }
         else if (this.state.CurrentStep === 5) {
@@ -796,13 +848,47 @@ class riskAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: false,
                 ThirdStep: false,
-                FourStep: true,
+                FourStep: false, 
+                FiveStep: true,
+                SixStep: true,
+                
+                CurrentStep: (this.state.CurrentStep + 1),
+                ThirdStepComplate: false,
+
+                postQuantitifactionStepComplate: false, 
+                addDocStepComplate: false,
+                SecondStepComplate: true,
+                ThirdStepComplate: true,
+                FourthStepComplate: false,
+                FivethStepComplate:false,
+                SixthStepComplate:false,
+                SeventhStepComplate:false,
+            })
+        }
+        else if (this.state.CurrentStep === 6) {
+
+            window.scrollTo(0, 0)
+            this.setState({
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+                FourStep: false, 
+                FiveStep: false, 
+                SixStep: false,
+                SevenStep: true,
+                
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: false,
 
                 postQuantitifactionStepComplate: false,
-                addDocStepComplate: true,
-                FourthStepComplate: false
+                SixthStepComplate:false, 
+                addDocStepComplate: false,
+                SecondStepComplate: true,
+                ThirdStepComplate: true,
+                FourthStepComplate: true,
+                FivethStepComplate:true,
+                SixthStepComplate:true,
+                SeventhStepComplate:true,
             })
         } else {
             this.props.history.push({
@@ -1094,41 +1180,6 @@ class riskAddEdit extends Component {
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="RiskRequestCycleFormPost" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
-                                {/* {isCurrent ?
-                                    <Fragment>
-                                        <div className="proForm datepickerContainer">
-                                            <div className="fullInputWidth letterFullWidth">
-                                                <label className="control-label">{Resources.currentPlannedMitigation[currentLanguage]}</label>
-                                                <div className={"inputDev ui input" + (errors.subject && touched.pre_subject ? (" has-error") : !errors.pre_subject && touched.pre_subject ? (" has-success") : " ")} >
-                                                    <input name='pre_subject' id="pre_subject" className="form-control fsadfsadsa"
-                                                        placeholder={Resources.currentPlannedMitigation[currentLanguage]}
-                                                        autoComplete='off'
-                                                        value={this.state.documentCycle.subject}
-                                                        onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                        onChange={(e) => this.handleChangeCycle(e, 'subject')} />
-                                                    {errors.pre_subject && touched.pre_subject ? (<em className="pError">{errors.pre_subject}</em>) : null}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="proForm datepickerContainer">
-                                            <div className="linebylineInput valid-input">
-                                                <Dropdown title="mitigationType"
-                                                    isMulti={false}
-                                                    isClear={false}
-                                                    data={this.state.mitigationTypes}
-                                                    selectedValue={this.state.selectedMitigationType}
-                                                    handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationType')}
-                                                    onChange={setFieldValue}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.pre_mitigationType}
-                                                    touched={touched.pre_mitigationType}
-                                                    index="pre_mitigationType"
-                                                    name="pre_mitigationType"
-                                                    id="pre_mitigationType" />
-                                            </div>
-                                        </div>
-                                    </Fragment>
-                                    : */}
                                 <Fragment>
                                     <div className="proForm datepickerContainer">
                                         <div className="fullInputWidth letterFullWidth">
@@ -1141,7 +1192,7 @@ class riskAddEdit extends Component {
                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                     onChange={(e) => this.handleChangeCycle(e, 'subject')} />
                                                 {errors.proposeMitigation && touched.proposeMitigation ? (<em className="pError">{errors.proposeMitigation}</em>) : null}
-                                                {<em className="pError">{JSON.stringify(errors.proposeMitigation)}</em>}
+                                                {/* {<em className="pError">{JSON.stringify(errors.proposeMitigation)}</em>} */}
                                             </div>
                                         </div>
                                     </div>
@@ -1183,7 +1234,7 @@ class riskAddEdit extends Component {
 
                                         <div className="letterFullWidth fullInputWidth">
                                             <label className="control-label">{Resources['actionProgress'][currentLanguage]}</label>
-                                            <div className='ui input inputDev  '>
+                                            <div className='ui input inputDev'>
                                                 <input autoComplete="off" name="actionProgress" id="actionProgress"
                                                     value={this.state.documentCycle.actionProgress}
                                                     className="form-control" name="actionProgress"
@@ -1194,16 +1245,43 @@ class riskAddEdit extends Component {
                                         </div>
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['medigationCost'][currentLanguage]}</label>
-                                            <div className='ui input inputDev  '>
+                                            <div className={'ui input inputDev' + (errors.medigationCost && touched.medigationCost ? (" has-error") : !errors.medigationCost && touched.medigationCost ? (" has-success") : " ")} >
                                                 <input autoComplete="off" name="medigationCost" id="medigationCost"
                                                     value={this.state.documentCycle.medigationCost}
-                                                    className="form-control" name="medigationCost"
+                                                    className="form-control"
                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                     onChange={(e) => { this.handleChangeCycle(e, 'medigationCost') }}
                                                     placeholder={Resources['medigationCost'][currentLanguage]} />
+                                                {errors.medigationCost && touched.medigationCost ? (<em className="pError">{errors.medigationCost}</em>) : null}
                                             </div>
                                         </div>
-
+                                        <div className="linebylineInput valid-input mix_dropdown">
+                                            <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
+                                            <div className="supervisor__company">
+                                                <div className="super_name">
+                                                    <Dropdown data={this.state.companies} isMulti={false}
+                                                        selectedValue={this.state.selectedFromCompany}
+                                                        handleChange={event => { this.handleChangeDropDown(event, 'actionOwnerId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.fromCompanyId}
+                                                        touched={touched.fromCompanyId}
+                                                        name="fromCompanyId"
+                                                        id="actionOwnerId" />
+                                                </div>
+                                                <div className="super_company">
+                                                    <Dropdown isMulti={false} data={this.state.fromContacts}
+                                                        selectedValue={this.state.selectedFromContact}
+                                                        handleChange={event => this.handleChangeDropDown(event, 'actionOwnerContactId', false, '', '', '', 'selectedFromContact')}
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.actionOwnerContactId}
+                                                        touched={touched.actionOwnerContactId}
+                                                        name="actionOwnerContactId"
+                                                        id="actionOwnerContactId" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </Fragment>
                                 {/* } */}
@@ -1711,7 +1789,7 @@ class riskAddEdit extends Component {
                     <h2 className="zero">{Resources['preMedigationRiskQuantification'][currentLanguage]}</h2>
                 </header>
 
-                <div className="Risk__input">
+                <div className="Risk__input proForm">
                     <div className="linebylineInput valid-input">
                         <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
                         <div className='ui input inputDev '>
@@ -1739,58 +1817,6 @@ class riskAddEdit extends Component {
     }
 
     drawConsequencePost = () => {
-
-        const columnsCons = [
-            {
-                Header: 'Title',
-                accessor: 'title',
-                sortabel: true,
-                filterable: false,
-                width: 160
-            }, {
-                Header: 'id',
-                accessor: 'id',
-                show: false
-            }, {
-                Header: 'Consequence Score',
-                accessor: 'conesquenceId',
-                width: 150,
-                sortabel: true,
-                filterable: false,
-                Cell: props => {
-                    return (<Dropdown title=""
-                        data={this.state.consequences}
-                        handleChange={e => this.actionHandlerPost(props.original.id, props.original.conesquenceScore, e, props.original, true, 1)}
-                        selectedValue={props.original.SelectedConsequencePost}
-                        index={props.original.id} />)
-                }
-            }, {
-                Header: 'Likelihood Score',
-                accessor: 'likelihoodScore',
-                width: 150,
-                sortabel: true,
-                filterable: false,
-                Cell: props => {
-                    return (<Dropdown title=""
-                        data={this.state.likelihoods}
-                        handleChange={e => this.actionHandlerPost(props.original.id, props.original.likelihoodScore, e, props.original, false, 2)}
-                        selectedValue={props.original.SelectedLikelihoodPost}
-                        index={props.original.id} />)
-                }
-            }, {
-                Header: 'Risk Ranking',
-                accessor: 'riskRanking',
-                width: 150,
-                sortabel: true,
-                filterable: false
-            }, {
-                Header: 'Risk EMV',
-                accessor: 'riskEMV',
-                width: 150,
-                sortabel: true,
-                filterable: false
-            }
-        ]
         return (
             <div className="modal-header fullWidthWrapper">
 
@@ -1858,7 +1884,7 @@ class riskAddEdit extends Component {
                     <h2 className="zero">{Resources['postMedigationRiskQuantification'][currentLanguage]}</h2>
                 </header>
 
-                <div className="Risk__input">
+                <div className="Risk__input proForm">
                     <div className="linebylineInput valid-input">
                         <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
                         <div className='ui input inputDev '>
@@ -1906,8 +1932,7 @@ class riskAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: true,
                 SecondStepComplate: true,
-                analysisStepLink: false,
-
+                analysisStepLink: false, 
                 ThirdStepComplate: false,
                 CurrentStep: 2,
                 FourthStepComplate: false,
@@ -1927,7 +1952,6 @@ class riskAddEdit extends Component {
                 SecondStepComplate: true,
                 ThirdStepComplate: true,
                 analysisStepLink: false,
-
                 FourthStepComplate: false,
                 FourStep: false,
                 CurrentStep: 3,
@@ -1945,13 +1969,13 @@ class riskAddEdit extends Component {
         if (docId !== 0) {
             this.setState({
                 FourStep: true,
+                FiveStep: false,
                 SecondStepComplate: true,
                 ThirdStepComplate: true,
                 FourthStepComplate: true,
-
+                FivethStepComplate:false,
                 CurrentStep: 4,
                 analysisStepLink: false,
-
                 postQuantitifactionStepComplate: false,
                 FirstStep: false,
                 SecondStep: false,
@@ -1960,58 +1984,74 @@ class riskAddEdit extends Component {
         }
     }
 
-    postQuanLink = () => {
+    StepFiveLink = () => {
         if (docId !== 0) {
             this.setState({
-                ThirdStep: false,
+                FourStep: true,
+                FiveStep: false,
                 SecondStepComplate: true,
                 ThirdStepComplate: true,
-
                 FourthStepComplate: true,
-                postQuantitifactionStepComplate: true,
-                analysisStepLink: false,
-                addDocStepComplate: false,
-
-                FourStep: false,
+                FivethStepComplate:true,
+                SixthStepComplate:false,
                 CurrentStep: 5,
+                analysisStepLink: false,
+                postQuantitifactionStepComplate: false,
                 FirstStep: false,
                 SecondStep: false,
+                ThirdStep: false,
             })
-            let consequenceData = this.state.consequenceData;
-            if (consequenceData.length == 0) {
-                this.fillConsequence();
-            }
         }
     }
-    analysisStepLink = () => {
+    
+    StepSixLink = () => {
         if (docId !== 0) {
             this.setState({
-                ThirdStep: false,
+                FourStep: false,
+                FiveStep: false,
                 SecondStepComplate: true,
                 ThirdStepComplate: true,
                 FourthStepComplate: true,
-                postQuantitifactionStepComplate: false,
-                addDocStepComplate: false,
-                analysisStepComplate: true,
-
-                FourStep: false,
+                FivethStepComplate:true,
+                SixthStepComplate:false,
                 CurrentStep: 6,
+                analysisStepLink: true, 
+                postQuantitifactionStepComplate: false,
                 FirstStep: false,
                 SecondStep: false,
+                ThirdStep: false,
             })
         }
     }
+
+    StepSevenLink = () => {
+        if (docId !== 0) {
+            this.setState({
+                FourStep: false,
+                FiveStep: true,
+                SecondStepComplate: true,
+                ThirdStepComplate: true,
+                FourthStepComplate: true,
+                FivethStepComplate:true,
+                SixthStepComplate:true,
+                SeventhStepComplate:true,
+                CurrentStep: 7,
+                analysisStepLink: false,
+                postQuantitifactionStepComplate: false,
+                FirstStep: false,
+                SecondStep: false,
+                ThirdStep: false,
+            })
+        }
+    }  
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }];
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]},
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]}
+        ];
         let comCause = <RiskCause riskId={this.state.docId} />
 
         return (
@@ -2019,7 +2059,6 @@ class riskAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['costControl'][currentLanguage]} />
                     <div className="doc-container">
-
                         <div className="step-content">
                             {this.state.FirstStep ?
                                 <div id="step1" className="step-content-body">
@@ -2037,8 +2076,7 @@ class riskAddEdit extends Component {
                                                     } else {
                                                         this.NextStep();
                                                     }
-                                                }}>
-
+                                                }}> 
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                     <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                         <div className="proForm datepickerContainer">
@@ -2102,7 +2140,6 @@ class riskAddEdit extends Component {
                                                                 </div>
                                                             </div>
 
-
                                                         </div>
                                                         <div className="proForm first-proform">
                                                             <div className="linebylineInput valid-input">
@@ -2145,33 +2182,7 @@ class riskAddEdit extends Component {
                                                                     name="riskType"
                                                                     id="riskType" />
                                                             </div>
-                                                            <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
-                                                                <div className="supervisor__company">
-                                                                    <div className="super_name">
-                                                                        <Dropdown data={this.state.companies} isMulti={false}
-                                                                            selectedValue={this.state.selectedFromCompany}
-                                                                            handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
-                                                                            onChange={setFieldValue}
-                                                                            onBlur={setFieldTouched}
-                                                                            error={errors.fromCompanyId}
-                                                                            touched={touched.fromCompanyId}
-                                                                            name="fromCompanyId"
-                                                                            id="fromCompanyId" />
-                                                                    </div>
-                                                                    <div className="super_company">
-                                                                        <Dropdown isMulti={false} data={this.state.fromContacts}
-                                                                            selectedValue={this.state.selectedFromContact}
-                                                                            handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-                                                                            onChange={setFieldValue}
-                                                                            onBlur={setFieldTouched}
-                                                                            error={errors.fromContactId}
-                                                                            touched={touched.fromContactId}
-                                                                            name="fromContactId"
-                                                                            id="fromContactId" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
@@ -2237,7 +2248,6 @@ class riskAddEdit extends Component {
                                         </div>
                                     </div>
                                 </div>
-
                                 :
                                 <Fragment>
                                     {this.state.SecondStep ?
@@ -2388,7 +2398,6 @@ class riskAddEdit extends Component {
                                             <h6>{Resources.information[currentLanguage]}</h6>
                                         </div>
                                     </div>
-
                                     <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
@@ -2397,7 +2406,7 @@ class riskAddEdit extends Component {
                                             <h6 >{Resources.mitigation[currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                    <div onClick={this.StepThreeLink} data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>
@@ -2405,40 +2414,36 @@ class riskAddEdit extends Component {
                                             <h6>{Resources.consequence[currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepFourLink} data-id="step3" className={this.state.FourthStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                    <div onClick={this.StepFourLink} data-id="step3" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>4</span>
                                         </div>
                                         <div className="steps-info">
                                             <h6>{Resources.proposeMitigation[currentLanguage]}</h6>
-
                                         </div>
                                     </div>
-                                    <div onClick={this.postQuanLink} data-id="step3" className={this.state.postQuantitifactionStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                    <div onClick={this.StepFiveLink} data-id="step3" className={'step-slider-item ' + (this.state.SixthStepComplate ? 'active' : this.state.FivethStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>5</span>
                                         </div>
                                         <div className="steps-info">
                                             <h6>{Resources.postQuantitifaction[currentLanguage]}</h6>
-
                                         </div>
                                     </div>
-                                    <div onClick={this.analysisStepLink} data-id="step3" className={this.state.analysisStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                    <div onClick={this.StepSixLink} data-id="step3" className={'step-slider-item ' + (this.state.SeventhStepComplate ? 'active' : this.state.SixthStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>6</span>
                                         </div>
                                         <div className="steps-info">
                                             <h6>{Resources.riskAnalysis[currentLanguage]}</h6>
-
                                         </div>
                                     </div>
-                                    <div onClick={this.StepFourLink} data-id="step3" className={this.state.addDocStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                    <div onClick={this.StepSevenLink} data-id="step3" className={'step-slider-item ' + (this.state.EightthStepComplate ? 'active' : this.state.SeventhStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>7</span>
                                         </div>
                                         <div className="steps-info">
                                             <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
-
                                         </div>
                                     </div>
                                 </div>

@@ -23,13 +23,13 @@ const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized()
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class App extends Component {
-  componentWillMount() {
-    let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-    if (currentLanguage == null)
-      localStorage.getItem('lang', 'en')
+
+  //componentWillMount() {
+    // let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+    // if (currentLanguage == null)
+    //   localStorage.getItem('lang', 'en')
 
     // if (currentLanguage == "ar") {
     //   require("./Styles/scss/ar-eg/layout-ar.css");
@@ -38,7 +38,8 @@ class App extends Component {
     //   require("./Styles/scss/en-us/layout.css");
     //   require("./Styles/scss/en-us/reactCss.css")
     // }
-  }
+
+  //}
 
   render() {
     const showComp = IsAuthorize ?
@@ -60,6 +61,7 @@ class App extends Component {
     );
   }
 }
+
 class ErrorHandler extends React.Component {
   constructor(props) {
     super(props);
@@ -107,4 +109,5 @@ class ErrorHandler extends React.Component {
     return this.props.children;
   }
 }
+
 export default App;

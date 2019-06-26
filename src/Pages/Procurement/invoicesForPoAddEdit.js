@@ -218,7 +218,7 @@ class invoicesForPoAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let document = nextProps.document
-            document.docDate = moment(document.docDate).format('DD/MM/YYYY')
+            document.docDate = document.docDate === null ? moment().format('YYYY-MM-DD') : moment(document.docDate).format('YYYY-MM-DD')
             this.setState({
                 document: document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -504,7 +504,7 @@ class invoicesForPoAddEdit extends Component {
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.items = this.state.InvoicesItems
         dataservice.addObject('EditContractsInvoicesForPo', saveDocument).then(result => {
             this.setState({
@@ -520,7 +520,7 @@ class invoicesForPoAddEdit extends Component {
         });
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         dataservice.addObject('AddContractsInvoicesForPo', saveDocument).then(result => {
             let itemsList = []

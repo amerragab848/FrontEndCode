@@ -134,10 +134,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let ProjectEstiDoc = nextProps.document
-            ProjectEstiDoc.docDate = moment(ProjectEstiDoc.docDate).format('DD/MM/YYYY')
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             this.setState({
-                document: ProjectEstiDoc,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
             });
             this.checkDocumentIsView();
@@ -309,7 +309,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
             })
 
             let Doc = { ...this.state.document }
-            Doc.docDate = moment(Doc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            Doc.docDate = moment(Doc.docDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
             if (this.state.docId > 0) {
                 dataservice.addObject('EditPrimaveraSchedule', Doc).then(

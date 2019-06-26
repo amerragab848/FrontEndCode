@@ -121,7 +121,6 @@ class Schedule extends Component {
 
         if (this.state.TabActive === 0) {
 
-
             let AddObj = {
                 [typeColumn]: this.state.docId,
                 arrange: values.arrange,

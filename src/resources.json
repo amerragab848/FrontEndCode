@@ -1330,8 +1330,8 @@
         "ar": "Current Mitigation"
     },
     "proposeMitigation": {
-        "en": "Proposed Mit",
-        "ar": "Proposed Mit"
+        "en": "Proposed Mitigation",
+        "ar": "Proposed Mitigation"
     },
     "empTitle": {
         "en": "Title",
@@ -2260,7 +2260,7 @@
         "ar": "المقاول العام"
     },
     "ownerRisk": {
-        "en": "Owner Risk",
+        "en": " Risk Owner",
         "ar": "Owner Risk"
     },
     "pleaseSelectGeneralContractor": {
@@ -7882,8 +7882,8 @@
         "ar": "Post-mitigation "
     },
     "mitigation": {
-        "en": "Current Mit.",
-        "ar": "Current Mit."
+        "en": "Current Mitigation",
+        "ar": "Current Mitigation"
     },
     "descriptionMitigation": {
         "en": "Description Mitigation ",

@@ -303,12 +303,13 @@ class projectWorkFlowAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let WorkFlowDoc = nextProps.document
-            WorkFlowDoc.docDate = moment(WorkFlowDoc.docDate).format("DD/MM/YYYY")
-            WorkFlowDoc.code = WorkFlowDoc.code === null ? '' : WorkFlowDoc.code
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+
+            doc.code = doc.code === null ? '' : doc.code
 
             this.setState({
-                document: WorkFlowDoc,
+                document: doc,
                 IsEditMode: true,
                 hasWorkflow: nextProps.hasWorkflow,
             });
@@ -579,7 +580,7 @@ class projectWorkFlowAddEdit extends Component {
         else {
 
             let WorkFlowObj = this.state.document
-            WorkFlowObj.docDate = moment(WorkFlowObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            WorkFlowObj.docDate = moment(WorkFlowObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
             if (this.props.changeStatus) {
                 dataservice.addObject('EditWorkFlow', WorkFlowObj).then(res => {

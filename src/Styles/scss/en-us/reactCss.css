@@ -85,7 +85,7 @@
     padding: 4px 0;
 } */
 
-.dropWrapper #lastname1 {
+/* .dropWrapper #lastname1 {
     height: 48px;
     border-radius: 4px;
     width: 360px;
@@ -96,7 +96,7 @@
     color: #3E4352;
     background-color: #ffffff;
     font-size: 14px;
-}
+} */
 
 .dropWrapper {
     padding: 5px 10px;
@@ -177,7 +177,7 @@
     background-size: 100% 100%;
     width: 16px;
     height: 16px;
-    top: 10px;
+    top: 15px;
     z-index: 0;
 }
 
@@ -2079,9 +2079,6 @@ tfoot tr td p {
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     margin-top: 0;
 }
 
@@ -2095,32 +2092,7 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput {
     margin-bottom: 16px;
-    width: 43%;
-    /* margin-right: 50px; */
-    flex-shrink: 0;
-    flex-flow: column;
-    align-items: flex-start;
-}
-
-/* .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput>label {
-    width: auto;
-    text-align: left;
-    margin-right: 32px;
-    font-family: 'Open Sans';
-    font-weight: 600;
-    font-style: normal;
-    font-stretch: normal;
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.2px;
-    color: #252833;
-    margin-bottom: 4px;
-} */
-
-@media screen and (max-width: 1250px) {
-    .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.even {
-        margin-right: 0;
-    }
+    width: 48%;
 }
 
 .noTabs__document .doc-container .step-content .doc-pre-cycle {
@@ -2424,10 +2396,6 @@ button.companies_icon {
     width: 100%;
 }
 
-.one__tab .doc-container .doc-pre-cycle {
-    padding: 0;
-}
-
 .one__tab .doc-container .doc-pre-cycle header {
     padding: 40px 0;
 }
@@ -2533,14 +2501,6 @@ button.companies_icon {
     width: 360px;
 }
 
-/* .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
-    margin-right: 0;
-} */
-
-.noTabs__document.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
-    width: 46%;
-}
-
 @media screen and (max-width: 1200px) {
     .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input,
     .noTabs__document .doc-container .step-content .linebylineInput .inputDev.ui.input,
@@ -2549,9 +2509,6 @@ button.companies_icon {
     }
     .one__tab.one_step .doc-container .docstepper-levels {
         width: 250px;
-    }
-    .noTabs__document.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
-        width: 48%;
     }
     .noTabs__document.one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput>label {
         margin-right: 13px;
@@ -2626,7 +2583,6 @@ button.companies_icon {
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.alternativeDate {
-    display: flex;
     flex-flow: row;
     align-items: flex-end;
     justify-content: space-between;
@@ -2641,10 +2597,6 @@ button.companies_icon {
     margin-right: 0
 }
 
-.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-    max-width: 100%;
-}
-
 .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev.NormalInputDate {
     max-width: inherit;
 }
@@ -2652,12 +2604,17 @@ button.companies_icon {
 
 /* grid show more filter */
 
+.showMore__btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .showMore__btn button {
     background: transparent;
     border: none;
     cursor: pointer;
     display: flex;
-    width: 100%;
+    /* width: 100%; */
     align-items: center;
     justify-content: flex-end;
 }
@@ -3556,8 +3513,8 @@ button.companies_icon {
     min-height: 50px;
     border-bottom: 1px solid rgba(34, 36, 38, .1);
     padding-left: 10px;
-    text-overflow: ellipsis;
-    white-space: pre-wrap;
+    /* text-overflow: ellipsis;
+    white-space: pre-wrap; */
     overflow: visible;
 }
 
@@ -5111,6 +5068,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     width: 232px;
     position: sticky;
     top: 72px;
+    z-index: 2;
 }
 
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
@@ -5383,8 +5341,19 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 }
 
 .withManyTabs .company__total .data__tabs li {
-    margin-bottom: 12px;
+    margin: 0 2px 12px;
+    transition: all 0.2s ease;
 }
+  
+.withManyTabs .company__total .data__tabs li:hover {
+    background: rgb(233, 236, 240) !important; 
+}
+  
+.withManyTabs .company__total .data__tabs li.active {
+    background: rgb(233, 236, 240) !important;
+    border-bottom-color: transparent !important;
+}
+  
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.radio__only .linebylineInput:only-child {
     flex-flow: row
@@ -7458,18 +7427,162 @@ div#markup-panel {
     border-bottom: 1px solid #DADEE6;
  }
 
- .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
+ .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5,   .filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
     min-height: 36px;
     /* height: 40px; */
   }
-  
-  .filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c {
-    width: 100%;
-  }
-  .filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c .spanValidation label::after{
-    display: none;
-  }
 
+  .filter__input-wrapper .letterFullWidth .multiChoice .css-1hwfws3 {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+  }
+ .datepickerContainer.proForm .ui.input.inputDev {
+     max-width: 100%;
+ }
+
+ .datepickerContainer.proForm .letterFullWidth, .dropWrapper .letterFullWidth {
+     display: flex;
+     align-items: flex-start;
+     flex-flow: column;
+ }
+
+ .datepickerContainer.proForm .datepickerContainer.proForm.letterFullWidth {
+    flex-flow: row;
+ }
+
+ .letterFullWidth > .document-fields {
+     width: 100%
+ }
+
+ .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
+     width: 100%;
+ }
+
+.linebylineInput__checkbox {
+    flex-flow: row !important;
+    align-items: center !important;
+}
+
+.linebylineInput__checkbox .ui.checkbox , .linebylineInput__checkbox label {
+    margin: 0 !important;
+ 
+}
+.filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
+    min-height: 36px;
+    /* height: 40px; */
+}
+  
+.filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c {
+    width: 100%;
+}
+
+.filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c .spanValidation label::after{
+    display: none;
+}
+
+.filter__input-wrapper .proForm .linebylineInput {
+      margin-bottom: 4px !important;
+}
+
+  /* calender */
+.react-calendar {
+    border-radius: 4px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+    border: solid 1px #ccd2db !important;
+    padding-bottom: 15px;
+}
+
+.react-calendar abbr {
+    font-family: Open Sans;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.71;
+    letter-spacing: -0.2px;
+    text-align: center;
+    color: #3e4352;
+}
+
+.react-calendar__tile--active {
+    border-radius: 1px;
+    background: #4382f9 !important;
+}
+
+.react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
+    background-color: #edf1f5;
+}
+
+
+
+.react-calendar__tile--active abbr, button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
+    color: #fff !important;
+}
+
+  .filter__warrper{
+      z-index: 19;
+  }
+button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day abbr {
+    color: #4382f9;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth abbr{
+    color: #adbccc;
+}
+
+.react-calendar__tile:enabled:hover abbr, .react-calendar__tile:enabled:focus abbr {
+    color: #252833 !important;
+}
+
+button.react-calendar__navigation__label {
+    font-family: 'Muli';
+    letter-spacing: -0.2px;
+    text-align: center;
+    color: #252833;
+}
+
+button.react-calendar__tile.react-calendar__month-view__days__day {
+    width: 50px !important;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+}
+
+.main-header .header-content .nav-right li:nth-child(4) {
+    margin-left: 24px;
+}
+
+.header__search {
+    display: flex;
+    align-items: flex-end;
+    padding: 0 5px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.4s ease-in-out
+}
+
+.header__search:hover {
+    border-bottom: 2px solid #E9ECF0;
+}
+
+.header__search .ui.input {
+    width: 0;
+    transition: all 0.4s ease-in-out
+}
+
+.header__search:hover .ui.input {
+    width: 220px;
+    transition: all 0.4s ease-in-out
+}
+
+.header__search input {
+    border-color: transparent !important;
+}
+
+.one__tab.one_step .doc-container .step-content .main__header {
+    margin-bottom: 10px;
+}
+
+/* calender */
 
   .attachmentTable__fixedWidth.attachmentTable tbody tr td:first-child, .attachmentTable__fixedWidth.attachmentTable thead tr th:first-child {
       width: auto

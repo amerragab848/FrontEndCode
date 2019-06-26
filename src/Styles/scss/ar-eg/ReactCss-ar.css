@@ -108,7 +108,7 @@
   height: 18px;
 }
 
-.dropWrapper #lastname1 {
+/* .dropWrapper #lastname1 {
   height: 40px;
   border-radius: 4px;
   width: 360px;
@@ -122,7 +122,7 @@
   color: #3E4352;
   background-color: #ffffff;
   font-size: 14px;
-}
+} */
 
 .dropWrapper {
   padding: 5px 10px;
@@ -225,7 +225,7 @@
   background-size: 100% 100%;
   width: 16px;
   height: 16px;
-  top: 10px;
+  top: 15px;
   z-index: 0;
 }
 
@@ -2499,22 +2499,22 @@ button.companies_icon {
   margin-left: 0;
 }
 
-.documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-  max-width: 100%;
-}
-
 .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev.NormalInputDate {
   max-width: inherit;
 }
 
 /* grid show more filter */
 
+.showMore__btn  {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .showMore__btn button {
   background: transparent;
   border: none;
   cursor: pointer;
   display: flex;
-  width: 100%;
   align-items: center;
   justify-content: flex-end;
 }
@@ -2584,8 +2584,7 @@ button.companies_icon {
   min-width: 420px !important;
   width: auto !important;
   max-width: 722px;
-  right: auto;
-  left: 1em;
+  right: 1em;
 }
 
 .Toastify__toast {
@@ -5230,7 +5229,16 @@ path.highcharts-label-box.highcharts-tooltip-box+text, path.highcharts-label-box
 }
 
 .withManyTabs .company__total .data__tabs li {
-  margin-bottom: 12px;
+  margin: 0 2px 12px;
+  transition: all 0.2s ease;
+}
+
+.withManyTabs .company__total .data__tabs li:hover {
+  background: rgb(233, 236, 240);
+}
+
+.withManyTabs .company__total .data__tabs li.active {
+  background: rgb(233, 236, 240) !important;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform.radio__only .linebylineInput:only-child {
@@ -6828,10 +6836,6 @@ div#markup-panel {
   height: 60px !important;
 }
 
-.react-grid-HeaderRow>div:first-of-type {
-  height: 58px !important;
-}
-
 .react-grid-HeaderCell {
   background: #fff;
   padding: 0;
@@ -6848,9 +6852,6 @@ div#markup-panel {
   top: 58px !important;
 }
 
-.react-grid-HeaderRow>div:first-child {
-  width: 100%;
-}
 
 .react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
   border-right-color: transparent;
@@ -6859,6 +6860,7 @@ div#markup-panel {
 
 .react-grid-HeaderRow {
   right: 0;
+  left: auto !important;
 }
 
 .react-grid-HeaderCell-sortable {
@@ -7903,6 +7905,26 @@ padding: 0;
   height: 100%;
 }
 
+.dashDragCustom .react-tabs__tab--selected::after {
+  top: 31%;
+  transform: rotate(181deg);
+}
+
+.datepickerContainer.proForm .ui.input.inputDev {
+  max-width: 100%;
+}
+
+.datepickerContainer.proForm .letterFullWidth {
+  display: flex;
+  align-items: flex-start;
+  flex-flow: column;
+}
+
+.datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
+  width: 100%;
+}
+
+
 .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
   min-height: 40px;
   height: 40px;
@@ -7912,6 +7934,10 @@ padding: 0;
   width: 100%;
 }
 
+
+.filter__warrper{
+  z-index: 19;
+}
 /* .submittalFilter .subFilter > span {
   margin: 0 24px;
 }
@@ -7920,5 +7946,132 @@ padding: 0;
   margin-right: 8px;
 } */
 /* new Menu panel */
+
+.datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
+  width: 100%;
+}
+
+.linebylineInput__checkbox {
+ flex-flow: row !important;
+ align-items: center !important;
+}
+
+.linebylineInput__checkbox .ui.checkbox , .linebylineInput__checkbox label {
+ margin: 0 !important;
+
+}
+.filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
+ min-height: 36px;
+ /* height: 40px; */
+}
+
+.filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c {
+ width: 100%;
+}
+
+.filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c .spanValidation label::after{
+ display: none;
+}
+
+.filter__input-wrapper .proForm .linebylineInput {
+   margin-bottom: 4px !important;
+}
+
+/* calender */
+.react-calendar {
+ border-radius: 4px;
+ box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+ border: solid 1px #ccd2db !important;
+ padding-bottom: 15px;
+}
+
+.react-calendar abbr {
+ font-family: Open Sans;
+ font-size: 14px;
+ font-weight: 600;
+ font-style: normal;
+ font-stretch: normal;
+ line-height: 1.71;
+ letter-spacing: -0.2px;
+ text-align: center;
+ color: #3e4352;
+}
+
+.react-calendar__tile--active {
+ border-radius: 1px;
+ background: #4382f9 !important;
+}
+
+.react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
+ background-color: #edf1f5;
+}
+
+.react-calendar__tile--active abbr, button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
+ color: #fff !important;
+}
+
+button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day abbr {
+ color: #4382f9;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth abbr{
+ color: #adbccc;
+}
+
+.react-calendar__tile:enabled:hover abbr, .react-calendar__tile:enabled:focus abbr {
+ color: #252833 !important;
+}
+
+button.react-calendar__navigation__label {
+ font-family: 'Muli';
+ letter-spacing: -0.2px;
+ text-align: center;
+ color: #252833;
+}
+
+.letterFullWidth > .document-fields {
+  width: 100%
+}
+
+button.react-calendar__tile.react-calendar__month-view__days__day {
+ width: 50px !important;
+ height: 40px;
+ padding: 0;
+ margin: 0;
+}
+
+.ui.input input {
+  text-align: right
+}
+
+.main-header .header-content .nav-right li:nth-child(4) {
+  margin-left: 24px;
+}
+
+.header__search {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 5px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.4s ease-in-out
+}
+
+.header__search.active {
+  border-bottom: 2px solid #E9ECF0;
+}
+
+.header__search .ui.input {
+  width: 0;
+  transition: all 0.4s ease-in-out
+}
+
+.header__search.active .ui.input {
+  width: 220px;
+  transition: all 0.4s ease-in-out
+}
+
+.header__search input {
+  border-color: transparent !important;
+}
 
 /* new rtl css */
