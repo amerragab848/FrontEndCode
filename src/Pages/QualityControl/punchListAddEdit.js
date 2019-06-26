@@ -284,7 +284,7 @@ class punchListAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let SnagListDoc = nextProps.document
-            SnagListDoc.docDate = moment(SnagListDoc.docDate).format("DD/MM/YYYY")
+            SnagListDoc.docDate = SnagListDoc.docDate === null ? moment().format('YYYY-MM-DD') : moment(SnagListDoc.docDate).format('YYYY-MM-DD')
             this.setState({
                 document: SnagListDoc,
                 IsEditMode: true,
@@ -650,7 +650,7 @@ class punchListAddEdit extends Component {
         }
         else {
             let SnagListObj = this.state.document
-            SnagListObj.docDate = moment(SnagListObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            SnagListObj.docDate = moment(SnagListObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
             this.setState({ isLoading: true })
             if (docId > 0) {
 
@@ -694,8 +694,8 @@ class punchListAddEdit extends Component {
 
     AddItem = (values) => {
         this.setState({ isLoading: true })
-        let OpenedDateItem = moment(this.state.OpenedDateItem, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        let RequiredDateItem = moment(this.state.RequiredDateItem, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let OpenedDateItem = moment(this.state.OpenedDateItem, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let RequiredDateItem = moment(this.state.RequiredDateItem, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let DocCloseDate = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let AddItemObj = {
             id: undefined, punchListId: this.state.docId,
@@ -732,8 +732,8 @@ class punchListAddEdit extends Component {
 
     EditItem = (values) => {
         this.setState({ isLoading: true })
-        let OpenedDateItem = moment(this.state.OpenedDateItem, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        let RequiredDateItem = moment(this.state.RequiredDateItem, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let OpenedDateItem = moment(this.state.OpenedDateItem, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let RequiredDateItem = moment(this.state.RequiredDateItem, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let DocCloseDate = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         let AddItemObj = {
             id: this.state.EditItems.id, punchListId: this.state.docId,
@@ -777,8 +777,8 @@ class punchListAddEdit extends Component {
                         this.setState({
                             ToContactsItem: result,
                             EditItems: res,
-                            OpenedDateItem: moment(res.openedDate).format('DD/MM/YYYY'),
-                            RequiredDateItem: moment(res.requiredDate).format('DD/MM/YYYY'),
+                            OpenedDateItem: moment(res.openedDate).format('YYYY-MM-DD'),
+                            RequiredDateItem: moment(res.requiredDate).format('YYYY-MM-DD'),
                             SelectedAreaItem: SelectedAreaItem,
                             selectedActionByCompanyIdItem: SelectedCompany,
                             selectedActionByContactItem: selectedActionByContactItem,

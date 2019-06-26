@@ -7,8 +7,9 @@ import Resources from "../../resources.json"
 import LoadingSection from '../publicComponants/LoadingSection'
 import Calendar from "react-calendar";
 import Dropdown from '../OptionsPanels/DropdownMelcous'
-import dataService from '../../Dataservice'
-import { serialize } from 'cookie';
+import dataService from '../../Dataservice' 
+import CryptoJS from "crypto-js";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let subject = "test"
 let formatDate = function (date) {
@@ -16,28 +17,25 @@ let formatDate = function (date) {
         return moment(date).format("DD/MM/YYYY");
     return "No Date"
 }
-// let formatStatus=function(status){
-//     if(status==null)
-//     return "Pending"
-// }
+ 
 
 class GlobalSearch extends Component {
     constructor(props) {
         super(props)
-        //     const query = new URLSearchParams(this.props.location.search);
-        //     let index = 0;
-        //     for (let param of query.entries()) {
-        //         if (index == 0) {
-        //             try {
-        //                 let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-        //                 subject = obj.subject; 
-        //             }
-        //             catch{
-        //                 this.props.history.goBack();
-        //             }
-        //         }
-        //         index++;
-        //     }
+            const query = new URLSearchParams(this.props.location.search);
+            let index = 0;
+            for (let param of query.entries()) {
+                if (index == 0) {
+                    try {
+                        let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+                        subject = obj.subject; 
+                    }
+                    catch{
+                        this.props.history.goBack();
+                    }
+                }
+                index++;
+            }
         this.searchColumns = [
             {
                 key: "index",

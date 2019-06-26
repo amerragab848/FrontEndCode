@@ -41,7 +41,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -85,7 +85,7 @@ class NCRAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -105,7 +105,7 @@ class NCRAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -166,9 +166,9 @@ class NCRAddEdit extends Component {
 
         if (!Config.IsAllow(917) && !Config.IsAllow(918) && !Config.IsAllow(920)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
 
     }
@@ -198,9 +198,9 @@ class NCRAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let NCRDoc = nextProps.document
-            NCRDoc.docDate = moment(NCRDoc.docDate).format('DD/MM/YYYY')
-            NCRDoc.requiredDate = moment(NCRDoc.requiredDate).format('DD/MM/YYYY')
-            NCRDoc.resultDate = moment(NCRDoc.resultDate).format('DD/MM/YYYY')
+            NCRDoc.docDate = NCRDoc.docDate === null ? moment().format('YYYY-MM-DD') : moment(NCRDoc.docDate).format('YYYY-MM-DD')
+            NCRDoc.requiredDate = NCRDoc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(NCRDoc.requiredDate).format('YYYY-MM-DD')
+            NCRDoc.resultDate = NCRDoc.resultDate === null ? moment().format('YYYY-MM-DD') : moment(NCRDoc.resultDate).format('YYYY-MM-DD')
 
             this.setState({
                 document: NCRDoc,
@@ -475,17 +475,15 @@ class NCRAddEdit extends Component {
             this.saveAndExit()
         }
         else {
-            this.setState({
-                isLoading: true
-            })
-            let NCRDoc = { ...this.state.document }
+            this.setState({ isLoading: true })
 
-            NCRDoc.docDate = moment(NCRDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-            NCRDoc.requiredDate = moment(NCRDoc.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-            NCRDoc.resultDate = moment(NCRDoc.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            let saveDocument = this.state.document;
+            saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
             if (this.state.docId > 0) {
-                dataservice.addObject('EditCommunicationNCRs', NCRDoc).then(
+                dataservice.addObject('EditCommunicationNCRs', saveDocument).then(
                     res => {
                         this.setState({
                             isLoading: false,
@@ -502,7 +500,7 @@ class NCRAddEdit extends Component {
                     });
             }
             else {
-                dataservice.addObject('AddCommunicationNCRs', NCRDoc).then(
+                dataservice.addObject('AddCommunicationNCRs', saveDocument).then(
                     res => {
                         this.setState({
                             docId: res.id,

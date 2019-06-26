@@ -651,37 +651,37 @@ class CommonLog extends Component {
             <div className="grid__column--content">
               <div className="grid__content">
                 <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
                   <label>Terms of purchase orders 11</label>
                 </div>
               </div>
               <div className="grid__content">
                 <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
                   <label>Terms of purchase orders 11</label>
                 </div>
               </div>
               <div className="grid__content">
                 <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
                   <label>Terms of purchase orders 11</label>
                 </div>
               </div>
               <div className="grid__content">
                 <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
                   <label>Terms of purchase orders 11</label>
                 </div>
               </div>
               <div className="grid__content">
                 <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
                   <label>Terms of purchase orders 11</label>
                 </div>
               </div>
               <div className="grid__content">
                 <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabindex="0" className="hidden" />
+                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
                   <label>Terms of purchase orders 11</label>
                 </div>
               </div>

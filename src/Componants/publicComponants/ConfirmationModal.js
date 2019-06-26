@@ -6,9 +6,9 @@ let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class ConfirmationModal extends Component {
-  
-    constructor(props) {
-    super(props); 
+
+  constructor(props) {
+    super(props);
   }
 
   clickHandlerCancel = e => {
@@ -19,7 +19,7 @@ class ConfirmationModal extends Component {
     this.props.clickHandlerContinue();
   };
 
-  closeModal = e =>{
+  closeModal = e => {
     this.props.closed();
   }
 
@@ -29,15 +29,15 @@ class ConfirmationModal extends Component {
         <Rodal visible={true} onClose={this.closeModal.bind(this)}>
           <div className="ui modal smallModal" id="smallModal">
             <div className="header zero">
-              {this.props.title} 
+              {this.props.title}
             </div>
             <div className="actions">
-              <button className="defaultBtn btn cancel smallBtn" onClick={this.clickHandlerCancel}>
-                {Resources["cancel"][currentLanguage]} 
+              <button className="defaultBtn btn cancel smallBtn" type="button" onClick={this.clickHandlerCancel}>
+                {Resources["cancel"][currentLanguage]}
               </button>
 
-              <button className="smallBtn primaryBtn-1 btn approve" onClick={this.clickHandlerContinue}>
-                {this.props != null ?Resources[this.props.buttonName][currentLanguage]:Resources["goEdit"][currentLanguage]}
+              <button className="smallBtn primaryBtn-1 btn approve" type="button" onClick={this.clickHandlerContinue}>
+                {this.props != null ? Resources[this.props.buttonName][currentLanguage] : Resources["goEdit"][currentLanguage]}
               </button>
             </div>
           </div>

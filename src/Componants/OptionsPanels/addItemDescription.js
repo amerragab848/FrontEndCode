@@ -126,6 +126,9 @@ class addItemDescription extends Component {
         dataservice.addObject(this.props.addItemApi, saveDocument).then(result => {
             if (result) {
                 let arr = [];
+                
+                console.log('addObject...',result);
+
                 arr.push(result);
                 this.props.actions.addItemDescription(arr);
                 this.setState({

@@ -99,7 +99,10 @@ class rptCostCodingTree extends Component {
                       <td>{Resources['totalCost'][currentLanguage]}</td>
                       <td>{this.state.NodeData.totalCostCode}</td>
                     </tr>
-
+                    <tr>
+                      <td>{Resources['estimatedCost'][currentLanguage]}</td>
+                      <td>{this.state.NodeData.originalBudget}</td>
+                    </tr>
                     <tr>
                       <td>{Resources['invoicesTotal'][currentLanguage]}</td>
                       <td>{this.state.NodeData.invoicesTotal}</td>
