@@ -279,7 +279,7 @@ class TaskGroupsAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document.id) {
-            let date = moment(props.document.docDate).format("DD/MM/YYYY")
+            let date =  props.document.docDate = props.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(props.document.docDate).format('YYYY-MM-DD')
             this.setState({
                 IsEditMode: true,
                 DocTaskGroupsData: props.document,
@@ -394,7 +394,7 @@ class TaskGroupsAddEdit extends Component {
 
     AddEditTaskGroups = (values, actions) => {
 
-        let Date = moment(this.state.DocumentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        let Date = moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         if (this.state.IsEditMode) {
 
