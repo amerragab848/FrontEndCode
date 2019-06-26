@@ -39,17 +39,17 @@ const validationSchema = Yup.object().shape({
 });
 
 const documentCycleValidationSchema = Yup.object().shape({
-    pre_subject: Yup.string()
+    subject: Yup.string()
         .required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    pre_mitigationType: Yup.string()
+    mitigationType: Yup.string()
         .required(Resources['mitigationType'][currentLanguage]).nullable(true)
 
 })
 
 const documentProposedValidationSchema = Yup.object().shape({
-    proposeMitigation: Yup.string()
+    subject: Yup.string()
         .required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    post_mitigationType: Yup.string()
+        mitigationType: Yup.string()
         .required(Resources['mitigationType'][currentLanguage]).nullable(true),
     actionProgress: Yup.string()
         .required(Resources['actionProgress'][currentLanguage]).nullable(true),
@@ -110,18 +110,18 @@ class riskAddEdit extends Component {
             FirstStep: true,
             SecondStep: false,
             ThirdStep: false,
-            FourStep: false,
-            FiveStep:false,
-            SixStep:false,
-            SevenStep:false,
-            EightStep:false,
+            FourthStep: false,
+            FivethStep: false,
+            SixthStep: false,
+            SevenStep: false,
+            EightStep: false,
             FourthStepComplate: false,
             FivethStepComplate: false,
-            SixthStepComplate:false,
+            SixthStepComplate: false,
             SecondStepComplate: false,
             ThirdStepComplate: false,
-            SeventhStepComplate : false,
-            EightthStepComplate : false,
+            SeventhStepComplate: false,
+            EightthStepComplate: false,
             postQuantitifactionStepComplate: false,
             addDocStepComplate: false,
             postQuantitifactionStep: false,
@@ -554,8 +554,8 @@ class riskAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditCommunicationRisk', saveDocument).then(result => {
             this.setState({
@@ -571,8 +571,8 @@ class riskAddEdit extends Component {
         let saveDocument = { ...this.state.document };
 
         saveDocument.projectId = projectId;
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationRisk', saveDocument).then(result => {
             if (result.id) {
@@ -695,7 +695,7 @@ class riskAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: false,
                 ThirdStep: false,
-                FourStep: true,
+                FourthStep: true,
                 analysisStep: false,
                 postQuantitifactionStep: false,
                 ThirdStepComplate: false,
@@ -713,7 +713,7 @@ class riskAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: false,
                 ThirdStep: false,
-                FourStep: false,
+                FourthStep: false,
                 CurrentStep: (this.state.CurrentStep + 1),
 
                 ThirdStepComplate: false,
@@ -731,7 +731,7 @@ class riskAddEdit extends Component {
                 FirstStep: false,
                 SecondStep: false,
                 ThirdStep: false,
-                FourStep: false,
+                FourthStep: false,
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: false,
                 analysisStep: true,
@@ -740,21 +740,21 @@ class riskAddEdit extends Component {
                 addDocStepComplate: false,
                 FourthStepComplate: false
             })
-        }else if (this.state.CurrentStep === 6) {
+        } else if (this.state.CurrentStep === 6) {
 
             window.scrollTo(0, 0)
             this.setState({
                 FirstStep: false,
                 SecondStep: false,
                 ThirdStep: false,
-                FourStep: false,
+                FourthStep: false,
                 CurrentStep: (this.state.CurrentStep + 1),
                 ThirdStepComplate: false,
                 analysisStep: true,
                 analysisStepComplate: true,
                 postQuantitifactionStepComplate: false,
                 addDocStepComplate: false,
-               
+
             })
         } else {
             this.props.history.push({
@@ -768,199 +768,118 @@ class riskAddEdit extends Component {
         }
     }
 
+
     NextTopStep = () => {
-
         if (this.state.CurrentStep === 1) {
-
-            window.scrollTo(0, 0)
+            window.scrollTo(0, 0);
             this.setState({
                 FirstStep: false,
                 SecondStep: true,
                 SecondStepComplate: true,
-                ThirdStepComplate: false,
-                analysisStep: false,
-                analysisStepComplate: false,
-                postQuantitifactionStepComplate: false,
-                postQuantitifactionStep: false,
-                addDocStepComplate: false,
-
-                CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
-            })
-
-        }
-        else if (this.state.CurrentStep === 2) {
-            window.scrollTo(0, 0)
+                CurrentStep: 2
+            });
+        } else if (this.state.CurrentStep === 2) {
+            window.scrollTo(0, 0);
             this.setState({
-                FirstStep: false,
                 SecondStep: false,
                 ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                analysisStep: false,
-                analysisStepComplate: false,
-                postQuantitifactionStepComplate: false,
-                postQuantitifactionStep: false,
-                addDocStepComplate: false,
-                ThirdStepComplate: true
-            })
-        }
-        else if (this.state.CurrentStep === 3) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: false,
-                FourStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                analysisStep: false,
-                analysisStepComplate: false,
-                postQuantitifactionStepComplate: false,
-                postQuantitifactionStep: false,
-                addDocStepComplate: false,
-                ThirdStepComplate: true,
-                FourthStepComplate: true,
-                
-            })
-        }
-        else if (this.state.CurrentStep === 4) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: false,
-                FourStep: false,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true,
-                postQuantitifactionStepComplate: true,
-                addDocStepComplate: false,
-                FourthStepComplate: true,
-                FivethStepComplate:true,
-                SixthStepComplate:false,
-                SeventhStepComplate:false,
-            })
-        }
-        else if (this.state.CurrentStep === 5) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: false,
-                FourStep: false, 
-                FiveStep: true,
-                SixStep: true,
-                
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: false,
-
-                postQuantitifactionStepComplate: false, 
-                addDocStepComplate: false,
                 SecondStepComplate: true,
                 ThirdStepComplate: true,
-                FourthStepComplate: false,
-                FivethStepComplate:false,
-                SixthStepComplate:false,
-                SeventhStepComplate:false,
-            })
-        }
-        else if (this.state.CurrentStep === 6) {
-
-            window.scrollTo(0, 0)
+                CurrentStep: 3
+            });
+        } else if (this.state.CurrentStep === 3) {
+            window.scrollTo(0, 0);
             this.setState({
-                FirstStep: false,
-                SecondStep: false,
+                FourthStep: true,
                 ThirdStep: false,
-                FourStep: false, 
-                FiveStep: false, 
-                SixStep: false,
-                SevenStep: true,
-                
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: false,
-
-                postQuantitifactionStepComplate: false,
-                SixthStepComplate:false, 
-                addDocStepComplate: false,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
                 FourthStepComplate: true,
-                FivethStepComplate:true,
-                SixthStepComplate:true,
-                SeventhStepComplate:true,
-            })
-        } else {
+                CurrentStep: 4
+            });
+        } else if (this.state.CurrentStep === 4) {
+            window.scrollTo(0, 0);
+            this.setState({
+                FourthStep: false,
+                FivethStep: true,
+                FivethStepComplate: true,
+                CurrentStep: 5
+            });
+        } else if (this.state.CurrentStep === 5) {
+            window.scrollTo(0, 0);
+            this.setState({
+                FivethStep: false,
+                SixthStep: true,
+                SixthStepComplate: true,
+                CurrentStep: 6
+            });
+        } else if (this.state.CurrentStep === 6) {
+            window.scrollTo(0, 0);
+            this.setState({
+                SixthStep: false,
+                SeventhStep: true,
+                SeventhStepComplate: true,
+                CurrentStep: 7
+            });
+        } else if (this.state.CurrentStep === 7) {
             this.props.history.push({
-                pathname: "/Risk/" + projectId
+                pathname: "/Risk/" + projectId + ""
             });
         }
+    };
 
-        let consequenceData = this.state.consequenceData;
-        if (consequenceData.length == 0) {
-            this.fillConsequence();
-        }
-    }
 
     PreviousStep = () => {
         if (this.state.docId !== 0) {
-            if (this.state.CurrentStep === 5) {
-                window.scrollTo(0, 0)
+            if (this.state.CurrentStep === 2) {
+                window.scrollTo(0, 0);
                 this.setState({
-                    FirstStep: false,
+                    FirstStep: true,
                     SecondStep: false,
-                    ThirdStep: false,
-                    FourStep: true,
-                    FourthStepComplate: false,
-                    postQuantitifactionStepComplate: false, analysisStepLink: false,
-
-                    CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: true,
-                    SecondStepComplate: true
-                })
-            }
-            if (this.state.CurrentStep === 4) {
-                window.scrollTo(0, 0)
+                    SecondStepComplate: false,
+                    CurrentStep: 1
+                });
+            } else if (this.state.CurrentStep === 3) {
+                window.scrollTo(0, 0);
                 this.setState({
-                    FirstStep: false,
-                    SecondStep: false,
-                    ThirdStep: true,
-                    postQuantitifactionStepComplate: false, analysisStepLink: false,
-
-                    CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: false,
-                    SecondStepComplate: false
-                })
-            }
-            if (this.state.CurrentStep === 3) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
                     SecondStep: true,
                     ThirdStep: false,
-                    postQuantitifactionStepComplate: false, analysisStepLink: false,
-
-                    CurrentStep: (this.state.CurrentStep - 1),
                     ThirdStepComplate: false,
-                    SecondStepComplate: true
-                })
-            }
-            else {
-                if (this.state.CurrentStep === 2) {
-                    window.scrollTo(0, 0)
-                    this.setState({
-                        FirstStep: true,
-                        SecondStep: false,
-                        SecondStepComplate: false,
-                        ThirdStep: false,
-                        postQuantitifactionStepComplate: false, analysisStepLink: false,
-
-                        CurrentStep: (this.state.CurrentStep - 1)
-                    })
-                }
+                    CurrentStep: 2
+                });
+            } else if (this.state.CurrentStep === 4) {
+                window.scrollTo(0, 0);
+                this.setState({
+                    FourthStep: false,
+                    ThirdStep: true,
+                    FourthStepComplate: false,
+                    CurrentStep: 3
+                });
+            } else if (this.state.CurrentStep === 5) {
+                window.scrollTo(0, 0);
+                this.setState({
+                    FourthStep: true,
+                    FivethStep: false,
+                    FivethStepComplate: false,
+                    CurrentStep: 4
+                });
+            } else if (this.state.CurrentStep === 6) {
+                window.scrollTo(0, 0);
+                this.setState({
+                    FivethStep: true,
+                    SixthStep: false,
+                    SixthStepComplate: false,
+                    CurrentStep: 5
+                });
+            } else if (this.state.CurrentStep === 7) {
+                window.scrollTo(0, 0);
+                this.setState({
+                    SixthStep: true,
+                    SeventhStep: false,
+                    SeventhStepComplate: false,
+                    CurrentStep: 6
+                });
             }
         }
-    }
+    };
 
     handleChangeCycle(e, field) {
 
@@ -997,7 +916,7 @@ class riskAddEdit extends Component {
         saveDocument.projectId = this.state.projectId;
         saveDocument.riskId = this.state.docId;
         saveDocument.isActive = isActive;
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         let api = 'AddCommunicationRiskCycles';
 
         this.setState({
@@ -1072,7 +991,6 @@ class riskAddEdit extends Component {
 
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                 <div className="proForm datepickerContainer">
                                     <div className="fullInputWidth letterFullWidth">
                                         <label className="control-label">{Resources.currentPlannedMitigation[currentLanguage]}</label>
@@ -1106,7 +1024,6 @@ class riskAddEdit extends Component {
                                 </div>
 
                                 <div className="slider-Btns">
-
                                     {this.state.CycleEditLoading ?
                                         <button className="primaryBtn-1 btn disabled">
                                             <div className="spinner">
@@ -1176,26 +1093,25 @@ class riskAddEdit extends Component {
                         onSubmit={(values) => {
                             this.saveMitigationRequest(false)
                         }}>
-
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="RiskRequestCycleFormPost" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                 <Fragment>
                                     <div className="proForm datepickerContainer">
                                         <div className="fullInputWidth letterFullWidth">
                                             <label className="control-label">{Resources.proposeMitigation[currentLanguage]}</label>
-                                            <div className={"inputDev ui input" + (errors.proposeMitigation && touched.proposeMitigation ? (" has-error") : !errors.proposeMitigation && touched.proposeMitigation ? (" has-success") : " ")} >
-                                                <input name='proposeMitigation' id="proposeMitigation" className="form-control fsadfsadsa"
+                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                <input name='subject' id="subject" className="form-control fsadfsadsa"
                                                     placeholder={Resources.proposeMitigation[currentLanguage]}
                                                     autoComplete='off'
                                                     value={this.state.documentCycle.subject}
                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                     onChange={(e) => this.handleChangeCycle(e, 'subject')} />
-                                                {errors.proposeMitigation && touched.proposeMitigation ? (<em className="pError">{errors.proposeMitigation}</em>) : null}
-                                                {/* {<em className="pError">{JSON.stringify(errors.proposeMitigation)}</em>} */}
+                                                {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                              
                                             </div>
                                         </div>
                                     </div>
+                                
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
                                             <Dropdown title="mitigationType"
@@ -1221,7 +1137,6 @@ class riskAddEdit extends Component {
                                                         <div className="linebylineInput" >
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <ModernDatepicker date={this.state.documentCycle.docDate}
-                                                                    format={'DD/MM/YYYY'}
                                                                     showBorder
                                                                     onChange={e => this.handleChangeDateCycle(e, 'docDate')}
                                                                     placeholder={'Select a date'} />
@@ -1300,7 +1215,6 @@ class riskAddEdit extends Component {
                             </Form>
                         )}
                     </Formik>
-
                     <div className="doc-pre-cycle">
                         <header>
                             <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
@@ -1356,11 +1270,11 @@ class riskAddEdit extends Component {
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         )
     }
+
     HandleChangeValue = (e, index, id) => {
         let items = this.state.items;
         let likelihood = this.state.likelihood;
@@ -1911,147 +1825,155 @@ class riskAddEdit extends Component {
     }
 
     StepOneLink = () => {
-        if (docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
                 FirstStep: true,
                 SecondStep: false,
                 SecondStepComplate: false,
-                ThirdStepComplate: false,
-                analysisStepLink: false,
-
                 CurrentStep: 1,
+                ThirdStepComplate: false,
                 FourthStepComplate: false,
-                FourStep: false,
-            })
+                FivethStepComplate: false,
+                FivethStep: false,
+                SixthStep: false,
+                SeventhStep: false,
+                SixthStepComplate: false,
+                SeventhStepComplate: false
+            });
         }
-    }
+    };
 
     StepTwoLink = () => {
-        if (docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
                 FirstStep: false,
                 SecondStep: true,
                 SecondStepComplate: true,
-                analysisStepLink: false, 
-                ThirdStepComplate: false,
                 CurrentStep: 2,
+                ThirdStepComplate: false,
                 FourthStepComplate: false,
-                FourStep: false,
-            })
-            let consequenceData = this.state.consequenceData;
-            if (consequenceData.length == 0) {
-                this.fillConsequence();
-            }
+                FivethStepComplate: false,
+                FivethStep: false,
+                SixthStep: false,
+                SeventhStep: false,
+                SixthStepComplate: false,
+                SeventhStepComplate: false
+            });
         }
-    }
+    };
 
     StepThreeLink = () => {
-        if (docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
                 ThirdStep: true,
                 SecondStepComplate: true,
                 ThirdStepComplate: true,
-                analysisStepLink: false,
-                FourthStepComplate: false,
-                FourStep: false,
                 CurrentStep: 3,
+                FourthStepComplate: false,
+                FivethStepComplate: false,
+                FourthStep: false,
+                FivethStep: false,
                 FirstStep: false,
                 SecondStep: false,
-            })
-            let consequenceData = this.state.consequenceData;
-            if (consequenceData.length == 0) {
-                this.fillConsequence();
-            }
+                SixthStep: false,
+                SeventhStep: false,
+                SixthStepComplate: false,
+                SeventhStepComplate: false
+            });
         }
-    }
+    };
 
     StepFourLink = () => {
-        if (docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
-                FourStep: true,
-                FiveStep: false,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
+                FourthStep: true,
                 FourthStepComplate: true,
-                FivethStepComplate:false,
-                CurrentStep: 4,
-                analysisStepLink: false,
-                postQuantitifactionStepComplate: false,
+                ThirdStepComplate: true,
+                SecondStepComplate: true,
+                ThirdStep: false,
                 FirstStep: false,
                 SecondStep: false,
-                ThirdStep: false,
-            })
+                CurrentStep: 4,
+                FivethStepComplate: false,
+                FivethStep: false,
+                SixthStep: false,
+                SeventhStep: false,
+                SixthStepComplate: false,
+                SeventhStepComplate: false
+            });
         }
-    }
+    };
 
     StepFiveLink = () => {
-        if (docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
-                FourStep: true,
-                FiveStep: false,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                FourthStepComplate: true,
-                FivethStepComplate:true,
-                SixthStepComplate:false,
+                FourthStep: false,
+                FivethStep: true,
+                FivethStepComplate: true,
                 CurrentStep: 5,
-                analysisStepLink: false,
-                postQuantitifactionStepComplate: false,
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: false,
-            })
-        }
-    }
-    
-    StepSixLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FourStep: false,
-                FiveStep: false,
-                SecondStepComplate: true,
                 ThirdStepComplate: true,
+                SecondStepComplate: true,
                 FourthStepComplate: true,
-                FivethStepComplate:true,
-                SixthStepComplate:false,
-                CurrentStep: 6,
-                analysisStepLink: true, 
-                postQuantitifactionStepComplate: false,
-                FirstStep: false,
                 SecondStep: false,
                 ThirdStep: false,
-            })
+                FirstStep: false,
+                SixthStep: false,
+                SeventhStep: false,
+                SixthStepComplate: false,
+                SeventhStepComplate: false
+            });
         }
-    }
+    };
+
+    StepSixLink = () => {
+        if (this.state.docId !== 0) {
+            this.setState({
+                SixthStep: true,
+                FourthStep: false,
+                FivethStep: false,
+                CurrentStep: 6,
+                FivethStepComplate: true,
+                ThirdStepComplate: true,
+                SecondStepComplate: true,
+                FourthStepComplate: true,
+                SecondStep: false,
+                ThirdStep: false,
+                FirstStep: false,
+                SeventhStep: false,
+                SixthStepComplate: true,
+                SeventhStepComplate: false
+            });
+        }
+    };
 
     StepSevenLink = () => {
-        if (docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
-                FourStep: false,
-                FiveStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                FourthStepComplate: true,
-                FivethStepComplate:true,
-                SixthStepComplate:true,
-                SeventhStepComplate:true,
+                FourthStep: false,
+                FivethStepComplate: true,
                 CurrentStep: 7,
-                analysisStepLink: false,
-                postQuantitifactionStepComplate: false,
-                FirstStep: false,
+                ThirdStepComplate: true,
+                SecondStepComplate: true,
+                FourthStepComplate: true,
                 SecondStep: false,
                 ThirdStep: false,
-            })
+                FirstStep: false,
+                SixthStep: false,
+                SeventhStep: true,
+                SixthStepComplate: true,
+                SeventhStepComplate: true
+            });
         }
-    }  
+    };
 
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]},
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]}
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
+
         let comCause = <RiskCause riskId={this.state.docId} />
 
         return (
@@ -2076,7 +1998,7 @@ class riskAddEdit extends Component {
                                                     } else {
                                                         this.NextStep();
                                                     }
-                                                }}> 
+                                                }}>
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                     <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                         <div className="proForm datepickerContainer">
@@ -2252,14 +2174,12 @@ class riskAddEdit extends Component {
                                 <Fragment>
                                     {this.state.SecondStep ?
                                         <div className="subiTabsContent feilds__top">
-
                                             {this.CurrentMit()}
                                             {/* {this.ProposedMit(true)} */}
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
                                                 </div>
-
                                             </div>
                                         </div>
                                         :
@@ -2296,22 +2216,19 @@ class riskAddEdit extends Component {
 
                                                     </div>
                                                 </div>
-
-
                                             </Fragment>
                                             :
-                                            this.state.FourStep ?
+                                            this.state.FourthStep ?
                                                 <div className="subiTabsContent feilds__top">
                                                     {this.ProposedMit(false)}
                                                     <div className="doc-pre-cycle">
                                                         <div className="slider-Btns">
                                                             <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                                 :
-                                                this.state.postQuantitifactionStepComplate ?
+                                                this.state.FivethStep ?
                                                     <div className="subiTabsContent feilds__top">
                                                         <div className="doc-pre-cycle">
                                                             <header>
@@ -2329,7 +2246,7 @@ class riskAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     :
-                                                    this.state.analysisStepComplate ?
+                                                    this.state.SixthStep ?
                                                         <div className="modal-header fullWidthWrapper">
                                                             <header>
                                                                 <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
@@ -2360,7 +2277,6 @@ class riskAddEdit extends Component {
                                                                     <span>{this.state.totalResidualRisk > this.state.totalPretRiskEmv ? 'Cost Effective' : 'Not Cost Effective'}</span>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                         :
                                                         <Fragment>
@@ -2371,7 +2287,6 @@ class riskAddEdit extends Component {
                                                                 <div className="slider-Btns">
                                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
-
                                                             </div>
                                                         </Fragment>
                                     }
@@ -2390,60 +2305,109 @@ class riskAddEdit extends Component {
                             {/* Steps Active  */}
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={"step-slider-item " + (this.state.SecondStepComplate ? "active" : "current__step")}>
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.information[currentLanguage]}</h6>
+                                            <h6 onClick={e => this.setState({ CurrentStep: 1 })}>
+                                                {Resources.information[currentLanguage]}
+                                            </h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={"step-slider-item " + (this.state.ThirdStepComplate ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6 >{Resources.mitigation[currentLanguage]}</h6>
+                                            <h6>{Resources["mitigation"][currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")}>
+                                    <div onClick={this.StepThreeLink} data-id="step3" className={"step-slider-item " + (this.state.FourthStepComplate ? "active" : this.state.ThirdStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.consequence[currentLanguage]}</h6>
+                                            <h6>
+                                                {Resources["consequence"][currentLanguage]}
+                                            </h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepFourLink} data-id="step3" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")}>
+
+                                    <div
+                                        onClick={this.StepFourLink}
+                                        data-id="step4"
+                                        className={
+                                            "step-slider-item " +
+                                            (this.state.FivethStepComplate
+                                                ? "active"
+                                                : this.state.FourthStepComplate
+                                                    ? "current__step"
+                                                    : "")
+                                        }
+                                    >
                                         <div className="steps-timeline">
                                             <span>4</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.proposeMitigation[currentLanguage]}</h6>
+                                            <h6>{Resources["proposeMitigation"][currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepFiveLink} data-id="step3" className={'step-slider-item ' + (this.state.SixthStepComplate ? 'active' : this.state.FivethStepComplate ? "current__step" : "")}>
+
+                                    <div
+                                        onClick={this.StepFiveLink}
+                                        data-id="step5"
+                                        className={
+                                            "step-slider-item " +
+                                            (this.state.SixthStepComplate
+                                                ? "active"
+                                                : this.state.FivethStepComplate
+                                                    ? "current__step"
+                                                    : "")
+                                        }
+                                    >
                                         <div className="steps-timeline">
                                             <span>5</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.postQuantitifaction[currentLanguage]}</h6>
+                                            <h6>{Resources["postQuantitifaction"][currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepSixLink} data-id="step3" className={'step-slider-item ' + (this.state.SeventhStepComplate ? 'active' : this.state.SixthStepComplate ? "current__step" : "")}>
+
+                                    <div
+                                        onClick={this.StepSixLink}
+                                        data-id="step6"
+                                        className={
+                                            "step-slider-item " +
+                                            (this.state.SeventhStepComplate
+                                                ? "active"
+                                                : this.state.SixthStepComplate
+                                                    ? "current__step"
+                                                    : "")
+                                        }
+                                    >
                                         <div className="steps-timeline">
                                             <span>6</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.riskAnalysis[currentLanguage]}</h6>
+                                            <h6>{Resources["riskAnalysis"][currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div onClick={this.StepSevenLink} data-id="step3" className={'step-slider-item ' + (this.state.EightthStepComplate ? 'active' : this.state.SeventhStepComplate ? "current__step" : "")}>
+
+                                    <div
+                                        onClick={this.StepSevenLink}
+                                        data-id="step7"
+                                        className={
+                                            this.state.SeventhStep
+                                                ? "step-slider-item  current__step"
+                                                : "step-slider-item"
+                                        }
+                                    >
                                         <div className="steps-timeline">
                                             <span>7</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
+                                            <h6>{Resources["addDocAttachment"][currentLanguage]}</h6>
                                         </div>
                                     </div>
                                 </div>
