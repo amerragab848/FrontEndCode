@@ -163,13 +163,13 @@ class ProjectTaskAddEdit extends Component {
   componentWillReceiveProps(nextProps, prevProps) {
 
     if (nextProps.document.id) {
-
-      nextProps.document.docDate = moment(nextProps.document.docDate).format("DD/MM/YYYY");
-      nextProps.document.startDate = moment(nextProps.document.startDate).format("DD/MM/YYYY");
-      nextProps.document.finishDate = moment(nextProps.document.finishDate).format("DD/MM/YYYY");
+      let doc = nextProps.document
+      doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+      doc.startDate = doc.startDate === null ? moment().format('YYYY-MM-DD') : moment(doc.startDate).format('YYYY-MM-DD')
+      doc.finishDate = doc.finishDate === null ? moment().format('YYYY-MM-DD') : moment(doc.finishDate).format('YYYY-MM-DD')
 
       this.setState({
-        document: nextProps.document,
+        document: doc,
         hasWorkflow: nextProps.hasWorkflow
       });
 
@@ -459,11 +459,11 @@ class ProjectTaskAddEdit extends Component {
 
     let saveDocument = this.state.document;
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.startDate = moment(saveDocument.startDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.startDate = moment(saveDocument.startDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.finishDate = moment(saveDocument.finishDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.finishDate = moment(saveDocument.finishDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditTask", saveDocument).then(result => {
       this.setState({
@@ -483,11 +483,11 @@ class ProjectTaskAddEdit extends Component {
 
     let saveDocument = { ...this.state.document };
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.startDate = moment(saveDocument.startDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.startDate = moment(saveDocument.startDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.finishDate = moment(saveDocument.finishDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.finishDate = moment(saveDocument.finishDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     if (saveDocument.finishDate >= saveDocument.startDate) {
 
@@ -577,11 +577,11 @@ class ProjectTaskAddEdit extends Component {
 
     let saveDocument = { ...this.state.cycleDocument };
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.startDate = moment(saveDocument.startDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.startDate = moment(saveDocument.startDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.finishDate = moment(saveDocument.finishDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.finishDate = moment(saveDocument.finishDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     if (saveDocument.finishDate >= saveDocument.startDate) {
 
@@ -728,7 +728,7 @@ class ProjectTaskAddEdit extends Component {
                                     </label>
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
-                                        <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
+                                        <ModernDatepicker date={this.state.document.docDate}
                                           onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
                                       </div>
                                     </div>
@@ -799,8 +799,7 @@ class ProjectTaskAddEdit extends Component {
                                     </label>
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
-                                        <ModernDatepicker date={this.state.document.startDate} format={"DD/MM/YYYY"}
-                                          showBorder onChange={e => this.handleChangeDate(e, "startDate")}
+                                        <ModernDatepicker date={this.state.document.startDate} onChange={e => this.handleChangeDate(e, "startDate")}
                                           placeholder={"Select a date"}
                                         />
                                       </div>

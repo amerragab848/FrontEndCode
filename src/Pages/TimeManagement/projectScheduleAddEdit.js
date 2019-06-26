@@ -285,11 +285,11 @@ class drawingListAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let Doc = nextProps.document
-            Doc.docDate = moment(Doc.docDate).format('DD/MM/YYYY')
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
 
             this.setState({
-                document: Doc,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
             });
             this.checkDocumentIsView();
@@ -624,7 +624,7 @@ class drawingListAddEdit extends Component {
             })
 
             let Doc = { ...this.state.document }
-            Doc.docDate = moment(Doc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            Doc.docDate = moment(Doc.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
             if (this.state.docId > 0) {
                 dataservice.addObject('EditProjectSchedule', Doc).then(
@@ -700,8 +700,8 @@ class drawingListAddEdit extends Component {
 
         let Doc = { ...this.state.documentItemEdit }
 
-        Doc.finishDate = moment(Doc.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        Doc.startDate = moment(Doc.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        Doc.finishDate = moment(Doc.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        Doc.startDate = moment(Doc.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditProjectScheduleItem', Doc).then(res => {
             this.setState({
@@ -737,8 +737,8 @@ class drawingListAddEdit extends Component {
         })
 
         let DocAdd = this.state.documentItem
-        DocAdd.finishDate = moment(DocAdd.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        DocAdd.startDate = moment(DocAdd.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        DocAdd.finishDate = moment(DocAdd.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        DocAdd.startDate = moment(DocAdd.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
 
         dataservice.addObject('AddProjectScheduleItem', DocAdd).then(res => {

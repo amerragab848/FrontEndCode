@@ -7426,6 +7426,15 @@ div#markup-panel {
     border-bottom: 1px solid #DADEE6;
  }
 
+ .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5,   .filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
+    min-height: 36px;
+    /* height: 40px; */
+  }
+
+  .filter__input-wrapper .letterFullWidth .multiChoice .css-1hwfws3 {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+  }
  .datepickerContainer.proForm .ui.input.inputDev {
      max-width: 100%;
  }
@@ -7509,6 +7518,9 @@ div#markup-panel {
     color: #fff !important;
 }
 
+  .filter__warrper{
+      z-index: 19;
+  }
 button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day abbr {
     color: #4382f9;
 }
@@ -7547,7 +7559,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     transition: all 0.4s ease-in-out
 }
 
-.header__search.active {
+.header__search:hover {
     border-bottom: 2px solid #E9ECF0;
 }
 
@@ -7556,7 +7568,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     transition: all 0.4s ease-in-out
 }
 
-.header__search.active .ui.input {
+.header__search:hover .ui.input {
     width: 220px;
     transition: all 0.4s ease-in-out
 }
