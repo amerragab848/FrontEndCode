@@ -47,8 +47,8 @@ class TechnicalOfficeReport extends Component {
             this.setState({ currentComponent: null, isLoading: true })
             let reportobj = {
                 projectId: this.state.project.value,
-                fromDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                toDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                fromDate: moment(this.state.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                toDate: moment(this.state.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             }
             let noClicks = this.state.noClicks;
             this.setState({ isLoading: true })

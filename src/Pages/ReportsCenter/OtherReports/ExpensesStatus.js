@@ -39,7 +39,6 @@ class ExpensesStatus extends Component {
             })
         }
         this.columns = [
-
             {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
@@ -50,7 +49,6 @@ class ExpensesStatus extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: dateFormate
-
             },
             {
                 key: "description",
@@ -155,13 +153,13 @@ class ExpensesStatus extends Component {
     getGridRows = () => {
         this.setState({ isLoading: true })
 
-        let obj= {
-            fromDate:this.state.startDate ,
-            toDate:this.state.finishDate ,
-            companyId:this.state.selectedCompany.value ,
-            accountId:this.state.selectedAccount.value
+        let obj = {
+            fromDate: this.state.startDate,
+            toDate: this.state.finishDate,
+            companyId: this.state.selectedCompany.value,
+            accountId: this.state.selectedAccount.value
         }
-        Api.post('GetAllExpensesByCompanyOrAccount',obj).then(
+        Api.post('GetAllExpensesByCompanyOrAccount', obj).then(
             res => {
                 this.setState({
                     rows: res,
@@ -190,10 +188,7 @@ class ExpensesStatus extends Component {
             })
     }
 
-    render() {
-
-
-
+    render() { 
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
